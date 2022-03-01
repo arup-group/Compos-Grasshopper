@@ -6,9 +6,9 @@ using System.Windows.Forms;
 
 namespace ComposGH.UI
 {
-    partial class AboutComposBox : Form
+    partial class AboutBox : Form
     {
-        public AboutComposBox()
+        public AboutBox()
         {
             GH_AssemblyInfo composPlugin = Grasshopper.Instances.ComponentServer.FindAssembly(new Guid("c3884cdc-ac5b-4151-afc2-93590cef4f8f"));
 

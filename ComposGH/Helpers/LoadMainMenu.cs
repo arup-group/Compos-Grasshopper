@@ -92,9 +92,9 @@ namespace ComposGH.Helpers
                 unitBox.Show();
             });
             // add info
-            oasysMenu.DropDown.Items.Add("AdSec Info", Properties.Resources.AdSecInfo, (s, a) =>
+            oasysMenu.DropDown.Items.Add("Compos Info", Properties.Resources.AdSecInfo, (s, a) =>
             {
-                UI.AboutComposBox aboutBox = new UI.AboutComposBox();
+                UI.AboutBox aboutBox = new UI.AboutBox();
                 aboutBox.Show();
             });
 
