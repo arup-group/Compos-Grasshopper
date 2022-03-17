@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
-
 namespace ComposGH.UI.ButtonsUI
 {
     /// <summary>
@@ -96,6 +95,8 @@ namespace ComposGH.UI.ButtonsUI
             return path;
         }
     }
+    
+
     /// <summary>
     /// Method to draw a dropdown arrow
     /// 
