@@ -63,6 +63,26 @@ namespace ComposGH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CreateProfile {
+            get {
+                object obj = ResourceManager.GetObject("CreateProfile", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CreateSteelMaterial {
+            get {
+                object obj = ResourceManager.GetObject("CreateSteelMaterial", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap OpenModel {
             get {
                 object obj = ResourceManager.GetObject("OpenModel", resourceCulture);
@@ -76,6 +96,16 @@ namespace ComposGH.Properties {
         internal static System.Drawing.Bitmap SaveModel {
             get {
                 object obj = ResourceManager.GetObject("SaveModel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SteelMaterialParam {
+            get {
+                object obj = ResourceManager.GetObject("SteelMaterialParam", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

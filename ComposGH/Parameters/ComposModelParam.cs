@@ -15,7 +15,7 @@ using Rhino.Collections;
 namespace ComposGH.Parameters
 {
     /// <summary>
-    /// Model class, this class defines the basic properties and methods for any Gsa Model
+    /// Model class, this class defines the basic properties and methods for any Compos Model
     /// </summary>
     [Serializable]
     public class ComposModel

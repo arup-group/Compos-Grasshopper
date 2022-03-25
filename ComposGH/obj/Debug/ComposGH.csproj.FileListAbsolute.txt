@@ -110,3 +110,12 @@ C:\Users\Gianluca.Casalnuovo\source\repos\Compos-Grasshopper\ComposGH\obj\Debug\
 C:\Users\Gianluca.Casalnuovo\source\repos\Compos-Grasshopper\ComposGH\obj\Debug\ComposGH.csproj.GenerateResource.cache
 C:\Users\Gianluca.Casalnuovo\Desktop\New folder (2)\ComposGH.dll
 C:\Users\Gianluca.Casalnuovo\Desktop\New folder (2)\ComposGH.pdb
+C:\Users\Gianluca.Casalnuovo\source\repos\Compos-Grasshopper\ComposGH\bin\ComposGH.dll.config
+C:\Users\Gianluca.Casalnuovo\source\repos\Compos-Grasshopper\ComposGH\bin\EntityFramework.dll
+C:\Users\Gianluca.Casalnuovo\source\repos\Compos-Grasshopper\ComposGH\bin\EntityFramework.SqlServer.dll
+C:\Users\Gianluca.Casalnuovo\source\repos\Compos-Grasshopper\ComposGH\bin\System.Data.SQLite.dll
+C:\Users\Gianluca.Casalnuovo\source\repos\Compos-Grasshopper\ComposGH\bin\System.Data.SQLite.EF6.dll
+C:\Users\Gianluca.Casalnuovo\source\repos\Compos-Grasshopper\ComposGH\bin\System.Data.SQLite.Linq.dll
+C:\Users\Gianluca.Casalnuovo\source\repos\Compos-Grasshopper\ComposGH\bin\EntityFramework.xml
+C:\Users\Gianluca.Casalnuovo\source\repos\Compos-Grasshopper\ComposGH\bin\EntityFramework.SqlServer.xml
+C:\Users\Gianluca.Casalnuovo\source\repos\Compos-Grasshopper\ComposGH\bin\System.Data.SQLite.xml

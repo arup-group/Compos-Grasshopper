@@ -12,7 +12,7 @@ using Rhino.Collections;
 namespace ComposGH.Parameters
 {
     /// <summary>
-    /// Section class, this class defines the basic properties and methods for any Gsa Section
+    /// Section class, this class defines the basic properties and methods for any Compos Section
     /// </summary>
     public class ComposSteelMaterial
     {
@@ -30,17 +30,45 @@ namespace ComposGH.Parameters
 
         public string WeldMaterial
         {
-            get { return wMat; }
+            get 
+            { return wMat; } 
             set
-            {
-                wMat = value;
-            }
+            { wMat = value; }
         }
+
+        public double YeldStrength
+        {
+            get
+            { return fy; }
+            set
+            { fy = value; }
+        }
+
+        public double YoungModulus
+        {
+            get
+            { return E; }
+            set
+            { E = value; }
+        }
+
+        public double Density
+        {
+            get
+            { return ρ; }
+            set
+            { ρ = value; }
+        }
+
 
         public SteelType SType;
 
+        
         #region fields
         string wMat = "";
+        double fy;
+        double E;
+        double ρ;
 
         #endregion
 
@@ -56,8 +84,11 @@ namespace ComposGH.Parameters
             SType = (SteelType)material_id;
         }
 
+  
+
         #endregion
 
+        
         #region properties
         public bool IsValid
         {
@@ -166,7 +197,7 @@ namespace ComposGH.Parameters
         public override bool CastFrom(object source)
         {
             // This function is called when Grasshopper needs to convert other data 
-            // into GsaMaterial.
+            // into ComposMaterial.
 
             if (source == null) { return false; }
 
@@ -238,7 +269,7 @@ namespace ComposGH.Parameters
 
         public override GH_Exposure Exposure => GH_Exposure.secondary | GH_Exposure.obscure;
 
-        //protected override System.Drawing.Bitmap Icon => GhSA.Properties.Resources.GsaMaterial;
+        protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
 
         protected override GH_GetterResult Prompt_Plural(ref List<ComposSteelMaterialGoo> values)
         {
