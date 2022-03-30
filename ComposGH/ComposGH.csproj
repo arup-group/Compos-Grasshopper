@@ -85,20 +85,60 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ComposGHInfo.cs" />
+    <Compile Include="Components\0_Model\SectionDescription.cs" />
+    <Compile Include="Components\0_Model\RetrieveMemberName.cs" />
+    <Compile Include="Components\0_Model\SaveModel.cs" />
+    <Compile Include="Components\0_Model\DesignOption.cs" />
+    <Compile Include="Components\0_Model\ShowCoa.cs" />
+    <Compile Include="Components\0_Model\OpenModel.cs" />
+    <Compile Include="Components\Properties\CreateProfile.cs" />
+    <Compile Include="Components\Properties\CreateSteelMaterial.cs" />
     <Compile Include="Helpers\GhRibbonLayout.cs" />
+    <Compile Include="Helpers\_Colour.cs" />
+    <Compile Include="Helpers\_ComposResultsHelper.cs" />
+    <Compile Include="Helpers\_ComposPath.cs" />
+    <Compile Include="Helpers\_ComposProfileConvert.cs" />
+    <Compile Include="Helpers\_RhinoConversions.cs" />
+    <Compile Include="Helpers\_SqlReader.cs" />
+    <Compile Include="Parameters\ComposModelParam.cs" />
+    <Compile Include="Parameters\ComposSteelMaterial.cs" />
+    <Compile Include="Parameters\_Unit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Comp_Button.cs" />
+    <Compile Include="UI\Comp_DropDown.cs" />
+    <Compile Include="UI\Comp_Profile.cs" />
     <Compile Include="UI\DropDownAttributes.cs" />
     <Compile Include="UI\GraphicButtons.cs" />
     <Compile Include="UI\WidthFix.cs" />
   </ItemGroup>
+  
+    <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Resources\OpenModel.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\" />
-    <Folder Include="Parameters\" />
+    <None Include="Resources\SaveModel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CreateProfile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CreateSteelMaterial.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SteelMaterialParam.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
