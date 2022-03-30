@@ -4,7 +4,6 @@
 
 *.suo
 /.vs/slnx.sqlite
-/ComposGH/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
 /packages
-/ComposGH/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttributes.cs
-/ComposGH/obj/Debug/ComposGH.csproj.AssemblyReference.cache
+/ComposGH/bin
+/ComposGH/obj

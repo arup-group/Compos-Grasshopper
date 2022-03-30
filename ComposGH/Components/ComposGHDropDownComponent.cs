@@ -94,7 +94,7 @@ namespace ComposGH.Components
         // list of descriptions 
         List<string> spacerDescriptions = new List<string>(new string[]
         {
-            "Moment Unit"
+            "Moment Unit",
             "Force Unit",
         });
         private bool first = true;
