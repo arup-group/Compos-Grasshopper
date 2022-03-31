@@ -1,9 +1,8 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-*.suo
+﻿*.suo
 /.vs/slnx.sqlite
+/.vs/ComposGH/v17/
 /packages
 /ComposGH/bin
 /ComposGH/obj
+/ComposGH/Tests/bin
+/ComposGH/Tests/obj
