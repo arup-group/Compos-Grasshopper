@@ -93,6 +93,7 @@
     <Compile Include="Components\0_Model\DesignOption.cs" />
     <Compile Include="Components\0_Model\ShowCoa.cs" />
     <Compile Include="Components\0_Model\OpenModel.cs" />
+    <Compile Include="Components\4_Studs\CreateStud.cs" />
     <Compile Include="Components\Properties\CreateProfile.cs" />
     <Compile Include="Components\Properties\CreateSteelMaterial.cs" />
     <Compile Include="Helpers\GhRibbonLayout.cs" />
@@ -100,10 +101,13 @@
     <Compile Include="Helpers\_ComposResultsHelper.cs" />
     <Compile Include="Helpers\_ComposPath.cs" />
     <Compile Include="Helpers\_ComposProfileConvert.cs" />
+    <Compile Include="Helpers\_GetInputs.cs" />
     <Compile Include="Helpers\_RhinoConversions.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
     <Compile Include="Parameters\ComposModelParam.cs" />
+    <Compile Include="Parameters\ComposStud.cs" />
     <Compile Include="Parameters\ComposSteelMaterial.cs" />
+    <Compile Include="Parameters\GH_UnitNumber.cs" />
     <Compile Include="Parameters\_Unit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -112,6 +116,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="UI\Comp_Button.cs" />
+    <Compile Include="UI\Comp_CheckBox.cs" />
     <Compile Include="UI\Comp_DropDown.cs" />
     <Compile Include="UI\Comp_Profile.cs" />
     <Compile Include="UI\DropDownAttributes.cs" />
@@ -141,6 +146,9 @@
   <ItemGroup>
     <None Include="Resources\SteelMaterialParam.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CreateStudZoneLength.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -150,7 +158,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>Copy "$(TargetPath)" "$(TargetDir)$(ProjectName).gha"
+    <PostBuildEvent>Copy "$(TargetPath)" "C:\Users\arjen.veldhuis\AppData\Roaming\Grasshopper\Libraries\ComposTest.gha"
 Erase "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>

@@ -35,27 +35,27 @@
 
 		public static string Cat2()
 		{
-			return new string(' ', 5) + "Geometry";
+			return new string(' ', 5) + "Beams";
 		}
 
 		public static string Cat3()
 		{
-			return new string(' ', 4) + "Loads";
+			return new string(' ', 4) + "Studs";
 		}
 
 		public static string Cat4()
 		{
-			return new string(' ', 3) + "Analyse";
+			return new string(' ', 3) + "ConcreteSlab";
 		}
 
 		public static string Cat5()
 		{
-			return new string(' ', 2) + "Results";
+			return new string(' ', 2) + "Loading";
 		}
 
 		public static string Cat6()
 		{
-			return new string(' ', 1) + "Test";
+			return new string(' ', 1) + "Analyses";
 		}
 
 		public static string Cat7()
