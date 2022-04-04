@@ -129,7 +129,7 @@ namespace ComposGH.Parameters
             if (Value == null)
                 return "Null";
             else
-                return Value.ToString();
+                return "Compos " + TypeName + " {" + Value.ToString() + "}"; ;
         }
         #endregion
 
