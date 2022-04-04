@@ -45,7 +45,6 @@ namespace ComposGH.Parameters
         }
 
           #endregion
-
         
         #region properties
         public bool IsValid
@@ -75,7 +74,7 @@ namespace ComposGH.Parameters
     }
 
     /// <summary>
-    /// GsaSection Goo wrapper class, makes sure GsaSection can be used in Grasshopper.
+    /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
     /// </summary>
     public class ComposStudGoo : GH_Goo<ComposStud>
     {
@@ -109,7 +108,6 @@ namespace ComposGH.Parameters
         {
             get
             {
-                //if (Value == null) { return "No internal GsaMember instance"; }
                 if (Value.IsValid) { return string.Empty; }
                 return Value.IsValid.ToString(); //Todo: beef this up to be more informative.
             }
@@ -121,16 +119,13 @@ namespace ComposGH.Parameters
             else
                 return Value.ToString();
         }
-
-
         #endregion
 
         #region casting methods
         public override bool CastTo<Q>(ref Q target)
         {
             // This function is called when Grasshopper needs to convert this 
-            // instance of GsaMaterial into some other type Q.            
-
+            // instance of our custom class into some other type Q.            
 
             if (typeof(Q).IsAssignableFrom(typeof(ComposStud)))
             {
@@ -147,7 +142,7 @@ namespace ComposGH.Parameters
         public override bool CastFrom(object source)
         {
             // This function is called when Grasshopper needs to convert other data 
-            // into ComposMaterial.
+            // into our custom class.
 
             if (source == null) { return false; }
 
@@ -164,7 +159,7 @@ namespace ComposGH.Parameters
     }
 
     /// <summary>
-    /// This class provides a Parameter interface for the Data_GsaSection type.
+    /// This class provides a Parameter interface for the CustomGoo type.
     /// </summary>
     
     //public class ComposSteelMaterialParameter */: GH_PersistentParam<ComposSteelMaterialGoo>
