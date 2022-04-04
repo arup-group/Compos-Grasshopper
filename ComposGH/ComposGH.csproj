@@ -83,8 +83,6 @@
     <Compile Include="Helpers\DeSerialization.cs" />
     <Compile Include="Helpers\GhRibbonLayout.cs" />
     <Compile Include="Helpers\LoadMainMenu.cs" />
-    <Compile Include="Helpers\_Colour.cs" />
-    <Compile Include="Helpers\_ComposPath.cs" />
     <Compile Include="Helpers\_ComposProfileConvert.cs" />
     <Compile Include="Helpers\_ComposResultsHelper.cs" />
     <Compile Include="Helpers\_GetInputs.cs" />
@@ -108,12 +106,12 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Colours.cs" />
-    <Compile Include="UI\Comp_Button.cs" />
-    <Compile Include="UI\Comp_CheckBox.cs" />
-    <Compile Include="UI\DropDownAttributes.cs" />
-    <Compile Include="UI\DropDownSliderAttributes.cs" />
+    <Compile Include="UI\_SingleButtonAttributes.cs" />
+    <Compile Include="UI\_CheckBoxAttributes.cs" />
+    <Compile Include="UI\_DropDownAttributes.cs" />
+    <Compile Include="UI\_DropDownSliderAttributes.cs" />
     <Compile Include="UI\GraphicButtons.cs" />
-    <Compile Include="UI\TripleButtonAttributes.cs" />
+    <Compile Include="UI\_TripleButtonAttributes.cs" />
     <Compile Include="UI\UnitSettingsBox.cs">
       <SubType>Form</SubType>
     </Compile>
