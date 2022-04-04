@@ -20,8 +20,8 @@ namespace ComposGH.Parameters
         public bool Welding { get; set; } = true;
         public bool NCCI { get; set; } = true;
         public Pressure StudSteelStrength { get; set; }
-        public Length StudLeftZone { get; set; }
-        public Length StudRightZone { get; set; }
+        public Length NoStudZoneStart { get; set; }
+        public Length NoStudZoneEnd { get; set; }
         public Length ReinforcementPosition { get; set; }
         public Length Diameter { get; set; }
         public Length Height { get; set; }
@@ -32,21 +32,19 @@ namespace ComposGH.Parameters
             
         }
 
-        public ComposStud(Length studDiameter, Length studHeight, Length studLeftZone, Length studRightZone, Pressure studSteelStrength, Length reinforcementPosition, bool welding=true, bool ncci=true)
+        public ComposStud(Length studDiameter, Length studHeight, Pressure studSteelStrength, Length noStudStartLength, Length noStudEndLength, Length reinforcementPosition, bool welding=true, bool ncci=true)
         {
             this.Diameter = studDiameter;
             this.Height = studHeight;
-            this.StudLeftZone = studLeftZone;
-            this.StudRightZone = studRightZone;
             this.StudSteelStrength = studSteelStrength;
+            this.NoStudZoneStart = noStudStartLength;
+            this.NoStudZoneEnd = noStudEndLength;
             this.ReinforcementPosition = reinforcementPosition;
             this.Welding = welding;
             this.NCCI = ncci; 
         }
+        #endregion
 
-          #endregion
-
-        
         #region properties
         public bool IsValid
         {
@@ -54,6 +52,19 @@ namespace ComposGH.Parameters
             {
                 return true;
             }
+        }
+        #endregion
+
+        #region coa interop
+        internal ComposStud(string coaString)
+        {
+            // to do - implement from coa string method
+        }
+
+        internal string ToCoaString()
+        {
+            // to do - implement to coa string method
+            return string.Empty;
         }
         #endregion
 
@@ -75,7 +86,7 @@ namespace ComposGH.Parameters
     }
 
     /// <summary>
-    /// GsaSection Goo wrapper class, makes sure GsaSection can be used in Grasshopper.
+    /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
     /// </summary>
     public class ComposStudGoo : GH_Goo<ComposStud>
     {
@@ -109,7 +120,6 @@ namespace ComposGH.Parameters
         {
             get
             {
-                //if (Value == null) { return "No internal GsaMember instance"; }
                 if (Value.IsValid) { return string.Empty; }
                 return Value.IsValid.ToString(); //Todo: beef this up to be more informative.
             }
@@ -121,16 +131,13 @@ namespace ComposGH.Parameters
             else
                 return Value.ToString();
         }
-
-
         #endregion
 
         #region casting methods
         public override bool CastTo<Q>(ref Q target)
         {
             // This function is called when Grasshopper needs to convert this 
-            // instance of GsaMaterial into some other type Q.            
-
+            // instance of our custom class into some other type Q.            
 
             if (typeof(Q).IsAssignableFrom(typeof(ComposStud)))
             {
@@ -147,7 +154,7 @@ namespace ComposGH.Parameters
         public override bool CastFrom(object source)
         {
             // This function is called when Grasshopper needs to convert other data 
-            // into ComposMaterial.
+            // into our custom class.
 
             if (source == null) { return false; }
 
@@ -164,7 +171,7 @@ namespace ComposGH.Parameters
     }
 
     /// <summary>
-    /// This class provides a Parameter interface for the Data_GsaSection type.
+    /// This class provides a Parameter interface for the CustomGoo type.
     /// </summary>
     
     //public class ComposSteelMaterialParameter */: GH_PersistentParam<ComposSteelMaterialGoo>

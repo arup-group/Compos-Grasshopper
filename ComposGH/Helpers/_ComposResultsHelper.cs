@@ -1,49 +1,94 @@
-﻿using System;
+﻿using ComposGH.Parameters;
+using Oasys.Units;
+using Rhino.Geometry;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposGH.Helpers
 {
     class ResultHelper
     {
-        public static List<double> SmartRounder(double max, double min)
+        internal static List<double> SmartRounder(double max, double min)
         {
-            // find the biggest abs value of max and min
-            double val = Math.Max(Math.Abs(max), Math.Abs(min));
-
-            // round that with 4 significant digits
-            double scale = RoundToSignificantDigits(val, 4);
-
             // list to hold output values
             List<double> roundedvals = new List<double>();
 
-            // do max
-            if (max == 0)
+            // check if both are zero then return
+            if (max == 0 & min == 0)
+            {
+                roundedvals.Add(max);
+                roundedvals.Add(min);
                 roundedvals.Add(0);
+                return roundedvals;
+            }
+            int signMax = Math.Sign(max);
+            int signMin = Math.Sign(min);
+
+            int significantNumbers = 2;
+
+            // find the biggest abs value of max and min
+            double val = Math.Max(Math.Abs(max), Math.Abs(min));
+            max = Math.Abs(max);
+            min = Math.Abs(min);
+
+            // a value for how to round the values on the legend
+            int numberOfDigitsOut = significantNumbers;
+            //factor for scaling small numbers (0.00012312451)
+            double factor = 1;
+            if (val < 1)
+            {
+                // count the number of zeroes after the decimal point
+                string valString = val.ToString().Split('.')[1];
+                int digits = 0;
+                while (valString[digits] == '0')
+                    digits++;
+                // create the factor, we want to remove the zeroes as well as making it big enough for rounding
+                factor = Math.Pow(10, digits + 1);
+                // scale up max/min values 
+                max = max * factor;
+                min = min * factor;
+                max = Math.Ceiling(max);
+                min = Math.Floor(min);
+                max = max / factor;
+                min = min / factor;
+                numberOfDigitsOut = digits + significantNumbers;
+            }
             else
             {
-                double tempmax = scale * Math.Round(max / (scale), 4);
-                tempmax = Math.Ceiling(tempmax * 1000) / 1000;
-                roundedvals.Add(tempmax);
+                string valString = val.ToString();
+                // count the number of digits before the decimal point
+                int digits = valString.Split('.')[0].Count();
+                // create the factor, we want to remove the zeroes as well as making it big enough for rounding
+                int power = 10;
+                if (val < 500)
+                    power = 5;
+
+                factor = Math.Pow(power, digits - 1);
+                // scale up max/min values 
+                max = max / factor;
+                min = min / factor;
+                max = Math.Ceiling(max);
+                min = Math.Floor(min);
+                max = max * factor;
+                min = min * factor;
+                numberOfDigitsOut = significantNumbers;
             }
 
-            // do min
-            if (min == 0)
-                roundedvals.Add(0);
-            else
-            {
-                double tempmin = scale * Math.Round(min / (scale), 4);
-                tempmin = Math.Floor(tempmin * 1000) / 1000;
-                roundedvals.Add(tempmin);
-            }
+            roundedvals.Add(max * signMax);
+            roundedvals.Add(min * signMin);
+            roundedvals.Add(numberOfDigitsOut);
 
             return roundedvals;
         }
-        public static double RoundToSignificantDigits(double d, int digits)
+        internal static double RoundToSignificantDigits(double d, int digits)
         {
-            
+
             if (d == 0.0)
             {
                 return 0.0;

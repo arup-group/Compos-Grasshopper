@@ -41,7 +41,7 @@ namespace ComposGH
 
             // ### Create Ribbon Category name and icon ###
             Grasshopper.Instances.ComponentServer.AddCategorySymbolName("Compos", 'C');
-            Grasshopper.Instances.ComponentServer.AddCategoryIcon("Compos", Properties.Resources.ComposLogo);
+            Grasshopper.Instances.ComponentServer.AddCategoryIcon("Compos", Properties.Resources.ComposLogo128);
 
             // ### Queue up Main menu loader ###
             Helpers.Loader menuLoad = new Helpers.Loader();
@@ -78,13 +78,6 @@ namespace ComposGH
             {
                 //Return a 24x24 pixel bitmap to represent this GHA library.
                 return null;
-            }
-        }
-        public string icon_url
-        {
-            get
-            {
-                return "https://raw.githubusercontent.com/arup-group/GSA-Grasshopper/master/Documentation/GettingStartedGuide/Icons/GsaGhLogo.jpg";
             }
         }
         public override Bitmap AssemblyIcon

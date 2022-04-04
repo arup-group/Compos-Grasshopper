@@ -9,11 +9,11 @@ using Oasys.Units;
 namespace ComposGH
 {
     /// <summary>
-    /// Class to hold units used in Grasshopper GSA file. 
+    /// Class to hold units used in Grasshopper Compos file. 
     /// </summary>
     public static class Units
     {
-        public enum GsaUnits
+        public enum ComposUnits
         {
             Length_Geometry,
             Length_Section,
@@ -56,7 +56,7 @@ namespace ComposGH
             {
                 if (m_units == null || useRhinoLengthGeometryUnit)
                 {
-                    m_length_geometry = GetRhinoLengthUnit(Rhino.RhinoDoc.ActiveDoc.ModelUnitSystem);
+                    m_length_geometry = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
                 }
                 else
                 {
@@ -78,7 +78,7 @@ namespace ComposGH
         public static void UseRhinoLengthUnitGeometry()
         {
             useRhinoLengthGeometryUnit = false;
-            m_length_geometry = GetRhinoLengthUnit(Rhino.RhinoDoc.ActiveDoc.ModelUnitSystem);
+            m_length_geometry = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
         }
         private static LengthUnit m_length_geometry;
         internal static bool useRhinoLengthGeometryUnit;
@@ -89,7 +89,7 @@ namespace ComposGH
             {
                 if (useRhinoLengthSectionUnit)
                 {
-                    m_length_section = GetRhinoLengthUnit(Rhino.RhinoDoc.ActiveDoc.ModelUnitSystem);
+                    m_length_section = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
                 }
                 return m_length_section;
             }
@@ -102,7 +102,7 @@ namespace ComposGH
         public static void UseRhinoLengthUnitSection()
         {
             useRhinoLengthSectionUnit = false;
-            m_length_section = GetRhinoLengthUnit(Rhino.RhinoDoc.ActiveDoc.ModelUnitSystem);
+            m_length_section = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
         }
         private static LengthUnit m_length_section;
         internal static bool useRhinoLengthSectionUnit;
@@ -149,7 +149,7 @@ namespace ComposGH
         {
             get
             {
-                Length len = new Length(1, Units.LengthUnitSection);
+                Length len = new Length(1, LengthUnitSection);
                 Area unitArea = len * len;
                 return unitArea.Unit;
             }
@@ -161,7 +161,7 @@ namespace ComposGH
             {
                 if (useRhinoLengthResultUnit)
                 {
-                    m_length_result = GetRhinoLengthUnit(Rhino.RhinoDoc.ActiveDoc.ModelUnitSystem);
+                    m_length_result = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
                 }
                 return m_length_result;
             }
@@ -174,7 +174,7 @@ namespace ComposGH
         public static void UseRhinoLengthUnitResult()
         {
             useRhinoLengthResultUnit = false;
-            m_length_result = GetRhinoLengthUnit(Rhino.RhinoDoc.ActiveDoc.ModelUnitSystem);
+            m_length_result = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
         }
         private static LengthUnit m_length_result;
         internal static bool useRhinoLengthResultUnit;
@@ -240,7 +240,7 @@ namespace ComposGH
             get { return m_moment; }
             set { m_moment = value; }
         }
-        private static MomentUnit m_moment = Oasys.Units.MomentUnit.KilonewtonMeter;
+        private static MomentUnit m_moment = MomentUnit.KilonewtonMeter;
         internal static List<string> FilteredMomentUnits = Enum.GetNames(typeof(MomentUnit)).ToList();
         #endregion
 
@@ -373,7 +373,7 @@ namespace ComposGH
         }
         internal static bool ReadSettings()
         {
-            if (!Grasshopper.Instances.Settings.ConstainsEntry("GsaLengthUnit"))
+            if (!Grasshopper.Instances.Settings.ConstainsEntry("ComposLengthUnit"))
                 return false;
 
             string lengthGeometry = Grasshopper.Instances.Settings.GetValue("ComposLengthUnitGeometry", string.Empty);
@@ -396,7 +396,7 @@ namespace ComposGH
 
             if (useRhinoLengthGeometryUnit)
             {
-                m_length_geometry = GetRhinoLengthUnit(Rhino.RhinoDoc.ActiveDoc.ModelUnitSystem);
+                m_length_geometry = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
             }
             else
             {
@@ -405,7 +405,7 @@ namespace ComposGH
 
             if (useRhinoLengthSectionUnit)
             {
-                m_length_section = GetRhinoLengthUnit(Rhino.RhinoDoc.ActiveDoc.ModelUnitSystem);
+                m_length_section = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
             }
             else
             {
@@ -414,7 +414,7 @@ namespace ComposGH
 
             if (useRhinoLengthResultUnit)
             {
-                m_length_result = GetRhinoLengthUnit(Rhino.RhinoDoc.ActiveDoc.ModelUnitSystem);
+                m_length_result = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
             }
             else
             {
@@ -432,7 +432,7 @@ namespace ComposGH
         }
         internal static LengthUnit GetRhinoLengthUnit()
         {
-            return GetRhinoLengthUnit(Rhino.RhinoDoc.ActiveDoc.ModelUnitSystem);
+            return GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
         }
         internal static LengthUnit GetRhinoLengthUnit(Rhino.UnitSystem rhinoUnits)
         {

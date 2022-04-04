@@ -9,7 +9,7 @@
 	{
 		public static string Name()
 		{
-			return "COMPOS";
+			return "Compos";
 		}
 	}
 
@@ -30,12 +30,12 @@
 
 		public static string Cat1()
 		{
-			return new string(' ', 6) + "Properties";
+			return new string(' ', 6) + "Slab";
 		}
 
 		public static string Cat2()
 		{
-			return new string(' ', 5) + "Geometry";
+			return new string(' ', 5) + "Beam";
 		}
 
 		public static string Cat3()
@@ -55,7 +55,7 @@
 
 		public static string Cat6()
 		{
-			return new string(' ', 1) + "Test";
+			return new string(' ', 1) + "Lab";
 		}
 
 		public static string Cat7()

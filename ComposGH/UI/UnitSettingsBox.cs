@@ -153,10 +153,10 @@ namespace ComposGH.UI
             stress = this.comboBoxStress.SelectedItem.ToString();
         }
 
-        private void comboBoxStrain_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            strain = this.comboBoxStrain.SelectedItem.ToString();
-        }
+        //private void comboBoxStrain_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    strain = this.comboBoxStrain.SelectedItem.ToString();
+        //}
 
         private void comboBoxLengthGeometry_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -191,9 +191,9 @@ namespace ComposGH.UI
             this.comboBoxForce.SelectedIndex = Units.FilteredForceUnits.IndexOf(force);
             this.comboBoxMoment.SelectedIndex = Units.FilteredMomentUnits.IndexOf(moment);
             this.comboBoxStress.SelectedIndex = Units.FilteredStressUnits.IndexOf(stress);
-            this.comboBoxStrain.SelectedIndex = Units.FilteredStrainUnits.IndexOf(strain);
+            //this.comboBoxStrain.SelectedIndex = Units.FilteredStrainUnits.IndexOf(strain);
             this.comboBoxMass.SelectedIndex = Units.FilteredMassUnits.IndexOf(mass);
-            this.comboBoxTemperature.SelectedIndex = Units.FilteredTemperatureUnits.IndexOf(temperature);
+            //this.comboBoxTemperature.SelectedIndex = Units.FilteredTemperatureUnits.IndexOf(temperature);
             if (!useRhinoUnitsGeometry)
                 this.comboBoxLengthGeometry.SelectedIndex = lengthdropdown.IndexOf(lengthGeometry) + 1;
             else
@@ -215,9 +215,9 @@ namespace ComposGH.UI
             force = ForceUnit.Newton.ToString();
             moment = MomentUnit.NewtonMeter.ToString();
             stress = PressureUnit.Pascal.ToString();
-            strain = StrainUnit.Ratio.ToString();
+            //strain = StrainUnit.Ratio.ToString();
             mass = MassUnit.Kilogram.ToString();
-            temperature = TemperatureUnit.Kelvin.ToString();
+            //temperature = TemperatureUnit.Kelvin.ToString();
             lengthGeometry = LengthUnit.Meter.ToString();
             lengthResult = LengthUnit.Meter.ToString();
             lengthSection = LengthUnit.Meter.ToString();
@@ -232,9 +232,9 @@ namespace ComposGH.UI
             force = ForceUnit.Kilonewton.ToString();
             moment = MomentUnit.KilonewtonMeter.ToString();
             stress = PressureUnit.NewtonPerSquareMillimeter.ToString();
-            strain = StrainUnit.MilliStrain.ToString();
+            //strain = StrainUnit.MilliStrain.ToString();
             mass = MassUnit.Tonne.ToString();
-            temperature = TemperatureUnit.DegreeCelsius.ToString();
+            //temperature = TemperatureUnit.DegreeCelsius.ToString();
             lengthGeometry = LengthUnit.Meter.ToString();
             lengthResult = LengthUnit.Millimeter.ToString();
             lengthSection = LengthUnit.Centimeter.ToString();
@@ -249,9 +249,9 @@ namespace ComposGH.UI
             force = ForceUnit.KilopoundForce.ToString();
             moment = MomentUnit.KilopoundForceFoot.ToString();
             stress = PressureUnit.KilopoundForcePerSquareInch.ToString();
-            strain = StrainUnit.Percent.ToString();
+            //strain = StrainUnit.Percent.ToString();
             mass = MassUnit.Kilopound.ToString();
-            temperature = TemperatureUnit.DegreeFahrenheit.ToString();
+            //temperature = TemperatureUnit.DegreeFahrenheit.ToString();
             lengthGeometry = LengthUnit.Foot.ToString();
             lengthResult = LengthUnit.Inch.ToString();
             lengthSection = LengthUnit.Inch.ToString();
@@ -266,9 +266,9 @@ namespace ComposGH.UI
             force = ForceUnit.KilopoundForce.ToString();
             moment = MomentUnit.KilopoundForceInch.ToString();
             stress = PressureUnit.KilopoundForcePerSquareInch.ToString();
-            strain = StrainUnit.Percent.ToString();
+            //strain = StrainUnit.Percent.ToString();
             mass = MassUnit.Kilopound.ToString();
-            temperature = TemperatureUnit.DegreeFahrenheit.ToString();
+            //temperature = TemperatureUnit.DegreeFahrenheit.ToString();
             lengthGeometry = LengthUnit.Inch.ToString();
             lengthResult = LengthUnit.Inch.ToString();
             lengthSection = LengthUnit.Inch.ToString();
