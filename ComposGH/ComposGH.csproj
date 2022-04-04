@@ -74,6 +74,7 @@
     <Compile Include="Components\0_Model\SaveModel.cs" />
     <Compile Include="Components\0_Model\SectionDescription.cs" />
     <Compile Include="Components\0_Model\ShowCoa.cs" />
+    <Compile Include="Components\4_Studs\CreateStud.cs" />
     <Compile Include="Components\ComposGHDropDownComponent.cs" />
     <Compile Include="Components\ComposGHComponent.cs" />
     <Compile Include="ComposGHInfo.cs" />
@@ -100,6 +101,8 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Colours.cs" />
+    <Compile Include="UI\Comp_Button.cs" />
+    <Compile Include="UI\Comp_CheckBox.cs" />
     <Compile Include="UI\DropDownAttributes.cs" />
     <Compile Include="UI\DropDownSliderAttributes.cs" />
     <Compile Include="UI\GraphicButtons.cs" />
