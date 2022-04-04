@@ -93,8 +93,6 @@
     <Compile Include="Parameters\ComposModelParam.cs" />
     <Compile Include="Parameters\ComposSteelMaterial.cs" />
     <Compile Include="Parameters\ComposStud.cs" />
-    <Compile Include="Parameters\CustomGH_GeometryGooParam.cs" />
-    <Compile Include="Parameters\CustomGH_GooParam.cs" />
     <Compile Include="Parameters\GH_UnitNumber.cs" />
     <Compile Include="Parameters\_Units.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -156,6 +154,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\SteelMaterialParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\ComposLogo128.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

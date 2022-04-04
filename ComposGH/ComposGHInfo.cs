@@ -41,7 +41,7 @@ namespace ComposGH
 
             // ### Create Ribbon Category name and icon ###
             Grasshopper.Instances.ComponentServer.AddCategorySymbolName("Compos", 'C');
-            Grasshopper.Instances.ComponentServer.AddCategoryIcon("Compos", Properties.Resources.ComposLogo);
+            Grasshopper.Instances.ComponentServer.AddCategoryIcon("Compos", Properties.Resources.ComposLogo128);
 
             // ### Queue up Main menu loader ###
             Helpers.Loader menuLoad = new Helpers.Loader();
