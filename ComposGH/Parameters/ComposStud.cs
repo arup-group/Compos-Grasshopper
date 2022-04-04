@@ -79,7 +79,8 @@ namespace ComposGH.Parameters
 
         public override string ToString()
         {
-            return Diameter.ToString() + "/" + Height.ToString();
+            string size = Diameter.ToString() + "/" + Height.ToString();
+            return size.Replace(" ", string.Empty);
         }
 
         #endregion
