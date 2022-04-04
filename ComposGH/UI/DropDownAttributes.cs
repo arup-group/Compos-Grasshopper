@@ -291,7 +291,7 @@ namespace ComposGH.UI
                     }
 
                     // background
-                    Brush background = new SolidBrush(Colour.UILightGrey);
+                    Brush background = new SolidBrush(Colour.GsaLightGrey);
                     // background
                     graphics.FillRectangle(background, BorderBound[i]);
                     // border
@@ -309,7 +309,7 @@ namespace ComposGH.UI
                     if (unfolded[i])
                     {
                         Pen penborder = new Pen(Brushes.Gray);
-                        Brush dropdownbackground = new SolidBrush(Colour.UILightGrey);
+                        Brush dropdownbackground = new SolidBrush(Colour.GsaLightGrey);
                         penborder.Width = 0.3f;
                         for (int j = 0; j < dropdownBounds[i].Count; j++)
                         {

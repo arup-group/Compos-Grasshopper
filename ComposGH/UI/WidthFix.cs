@@ -18,13 +18,10 @@ namespace ComposGH.UI
             // adjust fontsize to high resolution displays
             font = new Font(font.FontFamily, font.Size / GH_GraphicsUtil.UiScale, FontStyle.Regular);
 
-            if (spacerTxts != null)
+            for (int i = 0; i < spacerTxts.Count; i++)
             {
-                for (int i = 0; i < spacerTxts.Count; i++)
-                {
-                    if (GH_FontServer.StringWidth(spacerTxts[i] + " ", font) + 8 > sp)
-                        sp = GH_FontServer.StringWidth(spacerTxts[i] + " ", font) + 8;
-                }
+                if (GH_FontServer.StringWidth(spacerTxts[i], font) + 8 > sp)
+                    sp = GH_FontServer.StringWidth(spacerTxts[i], font) + 8;
             }
             return sp;
         }

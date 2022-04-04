@@ -265,7 +265,7 @@ namespace ComposGH.Parameters
         {
         }
 
-        public override Guid ComponentGuid => new Guid("201C73BE-395E-404A-B5BF-846DBF12CD30");
+        public override Guid ComponentGuid => new Guid("f13d079b-f7d1-4d8a-be7c-3b7e1e59c5ab");
 
         public override GH_Exposure Exposure => GH_Exposure.secondary | GH_Exposure.obscure;
 

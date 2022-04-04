@@ -9,7 +9,7 @@
 	{
 		public static string Name()
 		{
-			return "GSA";
+			return "COMPOS";
 		}
 	}
 
@@ -55,7 +55,7 @@
 
 		public static string Cat6()
 		{
-			return "";
+			return new string(' ', 1) + "Test";
 		}
 
 		public static string Cat7()
