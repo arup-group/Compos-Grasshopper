@@ -20,8 +20,8 @@ namespace ComposGH.Parameters
         public bool Welding { get; set; } = true;
         public bool NCCI { get; set; } = true;
         public Pressure StudSteelStrength { get; set; }
-        public Length StudLeftZone { get; set; }
-        public Length StudRightZone { get; set; }
+        public Length NoStudZoneStart { get; set; }
+        public Length NoStudZoneEnd { get; set; }
         public Length ReinforcementPosition { get; set; }
         public Length Diameter { get; set; }
         public Length Height { get; set; }
@@ -32,20 +32,19 @@ namespace ComposGH.Parameters
             
         }
 
-        public ComposStud(Length studDiameter, Length studHeight, Length studLeftZone, Length studRightZone, Pressure studSteelStrength, Length reinforcementPosition, bool welding=true, bool ncci=true)
+        public ComposStud(Length studDiameter, Length studHeight, Pressure studSteelStrength, Length noStudStartLength, Length noStudEndLength, Length reinforcementPosition, bool welding=true, bool ncci=true)
         {
             this.Diameter = studDiameter;
             this.Height = studHeight;
-            this.StudLeftZone = studLeftZone;
-            this.StudRightZone = studRightZone;
             this.StudSteelStrength = studSteelStrength;
+            this.NoStudZoneStart = noStudStartLength;
+            this.NoStudZoneEnd = noStudEndLength;
             this.ReinforcementPosition = reinforcementPosition;
             this.Welding = welding;
             this.NCCI = ncci; 
         }
+        #endregion
 
-          #endregion
-        
         #region properties
         public bool IsValid
         {
@@ -53,6 +52,19 @@ namespace ComposGH.Parameters
             {
                 return true;
             }
+        }
+        #endregion
+
+        #region coa interop
+        internal ComposStud(string coaString)
+        {
+            // to do - implement from coa string method
+        }
+
+        internal string ToCoaString()
+        {
+            // to do - implement to coa string method
+            return string.Empty;
         }
         #endregion
 

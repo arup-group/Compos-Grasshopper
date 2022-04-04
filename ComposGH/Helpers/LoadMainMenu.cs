@@ -86,13 +86,13 @@ namespace ComposGH.Helpers
         private ToolStripMenuItem AddMenuItem(ToolStripMenuItem oasysMenu, object sender, ElapsedEventArgs e)
         {
             // add units
-            oasysMenu.DropDown.Items.Add("Compos Units", Properties.Resources.Units, (s, a) =>
+            oasysMenu.DropDown.Items.Add("Compos Units", Properties.Resources.ComposLogo128, (s, a) =>
             {
                 UI.UnitSettingsBox unitBox = new UI.UnitSettingsBox();
                 unitBox.Show();
             });
             // add info
-            oasysMenu.DropDown.Items.Add("Compos Info", Properties.Resources.AdSecInfo, (s, a) =>
+            oasysMenu.DropDown.Items.Add("Compos Info", Properties.Resources.ComposLogo128, (s, a) =>
             {
                 UI.AboutBox aboutBox = new UI.AboutBox();
                 aboutBox.Show();

@@ -2,7 +2,7 @@
 using Grasshopper.GUI.Canvas;
 using Grasshopper.GUI;
 using Grasshopper.Kernel;
-using System.Windows.Forms;
+using Grasshopper;
 using System;
 using System.Drawing;
 using System.Collections.Generic;
@@ -17,26 +17,29 @@ namespace ComposGH.UI
     /// 
     /// To use this method override CreateAttributes() in component class and set m_attributes = new MultiDropDownComponentUI(...
     /// </summary>
-    public class MultiDropDownComponentUI : GH_ComponentAttributes
+    public class MultiDropDownCheckBoxesComponentUI : GH_ComponentAttributes
     {
-        public MultiDropDownComponentUI(GH_Component owner, Action<int, int> clickHandle, List<List<string>> dropdownContents, List<string> selections, List<string> spacerTexts = null, List<string> initialdescriptions = null) : base(owner)
+        public MultiDropDownCheckBoxesComponentUI(GH_Component owner, Action<int, int> clickHandle, List<List<string>> dropdownContents, List<string> selections,
+            Action<List<bool>> toggleHandle, List<bool> checkBoxInitialStates, List<string> checkBoxNames,
+            List<string> spacerTexts = null, List<string> initialdescriptions = null) : base(owner)
         {
             dropdownlists = dropdownContents;
             spacerTxts = spacerTexts;
             action = clickHandle;
             initialTxts = initialdescriptions ?? null; // if no description is inputted then null initialTxt
-            if (dropdownContents != null)
+            if (selections == null)
             {
-                if (selections == null)
-                {
-                    List<string> tempDisplaytxt = new List<string>();
-                    for (int i = 0; i < dropdownlists.Count; i++)
-                        tempDisplaytxt.Add((initialdescriptions == null) ? dropdownlists[i][0] : initialdescriptions[i]);
-                    displayTexts = tempDisplaytxt;
-                }
-                else
-                    displayTexts = selections;
+                List<string> tempDisplaytxt = new List<string>();
+                for (int i = 0; i < dropdownlists.Count; i++)
+                    tempDisplaytxt.Add((initialdescriptions == null) ? dropdownlists[i][0] : initialdescriptions[i]);
+                displayTexts = tempDisplaytxt;
             }
+            else
+                displayTexts = selections;
+
+            toggles = checkBoxInitialStates;
+            toggleTexts = checkBoxNames;
+            toggleAction = toggleHandle;
         }
 
         readonly List<string> spacerTxts; // list of descriptive texts above each dropdown
@@ -65,21 +68,31 @@ namespace ComposGH.UI
         int maxNoRows = 10;
         bool drag;
 
+        readonly Action<List<bool>> toggleAction; //function sending back the toggle actions
+
+        readonly List<string> toggleTexts; // the displayed texts for each check box
+        readonly List<bool> toggles; // booleans for each check box
+
+        List<RectangleF> ToggleBoxBound;// surrounding bounds for toggle boxes
+        List<RectangleF> ToggleTextBound;// surrounding bounds for toggle box names
+
         float MinWidth
         {
             get
             {
-                float sp = ComponentUI.MaxTextWidth(spacerTxts, GH_FontServer.Standard);
+                float sp = ComponentUI.MaxTextWidth(spacerTxts, GH_FontServer.Small);
                 float bt = 0;
                 for (int i = 0; i < dropdownlists.Count; i++)
                 {
-                    float tbt = ComponentUI.MaxTextWidth(dropdownlists[i], new Font(GH_FontServer.FamilyStandard, 8));
+                    float tbt = ComponentUI.MaxTextWidth(dropdownlists[i], new Font(GH_FontServer.FamilyStandard, 7));
                     if (tbt > bt)
                         bt = tbt;
                 }
-
+                float tbt2 = 15 + ComponentUI.MaxTextWidth(toggleTexts, new Font(GH_FontServer.FamilyStandard, 7)); //add 15 for button width
+                if (tbt2 > bt)
+                    bt = tbt2;
                 float num = Math.Max(Math.Max(sp, bt), 90);
-                return Math.Min(num, 170);
+                return num;
             }
             set { MinWidth = value; }
         }
@@ -90,8 +103,7 @@ namespace ComposGH.UI
             // first change the width to suit; using max to determine component visualisation style
             FixLayout();
 
-            if (SpacerBounds == null)
-                SpacerBounds = new List<RectangleF>();
+            SpacerBounds = new List<RectangleF>();
             if (BorderBound == null)
                 BorderBound = new List<RectangleF>();
             if (TextBound == null)
@@ -108,13 +120,19 @@ namespace ComposGH.UI
             int s = 2; //spacing to edges and internal between boxes
 
             int h0 = 0;
+            int h1 = 15; // height border
+            int bw = h1; // button width
 
             bool removeScroll = true;
+
             for (int i = 0; i < dropdownlists.Count; i++)
             {
                 //spacer and title
                 if (spacerTxts[i] != "")
                 {
+                    if (i < 1)
+                        Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, Bounds.Height - (CentralSettings.CanvasObjectIcons ? 5 : 0));
+
                     h0 = 10;
                     RectangleF tempSpacer = new RectangleF(Bounds.X, Bounds.Bottom + s / 2, Bounds.Width, h0);
                     if (SpacerBounds.Count == i || SpacerBounds[i] == null)
@@ -122,9 +140,6 @@ namespace ComposGH.UI
                     else
                         SpacerBounds[i] = tempSpacer;
                 }
-
-                int h1 = 15; // height border
-                int bw = h1; // button width
 
                 // create text box border
                 RectangleF tempBorder = new RectangleF(Bounds.X + 2 * s, Bounds.Bottom + h0 + 2 * s, Bounds.Width - 2 - 4 * s, h1);
@@ -183,7 +198,7 @@ namespace ComposGH.UI
 
                         // setup size of scroll bar
                         scrollBar.X = dropdownBound[i].X + dropdownBound[i].Width - 8; // locate from right-side of dropdown area
-                                                                                       // compute height based on number of items in list, but with a minimum size of 2 rows
+                        // compute height based on number of items in list, but with a minimum size of 2 rows
                         scrollBar.Height = (float)Math.Max(2 * h1, dropdownBound[i].Height * ((double)maxNoRows / ((double)dropdownlists[i].Count)));
                         scrollBar.Width = 8; // width of mouse-grab area (actual scroll bar drawn later)
 
@@ -245,6 +260,37 @@ namespace ComposGH.UI
                 scrollBar = new RectangleF();
                 scrollStartY = 0;
             }
+
+
+            // spacer
+            int i_after_dropdown = dropdownlists.Count;
+            if (spacerTxts[i_after_dropdown] != "")
+            {
+                if (i_after_dropdown < 1)
+                    Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, Bounds.Height - (CentralSettings.CanvasObjectIcons ? 5 : 0));
+
+                h0 = 10;
+                RectangleF tempSpacer = new RectangleF(Bounds.X, Bounds.Bottom + s / 2, Bounds.Width, h0);
+                SpacerBounds.Add(tempSpacer);
+            }
+            // add check boxes
+            h1 = 15; // height border
+            bw = h1; // button width
+
+            // check boxes
+            ToggleTextBound = new List<RectangleF>();
+            ToggleBoxBound = new List<RectangleF>();
+
+            for (int i = 0; i < toggleTexts.Count; i++)
+            {
+                // add text box 
+                ToggleTextBound.Add(new RectangleF(Bounds.X + 2 * s + bw, Bounds.Bottom + s + h0 + i * h1, Bounds.Width - 4 * s - bw, h1));
+                // add check box
+                ToggleBoxBound.Add(new RectangleF(Bounds.X + s, Bounds.Bottom + s + h0 + i * h1, bw, h1));
+
+            }
+            // update component bounds
+            Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, Bounds.Height + h0 + toggleTexts.Count * h1 + 2 * s);
         }
 
 
@@ -362,11 +408,48 @@ namespace ComposGH.UI
                         graphics.DrawLine(scrollPen, scrollBar.X + 4, scrollBar.Y + 4, scrollBar.X + 4, scrollBar.Y + scrollBar.Height - 4);
                     }
                 }
+
+                //Draw divider line
+                int k = dropdownlists.Count;
+                if (spacerTxts[k] != "")
+                {
+                    graphics.DrawString(spacerTxts[k], sml, Colour.AnnotationTextDark, SpacerBounds[k], GH_TextRenderingConstants.CenterCenter);
+                    graphics.DrawLine(spacer, SpacerBounds[k].X, SpacerBounds[k].Y + SpacerBounds[k].Height / 2, SpacerBounds[k].X + (SpacerBounds[k].Width - GH_FontServer.StringWidth(spacerTxts[k], sml)) / 2 - 4, SpacerBounds[k].Y + SpacerBounds[k].Height / 2);
+                    graphics.DrawLine(spacer, SpacerBounds[k].X + (SpacerBounds[k].Width - GH_FontServer.StringWidth(spacerTxts[k], sml)) / 2 + GH_FontServer.StringWidth(spacerTxts[k], sml) + 4, SpacerBounds[k].Y + SpacerBounds[k].Height / 2, SpacerBounds[k].X + SpacerBounds[k].Width, SpacerBounds[k].Y + SpacerBounds[k].Height / 2);
+                }
+
+                // #### check boxes ####
+                for (int i = 0; i < toggleTexts.Count; i++)
+                {
+                    Font font = new Font(GH_FontServer.FamilyStandard, 7);
+                    // adjust fontsize to high resolution displays
+                    font = new Font(font.FontFamily, font.Size / GH_GraphicsUtil.UiScale, FontStyle.Regular);
+                    Brush fontColour = Colour.AnnotationTextDark;
+
+                    Color myColour = Colour.GsaDarkBlue;
+                    Brush myBrush = new SolidBrush(myColour);
+                    Brush activeFillBrush = myBrush;
+                    Brush passiveFillBrush = Brushes.LightGray;
+                    Color borderColour = myColour;
+                    Color passiveBorder = Color.DarkGray;
+                    int s = 8;
+                    // draw text
+                    graphics.DrawString(toggleTexts[i], font, fontColour, ToggleTextBound[i], GH_TextRenderingConstants.NearCenter);
+                    // draw check box
+                    ButtonsUI.CheckBox.DrawCheckButton(graphics, new PointF(ToggleBoxBound[i].X + ToggleBoxBound[i].Width / 2, ToggleBoxBound[i].Y + ToggleBoxBound[i].Height / 2), toggles[i], activeFillBrush, borderColour, passiveFillBrush, passiveBorder, s);
+
+                    // update width of text box for mouse-over event handling
+                    List<string> incl = new List<string>();
+                    incl.Add(toggleTexts[i]);
+                    RectangleF txtBound = ToggleTextBound[i];
+                    txtBound.Width = ComponentUI.MaxTextWidth(incl, font);
+                    ToggleTextBound[i] = txtBound;
+                }
             }
         }
         public override GH_ObjectResponse RespondToMouseUp(GH_Canvas sender, GH_CanvasMouseEvent e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {
                 GH_Component comp = Owner as GH_Component;
                 if (drag)
@@ -377,6 +460,17 @@ namespace ComposGH.UI
                     drag = false;
                     comp.ExpireSolution(true);
                     return GH_ObjectResponse.Release;
+                }
+                for (int i = 0; i < toggleTexts.Count; i++)
+                {
+                    if (ToggleBoxBound[i].Contains(e.CanvasLocation) || ToggleTextBound[i].Contains(e.CanvasLocation))
+                    {
+                        comp.RecordUndoEvent("Toggle Incl. superseeded");
+                        toggles[i] = !toggles[i];
+                        toggleAction(toggles);
+                        comp.ExpireSolution(true);
+                        return GH_ObjectResponse.Handled;
+                    }
                 }
 
                 for (int i = 0; i < dropdownlists.Count; i++)
@@ -452,24 +546,28 @@ namespace ComposGH.UI
         }
         public override GH_ObjectResponse RespondToMouseDown(GH_Canvas sender, GH_CanvasMouseEvent e)
         {
-            for (int i = 0; i < dropdownlists.Count; i++)
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {
-                if (unfolded[i])
+                for (int i = 0; i < dropdownlists.Count; i++)
                 {
-                    if (e.Button == MouseButtons.Left)
+                    if (unfolded[i])
                     {
-                        RectangleF rec = scrollBar;
-                        GH_Component comp = Owner as GH_Component;
-                        if (rec.Contains(e.CanvasLocation))
+                        if (e.Button == System.Windows.Forms.MouseButtons.Left)
                         {
-                            dragMouseStartY = e.CanvasLocation.Y;
-                            drag = true;
-                            comp.ExpireSolution(true);
-                            return GH_ObjectResponse.Capture;
+                            RectangleF rec = scrollBar;
+                            GH_Component comp = Owner as GH_Component;
+                            if (rec.Contains(e.CanvasLocation))
+                            {
+                                dragMouseStartY = e.CanvasLocation.Y;
+                                drag = true;
+                                comp.ExpireSolution(true);
+                                return GH_ObjectResponse.Capture;
+                            }
                         }
                     }
                 }
             }
+
             return base.RespondToMouseDown(sender, e);
         }
         public override GH_ObjectResponse RespondToMouseMove(GH_Canvas sender, GH_CanvasMouseEvent e)
@@ -489,14 +587,14 @@ namespace ComposGH.UI
                 if (ButtonBound[i].Contains(e.CanvasLocation))
                 {
                     mouseOver = true;
-                    sender.Cursor = Cursors.Hand;
+                    sender.Cursor = System.Windows.Forms.Cursors.Hand;
                     return GH_ObjectResponse.Capture;
                 }
             }
             if (mouseOver)
             {
                 mouseOver = false;
-                Grasshopper.Instances.CursorServer.ResetCursor(sender);
+                Instances.CursorServer.ResetCursor(sender);
                 return GH_ObjectResponse.Release;
             }
 
