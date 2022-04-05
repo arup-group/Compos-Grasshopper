@@ -14,12 +14,6 @@ using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
 
-
-// In order to load the result of this wizard, you will also need to
-// add the output bin/ folder of this project to the list of loaded
-// folder in Grasshopper.
-// You can use the _GrasshopperDeveloperSettings Rhino command for that.
-
 namespace ComposGH.Components
 {
     public class CreateStud : GH_Component
@@ -31,10 +25,10 @@ namespace ComposGH.Components
         public CreateStud()
           : base("Create Stud Zone Length", "Zone Length", "Create the zone length for the studs",
                 Ribbon.CategoryName.Name(),
-                Ribbon.SubCategoryName.Cat3())
+                Ribbon.SubCategoryName.Cat2())
         { this.Hidden = false; } // sets the initial state of the component to hidden
 
-        public override GH_Exposure Exposure => GH_Exposure.tertiary;
+        public override GH_Exposure Exposure => GH_Exposure.primary;
 
         protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateStudZoneLength;
         #endregion
@@ -154,9 +148,9 @@ namespace ComposGH.Components
                 startZoneNoStud = GetInput.Length(this, DA, 5, lengthUnit, true);
 
 
-            ComposStud stud = new ComposStud(diameter, height, strength, startZoneNoStud, endZoneNoStud, rebarPosition, Welding, NCCILimits);
+            //ComposStud stud = new ComposStud(diameter, height, strength, startZoneNoStud, endZoneNoStud, rebarPosition, Welding, NCCILimits);
 
-            DA.SetData(0, new ComposStudGoo(stud));
+            //DA.SetData(0, new ComposStudGoo(stud));
         }
     }
 }
