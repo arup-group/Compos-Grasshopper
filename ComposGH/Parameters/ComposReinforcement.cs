@@ -10,13 +10,14 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Custom class: this class defines the basic properties and methods for our custom class
     /// </summary>
-    public class Reinforcement
+    public class ComposReinforcement
     {
         public Length Cover { get; set; }
         public MeshType Mesh_Type { get; set; }
 
         public enum MeshType
         {
+            None,
             A393,
             A252,
             A193,
@@ -37,12 +38,12 @@ namespace ComposGH.Parameters
 
 
         #region constructors
-        public Reinforcement()
+        public ComposReinforcement()
         {
-            // empty constructor
+            this.Mesh_Type = MeshType.A393;
         }
 
-        public Reinforcement(Length cover, MeshType meshType = MeshType.A393)
+        public ComposReinforcement(Length cover, MeshType meshType = MeshType.A393)
         {
             this.Cover = cover;
             this.Mesh_Type = meshType;
@@ -63,17 +64,18 @@ namespace ComposGH.Parameters
 
         #region methods
 
-        public Reinforcement Duplicate()
+        public ComposReinforcement Duplicate()
         {
             if (this == null) { return null; }
-            Reinforcement dup = (Reinforcement)this.MemberwiseClone();
+            ComposReinforcement dup = (ComposReinforcement)this.MemberwiseClone();
             return dup;
         }
         public override string ToString()
         {
             string cov = Cover.ToString("f0");
+            string msh = Mesh_Type.ToString();
 
-            return "Ø" + cov.Replace(" ", string.Empty);
+            return msh.Replace(" ", string.Empty) + " " +  cov.Replace(" ", string.Empty);
         }
         #endregion
     }
@@ -81,17 +83,17 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Goo wrapH class, makes sure our custom class can be used in GrasshopH.
     /// </summary>
-    public class ReinforcementGoo : GH_Goo<Reinforcement>
+    public class ComposReinforcementGoo : GH_Goo<ComposReinforcement>
     {
         #region constructors
-        public ReinforcementGoo()
+        public ComposReinforcementGoo()
         {
-            this.Value = new Reinforcement();
+            this.Value = new ComposReinforcement();
         }
-        public ReinforcementGoo(Reinforcement item)
+        public ComposReinforcementGoo(ComposReinforcement item)
         {
             if (item == null)
-                item = new Reinforcement();
+                item = new ComposReinforcement();
             this.Value = item.Duplicate();
         }
 
@@ -99,9 +101,9 @@ namespace ComposGH.Parameters
         {
             return DuplicateGoo();
         }
-        public ReinforcementGoo DuplicateGoo()
+        public ComposReinforcementGoo DuplicateGoo()
         {
-            return new ReinforcementGoo(Value == null ? new Reinforcement() : Value.Duplicate());
+            return new ComposReinforcementGoo(Value == null ? new ComposReinforcement() : Value.Duplicate());
         }
         #endregion
 
@@ -132,7 +134,7 @@ namespace ComposGH.Parameters
             // This function is called when GrasshopH needs to convert this 
             // instance of our custom class into some other type Q.            
 
-            if (typeof(Q).IsAssignableFrom(typeof(Reinforcement)))
+            if (typeof(Q).IsAssignableFrom(typeof(ComposReinforcement)))
             {
                 if (Value == null)
                     target = default;
@@ -152,9 +154,9 @@ namespace ComposGH.Parameters
             if (source == null) { return false; }
 
             //Cast from GsaMaterial
-            if (typeof(Reinforcement).IsAssignableFrom(source.GetType()))
+            if (typeof(ComposReinforcement).IsAssignableFrom(source.GetType()))
             {
-                Value = (Reinforcement)source;
+                Value = (ComposReinforcement)source;
                 return true;
             }
 

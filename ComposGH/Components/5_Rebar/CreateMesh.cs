@@ -6,8 +6,10 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Types;
 using Grasshopper.Kernel.Parameters;
+using ComposGH.Parameters;
 using Rhino.Geometry;
 using UnitsNet;
+using UnitsNet.Units;
 using ComposGH.Components;
 using ComposGH.Helpers;
 
@@ -20,7 +22,7 @@ namespace ComposGH.Components
             : base("Create Rebar Mesh", "Rebar Mesh", "Create Rebar Mesh for a Compos Slab",
                 Ribbon.CategoryName.Name(),
                 Ribbon.SubCategoryName.Cat3())
-        { this.Hidden = true; }
+        { this.Hidden = false; }
         public override Guid ComponentGuid => new Guid("17960644-0DFC-4F5D-B17C-45E6FBC3732E");
         public override GH_Exposure Exposure => GH_Exposure.primary;
 
@@ -33,7 +35,8 @@ namespace ComposGH.Components
         {
             if (first)
             {
-                List<string> list = Enum.GetNames(typeof(FoldMode)).ToList();
+                List<string> list = Enum.GetNames(typeof(ComposReinforcement.MeshType)).ToList();
+                list.RemoveAt(0);
                 dropdownitems = new List<List<string>>();
                 dropdownitems.Add(list);
 
@@ -44,9 +47,6 @@ namespace ComposGH.Components
                 //dropdownitems.Add(Enum.GetNames(typeof(UnitsNet.Units.LengthUnit)).ToList());
                 dropdownitems.Add(Units.FilteredLengthUnits);
                 selecteditems.Add(lengthUnit.ToString());
-
-                IQuantity quantity = new Length(0, lengthUnit);
-                unitAbbreviation = string.Concat(quantity.ToString().Where(char.IsLetter));
 
                 first = false;
             }
@@ -60,7 +60,7 @@ namespace ComposGH.Components
             selecteditems[i] = dropdownitems[i][j];
             if (i == 0)
             {
-                _mode = (FoldMode)Enum.Parse(typeof(FoldMode), selecteditems[i]);
+                //_mode = (FoldMode)Enum.Parse(typeof(FoldMode), selecteditems[i]);
                 ToggleInput();
             }
             else
@@ -85,13 +85,15 @@ namespace ComposGH.Components
             "Measure"
         });
         private UnitsNet.Units.LengthUnit lengthUnit = Units.LengthUnitGeometry;
-        string unitAbbreviation;
         #endregion
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter("Cover [" + unitAbbreviation + "]", "Cov", "Reinfrcement cover", GH_ParamAccess.item);
-            _mode = FoldMode.A393;
+            IQuantity length = new Length(0, lengthUnit);
+            string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+
+            pManager.AddGenericParameter("Cover [" + unitAbbreviation + "]", "Cov", "Reinforcement cover", GH_ParamAccess.item);
+            //_mode = FoldMode.A393;
         }
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
@@ -101,35 +103,35 @@ namespace ComposGH.Components
         protected override void SolveInstance(IGH_DataAccess DA)
         {
 
-            string rebar = "";
-            DA.SetData(0, rebar);
+            //string rebar = "";
+            DA.SetData(0, new ComposReinforcementGoo(new ComposReinforcement(GetInput.Length(this, DA, 0, lengthUnit ))));
 
         }
 
         #region menu override
 
         private bool first = true;
-        private enum FoldMode
-        {
-            A393,
-            A252,
-            A193,
-            A142,
-            A98,
-            B1131,
-            B785,
-            B503,
-            B385,
-            B283,
-            B196,
-            C785,
-            C636,
-            C503,
-            C385,
-            C283
-        }
+        //private enum FoldMode
+        //{
+        //    A393,
+        //    A252,
+        //    A193,
+        //    A142,
+        //    A98,
+        //    B1131,
+        //    B785,
+        //    B503,
+        //    B385,
+        //    B283,
+        //    B196,
+        //    C785,
+        //    C636,
+        //    C503,
+        //    C385,
+        //    C283
+        //}
 
-        private FoldMode _mode = FoldMode.A393;
+        //private FoldMode _mode = FoldMode.A393;
 
         private void ToggleInput()
         {
@@ -145,13 +147,13 @@ namespace ComposGH.Components
         public override bool Write(GH_IO.Serialization.GH_IWriter writer)
         {
             Helpers.DeSerialization.writeDropDownComponents(ref writer, dropdownitems, selecteditems, spacerDescriptions);
-            writer.SetString("mode", _mode.ToString());
+            //writer.SetString("mode", _mode.ToString());
             return base.Write(writer);
         }
         public override bool Read(GH_IO.Serialization.GH_IReader reader)
         {
             Helpers.DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
-            _mode = (FoldMode)Enum.Parse(typeof(FoldMode), reader.GetString("mode"));
+            //_mode = (FoldMode)Enum.Parse(typeof(FoldMode), reader.GetString("mode"));
             UpdateUIFromSelectedItems();
             first = false;
             return base.Read(reader);
@@ -179,8 +181,9 @@ namespace ComposGH.Components
         #region IGH_VariableParameterComponent null implementation
         void IGH_VariableParameterComponent.VariableParameterMaintenance()
         {
-            IQuantity quantity = new Length(0, lengthUnit);
-            unitAbbreviation = string.Concat(quantity.ToString().Where(char.IsLetter));
+            IQuantity length = new Length(0, lengthUnit);
+            string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+
             Params.Input[0].Name = "Cover [" + unitAbbreviation + "]";
         }
         #endregion
