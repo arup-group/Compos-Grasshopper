@@ -17,7 +17,7 @@ namespace ComposGH.Parameters
     /// </summary>
     public class ComposStud
     {
-        public Stud StudDimension { get; set; }
+        public StudDimensions StudDimension { get; set; }
         public StudSpecification StudSpecification { get; set; }
         
         // Stud Spacing
@@ -31,8 +31,7 @@ namespace ComposGH.Parameters
         {
             // empty constructor
         }
-
-        public ComposStud(StudGoo stud, StudSpecificationGoo spec, List<StudGroupSpacingGoo> spacings, bool checkSpacing)
+        public ComposStud(StudDimensionsGoo stud, StudSpecificationGoo spec, List<StudGroupSpacingGoo> spacings, bool checkSpacing)
         {
             this.StudDimension = stud.Value;
             this.StudSpecification = spec.Value;
@@ -40,28 +39,29 @@ namespace ComposGH.Parameters
             this.CheckStudSpacing = checkSpacing;
             this.StudSpacingType = StudGroupSpacing.StudSpacingType.Custom;
         }
-        public ComposStud(StudGoo stud, StudSpecificationGoo spec, double percentage, StudGroupSpacing.StudSpacingType type)
+        public ComposStud(StudDimensionsGoo stud, StudSpecificationGoo spec, double minSaving, StudGroupSpacing.StudSpacingType type)
         {
             this.StudDimension = stud.Value;
             this.StudSpecification = spec.Value;
             this.StudSpacingType = type;
+            this.MinSavingMultipleZones = minSaving;
             switch (type)
             {
-                case StudGroupSpacing.StudSpacingType.Automatic_MinNoStuds:
-                    this.MinSavingMultipleZones = percentage;
+                case StudGroupSpacing.StudSpacingType.Min_Num_of_Studs:
+                case StudGroupSpacing.StudSpacingType.Automatic:
                     break;
-                case StudGroupSpacing.StudSpacingType.Automatic_PartialInteraction:
-                    this.Interaction = percentage;
-                    break;
+                    
                 default:
-                    throw new ArgumentException("Stud spacing type must be either Partial Interaction or Minimum Number of Studs");
+                    throw new ArgumentException("Stud spacing type must be either Automatic or Minimum Number of Studs");
             }
         }
-        public ComposStud(StudGoo stud, StudSpecificationGoo spec)
+        public ComposStud(StudDimensionsGoo stud, StudSpecificationGoo spec, double minSaving, double interaction)
         {
             this.StudDimension = stud.Value;
             this.StudSpecification = spec.Value;
-            this.StudSpacingType = StudGroupSpacing.StudSpacingType.Automatic_FullInteraction;
+            this.StudSpacingType = StudGroupSpacing.StudSpacingType.Partial_Interaction;
+            this.MinSavingMultipleZones = minSaving;
+            this.Interaction = interaction;
         }
 
         #endregion

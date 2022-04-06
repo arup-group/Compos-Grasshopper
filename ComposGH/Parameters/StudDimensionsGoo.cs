@@ -15,7 +15,7 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Custom class: this class defines the basic properties and methods for our custom class
     /// </summary>
-    public class Stud
+    public class StudDimensions
     {
         public Length Diameter { get; set; }
         public Length Height { get; set; }
@@ -111,38 +111,38 @@ namespace ComposGH.Parameters
         }
 
         #region constructors
-        public Stud()
+        public StudDimensions()
         {
             // empty constructor
         }
-        public Stud(Length diameter, Length height, Pressure fu)
+        public StudDimensions(Length diameter, Length height, Pressure fu)
         {
             this.Diameter = diameter;
             this.Height = height;
             this.Fu = fu;
         }
-        public Stud(Length diameter, Length height, Force strength)
+        public StudDimensions(Length diameter, Length height, Force strength)
         {
             this.Diameter = diameter;
             this.Height = height;
             this.CharacterStrength = strength;
         }
-        public Stud(StandardSize size, Force strength)
+        public StudDimensions(StandardSize size, Force strength)
         {
             SetSizeFromStandard(size);
             this.CharacterStrength = strength;
         }
-        public Stud(StandardSize size, Pressure fu)
+        public StudDimensions(StandardSize size, Pressure fu)
         {
             SetSizeFromStandard(size);            
             this.Fu = fu;
         }
-        public Stud(StandardSize size, StandardGrade standardGrade)
+        public StudDimensions(StandardSize size, StandardGrade standardGrade)
         {
             SetSizeFromStandard(size);
             SetGradeFromStandard(standardGrade);
         }
-        public Stud(Length diameter, Length height, StandardGrade standardGrade)
+        public StudDimensions(Length diameter, Length height, StandardGrade standardGrade)
         {
             this.Diameter = diameter;
             this.Height = height;
@@ -163,10 +163,10 @@ namespace ComposGH.Parameters
 
         #region methods
 
-        public Stud Duplicate()
+        public StudDimensions Duplicate()
         {
             if (this == null) { return null; }
-            Stud dup = (Stud)this.MemberwiseClone();
+            StudDimensions dup = (StudDimensions)this.MemberwiseClone();
             return dup;
         }
         public override string ToString()
@@ -183,17 +183,17 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Goo wrapH class, makes sure our custom class can be used in GrasshopH.
     /// </summary>
-    public class StudGoo : GH_Goo<Stud>
+    public class StudDimensionsGoo : GH_Goo<StudDimensions>
     {
         #region constructors
-        public StudGoo()
+        public StudDimensionsGoo()
         {
-            this.Value = new Stud();
+            this.Value = new StudDimensions();
         }
-        public StudGoo(Stud item)
+        public StudDimensionsGoo(StudDimensions item)
         {
             if (item == null)
-                item = new Stud();
+                item = new StudDimensions();
             this.Value = item.Duplicate();
         }
 
@@ -201,9 +201,9 @@ namespace ComposGH.Parameters
         {
             return DuplicateGoo();
         }
-        public StudGoo DuplicateGoo()
+        public StudDimensionsGoo DuplicateGoo()
         {
-            return new StudGoo(Value == null ? new Stud() : Value.Duplicate());
+            return new StudDimensionsGoo(Value == null ? new StudDimensions() : Value.Duplicate());
         }
         #endregion
 
@@ -234,7 +234,7 @@ namespace ComposGH.Parameters
             // This function is called when GrasshopH needs to convert this 
             // instance of our custom class into some other type Q.            
 
-            if (typeof(Q).IsAssignableFrom(typeof(Stud)))
+            if (typeof(Q).IsAssignableFrom(typeof(StudDimensions)))
             {
                 if (Value == null)
                     target = default;
@@ -254,9 +254,9 @@ namespace ComposGH.Parameters
             if (source == null) { return false; }
 
             //Cast from GsaMaterial
-            if (typeof(Stud).IsAssignableFrom(source.GetType()))
+            if (typeof(StudDimensions).IsAssignableFrom(source.GetType()))
             {
-                Value = (Stud)source;
+                Value = (StudDimensions)source;
                 return true;
             }
 
