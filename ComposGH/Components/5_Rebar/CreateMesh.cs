@@ -68,6 +68,16 @@ namespace ComposGH.Components
                 lengthUnit = (UnitsNet.Units.LengthUnit)Enum.Parse(typeof(UnitsNet.Units.LengthUnit), selecteditems[i]);
             }
         }
+
+        List<string> checkboxText = new List<string>() { "Swap Direction"};
+        List<bool> initialCheckState = new List<bool>() { false };
+        bool Swap = true;
+
+        public void SetDirection(List<bool> value)
+        {
+            Swap = value[0];
+        }
+
         private void UpdateUIFromSelectedItems()
         {
             lengthUnit = (UnitsNet.Units.LengthUnit)Enum.Parse(typeof(UnitsNet.Units.LengthUnit), selecteditems[1]);

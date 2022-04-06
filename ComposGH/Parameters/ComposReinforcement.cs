@@ -1,9 +1,15 @@
-﻿using Grasshopper.Kernel.Types;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Grasshopper.Kernel;
+using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
 using Rhino;
 using Grasshopper.Documentation;
 using Rhino.Collections;
 using UnitsNet;
+
+
 
 namespace ComposGH.Parameters
 {
@@ -163,5 +169,6 @@ namespace ComposGH.Parameters
             return false;
         }
         #endregion
+
     }
 }

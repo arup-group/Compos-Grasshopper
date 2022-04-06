@@ -179,10 +179,9 @@
     <Folder Include="Components\7_Design\" />
     <Folder Include="Components\8_Analysis\" />
     <Folder Include="Components\9_Results\" />
-    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\Icons\RebarMesh.png" />
+    <None Include="Resources\RebarMesh.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
