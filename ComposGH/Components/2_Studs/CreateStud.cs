@@ -13,17 +13,18 @@ using ComposGH.Parameters;
 using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
+using Grasshopper.Kernel.Parameters;
 
 namespace ComposGH.Components
 {
-    public class CreateStud : GH_Component
+    public class CreateStud : GH_Component, IGH_VariableParameterComponent
     {
         #region Name and Ribbon Layout
         // This region handles how the component in displayed on the ribbon
         // including name, exposure level and icon
         public override Guid ComponentGuid => new Guid("1451E11C-69D0-47D3-8730-FCA80E838E25");
         public CreateStud()
-          : base("Create Stud Zone Length", "Zone Length", "Create the zone length for the studs",
+          : base("Create Stud", "Stud", "Create Compos Stud",
                 Ribbon.CategoryName.Name(),
                 Ribbon.SubCategoryName.Cat2())
         { this.Hidden = false; } // sets the initial state of the component to hidden
@@ -42,24 +43,26 @@ namespace ComposGH.Components
                 dropdownitems = new List<List<string>>();
                 selecteditems = new List<string>();
 
-                // length
-                dropdownitems.Add(Units.FilteredLengthUnits);
-                selecteditems.Add(lengthUnit.ToString());
-
-                // strength
-                dropdownitems.Add(Units.FilteredStressUnits);
-                selecteditems.Add(stressUnit.ToString());
+                // spacing
+                dropdownitems.Add(Enum.GetValues(typeof(StudGroupSpacing.StudSpacingType)).Cast<StudGroupSpacing.StudSpacingType>()
+                    .Select(x => x.ToString().Replace("_", " ")).ToList());
+                selecteditems.Add(StudGroupSpacing.StudSpacingType.Automatic.ToString().Replace("_", " "));
 
                 first = false;
             }
-            m_attributes = new UI.MultiDropDownCheckBoxesComponentUI(this, SetSelected, dropdownitems, selecteditems, SetWelding, initialCheckState, checkboxText, spacerDescriptions);
+            m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, dropdownitems, selecteditems, spacerDescriptions);
         }
         public void SetSelected(int i, int j)
         {
             // change selected item
             selecteditems[i] = dropdownitems[i][j];
 
-            lengthUnit = (UnitsNet.Units.LengthUnit)Enum.Parse(typeof(UnitsNet.Units.LengthUnit), selecteditems[i]);
+            if (spacingType.ToString().Replace("_", " ") == selecteditems[i])
+                return;
+
+            spacingType = (StudGroupSpacing.StudSpacingType)Enum.Parse(typeof(StudGroupSpacing.StudSpacingType), selecteditems[i].Replace(" ", "_"));
+
+            ModeChangeClicked();
 
             // update name of inputs (to display unit on sliders)
             (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -68,19 +71,11 @@ namespace ComposGH.Components
             this.OnDisplayExpired(true);
         }
 
-        List<string> checkboxText = new List<string>() { "Welded", "Use NCCI" };
-        List<bool> initialCheckState = new List<bool>() { true, true };
-        bool Welding = true;
-        bool NCCILimits = true;
-
-        public void SetWelding(List<bool> value)
-        {
-            Welding = value[0];
-            NCCILimits = value[1];
-        }
         private void UpdateUIFromSelectedItems()
         {
-            lengthUnit = (UnitsNet.Units.LengthUnit)Enum.Parse(typeof(UnitsNet.Units.LengthUnit), selecteditems[0]);
+            spacingType = (StudGroupSpacing.StudSpacingType)Enum.Parse(typeof(StudGroupSpacing.StudSpacingType), selecteditems[0]);
+
+            ModeChangeClicked();
 
             CreateAttributes();
             (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -95,62 +90,169 @@ namespace ComposGH.Components
         // list of descriptions 
         List<string> spacerDescriptions = new List<string>(new string[]
         {
-            "Length Unit",
-            "Stress Unit",
-            "Settings"
+            "Spacing Type",
         });
+
         private bool first = true;
-        private LengthUnit lengthUnit = Units.LengthUnitGeometry;
-        private PressureUnit stressUnit = Units.StressUnit;
+        private StudGroupSpacing.StudSpacingType spacingType = StudGroupSpacing.StudSpacingType.Automatic;
         #endregion
 
         #region Input and output
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            IQuantity length = new Length(0, lengthUnit);
-            string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
-            IQuantity stress = new Pressure(0, stressUnit);
-            string stressunitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
-
-            pManager.AddGenericParameter("Diameter [" + unitAbbreviation + "]", "D", "Stud Zone Length of the right end of the slab", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Height [" + unitAbbreviation + "]", "H", "Stud Zone Length of the right end of the slab", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Strength [" + stressunitAbbreviation + "]", "fu", "Stud strength", GH_ParamAccess.item);
-            pManager.AddGenericParameter("No Stud Start [" + unitAbbreviation + "]", "NSS", "[Optional] No Stud Zone Length at the start end of the beam", GH_ParamAccess.item);
-            pManager.AddGenericParameter("No Stud End [" + unitAbbreviation + "]", "NSE", "[Optional] No Stud Zone Length at the end of the beam", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Rebar Pos. [" + unitAbbreviation + "]", "RbP", "[Optional] Position of reinforcement from underside of stud head", GH_ParamAccess.item);
-            pManager[3].Optional = true;
-            pManager[4].Optional = true;
-            pManager[5].Optional = true;
+            pManager.AddGenericParameter("Stud Dims", "Sdm", "Compos Shear Stud Dimensions", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Stud Spec", "Spc", "Compos Shear Stud Specification", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Min Saving", "Msm", "Fraction for Minimum Savnig for using Multiple Zones (Default = 0.2 (20%))", GH_ParamAccess.item, 0.2);
+            pManager[2].Optional = true;
         }
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Stud", "Std", "Compos Shear Stud", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Stud", "Stu", "Compos Shear Stud", GH_ParamAccess.item);
         }
         #endregion
 
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            Length diameter = GetInput.Length(this, DA, 0, lengthUnit);
-            Length height = GetInput.Length(this, DA, 1, lengthUnit);
-            Pressure strength = GetInput.Stress(this, DA, 2, stressUnit);
-            
-            Length startZoneNoStud = new Length(0, lengthUnit);
-            if (this.Params.Input[3].Sources.Count > 0)
-                startZoneNoStud = GetInput.Length(this, DA, 3, lengthUnit, true);
+            StudDimensionsGoo studDimensions = GetInput.StudDim(this, DA, 0);
+            StudSpecificationGoo studSpec = GetInput.StudSpec(this, DA, 1);
+            double minSav = 0.2;
+            switch (spacingType)
+            {
+                case StudGroupSpacing.StudSpacingType.Automatic:
+                case StudGroupSpacing.StudSpacingType.Min_Num_of_Studs:
+                    DA.GetData(2, ref minSav);
+                    DA.SetData(0, new ComposStudGoo(new ComposStud(
+                        studDimensions, studSpec, minSav, spacingType)));
+                    break;
 
-            Length endZoneNoStud = new Length(0, lengthUnit);
-            if (this.Params.Input[4].Sources.Count > 0)
-                startZoneNoStud = GetInput.Length(this, DA, 4, lengthUnit, true);
+                case StudGroupSpacing.StudSpacingType.Partial_Interaction:
+                    DA.GetData(2, ref minSav);
+                    double interaction = 0.85;
+                    DA.GetData(3, ref interaction);
+                    DA.SetData(0, new ComposStudGoo(new ComposStud(
+                        studDimensions, studSpec, minSav, interaction)));
+                    break;
 
-            Length rebarPosition = new Length(0, lengthUnit);
-            if (this.Params.Input[5].Sources.Count > 0)
-                startZoneNoStud = GetInput.Length(this, DA, 5, lengthUnit, true);
-
-
-            //ComposStud stud = new ComposStud(diameter, height, strength, startZoneNoStud, endZoneNoStud, rebarPosition, Welding, NCCILimits);
-
-            //DA.SetData(0, new ComposStudGoo(stud));
+                case StudGroupSpacing.StudSpacingType.Custom:
+                    List<StudGroupSpacingGoo> spacings = GetInput.StudSpacings(this, DA, 2);
+                    bool check = false;
+                    DA.GetData(3, ref check);
+                    DA.SetData(0, new ComposStudGoo(new ComposStud(
+                        studDimensions, studSpec, spacings, check)));
+                    break;
+            }
         }
+        #region update input params
+        private void ModeChangeClicked()
+        {
+            RecordUndoEvent("Changed Parameters");
+
+            switch (spacingType)
+            {
+                case StudGroupSpacing.StudSpacingType.Automatic:
+                case StudGroupSpacing.StudSpacingType.Min_Num_of_Studs:
+                    //remove input parameters
+                    while (Params.Input.Count > 2)
+                        Params.UnregisterInputParameter(Params.Input[2], true);
+
+                    //add input parameters
+                    Params.RegisterInputParam(new Param_Number());
+                    break;
+
+                case StudGroupSpacing.StudSpacingType.Partial_Interaction:
+                    //remove input parameters
+                    while (Params.Input.Count > 2)
+                        Params.UnregisterInputParameter(Params.Input[2], true);
+
+                    //add input parameters
+                    Params.RegisterInputParam(new Param_Number());
+                    Params.RegisterInputParam(new Param_Number());
+                    break;
+
+                case StudGroupSpacing.StudSpacingType.Custom:
+                    //remove input parameters
+                    while (Params.Input.Count > 2)
+                        Params.UnregisterInputParameter(Params.Input[2], true);
+
+                    //add input parameters
+                    Params.RegisterInputParam(new Param_GenericObject());
+                    Params.RegisterInputParam(new Param_Boolean());
+                    break;
+            }
+        }
+        #endregion
+
+        #region (de)serialization
+        public override bool Write(GH_IO.Serialization.GH_IWriter writer)
+        {
+            Helpers.DeSerialization.writeDropDownComponents(ref writer, dropdownitems, selecteditems, spacerDescriptions);
+            return base.Write(writer);
+        }
+        public override bool Read(GH_IO.Serialization.GH_IReader reader)
+        {
+            Helpers.DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
+
+            UpdateUIFromSelectedItems();
+
+            first = false;
+
+            return base.Read(reader);
+        }
+        #endregion
+
+        #region IGH_VariableParameterComponent null implementation
+        bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
+        {
+            return false;
+        }
+        bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
+        {
+            return false;
+        }
+        IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
+        {
+            return null;
+        }
+        bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
+        {
+            return false;
+        }
+        void IGH_VariableParameterComponent.VariableParameterMaintenance()
+        {
+            switch (spacingType)
+            {
+                case StudGroupSpacing.StudSpacingType.Automatic:
+                case StudGroupSpacing.StudSpacingType.Min_Num_of_Studs:
+                    Params.Input[2].Name = "Min Saving";
+                    Params.Input[2].NickName = "Msm";
+                    Params.Input[2].Description = "Fraction for Minimum Savnig for using Multiple Zones (Default = 0.2 (20%))";
+                    Params.Input[2].Optional = true;
+                    break;
+
+                case StudGroupSpacing.StudSpacingType.Partial_Interaction:
+                    Params.Input[2].Name = "Min Saving";
+                    Params.Input[2].NickName = "Msm";
+                    Params.Input[2].Description = "Fraction for Minimum Savnig for using Multiple Zones (Default = 0.2 (20%))";
+                    Params.Input[2].Optional = true;
+                    Params.Input[3].Name = "Interaction";
+                    Params.Input[3].NickName = "Int";
+                    Params.Input[3].Description = "Fraction for percentage of interaction for automatic stud spacing (Default = 0.85 (85%))";
+                    Params.Input[3].Optional = true;
+                    break;
+
+                case StudGroupSpacing.StudSpacingType.Custom:
+                    Params.Input[2].Name = "Stud Spacings";
+                    Params.Input[2].NickName = "Spa";
+                    Params.Input[2].Description = "List of Custom Compos Shear Stud Spacing";
+                    Params.Input[2].Access = GH_ParamAccess.list;
+                    Params.Input[3].Name = "Check Spacing";
+                    Params.Input[3].NickName = "Chk";
+                    Params.Input[3].Description = "Check Shear Stud Spacing (default = false)";
+                    Params.Input[3].Optional = true;
+                    break;
+            }
+        }
+        #endregion
     }
 }

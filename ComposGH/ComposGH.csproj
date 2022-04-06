@@ -88,7 +88,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\1_Beam\CreateProfile.cs" />
-    <Compile Include="Components\2_Studs\StandardStud.cs" />
+    <Compile Include="Components\2_Studs\CustomStudSpacing.cs" />
+    <Compile Include="Components\2_Studs\CustomStudDims.cs" />
+    <Compile Include="Components\2_Studs\StudSpec.cs" />
+    <Compile Include="Components\2_Studs\StandardStudDims.cs" />
     <Compile Include="Components\2_Studs\CreateStud.cs" />
     <Compile Include="Components\5_Rebar\CreateMesh.cs" />
     <Compile Include="ComposGHInfo.cs" />
@@ -98,6 +101,7 @@
     <Compile Include="Helpers\_ComposResultsHelper.cs" />
     <Compile Include="Helpers\_GetInputs.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
+    <Compile Include="Parameters\StudDimensionsGoo.cs" />
     <Compile Include="Parameters\ComposReinforcement.cs" />
     <Compile Include="Parameters\StudGoo.cs" />
     <Compile Include="Parameters\StudSpecGoo.cs" />

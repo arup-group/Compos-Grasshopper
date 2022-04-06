@@ -18,9 +18,9 @@ namespace ComposGH.Parameters
     public class StudSpecification
     {
         // Stud Specifications
-        public bool Welding { get; set; } = true;
-        public bool NCCI { get; set; } = true;
-        public bool EC4_Limit { get; set; } = true;
+        public bool Welding { get; set; }
+        public bool NCCI { get; set; }
+        public bool EC4_Limit { get; set; }
         public Length NoStudZoneStart { get; set; }
         public Length NoStudZoneEnd { get; set; }
         public Length ReinforcementPosition { get; set; }
@@ -93,7 +93,14 @@ namespace ComposGH.Parameters
         }
         public override string ToString()
         {
-            return "Specs";
+            string noStudStart = (this.NoStudZoneStart.Value == 0) ? "" : "NSZS:" + this.NoStudZoneStart.ToString().Replace(" ", string.Empty);
+            string noStudEnd = (this.NoStudZoneEnd.Value == 0) ? "" : "NSZE:" + this.NoStudZoneEnd.ToString().Replace(" ", string.Empty);
+            string rebarPos = (this.ReinforcementPosition.Value == 0) ? "" : "RbP:" + this.ReinforcementPosition.ToString().Replace(" ", string.Empty);
+            string welding = (this.Welding == true) ? "Welded" : "";
+            string ncci = (this.NCCI == true) ? "NCCI Limit" : "";
+            string ec4 = (this.EC4_Limit == true) ? "EC4 Limit" : "";
+            string joined = string.Join(" ", new List<string>() { noStudStart, noStudEnd, rebarPos, welding, ncci, ec4 });
+            return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');
         }
         #endregion
     }
