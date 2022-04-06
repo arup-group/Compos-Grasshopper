@@ -414,9 +414,6 @@ namespace ComposGH.Components
         List<string> filteredlist = new List<string>();
         int catalogueIndex = -1; //-1 is all
         int typeIndex = -1;
-        // displayed selections
-        string typeName = "All";
-        string sectionName = "All";
         // list of sections as outcome from selections
         string profileString = "HE HE600.B";
         string search = "";
