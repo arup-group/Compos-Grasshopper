@@ -107,11 +107,6 @@
     <Compile Include="Parameters\GH_UnitNumber.cs" />
     <Compile Include="Parameters\_Units.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="UI\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -144,7 +139,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
@@ -179,6 +173,7 @@
     <Folder Include="Components\7_Design\" />
     <Folder Include="Components\8_Analysis\" />
     <Folder Include="Components\9_Results\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\RebarMesh.png" />
