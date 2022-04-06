@@ -90,6 +90,7 @@
     <Compile Include="Components\1_Beam\CreateProfile.cs" />
     <Compile Include="Components\2_Studs\StandardStud.cs" />
     <Compile Include="Components\2_Studs\CreateStud.cs" />
+    <Compile Include="Components\5_Rebar\CreateMesh.cs" />
     <Compile Include="ComposGHInfo.cs" />
     <Compile Include="Helpers\DeSerialization.cs" />
     <Compile Include="Helpers\GhRibbonLayout.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Helpers\_ComposResultsHelper.cs" />
     <Compile Include="Helpers\_GetInputs.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
+    <Compile Include="Parameters\ReinforcementGoo.cs" />
     <Compile Include="Parameters\StudGoo.cs" />
     <Compile Include="Parameters\StudSpecGoo.cs" />
     <Compile Include="Parameters\StudSpacingGoo.cs" />
@@ -173,11 +175,13 @@
     <Folder Include="Components\0_Model\" />
     <Folder Include="Components\3_Slab\" />
     <Folder Include="Components\4_Decking\" />
-    <Folder Include="Components\5_Rebar\" />
     <Folder Include="Components\6_Load\" />
     <Folder Include="Components\7_Design\" />
     <Folder Include="Components\8_Analysis\" />
     <Folder Include="Components\9_Results\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RebarMesh.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
