@@ -20,7 +20,7 @@ namespace ComposGH.Parameters
     {
         public Length Cover { get; set; }
         public MeshType Mesh_Type { get; set; }
-        public bool Swaping { get; set; }
+        public bool Rotated { get; set; }
 
         public enum MeshType
         {
@@ -50,11 +50,11 @@ namespace ComposGH.Parameters
             //empty constructor
         }
 
-        public ComposReinforcement(Length cover, MeshType meshType = MeshType.A393, bool swaping = false)
+        public ComposReinforcement(Length cover, MeshType meshType = MeshType.A393, bool rotated = false)
         {
             this.Cover = cover;
             this.Mesh_Type = meshType;
-            this.Swaping = swaping;
+            this.Rotated = rotated;
 
         }
 
@@ -82,9 +82,11 @@ namespace ComposGH.Parameters
         {
             string cov = Cover.ToString("f0");
             string msh = Mesh_Type.ToString();
-            string swap = (this.Swaping == true) ? "Paralel" : "";
+            
+            string rotated = (this.Rotated == true) ? " Rotated" : "";
+            
 
-            return msh.Replace(" ", string.Empty) + " " +  cov.Replace(" ", string.Empty) +" "+ swap.Replace(" ", string.Empty);
+            return msh.Replace(" ", string.Empty) + " " +  cov.Replace(" ", string.Empty) + rotated;
         }
         #endregion
     }

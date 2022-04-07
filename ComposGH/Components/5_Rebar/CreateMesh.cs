@@ -117,6 +117,7 @@ namespace ComposGH.Components
             string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
             pManager.AddGenericParameter("Cover [" + unitAbbreviation + "]", "Cov", "Reinforcement cover", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Rotated", "Rot", "If the mesh type is assymetrical, setting 'Rotated' to true will align the stronger direction with the beam's direction", GH_ParamAccess.item, true);
 
         }
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
@@ -131,24 +132,12 @@ namespace ComposGH.Components
             if (this.Params.Input[0].Sources.Count > 0)
                 cov = GetInput.Length(this, DA, 0, lengthUnit, true);
 
-            bool swap = false;
-            DA.GetData(2, ref swap);
-            DA.SetData(0, new ComposReinforcementGoo(new ComposReinforcement(cov,mesh,swap)));
-
+            bool rotated = false;
+            DA.GetData(1, ref rotated);
+            DA.SetData(0, new ComposReinforcementGoo(new ComposReinforcement(cov,mesh,rotated)));
 
         }
         
-        #region menu override
-
-        //private void ToggleInput() //ASK
-        //{
-        //    RecordUndoEvent("Changed dropdown");
-        //    ExpireSolution(true);
-        //    (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-        //    Params.OnParametersChanged();
-        //    this.OnDisplayExpired(true);
-        //}
-        #endregion
 
         #region (de)serialization
         public override bool Write(GH_IO.Serialization.GH_IWriter writer)
