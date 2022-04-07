@@ -8,87 +8,33 @@ using Rhino.Geometry;
 using Rhino;
 using Grasshopper.Documentation;
 using Rhino.Collections;
+using UnitsNet;
 
 namespace ComposGH.Parameters
 {
     /// <summary>
-    /// Section class, this class defines the basic properties and methods for any Compos Section
+    /// Custom class: this class defines the basic properties and methods for our custom class
     /// </summary>
     public class ComposSteelMaterial
     {
+        public Pressure fy { get; set; }
+        public Pressure E { get; set; }
+        public Density Density { get; set; }
+        public bool ReductionFactorMpl { get; set; }
 
-        public enum SteelType
-        {
-            CUSTOM = 0,
-            S235 = 1,
-            S275 = 2,
-            S355 = 3,
-            S450 = 4,
-            S460 = 5
-        }
-
-
-        public string WeldMaterial
-        {
-            get 
-            { return wMat; } 
-            set
-            { wMat = value; }
-        }
-
-        public double YeldStrength
-        {
-            get
-            { return fy; }
-            set
-            { fy = value; }
-        }
-
-        public double YoungModulus
-        {
-            get
-            { return E; }
-            set
-            { E = value; }
-        }
-
-        public double Density
-        {
-            get
-            { return ρ; }
-            set
-            { ρ = value; }
-        }
-
-
-        public SteelType SType;
-
-        
-        #region fields
-        string wMat = "";
-        double fy;
-        double E;
-        double ρ;
-
-        #endregion
+        // add public enum(s) for standard materials here
+        // add enum for weld material
 
         #region constructors
         public ComposSteelMaterial()
         {
-            SType = SteelType.CUSTOM;
+            // empty constructor
         }
-
-        /// <param name="material_id"></param>
-        public ComposSteelMaterial(int material_id)
-        {
-            SType = (SteelType)material_id;
-        }
-
-  
+        
+        // add public constructors here
 
         #endregion
 
-        
         #region properties
         public bool IsValid
         {
@@ -99,20 +45,39 @@ namespace ComposGH.Parameters
         }
         #endregion
 
+        #region coa interop
+        internal ComposSteelMaterial(string coaString)
+        {
+            // to do - implement from coa string method
+        }
+
+        internal string ToCoaString()
+        {
+            // to do - implement to coa string method
+            return string.Empty;
+        }
+        #endregion
+
         #region methods
+
+        public ComposSteelMaterial Duplicate()
+        {
+            if (this == null) { return null; }
+            ComposSteelMaterial dup = (ComposSteelMaterial)this.MemberwiseClone();
+            return dup;
+        }
+
         public override string ToString()
         {
-            string mate = SType.ToString();
-            mate = Char.ToUpper(mate[0]) + mate.Substring(1).ToLower().Replace("_", " ");
-
-            return "Compos Steel Material " + mate;
+            // update with better naming
+            return fy.ToString().Replace(" ", string.Empty);
         }
 
         #endregion
     }
 
     /// <summary>
-    /// GsaSection Goo wrapper class, makes sure GsaSection can be used in Grasshopper.
+    /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
     /// </summary>
     public class ComposSteelMaterialGoo : GH_Goo<ComposSteelMaterial>
     {
@@ -121,37 +86,31 @@ namespace ComposGH.Parameters
         {
             this.Value = new ComposSteelMaterial();
         }
-        public ComposSteelMaterialGoo(ComposSteelMaterial material)
+        public ComposSteelMaterialGoo(ComposSteelMaterial item)
         {
-            if (material == null)
-                material = new ComposSteelMaterial();
-            this.Value = material; //material.Duplicate();
+            if (item == null)
+                item = new ComposSteelMaterial();
+            this.Value = item.Duplicate();
         }
 
         public override IGH_Goo Duplicate()
         {
-            return DuplicateGsaSection();
+            return DuplicateGoo();
         }
-        public ComposSteelMaterialGoo DuplicateGsaSection()
+        public ComposSteelMaterialGoo DuplicateGoo()
         {
-            return new ComposSteelMaterialGoo(Value == null ? new ComposSteelMaterial() : Value); //Value.Duplicate());
+            return new ComposSteelMaterialGoo(Value == null ? new ComposSteelMaterial() : Value.Duplicate());
         }
         #endregion
 
         #region properties
-        public override bool IsValid
-        {
-            get
-            {
-                if (Value == null) { return false; }
-                return true;
-            }
-        }
+        public override bool IsValid => true;
+        public override string TypeName => "Steel Material";
+        public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
         public override string IsValidWhyNot
         {
             get
             {
-                //if (Value == null) { return "No internal GsaMember instance"; }
                 if (Value.IsValid) { return string.Empty; }
                 return Value.IsValid.ToString(); //Todo: beef this up to be more informative.
             }
@@ -159,28 +118,17 @@ namespace ComposGH.Parameters
         public override string ToString()
         {
             if (Value == null)
-                return "Null Compos Steel Material";
+                return "Null";
             else
-                return Value.ToString();
+                return "Compos " + TypeName + " {" + Value.ToString() + "}"; ;
         }
-        public override string TypeName
-        {
-            get { return ("Compos Steel Material"); }
-        }
-        public override string TypeDescription
-        {
-            get { return ("Compos Steel Material"); }
-        }
-
-
         #endregion
 
         #region casting methods
         public override bool CastTo<Q>(ref Q target)
         {
             // This function is called when Grasshopper needs to convert this 
-            // instance of GsaMaterial into some other type Q.            
-
+            // instance of our custom class into some other type Q.            
 
             if (typeof(Q).IsAssignableFrom(typeof(ComposSteelMaterial)))
             {
@@ -197,7 +145,7 @@ namespace ComposGH.Parameters
         public override bool CastFrom(object source)
         {
             // This function is called when Grasshopper needs to convert other data 
-            // into ComposMaterial.
+            // into our custom class.
 
             if (source == null) { return false; }
 
@@ -208,64 +156,23 @@ namespace ComposGH.Parameters
                 return true;
             }
 
-            //Cast from string
-            if (GH_Convert.ToString(source, out string mat, GH_Conversion.Both))
-            {
-                if (mat.ToUpper() == "CUSTOM")
-                {
-                    Value.SType = ComposSteelMaterial.SteelType.CUSTOM;
-                    return true;
-                }
-
-                if (mat.ToUpper() == "S235")
-                {
-                    Value.SType = ComposSteelMaterial.SteelType.S235;
-                    return true;
-                }
-
-                if (mat.ToUpper() == "S275")
-                {
-                    Value.SType = ComposSteelMaterial.SteelType.S275;
-                    return true;
-                }
-
-                if (mat.ToUpper() == "S355")
-                {
-                    Value.SType = ComposSteelMaterial.SteelType.S355;
-                    return true;
-                }
-
-                if (mat.ToUpper() == "S450")
-                {
-                    Value.SType = ComposSteelMaterial.SteelType.S450;
-                    return true;
-                }
-
-                if (mat.ToUpper() == "S460")
-                {
-                    Value.SType = ComposSteelMaterial.SteelType.S460;
-                    return true;
-                }
-
-                return false;
-            }
-
             return false;
         }
         #endregion
     }
 
     /// <summary>
-    /// This class provides a Parameter interface for the Data_GsaSection type.
+    /// This class provides a Parameter interface for the CustomGoo type.
     /// </summary>
-    public class ComposSteelMaterialParameter : GH_PersistentParam<ComposSteelMaterialGoo>
+
+    public class ComposSteelMaterialParameter: GH_PersistentParam<ComposSteelMaterialGoo>
     {
         public ComposSteelMaterialParameter()
-          : base(new GH_InstanceDescription("Material", "Ma", "Compos Material", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat9()))
+          : base(new GH_InstanceDescription("Stud", "Std", "Compos Stud", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
         {
         }
 
-        public override Guid ComponentGuid => new Guid("f13d079b-f7d1-4d8a-be7c-3b7e1e59c5ab");
+        public override Guid ComponentGuid => new Guid("1245ee2f-3d04-4135-833c-abff82dff85c");
 
         public override GH_Exposure Exposure => GH_Exposure.secondary | GH_Exposure.obscure;
 
