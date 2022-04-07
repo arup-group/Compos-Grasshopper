@@ -104,6 +104,7 @@
     <Compile Include="Parameters\ComposSteelMaterial.cs" />
     <Compile Include="Parameters\ComposWebOpening.cs" />
     <Compile Include="Parameters\StudDimensionsGoo.cs" />
+    <Compile Include="Parameters\BeamSectionGoo.cs" />
     <Compile Include="Parameters\WebOpeningStiffenerGoo.cs" />
     <Compile Include="Parameters\StudSpecGoo.cs" />
     <Compile Include="Parameters\StudSpacingGoo.cs" />
