@@ -15,54 +15,29 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Custom class: this class defines the basic properties and methods for our custom class
     /// </summary>
-    public class ComposStud
+    public class ComposWebOpening
     {
-        public StudDimensions StudDimension { get; set; }
-        public StudSpecification StudSpecification { get; set; }
-        
-        // Stud Spacing
-        public List<StudGroupSpacing> CustomSpacing { get; set; } = null;
-        public double Interaction { get; set; }
-        public double MinSavingMultipleZones { get; set; }
-        public StudGroupSpacing.StudSpacingType StudSpacingType { get; set; }
-        public bool CheckStudSpacing { get; set; }
+        public enum OpeningType
+        {
+            Rectangular,
+            Circular,
+            Left_notch,
+            Right_notch
+        }
+        public Length Width { get; set; }
+        public Length Height { get; set; }
+        public Length Diameter { get; set; }
+        public Length CentroidPosFromStart { get; set; }
+        public Length CentroidPosFromTop { get; set; }
+        public WebOpeningStiffener OpeningStiffener { get; set; }
+
         #region constructors
-        public ComposStud()
+        public ComposWebOpening()
         {
             // empty constructor
         }
-        public ComposStud(StudDimensionsGoo stud, StudSpecificationGoo spec, List<StudGroupSpacingGoo> spacings, bool checkSpacing)
-        {
-            this.StudDimension = stud.Value;
-            this.StudSpecification = spec.Value;
-            this.CustomSpacing = spacings.Select(item => item.Value).ToList();
-            this.CheckStudSpacing = checkSpacing;
-            this.StudSpacingType = StudGroupSpacing.StudSpacingType.Custom;
-        }
-        public ComposStud(StudDimensionsGoo stud, StudSpecificationGoo spec, double minSaving, StudGroupSpacing.StudSpacingType type)
-        {
-            this.StudDimension = stud.Value;
-            this.StudSpecification = spec.Value;
-            this.StudSpacingType = type;
-            this.MinSavingMultipleZones = minSaving;
-            switch (type)
-            {
-                case StudGroupSpacing.StudSpacingType.Min_Num_of_Studs:
-                case StudGroupSpacing.StudSpacingType.Automatic:
-                    break;
-                    
-                default:
-                    throw new ArgumentException("Stud spacing type must be either Automatic or Minimum Number of Studs");
-            }
-        }
-        public ComposStud(StudDimensionsGoo stud, StudSpecificationGoo spec, double minSaving, double interaction)
-        {
-            this.StudDimension = stud.Value;
-            this.StudSpecification = spec.Value;
-            this.StudSpacingType = StudGroupSpacing.StudSpacingType.Partial_Interaction;
-            this.MinSavingMultipleZones = minSaving;
-            this.Interaction = interaction;
-        }
+        
+        // add public constructors here
 
         #endregion
 
@@ -77,7 +52,7 @@ namespace ComposGH.Parameters
         #endregion
 
         #region coa interop
-        internal ComposStud(string coaString)
+        internal ComposWebOpening(string coaString)
         {
             // to do - implement from coa string method
         }
@@ -91,17 +66,17 @@ namespace ComposGH.Parameters
 
         #region methods
 
-        public ComposStud Duplicate()
+        public ComposWebOpening Duplicate()
         {
             if (this == null) { return null; }
-            ComposStud dup = (ComposStud)this.MemberwiseClone();
+            ComposWebOpening dup = (ComposWebOpening)this.MemberwiseClone();
             return dup;
         }
 
         public override string ToString()
         {
-            string size = this.StudDimension.Diameter.ToString() + "/" + this.StudDimension.Height.ToString();
-            return size.Replace(" ", string.Empty);
+            // to do: beef up this
+            return "Web Opening";
         }
 
         #endregion
@@ -110,17 +85,17 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
     /// </summary>
-    public class ComposStudGoo : GH_Goo<ComposStud>
+    public class ComposWebOpeningGoo : GH_Goo<ComposWebOpening>
     {
         #region constructors
-        public ComposStudGoo()
+        public ComposWebOpeningGoo()
         {
-            this.Value = new ComposStud();
+            this.Value = new ComposWebOpening();
         }
-        public ComposStudGoo(ComposStud item)
+        public ComposWebOpeningGoo(ComposWebOpening item)
         {
             if (item == null)
-                item = new ComposStud();
+                item = new ComposWebOpening();
             this.Value = item.Duplicate();
         }
 
@@ -128,15 +103,15 @@ namespace ComposGH.Parameters
         {
             return DuplicateGoo();
         }
-        public ComposStudGoo DuplicateGoo()
+        public ComposWebOpeningGoo DuplicateGoo()
         {
-            return new ComposStudGoo(Value == null ? new ComposStud() : Value.Duplicate());
+            return new ComposWebOpeningGoo(Value == null ? new ComposWebOpening() : Value.Duplicate());
         }
         #endregion
 
         #region properties
         public override bool IsValid => true;
-        public override string TypeName => "Stud";
+        public override string TypeName => "Web Opening";
         public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
         public override string IsValidWhyNot
         {
@@ -161,7 +136,7 @@ namespace ComposGH.Parameters
             // This function is called when Grasshopper needs to convert this 
             // instance of our custom class into some other type Q.            
 
-            if (typeof(Q).IsAssignableFrom(typeof(ComposStud)))
+            if (typeof(Q).IsAssignableFrom(typeof(ComposWebOpening)))
             {
                 if (Value == null)
                     target = default;
@@ -181,9 +156,9 @@ namespace ComposGH.Parameters
             if (source == null) { return false; }
 
             //Cast from GsaMaterial
-            if (typeof(ComposStud).IsAssignableFrom(source.GetType()))
+            if (typeof(ComposWebOpening).IsAssignableFrom(source.GetType()))
             {
-                Value = (ComposStud)source;
+                Value = (ComposWebOpening)source;
                 return true;
             }
 
@@ -196,24 +171,24 @@ namespace ComposGH.Parameters
     /// This class provides a Parameter interface for the CustomGoo type.
     /// </summary>
 
-    public class ComposStudParameter: GH_PersistentParam<ComposStudGoo>
+    public class ComposWebOpeningParameter : GH_PersistentParam<ComposWebOpeningGoo>
     {
-        public ComposStudParameter()
+        public ComposWebOpeningParameter()
           : base(new GH_InstanceDescription("Stud", "Std", "Compos Stud", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
         {
         }
 
-        public override Guid ComponentGuid => new Guid("e0b6cb52-99c8-4b2a-aec1-7f8a2d720daa");
+        public override Guid ComponentGuid => new Guid("eb70e868-29d9-4fae-9ef7-c465f3762a43");
 
         public override GH_Exposure Exposure => GH_Exposure.secondary | GH_Exposure.obscure;
 
         protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
 
-        protected override GH_GetterResult Prompt_Plural(ref List<ComposStudGoo> values)
+        protected override GH_GetterResult Prompt_Plural(ref List<ComposWebOpeningGoo> values)
         {
             return GH_GetterResult.cancel;
         }
-        protected override GH_GetterResult Prompt_Singular(ref ComposStudGoo value)
+        protected override GH_GetterResult Prompt_Singular(ref ComposWebOpeningGoo value)
         {
             return GH_GetterResult.cancel;
         }
