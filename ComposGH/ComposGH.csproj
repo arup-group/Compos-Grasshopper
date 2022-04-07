@@ -100,7 +100,10 @@
     <Compile Include="Helpers\_ComposResultsHelper.cs" />
     <Compile Include="Helpers\_GetInputs.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
+    <Compile Include="Parameters\ComposSteelMaterial.cs" />
+    <Compile Include="Parameters\ComposWebOpening.cs" />
     <Compile Include="Parameters\StudDimensionsGoo.cs" />
+    <Compile Include="Parameters\WebOpeningStiffenerGoo.cs" />
     <Compile Include="Parameters\StudSpecGoo.cs" />
     <Compile Include="Parameters\StudSpacingGoo.cs" />
     <Compile Include="Parameters\ComposDesignCode.cs" />

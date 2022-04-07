@@ -196,9 +196,9 @@ namespace ComposGH.Parameters
     /// This class provides a Parameter interface for the CustomGoo type.
     /// </summary>
 
-    public class ComposSteelMaterialParameter: GH_PersistentParam<ComposStudGoo>
+    public class ComposStudParameter: GH_PersistentParam<ComposStudGoo>
     {
-        public ComposSteelMaterialParameter()
+        public ComposStudParameter()
           : base(new GH_InstanceDescription("Stud", "Std", "Compos Stud", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
         {
         }
