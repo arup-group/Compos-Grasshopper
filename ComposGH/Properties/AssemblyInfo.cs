@@ -6,12 +6,12 @@ using ComposGH;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ComposGH")]
-[assembly: AssemblyDescription("Oasys" + " " + "Compos" + " Grasshopper plugin")]
+[assembly: AssemblyTitle(ComposGHInfo.ProductName)]
+[assembly: AssemblyDescription(ComposGHInfo.Company + " " + ComposGHInfo.ProductName + " Grasshopper plugin")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Oasys")]
-[assembly: AssemblyProduct("Compos")]
-[assembly: AssemblyCopyright("Oasys")]
+[assembly: AssemblyCompany(ComposGHInfo.Company)]
+[assembly: AssemblyProduct(ComposGHInfo.ProductName)]
+[assembly: AssemblyCopyright(ComposGHInfo.Copyright)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -21,7 +21,7 @@ using ComposGH;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("B806D80C-5455-4479-A941-D928020B6AB5")]
+[assembly: Guid("5274ea0f-5cf8-4f74-ace6-a273f4196522")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -33,5 +33,5 @@ using ComposGH;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0")]
-[assembly: AssemblyFileVersion("1.0" + ".0")]
+[assembly: AssemblyVersion(ComposGHInfo.Vers)]
+[assembly: AssemblyFileVersion(ComposGHInfo.Vers + ".0")]

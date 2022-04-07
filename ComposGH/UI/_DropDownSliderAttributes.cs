@@ -2,6 +2,7 @@
 using Grasshopper.GUI.Canvas;
 using Grasshopper.GUI;
 using Grasshopper.Kernel;
+using Grasshopper;
 using System.Windows.Forms;
 using System;
 using System.Drawing;
@@ -17,26 +18,34 @@ namespace ComposGH.UI
     /// 
     /// To use this method override CreateAttributes() in component class and set m_attributes = new MultiDropDownComponentUI(...
     /// </summary>
-    public class MultiDropDownComponentUI : GH_ComponentAttributes
+    public class MultiDropDownSliderComponentUI : GH_ComponentAttributes
     {
-        public MultiDropDownComponentUI(GH_Component owner, Action<int, int> clickHandle, List<List<string>> dropdownContents, List<string> selections, List<string> spacerTexts = null, List<string> initialdescriptions = null) : base(owner)
+        public MultiDropDownSliderComponentUI(GH_Component owner, Action<int, int> clickHandle, List<List<string>> dropdownContents, List<string> selections,
+            bool Slider, Action<double> sliderValue, Action<double, double> setMaxMinVals, double initValue, double maxVal, double minVal, int digits,
+            List<string> spacerTexts = null, List<string> initialdescriptions = null) : base(owner)
         {
             dropdownlists = dropdownContents;
             spacerTxts = spacerTexts;
             action = clickHandle;
             initialTxts = initialdescriptions ?? null; // if no description is inputted then null initialTxt
-            if (dropdownContents != null)
+            if (selections == null)
             {
-                if (selections == null)
-                {
-                    List<string> tempDisplaytxt = new List<string>();
-                    for (int i = 0; i < dropdownlists.Count; i++)
-                        tempDisplaytxt.Add((initialdescriptions == null) ? dropdownlists[i][0] : initialdescriptions[i]);
-                    displayTexts = tempDisplaytxt;
-                }
-                else
-                    displayTexts = selections;
+                List<string> tempDisplaytxt = new List<string>();
+                for (int i = 0; i < dropdownlists.Count; i++)
+                    tempDisplaytxt.Add((initialdescriptions == null) ? dropdownlists[i][0] : initialdescriptions[i]);
+                displayTexts = tempDisplaytxt;
             }
+            else
+                displayTexts = selections;
+
+            drawSlider = Slider;
+            ReturnSliderValue = sliderValue;
+            ChangeMaxMin = setMaxMinVals;
+            MinValue = minVal;
+            MaxValue = maxVal;
+            CurrentValue = initValue;
+            noDigits = digits;
+            first = true;
         }
 
         readonly List<string> spacerTxts; // list of descriptive texts above each dropdown
@@ -63,23 +72,39 @@ namespace ComposGH.UI
         float dragMouseStartY; // location of mouse at drag start
         float deltaY; // moved Y-location of scroll element
         int maxNoRows = 10;
-        bool drag;
+        bool dragY;
+        bool dragX;
+
+        bool drawSlider;
+        RectangleF SliderBound;// area where the slider is displayed
+        RectangleF SliderValTextBound;// bound where text is displayed
+        RectangleF GrabBound;// bound around the value grab
+        double MinValue;
+        double MaxValue;
+        double CurrentValue;
+        int noDigits;
+        bool first;
+        float scrollStartX; // location of scroll element at drag start
+        float dragMouseStartX; // location of mouse at drag start
+        float deltaX; // moved Y-location of scroll element
+
+        readonly Action<double> ReturnSliderValue;
+        readonly Action<double, double> ChangeMaxMin;
 
         float MinWidth
         {
             get
             {
-                float sp = ComponentUI.MaxTextWidth(spacerTxts, GH_FontServer.Standard);
+                float sp = ComponentUI.MaxTextWidth(spacerTxts, GH_FontServer.Small);
                 float bt = 0;
                 for (int i = 0; i < dropdownlists.Count; i++)
                 {
-                    float tbt = ComponentUI.MaxTextWidth(dropdownlists[i], new Font(GH_FontServer.FamilyStandard, 8));
+                    float tbt = ComponentUI.MaxTextWidth(dropdownlists[i], new Font(GH_FontServer.FamilyStandard, 7));
                     if (tbt > bt)
                         bt = tbt;
                 }
-
                 float num = Math.Max(Math.Max(sp, bt), 90);
-                return Math.Min(num, 170);
+                return num;
             }
             set { MinWidth = value; }
         }
@@ -90,8 +115,7 @@ namespace ComposGH.UI
             // first change the width to suit; using max to determine component visualisation style
             FixLayout();
 
-            if (SpacerBounds == null)
-                SpacerBounds = new List<RectangleF>();
+            SpacerBounds = new List<RectangleF>();
             if (BorderBound == null)
                 BorderBound = new List<RectangleF>();
             if (TextBound == null)
@@ -110,11 +134,15 @@ namespace ComposGH.UI
             int h0 = 0;
 
             bool removeScroll = true;
+
             for (int i = 0; i < dropdownlists.Count; i++)
             {
                 //spacer and title
                 if (spacerTxts[i] != "")
                 {
+                    if (i < 1)
+                        Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, Bounds.Height - (CentralSettings.CanvasObjectIcons ? 5 : 0));
+
                     h0 = 10;
                     RectangleF tempSpacer = new RectangleF(Bounds.X, Bounds.Bottom + s / 2, Bounds.Width, h0);
                     if (SpacerBounds.Count == i || SpacerBounds[i] == null)
@@ -183,7 +211,7 @@ namespace ComposGH.UI
 
                         // setup size of scroll bar
                         scrollBar.X = dropdownBound[i].X + dropdownBound[i].Width - 8; // locate from right-side of dropdown area
-                                                                                       // compute height based on number of items in list, but with a minimum size of 2 rows
+                        // compute height based on number of items in list, but with a minimum size of 2 rows
                         scrollBar.Height = (float)Math.Max(2 * h1, dropdownBound[i].Height * ((double)maxNoRows / ((double)dropdownlists[i].Count)));
                         scrollBar.Width = 8; // width of mouse-grab area (actual scroll bar drawn later)
 
@@ -245,6 +273,85 @@ namespace ComposGH.UI
                 scrollBar = new RectangleF();
                 scrollStartY = 0;
             }
+
+            // ### slider ###
+            if (drawSlider)
+            {
+                // create bound for spacer and title
+                h0 = 0; // height of spacer bound
+                if (spacerTxts[spacerTxts.Count - 1] != "")
+                {
+                    h0 = 10;
+                    SpacerBounds.Add(new RectangleF(Bounds.X, Bounds.Bottom + s / 2, Bounds.Width, h0));
+                }
+
+                int hslider = 15; // height of bound for slider
+                int bhslider = 10; // height and width of grab
+
+                // create overall bound for slider
+                SliderBound = new RectangleF(Bounds.X + 2 * s, Bounds.Bottom + h0 + 2 * s, Bounds.Width - 2 - 4 * s, hslider);
+
+                // slider grab 
+                GrabBound = new RectangleF(SliderBound.X + deltaX + scrollStartX, SliderBound.Y + SliderBound.Height / 2 - bhslider / 2, bhslider, bhslider);
+
+                // round current value for snapping
+                CurrentValue = Math.Round(CurrentValue, noDigits);
+                double dragPercentage;
+
+                // when component is initiated or value range is changed
+                // calculate position of grab
+                if (first)
+                {
+                    dragPercentage = (CurrentValue - MinValue) / (MaxValue - MinValue);
+                    scrollStartX = (float)(dragPercentage * (SliderBound.Width - GrabBound.Width));
+                    first = false;
+                }
+
+                // horizontal position (.X)
+                if (deltaX + scrollStartX >= 0) // handle if user drags left of starting point
+                {
+                    // dragging right-wards:
+                    if (SliderBound.Width - GrabBound.Width >= deltaX + scrollStartX) // handles if user drags below bottom point
+                    {
+                        // update scroll bar position for normal scroll event within bounds
+                        dragPercentage = (deltaX + scrollStartX) / (SliderBound.Width - GrabBound.Width);
+                        CurrentValue = Math.Round(MinValue + dragPercentage * (MaxValue - MinValue), noDigits);
+                        dragPercentage = (CurrentValue - MinValue) / (MaxValue - MinValue);
+                    }
+                    else
+                    {
+                        // scroll reached end
+                        dragPercentage = 1;
+                        scrollStartX = SliderBound.Width - GrabBound.Width;
+                        deltaX = 0;
+                        CurrentValue = MaxValue;
+                    }
+                }
+                else
+                {
+                    // scroll reached start
+                    dragPercentage = 0;
+                    scrollStartX = 0;
+                    deltaX = 0;
+                    CurrentValue = MinValue;
+                }
+
+                // set grab item position with snap
+                GrabBound.X = SliderBound.X + (float)(dragPercentage * (SliderBound.Width - GrabBound.Width));
+
+                // return new current value to component
+                ReturnSliderValue(CurrentValue);
+
+                // text box for value display
+
+                if (CurrentValue < (MaxValue - MinValue) / 2) // we are in the left half of the range
+                    SliderValTextBound = new RectangleF(GrabBound.X + GrabBound.Width, SliderBound.Y, SliderBound.X + SliderBound.Width - GrabBound.X + GrabBound.Width, SliderBound.Height);
+                else // we are in the right half of the range
+                    SliderValTextBound = new RectangleF(SliderBound.X, SliderBound.Y, GrabBound.X - SliderBound.X, SliderBound.Height);
+
+                //update component bounds
+                Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, Bounds.Height + h0 + hslider + 4 * s);
+            }
         }
 
 
@@ -291,7 +398,7 @@ namespace ComposGH.UI
                     }
 
                     // background
-                    Brush background = new SolidBrush(Colour.GsaLightGrey);
+                    Brush background = new SolidBrush(Colour.UILightGrey);
                     // background
                     graphics.FillRectangle(background, BorderBound[i]);
                     // border
@@ -309,7 +416,7 @@ namespace ComposGH.UI
                     if (unfolded[i])
                     {
                         Pen penborder = new Pen(Brushes.Gray);
-                        Brush dropdownbackground = new SolidBrush(Colour.GsaLightGrey);
+                        Brush dropdownbackground = new SolidBrush(Colour.UILightGrey);
                         penborder.Width = 0.3f;
                         for (int j = 0; j < dropdownBounds[i].Count; j++)
                         {
@@ -354,13 +461,46 @@ namespace ComposGH.UI
                         graphics.DrawRectangle(pen, dropdownBound[i].X, dropdownBound[i].Y, dropdownBound[i].Width, dropdownBound[i].Height);
 
                         // draw vertical scroll bar
-                        Brush scrollbar = new SolidBrush(Color.FromArgb(drag ? 160 : 120, Color.Black));
+                        Brush scrollbar = new SolidBrush(Color.FromArgb(dragY ? 160 : 120, Color.Black));
                         Pen scrollPen = new Pen(scrollbar);
                         scrollPen.Width = scrollBar.Width - 2;
                         scrollPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
                         scrollPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
                         graphics.DrawLine(scrollPen, scrollBar.X + 4, scrollBar.Y + 4, scrollBar.X + 4, scrollBar.Y + scrollBar.Height - 4);
                     }
+                }
+
+                if (drawSlider)
+                {
+                    //Draw divider line
+                    int i = spacerTxts.Count - 1;
+                    if (spacerTxts[i] != "")
+                    {
+                        graphics.DrawString(spacerTxts[i], sml, Colour.AnnotationTextDark, SpacerBounds[i], GH_TextRenderingConstants.CenterCenter);
+                        graphics.DrawLine(spacer, SpacerBounds[i].X, SpacerBounds[i].Y + SpacerBounds[i].Height / 2, SpacerBounds[i].X + (SpacerBounds[i].Width - GH_FontServer.StringWidth(spacerTxts[i], sml)) / 2 - 4, SpacerBounds[i].Y + SpacerBounds[i].Height / 2);
+                        graphics.DrawLine(spacer, SpacerBounds[i].X + (SpacerBounds[i].Width - GH_FontServer.StringWidth(spacerTxts[i], sml)) / 2 + GH_FontServer.StringWidth(spacerTxts[i], sml) + 4, SpacerBounds[i].Y + SpacerBounds[i].Height / 2, SpacerBounds[i].X + SpacerBounds[i].Width, SpacerBounds[i].Y + SpacerBounds[i].Height / 2);
+                    }
+
+                    // draw drag line and intervals
+                    Pen line = new Pen(Colour.OasysDarkGrey);
+                    graphics.DrawLine(line, new PointF(SliderBound.X + GrabBound.Width / 2, SliderBound.Y + SliderBound.Height / 2), new PointF(SliderBound.X + SliderBound.Width - GrabBound.Width / 2, SliderBound.Y + SliderBound.Height / 2));
+
+                    // draw grab item
+                    Pen penS = new Pen(Colour.GsaDarkBlue);
+                    penS.Width = 2f;
+                    RectangleF button = new RectangleF(GrabBound.X, GrabBound.Y, GrabBound.Width, GrabBound.Height);
+                    button.Inflate(-2, -2);
+                    Brush fill = new SolidBrush(Colour.OasysDarkGrey);
+                    graphics.FillEllipse(fill, button);
+                    graphics.DrawEllipse(penS, button);
+
+                    // Draw display value text
+                    Font font = new Font(GH_FontServer.FamilyStandard, 7);
+                    // adjust fontsize to high resolution displays
+                    font = new Font(font.FontFamily, font.Size / GH_GraphicsUtil.UiScale, FontStyle.Regular);
+                    string val = string.Format(new System.Globalization.NumberFormatInfo() { NumberDecimalDigits = noDigits }, "{0:F}", new decimal(CurrentValue));
+
+                    graphics.DrawString(val, font, Colour.AnnotationTextDark, SliderValTextBound, ((CurrentValue - MinValue) / (MaxValue - MinValue) < 0.5) ? GH_TextRenderingConstants.NearCenter : GH_TextRenderingConstants.FarCenter);
                 }
             }
         }
@@ -369,12 +509,21 @@ namespace ComposGH.UI
             if (e.Button == MouseButtons.Left)
             {
                 GH_Component comp = Owner as GH_Component;
-                if (drag)
+                if (dragY)
                 {
                     // if drag was true then we release it here:
                     scrollStartY += deltaY;
                     deltaY = 0;
-                    drag = false;
+                    dragY = false;
+                    comp.ExpireSolution(true);
+                    return GH_ObjectResponse.Release;
+                }
+                if (dragX)
+                {
+                    // if drag was true then we release it here:
+                    scrollStartX += deltaX;
+                    deltaX = 0;
+                    dragX = false;
                     comp.ExpireSolution(true);
                     return GH_ObjectResponse.Release;
                 }
@@ -452,29 +601,43 @@ namespace ComposGH.UI
         }
         public override GH_ObjectResponse RespondToMouseDown(GH_Canvas sender, GH_CanvasMouseEvent e)
         {
-            for (int i = 0; i < dropdownlists.Count; i++)
+            if (e.Button == MouseButtons.Left)
             {
-                if (unfolded[i])
+                RectangleF rec = GrabBound;
+                GH_Component comp = Owner as GH_Component;
+                if (rec.Contains(e.CanvasLocation))
                 {
-                    if (e.Button == MouseButtons.Left)
+                    dragMouseStartX = e.CanvasLocation.X;
+                    dragX = true;
+                    comp.ExpireSolution(true);
+                    return GH_ObjectResponse.Capture;
+                }
+
+                for (int i = 0; i < dropdownlists.Count; i++)
+                {
+                    if (unfolded[i])
                     {
-                        RectangleF rec = scrollBar;
-                        GH_Component comp = Owner as GH_Component;
-                        if (rec.Contains(e.CanvasLocation))
+                        if (e.Button == MouseButtons.Left)
                         {
-                            dragMouseStartY = e.CanvasLocation.Y;
-                            drag = true;
-                            comp.ExpireSolution(true);
-                            return GH_ObjectResponse.Capture;
+                            rec = scrollBar;
+                            comp = Owner as GH_Component;
+                            if (rec.Contains(e.CanvasLocation))
+                            {
+                                dragMouseStartY = e.CanvasLocation.Y;
+                                dragY = true;
+                                comp.ExpireSolution(true);
+                                return GH_ObjectResponse.Capture;
+                            }
                         }
                     }
                 }
             }
+
             return base.RespondToMouseDown(sender, e);
         }
         public override GH_ObjectResponse RespondToMouseMove(GH_Canvas sender, GH_CanvasMouseEvent e)
         {
-            if (drag)
+            if (dragY)
             {
                 GH_Component comp = Owner as GH_Component;
 
@@ -482,6 +645,26 @@ namespace ComposGH.UI
 
                 comp.ExpireSolution(true);
                 return GH_ObjectResponse.Ignore;
+            }
+
+            if (dragX)
+            {
+                GH_Component comp = Owner as GH_Component;
+
+                deltaX = e.CanvasLocation.X - dragMouseStartX;
+
+                Instances.CursorServer.AttachCursor(sender, "GH_NumericSlider");
+
+                comp.ExpireSolution(true);
+                return GH_ObjectResponse.Ignore;
+            }
+
+            RectangleF rec = GrabBound;
+            if (rec.Contains(e.CanvasLocation))
+            {
+                mouseOver = true;
+                Instances.CursorServer.AttachCursor(sender, "GH_NumericSlider");
+                return GH_ObjectResponse.Capture;
             }
 
             for (int i = 0; i < ButtonBound.Count; i++)
@@ -496,13 +679,45 @@ namespace ComposGH.UI
             if (mouseOver)
             {
                 mouseOver = false;
-                Grasshopper.Instances.CursorServer.ResetCursor(sender);
+                Instances.CursorServer.ResetCursor(sender);
                 return GH_ObjectResponse.Release;
             }
 
             return base.RespondToMouseMove(sender, e);
         }
         bool mouseOver;
+
+        public override GH_ObjectResponse RespondToMouseDoubleClick(GH_Canvas sender, GH_CanvasMouseEvent e)
+        {
+            RectangleF rec = GrabBound;
+            if (rec.Contains(e.CanvasLocation))
+            {
+                Grasshopper.Kernel.Special.GH_NumberSlider hiddenSlider = new Grasshopper.Kernel.Special.GH_NumberSlider();
+                hiddenSlider.Slider.Maximum = (decimal)MaxValue;
+                hiddenSlider.Slider.Minimum = (decimal)MinValue;
+                hiddenSlider.Slider.DecimalPlaces = noDigits;
+                hiddenSlider.Slider.Type = noDigits == 0 ? Grasshopper.GUI.Base.GH_SliderAccuracy.Integer : Grasshopper.GUI.Base.GH_SliderAccuracy.Float;
+                hiddenSlider.Name = Owner.Name + " Slider";
+                hiddenSlider.Slider.Value = (decimal)CurrentValue;
+                GH_NumberSliderPopup gH_MenuSliderForm = new GH_NumberSliderPopup();
+                GH_WindowsFormUtil.CenterFormOnCursor(gH_MenuSliderForm, true);
+                gH_MenuSliderForm.Setup(hiddenSlider);
+                var res = gH_MenuSliderForm.ShowDialog();
+                if (res == DialogResult.OK)
+                {
+                    first = true;
+                    MaxValue = (double)hiddenSlider.Slider.Maximum;
+                    MinValue = (double)hiddenSlider.Slider.Minimum;
+                    CurrentValue = (double)hiddenSlider.Slider.Value;
+                    noDigits = hiddenSlider.Slider.Type == Grasshopper.GUI.Base.GH_SliderAccuracy.Integer ? 0 : hiddenSlider.Slider.DecimalPlaces;
+                    ChangeMaxMin(MaxValue, MinValue);
+                    Owner.OnDisplayExpired(false);
+                    Owner.ExpireSolution(true);
+                    return GH_ObjectResponse.Handled;
+                }
+            }
+            return GH_ObjectResponse.Ignore;
+        }
 
         protected void FixLayout()
         {

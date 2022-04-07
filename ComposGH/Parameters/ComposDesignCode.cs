@@ -12,58 +12,41 @@ using UnitsNet;
 
 namespace ComposGH.Parameters
 {
+    
     /// <summary>
     /// Custom class: this class defines the basic properties and methods for our custom class
     /// </summary>
-    public class ComposStud
+    public class DesignCode
     {
-        public StudDimensions StudDimension { get; set; }
-        public StudSpecification StudSpecification { get; set; }
+        public enum Code
+        {
+            BS5950_3_1_1990_Superseeded,
+            BS5950_3_1_1990_A1_2010,
+            EN1994_1_1_2004,
+            HKSUOS_2005,
+            HKSUOS_2011,
+            AS_NZS2327_2017
+        }
+        public enum NationalAnnex
+        {
+            Generic,
+            United_Kingdom
+        }
         
-        // Stud Spacing
-        public List<StudGroupSpacing> CustomSpacing { get; set; } = null;
-        public double Interaction { get; set; }
-        public double MinSavingMultipleZones { get; set; }
-        public StudGroupSpacing.StudSpacingType StudSpacingType { get; set; }
-        public bool CheckStudSpacing { get; set; }
-        #region constructors
-        public ComposStud()
-        {
-            // empty constructor
-        }
-        public ComposStud(StudDimensionsGoo stud, StudSpecificationGoo spec, List<StudGroupSpacingGoo> spacings, bool checkSpacing)
-        {
-            this.StudDimension = stud.Value;
-            this.StudSpecification = spec.Value;
-            this.CustomSpacing = spacings.Select(item => item.Value).ToList();
-            this.CheckStudSpacing = checkSpacing;
-            this.StudSpacingType = StudGroupSpacing.StudSpacingType.Custom;
-        }
-        public ComposStud(StudDimensionsGoo stud, StudSpecificationGoo spec, double minSaving, StudGroupSpacing.StudSpacingType type)
-        {
-            this.StudDimension = stud.Value;
-            this.StudSpecification = spec.Value;
-            this.StudSpacingType = type;
-            this.MinSavingMultipleZones = minSaving;
-            switch (type)
-            {
-                case StudGroupSpacing.StudSpacingType.Min_Num_of_Studs:
-                case StudGroupSpacing.StudSpacingType.Automatic:
-                    break;
-                    
-                default:
-                    throw new ArgumentException("Stud spacing type must be either Automatic or Minimum Number of Studs");
-            }
-        }
-        public ComposStud(StudDimensionsGoo stud, StudSpecificationGoo spec, double minSaving, double interaction)
-        {
-            this.StudDimension = stud.Value;
-            this.StudSpecification = spec.Value;
-            this.StudSpacingType = StudGroupSpacing.StudSpacingType.Partial_Interaction;
-            this.MinSavingMultipleZones = minSaving;
-            this.Interaction = interaction;
-        }
+        public Code Design_Code { get; set; }
+        public NationalAnnex National_Annex { get; set; }
 
+        #region constructors
+        public DesignCode()
+        {
+            this.Design_Code = Code.EN1994_1_1_2004;
+            this.National_Annex = NationalAnnex.Generic;
+        }
+        public DesignCode(Code designcode, NationalAnnex nationalAnnex = NationalAnnex.Generic)
+        {
+            this.Design_Code = designcode;
+            this.National_Annex = nationalAnnex;
+        }
         #endregion
 
         #region properties
@@ -77,31 +60,64 @@ namespace ComposGH.Parameters
         #endregion
 
         #region coa interop
-        internal ComposStud(string coaString)
+        internal DesignCode(string coaString)
         {
-            // to do - implement from coa string method
+            switch (coaString)
+            {
+                case "BS5950-3.1:1990 (superseded)":
+                    this.Design_Code = Code.BS5950_3_1_1990_Superseeded;
+                    break;
+                case "BS5950-3.1:1990+A1:2010":
+                    this.Design_Code = Code.BS5950_3_1_1990_A1_2010;
+                    break;
+                case "EN1994-1-1:2004":
+                    this.Design_Code = Code.EN1994_1_1_2004;
+                    break;
+                case "HKSUOS:2005":
+                    this.Design_Code = Code.HKSUOS_2005;
+                    break;
+                case "HKSUOS:2011":
+                    this.Design_Code = Code.HKSUOS_2011;
+                    break;
+                case "AS/NZS2327:2017":
+                    this.Design_Code = Code.AS_NZS2327_2017;
+                    break;
+            }
         }
 
-        internal string ToCoaString()
+        internal string Coa()
         {
-            // to do - implement to coa string method
-            return string.Empty;
+            switch (this.Design_Code)
+            {
+                case Code.BS5950_3_1_1990_Superseeded:
+                    return "BS5950-3.1:1990 (superseded)";
+                case Code.BS5950_3_1_1990_A1_2010:
+                    return "BS5950-3.1:1990+A1:2010";
+                case Code.EN1994_1_1_2004:
+                    return "EN1994-1-1:2004";
+                case Code.HKSUOS_2005:
+                    return "HKSUOS:2005";
+                case Code.HKSUOS_2011:
+                    return "HKSUOS:2011";
+                case Code.AS_NZS2327_2017:
+                    return "AS/NZS2327:2017";
+            }
+            return "";
         }
         #endregion
 
         #region methods
 
-        public ComposStud Duplicate()
+        public DesignCode Duplicate()
         {
             if (this == null) { return null; }
-            ComposStud dup = (ComposStud)this.MemberwiseClone();
+            DesignCode dup = (DesignCode)this.MemberwiseClone();
             return dup;
         }
 
         public override string ToString()
         {
-            string size = this.StudDimension.Diameter.ToString() + "/" + this.StudDimension.Height.ToString();
-            return size.Replace(" ", string.Empty);
+            return Coa();
         }
 
         #endregion
@@ -110,17 +126,17 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
     /// </summary>
-    public class ComposStudGoo : GH_Goo<ComposStud>
+    public class DesignCodeGoo : GH_Goo<DesignCode>
     {
         #region constructors
-        public ComposStudGoo()
+        public DesignCodeGoo()
         {
-            this.Value = new ComposStud();
+            this.Value = new DesignCode();
         }
-        public ComposStudGoo(ComposStud item)
+        public DesignCodeGoo(DesignCode item)
         {
             if (item == null)
-                item = new ComposStud();
+                item = new DesignCode();
             this.Value = item.Duplicate();
         }
 
@@ -128,15 +144,15 @@ namespace ComposGH.Parameters
         {
             return DuplicateGoo();
         }
-        public ComposStudGoo DuplicateGoo()
+        public DesignCodeGoo DuplicateGoo()
         {
-            return new ComposStudGoo(Value == null ? new ComposStud() : Value.Duplicate());
+            return new DesignCodeGoo(Value == null ? new DesignCode() : Value.Duplicate());
         }
         #endregion
 
         #region properties
         public override bool IsValid => true;
-        public override string TypeName => "Stud";
+        public override string TypeName => "DesignCode";
         public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
         public override string IsValidWhyNot
         {
@@ -181,9 +197,9 @@ namespace ComposGH.Parameters
             if (source == null) { return false; }
 
             //Cast from GsaMaterial
-            if (typeof(ComposStud).IsAssignableFrom(source.GetType()))
+            if (typeof(DesignCode).IsAssignableFrom(source.GetType()))
             {
-                Value = (ComposStud)source;
+                Value = (DesignCode)source;
                 return true;
             }
 
@@ -195,25 +211,23 @@ namespace ComposGH.Parameters
     /// <summary>
     /// This class provides a Parameter interface for the CustomGoo type.
     /// </summary>
-
-    public class ComposSteelMaterialParameter: GH_PersistentParam<ComposStudGoo>
+    public class DesignCodeParameter : GH_PersistentParam<DesignCodeGoo>
     {
-        public ComposSteelMaterialParameter()
-          : base(new GH_InstanceDescription("Stud", "Std", "Compos Stud", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
+        public DesignCodeParameter()
+          : base(new GH_InstanceDescription("DesignCode", "DC", "Compos DesignCode", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
         {
         }
-
-        public override Guid ComponentGuid => new Guid("e0b6cb52-99c8-4b2a-aec1-7f8a2d720daa");
+        public override Guid ComponentGuid => new Guid("fb4d79ea-1c30-4e86-9654-a55ef42fd8e2");
 
         public override GH_Exposure Exposure => GH_Exposure.secondary | GH_Exposure.obscure;
 
         protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
 
-        protected override GH_GetterResult Prompt_Plural(ref List<ComposStudGoo> values)
+        protected override GH_GetterResult Prompt_Plural(ref List<DesignCodeGoo> values)
         {
             return GH_GetterResult.cancel;
         }
-        protected override GH_GetterResult Prompt_Singular(ref ComposStudGoo value)
+        protected override GH_GetterResult Prompt_Singular(ref DesignCodeGoo value)
         {
             return GH_GetterResult.cancel;
         }
