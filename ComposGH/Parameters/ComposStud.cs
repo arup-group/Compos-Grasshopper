@@ -31,18 +31,18 @@ namespace ComposGH.Parameters
         {
             // empty constructor
         }
-        public ComposStud(StudDimensionsGoo stud, StudSpecificationGoo spec, List<StudGroupSpacingGoo> spacings, bool checkSpacing)
+        public ComposStud(StudDimensions stud, StudSpecification spec, List<StudGroupSpacing> spacings, bool checkSpacing)
         {
-            this.StudDimension = stud.Value;
-            this.StudSpecification = spec.Value;
-            this.CustomSpacing = spacings.Select(item => item.Value).ToList();
+            this.StudDimension = stud;
+            this.StudSpecification = spec;
+            this.CustomSpacing = spacings;
             this.CheckStudSpacing = checkSpacing;
             this.StudSpacingType = StudGroupSpacing.StudSpacingType.Custom;
         }
-        public ComposStud(StudDimensionsGoo stud, StudSpecificationGoo spec, double minSaving, StudGroupSpacing.StudSpacingType type)
+        public ComposStud(StudDimensions stud, StudSpecification spec, double minSaving, StudGroupSpacing.StudSpacingType type)
         {
-            this.StudDimension = stud.Value;
-            this.StudSpecification = spec.Value;
+            this.StudDimension = stud;
+            this.StudSpecification = spec;
             this.StudSpacingType = type;
             this.MinSavingMultipleZones = minSaving;
             switch (type)
@@ -55,10 +55,10 @@ namespace ComposGH.Parameters
                     throw new ArgumentException("Stud spacing type must be either Automatic or Minimum Number of Studs");
             }
         }
-        public ComposStud(StudDimensionsGoo stud, StudSpecificationGoo spec, double minSaving, double interaction)
+        public ComposStud(StudDimensions stud, StudSpecification spec, double minSaving, double interaction)
         {
-            this.StudDimension = stud.Value;
-            this.StudSpecification = spec.Value;
+            this.StudDimension = stud;
+            this.StudSpecification = spec;
             this.StudSpacingType = StudGroupSpacing.StudSpacingType.Partial_Interaction;
             this.MinSavingMultipleZones = minSaving;
             this.Interaction = interaction;
