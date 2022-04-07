@@ -101,7 +101,11 @@
     <Compile Include="Helpers\_ComposResultsHelper.cs" />
     <Compile Include="Helpers\_GetInputs.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
+    <Compile Include="Parameters\ComposBeam.cs" />
+    <Compile Include="Parameters\ComposSteelMaterial.cs" />
+    <Compile Include="Parameters\ComposWebOpening.cs" />
     <Compile Include="Parameters\StudDimensionsGoo.cs" />
+    <Compile Include="Parameters\WebOpeningStiffenerGoo.cs" />
     <Compile Include="Parameters\ComposReinforcement.cs" />
     <Compile Include="Parameters\StudSpecGoo.cs" />
     <Compile Include="Parameters\StudSpacingGoo.cs" />
@@ -178,6 +182,7 @@
     <Folder Include="Components\0_Model\" />
     <Folder Include="Components\3_Slab\" />
     <Folder Include="Components\4_Decking\" />
+    <Folder Include="Components\5_Rebar\" />
     <Folder Include="Components\6_Load\" />
     <Folder Include="Components\7_Design\" />
     <Folder Include="Components\8_Analysis\" />
