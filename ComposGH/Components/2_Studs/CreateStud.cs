@@ -114,32 +114,32 @@ namespace ComposGH.Components
 
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            StudDimensionsGoo studDimensions = GetInput.StudDim(this, DA, 0);
-            StudSpecificationGoo studSpec = GetInput.StudSpec(this, DA, 1);
+            StudDimensions studDimensions = GetInput.StudDim(this, DA, 0);
+            StudSpecification studSpec = GetInput.StudSpec(this, DA, 1);
             double minSav = 0.2;
             switch (spacingType)
             {
                 case StudGroupSpacing.StudSpacingType.Automatic:
                 case StudGroupSpacing.StudSpacingType.Min_Num_of_Studs:
                     DA.GetData(2, ref minSav);
-                    DA.SetData(0, new ComposStudGoo(new ComposStud(
-                        studDimensions, studSpec, minSav, spacingType)));
+                    DA.SetData(0, new ComposStudGoo(
+                        new ComposStud(studDimensions, studSpec, minSav, spacingType)));
                     break;
 
                 case StudGroupSpacing.StudSpacingType.Partial_Interaction:
                     DA.GetData(2, ref minSav);
                     double interaction = 0.85;
                     DA.GetData(3, ref interaction);
-                    DA.SetData(0, new ComposStudGoo(new ComposStud(
-                        studDimensions, studSpec, minSav, interaction)));
+                    DA.SetData(0, new ComposStudGoo(
+                        new ComposStud(studDimensions, studSpec, minSav, interaction)));
                     break;
 
                 case StudGroupSpacing.StudSpacingType.Custom:
-                    List<StudGroupSpacingGoo> spacings = GetInput.StudSpacings(this, DA, 2);
+                    List<StudGroupSpacing> spacings = GetInput.StudSpacings(this, DA, 2);
                     bool check = false;
                     DA.GetData(3, ref check);
-                    DA.SetData(0, new ComposStudGoo(new ComposStud(
-                        studDimensions, studSpec, spacings, check)));
+                    DA.SetData(0, new ComposStudGoo(
+                        new ComposStud(studDimensions, studSpec, spacings, check)));
                     break;
             }
         }
