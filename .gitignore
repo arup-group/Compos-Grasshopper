@@ -1,10 +1,8 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-*.suo
+﻿*.suo
 /.vs/slnx.sqlite
-/ComposGH/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/.vs/ComposGH/v17/
 /packages
-/ComposGH/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttributes.cs
-/ComposGH/obj/Debug/ComposGH.csproj.AssemblyReference.cache
+/ComposGH/bin
+/ComposGH/obj
+/ComposGH/Tests/bin
+/ComposGH/Tests/obj

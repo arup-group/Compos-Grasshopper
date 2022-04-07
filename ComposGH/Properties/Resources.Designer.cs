@@ -19,7 +19,7 @@ namespace ComposGH.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -63,6 +63,16 @@ namespace ComposGH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ComposLogo128 {
+            get {
+                object obj = ResourceManager.GetObject("ComposLogo128", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap CreateProfile {
             get {
                 object obj = ResourceManager.GetObject("CreateProfile", resourceCulture);
@@ -76,6 +86,16 @@ namespace ComposGH.Properties {
         internal static System.Drawing.Bitmap CreateSteelMaterial {
             get {
                 object obj = ResourceManager.GetObject("CreateSteelMaterial", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CreateStudZoneLength {
+            get {
+                object obj = ResourceManager.GetObject("CreateStudZoneLength", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
