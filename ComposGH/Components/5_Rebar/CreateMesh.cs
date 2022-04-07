@@ -23,8 +23,8 @@ namespace ComposGH.Components
                 Ribbon.CategoryName.Name(),
                 Ribbon.SubCategoryName.Cat3())
         { this.Hidden = false; }
-        public override Guid ComponentGuid => new Guid("17960644-0DFC-4F5D-B17C-45E6FBC3732E"); //ASK
-        public override GH_Exposure Exposure => GH_Exposure.secondary;  //ASK
+        public override Guid ComponentGuid => new Guid("17960644-0DFC-4F5D-B17C-45E6FBC3732E"); 
+        public override GH_Exposure Exposure => GH_Exposure.secondary;
 
         protected override System.Drawing.Bitmap Icon => Properties.Resources.RebarMesh;
         #endregion
@@ -40,7 +40,7 @@ namespace ComposGH.Components
 
                 // mesh
                 dropdownitems.Add(Enum.GetValues(typeof(ComposReinforcement.MeshType)).Cast<ComposReinforcement.MeshType>().Select(x => x.ToString()).ToList());
-                //dropdownitems.RemoveAt(0); //ASK
+                dropdownitems[0].RemoveAt(0); //
                 selecteditems.Add(mesh.ToString());
 
                 // length
@@ -80,14 +80,6 @@ namespace ComposGH.Components
             this.OnDisplayExpired(true);
         }
 
-        //List<string> checkboxText = new List<string>() { "Swap Direction"};
-        //List<bool> initialCheckState = new List<bool>() { false };
-        //bool Swap = true;
-
-        //public void SetDirection(List<bool> value)
-        //{
-        //    Swap = value[0];
-        //}
 
         private void UpdateUIFromSelectedItems()
         {
@@ -138,10 +130,14 @@ namespace ComposGH.Components
             Length cov = Length.Zero;
             if (this.Params.Input[0].Sources.Count > 0)
                 cov = GetInput.Length(this, DA, 0, lengthUnit, true);
-            DA.SetData(0, new ComposReinforcementGoo(new ComposReinforcement(cov,mesh)));
+
+            bool swap = false;
+            DA.GetData(2, ref swap);
+            DA.SetData(0, new ComposReinforcementGoo(new ComposReinforcement(cov,mesh,swap)));
+
 
         }
-
+        
         #region menu override
 
         //private void ToggleInput() //ASK
