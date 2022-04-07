@@ -60,10 +60,12 @@ namespace ComposGH.Components._4_Studs
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter("Diameter", "D", "Stud Zone Length of the right end of the slab", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Height", "H", "Stud Zone Length of the right end of the slab", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Left", "LE[m or %]", "Stud Zone Length of the left end of the slab", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Right", "RE[m or %]", "Stud Zone Length of the right end of the slab", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Diameter", "D", "Diameter of Stud", GH_ParamAccess.item);                                         //0
+            pManager.AddGenericParameter("Height", "H", "Height of Stud", GH_ParamAccess.item);                                             //1
+            pManager.AddGenericParameter("Left", "LE[m or %]", "Stud Zone Length of the left end of the slab", GH_ParamAccess.item);        //2
+            pManager.AddGenericParameter("Right", "RE[m or %]", "Stud Zone Length of the right end of the slab", GH_ParamAccess.item);      //3
+            pManager.AddGenericParameter("Strength", "fy", "Steel Strength of Stud", GH_ParamAccess.item);                                  //4
+            pManager.AddGenericParameter("Reinf", "RP", "Distance below underside of the stud head", GH_ParamAccess.item);                  //5
             pManager[2].Optional = true;
             pManager[3].Optional = true;
         }
@@ -75,33 +77,39 @@ namespace ComposGH.Components._4_Studs
 
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            double StudZL = new double();
-            double StudZR = new double();
+            //double StudZL = new double();
+            //double StudZR = new double();
 
-            DA.GetData(0, ref StudZL);
-            DA.GetData(1, ref StudZR);
+            //DA.GetData(0, ref StudZL);
+            //DA.GetData(1, ref StudZR);
 
             Length diameter = GetInput.Length(this, DA, 0, UnitsNet.Units.LengthUnit.Millimeter);
-            
-            List<string> StudZoneGoo = new List<string>() { StudZL.ToString(), StudZR.ToString() };
+            Length height = GetInput.Length(this, DA, 1, UnitsNet.Units.LengthUnit.Millimeter);
+            Length studZL = GetInput.Length(this, DA, 2, UnitsNet.Units.LengthUnit.Millimeter);
+            Length studZR = GetInput.Length(this, DA, 3, UnitsNet.Units.LengthUnit.Millimeter);
+            Pressure steelStrength = GetInput.Stress(this, DA, 4, UnitsNet.Units.PressureUnit.NewtonPerSquareMillimeter);
+            Length reinfPosition = GetInput.Length(this, DA, 5, UnitsNet.Units.LengthUnit.Millimeter);
 
+            //List<string> StudZoneGoo = new List<string>() { StudZL.ToString(), StudZR.ToString() };
             //DA.SetData(0, string.Join<string>(", ", StudZoneGoo));
+
+            List<string> checkStuds = new List<string>();
 
             #region Welding
             if (Welding)
-                StudZoneGoo.Add("Welding is applied");
+                checkStuds.Add("Welding is applied");
             else
-                StudZoneGoo.Add("Welding is not applied");
+                checkStuds.Add("Welding is not applied");
             #endregion
 
             #region NCCI
             if (NCCILimits)
-                StudZoneGoo.Add("NCCI Limit is applied");
+                checkStuds.Add("NCCI Limit is applied");
             else
-                StudZoneGoo.Add("NCCI Limit is not applied");
+                checkStuds.Add("NCCI Limit is not applied");
             #endregion
 
-            ComposStud studs = new ComposStud(diameter, StudZL, StudZR);
+            ComposStud studs = new ComposStud(diameter, height, studZL, studZR, steelStrength, reinfPosition);
 
             DA.SetData(0, new ComposStudGoo(studs));
         }
