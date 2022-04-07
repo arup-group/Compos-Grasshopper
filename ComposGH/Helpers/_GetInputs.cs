@@ -302,7 +302,7 @@ namespace ComposGH.Components
         #endregion
 
         #region Studs
-        internal static StudDimensionsGoo StudDim(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        internal static StudDimensions StudDim(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
         {
             StudDimensionsGoo goo = null;
             GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
@@ -327,9 +327,9 @@ namespace ComposGH.Components
                     return null;
             }
 
-            return goo;
+            return goo.Value;
         }
-        internal static StudSpecificationGoo StudSpec(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        internal static StudSpecification StudSpec(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
         {
             StudSpecificationGoo goo = null;
             GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
@@ -354,11 +354,11 @@ namespace ComposGH.Components
                     return null;
             }
 
-            return goo;
+            return goo.Value;
         }
-        internal static List<StudGroupSpacingGoo> StudSpacings(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        internal static List<StudGroupSpacing> StudSpacings(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
         {
-            List<StudGroupSpacingGoo> lengths = new List<StudGroupSpacingGoo>();
+            List<StudGroupSpacing> items = new List<StudGroupSpacing>();
             List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
             if (DA.GetDataList(inputid, gh_typs))
             {
@@ -367,7 +367,8 @@ namespace ComposGH.Components
                     // try cast directly to quantity type
                     if (gh_typs[i].Value is StudGroupSpacingGoo)
                     {
-                        lengths.Add((StudGroupSpacingGoo)gh_typs[i].Value);
+                        StudGroupSpacingGoo goo = (StudGroupSpacingGoo)gh_typs[i].Value;
+                        items.Add(goo.Value);
                     }
                     else
                     {
@@ -375,7 +376,7 @@ namespace ComposGH.Components
                         return null;
                     }
                 }
-                return lengths;
+                return items;
             }
             else if (!isOptional)
             {
