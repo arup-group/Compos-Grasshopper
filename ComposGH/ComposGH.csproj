@@ -103,7 +103,6 @@
     <Compile Include="Helpers\_SqlReader.cs" />
     <Compile Include="Parameters\StudDimensionsGoo.cs" />
     <Compile Include="Parameters\ComposReinforcement.cs" />
-    <Compile Include="Parameters\StudGoo.cs" />
     <Compile Include="Parameters\StudSpecGoo.cs" />
     <Compile Include="Parameters\StudSpacingGoo.cs" />
     <Compile Include="Parameters\ComposDesignCode.cs" />
