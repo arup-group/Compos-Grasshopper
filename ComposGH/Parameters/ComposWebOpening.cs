@@ -29,7 +29,7 @@ namespace ComposGH.Parameters
         public Length Diameter { get; set; }
         public Length CentroidPosFromStart { get; set; }
         public Length CentroidPosFromTop { get; set; }
-        public List<WebOpeningStiffener> OpeningStiffeners { get; set; }
+        public WebOpeningStiffener OpeningStiffener { get; set; }
 
         #region constructors
         public ComposWebOpening()
