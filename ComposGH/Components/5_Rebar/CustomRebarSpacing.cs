@@ -164,7 +164,10 @@ namespace ComposGH.Components
             string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
             Params.Input[0].Name = "From [" + unitAbbreviation + "]";
+            Params.Input[1].Name = "To [" + unitAbbreviation + "]";
+            Params.Input[2].Name = "Diameter [" + unitAbbreviation + "]";
             Params.Input[3].Name = "Spacing [" + unitAbbreviation + "]";
+            Params.Input[4].Name = "Cover [" + unitAbbreviation + "]";
         }
         #endregion
     }
