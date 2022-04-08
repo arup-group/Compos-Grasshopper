@@ -93,6 +93,7 @@
     <Compile Include="Components\2_Studs\StudSpec.cs" />
     <Compile Include="Components\2_Studs\StandardStudDims.cs" />
     <Compile Include="Components\2_Studs\CreateStud.cs" />
+    <Compile Include="Components\5_Rebar\RebarMat.cs" />
     <Compile Include="Components\5_Rebar\CustomRebarSpacing.cs" />
     <Compile Include="Components\5_Rebar\CreateMesh.cs" />
     <Compile Include="ComposGHInfo.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Helpers\_ComposResultsHelper.cs" />
     <Compile Include="Helpers\_GetInputs.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
+    <Compile Include="Parameters\RebarGoo.cs" />
     <Compile Include="Parameters\RebarSpacingGoo.cs" />
     <Compile Include="Parameters\ComposBeam.cs" />
     <Compile Include="Parameters\ComposSteelMaterial.cs" />

@@ -412,6 +412,34 @@ namespace ComposGH.Components
             }
             return goo.Value;
         }
+        internal static List<RebarGroupSpacing> RebarSpacings(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        {
+            List<RebarGroupSpacing> items = new List<RebarGroupSpacing>();
+            List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
+            if (DA.GetDataList(inputid, gh_typs))
+            {
+                for (int i = 0; i < gh_typs.Count; i++)
+                {
+                    // try cast directly to quantity type
+                    if (gh_typs[i].Value is StudGroupSpacingGoo)
+                    {
+                        RebarGroupSpacingGoo goo = (RebarGroupSpacingGoo)gh_typs[i].Value;
+                        items.Add(goo.Value);
+                    }
+                    else
+                    {
+                        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Stud Spacing");
+                        return null;
+                    }
+                }
+                return items;
+            }
+            else if (!isOptional)
+            {
+                owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+            }
+            return null;
+        }
         #endregion
     }
 }
