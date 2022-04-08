@@ -1,32 +1,36 @@
-﻿  using System;
+﻿using System;
+using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using Grasshopper;
+using System.Drawing;
+using Grasshopper.Kernel.Attributes;
+using Grasshopper.GUI.Canvas;
+using Grasshopper.GUI;
 using Grasshopper.Kernel;
-using Grasshopper.Kernel.Data;
-using Grasshopper.Kernel.Types;
-using Grasshopper.Kernel.Parameters;
-using ComposGH.Parameters;
 using Rhino.Geometry;
+using System.Windows.Forms;
+using Grasshopper.Kernel.Types;
+using ComposGH.Parameters;
 using UnitsNet;
 using UnitsNet.Units;
-using ComposGH.Components;
-using ComposGH.Helpers;
+using System.Linq;
 
 namespace ComposGH.Components
 {
-    public class CreateMesh : GH_Component, IGH_VariableParameterComponent
+    public class CustomRebarSpacing : GH_Component, IGH_VariableParameterComponent
     {
         #region Name and Ribbon Layout
-        public CreateMesh()
-            : base("Create Rebar Mesh", "Rebar Mesh", "Create Rebar Mesh for a Compos Slab",
+        // This region handles how the component in displayed on the ribbon
+        // including name, exposure level and icon
+        public CustomRebarSpacing()
+          : base("Custom Rebar Spacing", "CustRebarSpac", "Create Custom Rebar Spacing for a Compos Rebar",
                 Ribbon.CategoryName.Name(),
                 Ribbon.SubCategoryName.Cat5())
-        { this.Hidden = false; }
-        public override Guid ComponentGuid => new Guid("17960644-0DFC-4F5D-B17C-45E6FBC3732E"); 
+        { this.Hidden = false; } // sets the initial state of the component to hidden
+
+        public override Guid ComponentGuid => new Guid("E832E3E8-1EF9-4F31-BC2A-683881E4BAC3");
         public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-        protected override System.Drawing.Bitmap Icon => Properties.Resources.RebarMesh;
+        //protected override System.Drawing.Bitmap Icon => Properties.Resources.RebarSpacing;
         #endregion
 
         #region Custom UI
@@ -38,40 +42,22 @@ namespace ComposGH.Components
                 dropdownitems = new List<List<string>>();
                 selecteditems = new List<string>();
 
-                // mesh
-                dropdownitems.Add(Enum.GetValues(typeof(ComposReinforcement.MeshType)).Cast<ComposReinforcement.MeshType>().Select(x => x.ToString()).ToList());
-                dropdownitems[0].RemoveAt(0); //
-                selecteditems.Add(mesh.ToString());
-
                 // length
                 dropdownitems.Add(Units.FilteredLengthUnits);
                 selecteditems.Add(lengthUnit.ToString());
 
-
                 first = false;
             }
-
             m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, dropdownitems, selecteditems, spacerDescriptions);
         }
-
         public void SetSelected(int i, int j)
         {
             // change selected item
             selecteditems[i] = dropdownitems[i][j];
 
-            if (i == 0)  // change is made to code 
-            {
-                if (mesh.ToString() == selecteditems[i])
-                    return; // return if selected value is same as before
 
-                mesh = (ComposReinforcement.MeshType)Enum.Parse(typeof(ComposReinforcement.MeshType), selecteditems[i]);
+            lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[i]);
 
-                //ToggleInput();
-            }
-            else
-            {
-                lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[i]);
-            }
 
             // update name of inputs (to display unit on sliders)
             (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -80,11 +66,9 @@ namespace ComposGH.Components
             this.OnDisplayExpired(true);
         }
 
-
         private void UpdateUIFromSelectedItems()
         {
-            mesh = (ComposReinforcement.MeshType)Enum.Parse(typeof(ComposReinforcement.MeshType), selecteditems[0]);
-            lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[1]);
+            lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[0]);
 
             CreateAttributes();
             (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -92,10 +76,6 @@ namespace ComposGH.Components
             Params.OnParametersChanged();
             this.OnDisplayExpired(true);
         }
-        #endregion
-
-        #region Input and output
-
         // list of lists with all dropdown lists conctent
         List<List<string>> dropdownitems;
         // list of selected items
@@ -103,41 +83,45 @@ namespace ComposGH.Components
         // list of descriptions 
         List<string> spacerDescriptions = new List<string>(new string[]
         {
-            "Mesh Type",
-            "Measure"
+            "Unit",
         });
+
         private bool first = true;
         private LengthUnit lengthUnit = Units.LengthUnitGeometry;
-        private ComposReinforcement.MeshType mesh = ComposReinforcement.MeshType.A393;
         #endregion
+
+        #region Input and output
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             IQuantity length = new Length(0, lengthUnit);
             string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
+            pManager.AddGenericParameter("From [" + unitAbbreviation + "]", "From", "Distance from beam starting point where this Rebar Spacing Groups begins", GH_ParamAccess.item);
+            pManager.AddGenericParameter("To [" + unitAbbreviation + "]", "To", "Distance from beam ending point where this Rebar Spacing Groups begins", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Diameter [" + unitAbbreviation + "]", "Dia", "Transverse rebar diameter", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Spacing [" + unitAbbreviation + "]", "Spac", "Spacing of rebars in this group", GH_ParamAccess.item);
             pManager.AddGenericParameter("Cover [" + unitAbbreviation + "]", "Cov", "Reinforcement cover", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Rotated", "Rot", "If the mesh type is assymetrical, setting 'Rotated' to true will align the stronger direction with the beam's direction", GH_ParamAccess.item, true);
 
         }
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Mesh reinforcement", "Mesh", "Mesh reinforcement type for Compos Slab Reinforcement", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Rebar Spacing", "Spa", "Custom Compos Transverse Rebar Spacing", GH_ParamAccess.item);
         }
+        #endregion
 
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+
             // get default length inputs used for all cases
-            Length cov = Length.Zero;
-            if (this.Params.Input[0].Sources.Count > 0)
-                cov = GetInput.Length(this, DA, 0, lengthUnit, true);
+            Length start = GetInput.Length(this, DA, 0, lengthUnit);
+            Length end = GetInput.Length(this, DA, 1, lengthUnit);
+            Length dia = GetInput.Length(this, DA, 2, lengthUnit);
+            Length spacing = GetInput.Length(this, DA, 3, lengthUnit);
+            Length cov = GetInput.Length(this, DA, 4, lengthUnit);
 
-            bool rotated = false;
-            DA.GetData(1, ref rotated);
-            DA.SetData(0, new ComposReinforcementGoo(new ComposReinforcement(cov,mesh,rotated)));
-
+            DA.SetData(0, new RebarGroupSpacingGoo(new RebarGroupSpacing(start, end, dia, spacing, cov)));
         }
-        
 
         #region (de)serialization
         public override bool Write(GH_IO.Serialization.GH_IWriter writer)
@@ -148,11 +132,13 @@ namespace ComposGH.Components
         public override bool Read(GH_IO.Serialization.GH_IReader reader)
         {
             Helpers.DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
+
             UpdateUIFromSelectedItems();
+
             first = false;
+
             return base.Read(reader);
         }
-
         #endregion
 
         #region IGH_VariableParameterComponent null implementation
@@ -172,15 +158,14 @@ namespace ComposGH.Components
         {
             return false;
         }
-
         void IGH_VariableParameterComponent.VariableParameterMaintenance()
         {
             IQuantity length = new Length(0, lengthUnit);
             string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
-            Params.Input[0].Name = "Cover [" + unitAbbreviation + "]";
+            Params.Input[0].Name = "From [" + unitAbbreviation + "]";
+            Params.Input[3].Name = "Spacing [" + unitAbbreviation + "]";
         }
-        
+        #endregion
     }
-    #endregion
 }
