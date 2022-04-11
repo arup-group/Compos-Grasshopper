@@ -55,7 +55,6 @@ namespace ComposGH.Parameters
             this.Cover = cover;
             this.Mesh_Type = meshType;
             this.Rotated = rotated;
-
         }
 
         #endregion

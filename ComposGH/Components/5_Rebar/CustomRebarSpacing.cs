@@ -22,7 +22,7 @@ namespace ComposGH.Components
         // This region handles how the component in displayed on the ribbon
         // including name, exposure level and icon
         public CustomRebarSpacing()
-          : base("Custom Rebar Spacing", "CustRebarSpac", "Create Custom Rebar Spacing for a Compos Rebar",
+          : base("Custom Rebar Spacing", "CustomRbS", "Create Custom Rebar Spacing for a Compos Rebar",
                 Ribbon.CategoryName.Name(),
                 Ribbon.SubCategoryName.Cat5())
         { this.Hidden = false; } // sets the initial state of the component to hidden
@@ -54,10 +54,8 @@ namespace ComposGH.Components
         {
             // change selected item
             selecteditems[i] = dropdownitems[i][j];
-
-
+            
             lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[i]);
-
 
             // update name of inputs (to display unit on sliders)
             (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -97,16 +95,16 @@ namespace ComposGH.Components
             IQuantity length = new Length(0, lengthUnit);
             string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
-            pManager.AddGenericParameter("From [" + unitAbbreviation + "]", "From", "Distance from beam starting point where this Rebar Spacing Groups begins", GH_ParamAccess.item);
-            pManager.AddGenericParameter("To [" + unitAbbreviation + "]", "To", "Distance from beam ending point where this Rebar Spacing Groups begins", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Diameter [" + unitAbbreviation + "]", "Dia", "Transverse rebar diameter", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Spacing [" + unitAbbreviation + "]", "Spac", "Spacing of rebars in this group", GH_ParamAccess.item);
+            pManager.AddGenericParameter("From [" + unitAbbreviation + "]", "PS", "Starting Point from beam start where this Rebar Spacing Groups begins", GH_ParamAccess.item);
+            pManager.AddGenericParameter("To [" + unitAbbreviation + "]", "PE", "Ending Point from beam start point where this Rebar Spacing Groups begins", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Diameter [" + unitAbbreviation + "]", "Ø", "Transverse rebar diameter", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Spacing [" + unitAbbreviation + "]", "S", "The centre/centre distance rebars in this group", GH_ParamAccess.item);
             pManager.AddGenericParameter("Cover [" + unitAbbreviation + "]", "Cov", "Reinforcement cover", GH_ParamAccess.item);
 
         }
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Rebar Spacing", "Spa", "Custom Compos Transverse Rebar Spacing", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Rebar Spacing", "RbS", "Custom Compos Transverse Rebar Spacing", GH_ParamAccess.item);
         }
         #endregion
 

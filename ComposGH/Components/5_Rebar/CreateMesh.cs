@@ -103,8 +103,8 @@ namespace ComposGH.Components
         // list of descriptions 
         List<string> spacerDescriptions = new List<string>(new string[]
         {
-            "Mesh Type",
-            "Measure"
+            "Standard Mesh",
+            "Unit"
         });
         private bool first = true;
         private LengthUnit lengthUnit = Units.LengthUnitGeometry;
@@ -117,7 +117,7 @@ namespace ComposGH.Components
             string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
             pManager.AddGenericParameter("Cover [" + unitAbbreviation + "]", "Cov", "Reinforcement cover", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Rotated", "Rot", "If the mesh type is assymetrical, setting 'Rotated' to true will align the stronger direction with the beam's direction", GH_ParamAccess.item, true);
+            pManager.AddBooleanParameter("Rotated", "Rot", "If the mesh type is assymetrical, setting 'Rotated' to true will align the stronger direction with the beam's direction", GH_ParamAccess.item, false);
 
         }
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
