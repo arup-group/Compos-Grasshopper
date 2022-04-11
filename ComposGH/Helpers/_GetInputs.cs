@@ -399,7 +399,7 @@ namespace ComposGH.Components
                 }
                 else
                 {
-                    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Stud Specification");
+                    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Reinforcement");
                     return null;
                 }
             }
@@ -428,7 +428,7 @@ namespace ComposGH.Components
                     }
                     else
                     {
-                        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Stud Spacing");
+                        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Rebar Spacing");
                         return null;
                     }
                 }
@@ -439,6 +439,31 @@ namespace ComposGH.Components
                 owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
             }
             return null;
+        }
+        internal static Rebar Rebar(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        {
+            RebarGoo goo = null;
+            GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+            if (DA.GetData(inputid, ref gh_typ))
+            {
+                if (gh_typ.Value is RebarGoo)
+                {
+                    goo = (RebarGoo)gh_typ.Value;
+                }
+                else
+                {
+                    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Rebar material");
+                    return null;
+                }
+            }
+            else if (!isOptional)
+                owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+            else
+            {
+                if (goo == null)
+                    return null;
+            }
+            return goo.Value;
         }
         #endregion
     }

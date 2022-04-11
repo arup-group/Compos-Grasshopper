@@ -23,7 +23,7 @@ namespace ComposGH.Components
         // including name, exposure level and icon
         public override Guid ComponentGuid => new Guid("E91D37A1-81D4-427D-9910-E8A514466F3C");
         public RebarMat()
-          : base("Custom Stud Dimensions", "CustStudDim", "Create Custom Stud Dimensions for a Compos Stud",
+          : base("Rebar Material", "RebarMat", "Create Rebar Material for a Compos Reinforcement",
                 Ribbon.CategoryName.Name(),
                 Ribbon.SubCategoryName.Cat5())
         { this.Hidden = false; } // sets the initial state of the component to hidden
@@ -65,7 +65,7 @@ namespace ComposGH.Components
             selecteditems[i] = dropdownitems[i][j];
 
 
-            if (i == 0) // change is made to code 
+            if (i == 0) // change is made to type 
             {
                 if (type.ToString() == selecteditems[i])
                     return; // return if selected value is same as before
@@ -74,7 +74,7 @@ namespace ComposGH.Components
 
                 if (type == Rebar.RebarMatType.Standard)
                 {
-                    mat = (Rebar.StandardGrade)Enum.Parse(typeof(Rebar.StandardGrade), selecteditems[i]);
+                    //mat = (Rebar.StandardGrade)Enum.Parse(typeof(Rebar.StandardGrade), selecteditems[i]);
                     dropdownitems[1] = Enum.GetValues(typeof(Rebar.StandardGrade)).Cast<Rebar.StandardGrade>().Select(x => x.ToString()).ToList();
                     selecteditems[1] = mat.ToString();
                     dropdownitems.Add(Units.FilteredStressUnits);
@@ -124,7 +124,7 @@ namespace ComposGH.Components
         private void UpdateUIFromSelectedItems()
         {
             type = (Rebar.RebarMatType)Enum.Parse(typeof(Rebar.RebarMatType), selecteditems[0]);
-            if (type == Rebar.RebarMatType.Custom)
+            if (type == Rebar.RebarMatType.Standard)
             {
                 mat = (Rebar.StandardGrade)Enum.Parse(typeof(Rebar.StandardGrade), selecteditems[1]);
                 stressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), selecteditems[2]);
@@ -149,13 +149,13 @@ namespace ComposGH.Components
 
         List<string> spacerDescriptionsStandard = new List<string>(new string[]
         {
-            "Option",
+            "Material Type",
             "Grade",
             "Unit"
         });
         List<string> spacerDescriptionsOther = new List<string>(new string[]
         {
-            "Option",
+            "Material Type",
             "Unit"
         });
 
@@ -179,11 +179,11 @@ namespace ComposGH.Components
         }
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Stud Dims", "Sdm", "Compos Shear Stud Dimensions", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Reinforcement material", "Ref", "Reinforcement steel material", GH_ParamAccess.item);
         }
         #endregion
 
-        protected override void SolveInstance(IGH_DataAccess DA) //TODO
+        protected override void SolveInstance(IGH_DataAccess DA) 
         {
             if (type == Rebar.RebarMatType.Standard)
             {
@@ -194,7 +194,6 @@ namespace ComposGH.Components
             }
             else
             {
-                //Pressure fu = GetInput.Stress(this, DA, 0, stressUnit);
                 DA.SetData(0, new RebarGoo(new Rebar(GetInput.Stress(this, DA, 0, stressUnit))));
             }
         }
@@ -235,12 +234,11 @@ namespace ComposGH.Components
         {
             return false;
         }
-        void IGH_VariableParameterComponent.VariableParameterMaintenance() //TODO
+        void IGH_VariableParameterComponent.VariableParameterMaintenance()
         {
             IQuantity stress = new Pressure(0, stressUnit);
             string stressunitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
             Params.Input[0].Name = "Strength [" + stressunitAbbreviation + "]";
-
         }
         #endregion
     }
