@@ -22,8 +22,7 @@ namespace ComposGH.Parameters
 
         // Rebar Spacing
         public List<RebarGroupSpacing> CustomSpacing { get; set; } = null;
-        public double Interaction { get; set; }
-        public bool CheckReinfSpacing { get; set; }
+
 
         #region constructors
         public ComposReinf()

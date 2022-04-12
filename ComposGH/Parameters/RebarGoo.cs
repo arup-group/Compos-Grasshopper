@@ -141,7 +141,7 @@ namespace ComposGH.Parameters
         }
         #endregion
 
-        #region proHties
+        #region propethies
         public override bool IsValid => true;
         public override string TypeName => "Rebar Material";
         public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
