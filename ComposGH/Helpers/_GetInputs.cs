@@ -387,15 +387,15 @@ namespace ComposGH.Components
         #endregion
 
         #region Reinforcement
-        internal static ComposReinforcement ComposReinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        internal static RebarMesh ComposReinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
         {
-            ComposReinforcementGoo goo = null;
+            RebarMeshGoo goo = null;
             GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
             if (DA.GetData(inputid, ref gh_typ))
             {
-                if (gh_typ.Value is ComposReinforcementGoo)
+                if (gh_typ.Value is RebarMeshGoo)
                 {
-                    goo = (ComposReinforcementGoo)gh_typ.Value;
+                    goo = (RebarMeshGoo)gh_typ.Value;
                 }
                 else
                 {
@@ -466,5 +466,7 @@ namespace ComposGH.Components
             return goo.Value;
         }
         #endregion
+
+
     }
 }

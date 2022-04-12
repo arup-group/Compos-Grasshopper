@@ -39,7 +39,7 @@ namespace ComposGH.Components
                 selecteditems = new List<string>();
 
                 // mesh
-                dropdownitems.Add(Enum.GetValues(typeof(ComposReinforcement.MeshType)).Cast<ComposReinforcement.MeshType>().Select(x => x.ToString()).ToList());
+                dropdownitems.Add(Enum.GetValues(typeof(RebarMesh.MeshType)).Cast<RebarMesh.MeshType>().Select(x => x.ToString()).ToList());
                 dropdownitems[0].RemoveAt(0); //
                 selecteditems.Add(mesh.ToString());
 
@@ -64,7 +64,7 @@ namespace ComposGH.Components
                 if (mesh.ToString() == selecteditems[i])
                     return; // return if selected value is same as before
 
-                mesh = (ComposReinforcement.MeshType)Enum.Parse(typeof(ComposReinforcement.MeshType), selecteditems[i]);
+                mesh = (RebarMesh.MeshType)Enum.Parse(typeof(RebarMesh.MeshType), selecteditems[i]);
 
                 //ToggleInput();
             }
@@ -83,7 +83,7 @@ namespace ComposGH.Components
 
         private void UpdateUIFromSelectedItems()
         {
-            mesh = (ComposReinforcement.MeshType)Enum.Parse(typeof(ComposReinforcement.MeshType), selecteditems[0]);
+            mesh = (RebarMesh.MeshType)Enum.Parse(typeof(RebarMesh.MeshType), selecteditems[0]);
             lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[1]);
 
             CreateAttributes();
@@ -108,7 +108,7 @@ namespace ComposGH.Components
         });
         private bool first = true;
         private LengthUnit lengthUnit = Units.LengthUnitGeometry;
-        private ComposReinforcement.MeshType mesh = ComposReinforcement.MeshType.A393;
+        private RebarMesh.MeshType mesh = RebarMesh.MeshType.A393;
         #endregion
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
@@ -134,7 +134,7 @@ namespace ComposGH.Components
 
             bool rotated = false;
             DA.GetData(1, ref rotated);
-            DA.SetData(0, new ComposReinforcementGoo(new ComposReinforcement(cov,mesh,rotated)));
+            DA.SetData(0, new RebarMeshGoo(new RebarMesh(cov,mesh,rotated)));
 
         }
         

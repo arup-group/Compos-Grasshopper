@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
@@ -9,53 +10,34 @@ using Grasshopper.Documentation;
 using Rhino.Collections;
 using UnitsNet;
 
-
-
 namespace ComposGH.Parameters
 {
     /// <summary>
     /// Custom class: this class defines the basic properties and methods for our custom class
     /// </summary>
-    public class ComposReinforcement
+    public class ComposReinf
     {
-        public Length Cover { get; set; }
-        public MeshType Mesh_Type { get; set; }
-        public bool Rotated { get; set; }
+        public RebarMesh RebarMesh { get; set; }
+        public Rebar Rebar { get; set; }
 
-        public enum MeshType
-        {
-            None,
-            A393,
-            A252,
-            A193,
-            A142,
-            A98,
-            B1131,
-            B785,
-            B503,
-            B385,
-            B283,
-            B196,
-            C785,
-            C636,
-            C503,
-            C385,
-            C283
-        }
-
+        // Rebar Spacing
+        public List<RebarGroupSpacing> CustomSpacing { get; set; } = null;
+        public double Interaction { get; set; }
+        public bool CheckReinfSpacing { get; set; }
 
         #region constructors
-        public ComposReinforcement()
+        public ComposReinf()
         {
-            //empty constructor
+            // empty constructor
+        }
+        public ComposReinf(RebarMesh mesh, Rebar mat, List<RebarGroupSpacing> spacings)
+        {
+            this.RebarMesh = mesh;
+            this.Rebar = mat;
+            this.CustomSpacing = spacings;
+            //this.CheckReinfSpacing = checkSpacing;
         }
 
-        public ComposReinforcement(Length cover, MeshType meshType = MeshType.A393, bool rotated = false)
-        {
-            this.Cover = cover;
-            this.Mesh_Type = meshType;
-            this.Rotated = rotated;
-        }
 
         #endregion
 
@@ -69,41 +51,51 @@ namespace ComposGH.Parameters
         }
         #endregion
 
+        #region coa interop
+        internal ComposReinf(string coaString)
+        {
+            // to do - implement from coa string method
+        }
+
+        internal string ToCoaString()
+        {
+            // to do - implement to coa string method
+            return string.Empty;
+        }
+        #endregion
+
         #region methods
 
-        public ComposReinforcement Duplicate()
+        public ComposReinf Duplicate()
         {
             if (this == null) { return null; }
-            ComposReinforcement dup = (ComposReinforcement)this.MemberwiseClone();
+            ComposReinf dup = (ComposReinf)this.MemberwiseClone();
             return dup;
         }
+
         public override string ToString()
         {
-            string cov = Cover.ToString("f0");
-            string msh = Mesh_Type.ToString();
-            
-            string rotated = (this.Rotated == true) ? " Rotated" : "";
-            
-
-            return msh.Replace(" ", string.Empty) + " " +  cov.Replace(" ", string.Empty) + rotated;
+            string size = this.RebarMesh.ToString() + "/" + this.Rebar.ToString();
+            return size.Replace(" ", string.Empty);
         }
+
         #endregion
     }
 
     /// <summary>
-    /// Goo wrapH class, makes sure our custom class can be used in GrasshopH.
+    /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
     /// </summary>
-    public class ComposReinforcementGoo : GH_Goo<ComposReinforcement>
+    public class ComposReinfGoo : GH_Goo<ComposReinf>
     {
         #region constructors
-        public ComposReinforcementGoo()
+        public ComposReinfGoo()
         {
-            this.Value = new ComposReinforcement();
+            this.Value = new ComposReinf();
         }
-        public ComposReinforcementGoo(ComposReinforcement item)
+        public ComposReinfGoo(ComposReinf item)
         {
             if (item == null)
-                item = new ComposReinforcement();
+                item = new ComposReinf();
             this.Value = item.Duplicate();
         }
 
@@ -111,15 +103,15 @@ namespace ComposGH.Parameters
         {
             return DuplicateGoo();
         }
-        public ComposReinforcementGoo DuplicateGoo()
+        public ComposReinfGoo DuplicateGoo()
         {
-            return new ComposReinforcementGoo(Value == null ? new ComposReinforcement() : Value.Duplicate());
+            return new ComposReinfGoo(Value == null ? new ComposReinf() : Value.Duplicate());
         }
         #endregion
 
         #region properties
         public override bool IsValid => true;
-        public override string TypeName => "Reinforcement Type";
+        public override string TypeName => "Reinf";
         public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
         public override string IsValidWhyNot
         {
@@ -141,10 +133,10 @@ namespace ComposGH.Parameters
         #region casting methods
         public override bool CastTo<Q>(ref Q target)
         {
-            // This function is called when GrasshopH needs to convert this 
+            // This function is called when Grasshopper needs to convert this 
             // instance of our custom class into some other type Q.            
 
-            if (typeof(Q).IsAssignableFrom(typeof(ComposReinforcement)))
+            if (typeof(Q).IsAssignableFrom(typeof(ComposReinf)))
             {
                 if (Value == null)
                     target = default;
@@ -158,21 +150,79 @@ namespace ComposGH.Parameters
         }
         public override bool CastFrom(object source)
         {
-            // This function is called when GrasshopH needs to convert other data 
+            // This function is called when Grasshopper needs to convert other data 
             // into our custom class.
 
             if (source == null) { return false; }
 
             //Cast from GsaMaterial
-            if (typeof(ComposReinforcement).IsAssignableFrom(source.GetType()))
+            if (typeof(ComposReinf).IsAssignableFrom(source.GetType()))
             {
-                Value = (ComposReinforcement)source;
+                Value = (ComposReinf)source;
                 return true;
             }
 
             return false;
         }
         #endregion
-
     }
+
+    /// <summary>
+    /// This class provides a Parameter interface for the CustomGoo type.
+    /// </summary>
+
+    public class ComposReinfParameter : GH_PersistentParam<ComposReinfGoo>
+    {
+        public ComposReinfParameter()
+          : base(new GH_InstanceDescription("Reinf", "Std", "Compos Reinf", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
+        {
+        }
+
+        public override Guid ComponentGuid => new Guid("e0b6cb52-99c8-4b2a-aec1-7f8a2d720daa");
+
+        public override GH_Exposure Exposure => GH_Exposure.secondary | GH_Exposure.obscure;
+
+        protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
+
+        protected override GH_GetterResult Prompt_Plural(ref List<ComposReinfGoo> values)
+        {
+            return GH_GetterResult.cancel;
+        }
+        protected override GH_GetterResult Prompt_Singular(ref ComposReinfGoo value)
+        {
+            return GH_GetterResult.cancel;
+        }
+        protected override System.Windows.Forms.ToolStripMenuItem Menu_CustomSingleValueItem()
+        {
+            System.Windows.Forms.ToolStripMenuItem item = new System.Windows.Forms.ToolStripMenuItem
+            {
+                Text = "Not available",
+                Visible = false
+            };
+            return item;
+        }
+        protected override System.Windows.Forms.ToolStripMenuItem Menu_CustomMultiValueItem()
+        {
+            System.Windows.Forms.ToolStripMenuItem item = new System.Windows.Forms.ToolStripMenuItem
+            {
+                Text = "Not available",
+                Visible = false
+            };
+            return item;
+        }
+
+        #region preview methods
+
+        public bool Hidden
+        {
+            get { return true; }
+            //set { m_hidden = value; }
+        }
+        public bool IsPreviewCapable
+        {
+            get { return false; }
+        }
+        #endregion
+    }
+
 }
