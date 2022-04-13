@@ -371,7 +371,6 @@ namespace ComposGH.Components
         }
         #endregion
 
-
         #region Input and output
         // list of lists with all dropdown lists conctent
         List<List<string>> dropdownitems;
@@ -520,7 +519,6 @@ namespace ComposGH.Components
             }
             #endregion
         }
-
 
         #region menu override
         private enum FoldMode
@@ -758,6 +756,7 @@ namespace ComposGH.Components
         }
 
         #endregion
+
         #region (de)serialization
         public override bool Write(GH_IO.Serialization.GH_IWriter writer)
         {
@@ -809,6 +808,7 @@ namespace ComposGH.Components
             return false;
         }
         #endregion
+
         #region IGH_VariableParameterComponent null implementation
         void IGH_VariableParameterComponent.VariableParameterMaintenance()
         {
