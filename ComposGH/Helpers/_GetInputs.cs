@@ -385,5 +385,86 @@ namespace ComposGH.Components
             return null;
         }
         #endregion
+
+        #region Reinforcement
+        internal static ComposReinforcement ComposReinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        {
+            ComposReinforcementGoo goo = null;
+            GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+            if (DA.GetData(inputid, ref gh_typ))
+            {
+                if (gh_typ.Value is ComposReinforcementGoo)
+                {
+                    goo = (ComposReinforcementGoo)gh_typ.Value;
+                }
+                else
+                {
+                    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Reinforcement");
+                    return null;
+                }
+            }
+            else if (!isOptional)
+                owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+            else
+            {
+                if (goo == null)
+                    return null;
+            }
+            return goo.Value;
+        }
+        internal static List<RebarGroupSpacing> RebarSpacings(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        {
+            List<RebarGroupSpacing> items = new List<RebarGroupSpacing>();
+            List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
+            if (DA.GetDataList(inputid, gh_typs))
+            {
+                for (int i = 0; i < gh_typs.Count; i++)
+                {
+                    // try cast directly to quantity type
+                    if (gh_typs[i].Value is StudGroupSpacingGoo)
+                    {
+                        RebarGroupSpacingGoo goo = (RebarGroupSpacingGoo)gh_typs[i].Value;
+                        items.Add(goo.Value);
+                    }
+                    else
+                    {
+                        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Rebar Spacing");
+                        return null;
+                    }
+                }
+                return items;
+            }
+            else if (!isOptional)
+            {
+                owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+            }
+            return null;
+        }
+        internal static Rebar Rebar(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        {
+            RebarGoo goo = null;
+            GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+            if (DA.GetData(inputid, ref gh_typ))
+            {
+                if (gh_typ.Value is RebarGoo)
+                {
+                    goo = (RebarGoo)gh_typ.Value;
+                }
+                else
+                {
+                    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Rebar material");
+                    return null;
+                }
+            }
+            else if (!isOptional)
+                owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+            else
+            {
+                if (goo == null)
+                    return null;
+            }
+            return goo.Value;
+        }
+        #endregion
     }
 }
