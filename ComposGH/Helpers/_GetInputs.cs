@@ -387,7 +387,7 @@ namespace ComposGH.Components
         #endregion
 
         #region Reinforcement
-        internal static ComposReinforcement ComposReinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        internal static ComposReinforcement Reinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
         {
             ComposReinforcementGoo goo = null;
             GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
@@ -412,23 +412,23 @@ namespace ComposGH.Components
             }
             return goo.Value;
         }
-        internal static List<RebarGroupSpacing> RebarSpacings(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        internal static List<ComposReinforcement> TransverseReinforcements(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
         {
-            List<RebarGroupSpacing> items = new List<RebarGroupSpacing>();
+            List<ComposReinforcement> items = new List<ComposReinforcement>();
             List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
             if (DA.GetDataList(inputid, gh_typs))
             {
                 for (int i = 0; i < gh_typs.Count; i++)
                 {
                     // try cast directly to quantity type
-                    if (gh_typs[i].Value is StudGroupSpacingGoo)
+                    if (gh_typs[i].Value is ComposReinforcementGoo)
                     {
-                        RebarGroupSpacingGoo goo = (RebarGroupSpacingGoo)gh_typs[i].Value;
+                        ComposReinforcementGoo goo = (ComposReinforcementGoo)gh_typs[i].Value;
                         items.Add(goo.Value);
                     }
                     else
                     {
-                        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Rebar Spacing");
+                        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Compos Reinforcement");
                         return null;
                     }
                 }
@@ -440,15 +440,15 @@ namespace ComposGH.Components
             }
             return null;
         }
-        internal static Rebar Rebar(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        internal static RebarMaterial RebarMaterial(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
         {
-            RebarGoo goo = null;
+            RebarMaterialGoo goo = null;
             GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
             if (DA.GetData(inputid, ref gh_typ))
             {
-                if (gh_typ.Value is RebarGoo)
+                if (gh_typ.Value is RebarMaterialGoo)
                 {
-                    goo = (RebarGoo)gh_typ.Value;
+                    goo = (RebarMaterialGoo)gh_typ.Value;
                 }
                 else
                 {

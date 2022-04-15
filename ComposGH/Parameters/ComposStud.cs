@@ -205,9 +205,9 @@ namespace ComposGH.Parameters
 
         public override Guid ComponentGuid => new Guid("e0b6cb52-99c8-4b2a-aec1-7f8a2d720daa");
 
-        public override GH_Exposure Exposure => GH_Exposure.secondary | GH_Exposure.obscure;
+        public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-        protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
+        //protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
 
         protected override GH_GetterResult Prompt_Plural(ref List<ComposStudGoo> values)
         {
