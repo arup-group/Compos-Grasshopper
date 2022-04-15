@@ -185,6 +185,7 @@ namespace ComposGH.Components
         List<string> selecteditems;
         // list of descriptions 
         List<string> spacerDescriptions;
+
         List<string> spacerDescriptionsEN = new List<string>(new string[]
         {
             "Design Code",
