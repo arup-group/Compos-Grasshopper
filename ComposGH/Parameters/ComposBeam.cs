@@ -15,18 +15,15 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Custom class: this class defines the basic properties and methods for our custom class
     /// </summary>
-    public class ComposSteelMaterial
+    public class ComposBeam
     {
-        public Pressure fy { get; set; }
-        public Pressure E { get; set; }
-        public Density Density { get; set; }
-        public bool ReductionFactorMpl { get; set; }
-
-        // add public enum(s) for standard materials here
-        // add enum for weld material
+        public Length Length { get; set; }
+        public ComposSteelMaterial Material { get; set; }
+        public List<BeamSection> BeamSections { get; set; }
+        public List<ComposWebOpening> WebOpenings { get; set; }
 
         #region constructors
-        public ComposSteelMaterial()
+        public ComposBeam()
         {
             // empty constructor
         }
@@ -46,7 +43,7 @@ namespace ComposGH.Parameters
         #endregion
 
         #region coa interop
-        internal ComposSteelMaterial(string coaString)
+        internal ComposBeam(string coaString)
         {
             // to do - implement from coa string method
         }
@@ -60,17 +57,17 @@ namespace ComposGH.Parameters
 
         #region methods
 
-        public ComposSteelMaterial Duplicate()
+        public ComposBeam Duplicate()
         {
             if (this == null) { return null; }
-            ComposSteelMaterial dup = (ComposSteelMaterial)this.MemberwiseClone();
+            ComposBeam dup = (ComposBeam)this.MemberwiseClone();
             return dup;
         }
 
         public override string ToString()
         {
             // update with better naming
-            return fy.ToString().Replace(" ", string.Empty);
+            return "Beam";
         }
 
         #endregion
@@ -79,17 +76,17 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
     /// </summary>
-    public class ComposSteelMaterialGoo : GH_Goo<ComposSteelMaterial>
+    public class ComposBeamGoo : GH_Goo<ComposBeam> // needs to be upgraded to GeometryGoo eventually....
     {
         #region constructors
-        public ComposSteelMaterialGoo()
+        public ComposBeamGoo()
         {
-            this.Value = new ComposSteelMaterial();
+            this.Value = new ComposBeam();
         }
-        public ComposSteelMaterialGoo(ComposSteelMaterial item)
+        public ComposBeamGoo(ComposBeam item)
         {
             if (item == null)
-                item = new ComposSteelMaterial();
+                item = new ComposBeam();
             this.Value = item.Duplicate();
         }
 
@@ -97,15 +94,15 @@ namespace ComposGH.Parameters
         {
             return DuplicateGoo();
         }
-        public ComposSteelMaterialGoo DuplicateGoo()
+        public ComposBeamGoo DuplicateGoo()
         {
-            return new ComposSteelMaterialGoo(Value == null ? new ComposSteelMaterial() : Value.Duplicate());
+            return new ComposBeamGoo(Value == null ? new ComposBeam() : Value.Duplicate());
         }
         #endregion
 
         #region properties
         public override bool IsValid => true;
-        public override string TypeName => "Steel Material";
+        public override string TypeName => "Beam";
         public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
         public override string IsValidWhyNot
         {
@@ -130,7 +127,7 @@ namespace ComposGH.Parameters
             // This function is called when Grasshopper needs to convert this 
             // instance of our custom class into some other type Q.            
 
-            if (typeof(Q).IsAssignableFrom(typeof(ComposSteelMaterial)))
+            if (typeof(Q).IsAssignableFrom(typeof(ComposBeam)))
             {
                 if (Value == null)
                     target = default;
@@ -150,9 +147,9 @@ namespace ComposGH.Parameters
             if (source == null) { return false; }
 
             //Cast from GsaMaterial
-            if (typeof(ComposSteelMaterial).IsAssignableFrom(source.GetType()))
+            if (typeof(ComposBeam).IsAssignableFrom(source.GetType()))
             {
-                Value = (ComposSteelMaterial)source;
+                Value = (ComposBeam)source;
                 return true;
             }
 
@@ -165,24 +162,24 @@ namespace ComposGH.Parameters
     /// This class provides a Parameter interface for the CustomGoo type.
     /// </summary>
 
-    public class ComposSteelMaterialParameter: GH_PersistentParam<ComposSteelMaterialGoo>
+    public class ComposBeamParameter : GH_PersistentParam<ComposBeamGoo>
     {
-        public ComposSteelMaterialParameter()
-          : base(new GH_InstanceDescription("Steel", "Ste", "Compos Steel Material", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
+        public ComposBeamParameter()
+          : base(new GH_InstanceDescription("Beam", "Bm", "Compos Beam", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
         {
         }
 
-        public override Guid ComponentGuid => new Guid("1245ee2f-3d04-4135-833c-abff82dff85c");
+        public override Guid ComponentGuid => new Guid("2dc51bc1-9abb-4f26-845f-ca1e66236e9e");
 
         public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-        protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
+        //protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
 
-        protected override GH_GetterResult Prompt_Plural(ref List<ComposSteelMaterialGoo> values)
+        protected override GH_GetterResult Prompt_Plural(ref List<ComposBeamGoo> values)
         {
             return GH_GetterResult.cancel;
         }
-        protected override GH_GetterResult Prompt_Singular(ref ComposSteelMaterialGoo value)
+        protected override GH_GetterResult Prompt_Singular(ref ComposBeamGoo value)
         {
             return GH_GetterResult.cancel;
         }

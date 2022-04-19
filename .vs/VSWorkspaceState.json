@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\ComposGH",
+    "\\ComposGH\\Components",
+    "\\ComposGH\\Parameters"
   ],
-  "SelectedNode": "\\ComposGH.sln",
   "PreviewInSolutionExplorer": false
 }

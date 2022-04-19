@@ -214,14 +214,14 @@ namespace ComposGH.Parameters
     public class DesignCodeParameter : GH_PersistentParam<DesignCodeGoo>
     {
         public DesignCodeParameter()
-          : base(new GH_InstanceDescription("DesignCode", "DC", "Compos DesignCode", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
+          : base(new GH_InstanceDescription("DesignCode", "DC", "Compos Design Code", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
         {
         }
         public override Guid ComponentGuid => new Guid("fb4d79ea-1c30-4e86-9654-a55ef42fd8e2");
 
-        public override GH_Exposure Exposure => GH_Exposure.secondary | GH_Exposure.obscure;
+        public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-        protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
+        //protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
 
         protected override GH_GetterResult Prompt_Plural(ref List<DesignCodeGoo> values)
         {

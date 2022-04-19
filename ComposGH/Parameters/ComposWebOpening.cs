@@ -15,18 +15,24 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Custom class: this class defines the basic properties and methods for our custom class
     /// </summary>
-    public class ComposSteelMaterial
+    public class ComposWebOpening
     {
-        public Pressure fy { get; set; }
-        public Pressure E { get; set; }
-        public Density Density { get; set; }
-        public bool ReductionFactorMpl { get; set; }
-
-        // add public enum(s) for standard materials here
-        // add enum for weld material
+        public enum OpeningType
+        {
+            Rectangular,
+            Circular,
+            Left_notch,
+            Right_notch
+        }
+        public Length Width { get; set; }
+        public Length Height { get; set; }
+        public Length Diameter { get; set; }
+        public Length CentroidPosFromStart { get; set; }
+        public Length CentroidPosFromTop { get; set; }
+        public WebOpeningStiffener OpeningStiffener { get; set; }
 
         #region constructors
-        public ComposSteelMaterial()
+        public ComposWebOpening()
         {
             // empty constructor
         }
@@ -46,7 +52,7 @@ namespace ComposGH.Parameters
         #endregion
 
         #region coa interop
-        internal ComposSteelMaterial(string coaString)
+        internal ComposWebOpening(string coaString)
         {
             // to do - implement from coa string method
         }
@@ -60,17 +66,17 @@ namespace ComposGH.Parameters
 
         #region methods
 
-        public ComposSteelMaterial Duplicate()
+        public ComposWebOpening Duplicate()
         {
             if (this == null) { return null; }
-            ComposSteelMaterial dup = (ComposSteelMaterial)this.MemberwiseClone();
+            ComposWebOpening dup = (ComposWebOpening)this.MemberwiseClone();
             return dup;
         }
 
         public override string ToString()
         {
-            // update with better naming
-            return fy.ToString().Replace(" ", string.Empty);
+            // to do: beef up this
+            return "Web Opening";
         }
 
         #endregion
@@ -79,17 +85,17 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
     /// </summary>
-    public class ComposSteelMaterialGoo : GH_Goo<ComposSteelMaterial>
+    public class ComposWebOpeningGoo : GH_Goo<ComposWebOpening>
     {
         #region constructors
-        public ComposSteelMaterialGoo()
+        public ComposWebOpeningGoo()
         {
-            this.Value = new ComposSteelMaterial();
+            this.Value = new ComposWebOpening();
         }
-        public ComposSteelMaterialGoo(ComposSteelMaterial item)
+        public ComposWebOpeningGoo(ComposWebOpening item)
         {
             if (item == null)
-                item = new ComposSteelMaterial();
+                item = new ComposWebOpening();
             this.Value = item.Duplicate();
         }
 
@@ -97,15 +103,15 @@ namespace ComposGH.Parameters
         {
             return DuplicateGoo();
         }
-        public ComposSteelMaterialGoo DuplicateGoo()
+        public ComposWebOpeningGoo DuplicateGoo()
         {
-            return new ComposSteelMaterialGoo(Value == null ? new ComposSteelMaterial() : Value.Duplicate());
+            return new ComposWebOpeningGoo(Value == null ? new ComposWebOpening() : Value.Duplicate());
         }
         #endregion
 
         #region properties
         public override bool IsValid => true;
-        public override string TypeName => "Steel Material";
+        public override string TypeName => "Web Opening";
         public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
         public override string IsValidWhyNot
         {
@@ -130,7 +136,7 @@ namespace ComposGH.Parameters
             // This function is called when Grasshopper needs to convert this 
             // instance of our custom class into some other type Q.            
 
-            if (typeof(Q).IsAssignableFrom(typeof(ComposSteelMaterial)))
+            if (typeof(Q).IsAssignableFrom(typeof(ComposWebOpening)))
             {
                 if (Value == null)
                     target = default;
@@ -150,9 +156,9 @@ namespace ComposGH.Parameters
             if (source == null) { return false; }
 
             //Cast from GsaMaterial
-            if (typeof(ComposSteelMaterial).IsAssignableFrom(source.GetType()))
+            if (typeof(ComposWebOpening).IsAssignableFrom(source.GetType()))
             {
-                Value = (ComposSteelMaterial)source;
+                Value = (ComposWebOpening)source;
                 return true;
             }
 
@@ -165,24 +171,24 @@ namespace ComposGH.Parameters
     /// This class provides a Parameter interface for the CustomGoo type.
     /// </summary>
 
-    public class ComposSteelMaterialParameter: GH_PersistentParam<ComposSteelMaterialGoo>
+    public class ComposWebOpeningParameter : GH_PersistentParam<ComposWebOpeningGoo>
     {
-        public ComposSteelMaterialParameter()
-          : base(new GH_InstanceDescription("Steel", "Ste", "Compos Steel Material", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
+        public ComposWebOpeningParameter()
+          : base(new GH_InstanceDescription("WebOpening", "WO", "Compos Web Opening", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
         {
         }
 
-        public override Guid ComponentGuid => new Guid("1245ee2f-3d04-4135-833c-abff82dff85c");
+        public override Guid ComponentGuid => new Guid("eb70e868-29d9-4fae-9ef7-c465f3762a43");
 
         public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-        protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
+        //protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
 
-        protected override GH_GetterResult Prompt_Plural(ref List<ComposSteelMaterialGoo> values)
+        protected override GH_GetterResult Prompt_Plural(ref List<ComposWebOpeningGoo> values)
         {
             return GH_GetterResult.cancel;
         }
-        protected override GH_GetterResult Prompt_Singular(ref ComposSteelMaterialGoo value)
+        protected override GH_GetterResult Prompt_Singular(ref ComposWebOpeningGoo value)
         {
             return GH_GetterResult.cancel;
         }

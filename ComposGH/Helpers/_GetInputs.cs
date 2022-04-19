@@ -302,7 +302,7 @@ namespace ComposGH.Components
         #endregion
 
         #region Studs
-        internal static StudDimensionsGoo StudDim(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        internal static StudDimensions StudDim(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
         {
             StudDimensionsGoo goo = null;
             GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
@@ -327,9 +327,9 @@ namespace ComposGH.Components
                     return null;
             }
 
-            return goo;
+            return goo.Value;
         }
-        internal static StudSpecificationGoo StudSpec(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        internal static StudSpecification StudSpec(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
         {
             StudSpecificationGoo goo = null;
             GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
@@ -354,11 +354,11 @@ namespace ComposGH.Components
                     return null;
             }
 
-            return goo;
+            return goo.Value;
         }
-        internal static List<StudGroupSpacingGoo> StudSpacings(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        internal static List<StudGroupSpacing> StudSpacings(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
         {
-            List<StudGroupSpacingGoo> lengths = new List<StudGroupSpacingGoo>();
+            List<StudGroupSpacing> items = new List<StudGroupSpacing>();
             List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
             if (DA.GetDataList(inputid, gh_typs))
             {
@@ -367,7 +367,8 @@ namespace ComposGH.Components
                     // try cast directly to quantity type
                     if (gh_typs[i].Value is StudGroupSpacingGoo)
                     {
-                        lengths.Add((StudGroupSpacingGoo)gh_typs[i].Value);
+                        StudGroupSpacingGoo goo = (StudGroupSpacingGoo)gh_typs[i].Value;
+                        items.Add(goo.Value);
                     }
                     else
                     {
@@ -375,13 +376,94 @@ namespace ComposGH.Components
                         return null;
                     }
                 }
-                return lengths;
+                return items;
             }
             else if (!isOptional)
             {
                 owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
             }
             return null;
+        }
+        #endregion
+
+        #region Reinforcement
+        internal static ComposReinforcement Reinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        {
+            ComposReinforcementGoo goo = null;
+            GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+            if (DA.GetData(inputid, ref gh_typ))
+            {
+                if (gh_typ.Value is ComposReinforcementGoo)
+                {
+                    goo = (ComposReinforcementGoo)gh_typ.Value;
+                }
+                else
+                {
+                    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Reinforcement");
+                    return null;
+                }
+            }
+            else if (!isOptional)
+                owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+            else
+            {
+                if (goo == null)
+                    return null;
+            }
+            return goo.Value;
+        }
+        internal static List<ComposReinforcement> TransverseReinforcements(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        {
+            List<ComposReinforcement> items = new List<ComposReinforcement>();
+            List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
+            if (DA.GetDataList(inputid, gh_typs))
+            {
+                for (int i = 0; i < gh_typs.Count; i++)
+                {
+                    // try cast directly to quantity type
+                    if (gh_typs[i].Value is ComposReinforcementGoo)
+                    {
+                        ComposReinforcementGoo goo = (ComposReinforcementGoo)gh_typs[i].Value;
+                        items.Add(goo.Value);
+                    }
+                    else
+                    {
+                        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Compos Reinforcement");
+                        return null;
+                    }
+                }
+                return items;
+            }
+            else if (!isOptional)
+            {
+                owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+            }
+            return null;
+        }
+        internal static RebarMaterial RebarMaterial(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        {
+            RebarMaterialGoo goo = null;
+            GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+            if (DA.GetData(inputid, ref gh_typ))
+            {
+                if (gh_typ.Value is RebarMaterialGoo)
+                {
+                    goo = (RebarMaterialGoo)gh_typ.Value;
+                }
+                else
+                {
+                    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Rebar material");
+                    return null;
+                }
+            }
+            else if (!isOptional)
+                owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+            else
+            {
+                if (goo == null)
+                    return null;
+            }
+            return goo.Value;
         }
         #endregion
     }

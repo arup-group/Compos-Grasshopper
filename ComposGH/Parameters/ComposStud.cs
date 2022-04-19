@@ -31,18 +31,18 @@ namespace ComposGH.Parameters
         {
             // empty constructor
         }
-        public ComposStud(StudDimensionsGoo stud, StudSpecificationGoo spec, List<StudGroupSpacingGoo> spacings, bool checkSpacing)
+        public ComposStud(StudDimensions stud, StudSpecification spec, List<StudGroupSpacing> spacings, bool checkSpacing)
         {
-            this.StudDimension = stud.Value;
-            this.StudSpecification = spec.Value;
-            this.CustomSpacing = spacings.Select(item => item.Value).ToList();
+            this.StudDimension = stud;
+            this.StudSpecification = spec;
+            this.CustomSpacing = spacings;
             this.CheckStudSpacing = checkSpacing;
             this.StudSpacingType = StudGroupSpacing.StudSpacingType.Custom;
         }
-        public ComposStud(StudDimensionsGoo stud, StudSpecificationGoo spec, double minSaving, StudGroupSpacing.StudSpacingType type)
+        public ComposStud(StudDimensions stud, StudSpecification spec, double minSaving, StudGroupSpacing.StudSpacingType type)
         {
-            this.StudDimension = stud.Value;
-            this.StudSpecification = spec.Value;
+            this.StudDimension = stud;
+            this.StudSpecification = spec;
             this.StudSpacingType = type;
             this.MinSavingMultipleZones = minSaving;
             switch (type)
@@ -55,10 +55,10 @@ namespace ComposGH.Parameters
                     throw new ArgumentException("Stud spacing type must be either Automatic or Minimum Number of Studs");
             }
         }
-        public ComposStud(StudDimensionsGoo stud, StudSpecificationGoo spec, double minSaving, double interaction)
+        public ComposStud(StudDimensions stud, StudSpecification spec, double minSaving, double interaction)
         {
-            this.StudDimension = stud.Value;
-            this.StudSpecification = spec.Value;
+            this.StudDimension = stud;
+            this.StudSpecification = spec;
             this.StudSpacingType = StudGroupSpacing.StudSpacingType.Partial_Interaction;
             this.MinSavingMultipleZones = minSaving;
             this.Interaction = interaction;
@@ -196,18 +196,18 @@ namespace ComposGH.Parameters
     /// This class provides a Parameter interface for the CustomGoo type.
     /// </summary>
 
-    public class ComposSteelMaterialParameter: GH_PersistentParam<ComposStudGoo>
+    public class ComposStudParameter: GH_PersistentParam<ComposStudGoo>
     {
-        public ComposSteelMaterialParameter()
+        public ComposStudParameter()
           : base(new GH_InstanceDescription("Stud", "Std", "Compos Stud", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
         {
         }
 
         public override Guid ComponentGuid => new Guid("e0b6cb52-99c8-4b2a-aec1-7f8a2d720daa");
 
-        public override GH_Exposure Exposure => GH_Exposure.secondary | GH_Exposure.obscure;
+        public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-        protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
+        //protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
 
         protected override GH_GetterResult Prompt_Plural(ref List<ComposStudGoo> values)
         {
