@@ -87,7 +87,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\1_Beam\CreateWebOpeningStiffener.cs" />
     <Compile Include="Components\1_Beam\CreateProfile.cs" />
+    <Compile Include="Components\1_Beam\CreateNotch.cs" />
+    <Compile Include="Components\1_Beam\CreateWebOpening.cs" />
     <Compile Include="Components\2_Studs\CustomStudSpacing.cs" />
     <Compile Include="Components\2_Studs\CustomStudDims.cs" />
     <Compile Include="Components\2_Studs\StudSpec.cs" />
@@ -110,7 +113,7 @@
     <Compile Include="Parameters\ComposWebOpening.cs" />
     <Compile Include="Parameters\StudDimensionsGoo.cs" />
     <Compile Include="Parameters\BeamSectionGoo.cs" />
-    <Compile Include="Parameters\WebOpeningStiffenerGoo.cs" />
+    <Compile Include="Parameters\WebOpeningStiffenersGoo.cs" />
     <Compile Include="Parameters\StudSpecGoo.cs" />
     <Compile Include="Parameters\StudSpacingGoo.cs" />
     <Compile Include="Parameters\ComposDesignCode.cs" />
@@ -156,6 +159,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
@@ -192,7 +196,7 @@
     <Folder Include="Components\9_Results\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\RebarMesh.png" />
+    <None Include="Properties\Icons\RebarMesh.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -17,27 +17,113 @@ namespace ComposGH.Parameters
     /// </summary>
     public class ComposWebOpening
     {
+        public enum WebOpeningShape
+        {
+            Rectangular,
+            Circular
+        }
+        public enum NotchPosition
+        {
+            Start,
+            End
+        }
         public enum OpeningType
         {
             Rectangular,
             Circular,
-            Left_notch,
-            Right_notch
+            Start_notch,
+            End_notch
         }
+        public OpeningType WebOpeningType { get; set; }
         public Length Width { get; set; }
         public Length Height { get; set; }
         public Length Diameter { get; set; }
         public Length CentroidPosFromStart { get; set; }
         public Length CentroidPosFromTop { get; set; }
-        public WebOpeningStiffener OpeningStiffener { get; set; }
+        public WebOpeningStiffeners OpeningStiffeners { get; set; } = null;
 
         #region constructors
         public ComposWebOpening()
         {
             // empty constructor
         }
-        
-        // add public constructors here
+        /// <summary>
+        /// Rectangular web opening
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="positionCentroidFromStart"></param>
+        /// <param name="positionCentroidFromTop"></param>
+        /// <param name="stiffeners"></param>
+        public ComposWebOpening(Length width, Length height, Length positionCentroidFromStart, Length positionCentroidFromTop, WebOpeningStiffeners stiffeners = null)
+        {
+            // static type for this constructor
+            this.WebOpeningType = OpeningType.Rectangular;
+            // inputs
+            this.Width = width;
+            this.Height = height;
+            this.CentroidPosFromStart = positionCentroidFromStart;
+            this.CentroidPosFromTop = positionCentroidFromTop;
+            this.OpeningStiffeners = stiffeners;
+            // set stiffeners properties
+            if (this.OpeningStiffeners != null)
+            {
+                this.OpeningStiffeners = new WebOpeningStiffeners(
+                    stiffeners.DistanceFrom, stiffeners.TopStiffenerWidth, stiffeners.TopStiffenerThickness,
+                    stiffeners.BottomStiffenerWidth, stiffeners.BottomStiffenerThickness, stiffeners.isBothSides);
+            }
+        }
+        /// <summary>
+        /// Circular web opening
+        /// </summary>
+        /// <param name="diameter"></param>
+        /// <param name="positionCentroidFromStart"></param>
+        /// <param name="positionCentroidFromTop"></param>
+        /// <param name="stiffeners"></param>
+        public ComposWebOpening(Length diameter, Length positionCentroidFromStart, Length positionCentroidFromTop, WebOpeningStiffeners stiffeners = null)
+        {
+            // static type for this constructor
+            this.WebOpeningType = OpeningType.Circular;
+            // inputs
+            this.Diameter = diameter;
+            this.CentroidPosFromStart = positionCentroidFromStart;
+            this.CentroidPosFromTop = positionCentroidFromTop;
+            this.OpeningStiffeners = stiffeners;
+            // set stiffeners properties
+            if (this.OpeningStiffeners != null)
+            {
+                this.OpeningStiffeners = new WebOpeningStiffeners(
+                    stiffeners.DistanceFrom, stiffeners.TopStiffenerWidth, stiffeners.TopStiffenerThickness,
+                    stiffeners.BottomStiffenerWidth, stiffeners.BottomStiffenerThickness, stiffeners.isBothSides);
+            }
+        }
+        /// <summary>
+        /// Notch web opening
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="positionCentroidFromStart"></param>
+        /// <param name="positionCentroidFromTop"></param>
+        /// <param name="stiffeners"></param>
+        public ComposWebOpening(Length width, Length height, NotchPosition position, WebOpeningStiffeners stiffeners = null)
+        {
+            // static type for this constructor
+            if (position == NotchPosition.Start)
+                this.WebOpeningType = OpeningType.Start_notch;
+            else
+                this.WebOpeningType = OpeningType.End_notch;
+            // inputs
+            this.Width = width;
+            this.Height = height;
+            this.OpeningStiffeners = stiffeners;
+            // set stiffeners properties
+            if (this.OpeningStiffeners != null)
+            {
+                this.OpeningStiffeners = new WebOpeningStiffeners(
+                    stiffeners.DistanceFrom, stiffeners.TopStiffenerWidth, 
+                    stiffeners.TopStiffenerThickness, stiffeners.isBothSides);
+            }
+        }
 
         #endregion
 
@@ -75,8 +161,37 @@ namespace ComposGH.Parameters
 
         public override string ToString()
         {
-            // to do: beef up this
-            return "Web Opening";
+            string size = "";
+            switch (this.WebOpeningType)
+            {
+                case OpeningType.Start_notch:
+                case OpeningType.End_notch:
+                case OpeningType.Rectangular:
+                    size = this.Width.As(Units.LengthUnitGeometry).ToString("f0") + "x" + this.Height.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
+                    break;
+                case OpeningType.Circular:
+                    size = "Ø" + this.Diameter.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
+                    break;
+            }
+            
+            string typ = "";
+            switch (this.WebOpeningType)
+            {
+                case OpeningType.Start_notch:
+                    typ = " Start Notch";
+                    break;
+                case OpeningType.End_notch:
+                    typ = " End Notch";
+                    break;
+                case OpeningType.Rectangular:
+                case OpeningType.Circular:
+                    typ = ", Pos:(x:" + this.CentroidPosFromStart.As(Units.LengthUnitGeometry).ToString("f0") + ", z:" + this.CentroidPosFromTop.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty) + ")";
+                    break;
+            }
+            if (this.OpeningStiffeners != null)
+                typ += " w/Stiff.";
+
+            return size + typ;
         }
 
         #endregion
