@@ -178,7 +178,7 @@ namespace UnitsNet.GH
     public class GH_UnitNumberParameter : GH_PersistentParam<GH_UnitNumber>
     {
         public GH_UnitNumberParameter()
-          : base(new GH_InstanceDescription("UnitNumber", "UNum", "Quantity = number + unit", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat9()))
+          : base(new GH_InstanceDescription("UnitNumber", "UNum", "Quantity = number + unit", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
         {
         }
 

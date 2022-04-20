@@ -1,36 +1,32 @@
-﻿using System;
-using System.IO;
+﻿  using System;
 using System.Collections.Generic;
-using System.Drawing;
-using Grasshopper.Kernel.Attributes;
-using Grasshopper.GUI.Canvas;
-using Grasshopper.GUI;
+using System.Linq;
+using Grasshopper;
 using Grasshopper.Kernel;
-using Rhino.Geometry;
-using System.Windows.Forms;
+using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Types;
+using Grasshopper.Kernel.Parameters;
 using ComposGH.Parameters;
+using Rhino.Geometry;
 using UnitsNet;
 using UnitsNet.Units;
-using System.Linq;
+using ComposGH.Components;
+using ComposGH.Helpers;
 
 namespace ComposGH.Components
 {
-    public class CustomStudDimensions : GH_Component, IGH_VariableParameterComponent
+    public class CreateMesh : GH_Component, IGH_VariableParameterComponent
     {
         #region Name and Ribbon Layout
-        // This region handles how the component in displayed on the ribbon
-        // including name, exposure level and icon
-        public override Guid ComponentGuid => new Guid("e70db6bb-b4bf-4033-a3d0-3ad131fe09b1");
-        public CustomStudDimensions()
-          : base("Custom Stud Dimensions", "CustStudDim", "Create Custom Stud Dimensions for a Compos Stud",
+        public CreateMesh()
+            : base("Mesh Reinforcement", "MeshRb", "Create Compos Slab Reinforcement from a Standard Reinforment Mesh",
                 Ribbon.CategoryName.Name(),
-                Ribbon.SubCategoryName.Cat2())
-        { this.Hidden = false; } // sets the initial state of the component to hidden
+                Ribbon.SubCategoryName.Cat5())
+        { this.Hidden = false; }
+        public override Guid ComponentGuid => new Guid("17960644-0DFC-4F5D-B17C-45E6FBC3732E"); 
+        public override GH_Exposure Exposure => GH_Exposure.primary;
 
-        public override GH_Exposure Exposure => GH_Exposure.secondary | GH_Exposure.obscure;
-
-        //protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateStudZoneLength;
+        protected override System.Drawing.Bitmap Icon => Properties.Resources.RebarMesh;
         #endregion
 
         #region Custom UI
@@ -42,30 +38,39 @@ namespace ComposGH.Components
                 dropdownitems = new List<List<string>>();
                 selecteditems = new List<string>();
 
+                // mesh
+                dropdownitems.Add(Enum.GetValues(typeof(MeshReinforcement.ReinforcementMeshType)).Cast<MeshReinforcement.ReinforcementMeshType>().Select(x => x.ToString()).ToList());
+                dropdownitems[0].RemoveAt(0); //
+                selecteditems.Add(mesh.ToString());
+
                 // length
                 dropdownitems.Add(Units.FilteredLengthUnits);
                 selecteditems.Add(lengthUnit.ToString());
 
-                // strength
-                dropdownitems.Add(Units.FilteredForceUnits);
-                selecteditems.Add(forceUnit.ToString());
 
                 first = false;
             }
+
             m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, dropdownitems, selecteditems, spacerDescriptions);
         }
+
         public void SetSelected(int i, int j)
         {
             // change selected item
             selecteditems[i] = dropdownitems[i][j];
 
-            if (i == 0) // change is made to length unit
+            if (i == 0)  // change is made to code 
+            {
+                if (mesh.ToString() == selecteditems[i])
+                    return; // return if selected value is same as before
+
+                mesh = (MeshReinforcement.ReinforcementMeshType)Enum.Parse(typeof(MeshReinforcement.ReinforcementMeshType), selecteditems[i]);
+
+                //ToggleInput();
+            }
+            else
             {
                 lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[i]);
-            }
-            if (i == 1)
-            {
-                forceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), selecteditems[i]);
             }
 
             // update name of inputs (to display unit on sliders)
@@ -75,10 +80,11 @@ namespace ComposGH.Components
             this.OnDisplayExpired(true);
         }
 
+
         private void UpdateUIFromSelectedItems()
         {
-            lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[0]);
-            forceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), selecteditems[1]);
+            mesh = (MeshReinforcement.ReinforcementMeshType)Enum.Parse(typeof(MeshReinforcement.ReinforcementMeshType), selecteditems[0]);
+            lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[1]);
 
             CreateAttributes();
             (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -86,48 +92,51 @@ namespace ComposGH.Components
             Params.OnParametersChanged();
             this.OnDisplayExpired(true);
         }
-        // list of lists with all dropdown lists conctent
+        #endregion
+
+        #region Input and output
+
+        // list of lists with all dropdown lists content
         List<List<string>> dropdownitems;
         // list of selected items
         List<string> selecteditems;
         // list of descriptions 
         List<string> spacerDescriptions = new List<string>(new string[]
         {
-            "Length Unit",
-            "Strength Unit"
+            "Standard Mesh",
+            "Unit"
         });
-
         private bool first = true;
         private LengthUnit lengthUnit = Units.LengthUnitGeometry;
-        private ForceUnit forceUnit = Units.ForceUnit;
+        private MeshReinforcement.ReinforcementMeshType mesh = MeshReinforcement.ReinforcementMeshType.A393;
         #endregion
-
-        #region Input and output
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            IQuantity force = new Force(0, forceUnit);
-            string forceunitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
             IQuantity length = new Length(0, lengthUnit);
             string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
-            pManager.AddGenericParameter("Diameter [" + unitAbbreviation + "]", "Ø", "Diameter of stud head", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Height [" + unitAbbreviation + "]", "H", "Height of stud", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Grade [" + forceunitAbbreviation + "]", "fu", "Stud Character strength", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Cover [" + unitAbbreviation + "]", "Cov", "Reinforcement cover", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Rotated", "Rot", "If the mesh type is assymetrical, setting 'Rotated' to true will align the stronger direction with the beam's direction", GH_ParamAccess.item, false);
+
         }
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Stud Dims", "Sdm", "Compos Shear Stud Dimensions", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Reinforcement", "Rb", "Mesh Reinforcement for Compos Slab", GH_ParamAccess.item);
         }
-        #endregion
 
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            Length dia = GetInput.Length(this, DA, 0, lengthUnit, true);
-            Length h = GetInput.Length(this, DA, 1, lengthUnit, true);
-            Force strengthF = GetInput.Force(this, DA, 2, forceUnit);
-            DA.SetData(0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthF)));
+            // get default length inputs used for all cases
+            Length cov = Length.Zero;
+            if (this.Params.Input[0].Sources.Count > 0)
+                cov = GetInput.Length(this, DA, 0, lengthUnit, true);
+
+            bool rotated = false;
+            DA.GetData(1, ref rotated);
+            DA.SetData(0, new ComposReinforcementGoo(new ComposReinforcement(cov, mesh, rotated)));
         }
+        
 
         #region (de)serialization
         public override bool Write(GH_IO.Serialization.GH_IWriter writer)
@@ -138,13 +147,11 @@ namespace ComposGH.Components
         public override bool Read(GH_IO.Serialization.GH_IReader reader)
         {
             Helpers.DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
-
             UpdateUIFromSelectedItems();
-
             first = false;
-
             return base.Read(reader);
         }
+
         #endregion
 
         #region IGH_VariableParameterComponent null implementation
@@ -164,17 +171,15 @@ namespace ComposGH.Components
         {
             return false;
         }
+
         void IGH_VariableParameterComponent.VariableParameterMaintenance()
         {
             IQuantity length = new Length(0, lengthUnit);
             string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
-            Params.Input[0].Name = "Diameter [" + unitAbbreviation + "]";
-            Params.Input[1].Name = "Height [" + unitAbbreviation + "]";
-            
-            IQuantity force = new Force(0, forceUnit);
-            string forceunitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
-            Params.Input[2].Name = "Strength [" + forceunitAbbreviation + "]";
+
+            Params.Input[0].Name = "Cover [" + unitAbbreviation + "]";
         }
-        #endregion
+        
     }
+    #endregion
 }

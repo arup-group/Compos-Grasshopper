@@ -15,37 +15,36 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Custom class: this class defines the basic properties and methods for our custom class
     /// </summary>
-    public class StudGroupSpacing
+    public class WebOpeningsSpec
     {
-        public Length DistanceFromStart { get; set; }
-        public int NumberOfRows { get; set; } = 2;
-        public int NumberOfLines { get; set; } = 1;
-        public Length Spacing { get; set; }
-
-        // Stud spacing
-        public enum StudSpacingType
+        public enum Opening
         {
-            Automatic,
-            Partial_Interaction,
-            Min_Num_of_Studs,
-            Custom
+            Rectangular,
+            Notch_Left,
+            Notch_Right,
+            Circular
         }
+
+        public enum Stiffeners
+        {
+            Without_Stiffeners,
+            With_Stiffeners
+        }
+
+        public Opening Opening_Type { get; set; }
+        public Stiffeners Stiffener_Type { get; set; }
+
         #region constructors
-        public StudGroupSpacing()
+        public WebOpeningsSpec()
         {
-            // empty constructor
+            this.Opening_Type = Opening.Circular;
+            this.Stiffener_Type = Stiffeners.Without_Stiffeners;
         }
-
-        public StudGroupSpacing(Length distanceFromStart, int numberOfRows, int numberOfLines, Length spacing)
+        
+        public WebOpeningsSpec(Opening openingType = Opening.Circular, Stiffeners stiffenerType = Stiffeners.With_Stiffeners)
         {
-            this.DistanceFromStart = distanceFromStart;
-            if (numberOfRows < 1)
-                throw new ArgumentException("Number of rows must be bigger or equal to 1");
-            this.NumberOfRows = numberOfRows;
-            if (numberOfLines < 1)
-                throw new ArgumentException("Number of lines must be bigger or equal to 1");
-            this.NumberOfLines = numberOfLines;
-            this.Spacing = spacing;
+            this.Opening_Type = openingType;
+            this.Stiffener_Type = stiffenerType;
         }
 
         #endregion
@@ -62,21 +61,16 @@ namespace ComposGH.Parameters
 
         #region methods
 
-        public StudGroupSpacing Duplicate()
+        public WebOpeningsSpec Duplicate()
         {
             if (this == null) { return null; }
-            StudGroupSpacing dup = (StudGroupSpacing)this.MemberwiseClone();
+            WebOpeningsSpec dup = (WebOpeningsSpec)this.MemberwiseClone();
             return dup;
         }
         public override string ToString()
         {
-            string start = (this.DistanceFromStart.Value == 0) ? "" : "From:" + this.DistanceFromStart.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
-            string rows = NumberOfRows + "R";
-            string lines = NumberOfLines + "L";
-            string spacing = "@" + this.Spacing.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
-
-            string joined = string.Join(" ", new List<string>() { start, rows, lines, spacing });
-            return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');
+            // to do: make sensible to-string method
+            return "Web Opening Stiffener";
         }
         #endregion
     }
@@ -84,17 +78,17 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
     /// </summary>
-    public class StudGroupSpacingGoo : GH_Goo<StudGroupSpacing>
+    public class WebOpeningsGoo : GH_Goo<WebOpeningsSpec>
     {
         #region constructors
-        public StudGroupSpacingGoo()
+        public WebOpeningsGoo()
         {
-            this.Value = new StudGroupSpacing();
+            this.Value = new WebOpeningsSpec();
         }
-        public StudGroupSpacingGoo(StudGroupSpacing item)
+        public WebOpeningsGoo(WebOpeningsSpec item)
         {
             if (item == null)
-                item = new StudGroupSpacing();
+                item = new WebOpeningsSpec();
             this.Value = item.Duplicate();
         }
 
@@ -102,15 +96,15 @@ namespace ComposGH.Parameters
         {
             return DuplicateGoo();
         }
-        public StudGroupSpacingGoo DuplicateGoo()
+        public WebOpeningsGoo DuplicateGoo()
         {
-            return new StudGroupSpacingGoo(Value == null ? new StudGroupSpacing() : Value.Duplicate());
+            return new WebOpeningsGoo(Value == null ? new WebOpeningsSpec() : Value.Duplicate());
         }
         #endregion
 
         #region properties
         public override bool IsValid => true;
-        public override string TypeName => "Stud Spacing";
+        public override string TypeName => "Web Opening";
         public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
         public override string IsValidWhyNot
         {
@@ -135,7 +129,7 @@ namespace ComposGH.Parameters
             // This function is called when Grasshopper needs to convert this 
             // instance of our custom class into some other type Q.            
 
-            if (typeof(Q).IsAssignableFrom(typeof(StudGroupSpacing)))
+            if (typeof(Q).IsAssignableFrom(typeof(WebOpeningsSpec)))
             {
                 if (Value == null)
                     target = default;
@@ -155,9 +149,9 @@ namespace ComposGH.Parameters
             if (source == null) { return false; }
 
             //Cast from GsaMaterial
-            if (typeof(StudGroupSpacing).IsAssignableFrom(source.GetType()))
+            if (typeof(WebOpeningsSpec).IsAssignableFrom(source.GetType()))
             {
-                Value = (StudGroupSpacing)source;
+                Value = (WebOpeningsSpec)source;
                 return true;
             }
 

@@ -134,7 +134,7 @@ namespace ComposGH.UI
                     BorderBound[i] = tempBorder;
 
                 // text box inside border
-                RectangleF tempText = new RectangleF(BorderBound[i].X, BorderBound[i].Y, BorderBound[i].Width - bw, BorderBound[i].Height);
+                RectangleF tempText = new RectangleF(BorderBound[i].X, BorderBound[i].Y, BorderBound[i].Width, BorderBound[i].Height);
                 if (TextBound.Count == i || TextBound[i] == null)
                     TextBound.Add(tempText);
                 else
@@ -291,7 +291,7 @@ namespace ComposGH.UI
                     }
 
                     // background
-                    Brush background = new SolidBrush(Colour.GsaLightGrey);
+                    Brush background = new SolidBrush(Colour.UILightGrey);
                     // background
                     graphics.FillRectangle(background, BorderBound[i]);
                     // border
@@ -309,7 +309,7 @@ namespace ComposGH.UI
                     if (unfolded[i])
                     {
                         Pen penborder = new Pen(Brushes.Gray);
-                        Brush dropdownbackground = new SolidBrush(Colour.GsaLightGrey);
+                        Brush dropdownbackground = new SolidBrush(Colour.UILightGrey);
                         penborder.Width = 0.3f;
                         for (int j = 0; j < dropdownBounds[i].Count; j++)
                         {
