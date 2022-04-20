@@ -466,5 +466,59 @@ namespace ComposGH.Components
             return goo.Value;
         }
         #endregion
+
+        #region Webopening
+        internal static WebOpeningStiffeners WebOpeningStiffeners(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        {
+            WebOpeningStiffenersGoo goo = null;
+            GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+            if (DA.GetData(inputid, ref gh_typ))
+            {
+                if (gh_typ.Value is WebOpeningStiffenersGoo)
+                {
+                    goo = (WebOpeningStiffenersGoo)gh_typ.Value;
+                }
+                else
+                {
+                    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Web Opening Stiffeners");
+                    return null;
+                }
+            }
+            else if (!isOptional)
+                owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+            else
+            {
+                if (goo == null)
+                    return null;
+            }
+            return goo.Value;
+        }
+
+        internal static ComposWebOpening WebOpening(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        {
+            ComposWebOpeningGoo goo = null;
+            GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+            if (DA.GetData(inputid, ref gh_typ))
+            {
+                if (gh_typ.Value is ComposWebOpeningGoo)
+                {
+                    goo = (ComposWebOpeningGoo)gh_typ.Value;
+                }
+                else
+                {
+                    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Web Opening");
+                    return null;
+                }
+            }
+            else if (!isOptional)
+                owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+            else
+            {
+                if (goo == null)
+                    return null;
+            }
+            return goo.Value;
+        }
+        #endregion
     }
 }

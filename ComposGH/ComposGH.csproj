@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,11 +11,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ComposGH</RootNamespace>
     <AssemblyName>ComposGH</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -87,9 +88,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\1_Beam\CreateWebOpeningStiffener.cs" />
     <Compile Include="Components\1_Beam\CreateProfile.cs" />
+    <Compile Include="Components\1_Beam\CreateNotch.cs" />
+    <Compile Include="Components\1_Beam\CreateWebOpening.cs" />
     <Compile Include="Components\2_Studs\CustomStudSpacing.cs" />
     <Compile Include="Components\2_Studs\CustomStudDims.cs" />
+    <Compile Include="Components\2_Studs\StandardStudDimsEN.cs" />
+    <Compile Include="Components\2_Studs\StudSpecBS.cs" />
+    <Compile Include="Components\2_Studs\StudSpecEN.cs" />
     <Compile Include="Components\2_Studs\StudSpec.cs" />
     <Compile Include="Components\2_Studs\StandardStudDims.cs" />
     <Compile Include="Components\2_Studs\CreateStud.cs" />
@@ -110,7 +117,7 @@
     <Compile Include="Parameters\ComposWebOpening.cs" />
     <Compile Include="Parameters\StudDimensionsGoo.cs" />
     <Compile Include="Parameters\BeamSectionGoo.cs" />
-    <Compile Include="Parameters\WebOpeningStiffenerGoo.cs" />
+    <Compile Include="Parameters\WebOpeningStiffenersGoo.cs" />
     <Compile Include="Parameters\StudSpecGoo.cs" />
     <Compile Include="Parameters\StudSpacingGoo.cs" />
     <Compile Include="Parameters\ComposDesignCode.cs" />
@@ -156,6 +163,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
@@ -192,7 +200,7 @@
     <Folder Include="Components\9_Results\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\RebarMesh.png" />
+    <None Include="Properties\Icons\RebarMesh.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

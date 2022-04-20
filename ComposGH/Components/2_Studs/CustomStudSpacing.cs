@@ -28,7 +28,7 @@ namespace ComposGH.Components
                 Ribbon.SubCategoryName.Cat2())
         { this.Hidden = false; } // sets the initial state of the component to hidden
 
-        public override GH_Exposure Exposure => GH_Exposure.secondary;
+        public override GH_Exposure Exposure => GH_Exposure.quarternary | GH_Exposure.obscure;
 
         //protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateStudZoneLength;
         #endregion
@@ -97,7 +97,7 @@ namespace ComposGH.Components
             IQuantity length = new Length(0, lengthUnit);
             string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
-            pManager.AddGenericParameter("From [" + unitAbbreviation + "]", "F", "Distance from beam starting point where this Stud Spacing Groups begins", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Pos x [" + unitAbbreviation + "]", "Px", "Start Position where this Stud Spacing Groups begins on Beam (beam local x-axis)", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Rows", "R", "Number of rows (across the top flange)", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Lines", "L", "Number of lines (along the length of the beam", GH_ParamAccess.item);
             pManager.AddGenericParameter("Spacing [" + unitAbbreviation + "]", "S", "Spacing of studs in this group (distance between each line)", GH_ParamAccess.item);
@@ -162,7 +162,7 @@ namespace ComposGH.Components
             IQuantity length = new Length(0, lengthUnit);
             string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
             
-            Params.Input[0].Name = "From [" + unitAbbreviation + "]";
+            Params.Input[0].Name = "Pos x [" + unitAbbreviation + "]";
             Params.Input[3].Name = "Spacing [" + unitAbbreviation + "]";
         }
         #endregion

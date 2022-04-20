@@ -100,7 +100,7 @@ namespace ComposGH.Parameters
 
         public override string ToString()
         {
-            string size = this.StudDimension.Diameter.ToString() + "/" + this.StudDimension.Height.ToString();
+            string size = this.StudDimension.Diameter.As(Units.LengthUnitGeometry).ToString("f0") + "/" + this.StudDimension.Height.ToUnit(Units.LengthUnitGeometry).ToString("f0");
             return size.Replace(" ", string.Empty);
         }
 
