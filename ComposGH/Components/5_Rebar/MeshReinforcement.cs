@@ -26,7 +26,7 @@ namespace ComposGH.Components
         public override Guid ComponentGuid => new Guid("17960644-0DFC-4F5D-B17C-45E6FBC3732E"); 
         public override GH_Exposure Exposure => GH_Exposure.primary;
 
-        protected override System.Drawing.Bitmap Icon => Properties.Resources.RebarMesh;
+        protected override System.Drawing.Bitmap Icon => Properties.Resources.MeshReinforcement;
         #endregion
 
         #region Custom UI

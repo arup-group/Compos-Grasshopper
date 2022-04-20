@@ -343,7 +343,7 @@ namespace ComposGH.Parameters
 
         public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-        //protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
+        protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.ReinforcementParam;
 
         protected override GH_GetterResult Prompt_Plural(ref List<ComposReinforcementGoo> values)
         {

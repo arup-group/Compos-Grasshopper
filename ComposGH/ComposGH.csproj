@@ -163,8 +163,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
@@ -175,9 +175,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\CreateSteelMaterial.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateStudZoneLength.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\OpenModel.png" />
@@ -202,6 +199,96 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\RebarMesh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\BeamParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\ConvertUnitNumber.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreateBeam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreateDesignCode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreateStud.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreateUnitNumber.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CustomDecking.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CustomStudSpacing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\DeckingParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\DesignCodeParameter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\MeshReinforcement.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\ModelParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\Notch.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\RebarMaterial.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\ReinforcementParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\SlabParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\StandardDecking.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\StandardStudDims.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\StandardStudDimsEN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\StandardStudSpecs.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\StandardStudSpecsBS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\StandardStudSpecsEN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\Stiffener.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\StudParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\TransverseReinforcement.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\UnitParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\Units.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\WebOpening.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\WebOpeningParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CustomStudDims.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

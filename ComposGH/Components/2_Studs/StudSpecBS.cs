@@ -31,7 +31,7 @@ namespace ComposGH.Components
 
         public override GH_Exposure Exposure => GH_Exposure.tertiary | GH_Exposure.obscure;
 
-        //protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateStudZoneLength;
+        protected override System.Drawing.Bitmap Icon => Properties.Resources.StandardStudSpecsBS;
         #endregion
 
         #region Custom UI
