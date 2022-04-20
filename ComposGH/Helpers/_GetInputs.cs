@@ -387,31 +387,31 @@ namespace ComposGH.Components
         #endregion
 
         #region Reinforcement
-        internal static ComposReinforcement Reinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-        {
-            RebarMeshGoo goo = null;
-            GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
-            if (DA.GetData(inputid, ref gh_typ))
-            {
-                if (gh_typ.Value is RebarMeshGoo)
-                {
-                    goo = (RebarMeshGoo)gh_typ.Value;
-                }
-                else
-                {
-                    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Reinforcement");
-                    return null;
-                }
-            }
-            else if (!isOptional)
-                owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-            else
-            {
-                if (goo == null)
-                    return null;
-            }
-            return goo.Value;
-        }
+        //internal static ComposReinforcement Reinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        //{
+        //    ComposReinforcement goo = null;
+        //    GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+        //    if (DA.GetData(inputid, ref gh_typ))
+        //    {
+        //        if (gh_typ.Value is ComposReinforcement)
+        //        {
+        //            goo = (ComposReinforcement)gh_typ.Value;
+        //        }
+        //        else
+        //        {
+        //            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Reinforcement");
+        //            return null;
+        //        }
+        //    }
+        //    else if (!isOptional)
+        //        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+        //    else
+        //    {
+        //        if (goo == null)
+        //            return null;
+        //    }
+        //    return goo.Value; //??
+        //}
         internal static List<ComposReinforcement> TransverseReinforcements(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
         {
             List<ComposReinforcement> items = new List<ComposReinforcement>();
