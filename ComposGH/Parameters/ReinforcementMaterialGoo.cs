@@ -107,8 +107,7 @@ namespace ComposGH.Parameters
         public override string ToString()
         {
 
-            string f = (Fu.Value == 0) ? Fu.ToString() : Fu.ToString();
-
+            string f = Fu.ToUnit(Units.StressUnit).ToString("f0");
             return f.Replace(" ", string.Empty);
         }
         #endregion

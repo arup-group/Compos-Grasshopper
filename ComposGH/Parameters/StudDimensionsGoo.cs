@@ -171,11 +171,11 @@ namespace ComposGH.Parameters
         }
         public override string ToString()
         {
-            string dia = Diameter.ToString("f0");
-            string h = Height.ToString("f0");
-            string f = (Fu.Value == 0) ? CharacterStrength.ToString() : Fu.ToString();
+            string dia = Diameter.As(Units.LengthUnitGeometry).ToString("f0");
+            string h = Height.ToUnit(Units.LengthUnitGeometry).ToString("f0");
+            string f = (Fu.Value == 0) ? CharacterStrength.ToUnit(Units.ForceUnit).ToString("f0") : Fu.ToUnit(Units.StressUnit).ToString("f0");
             
-            return "Ø" + dia.Replace(" ", string.Empty) + "/" + h.Replace(" ", string.Empty) + " - " + f.Replace(" ", string.Empty);
+            return "Ø" + dia.Replace(" ", string.Empty) + "/" + h.Replace(" ", string.Empty) + ", f:" + f.Replace(" ", string.Empty);
         }
         #endregion
     }

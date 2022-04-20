@@ -15,23 +15,37 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Custom class: this class defines the basic properties and methods for our custom class
     /// </summary>
-    public class WebOpeningStiffener
+    public class WebOpeningsSpec
     {
-        public Length DistanceFrom { get; set; }
-        public Length TopStiffenerWidth { get; set; }
-        public Length TopStiffenerThickness { get; set; }
-        public Length BottomStiffenerWidth { get; set; }
-        public Length BottomStiffenerThickness { get; set; }
-        public bool BothSides { get; set; }
+        public enum Opening
+        {
+            Rectangular,
+            Notch_Left,
+            Notch_Right,
+            Circular
+        }
 
+        public enum Stiffeners
+        {
+            Without_Stiffeners,
+            With_Stiffeners
+        }
+
+        public Opening Opening_Type { get; set; }
+        public Stiffeners Stiffener_Type { get; set; }
 
         #region constructors
-        public WebOpeningStiffener()
+        public WebOpeningsSpec()
         {
-            // empty constructor
+            this.Opening_Type = Opening.Circular;
+            this.Stiffener_Type = Stiffeners.Without_Stiffeners;
         }
         
-        // add constructors here
+        public WebOpeningsSpec(Opening openingType = Opening.Circular, Stiffeners stiffenerType = Stiffeners.With_Stiffeners)
+        {
+            this.Opening_Type = openingType;
+            this.Stiffener_Type = stiffenerType;
+        }
 
         #endregion
 
@@ -47,10 +61,10 @@ namespace ComposGH.Parameters
 
         #region methods
 
-        public WebOpeningStiffener Duplicate()
+        public WebOpeningsSpec Duplicate()
         {
             if (this == null) { return null; }
-            WebOpeningStiffener dup = (WebOpeningStiffener)this.MemberwiseClone();
+            WebOpeningsSpec dup = (WebOpeningsSpec)this.MemberwiseClone();
             return dup;
         }
         public override string ToString()
@@ -64,17 +78,17 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
     /// </summary>
-    public class WebOpeningStiffenerGoo : GH_Goo<WebOpeningStiffener>
+    public class WebOpeningsGoo : GH_Goo<WebOpeningsSpec>
     {
         #region constructors
-        public WebOpeningStiffenerGoo()
+        public WebOpeningsGoo()
         {
-            this.Value = new WebOpeningStiffener();
+            this.Value = new WebOpeningsSpec();
         }
-        public WebOpeningStiffenerGoo(WebOpeningStiffener item)
+        public WebOpeningsGoo(WebOpeningsSpec item)
         {
             if (item == null)
-                item = new WebOpeningStiffener();
+                item = new WebOpeningsSpec();
             this.Value = item.Duplicate();
         }
 
@@ -82,15 +96,15 @@ namespace ComposGH.Parameters
         {
             return DuplicateGoo();
         }
-        public WebOpeningStiffenerGoo DuplicateGoo()
+        public WebOpeningsGoo DuplicateGoo()
         {
-            return new WebOpeningStiffenerGoo(Value == null ? new WebOpeningStiffener() : Value.Duplicate());
+            return new WebOpeningsGoo(Value == null ? new WebOpeningsSpec() : Value.Duplicate());
         }
         #endregion
 
         #region properties
         public override bool IsValid => true;
-        public override string TypeName => "Web Opening Stiffener";
+        public override string TypeName => "Web Opening";
         public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
         public override string IsValidWhyNot
         {
@@ -115,7 +129,7 @@ namespace ComposGH.Parameters
             // This function is called when Grasshopper needs to convert this 
             // instance of our custom class into some other type Q.            
 
-            if (typeof(Q).IsAssignableFrom(typeof(WebOpeningStiffener)))
+            if (typeof(Q).IsAssignableFrom(typeof(WebOpeningsSpec)))
             {
                 if (Value == null)
                     target = default;
@@ -135,9 +149,9 @@ namespace ComposGH.Parameters
             if (source == null) { return false; }
 
             //Cast from GsaMaterial
-            if (typeof(WebOpeningStiffener).IsAssignableFrom(source.GetType()))
+            if (typeof(WebOpeningsSpec).IsAssignableFrom(source.GetType()))
             {
-                Value = (WebOpeningStiffener)source;
+                Value = (WebOpeningsSpec)source;
                 return true;
             }
 

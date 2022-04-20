@@ -142,8 +142,8 @@ namespace ComposGH.Parameters
         }
         public override string ToString()
         {
-            string start = (this.DistanceFromStart.Value == 0) ? "" : this.DistanceFromStart.ToString().Replace(" ", string.Empty) + "<-";
-            string end = (this.DistanceFromEnd.Value == 0) ? "" : "->" + this.DistanceFromEnd.ToString().Replace(" ", string.Empty);
+            string start = (this.DistanceFromStart.Value == 0) ? "" : this.DistanceFromStart.As(Units.LengthUnitGeometry).ToString("f2").Replace(" ", string.Empty) + "<-";
+            string end = (this.DistanceFromEnd.Value == 0) ? "" : "->" + this.DistanceFromEnd.As(Units.LengthUnitGeometry).ToString("f2").Replace(" ", string.Empty);
             string startend = start + end;
             startend = startend.Replace("--", "-").Replace(",", string.Empty);
             string mat = this.Material.ToString();
