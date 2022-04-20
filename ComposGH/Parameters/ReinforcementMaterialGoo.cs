@@ -17,11 +17,6 @@ namespace ComposGH.Parameters
     /// </summary>
     public class RebarMaterial
     {
-        public enum RebarMatType
-        {
-            Standard,
-            Custom
-        }
         public Pressure Fu { get; set; }
 
         public enum StandardGrade
@@ -83,7 +78,6 @@ namespace ComposGH.Parameters
         {
             SetGradeFromStandard(standardGrade);
         }
-
         #endregion
 
         #region properties
