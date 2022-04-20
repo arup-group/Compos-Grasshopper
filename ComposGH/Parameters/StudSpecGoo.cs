@@ -25,9 +25,6 @@ namespace ComposGH.Parameters
         public Length NoStudZoneEnd { get; set; }
         public Length ReinforcementPosition { get; set; }
         
-        
-        
-        
         #region constructors
         public StudSpecification()
         {
