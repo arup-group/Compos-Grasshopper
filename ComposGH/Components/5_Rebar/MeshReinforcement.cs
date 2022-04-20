@@ -96,7 +96,7 @@ namespace ComposGH.Components
 
         #region Input and output
 
-        // list of lists with all dropdown lists conctent
+        // list of lists with all dropdown lists content
         List<List<string>> dropdownitems;
         // list of selected items
         List<string> selecteditems;
