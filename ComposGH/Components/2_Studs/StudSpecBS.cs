@@ -17,19 +17,19 @@ using Grasshopper.Kernel.Parameters;
 
 namespace ComposGH.Components
 {
-    public class CreateNotch : GH_Component, IGH_VariableParameterComponent
+    public class StudSpecBS : GH_Component, IGH_VariableParameterComponent
     {
         #region Name and Ribbon Layout
         // This region handles how the component in displayed on the ribbon
         // including name, exposure level and icon
-        public override Guid ComponentGuid => new Guid("de802051-ae6a-4249-8699-7ea0cfe8c528");
-        public CreateNotch()
-          : base("Beam Notch", "No", "Create Notch for a Compos Beam",
+        public override Guid ComponentGuid => new Guid("418590eb-52b0-455b-96e7-36df966d328f");
+        public StudSpecBS()
+          : base("Stud BS Specification", "StudSpecBS", "Create Stud Specification to BS5950-3-1 for a Compos Stud",
                 Ribbon.CategoryName.Name(),
-                Ribbon.SubCategoryName.Cat1())
+                Ribbon.SubCategoryName.Cat2())
         { this.Hidden = false; } // sets the initial state of the component to hidden
 
-        public override GH_Exposure Exposure => GH_Exposure.tertiary;
+        public override GH_Exposure Exposure => GH_Exposure.tertiary | GH_Exposure.obscure;
 
         //protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateStudZoneLength;
         #endregion
@@ -43,11 +43,6 @@ namespace ComposGH.Components
                 dropdownitems = new List<List<string>>();
                 selecteditems = new List<string>();
 
-                // type
-                dropdownitems.Add(Enum.GetValues(typeof(notch_types)).Cast<notch_types>()
-                    .Select(x => x.ToString().Replace('_', ' ')).ToList());
-                selecteditems.Add(notch_types.Both_ends.ToString().Replace('_', ' '));
-
                 // length
                 dropdownitems.Add(Units.FilteredLengthUnits);
                 selecteditems.Add(lengthUnit.ToString());
@@ -60,17 +55,10 @@ namespace ComposGH.Components
         {
             // change selected item
             selecteditems[i] = dropdownitems[i][j];
+            if (lengthUnit.ToString() == selecteditems[i])
+                return;
 
-            if (i == 0)
-            {
-                if (selecteditems[i] == openingType.ToString().Replace('_', ' '))
-                    return;
-                openingType = (notch_types)Enum.Parse(typeof(notch_types), selecteditems[i].Replace(' ', '_'));
-            }
-            else if (i == 1) // change is made to length unit
-            {
-                lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[i]);
-            }
+            lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[i]);
 
             // update name of inputs (to display unit on sliders)
             (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -81,9 +69,8 @@ namespace ComposGH.Components
 
         private void UpdateUIFromSelectedItems()
         {
-            openingType = (notch_types)Enum.Parse(typeof(notch_types), selecteditems[0].Replace(' ', '_'));
-            lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[1]);
-            
+            lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[0]);
+
             CreateAttributes();
             (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
             ExpireSolution(true);
@@ -97,18 +84,10 @@ namespace ComposGH.Components
         // list of descriptions 
         List<string> spacerDescriptions = new List<string>(new string[]
         {
-            "Position",
-            "Unit"
+            "Unit",
         });
-        private enum notch_types
-        {
-            Both_ends,
-            Start,
-            End
-        }
 
         private bool first = true;
-        private notch_types openingType = notch_types.Both_ends;
         private LengthUnit lengthUnit = Units.LengthUnitGeometry;
         #endregion
 
@@ -119,40 +98,37 @@ namespace ComposGH.Components
             IQuantity length = new Length(0, lengthUnit);
             string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
-            pManager.AddGenericParameter("Width [" + unitAbbreviation + "]", "B", "Web Opening Width", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Height [" + unitAbbreviation + "]", "H", "Web Opening Height", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Stiffeners", "WS", "(Optional) Web Opening Stiffeners", GH_ParamAccess.item);
+            pManager.AddGenericParameter("No Stud Zone Start [" + unitAbbreviation + "]", 
+                "NSZS", "Length of zone without shear studs at the start of the beam (default = 0)", GH_ParamAccess.item);
+            pManager.AddGenericParameter("No Stud Zone End [" + unitAbbreviation + "]", 
+                "NSZE", "Length of zone without shear studs at the end of the beam (default = 0)", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("EC4 Limit", "Lim", "Use 'Eurocode 4'limit on minimum percentage of shear interaction if it is worse than BS5950", GH_ParamAccess.item, true);
+            pManager[0].Optional = true;
+            pManager[1].Optional = true;
             pManager[2].Optional = true;
         }
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("WebOpening", "WO", "Notch Web Opening for a Compos Beam", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Stud Spec", "Spc", "Compos Shear Stud Specification", GH_ParamAccess.item);
         }
         #endregion
 
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            Length width = GetInput.Length(this, DA, 0, lengthUnit);
-            Length height = GetInput.Length(this, DA, 1, lengthUnit);
-            WebOpeningStiffeners stiff = GetInput.WebOpeningStiffeners(this, DA, 2, true);
+            // get default length inputs used for all cases
+            Length noStudZoneStart = Length.Zero;
+            if (this.Params.Input[0].Sources.Count > 0)
+                noStudZoneStart = GetInput.Length(this, DA, 0, lengthUnit, true);
+            Length noStudZoneEnd = Length.Zero;
+            if (this.Params.Input[1].Sources.Count > 0)
+                noStudZoneEnd = GetInput.Length(this, DA, 1, lengthUnit, true);
 
-            switch (openingType)
-            {
-                case notch_types.Start:
-                    DA.SetData(0, new ComposWebOpeningGoo(new ComposWebOpening(width, height, ComposWebOpening.NotchPosition.Start, stiff)));
-                    break;
+            bool ec4 = true;
+            DA.GetData(2, ref ec4);
 
-                case notch_types.End:
-                    DA.SetData(0, new ComposWebOpeningGoo(new ComposWebOpening(width, height, ComposWebOpening.NotchPosition.End, stiff)));
-                    break;
-
-                case notch_types.Both_ends:
-                    List<ComposWebOpeningGoo> both = new List<ComposWebOpeningGoo>();
-                    both.Add(new ComposWebOpeningGoo(new ComposWebOpening(width, height, ComposWebOpening.NotchPosition.Start, stiff)));
-                    both.Add(new ComposWebOpeningGoo(new ComposWebOpening(width, height, ComposWebOpening.NotchPosition.End, stiff)));
-                    DA.SetDataList(0, both);
-                    break;
-            }
+            StudSpecification specBS = new StudSpecification(
+                ec4, noStudZoneStart, noStudZoneEnd);
+            DA.SetData(0, new StudSpecificationGoo(specBS));
         }
 
         #region (de)serialization
@@ -192,15 +168,10 @@ namespace ComposGH.Components
         }
         void IGH_VariableParameterComponent.VariableParameterMaintenance()
         {
-            if (openingType == notch_types.Both_ends)
-                Params.Output[0].Access = GH_ParamAccess.list;
-            else
-                Params.Output[0].Access = GH_ParamAccess.item;
-
             IQuantity length = new Length(0, lengthUnit);
             string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
-            Params.Input[0].Name = "Width [" + unitAbbreviation + "]";
-            Params.Input[1].Name = "Height [" + unitAbbreviation + "]";
+            Params.Input[0].Name = "No Stud Zone Start [" + unitAbbreviation + "]";
+            Params.Input[1].Name = "No Stud Zone End [" + unitAbbreviation + "]";
         }
         #endregion
     }

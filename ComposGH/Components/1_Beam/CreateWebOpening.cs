@@ -116,8 +116,8 @@ namespace ComposGH.Components
 
             pManager.AddGenericParameter("Width [" + unitAbbreviation + "]", "B", "Web Opening Width", GH_ParamAccess.item);
             pManager.AddGenericParameter("Height [" + unitAbbreviation + "]", "H", "Web Opening Height", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Pos X [" + unitAbbreviation + "]", "pX", "Position of opening Centroid from Start of Beam (beam local x-axis)", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Pos Z [" + unitAbbreviation + "]", "pZ", "Position of opening Centroid from Top of Beam (beam local z-axis)", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Pos x [" + unitAbbreviation + "]", "Px", "Position of opening Centroid from Start of Beam (beam local x-axis)", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Pos z [" + unitAbbreviation + "]", "Pz", "Position of opening Centroid from Top of Beam (beam local z-axis)", GH_ParamAccess.item);
             pManager.AddGenericParameter("Stiffeners", "WS", "(Optional) Web Opening Stiffeners", GH_ParamAccess.item);
             pManager[4].Optional = true;
         }
@@ -177,20 +177,8 @@ namespace ComposGH.Components
                 if (this.Params.Input.Count == 4)
                     return;
 
-                // remove parameters until param first
-                IGH_Param stiff = Params.Input[4];
-                Params.UnregisterInputParameter(Params.Input[4], false);
-                IGH_Param z = Params.Input[3];
-                Params.UnregisterInputParameter(Params.Input[3], false);
-                IGH_Param x = Params.Input[2];
-                Params.UnregisterInputParameter(Params.Input[2], false);
                 // remove height param
                 Params.UnregisterInputParameter(Params.Input[1], true);
-
-                // re-add other params
-                Params.RegisterInputParam(x);
-                Params.RegisterInputParam(z);
-                Params.RegisterInputParam(stiff);
             }
         }
         #endregion
@@ -248,13 +236,13 @@ namespace ComposGH.Components
                 Params.Input[i].Description = "Web Opening Height";
                 Params.Input[i].Optional = false;
                 i++;
-                Params.Input[i].Name = "Pos X [" + unitAbbreviation + "]";
-                Params.Input[i].NickName = "pX";
+                Params.Input[i].Name = "Pos x [" + unitAbbreviation + "]";
+                Params.Input[i].NickName = "Px";
                 Params.Input[i].Description = "Position of opening Centroid from Start of Beam (beam local x-axis)";
                 Params.Input[i].Optional = false;
                 i++;
-                Params.Input[i].Name = "Pos Z [" + unitAbbreviation + "]";
-                Params.Input[i].NickName = "pZ";
+                Params.Input[i].Name = "Pos z [" + unitAbbreviation + "]";
+                Params.Input[i].NickName = "Pz";
                 Params.Input[i].Description = "Position of opening Centroid from Top of Beam (beam local z-axis)";
                 Params.Input[i].Optional = false;
                 i++;
@@ -271,13 +259,13 @@ namespace ComposGH.Components
                 Params.Input[i].Description = "Web Opening Diameter";
                 Params.Input[i].Optional = false;
                 i++;
-                Params.Input[i].Name = "Pos X [" + unitAbbreviation + "]";
-                Params.Input[i].NickName = "pX";
+                Params.Input[i].Name = "Pos x [" + unitAbbreviation + "]";
+                Params.Input[i].NickName = "Px";
                 Params.Input[i].Description = "Position of opening Centroid from Start of Beam (beam local x-axis)";
                 Params.Input[i].Optional = false;
                 i++;
-                Params.Input[i].Name = "Pos Z [" + unitAbbreviation + "]";
-                Params.Input[i].NickName = "pZ";
+                Params.Input[i].Name = "Pos z [" + unitAbbreviation + "]";
+                Params.Input[i].NickName = "Pz";
                 Params.Input[i].Description = "Position of opening Centroid from Top of Beam (beam local z-axis)";
                 Params.Input[i].Optional = false;
                 i++;

@@ -120,7 +120,7 @@ namespace ComposGH.Components
             string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
             pManager.AddBooleanParameter("Both Sides", "BS", "Set to true to apply horizontal stiffeners on both sides of web", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Distance [" + unitAbbreviation + "]", "d", "Distance above/below opening edge to centre of stiffener", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Dist. z [" + unitAbbreviation + "]", "Dz", "Vertical distance above/below opening edge to centre of stiffener (beam local z-axis)", GH_ParamAccess.item);
             pManager.AddGenericParameter("Top Width [" + unitAbbreviation + "]", "Wt", "Top Stiffener Width", GH_ParamAccess.item);
             pManager.AddGenericParameter("Top Thickness [" + unitAbbreviation + "]", "Tt", "Top Stiffener Thickness", GH_ParamAccess.item);
             pManager.AddGenericParameter("Bottom Width [" + unitAbbreviation + "]", "Wb", "Bottom Stiffener Width", GH_ParamAccess.item);
@@ -215,7 +215,7 @@ namespace ComposGH.Components
         {
             IQuantity length = new Length(0, lengthUnit);
             string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
-            Params.Input[1].Name = "Distance [" + unitAbbreviation + "]";
+            Params.Input[1].Name = "Dist. z [" + unitAbbreviation + "]";
             Params.Input[2].Name = "Top Width [" + unitAbbreviation + "]";
             Params.Input[3].Name = "Top Thickness [" + unitAbbreviation + "]";
 
