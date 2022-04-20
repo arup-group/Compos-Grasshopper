@@ -24,7 +24,7 @@ namespace ComposGH.Components
         // including name, exposure level and icon
         public override Guid ComponentGuid => new Guid("084fa2ab-d50e-4213-8f44-2affc9f41752");
         public CreateWebOpening()
-          : base("Web Opening", "WO", "Create Web Opening for a Compos Beam",
+          : base("Web Opening", "WebOpen", "Create Web Opening for a Compos Beam",
                 Ribbon.CategoryName.Name(),
                 Ribbon.SubCategoryName.Cat1())
         { this.Hidden = false; } // sets the initial state of the component to hidden

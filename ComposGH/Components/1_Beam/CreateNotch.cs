@@ -24,7 +24,7 @@ namespace ComposGH.Components
         // including name, exposure level and icon
         public override Guid ComponentGuid => new Guid("de802051-ae6a-4249-8699-7ea0cfe8c528");
         public CreateNotch()
-          : base("Beam Notch", "No", "Create Notch for a Compos Beam",
+          : base("Beam Notch", "Notch", "Create Notch for a Compos Beam",
                 Ribbon.CategoryName.Name(),
                 Ribbon.SubCategoryName.Cat1())
         { this.Hidden = false; } // sets the initial state of the component to hidden
