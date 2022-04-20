@@ -389,7 +389,7 @@ namespace ComposGH.Components
         #region Reinforcement
         internal static ComposReinforcement Reinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
         {
-            ComposReinforcement goo = null;
+            ComposReinforcementGoo goo = null;
             GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
             if (DA.GetData(inputid, ref gh_typ))
             {
@@ -410,7 +410,7 @@ namespace ComposGH.Components
                 if (goo == null)
                     return null;
             }
-            return goo.Value; //??
+            return goo.Value;
         }
         internal static List<ComposReinforcement> TransverseReinforcements(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
         {
