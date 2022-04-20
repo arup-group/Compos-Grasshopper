@@ -332,7 +332,6 @@ namespace ComposGH.Parameters
     /// <summary>
     /// This class provides a Parameter interface for the CustomGoo type.
     /// </summary>
-
     public class ComposReinforcementParameter : GH_PersistentParam<ComposReinforcementGoo>
     {
         public ComposReinforcementParameter()
@@ -386,5 +385,4 @@ namespace ComposGH.Parameters
         }
         #endregion
     }
-
 }
