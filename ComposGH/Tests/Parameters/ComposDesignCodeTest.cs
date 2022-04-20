@@ -1,6 +1,5 @@
 using Xunit;
 
-// are we sure about this namespace?
 using static ComposGH.Parameters.DesignCode;
 
 namespace ComposGH.Parameters.Tests
@@ -8,7 +7,7 @@ namespace ComposGH.Parameters.Tests
   public class ComposDesignCodeTest
   {
     [Fact]
-    public void TestConstructor()
+    public DesignCode TestConstructor()
     {
       Code code = Code.EN1994_1_1_2004;
       NationalAnnex nationalAnnex = NationalAnnex.Generic;
@@ -17,6 +16,8 @@ namespace ComposGH.Parameters.Tests
 
       Assert.Equal(code, designCode.Design_Code);
       Assert.Equal(nationalAnnex, designCode.National_Annex);
+
+      return designCode;
     }
 
     [Fact]
