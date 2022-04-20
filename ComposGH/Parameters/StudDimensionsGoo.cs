@@ -99,13 +99,13 @@ namespace ComposGH.Parameters
             switch (standardGrade)
             {
                 case StandardGrade.SD1_EN13918:
-                    this.Fu = new Pressure(400, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.Fu = new Pressure(400, UnitsNet.Units.PressureUnit.NewtonPerSquareMillimeter);
                     break;
                 case StandardGrade.SD2_EN13918:
-                    this.Fu = new Pressure(450, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.Fu = new Pressure(450, UnitsNet.Units.PressureUnit.NewtonPerSquareMillimeter);
                     break;
                 case StandardGrade.SD3_EN13918:
-                    this.Fu = new Pressure(500, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.Fu = new Pressure(500, UnitsNet.Units.PressureUnit.NewtonPerSquareMillimeter);
                     break;
             }
         }
