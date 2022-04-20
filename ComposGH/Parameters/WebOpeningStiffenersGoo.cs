@@ -40,12 +40,12 @@ namespace ComposGH.Parameters
         /// <param name="bothSides"></param>
         public WebOpeningStiffeners(Length startPos, Length topWidth, Length topTHK, Length bottomWidth, Length bottomTHK, bool bothSides)
         {
-            this.isBothSides = bothSides;
             this.DistanceFrom = startPos;
             this.TopStiffenerWidth = topWidth;
             this.TopStiffenerThickness = topTHK;
             this.BottomStiffenerWidth = bottomWidth;
             this.BottomStiffenerThickness = bottomTHK;
+            this.isBothSides = bothSides;
             this.isNotch = false;
         }
         /// <summary>
