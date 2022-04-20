@@ -17,13 +17,13 @@ using Grasshopper.Kernel.Parameters;
 
 namespace ComposGH.Components
 {
-    public class CreateReinf : GH_Component, IGH_VariableParameterComponent
+    public class CreateTransRf : GH_Component, IGH_VariableParameterComponent
     {
         #region Name and Ribbon Layout
         // This region handles how the component in displayed on the ribbon
         // including name, exposure level and icon
         public override Guid ComponentGuid => new Guid("236F55AF-8AC1-4349-8240-23F5C52D6E79");
-        public CreateReinf()
+        public CreateTransRf()
           : base("Create Reinf", "Reinf", "Create Compos Reinforcement",
                 Ribbon.CategoryName.Name(),
                 Ribbon.SubCategoryName.Cat5())
@@ -31,7 +31,7 @@ namespace ComposGH.Components
 
         public override GH_Exposure Exposure => GH_Exposure.primary;
 
-        //protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateReinfZoneLength;
+        //protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateTransRf;
         #endregion
 
         #region Custom UI
@@ -42,10 +42,9 @@ namespace ComposGH.Components
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter("Mesh reinforcement", "Mesh", "Mesh reinforcement type for Compos Slab Reinforcement", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Reinforcement material", "Ref", "Reinforcement steel material", GH_ParamAccess.item); //TODO
-            pManager.AddGenericParameter("Rebar Spacing", "RbS", "Custom Compos Transverse Rebar Spacing", GH_ParamAccess.item);
-            pManager[2].Optional = true;
+            pManager.AddGenericParameter("Reinforcement material", "Ref", "Reinforcement steel material", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Rebar Spacing", "RbS", "List of Custom Compos Transverse Rebar Spacing", GH_ParamAccess.list);
+            pManager[1].Optional = true;
         }
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
@@ -55,11 +54,10 @@ namespace ComposGH.Components
 
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            RebarMesh mesh = GetInput.ComposReinforcement(this, DA, 0);
-            Rebar mat = GetInput.Rebar(this, DA, 1);
-            List<RebarGroupSpacing> spacings = GetInput.RebarSpacings(this, DA, 2);
+            Rebar mat = GetInput.Rebar(this, DA, 0);
+            List<RebarGroupSpacing> spacings = GetInput.RebarSpacings(this, DA, 1);
             
-            DA.SetData(0, new ComposReinfGoo(new ComposReinf(mesh, mat, spacings)));
+            DA.SetData(0, new ComposReinfGoo(new ComposReinf(mat, spacings)));
 
         }
 
@@ -83,6 +81,7 @@ namespace ComposGH.Components
         }
         void IGH_VariableParameterComponent.VariableParameterMaintenance()
         {
+            //empty
         }
         #endregion
     }

@@ -95,7 +95,7 @@
     <Compile Include="Components\2_Studs\CreateStud.cs" />
     <Compile Include="Components\4_Decking\StnadardDeck.cs" />
     <Compile Include="Components\4_Decking\CustomDeck.cs" />
-    <Compile Include="Components\5_Rebar\CreateReinforcement.cs" />
+    <Compile Include="Components\5_Rebar\CreateTransRf.cs" />
     <Compile Include="Components\5_Rebar\RebarMat.cs" />
     <Compile Include="Components\5_Rebar\CustomRebarSpacing.cs" />
     <Compile Include="Components\5_Rebar\CreateMesh.cs" />

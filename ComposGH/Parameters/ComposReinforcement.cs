@@ -17,7 +17,6 @@ namespace ComposGH.Parameters
     /// </summary>
     public class ComposReinf
     {
-        public RebarMesh RebarMesh { get; set; }
         public Rebar Rebar { get; set; }
 
         // Rebar Spacing
@@ -29,9 +28,8 @@ namespace ComposGH.Parameters
         {
             // empty constructor
         }
-        public ComposReinf(RebarMesh mesh, Rebar mat, List<RebarGroupSpacing> spacings)
+        public ComposReinf(Rebar mat, List<RebarGroupSpacing> spacings)
         {
-            this.RebarMesh = mesh;
             this.Rebar = mat;
             this.CustomSpacing = spacings;
             //this.CheckReinfSpacing = checkSpacing;
@@ -74,7 +72,7 @@ namespace ComposGH.Parameters
 
         public override string ToString()
         {
-            string size = this.RebarMesh.ToString() + "/" + this.Rebar.ToString();
+            string size = this.Rebar.ToString();
             return size.Replace(" ", string.Empty);
         }
 

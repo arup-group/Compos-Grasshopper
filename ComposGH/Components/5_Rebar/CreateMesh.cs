@@ -24,7 +24,7 @@ namespace ComposGH.Components
                 Ribbon.SubCategoryName.Cat5())
         { this.Hidden = false; }
         public override Guid ComponentGuid => new Guid("17960644-0DFC-4F5D-B17C-45E6FBC3732E"); 
-        public override GH_Exposure Exposure => GH_Exposure.secondary;
+        public override GH_Exposure Exposure => GH_Exposure.primary;
 
         protected override System.Drawing.Bitmap Icon => Properties.Resources.RebarMesh;
         #endregion

@@ -421,7 +421,7 @@ namespace ComposGH.Components
                 for (int i = 0; i < gh_typs.Count; i++)
                 {
                     // try cast directly to quantity type
-                    if (gh_typs[i].Value is StudGroupSpacingGoo)
+                    if (gh_typs[i].Value is RebarGroupSpacingGoo)
                     {
                         RebarGroupSpacingGoo goo = (RebarGroupSpacingGoo)gh_typs[i].Value;
                         items.Add(goo.Value);
