@@ -187,7 +187,7 @@ namespace UnitsNet.GH
         public override GH_Exposure Exposure => GH_Exposure.quarternary | GH_Exposure.obscure;
 
 
-        //protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.UnitParam;
+        protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.UnitParam;
 
         protected override GH_GetterResult Prompt_Plural(ref List<GH_UnitNumber> values)
         {

@@ -30,7 +30,7 @@ namespace ComposGH.Components
         public override Guid ComponentGuid => new Guid("E832E3E8-1EF9-4F31-BC2A-683881E4BAC3");
         public override GH_Exposure Exposure => GH_Exposure.primary;
 
-        //protected override System.Drawing.Bitmap Icon => Properties.Resources.RebarSpacing;
+        protected override System.Drawing.Bitmap Icon => Properties.Resources.TransverseReinforcement;
         #endregion
 
         #region Custom UI
@@ -95,11 +95,11 @@ namespace ComposGH.Components
             IQuantity length = new Length(0, lengthUnit);
             string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
             
-            pManager.AddGenericParameter("Material", "RMt", "Reinforcement Materia", GH_ParamAccess.item);
-            pManager.AddGenericParameter("From [" + unitAbbreviation + "]", "PS", "Starting Point from beam start where this Rebar Spacing Groups begins", GH_ParamAccess.item);
-            pManager.AddGenericParameter("To [" + unitAbbreviation + "]", "PE", "End Point from beam start point where this Rebar Spacing Groups begins", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Material", "RMt", "Reinforcement Material", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Start Pos x [" + unitAbbreviation + "]", "PxS", "Start Position where this Rebar Spacing Groups begins on Beam (beam local x-axis)", GH_ParamAccess.item);
+            pManager.AddGenericParameter("End Pos x [" + unitAbbreviation + "]", "PxE", "End Position where this Rebar Spacing Groups begins on Beam (beam local x-axis)", GH_ParamAccess.item);
             pManager.AddGenericParameter("Diameter [" + unitAbbreviation + "]", "Ø", "Transverse rebar diameter", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Spacing [" + unitAbbreviation + "]", "S", "The centre/centre distance rebars in this group", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Spacing [" + unitAbbreviation + "]", "S", "The centre/centre distance between rebars in this group (along beam local x-axis)", GH_ParamAccess.item);
             pManager.AddGenericParameter("Cover [" + unitAbbreviation + "]", "Cov", "Reinforcement cover", GH_ParamAccess.item);
 
         }
@@ -162,8 +162,8 @@ namespace ComposGH.Components
             IQuantity length = new Length(0, lengthUnit);
             string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
-            Params.Input[1].Name = "From [" + unitAbbreviation + "]";
-            Params.Input[2].Name = "To [" + unitAbbreviation + "]";
+            Params.Input[1].Name = "Start Pos x [" + unitAbbreviation + "]";
+            Params.Input[2].Name = "End Pos x [" + unitAbbreviation + "]";
             Params.Input[3].Name = "Diameter [" + unitAbbreviation + "]";
             Params.Input[4].Name = "Spacing [" + unitAbbreviation + "]";
             Params.Input[5].Name = "Cover [" + unitAbbreviation + "]";

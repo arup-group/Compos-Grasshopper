@@ -30,7 +30,7 @@ namespace ComposGH.Components
 
         public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-        //protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateStudZoneLength;
+        protected override System.Drawing.Bitmap Icon => Properties.Resources.RebarMaterial;
         #endregion
 
         #region Custom UI
