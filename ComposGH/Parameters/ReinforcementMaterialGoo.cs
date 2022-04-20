@@ -15,7 +15,7 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Custom class: this class defines the basic properties and methods for our custom class
     /// </summary>
-    public class Rebar
+    public class RebarMaterial
     {
         public enum RebarMatType
         {
@@ -70,16 +70,16 @@ namespace ComposGH.Parameters
         }
 
         #region constructors
-        public Rebar()
+        public RebarMaterial()
         {
             // empty constructor
         }
-        public Rebar(Pressure fu)
+        public RebarMaterial(Pressure fu)
         {
             this.Fu = fu;
         }
  
-        public Rebar(StandardGrade standardGrade)
+        public RebarMaterial(StandardGrade standardGrade)
         {
             SetGradeFromStandard(standardGrade);
         }
@@ -98,10 +98,10 @@ namespace ComposGH.Parameters
 
         #region methods
 
-        public Rebar Duplicate()
+        public RebarMaterial Duplicate()
         {
             if (this == null) { return null; }
-            Rebar dup = (Rebar)this.MemberwiseClone();
+            RebarMaterial dup = (RebarMaterial)this.MemberwiseClone();
             return dup;
         }
         public override string ToString()
@@ -117,17 +117,17 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Goo wrapH class, makes sure our custom class can be used in GrasshopH.
     /// </summary>
-    public class RebarGoo : GH_Goo<Rebar>
+    public class RebarMaterialGoo : GH_Goo<RebarMaterial>
     {
         #region constructors
-        public RebarGoo()
+        public RebarMaterialGoo()
         {
-            this.Value = new Rebar();
+            this.Value = new RebarMaterial();
         }
-        public RebarGoo(Rebar item)
+        public RebarMaterialGoo(RebarMaterial item)
         {
             if (item == null)
-                item = new Rebar();
+                item = new RebarMaterial();
             this.Value = item.Duplicate();
         }
 
@@ -135,9 +135,9 @@ namespace ComposGH.Parameters
         {
             return DuplicateGoo();
         }
-        public RebarGoo DuplicateGoo()
+        public RebarMaterialGoo DuplicateGoo()
         {
-            return new RebarGoo(Value == null ? new Rebar() : Value.Duplicate());
+            return new RebarMaterialGoo(Value == null ? new RebarMaterial() : Value.Duplicate());
         }
         #endregion
 
@@ -168,7 +168,7 @@ namespace ComposGH.Parameters
             // This function is called when GrasshopH needs to convert this 
             // instance of our custom class into some other type Q.            
 
-            if (typeof(Q).IsAssignableFrom(typeof(Rebar)))
+            if (typeof(Q).IsAssignableFrom(typeof(RebarMaterial)))
             {
                 if (Value == null)
                     target = default;
@@ -188,9 +188,9 @@ namespace ComposGH.Parameters
             if (source == null) { return false; }
 
             //Cast from GsaMaterial
-            if (typeof(Rebar).IsAssignableFrom(source.GetType()))
+            if (typeof(RebarMaterial).IsAssignableFrom(source.GetType()))
             {
-                Value = (Rebar)source;
+                Value = (RebarMaterial)source;
                 return true;
             }
 

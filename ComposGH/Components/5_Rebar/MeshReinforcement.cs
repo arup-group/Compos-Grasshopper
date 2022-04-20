@@ -19,7 +19,7 @@ namespace ComposGH.Components
     {
         #region Name and Ribbon Layout
         public CreateMesh()
-            : base("Create Rebar Mesh", "Rebar Mesh", "Create Rebar Mesh for a Compos Slab",
+            : base("Mesh Reinforcement", "MeshRb", "Create Compos Slab Reinforcement from a Standard Reinforment Mesh",
                 Ribbon.CategoryName.Name(),
                 Ribbon.SubCategoryName.Cat5())
         { this.Hidden = false; }
@@ -39,7 +39,7 @@ namespace ComposGH.Components
                 selecteditems = new List<string>();
 
                 // mesh
-                dropdownitems.Add(Enum.GetValues(typeof(RebarMesh.MeshType)).Cast<RebarMesh.MeshType>().Select(x => x.ToString()).ToList());
+                dropdownitems.Add(Enum.GetValues(typeof(MeshReinforcement.ReinforcementMeshType)).Cast<MeshReinforcement.ReinforcementMeshType>().Select(x => x.ToString()).ToList());
                 dropdownitems[0].RemoveAt(0); //
                 selecteditems.Add(mesh.ToString());
 
@@ -64,7 +64,7 @@ namespace ComposGH.Components
                 if (mesh.ToString() == selecteditems[i])
                     return; // return if selected value is same as before
 
-                mesh = (RebarMesh.MeshType)Enum.Parse(typeof(RebarMesh.MeshType), selecteditems[i]);
+                mesh = (MeshReinforcement.ReinforcementMeshType)Enum.Parse(typeof(MeshReinforcement.ReinforcementMeshType), selecteditems[i]);
 
                 //ToggleInput();
             }
@@ -83,7 +83,7 @@ namespace ComposGH.Components
 
         private void UpdateUIFromSelectedItems()
         {
-            mesh = (RebarMesh.MeshType)Enum.Parse(typeof(RebarMesh.MeshType), selecteditems[0]);
+            mesh = (MeshReinforcement.ReinforcementMeshType)Enum.Parse(typeof(MeshReinforcement.ReinforcementMeshType), selecteditems[0]);
             lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[1]);
 
             CreateAttributes();
@@ -108,7 +108,7 @@ namespace ComposGH.Components
         });
         private bool first = true;
         private LengthUnit lengthUnit = Units.LengthUnitGeometry;
-        private RebarMesh.MeshType mesh = RebarMesh.MeshType.A393;
+        private MeshReinforcement.ReinforcementMeshType mesh = MeshReinforcement.ReinforcementMeshType.A393;
         #endregion
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
@@ -122,7 +122,7 @@ namespace ComposGH.Components
         }
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Mesh reinforcement", "Mesh", "Mesh reinforcement type for Compos Slab Reinforcement", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Reinforcement", "Rb", "Mesh Reinforcement for Compos Slab", GH_ParamAccess.item);
         }
 
         protected override void SolveInstance(IGH_DataAccess DA)
@@ -134,8 +134,7 @@ namespace ComposGH.Components
 
             bool rotated = false;
             DA.GetData(1, ref rotated);
-            DA.SetData(0, new RebarMeshGoo(new RebarMesh(cov,mesh,rotated)));
-
+            DA.SetData(0, new ComposReinforcementGoo(new ComposReinforcement(cov, mesh, rotated)));
         }
         
 

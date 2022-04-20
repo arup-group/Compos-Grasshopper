@@ -174,15 +174,15 @@ namespace ComposGH.Parameters
     public class ComposWebOpeningParameter : GH_PersistentParam<ComposWebOpeningGoo>
     {
         public ComposWebOpeningParameter()
-          : base(new GH_InstanceDescription("Stud", "Std", "Compos Stud", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
+          : base(new GH_InstanceDescription("WebOpening", "WO", "Compos Web Opening", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
         {
         }
 
         public override Guid ComponentGuid => new Guid("eb70e868-29d9-4fae-9ef7-c465f3762a43");
 
-        public override GH_Exposure Exposure => GH_Exposure.secondary | GH_Exposure.obscure;
+        public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-        protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
+        //protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
 
         protected override GH_GetterResult Prompt_Plural(ref List<ComposWebOpeningGoo> values)
         {

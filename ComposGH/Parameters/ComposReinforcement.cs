@@ -15,26 +15,187 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Custom class: this class defines the basic properties and methods for our custom class
     /// </summary>
-    public class ComposReinf
+    public class MeshReinforcement
     {
-        public Rebar Rebar { get; set; }
+        public Length Cover { get; set; }
+        public ReinforcementMeshType Type { get; set; }
+        public bool Rotated { get; set; }
 
-        // Rebar Spacing
-        public List<RebarGroupSpacing> CustomSpacing { get; set; } = null;
-
+        public enum ReinforcementMeshType
+        {
+            A393,
+            A252,
+            A193,
+            A142,
+            A98,
+            B1131,
+            B785,
+            B503,
+            B385,
+            B283,
+            B196,
+            C785,
+            C636,
+            C503,
+            C385,
+            C283
+        }
 
         #region constructors
-        public ComposReinf()
+        public MeshReinforcement()
+        {
+            //empty constructor
+        }
+
+        public MeshReinforcement(Length cover, ReinforcementMeshType meshType = ReinforcementMeshType.A393, bool rotated = false)
+        {
+            this.Cover = cover;
+            this.Type = meshType;
+            this.Rotated = rotated;
+        }
+
+        #endregion
+
+        #region properties
+        public bool IsValid
+        {
+            get
+            {
+                return true;
+            }
+        }
+        #endregion
+
+        #region methods
+
+        public MeshReinforcement Duplicate()
+        {
+            if (this == null) { return null; }
+            MeshReinforcement dup = (MeshReinforcement)this.MemberwiseClone();
+            return dup;
+        }
+        public override string ToString()
+        {
+            string cov = Cover.ToString("f0");
+            string msh = Type.ToString();
+
+            string rotated = (this.Rotated == true) ? " (rotated)" : "";
+
+
+            return msh.Replace(" ", string.Empty) + rotated + ", c:" + cov.Replace(" ", string.Empty);
+        }
+        #endregion
+    }
+    /// <summary>
+    /// Custom class: this class defines the basic properties and methods for our custom class
+    /// </summary>
+    public class TransverseReinforcement
+    {
+        public Length DistanceFromStart { get; set; }
+        public Length DistanceFromEnd { get; set; }
+        public Length Diameter { get; set; }
+        public Length Spacing { get; set; }
+        public Length Cover { get; set; }
+        public RebarMaterial Material { get; set; }
+
+        // Rebar spacing
+        public enum RebarSpacingType
+        {
+            Automatic,
+            Custom
+        }
+        #region constructors
+        public TransverseReinforcement()
         {
             // empty constructor
         }
-        public ComposReinf(Rebar mat, List<RebarGroupSpacing> spacings)
+
+        public TransverseReinforcement(RebarMaterial material, Length distanceFromStart, Length distanceFromEnd, Length diameter, Length spacing, Length cover)
         {
-            this.Rebar = mat;
-            this.CustomSpacing = spacings;
-            //this.CheckReinfSpacing = checkSpacing;
+            this.Material = material;
+            this.DistanceFromStart = distanceFromStart;
+            this.DistanceFromEnd = distanceFromEnd;
+            this.Diameter = diameter;
+            this.Spacing = spacing;
+            this.Cover = cover;
         }
 
+        #endregion
+
+        #region properties
+        public bool IsValid
+        {
+            get
+            {
+                return true;
+            }
+        }
+        #endregion
+
+        #region methods
+
+        public TransverseReinforcement Duplicate()
+        {
+            if (this == null) { return null; }
+            TransverseReinforcement dup = (TransverseReinforcement)this.MemberwiseClone();
+            return dup;
+        }
+        public override string ToString()
+        {
+            string start = (this.DistanceFromStart.Value == 0) ? "" : this.DistanceFromStart.ToString().Replace(" ", string.Empty) + "<-";
+            string end = (this.DistanceFromEnd.Value == 0) ? "" : "->" + this.DistanceFromEnd.ToString().Replace(" ", string.Empty);
+            string startend = start + end;
+            startend = startend.Replace("--", "-").Replace(",", string.Empty);
+            string mat = this.Material.ToString();
+            string dia = "Ø" + this.Diameter.ToString().Replace(" ", string.Empty);
+            string spacing = "/" + this.Spacing.ToString().Replace(" ", string.Empty);
+            string cov = ", c:" + this.Cover.ToString().Replace(" ", string.Empty);
+            string diaspacingcov = dia + spacing + cov;
+
+            string joined = string.Join(" ", new List<string>() { startend, mat, diaspacingcov });
+            return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');
+        }
+        #endregion
+    }
+    /// <summary>
+    /// Custom class: this class defines the basic properties and methods for our custom class
+    /// </summary>
+    public class ComposReinforcement
+    {
+        public MeshReinforcement Mesh { get; set; }
+        public TransverseReinforcement Transverse { get; set; }
+        internal enum ReinforcementType
+        {
+            Mesh,
+            Transverse
+        }
+        internal ReinforcementType Type { get; set; }
+
+        #region constructors
+        public ComposReinforcement()
+        {
+            // empty constructor
+        }
+        public ComposReinforcement(MeshReinforcement mesh)
+        {
+            this.Mesh = mesh;
+            this.Type = ReinforcementType.Mesh;
+        }
+        public ComposReinforcement(Length cover, MeshReinforcement.ReinforcementMeshType meshType = MeshReinforcement.ReinforcementMeshType.A393, bool rotated = false)
+        {
+            this.Mesh = new MeshReinforcement(cover, meshType, rotated);
+            this.Type = ReinforcementType.Mesh;
+        }
+        public ComposReinforcement(TransverseReinforcement transverse)
+        {
+            this.Transverse = transverse;
+            this.Type = ReinforcementType.Transverse;
+        }
+        public ComposReinforcement(RebarMaterial material, Length distanceFromStart, Length distanceFromEnd, Length diameter, Length spacing, Length cover)
+        {
+            this.Transverse = new TransverseReinforcement(material, distanceFromStart, distanceFromEnd, diameter, spacing, cover);
+            this.Type = ReinforcementType.Transverse;
+        }
 
         #endregion
 
@@ -49,7 +210,7 @@ namespace ComposGH.Parameters
         #endregion
 
         #region coa interop
-        internal ComposReinf(string coaString)
+        internal ComposReinforcement(string coaString)
         {
             // to do - implement from coa string method
         }
@@ -63,17 +224,21 @@ namespace ComposGH.Parameters
 
         #region methods
 
-        public ComposReinf Duplicate()
+        public ComposReinforcement Duplicate()
         {
             if (this == null) { return null; }
-            ComposReinf dup = (ComposReinf)this.MemberwiseClone();
+            ComposReinforcement dup = (ComposReinforcement)this.MemberwiseClone();
             return dup;
         }
 
         public override string ToString()
         {
-            string size = this.Rebar.ToString();
-            return size.Replace(" ", string.Empty);
+            switch (Type)
+            {
+                case ReinforcementType.Mesh: return this.Mesh.ToString();
+                case ReinforcementType.Transverse: return this.Transverse.ToString();
+                default: return base.ToString();
+            }
         }
 
         #endregion
@@ -82,17 +247,17 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
     /// </summary>
-    public class ComposReinfGoo : GH_Goo<ComposReinf>
+    public class ComposReinforcementGoo : GH_Goo<ComposReinforcement>
     {
         #region constructors
-        public ComposReinfGoo()
+        public ComposReinforcementGoo()
         {
-            this.Value = new ComposReinf();
+            this.Value = new ComposReinforcement();
         }
-        public ComposReinfGoo(ComposReinf item)
+        public ComposReinforcementGoo(ComposReinforcement item)
         {
             if (item == null)
-                item = new ComposReinf();
+                item = new ComposReinforcement();
             this.Value = item.Duplicate();
         }
 
@@ -100,15 +265,15 @@ namespace ComposGH.Parameters
         {
             return DuplicateGoo();
         }
-        public ComposReinfGoo DuplicateGoo()
+        public ComposReinforcementGoo DuplicateGoo()
         {
-            return new ComposReinfGoo(Value == null ? new ComposReinf() : Value.Duplicate());
+            return new ComposReinforcementGoo(Value == null ? new ComposReinforcement() : Value.Duplicate());
         }
         #endregion
 
         #region properties
         public override bool IsValid => true;
-        public override string TypeName => "Reinf";
+        public override string TypeName => "Reinforcement";
         public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
         public override string IsValidWhyNot
         {
@@ -133,7 +298,7 @@ namespace ComposGH.Parameters
             // This function is called when Grasshopper needs to convert this 
             // instance of our custom class into some other type Q.            
 
-            if (typeof(Q).IsAssignableFrom(typeof(ComposReinf)))
+            if (typeof(Q).IsAssignableFrom(typeof(ComposReinforcement)))
             {
                 if (Value == null)
                     target = default;
@@ -153,9 +318,9 @@ namespace ComposGH.Parameters
             if (source == null) { return false; }
 
             //Cast from GsaMaterial
-            if (typeof(ComposReinf).IsAssignableFrom(source.GetType()))
+            if (typeof(ComposReinforcement).IsAssignableFrom(source.GetType()))
             {
-                Value = (ComposReinf)source;
+                Value = (ComposReinforcement)source;
                 return true;
             }
 
@@ -168,24 +333,24 @@ namespace ComposGH.Parameters
     /// This class provides a Parameter interface for the CustomGoo type.
     /// </summary>
 
-    public class ComposReinfParameter : GH_PersistentParam<ComposReinfGoo>
+    public class ComposReinforcementParameter : GH_PersistentParam<ComposReinforcementGoo>
     {
-        public ComposReinfParameter()
-          : base(new GH_InstanceDescription("Reinf", "Std", "Compos Reinf", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
+        public ComposReinforcementParameter()
+          : base(new GH_InstanceDescription("Reinforcement", "Rb", "Compos Slab Reinforcement", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
         {
         }
 
-        public override Guid ComponentGuid => new Guid("e0b6cb52-99c8-4b2a-aec1-7f8a2d720daa");
+        public override Guid ComponentGuid => new Guid("c6261340-24f2-4d79-9894-5cd945023163");
 
-        public override GH_Exposure Exposure => GH_Exposure.secondary | GH_Exposure.obscure;
+        public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-        protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
+        //protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
 
-        protected override GH_GetterResult Prompt_Plural(ref List<ComposReinfGoo> values)
+        protected override GH_GetterResult Prompt_Plural(ref List<ComposReinforcementGoo> values)
         {
             return GH_GetterResult.cancel;
         }
-        protected override GH_GetterResult Prompt_Singular(ref ComposReinfGoo value)
+        protected override GH_GetterResult Prompt_Singular(ref ComposReinforcementGoo value)
         {
             return GH_GetterResult.cancel;
         }

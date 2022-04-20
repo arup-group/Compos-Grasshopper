@@ -168,13 +168,13 @@ namespace ComposGH.Parameters
     public class ComposSteelMaterialParameter: GH_PersistentParam<ComposSteelMaterialGoo>
     {
         public ComposSteelMaterialParameter()
-          : base(new GH_InstanceDescription("Stud", "Std", "Compos Stud", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
+          : base(new GH_InstanceDescription("Steel", "Ste", "Compos Steel Material", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
         {
         }
 
         public override Guid ComponentGuid => new Guid("1245ee2f-3d04-4135-833c-abff82dff85c");
 
-        public override GH_Exposure Exposure => GH_Exposure.secondary | GH_Exposure.obscure;
+        public override GH_Exposure Exposure => GH_Exposure.secondary;
 
         protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
 
