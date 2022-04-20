@@ -45,7 +45,7 @@ namespace ComposGH.Components
 
                 // type
                 dropdownitems.Add(Enum.GetValues(typeof(stiff_types)).Cast<stiff_types>()
-                    .Select(x => x.ToString()).ToList());
+                    .Select(x => x.ToString().Replace('_', ' ')).ToList());
                 selecteditems.Add(stiff_types.Web_Opening.ToString().Replace('_', ' '));
 
                 // length
