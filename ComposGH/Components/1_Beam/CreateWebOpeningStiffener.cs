@@ -24,7 +24,7 @@ namespace ComposGH.Components
         // including name, exposure level and icon
         public override Guid ComponentGuid => new Guid("4e7a2c23-0504-46d2-8fe1-846bf4ef6a37");
         public WebOpeningStiffener()
-          : base("Stiffeners", "WS", "Create Horizontal Web Opening Stiffeners for a Compos Web Opening or Notch",
+          : base("Web Opening Stiffeners", "Stiffener", "Create Horizontal Web Opening Stiffeners for a Compos Web Opening or Notch",
                 Ribbon.CategoryName.Name(),
                 Ribbon.SubCategoryName.Cat1())
         { this.Hidden = false; } // sets the initial state of the component to hidden
@@ -45,7 +45,7 @@ namespace ComposGH.Components
 
                 // type
                 dropdownitems.Add(Enum.GetValues(typeof(stiff_types)).Cast<stiff_types>()
-                    .Select(x => x.ToString()).ToList());
+                    .Select(x => x.ToString().Replace('_', ' ')).ToList());
                 selecteditems.Add(stiff_types.Web_Opening.ToString().Replace('_', ' '));
 
                 // length

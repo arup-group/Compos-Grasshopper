@@ -32,15 +32,15 @@ namespace ComposGH.Parameters
         /// <summary>
         /// Create web opening stiffeners
         /// </summary>
-        /// <param name="startPos"></param>
+        /// <param name="distance"></param>
         /// <param name="topWidth"></param>
         /// <param name="topTHK"></param>
         /// <param name="bottomWidth"></param>
         /// <param name="bottomTHK"></param>
         /// <param name="bothSides"></param>
-        public WebOpeningStiffeners(Length startPos, Length topWidth, Length topTHK, Length bottomWidth, Length bottomTHK, bool bothSides)
+        public WebOpeningStiffeners(Length distance, Length topWidth, Length topTHK, Length bottomWidth, Length bottomTHK, bool bothSides)
         {
-            this.DistanceFrom = startPos;
+            this.DistanceFrom = distance;
             this.TopStiffenerWidth = topWidth;
             this.TopStiffenerThickness = topTHK;
             this.BottomStiffenerWidth = bottomWidth;
@@ -51,14 +51,14 @@ namespace ComposGH.Parameters
         /// <summary>
         /// Create notch stiffener
         /// </summary>
-        /// <param name="startPos"></param>
+        /// <param name="distance"></param>
         /// <param name="topWidth"></param>
         /// <param name="topTHK"></param>
         /// <param name="bothSides"></param>
-        public WebOpeningStiffeners(Length startPos, Length topWidth, Length topTHK, bool bothSides)
+        public WebOpeningStiffeners(Length distance, Length topWidth, Length topTHK, bool bothSides)
         {
             this.isBothSides = bothSides;
-            this.DistanceFrom = startPos;
+            this.DistanceFrom = distance;
             this.TopStiffenerWidth = topWidth;
             this.TopStiffenerThickness = topTHK;
             this.isNotch = true;
