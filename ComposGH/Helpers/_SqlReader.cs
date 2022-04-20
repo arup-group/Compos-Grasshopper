@@ -195,5 +195,124 @@ namespace ComposGH.Helpers
             
             return section;
         }
+
+
+        /// <summary>
+        /// Get decking type data from SQLite file (.db3). The method returns a tuple with:
+        /// Item1 = list of type name (string)
+        /// where first item will be "All"
+        /// Item2 = list of type number (int)
+        /// where first item will be "-1" representing All
+        /// </summary>
+        /// <param name="catalogue_number">Catalogue number to get section types from. Input -1 in first item of the input list to get all types</param>
+        /// <param name="filePath">Path to SecLib.db3</param>
+        /// <param name="inclSuperseeded">True if you want to include superseeded items</param>
+        /// <returns></returns>
+        public static Tuple<List<string>, List<int>> GetDeckTypesDataFromSQLite(int catalogue_number, string filePath, bool inclSuperseeded = false)
+        {
+            // Create empty lists to work on:
+            List<string> typeNames = new List<string>();
+            List<int> typeNumber = new List<int>();
+
+            // get Catalogue numbers if input is -1 (All catalogues)
+            List<int> catNumbers = new List<int>();
+            if (catalogue_number == -1)
+            {
+                Tuple<List<string>, List<int>> catalogueData = GetCataloguesDataFromSQLite(filePath);
+                catNumbers = catalogueData.Item2;
+                catNumbers.RemoveAt(0); // remove -1 from beginning of list
+            }
+            else
+                catNumbers.Add(catalogue_number);
+
+            using (var db = Connection(filePath))
+            {
+
+            db.Open();
+            SQLiteCommand cmd = db.CreateCommand();
+            cmd.CommandText = $"Select Catalogue_Name || ' -- ' || Catalogue_ID as Catalogue_Name from Catalogue";
+            cmd.CommandType = CommandType.Text;
+            SQLiteDataReader r = cmd.ExecuteReader();
+            while (r.Read())
+            {
+            // get data
+            string sqlData = System.Convert.ToString(r["Catalogue_Name"]);
+
+            // split text string
+            // example: Universal Beams -- 51
+            typeNames.Add(sqlData.Split(new string[] { " -- " }, StringSplitOptions.None)[0]);
+            typeNumber.Add(Int32.Parse(sqlData.Split(new string[] { " -- " }, StringSplitOptions.None)[1]));
+            }
+            db.Close();
+
+            }
+            typeNames.Insert(0, "All");
+            typeNumber.Insert(0, -1);
+            return new Tuple<List<string>, List<int>>(typeNames, typeNumber);
+        }
+
+
+        /// <summary>
+        /// Get a list of decking profile strings from SQLite file (.db3). The method returns a string that includes type abbriviation as accepted by GSA. 
+        /// </summary>
+        /// <param name="type_numbers">List of types to get sections from</param>
+        /// <param name="filePath">Path to SecLib.db3</param>
+        /// <param name="inclSuperseeded">True if you want to include superseeded items</param>
+        /// <returns></returns>
+        public static List<string> GetDeckingDataFromSQLite(List<int> type_numbers, string filePath, string cat, bool inclSuperseeded = false)
+        {
+            // Create empty list to work on:
+            List<string> section = new List<string>();
+
+            List<int> types = new List<int>();
+            if (type_numbers[0] == -1)
+            {
+                Tuple<List<string>, List<int>> typeData = GetTypesDataFromSQLite(-1, filePath, inclSuperseeded);
+                types = typeData.Item2;
+                types.RemoveAt(0); // remove -1 from beginning of list
+            }
+            else
+                types = type_numbers;
+
+            using (var db = Connection(filePath))
+            {
+                // get section name
+
+                db.Open();
+                SQLiteCommand cmd = db.CreateCommand();
+                //cat = "Kingspan";
+                //querry
+                //Select Type_TATA.TYPE_ABR || ' ' || Deck_Name || ' -- ' || Date_Added as Deck_Name from Deck_TATA INNER JOIN Type_TATA ON Deck_TATA.Deck_Type_ID = Type_TATA.TYPE_ID ORDER BY Deck_Thickness 
+
+
+                cmd.CommandText = $"Select Type_{cat}.TYPE_ABR || ' ' || Deck_Name || ' -- ' || Date_Added as Deck_Name from Deck_{cat} INNER JOIN Type_{cat} ON Deck_Kingspan.Deck_Type_ID = Type_{cat}.TYPE_ID ORDER BY Deck_Thickness ";
+
+                cmd.CommandType = CommandType.Text;
+                SQLiteDataReader r = cmd.ExecuteReader();
+                while (r.Read())
+                {
+                    if (inclSuperseeded)
+                    {
+                        string full = System.Convert.ToString(r["Deck_Name"]);
+                        // BSI-IPE IPEAA80 -- 2017-09-01 00:00:00.000
+                        string profile = full.Split(new string[] { " -- " }, StringSplitOptions.None)[0];
+                        string date = full.Split(new string[] { " -- " }, StringSplitOptions.None)[1];
+                        date = date.Replace("-", "");
+                        date = date.Substring(0, 8);
+                        section.Add(profile + " " + date);
+                    }
+                    else
+                    {
+                        string profile = System.Convert.ToString(r["Deck_Name"]);
+                        // BSI-IPE IPEAA80                           
+                        section.Add(profile);
+                    }
+                    db.Close();
+                }
+            }
+
+            section.Insert(0, "All");
+            return section;
+        }
     }
 }

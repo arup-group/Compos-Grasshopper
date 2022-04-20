@@ -62,7 +62,6 @@ namespace ComposGH.Components
                 dropdownitems.Add(Units.FilteredLengthUnits);
                 selecteditems.Add(lengthUnit.ToString());
 
-                SetSelected(-1, 0);
                 first = false;
             }
 
