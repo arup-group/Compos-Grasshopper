@@ -1,9 +1,10 @@
 ﻿*.suo
 /.vs/slnx.sqlite
-/.vs/ComposGH/v17/
-/.vs/ComposGH/DesignTimeBuild/
+/.vs/ComposGH/v17
+/.vs/ComposGH/DesignTimeBuild
 /packages
 /ComposGH/bin
 /ComposGH/obj
 /ComposGH/Tests/bin
 /ComposGH/Tests/obj
+ComposGH/Converters/obj
