@@ -10,6 +10,7 @@ using Grasshopper.Documentation;
 using Rhino.Collections;
 using UnitsNet;
 using UnitsNet.Units;
+using System.Globalization;
 
 namespace ComposGH.Parameters
 {
@@ -20,7 +21,22 @@ namespace ComposGH.Parameters
   {
     // Setting out
 
-    public bool TaperedToNext { get; set; } = true;
+    public bool TaperedToNext 
+    {
+      get 
+      {
+        if (this.m_isCatalogue)
+          return false;
+        else
+          return this.m_taper; 
+      }
+      set
+      {
+        if (!this.m_isCatalogue)
+          this.m_taper = value;
+      }
+    }
+    private bool m_taper;
     public Length StartPosition { get; set; } = Length.Zero;
 
     // Dimensions
@@ -30,6 +46,7 @@ namespace ComposGH.Parameters
     public Length TopFlangeThickness { get; set; }
     public Length BottomFlangeThickness { get; set; }
     public Length WebThickness { get; set; }
+    private bool m_isCatalogue;
 
     public string SectionDescription { get; set; }
 
@@ -38,6 +55,76 @@ namespace ComposGH.Parameters
     {
       // empty constructor
     }
+
+    /// <summary>
+    /// Create assymetric I section
+    /// </summary>
+    /// <param name="depth"></param>
+    /// <param name="topFlangeWidth"></param>
+    /// <param name="bottomFlangeWidth"></param>
+    /// <param name="webThickness"></param>
+    /// <param name="topFlangeThickness"></param>
+    /// <param name="bottomFlangeThickness"></param>
+    public BeamSection(Length depth, Length topFlangeWidth, Length bottomFlangeWidth, Length webThickness, 
+      Length topFlangeThickness, Length bottomFlangeThickness, bool taperToNext = false)
+    {
+      this.Depth = depth;
+      this.TopFlangeWidth = topFlangeWidth;
+      this.BottomFlangeWidth = bottomFlangeWidth;
+      this.WebThickness = webThickness;
+      this.TopFlangeThickness = topFlangeThickness;
+      this.BottomFlangeThickness = bottomFlangeThickness;
+      this.m_isCatalogue = false;
+      this.TaperedToNext = taperToNext;
+
+      LengthUnit unit = this.Depth.Unit;
+      string u = " ";
+      try { u = unitString(unit); }
+      catch (Exception) { unit = LengthUnit.Millimeter; }
+
+      string dims = string.Join(" ",
+        this.Depth.As(unit).ToString(),
+        this.TopFlangeWidth.As(unit).ToString(),
+        this.BottomFlangeWidth.As(unit).ToString(),
+        this.WebThickness.As(unit).ToString(),
+        this.TopFlangeThickness.As(unit).ToString(),
+        this.BottomFlangeThickness.As(unit).ToString());
+      
+      this.SectionDescription = "STD GI" + u + dims.Replace(',', '.');
+    }
+
+    /// <summary>
+    /// Create symmetric I section
+    /// </summary>
+    /// <param name="depth"></param>
+    /// <param name="flangeWidth"></param>
+    /// <param name="webThickness"></param>
+    /// <param name="flangeThickness"></param>
+    public BeamSection(Length depth, Length flangeWidth, Length webThickness, Length flangeThickness, bool taperToNext = false)
+    {
+      this.Depth = depth;
+      this.TopFlangeWidth = flangeWidth;
+      this.BottomFlangeWidth = TopFlangeWidth;
+      this.WebThickness = webThickness;
+      this.TopFlangeThickness = flangeThickness;
+      this.BottomFlangeThickness = TopFlangeThickness;
+      this.m_isCatalogue = false;
+      this.TaperedToNext = taperToNext;
+
+      LengthUnit unit = this.Depth.Unit;
+      string u = " ";
+      try { u = unitString(unit); }
+      catch (Exception) { unit = LengthUnit.Millimeter; }
+
+      string dims = string.Join(" ",
+        this.Depth.As(unit).ToString(),
+        this.TopFlangeWidth.As(unit).ToString(),
+        this.WebThickness.As(unit).ToString(),
+        this.TopFlangeThickness.As(unit).ToString());
+
+      this.SectionDescription = "STD I" + u + dims.Replace(',', '.');
+    }
+
     public BeamSection(string profile)
     {
       profile = profile.Replace(',', '.');
@@ -51,21 +138,22 @@ namespace ComposGH.Parameters
 
         LengthUnit unit = LengthUnit.Millimeter; // default unit for sections is mm
 
-        string[] type = parts[0].Split('(', ')');
-        if (type.Length > 0)
+        string[] type = parts[1].Split('(', ')');
+        if (type.Length > 1)
         {
           var parser = UnitParser.Default;
           unit = parser.Parse<LengthUnit>(type[1]);
         }
         try
         {
-          this.Depth = new Length(double.Parse(parts[1]), unit);
-          this.TopFlangeWidth = new Length(double.Parse(parts[2]), unit);
+          this.Depth = new Length(double.Parse(parts[2], CultureInfo.InvariantCulture), unit);
+          this.TopFlangeWidth = new Length(double.Parse(parts[3], CultureInfo.InvariantCulture), unit);
           this.BottomFlangeWidth = TopFlangeWidth;
-          this.WebThickness = new Length(double.Parse(parts[3]), unit);
-          this.TopFlangeThickness = new Length(double.Parse(parts[4]), unit);
+          this.WebThickness = new Length(double.Parse(parts[4], CultureInfo.InvariantCulture), unit);
+          this.TopFlangeThickness = new Length(double.Parse(parts[5], CultureInfo.InvariantCulture), unit);
           this.BottomFlangeThickness = TopFlangeThickness;
           this.SectionDescription = profile;
+          this.m_isCatalogue = false;
         }
         catch (Exception)
         {
@@ -81,21 +169,22 @@ namespace ComposGH.Parameters
 
         LengthUnit unit = LengthUnit.Millimeter; // default unit for sections is mm
 
-        string[] type = parts[0].Split('(', ')');
-        if (type.Length > 0)
+        string[] type = parts[1].Split('(', ')');
+        if (type.Length > 1)
         {
           var parser = UnitParser.Default;
           unit = parser.Parse<LengthUnit>(type[1]);
         }
         try
         {
-          this.Depth = new Length(double.Parse(parts[1]), unit);
-          this.TopFlangeWidth = new Length(double.Parse(parts[2]), unit);
-          this.BottomFlangeWidth = new Length(double.Parse(parts[3]), unit);
-          this.WebThickness = new Length(double.Parse(parts[3]), unit);
-          this.TopFlangeThickness = new Length(double.Parse(parts[4]), unit);
-          this.BottomFlangeThickness = new Length(double.Parse(parts[5]), unit);
+          this.Depth = new Length(double.Parse(parts[2], CultureInfo.InvariantCulture), unit);
+          this.TopFlangeWidth = new Length(double.Parse(parts[3], CultureInfo.InvariantCulture), unit);
+          this.BottomFlangeWidth = new Length(double.Parse(parts[4], CultureInfo.InvariantCulture), unit);
+          this.WebThickness = new Length(double.Parse(parts[5], CultureInfo.InvariantCulture), unit);
+          this.TopFlangeThickness = new Length(double.Parse(parts[6], CultureInfo.InvariantCulture), unit);
+          this.BottomFlangeThickness = new Length(double.Parse(parts[7], CultureInfo.InvariantCulture), unit);
           this.SectionDescription = profile;
+          this.m_isCatalogue = false;
         }
         catch (Exception)
         {
@@ -105,10 +194,36 @@ namespace ComposGH.Parameters
       else if (profile.StartsWith("CAT"))
       {
         // to be done
+        //this.Depth = 
+        //this.TopFlangeWidth = 
+        //this.BottomFlangeWidth = 
+        //this.WebThickness = 
+        //this.TopFlangeThickness = 
+        //this.BottomFlangeThickness = 
         this.SectionDescription = profile;
+        this.m_isCatalogue = true;
       }
       else
         throw new ArgumentException("Unrecognisable profile type. String must start with 'STD I', 'STD GI' or 'CAT'.");
+    }
+
+    private string unitString(LengthUnit unit)
+    {
+      switch (unit)
+      {
+        case LengthUnit.Millimeter:
+          return " ";
+        case LengthUnit.Centimeter:
+          return "(cm) ";
+        case LengthUnit.Meter:
+          return "(m) ";
+        case LengthUnit.Inch:
+          return "(in) ";
+        case LengthUnit.Foot:
+          return "(ft) ";
+        default:
+          throw new ArgumentException("unrecognised unit - must be mm, cm, m, in or ft.");
+      }
     }
 
     #endregion
