@@ -198,9 +198,6 @@
     <Folder Include="Components\9_Results\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\Icons\RebarMesh.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Properties\Icons\BeamParam.png" />
   </ItemGroup>
   <ItemGroup>
