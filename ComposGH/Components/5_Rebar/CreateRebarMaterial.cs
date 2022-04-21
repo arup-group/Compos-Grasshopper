@@ -80,9 +80,9 @@ namespace ComposGH.Components
     {
       if (selecteditems[0] != "Custom")
         mat = (RebarMaterial.StandardGrade)Enum.Parse(typeof(RebarMaterial.StandardGrade), selecteditems[0]);
-        
+
       stressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), selecteditems[1]);
-      
+
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -126,13 +126,13 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-        if (this.Params.Input[0].Sources.Count > 0)
-        {
-          selecteditems[0] = "Custom";
-          DA.SetData(0, new RebarMaterialGoo(new RebarMaterial(GetInput.Stress(this, DA, 0, stressUnit))));
-        }
-        else
-          DA.SetData(0, new RebarMaterialGoo(new RebarMaterial(mat)));
+      if (this.Params.Input[0].Sources.Count > 0)
+      {
+        selecteditems[0] = "Custom";
+        DA.SetData(0, new RebarMaterialGoo(new RebarMaterial(GetInput.Stress(this, DA, 0, stressUnit))));
+      }
+      else
+        DA.SetData(0, new RebarMaterialGoo(new RebarMaterial(mat)));
     }
 
 

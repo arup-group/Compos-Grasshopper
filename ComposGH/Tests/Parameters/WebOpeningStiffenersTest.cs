@@ -10,15 +10,15 @@ namespace ComposGH.Parameters.Tests
     [Theory]
     [InlineData(50, 100, 10, 100, 10, false)]
     [InlineData(20, 120, 5, 80, 12, true)]
-    public WebOpeningStiffeners TestConstructorStiffenersWebOpening(double startPos, double topWidth, 
+    public WebOpeningStiffeners TestConstructorStiffenersWebOpening(double startPos, double topWidth,
       double topTHK, double bottomWidth, double bottomTHK, bool bothSides)
     {
       LengthUnit unit = LengthUnit.Millimeter;
 
       // 2 create object instance with constructor
       WebOpeningStiffeners webOpeningStiffeners = new WebOpeningStiffeners(
-        new Length(startPos, unit), new Length(topWidth, unit), 
-        new Length(topTHK, unit), new Length(bottomWidth, unit), 
+        new Length(startPos, unit), new Length(topWidth, unit),
+        new Length(topTHK, unit), new Length(bottomWidth, unit),
         new Length(bottomTHK, unit), bothSides);
 
       // 3 check that inputs are set in object's members

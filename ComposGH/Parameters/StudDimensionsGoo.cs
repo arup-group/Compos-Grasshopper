@@ -85,7 +85,7 @@ namespace ComposGH.Parameters
       }
     }
 
-    public Force CharacterStrength 
+    public Force CharacterStrength
     {
       get { return this.m_strength; }
       set
