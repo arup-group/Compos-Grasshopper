@@ -6,6 +6,7 @@ namespace ComposGH.Parameters.Tests
 {
   public partial class ComposStudTest
   {
+    // 1 setup inputs
     [Theory]
     [InlineData(50, 100, 10, true, false)]
     [InlineData(20, 120, 5, false, true)]
@@ -16,10 +17,12 @@ namespace ComposGH.Parameters.Tests
     {
       LengthUnit unit = LengthUnit.Millimeter;
 
+      // 2 create object instance with constructor
       StudSpecification studSpec = new StudSpecification(
         new Length(noStudZoneStart, unit), new Length(noStudZoneEnd, unit), 
         new Length(reinforcementPosition, unit), welding, ncci);
 
+      // 3 check that inputs are set in object's members
       Assert.Equal(noStudZoneStart, studSpec.NoStudZoneStart.Millimeters);
       Assert.Equal(noStudZoneEnd, studSpec.NoStudZoneEnd.Millimeters);
       Assert.Equal(reinforcementPosition, studSpec.ReinforcementPosition.Millimeters);
@@ -30,6 +33,7 @@ namespace ComposGH.Parameters.Tests
       return studSpec;
     }
 
+    // 1 setup inputs
     [Theory]
     [InlineData(true, 100, 10)]
     [InlineData(false, 120, 5)]
@@ -37,9 +41,11 @@ namespace ComposGH.Parameters.Tests
     {
       LengthUnit unit = LengthUnit.Millimeter;
 
+      // 2 create object instance with constructor
       StudSpecification studSpec = new StudSpecification(useEC4Limit,
         new Length(noStudZoneStart, unit), new Length(noStudZoneEnd, unit));
 
+      // 3 check that inputs are set in object's members
       Assert.Equal(noStudZoneStart, studSpec.NoStudZoneStart.Millimeters);
       Assert.Equal(noStudZoneEnd, studSpec.NoStudZoneEnd.Millimeters);
       Assert.Equal(useEC4Limit, studSpec.EC4_Limit);
@@ -48,6 +54,7 @@ namespace ComposGH.Parameters.Tests
       return studSpec;
     }
 
+    // 1 setup inputs
     [Theory]
     [InlineData(50, 100, true)]
     [InlineData(20, 120, false)]
@@ -55,9 +62,11 @@ namespace ComposGH.Parameters.Tests
     {
       LengthUnit unit = LengthUnit.Millimeter;
 
+      // 2 create object instance with constructor
       StudSpecification studSpec = new StudSpecification(
         new Length(noStudZoneStart, unit), new Length(noStudZoneEnd, unit), welding);
 
+      // 3 check that inputs are set in object's members
       Assert.Equal(noStudZoneStart, studSpec.NoStudZoneStart.Millimeters);
       Assert.Equal(noStudZoneEnd, studSpec.NoStudZoneEnd.Millimeters);
       Assert.Equal(welding, studSpec.Welding);
