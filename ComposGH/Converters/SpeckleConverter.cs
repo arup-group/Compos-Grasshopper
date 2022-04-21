@@ -12,19 +12,20 @@ namespace ComposGH.Converters
   {
     public static bool IsPresent()
     {
-      try
-      {
-        // Get a list of all available kits
-        IEnumerable<ISpeckleKit> kits = KitManager.Kits;
+      return false;
+      //try
+      //{
+      //  // Get a list of all available kits
+      //  IEnumerable<ISpeckleKit> kits = KitManager.Kits;
 
-        // Load the default Objects Kit and the included Revit converter
-        var kit = Speckle.Core.Kits.KitManager.GetDefaultKit();
-      }
-      catch (DllNotFoundException)
-      {
-        return false;
-      }
-      return true;
+      //  // Load the default Objects Kit and the included Revit converter
+      //  var kit = Speckle.Core.Kits.KitManager.GetDefaultKit();
+      //}
+      //catch (DllNotFoundException)
+      //{
+      //  return false;
+      //}
+      //return true;
     }
 
   }
