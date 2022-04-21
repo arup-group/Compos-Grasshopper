@@ -285,7 +285,7 @@ namespace ComposGH.Helpers
                 //Select Type_TATA.TYPE_ABR || ' ' || Deck_Name || ' -- ' || Date_Added as Deck_Name from Deck_TATA INNER JOIN Type_TATA ON Deck_TATA.Deck_Type_ID = Type_TATA.TYPE_ID ORDER BY Deck_Thickness 
 
 
-                cmd.CommandText = $"Select Type_{cat}.TYPE_ABR || ' ' || Deck_Name || ' -- ' || Date_Added as Deck_Name from Deck_{cat} INNER JOIN Type_{cat} ON Deck_Kingspan.Deck_Type_ID = Type_{cat}.TYPE_ID ORDER BY Deck_Thickness ";
+                cmd.CommandText = $"Select Type_{cat}.TYPE_ABR || ' ' || Deck_Name || ' -- ' || Date_Added as Deck_Name from Deck_{cat} INNER JOIN Type_{cat} ON Deck_Kingspan.Deck_Type_ID = Type_{cat}.TYPE_ID ORDER BY Deck_Thickness";
 
                 cmd.CommandType = CommandType.Text;
                 SQLiteDataReader r = cmd.ExecuteReader();
