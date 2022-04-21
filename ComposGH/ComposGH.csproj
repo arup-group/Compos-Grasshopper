@@ -290,6 +290,12 @@
   <ItemGroup>
     <None Include="Properties\Icons\CustomStudDims.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Converters\Converters.csproj">
+      <Project>{0bf1ed34-39f9-4842-b788-31d8bea0825e}</Project>
+      <Name>Converters</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

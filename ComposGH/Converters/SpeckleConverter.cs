@@ -8,7 +8,7 @@ using Speckle.Core.Models;
 
 namespace ComposGH.Converters
 {
-  internal class SpeckleConverter
+  public class SpeckleConverter //: ISpeckleConverter
   {
     public static bool IsPresent()
     {

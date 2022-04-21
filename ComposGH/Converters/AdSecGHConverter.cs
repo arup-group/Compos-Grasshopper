@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AdSecGH.Parameters;
+//using AdSecGH.Parameters;
 
-namespace Converters
+namespace ComposGH.Converters
 {
-  internal class AdSecGHConverter
+  public class AdSecGHConverter
   {
     public static bool IsPresent()
     {
       try
       {
-        AdSecMaterial material = new AdSecMaterial();
+        //AdSecMaterial material = new AdSecMaterial();
       }
       catch (DllNotFoundException)
       {
         return false;
       }
-      return true;
+      //return true;
+      return false;
     }
   }
 }

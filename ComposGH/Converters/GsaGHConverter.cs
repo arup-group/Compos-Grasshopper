@@ -7,7 +7,7 @@ using GsaGH.Parameters;
 
 namespace ComposGH.Converters
 {
-  internal class GsaGHConverter
+  public class GsaGHConverter
   {
     public static bool IsPresent()
     {
@@ -20,6 +20,16 @@ namespace ComposGH.Converters
         return false;
       }
       return true;
+    }
+
+    public static Type GetTypeFor(Type type)
+    {
+      throw new NotImplementedException();
+    }
+
+    public static object CastToComposBeam(object source)
+    {
+      throw new NotImplementedException();
     }
   }
 }
