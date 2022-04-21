@@ -168,7 +168,7 @@ namespace ComposGH.Parameters
           }
         }
         // Cast from AdSecGH
-        if (GsaGHConverter.IsPresent())
+        if (AdSecGHConverter.IsPresent())
         {
           Type type = AdSecGHConverter.GetTypeFor(typeof(IComposBeam));
           if (type.IsAssignableFrom(source.GetType()))
@@ -196,7 +196,6 @@ namespace ComposGH.Parameters
   /// <summary>
   /// This class provides a Parameter interface for the CustomGoo type.
   /// </summary>
-
   public class ComposBeamParameter : GH_PersistentParam<ComposBeamGoo>
   {
     public ComposBeamParameter()
