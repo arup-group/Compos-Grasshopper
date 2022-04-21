@@ -161,7 +161,6 @@ namespace ComposGH.Parameters
     /// <summary>
     /// This class provides a Parameter interface for the CustomGoo type.
     /// </summary>
-
     public class ComposBeamParameter : GH_PersistentParam<ComposBeamGoo>
     {
         public ComposBeamParameter()
