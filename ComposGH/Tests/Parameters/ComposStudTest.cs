@@ -1,224 +1,284 @@
 ﻿using Xunit;
 using UnitsNet;
 using UnitsNet.Units;
+using System.Collections.Generic;
 
 namespace ComposGH.Parameters.Tests
 {
   public partial class ComposStudTest
   {
-    // 1 setup inputs
-    [Theory]
-    [InlineData(19, 100, 450)]
-    public StudDimensions TestConstructorStudDimensionsCustomSizeStress(double diameter, double height, double fu)
+    [Fact]
+    public ComposStud TestConstructorStudCustomSpacing()
     {
-      LengthUnit length = LengthUnit.Millimeter;
-      PressureUnit stress = PressureUnit.Megapascal;
+      // 1 setup inputs
+      StudDimensions dimensions = new StudDimensions(StudDimensions.StandardSize.D13mmH65mm, StudDimensions.StandardGrade.SD1_EN13918);
+      StudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
+      List<StudGroupSpacing> studSpacings = new List<StudGroupSpacing>();
+      studSpacings.Add(new StudGroupSpacing(Length.Zero, 2, 1, new Length(25, LengthUnit.Centimeter)));
+      studSpacings.Add(new StudGroupSpacing(Length.Zero, 1, 2, new Length(35, LengthUnit.Centimeter)));
 
       // 2 create object instance with constructor
-      StudDimensions studDims = new StudDimensions(
-        new Length(diameter, length), new Length(height, length), new Pressure(fu, stress));
+      ComposStud stud = new ComposStud(dimensions, specification, studSpacings, true);
 
       // 3 check that inputs are set in object's members
-      Assert.Equal(diameter, studDims.Diameter.Millimeters);
-      Assert.Equal(height, studDims.Height.Millimeters);
-      Assert.Equal(fu, studDims.Fu.Megapascals);
-      Assert.Equal(Force.Zero, studDims.CharacterStrength);
+      // dimensions
+      Assert.NotNull(stud.StudDimension);
+      Assert.Equal(13, stud.StudDimension.Diameter.Millimeters);
+      Assert.Equal(65, stud.StudDimension.Height.Millimeters);
+      Assert.Equal(400, stud.StudDimension.Fu.Megapascals);
+      Assert.Equal(Force.Zero, stud.StudDimension.CharacterStrength);
+      // specification
+      Assert.NotNull(stud.StudSpecification);
+      Assert.Equal(Length.Zero, stud.StudSpecification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, stud.StudSpecification.NoStudZoneEnd);
+      Assert.True(stud.StudSpecification.Welding);
+      // spacings
+      Assert.NotNull(stud.CustomSpacing);
+      Assert.Equal(2, stud.CustomSpacing.Count);
+      Assert.NotNull(stud.CustomSpacing[0]);
+      Assert.Equal(Length.Zero, stud.CustomSpacing[0].DistanceFromStart);
+      Assert.Equal(2, stud.CustomSpacing[0].NumberOfRows);
+      Assert.Equal(1, stud.CustomSpacing[0].NumberOfLines);
+      Assert.Equal(25, stud.CustomSpacing[0].Spacing.Centimeters);
+      Assert.NotNull(stud.CustomSpacing[1]);
+      Assert.Equal(Length.Zero, stud.CustomSpacing[1].DistanceFromStart);
+      Assert.Equal(1, stud.CustomSpacing[1].NumberOfRows);
+      Assert.Equal(2, stud.CustomSpacing[1].NumberOfLines);
+      Assert.Equal(35, stud.CustomSpacing[1].Spacing.Centimeters);
+      //other
+      Assert.Equal(StudGroupSpacing.StudSpacingType.Custom, stud.StudSpacingType);
+      Assert.True(stud.CheckStudSpacing);
+      Assert.Equal(double.NaN, stud.Interaction);
+      Assert.Equal(double.NaN, stud.MinSavingMultipleZones);
 
-      return studDims;
+      return stud;
     }
 
     // 1 setup inputs
     [Theory]
-    [InlineData(19, 100, 90)]
-    public StudDimensions TestConstructorStudDimensionsCustomSizeForce(double diameter, double height, double strength)
+    [InlineData(StudGroupSpacing.StudSpacingType.Min_Num_of_Studs, 0.2)]
+    [InlineData(StudGroupSpacing.StudSpacingType.Automatic, 0.3)]
+    public ComposStud TestConstructorStudAutomaticOrMinSpacing(StudGroupSpacing.StudSpacingType type, double minSaving)
     {
-      LengthUnit length = LengthUnit.Millimeter;
-      ForceUnit force = ForceUnit.Kilonewton;
+      // 1b setup inputs
+      StudDimensions dimensions = new StudDimensions(StudDimensions.StandardSize.D13mmH65mm, StudDimensions.StandardGrade.SD1_EN13918);
+      StudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
 
       // 2 create object instance with constructor
-      StudDimensions studDims = new StudDimensions(
-        new Length(diameter, length), new Length(height, length), new Force(strength, force));
+      ComposStud stud = new ComposStud(dimensions, specification, minSaving, type);
 
       // 3 check that inputs are set in object's members
-      Assert.Equal(diameter, studDims.Diameter.Millimeters);
-      Assert.Equal(height, studDims.Height.Millimeters);
-      Assert.Equal(Pressure.Zero, studDims.Fu);
-      Assert.Equal(strength, studDims.CharacterStrength.Kilonewtons);
+      // dimensions
+      Assert.NotNull(stud.StudDimension);
+      Assert.Equal(13, stud.StudDimension.Diameter.Millimeters);
+      Assert.Equal(65, stud.StudDimension.Height.Millimeters);
+      Assert.Equal(400, stud.StudDimension.Fu.Megapascals);
+      Assert.Equal(Force.Zero, stud.StudDimension.CharacterStrength);
+      // specification
+      Assert.NotNull(stud.StudSpecification);
+      Assert.Equal(Length.Zero, stud.StudSpecification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, stud.StudSpecification.NoStudZoneEnd);
+      Assert.True(stud.StudSpecification.Welding);
+      // spacings
+      Assert.Null(stud.CustomSpacing);
+      //other
+      Assert.Equal(minSaving, stud.MinSavingMultipleZones);
+      Assert.Equal(type, stud.StudSpacingType);
+      Assert.Equal(double.NaN, stud.Interaction);
 
-      return studDims;
+      return stud;
+    }
+
+    [Theory]
+    [InlineData(StudGroupSpacing.StudSpacingType.Custom)]
+    [InlineData(StudGroupSpacing.StudSpacingType.Partial_Interaction)]
+    public void TestConstructorStudAutomaticOrMinSpacingExceptions(StudGroupSpacing.StudSpacingType type)
+    {
+      // check that exceptions are thrown if inputs does not comply with allowed
+      Assert.Throws<System.ArgumentException>(() => TestConstructorStudAutomaticOrMinSpacing(type, 0.2));
     }
 
     // 1 setup inputs
     [Theory]
-    [InlineData(StudDimensions.StandardSize.D13mmH65mm, 90, 13, 65)]
-    [InlineData(StudDimensions.StandardSize.D16mmH70mm, 95, 16, 70)]
-    [InlineData(StudDimensions.StandardSize.D16mmH75mm, 100, 16, 75)]
-    [InlineData(StudDimensions.StandardSize.D19mmH75mm, 80, 19, 75)]
-    [InlineData(StudDimensions.StandardSize.D19mmH95mm, 85, 19, 95)]
-    [InlineData(StudDimensions.StandardSize.D19mmH100mm, 90, 19, 100)]
-    [InlineData(StudDimensions.StandardSize.D19mmH125mm, 95, 19, 125)]
-    [InlineData(StudDimensions.StandardSize.D22mmH95mm, 100, 22, 95)]
-    [InlineData(StudDimensions.StandardSize.D22mmH100mm, 110, 22, 100)]
-    [InlineData(StudDimensions.StandardSize.D25mmH95mm, 80, 25, 95)]
-    [InlineData(StudDimensions.StandardSize.D25mmH100mm, 90, 25, 100)]
-    public StudDimensions TestConstructorStudDimensionsStandardSizeForce(StudDimensions.StandardSize size, double strength,
-      double expectedDiameter, double expectedHeight)
+    [InlineData(0.2, 0.95)]
+    [InlineData(0.3, 0.85)]
+    public ComposStud TestConstructorStudPartialSpacing(double minSaving, double interaction)
     {
-      ForceUnit force = ForceUnit.Kilonewton;
+      // 1b setup inputs
+      StudDimensions dimensions = new StudDimensions(StudDimensions.StandardSize.D13mmH65mm, StudDimensions.StandardGrade.SD1_EN13918);
+      StudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
 
       // 2 create object instance with constructor
-      StudDimensions studDims = new StudDimensions(size, new Force(strength, force));
+      ComposStud stud = new ComposStud(dimensions, specification, minSaving, interaction);
 
       // 3 check that inputs are set in object's members
-      Assert.Equal(expectedDiameter, studDims.Diameter.Millimeters);
-      Assert.Equal(expectedHeight, studDims.Height.Millimeters);
-      Assert.Equal(Pressure.Zero, studDims.Fu);
-      Assert.Equal(strength, studDims.CharacterStrength.Kilonewtons);
+      // dimensions
+      Assert.NotNull(stud.StudDimension);
+      Assert.Equal(13, stud.StudDimension.Diameter.Millimeters);
+      Assert.Equal(65, stud.StudDimension.Height.Millimeters);
+      Assert.Equal(400, stud.StudDimension.Fu.Megapascals);
+      Assert.Equal(Force.Zero, stud.StudDimension.CharacterStrength);
+      // specification
+      Assert.NotNull(stud.StudSpecification);
+      Assert.Equal(Length.Zero, stud.StudSpecification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, stud.StudSpecification.NoStudZoneEnd);
+      Assert.True(stud.StudSpecification.Welding);
+      // spacings
+      Assert.Null(stud.CustomSpacing);
+      //other
+      Assert.Equal(minSaving, stud.MinSavingMultipleZones);
+      Assert.Equal(interaction, stud.Interaction);
+      Assert.Equal(StudGroupSpacing.StudSpacingType.Partial_Interaction, stud.StudSpacingType);
 
-      return studDims;
-    }
-
-    // 1 setup inputs
-    [Theory]
-    [InlineData(StudDimensions.StandardSize.D13mmH65mm, 400, 13, 65)]
-    [InlineData(StudDimensions.StandardSize.D16mmH70mm, 450, 16, 70)]
-    [InlineData(StudDimensions.StandardSize.D16mmH75mm, 500, 16, 75)]
-    [InlineData(StudDimensions.StandardSize.D19mmH75mm, 400, 19, 75)]
-    [InlineData(StudDimensions.StandardSize.D19mmH95mm, 450, 19, 95)]
-    [InlineData(StudDimensions.StandardSize.D19mmH100mm, 500, 19, 100)]
-    [InlineData(StudDimensions.StandardSize.D19mmH125mm, 400, 19, 125)]
-    [InlineData(StudDimensions.StandardSize.D22mmH95mm, 450, 22, 95)]
-    [InlineData(StudDimensions.StandardSize.D22mmH100mm, 500, 22, 100)]
-    [InlineData(StudDimensions.StandardSize.D25mmH95mm, 400, 25, 95)]
-    [InlineData(StudDimensions.StandardSize.D25mmH100mm, 450, 25, 100)]
-    public StudDimensions TestConstructorStudDimensionsStandardSizeStress(StudDimensions.StandardSize size, double fu,
-      double expectedDiameter, double expectedHeight)
-    {
-      PressureUnit stress = PressureUnit.Megapascal;
-
-      // 2 create object instance with constructor
-      StudDimensions studDims = new StudDimensions(size, new Pressure(fu, stress));
-
-      // 3 check that inputs are set in object's members
-      Assert.Equal(expectedDiameter, studDims.Diameter.Millimeters);
-      Assert.Equal(expectedHeight, studDims.Height.Millimeters);
-      Assert.Equal(fu, studDims.Fu.Megapascals);
-      Assert.Equal(Force.Zero, studDims.CharacterStrength);
-
-      return studDims;
-    }
-
-    // 1 setup inputs
-    [Theory]
-    [InlineData(StudDimensions.StandardSize.D13mmH65mm, StudDimensions.StandardGrade.SD1_EN13918, 400, 13, 65)]
-    [InlineData(StudDimensions.StandardSize.D16mmH70mm, StudDimensions.StandardGrade.SD2_EN13918, 450, 16, 70)]
-    [InlineData(StudDimensions.StandardSize.D16mmH75mm, StudDimensions.StandardGrade.SD3_EN13918, 500, 16, 75)]
-    [InlineData(StudDimensions.StandardSize.D19mmH75mm, StudDimensions.StandardGrade.SD1_EN13918, 400, 19, 75)]
-    [InlineData(StudDimensions.StandardSize.D19mmH95mm, StudDimensions.StandardGrade.SD2_EN13918, 450, 19, 95)]
-    [InlineData(StudDimensions.StandardSize.D19mmH100mm, StudDimensions.StandardGrade.SD3_EN13918, 500, 19, 100)]
-    [InlineData(StudDimensions.StandardSize.D19mmH125mm, StudDimensions.StandardGrade.SD1_EN13918, 400, 19, 125)]
-    [InlineData(StudDimensions.StandardSize.D22mmH95mm, StudDimensions.StandardGrade.SD2_EN13918, 450, 22, 95)]
-    [InlineData(StudDimensions.StandardSize.D22mmH100mm, StudDimensions.StandardGrade.SD3_EN13918, 500, 22, 100)]
-    [InlineData(StudDimensions.StandardSize.D25mmH95mm, StudDimensions.StandardGrade.SD1_EN13918, 400, 25, 95)]
-    [InlineData(StudDimensions.StandardSize.D25mmH100mm, StudDimensions.StandardGrade.SD2_EN13918, 450, 25, 100)]
-    public StudDimensions TestConstructorStudDimensionsStandardSizeStandardGrade(
-      StudDimensions.StandardSize size, StudDimensions.StandardGrade grade,
-      double expectedFu, double expectedDiameter, double expectedHeight)
-    {
-      // 2 create object instance with constructor
-      StudDimensions studDims = new StudDimensions(size, grade);
-
-      // 3 check that inputs are set in object's members
-      Assert.Equal(expectedDiameter, studDims.Diameter.Millimeters);
-      Assert.Equal(expectedHeight, studDims.Height.Millimeters);
-      Assert.Equal(expectedFu, studDims.Fu.Megapascals);
-      Assert.Equal(Force.Zero, studDims.CharacterStrength);
-
-      return studDims;
-    }
-
-    // 1 setup inputs
-    [Theory]
-    [InlineData(13, 65, StudDimensions.StandardGrade.SD1_EN13918, 400)]
-    [InlineData(16, 70, StudDimensions.StandardGrade.SD2_EN13918, 450)]
-    [InlineData(16, 75, StudDimensions.StandardGrade.SD3_EN13918, 500)]
-    public StudDimensions TestConstructorStudDimensionsCustomSizeStandardGrade(double diameter, double height,
-      StudDimensions.StandardGrade grade, double expectedFu)
-    {
-      LengthUnit length = LengthUnit.Millimeter;
-
-      // 2 create object instance with constructor
-      StudDimensions studDims = new StudDimensions(new Length(diameter, length), new Length(height, length), grade);
-
-      // 3 check that inputs are set in object's members
-      Assert.Equal(diameter, studDims.Diameter.Millimeters);
-      Assert.Equal(height, studDims.Height.Millimeters);
-      Assert.Equal(expectedFu, studDims.Fu.Megapascals);
-      Assert.Equal(Force.Zero, studDims.CharacterStrength);
-
-      return studDims;
+      return stud;
     }
 
     [Fact]
-    public void TestStudDimensionsDuplicate()
+    public void TestComposStudDuplicate()
     {
-      LengthUnit length = LengthUnit.Millimeter;
-      PressureUnit stress = PressureUnit.Megapascal;
-      ForceUnit force = ForceUnit.Kilonewton;
-
       // 1 create with constructor and duplicate
-      StudDimensions original = TestConstructorStudDimensionsCustomSizeStress(19, 100, 450);
-      StudDimensions duplicate = original.Duplicate();
+      ComposStud original = TestConstructorStudCustomSpacing();
+      ComposStud duplicate = original.Duplicate();
 
       // 2 check that duplicate has duplicated values
-      Assert.Equal(19, duplicate.Diameter.Millimeters);
-      Assert.Equal(100, duplicate.Height.Millimeters);
-      Assert.Equal(450, duplicate.Fu.Megapascals);
-      Assert.Equal(Force.Zero, duplicate.CharacterStrength);
+      // dimensions
+      Assert.NotNull(duplicate.StudDimension);
+      Assert.Equal(13, duplicate.StudDimension.Diameter.Millimeters);
+      Assert.Equal(65, duplicate.StudDimension.Height.Millimeters);
+      Assert.Equal(400, duplicate.StudDimension.Fu.Megapascals);
+      Assert.Equal(Force.Zero, duplicate.StudDimension.CharacterStrength);
+      // specification
+      Assert.NotNull(duplicate.StudSpecification);
+      Assert.Equal(Length.Zero, duplicate.StudSpecification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, duplicate.StudSpecification.NoStudZoneEnd);
+      Assert.True(duplicate.StudSpecification.Welding);
+      // spacings
+      Assert.NotNull(duplicate.CustomSpacing);
+      Assert.Equal(2, duplicate.CustomSpacing.Count);
+      Assert.NotNull(duplicate.CustomSpacing[0]);
+      Assert.Equal(Length.Zero, duplicate.CustomSpacing[0].DistanceFromStart);
+      Assert.Equal(2, duplicate.CustomSpacing[0].NumberOfRows);
+      Assert.Equal(1, duplicate.CustomSpacing[0].NumberOfLines);
+      Assert.Equal(25, duplicate.CustomSpacing[0].Spacing.Centimeters);
+      Assert.NotNull(duplicate.CustomSpacing[1]);
+      Assert.Equal(Length.Zero, duplicate.CustomSpacing[1].DistanceFromStart);
+      Assert.Equal(1, duplicate.CustomSpacing[1].NumberOfRows);
+      Assert.Equal(2, duplicate.CustomSpacing[1].NumberOfLines);
+      Assert.Equal(35, duplicate.CustomSpacing[1].Spacing.Centimeters);
+      //other
+      Assert.Equal(StudGroupSpacing.StudSpacingType.Custom, duplicate.StudSpacingType);
+      Assert.True(duplicate.CheckStudSpacing);
+      Assert.Equal(double.NaN, duplicate.Interaction);
+      Assert.Equal(double.NaN, duplicate.MinSavingMultipleZones);
 
       // 3 make some changes to duplicate
-      duplicate.Diameter = new Length(13, length);
-      duplicate.Height = new Length(65, length);
-      duplicate.Fu = new Pressure(500, stress);
+      StudDimensions dimensions = new StudDimensions(StudDimensions.StandardSize.D25mmH100mm, StudDimensions.StandardGrade.SD3_EN13918);
+      StudSpecification specification = new StudSpecification(new Length(25, LengthUnit.Centimeter), new Length(35, LengthUnit.Centimeter), false);
+      List<StudGroupSpacing> studSpacings = new List<StudGroupSpacing>();
+      studSpacings.Add(new StudGroupSpacing(Length.Zero, 3, 2, new Length(10, LengthUnit.Centimeter)));
+
+      duplicate.StudDimension = dimensions;
+      duplicate.StudSpecification = specification;
+      duplicate.CustomSpacing = studSpacings;
+      duplicate.CheckStudSpacing = false;
 
       // 4 check that duplicate has set changes
-      Assert.Equal(13, duplicate.Diameter.Millimeters);
-      Assert.Equal(65, duplicate.Height.Millimeters);
-      Assert.Equal(500, duplicate.Fu.Megapascals);
-      Assert.Equal(Force.Zero, duplicate.CharacterStrength);
+      // dimensions
+      Assert.NotNull(duplicate.StudDimension);
+      Assert.Equal(25, duplicate.StudDimension.Diameter.Millimeters);
+      Assert.Equal(100, duplicate.StudDimension.Height.Millimeters);
+      Assert.Equal(500, duplicate.StudDimension.Fu.Megapascals);
+      Assert.Equal(Force.Zero, duplicate.StudDimension.CharacterStrength);
+      // specification
+      Assert.NotNull(duplicate.StudSpecification);
+      Assert.Equal(25, duplicate.StudSpecification.NoStudZoneStart.Centimeters);
+      Assert.Equal(35, duplicate.StudSpecification.NoStudZoneEnd.Centimeters);
+      Assert.False(duplicate.StudSpecification.Welding);
+      // spacings
+      Assert.NotNull(duplicate.CustomSpacing);
+      Assert.Single(duplicate.CustomSpacing);
+      Assert.NotNull(duplicate.CustomSpacing[0]);
+      Assert.Equal(Length.Zero, duplicate.CustomSpacing[0].DistanceFromStart);
+      Assert.Equal(3, duplicate.CustomSpacing[0].NumberOfRows);
+      Assert.Equal(2, duplicate.CustomSpacing[0].NumberOfLines);
+      Assert.Equal(10, duplicate.CustomSpacing[0].Spacing.Centimeters);
+      //other
+      Assert.Equal(StudGroupSpacing.StudSpacingType.Custom, duplicate.StudSpacingType);
+      Assert.False(duplicate.CheckStudSpacing);
+      Assert.Equal(double.NaN, duplicate.Interaction);
+      Assert.Equal(double.NaN, duplicate.MinSavingMultipleZones);
 
       // 5 check that original has not been changed
-      Assert.Equal(19, original.Diameter.Millimeters);
-      Assert.Equal(100, original.Height.Millimeters);
-      Assert.Equal(450, original.Fu.Megapascals);
-      Assert.Equal(Force.Zero, original.CharacterStrength);
+      // dimensions
+      Assert.NotNull(original.StudDimension);
+      Assert.Equal(13, original.StudDimension.Diameter.Millimeters);
+      Assert.Equal(65, original.StudDimension.Height.Millimeters);
+      Assert.Equal(400, original.StudDimension.Fu.Megapascals);
+      Assert.Equal(Force.Zero, original.StudDimension.CharacterStrength);
+      // specification
+      Assert.NotNull(original.StudSpecification);
+      Assert.Equal(Length.Zero, original.StudSpecification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, original.StudSpecification.NoStudZoneEnd);
+      Assert.True(original.StudSpecification.Welding);
+      // spacings
+      Assert.NotNull(original.CustomSpacing);
+      Assert.Equal(2, original.CustomSpacing.Count);
+      Assert.NotNull(original.CustomSpacing[0]);
+      Assert.Equal(Length.Zero, original.CustomSpacing[0].DistanceFromStart);
+      Assert.Equal(2, original.CustomSpacing[0].NumberOfRows);
+      Assert.Equal(1, original.CustomSpacing[0].NumberOfLines);
+      Assert.Equal(25, original.CustomSpacing[0].Spacing.Centimeters);
+      Assert.NotNull(original.CustomSpacing[1]);
+      Assert.Equal(Length.Zero, original.CustomSpacing[1].DistanceFromStart);
+      Assert.Equal(1, original.CustomSpacing[1].NumberOfRows);
+      Assert.Equal(2, original.CustomSpacing[1].NumberOfLines);
+      Assert.Equal(35, original.CustomSpacing[1].Spacing.Centimeters);
+      //other
+      Assert.Equal(StudGroupSpacing.StudSpacingType.Custom, original.StudSpacingType);
+      Assert.True(original.CheckStudSpacing);
+      Assert.Equal(double.NaN, original.Interaction);
+      Assert.Equal(double.NaN, original.MinSavingMultipleZones);
 
       // 1 create with new constructor and duplicate
-      original = TestConstructorStudDimensionsCustomSizeForce(16, 75, 90);
+      original = TestConstructorStudAutomaticOrMinSpacing(StudGroupSpacing.StudSpacingType.Automatic, 0.2);
       duplicate = original.Duplicate();
 
       // 2 check that duplicate has duplicated values
-      Assert.Equal(16, duplicate.Diameter.Millimeters);
-      Assert.Equal(75, duplicate.Height.Millimeters);
-      Assert.Equal(Pressure.Zero, duplicate.Fu);
-      Assert.Equal(90, duplicate.CharacterStrength.Kilonewtons);
+      Assert.Equal(StudGroupSpacing.StudSpacingType.Automatic, duplicate.StudSpacingType);
+      Assert.Null(duplicate.CustomSpacing);
+      Assert.Equal(0.2, duplicate.MinSavingMultipleZones);
+      Assert.Equal(double.NaN, duplicate.Interaction);
 
       // 3 make some changes to duplicate
-      duplicate.Diameter = new Length(19, length);
-      duplicate.Height = new Length(125, length);
-      duplicate.CharacterStrength = new Force(110, force);
+      duplicate.MinSavingMultipleZones = 0.3;
 
       // 4 check that duplicate has set changes
-      Assert.Equal(19, duplicate.Diameter.Millimeters);
-      Assert.Equal(125, duplicate.Height.Millimeters);
-      Assert.Equal(Pressure.Zero, duplicate.Fu);
-      Assert.Equal(110, duplicate.CharacterStrength.Kilonewtons);
+      Assert.Equal(0.3, duplicate.MinSavingMultipleZones);
 
       // 5 check that original has not been changed
-      Assert.Equal(16, original.Diameter.Millimeters);
-      Assert.Equal(75, original.Height.Millimeters);
-      Assert.Equal(Pressure.Zero, original.Fu);
-      Assert.Equal(90, original.CharacterStrength.Kilonewtons);
+      Assert.Equal(0.2, original.MinSavingMultipleZones);
+
+      // 1 create with new constructor and duplicate
+      original = TestConstructorStudPartialSpacing(0.15, 0.90);
+      duplicate = original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Assert.Equal(StudGroupSpacing.StudSpacingType.Partial_Interaction, duplicate.StudSpacingType);
+      Assert.Null(duplicate.CustomSpacing);
+      Assert.Equal(0.15, duplicate.MinSavingMultipleZones);
+      Assert.Equal(0.90, duplicate.Interaction);
+
+      // 3 make some changes to duplicate
+      duplicate.MinSavingMultipleZones = 0.25;
+      duplicate.Interaction = 0.97;
+
+      // 4 check that duplicate has set changes
+      Assert.Equal(0.25, duplicate.MinSavingMultipleZones);
+      Assert.Equal(0.97, duplicate.Interaction);
+
+      // 5 check that original has not been changed
+      Assert.Equal(0.15, original.MinSavingMultipleZones);
+      Assert.Equal(0.90, original.Interaction);
     }
   }
 }

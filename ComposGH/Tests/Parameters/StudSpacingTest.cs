@@ -31,7 +31,7 @@ namespace ComposGH.Parameters.Tests
     [Fact]
     public void TestContructorStudSpacingExceptions()
     {
-      // check that exceptions are thrown if inputs does not
+      // check that exceptions are thrown if inputs does not comply with allowed
       Assert.Throws<System.ArgumentException>(() => TestConstructorStudSpacing(150, 0, 1, 250));
       Assert.Throws<System.ArgumentException>(() => TestConstructorStudSpacing(150, 1, 0, 250));
     }
