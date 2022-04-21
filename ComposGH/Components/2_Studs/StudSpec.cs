@@ -29,9 +29,9 @@ namespace ComposGH.Components
                 Ribbon.SubCategoryName.Cat2())
         { this.Hidden = false; } // sets the initial state of the component to hidden
 
-        public override GH_Exposure Exposure => GH_Exposure.secondary;
+        public override GH_Exposure Exposure => GH_Exposure.tertiary;
 
-        //protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateStudZoneLength;
+        protected override System.Drawing.Bitmap Icon => Properties.Resources.StandardStudSpecs;
         #endregion
 
         #region Custom UI
@@ -42,10 +42,6 @@ namespace ComposGH.Components
             {
                 dropdownitems = new List<List<string>>();
                 selecteditems = new List<string>();
-
-                // code
-                dropdownitems.Add(Enum.GetValues(typeof(DesignCode.Code)).Cast<DesignCode.Code>().Select(x => x.ToString()).ToList());
-                selecteditems.Add(code.ToString());
 
                 // length
                 dropdownitems.Add(Units.FilteredLengthUnits);
@@ -59,27 +55,10 @@ namespace ComposGH.Components
         {
             // change selected item
             selecteditems[i] = dropdownitems[i][j];
+            if (lengthUnit.ToString() == selecteditems[i])
+                return;
 
-            if (i == 0) // change is made to code 
-            {
-                if (code.ToString() == selecteditems[i])
-                    return; // return if selected value is same as before
-
-                code = (DesignCode.Code)Enum.Parse(typeof(DesignCode.Code), selecteditems[i]);
-
-                if (code == DesignCode.Code.EN1994_1_1_2004)
-                {
-                    ModeENClicked();
-                }
-                else
-                {
-                    ModeOtherClicked();
-                }
-            }
-            else if (i == 1) // change is made to length unit
-            {
-                lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[i]);
-            }
+            lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[i]);
 
             // update name of inputs (to display unit on sliders)
             (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -90,12 +69,7 @@ namespace ComposGH.Components
 
         private void UpdateUIFromSelectedItems()
         {
-            code = (DesignCode.Code)Enum.Parse(typeof(DesignCode.Code), selecteditems[0]);
-            lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[1]);
-            if (code == DesignCode.Code.EN1994_1_1_2004)
-                ModeENClicked();
-            else
-                ModeOtherClicked();
+            lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[0]);
 
             CreateAttributes();
             (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -110,14 +84,11 @@ namespace ComposGH.Components
         // list of descriptions 
         List<string> spacerDescriptions = new List<string>(new string[]
         {
-            "Design Code",
             "Unit",
-            "Settings"
         });
 
         private bool first = true;
         private LengthUnit lengthUnit = Units.LengthUnitGeometry;
-        private DesignCode.Code code = DesignCode.Code.EN1994_1_1_2004;
         #endregion
 
         #region Input and output
@@ -131,14 +102,13 @@ namespace ComposGH.Components
                 "NSZS", "Length of zone without shear studs at the start of the beam (default = 0)", GH_ParamAccess.item);
             pManager.AddGenericParameter("No Stud Zone End [" + unitAbbreviation + "]", 
                 "NSZE", "Length of zone without shear studs at the end of the beam (default = 0)", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Rebar Pos [" + unitAbbreviation + "]", 
-                "RbP", "Reinforcement position distance below underside of stud head (default = 30mm)", GH_ParamAccess.item);
             pManager.AddBooleanParameter("Welded", "Wld", "Welded through profiled steel sheeting", GH_ParamAccess.item, true);
             pManager.AddBooleanParameter("NCCI Limits", "NCCI", "Use NCCI limits on minimum percentage of interaction if applicable. " +
                 "(Imposed load criteria will not be verified)", GH_ParamAccess.item, false);
             pManager[0].Optional = true;
             pManager[1].Optional = true;
             pManager[2].Optional = true;
+            pManager[3].Optional = true;
         }
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
@@ -157,69 +127,12 @@ namespace ComposGH.Components
                 noStudZoneEnd = GetInput.Length(this, DA, 1, lengthUnit, true);
 
             bool welded = true;
+            DA.GetData(2, ref welded);
 
-            switch (code)
-            {
-                case DesignCode.Code.EN1994_1_1_2004:
-                    // get rebar position
-                    Length rebarPos = new Length(30, LengthUnit.Millimeter);
-                    if (this.Params.Input[2].Sources.Count > 0)
-                        rebarPos = GetInput.Length(this, DA, 2, lengthUnit, true);
-                    DA.GetData(3, ref welded);
-                    bool ncci = false;
-                    DA.GetData(4, ref ncci);
-                    StudSpecification specEN = new StudSpecification(
-                        noStudZoneStart, noStudZoneEnd, rebarPos, welded, ncci);
-                    DA.SetData(0, new StudSpecificationGoo(specEN));
-                    return;
-
-                case DesignCode.Code.BS5950_3_1_1990_Superseeded:
-                case DesignCode.Code.BS5950_3_1_1990_A1_2010:
-                    bool ec4 = true;
-                    DA.GetData(2, ref ec4);
-
-                    StudSpecification specBS = new StudSpecification(
-                        ec4, noStudZoneStart, noStudZoneEnd);
-                    DA.SetData(0, new StudSpecificationGoo(specBS));
-                    return;
-
-                default:
-                    DA.GetData(2, ref welded);
-
-                    StudSpecification specOther = new StudSpecification(
-                        noStudZoneStart, noStudZoneEnd, welded);
-                    DA.SetData(0, new StudSpecificationGoo(specOther));
-                    return;
-            }
+            StudSpecification specOther = new StudSpecification(
+                noStudZoneStart, noStudZoneEnd, welded);
+            DA.SetData(0, new StudSpecificationGoo(specOther));
         }
-
-        #region update input params
-        private void ModeENClicked()
-        {
-            RecordUndoEvent(code.ToString() + " Parameters");
-
-            //remove input parameters
-            while (Params.Input.Count > 2)
-                Params.UnregisterInputParameter(Params.Input[2], true);
-
-            //add input parameters
-            Params.RegisterInputParam(new Param_GenericObject());
-            Params.RegisterInputParam(new Param_Boolean());
-            Params.RegisterInputParam(new Param_Boolean());
-        }
-
-        private void ModeOtherClicked()
-        {
-            RecordUndoEvent(code.ToString() + " Parameters");
-
-            //remove input parameters
-            while (Params.Input.Count > 2)
-                Params.UnregisterInputParameter(Params.Input[2], true);
-
-            //add input parameters
-            Params.RegisterInputParam(new Param_Boolean());
-        }
-        #endregion
 
         #region (de)serialization
         public override bool Write(GH_IO.Serialization.GH_IWriter writer)
@@ -262,28 +175,6 @@ namespace ComposGH.Components
             string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
             Params.Input[0].Name = "No Stud Zone Start [" + unitAbbreviation + "]";
             Params.Input[1].Name = "No Stud Zone End [" + unitAbbreviation + "]";
-
-            if (code == DesignCode.Code.EN1994_1_1_2004)
-            {
-                Params.Input[2].Name = "Rebar Pos [" + unitAbbreviation + "]";
-                Params.Input[2].NickName = "RbP";
-                Params.Input[2].Description = "Character strength";
-
-                Params.Input[3].Name = "Welded";
-                Params.Input[3].NickName = "Wld";
-                Params.Input[3].Description = "Welded through profiled steel sheeting";
-
-                Params.Input[4].Name = "NCCI Limits";
-                Params.Input[4].NickName = "NCCI";
-                Params.Input[4].Description = "Use NCCI limits on minimum percentage of interaction if applicable. " +
-                    "(Imposed load criteria will not be verified)";
-            }
-            else
-            {
-                Params.Input[2].Name = "Welded";
-                Params.Input[2].NickName = "Wld";
-                Params.Input[2].Description = "Welded through profiled steel sheeting";
-            }
         }
         #endregion
     }

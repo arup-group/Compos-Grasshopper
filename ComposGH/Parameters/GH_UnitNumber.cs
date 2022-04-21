@@ -178,7 +178,7 @@ namespace UnitsNet.GH
     public class GH_UnitNumberParameter : GH_PersistentParam<GH_UnitNumber>
     {
         public GH_UnitNumberParameter()
-          : base(new GH_InstanceDescription("UnitNumber", "UNum", "Quantity = number + unit", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat9()))
+          : base(new GH_InstanceDescription("UnitNumber", "UNum", "Quantity = number + unit", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
         {
         }
 
@@ -187,7 +187,7 @@ namespace UnitsNet.GH
         public override GH_Exposure Exposure => GH_Exposure.quarternary | GH_Exposure.obscure;
 
 
-        //protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.UnitParam;
+        protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.UnitParam;
 
         protected override GH_GetterResult Prompt_Plural(ref List<GH_UnitNumber> values)
         {

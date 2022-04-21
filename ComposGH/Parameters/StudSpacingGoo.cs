@@ -70,10 +70,10 @@ namespace ComposGH.Parameters
         }
         public override string ToString()
         {
-            string start = (this.DistanceFromStart.Value == 0) ? "" : "From:" + this.DistanceFromStart.ToString().Replace(" ", string.Empty);
+            string start = (this.DistanceFromStart.Value == 0) ? "" : "From:" + this.DistanceFromStart.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
             string rows = NumberOfRows + "R";
             string lines = NumberOfLines + "L";
-            string spacing = "@" + this.Spacing.ToString().Replace(" ", string.Empty);
+            string spacing = "@" + this.Spacing.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
 
             string joined = string.Join(" ", new List<string>() { start, rows, lines, spacing });
             return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');

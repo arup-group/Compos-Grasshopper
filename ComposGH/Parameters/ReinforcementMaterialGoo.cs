@@ -17,11 +17,6 @@ namespace ComposGH.Parameters
     /// </summary>
     public class RebarMaterial
     {
-        public enum RebarMatType
-        {
-            Standard,
-            Custom
-        }
         public Pressure Fu { get; set; }
 
         public enum StandardGrade
@@ -83,7 +78,6 @@ namespace ComposGH.Parameters
         {
             SetGradeFromStandard(standardGrade);
         }
-
         #endregion
 
         #region properties
@@ -107,8 +101,7 @@ namespace ComposGH.Parameters
         public override string ToString()
         {
 
-            string f = (Fu.Value == 0) ? Fu.ToString() : Fu.ToString();
-
+            string f = Fu.ToUnit(Units.StressUnit).ToString("f0");
             return f.Replace(" ", string.Empty);
         }
         #endregion
@@ -141,7 +134,7 @@ namespace ComposGH.Parameters
         }
         #endregion
 
-        #region propethies
+        #region proHties
         public override bool IsValid => true;
         public override string TypeName => "Rebar Material";
         public override string TypeDescription => "Compos " + this.TypeName + " Parameter";

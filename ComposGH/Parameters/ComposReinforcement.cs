@@ -142,8 +142,8 @@ namespace ComposGH.Parameters
         }
         public override string ToString()
         {
-            string start = (this.DistanceFromStart.Value == 0) ? "" : this.DistanceFromStart.ToString().Replace(" ", string.Empty) + "<-";
-            string end = (this.DistanceFromEnd.Value == 0) ? "" : "->" + this.DistanceFromEnd.ToString().Replace(" ", string.Empty);
+            string start = (this.DistanceFromStart.Value == 0) ? "" : this.DistanceFromStart.As(Units.LengthUnitGeometry).ToString("f2").Replace(" ", string.Empty) + "<-";
+            string end = (this.DistanceFromEnd.Value == 0) ? "" : "->" + this.DistanceFromEnd.As(Units.LengthUnitGeometry).ToString("f2").Replace(" ", string.Empty);
             string startend = start + end;
             startend = startend.Replace("--", "-").Replace(",", string.Empty);
             string mat = this.Material.ToString();
@@ -332,7 +332,6 @@ namespace ComposGH.Parameters
     /// <summary>
     /// This class provides a Parameter interface for the CustomGoo type.
     /// </summary>
-
     public class ComposReinforcementParameter : GH_PersistentParam<ComposReinforcementGoo>
     {
         public ComposReinforcementParameter()
@@ -344,7 +343,7 @@ namespace ComposGH.Parameters
 
         public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-        //protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
+        protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.ReinforcementParam;
 
         protected override GH_GetterResult Prompt_Plural(ref List<ComposReinforcementGoo> values)
         {
@@ -386,5 +385,4 @@ namespace ComposGH.Parameters
         }
         #endregion
     }
-
 }

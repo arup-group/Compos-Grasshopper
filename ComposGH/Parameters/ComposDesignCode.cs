@@ -16,7 +16,7 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Custom class: this class defines the basic properties and methods for our custom class
     /// </summary>
-    public class DesignCode
+    public class ComposDesignCode
     {
         public enum Code
         {
@@ -37,12 +37,12 @@ namespace ComposGH.Parameters
         public NationalAnnex National_Annex { get; set; }
 
         #region constructors
-        public DesignCode()
+        public ComposDesignCode()
         {
             this.Design_Code = Code.EN1994_1_1_2004;
             this.National_Annex = NationalAnnex.Generic;
         }
-        public DesignCode(Code designcode, NationalAnnex nationalAnnex = NationalAnnex.Generic)
+        public ComposDesignCode(Code designcode, NationalAnnex nationalAnnex = NationalAnnex.Generic)
         {
             this.Design_Code = designcode;
             this.National_Annex = nationalAnnex;
@@ -60,7 +60,7 @@ namespace ComposGH.Parameters
         #endregion
 
         #region coa interop
-        internal DesignCode(string coaString)
+        internal ComposDesignCode(string coaString)
         {
             switch (coaString)
             {
@@ -108,10 +108,10 @@ namespace ComposGH.Parameters
 
         #region methods
 
-        public DesignCode Duplicate()
+        public ComposDesignCode Duplicate()
         {
             if (this == null) { return null; }
-            DesignCode dup = (DesignCode)this.MemberwiseClone();
+            ComposDesignCode dup = (ComposDesignCode)this.MemberwiseClone();
             return dup;
         }
 
@@ -126,17 +126,17 @@ namespace ComposGH.Parameters
     /// <summary>
     /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
     /// </summary>
-    public class DesignCodeGoo : GH_Goo<DesignCode>
+    public class DesignCodeGoo : GH_Goo<ComposDesignCode>
     {
         #region constructors
         public DesignCodeGoo()
         {
-            this.Value = new DesignCode();
+            this.Value = new ComposDesignCode();
         }
-        public DesignCodeGoo(DesignCode item)
+        public DesignCodeGoo(ComposDesignCode item)
         {
             if (item == null)
-                item = new DesignCode();
+                item = new ComposDesignCode();
             this.Value = item.Duplicate();
         }
 
@@ -146,7 +146,7 @@ namespace ComposGH.Parameters
         }
         public DesignCodeGoo DuplicateGoo()
         {
-            return new DesignCodeGoo(Value == null ? new DesignCode() : Value.Duplicate());
+            return new DesignCodeGoo(Value == null ? new ComposDesignCode() : Value.Duplicate());
         }
         #endregion
 
@@ -197,9 +197,9 @@ namespace ComposGH.Parameters
             if (source == null) { return false; }
 
             //Cast from GsaMaterial
-            if (typeof(DesignCode).IsAssignableFrom(source.GetType()))
+            if (typeof(ComposDesignCode).IsAssignableFrom(source.GetType()))
             {
-                Value = (DesignCode)source;
+                Value = (ComposDesignCode)source;
                 return true;
             }
 
@@ -221,7 +221,7 @@ namespace ComposGH.Parameters
 
         public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-        //protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
+        protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.DesignCodeParameter;
 
         protected override GH_GetterResult Prompt_Plural(ref List<DesignCodeGoo> values)
         {
