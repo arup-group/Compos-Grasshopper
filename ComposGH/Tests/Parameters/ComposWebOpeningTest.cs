@@ -10,7 +10,7 @@ namespace ComposGH.Parameters.Tests
     [Theory]
     [InlineData(400, 300, 6000, 150)]
     [InlineData(250.123, 423.0013, 1240.12, 214)]
-    public void TestConstructorRectangularWebOpening(double width, double height, 
+    public void TestConstructorRectangularWebOpening(double width, double height,
       double positionCentroidFromStart, double positionCentroidFromTop)
     {
       LengthUnit unit = LengthUnit.Millimeter;
@@ -31,7 +31,7 @@ namespace ComposGH.Parameters.Tests
     [Theory]
     [InlineData(200, 400, 9000)]
     [InlineData(123.456, 0.0123, 500.111)]
-    public void TestConstructorCircularWebOpening(double diameter, 
+    public void TestConstructorCircularWebOpening(double diameter,
       double positionCentroidFromStart, double positionCentroidFromTop)
     {
       LengthUnit unit = LengthUnit.Millimeter;
