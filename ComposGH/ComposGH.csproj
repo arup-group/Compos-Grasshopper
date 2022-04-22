@@ -104,6 +104,12 @@
     <Compile Include="Components\5_Rebar\CreateRebarMaterial.cs" />
     <Compile Include="Components\5_Rebar\TransverseReinforcement.cs" />
     <Compile Include="Components\5_Rebar\MeshReinforcement.cs" />
+    <Compile Include="Components\6_Load\PatchLoad.cs" />
+    <Compile Include="Components\6_Load\AxialLoad.cs" />
+    <Compile Include="Components\6_Load\TriLinearLoad.cs" />
+    <Compile Include="Components\6_Load\LinearLoad.cs" />
+    <Compile Include="Components\6_Load\UniformLoad.cs" />
+    <Compile Include="Components\6_Load\PointLoad.cs" />
     <Compile Include="ComposGHInfo.cs" />
     <Compile Include="Helpers\DeSerialization.cs" />
     <Compile Include="Helpers\GhRibbonLayout.cs" />
@@ -111,6 +117,7 @@
     <Compile Include="Helpers\_ComposResultsHelper.cs" />
     <Compile Include="Helpers\_GetInputs.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
+    <Compile Include="Parameters\Load.cs" />
     <Compile Include="Parameters\ComposLoad.cs" />
     <Compile Include="Parameters\ComposReinforcement.cs" />
     <Compile Include="Parameters\ReinforcementMaterialGoo.cs" />
@@ -193,7 +200,6 @@
     <Folder Include="Components\0_Model\" />
     <Folder Include="Components\3_Slab\" />
     <Folder Include="Components\4_Decking\" />
-    <Folder Include="Components\6_Load\" />
     <Folder Include="Components\7_Design\" />
     <Folder Include="Components\8_Analysis\" />
     <Folder Include="Components\9_Results\" />
@@ -287,6 +293,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\CustomStudDims.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\AxialLoad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\LinearLoad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\LoadParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\PatchLoad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\PointLoad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\TriLinearLoad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\UniformLoad.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

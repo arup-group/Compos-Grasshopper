@@ -258,13 +258,22 @@ namespace ComposGH
             PressureUnit.Megapascal.ToString(),
             PressureUnit.Gigapascal.ToString(),
             PressureUnit.NewtonPerSquareMillimeter.ToString(),
-            PressureUnit.KilonewtonPerSquareCentimeter.ToString(),
             PressureUnit.NewtonPerSquareMeter.ToString(),
-            PressureUnit.KilopoundForcePerSquareInch.ToString(),
             PressureUnit.PoundForcePerSquareInch.ToString(),
             PressureUnit.PoundForcePerSquareFoot.ToString(),
             PressureUnit.KilopoundForcePerSquareInch.ToString(),
-            PressureUnit.KilopoundForcePerSquareFoot.ToString()
+        };
+    internal static List<string> FilteredForcePerAreaUnits = new List<string>()
+        {
+            PressureUnit.NewtonPerSquareMillimeter.ToString(),
+            PressureUnit.NewtonPerSquareCentimeter.ToString(),
+            PressureUnit.NewtonPerSquareMeter.ToString(),
+            PressureUnit.KilonewtonPerSquareCentimeter.ToString(),
+            PressureUnit.KilonewtonPerSquareMillimeter.ToString(),
+            PressureUnit.KilonewtonPerSquareMeter.ToString(),
+            PressureUnit.PoundForcePerSquareInch.ToString(),
+            PressureUnit.PoundForcePerSquareFoot.ToString(),
+            PressureUnit.KilopoundForcePerSquareInch.ToString(),
         };
     #endregion
 
