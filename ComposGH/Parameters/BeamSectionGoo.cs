@@ -20,7 +20,6 @@ namespace ComposGH.Parameters
   public class BeamSection
   {
     // Setting out
-
     public bool TaperedToNext 
     {
       get 

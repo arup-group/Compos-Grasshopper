@@ -15,15 +15,29 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Custom class: this class defines the basic properties and methods for our custom class
   /// </summary>
-  public class ComposBeam
+  public class ComposLoad
   {
-    public Length Length { get; set; }
-    public ComposSteelMaterial Material { get; set; }
-    public List<BeamSection> BeamSections { get; set; }
-    public List<ComposWebOpening> WebOpenings { get; set; }
+    public enum LoadType
+    {
+      Point,
+      Uniform,
+      Linear,
+      TriLinear,
+      Patch,
+      MemberLoad,
+      Axial
+    }
+    public enum LoadDistribution
+    {
+      Line,
+      Area
+    }
+
+    public LoadType Type { get { return m_type; } }
+    internal LoadType m_type;
 
     #region constructors
-    public ComposBeam()
+    public ComposLoad()
     {
       // empty constructor
     }
@@ -43,7 +57,7 @@ namespace ComposGH.Parameters
     #endregion
 
     #region coa interop
-    internal ComposBeam(string coaString)
+    internal ComposLoad(string coaString)
     {
       // to do - implement from coa string method
     }
@@ -57,17 +71,10 @@ namespace ComposGH.Parameters
 
     #region methods
 
-    public ComposBeam Duplicate()
-    {
-      if (this == null) { return null; }
-      ComposBeam dup = (ComposBeam)this.MemberwiseClone();
-      return dup;
-    }
-
     public override string ToString()
     {
       // update with better naming
-      return "Beam";
+      return this.Type.ToString() + " Load";
     }
 
     #endregion
@@ -76,33 +83,33 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class ComposBeamGoo : GH_Goo<ComposBeam> // needs to be upgraded to GeometryGoo eventually....
+  public class ComposLoadGoo : GH_Goo<ComposLoad> // needs to be upgraded to GeometryGoo eventually....
   {
     #region constructors
-    public ComposBeamGoo()
+    public ComposLoadGoo()
     {
-      this.Value = new ComposBeam();
+      this.Value = new ComposLoad();
     }
-    public ComposBeamGoo(ComposBeam item)
+    public ComposLoadGoo(ComposLoad item)
     {
       if (item == null)
-        item = new ComposBeam();
-      this.Value = item.Duplicate();
+        item = new ComposLoad();
+      this.Value = item;
     }
 
     public override IGH_Goo Duplicate()
     {
       return DuplicateGoo();
     }
-    public ComposBeamGoo DuplicateGoo()
+    public ComposLoadGoo DuplicateGoo()
     {
-      return new ComposBeamGoo(Value == null ? new ComposBeam() : Value.Duplicate());
+      return new ComposLoadGoo(Value == null ? new ComposLoad() : Value);
     }
     #endregion
 
     #region properties
     public override bool IsValid => true;
-    public override string TypeName => "Beam";
+    public override string TypeName => "Load";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot
     {
@@ -127,7 +134,7 @@ namespace ComposGH.Parameters
       // This function is called when Grasshopper needs to convert this 
       // instance of our custom class into some other type Q.            
 
-      if (typeof(Q).IsAssignableFrom(typeof(ComposBeam)))
+      if (typeof(Q).IsAssignableFrom(typeof(ComposLoad)))
       {
         if (Value == null)
           target = default;
@@ -147,9 +154,9 @@ namespace ComposGH.Parameters
       if (source == null) { return false; }
 
       //Cast from GsaMaterial
-      if (typeof(ComposBeam).IsAssignableFrom(source.GetType()))
+      if (typeof(ComposLoad).IsAssignableFrom(source.GetType()))
       {
-        Value = (ComposBeam)source;
+        Value = (ComposLoad)source;
         return true;
       }
 
@@ -161,24 +168,24 @@ namespace ComposGH.Parameters
   /// <summary>
   /// This class provides a Parameter interface for the CustomGoo type.
   /// </summary>
-  public class ComposBeamParameter : GH_PersistentParam<ComposBeamGoo>
+  public class ComposLoadParameter : GH_PersistentParam<ComposLoadGoo>
   {
-    public ComposBeamParameter()
-      : base(new GH_InstanceDescription("Beam", "Bm", "Compos Beam", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
+    public ComposLoadParameter()
+      : base(new GH_InstanceDescription("Load", "Ld", "Compos Load", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
 
-    public override Guid ComponentGuid => new Guid("2dc51bc1-9abb-4f26-845f-ca1e66236e9e");
+    public override Guid ComponentGuid => new Guid("3dc51bc1-9abb-4f26-845f-ca1e66236e9e");
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-    protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.BeamParam;
+    protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.LoadParam;
 
-    protected override GH_GetterResult Prompt_Plural(ref List<ComposBeamGoo> values)
+    protected override GH_GetterResult Prompt_Plural(ref List<ComposLoadGoo> values)
     {
       return GH_GetterResult.cancel;
     }
-    protected override GH_GetterResult Prompt_Singular(ref ComposBeamGoo value)
+    protected override GH_GetterResult Prompt_Singular(ref ComposLoadGoo value)
     {
       return GH_GetterResult.cancel;
     }
