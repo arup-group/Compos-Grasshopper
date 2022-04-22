@@ -24,6 +24,13 @@ namespace ComposGH.Parameters
     public Length NoStudZoneStart { get; set; }
     public Length NoStudZoneEnd { get; set; }
     public Length ReinforcementPosition { get; set; }
+    public enum StudSpecType
+    {
+      EC4,
+      BS5950,
+      Other
+    }
+    public StudSpecType SpecType;
 
     #region constructors
     public StudSpecification()
@@ -45,6 +52,7 @@ namespace ComposGH.Parameters
       this.ReinforcementPosition = reinforcementPosition;
       this.Welding = welding;
       this.NCCI = ncci;
+      this.SpecType = StudSpecType.EC4;
     }
     /// <summary>
     /// for BS5950 code
@@ -58,6 +66,7 @@ namespace ComposGH.Parameters
       this.NoStudZoneStart = noStudZoneStart;
       this.NoStudZoneEnd = noStudZoneEnd;
       this.EC4_Limit = useEC4Limit;
+      this.SpecType = StudSpecType.BS5950;
     }
     /// <summary>
     /// for codes: AS/NZ, HK, 
@@ -70,6 +79,7 @@ namespace ComposGH.Parameters
       this.NoStudZoneStart = noStudZoneStart;
       this.NoStudZoneEnd = noStudZoneEnd;
       this.Welding = welding;
+      this.SpecType = StudSpecType.Other;
     }
 
     #endregion
