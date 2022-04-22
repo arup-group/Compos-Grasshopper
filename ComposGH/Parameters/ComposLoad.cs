@@ -15,7 +15,7 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Custom class: this class defines the basic properties and methods for our custom class
   /// </summary>
-  public class ComposBeam
+  public class ComposLoad
   {
     public Length Length { get; set; }
     public ComposSteelMaterial Material { get; set; }
@@ -23,7 +23,7 @@ namespace ComposGH.Parameters
     public List<ComposWebOpening> WebOpenings { get; set; }
 
     #region constructors
-    public ComposBeam()
+    public ComposLoad()
     {
       // empty constructor
     }
@@ -43,7 +43,7 @@ namespace ComposGH.Parameters
     #endregion
 
     #region coa interop
-    internal ComposBeam(string coaString)
+    internal ComposLoad(string coaString)
     {
       // to do - implement from coa string method
     }
@@ -57,10 +57,10 @@ namespace ComposGH.Parameters
 
     #region methods
 
-    public ComposBeam Duplicate()
+    public ComposLoad Duplicate()
     {
       if (this == null) { return null; }
-      ComposBeam dup = (ComposBeam)this.MemberwiseClone();
+      ComposLoad dup = (ComposLoad)this.MemberwiseClone();
       return dup;
     }
 

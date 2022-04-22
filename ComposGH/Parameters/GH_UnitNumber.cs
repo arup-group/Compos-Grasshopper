@@ -13,44 +13,6 @@ using Oasys.Units;
 
 namespace UnitsNet.GH
 {
-  //public class UnitNumber
-  //{
-  //    #region fields
-  //    public IQuantity Quantity
-  //    {
-  //        get { return m_value; }
-  //        set { m_value = value; }
-  //    }
-  //    private IQuantity m_value;
-  //    #endregion
-  //    #region constructors
-  //    public UnitNumber()
-  //    {
-  //        this.m_value = null;
-  //    }
-  //    public UnitNumber(IQuantity quantity)
-  //    {
-  //        this.m_value = quantity;
-  //    }
-  //    #endregion
-  //    #region properties
-  //    public bool IsValid
-  //    {
-  //        get
-  //        {
-  //            if (this.Quantity == null) { return false; }
-  //            return true;
-  //        }
-  //    }
-  //    #endregion
-
-  //    #region methods
-  //    public override string ToString()
-  //    {
-  //        return this.Quantity.ToString();
-  //    }
-  //}
-
   /// <summary>
   /// Goo wrapper class, makes sure this can be used in Grasshopper.
   /// </summary>

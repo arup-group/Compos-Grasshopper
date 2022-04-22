@@ -111,6 +111,7 @@
     <Compile Include="Helpers\_ComposResultsHelper.cs" />
     <Compile Include="Helpers\_GetInputs.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
+    <Compile Include="Parameters\ComposLoad.cs" />
     <Compile Include="Parameters\ComposReinforcement.cs" />
     <Compile Include="Parameters\ReinforcementMaterialGoo.cs" />
     <Compile Include="Parameters\ComposBeam.cs" />
