@@ -34,7 +34,7 @@ namespace ComposGH.Components
     #endregion
 
     #region Custom UI
-    //This region overrides the typical component layout
+    // This region overrides the typical component layout
     public override void CreateAttributes()
     {
       if (first)

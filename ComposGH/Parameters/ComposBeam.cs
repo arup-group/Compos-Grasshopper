@@ -10,7 +10,6 @@ using Grasshopper.Documentation;
 using Rhino.Collections;
 using UnitsNet;
 using ComposGH.Converters;
-using ComposGH.Helpers;
 
 namespace ComposGH.Parameters
 {

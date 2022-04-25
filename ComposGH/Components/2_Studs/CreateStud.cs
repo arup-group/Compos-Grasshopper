@@ -35,7 +35,7 @@ namespace ComposGH.Components
     #endregion
 
     #region Custom UI
-    //This region overrides the typical component layout
+    // This region overrides the typical component layout
     public override void CreateAttributes()
     {
       if (first)
@@ -103,9 +103,10 @@ namespace ComposGH.Components
     {
       pManager.AddGenericParameter("Stud Dims", "Sdm", "Compos Shear Stud Dimensions", GH_ParamAccess.item);
       pManager.AddGenericParameter("Stud Spec", "Spc", "Compos Shear Stud Specification", GH_ParamAccess.item);
-      pManager.AddNumberParameter("Min Saving", "Msm", "Fraction for Minimum Savnig for using Multiple Zones (Default = 0.2 (20%))", GH_ParamAccess.item, 0.2);
+      pManager.AddNumberParameter("Min Saving", "Msm", "Fraction for Minimum Saving for using Multiple Zones (Default = 0.2 (20%))", GH_ParamAccess.item, 0.2);
       pManager[2].Optional = true;
     }
+
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
       pManager.AddGenericParameter("Stud", "Stu", "Compos Shear Stud", GH_ParamAccess.item);

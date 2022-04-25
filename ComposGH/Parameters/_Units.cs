@@ -328,6 +328,22 @@ namespace ComposGH
         };
     #endregion
 
+    #region strain
+    public static StrainUnit StrainUnit
+    {
+      get { return m_strain; }
+      set { m_strain = value; }
+    }
+    private static StrainUnit m_strain = StrainUnit.MilliStrain;
+    internal static List<string> FilteredStrainUnits = new List<string>()
+        {
+            StrainUnit.Ratio.ToString(),
+            StrainUnit.Percent.ToString(),
+            StrainUnit.MilliStrain.ToString(),
+            StrainUnit.MicroStrain.ToString()
+        };
+    #endregion
+
     #region unit system
     public static UnitsNet.UnitSystem UnitSystem
     {

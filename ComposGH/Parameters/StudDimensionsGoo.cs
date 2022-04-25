@@ -234,7 +234,7 @@ namespace ComposGH.Parameters
   }
 
   /// <summary>
-  /// Goo wrapH class, makes sure our custom class can be used in GrasshopH.
+  /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
   public class StudDimensionsGoo : GH_Goo<StudDimensions>
   {
@@ -284,7 +284,7 @@ namespace ComposGH.Parameters
     #region casting methods
     public override bool CastTo<Q>(ref Q target)
     {
-      // This function is called when GrasshopH needs to convert this 
+      // This function is called when Grasshopper needs to convert this 
       // instance of our custom class into some other type Q.            
 
       if (typeof(Q).IsAssignableFrom(typeof(StudDimensions)))
@@ -301,7 +301,7 @@ namespace ComposGH.Parameters
     }
     public override bool CastFrom(object source)
     {
-      // This function is called when GrasshopH needs to convert other data 
+      // This function is called when Grasshopper needs to convert other data 
       // into our custom class.
 
       if (source == null) { return false; }

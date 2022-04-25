@@ -17,6 +17,47 @@ namespace ComposGH.Components
   class GetInput
   {
     #region UnitsNet
+    internal static Density Density(GH_Component owner, IGH_DataAccess DA, int inputid, DensityUnit densityUnit, bool isOptional = false)
+    {
+      GH_UnitNumber unitNumber = null;
+      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+      if (DA.GetData(inputid, ref gh_typ))
+      {
+        // try cast directly to quantity type
+        if (gh_typ.Value is GH_UnitNumber)
+        {
+          unitNumber = (GH_UnitNumber)gh_typ.Value;
+          // check that unit is of right type
+          if (!unitNumber.Value.QuantityInfo.UnitType.Equals(typeof(DensityUnit)))
+          {
+            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Error in " + owner.Params.Input[inputid].NickName + " input: Wrong unit type"
+                + System.Environment.NewLine + "Unit type is " + unitNumber.Value.QuantityInfo.Name + " but must be Density");
+            return UnitsNet.Density.Zero;
+          }
+        }
+        // try cast to double
+        else if (GH_Convert.ToDouble(gh_typ.Value, out double val, GH_Conversion.Both))
+        {
+          // create new quantity from default units
+          unitNumber = new GH_UnitNumber(new Density(val, densityUnit));
+        }
+        else
+        {
+          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber");
+          return UnitsNet.Density.Zero;
+        }
+      }
+      else if (!isOptional)
+        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+      else
+      {
+        if (unitNumber == null)
+          return UnitsNet.Density.Zero;
+      }
+
+      return (Density)unitNumber.Value;
+    }
+
     internal static Length Length(GH_Component owner, IGH_DataAccess DA, int inputid, LengthUnit docLengthUnit, bool isOptional = false)
     {
       GH_UnitNumber unitNumber = null;
@@ -98,6 +139,52 @@ namespace ComposGH.Components
       }
       return Pressure.Zero;
     }
+
+    internal static Ratio Ratio(GH_Component owner, IGH_DataAccess DA, int inputid, RatioUnit ratioUnit, bool isOptional = false)
+    {
+      Ratio ratio = new Ratio();
+
+      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+      if (DA.GetData(inputid, ref gh_typ))
+      {
+        GH_UnitNumber inRatio;
+
+        // try cast directly to quantity type
+        if (gh_typ.Value is GH_UnitNumber)
+        {
+          inRatio = (GH_UnitNumber)gh_typ.Value;
+          if (!inRatio.Value.QuantityInfo.UnitType.Equals(typeof(RatioUnit)))
+          {
+            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Error in " + owner.Params.Input[inputid].NickName + " input: Wrong unit type"
+                + Environment.NewLine + "Unit type is " + inRatio.Value.QuantityInfo.Name + " but must be Ratio");
+            inRatio = new GH_UnitNumber(new Ratio(0, ratioUnit));
+            ratio = (Ratio)inRatio.Value;
+          }
+          ratio = (Ratio)inRatio.Value.ToUnit(ratioUnit);
+        }
+        // try cast to double
+        else if (GH_Convert.ToDouble(gh_typ.Value, out double val, GH_Conversion.Both))
+        {
+          // create new quantity from default units
+          inRatio = new GH_UnitNumber(new Ratio(val, ratioUnit));
+          ratio = (Ratio)inRatio.Value;
+        }
+        else
+        {
+          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber of Ratio");
+          inRatio = new GH_UnitNumber(new Ratio(0, ratioUnit));
+          ratio = (Ratio)inRatio.Value;
+        }
+        return ratio;
+      }
+      else if (!isOptional)
+      {
+        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+      }
+      ratio = new Ratio(0, ratioUnit);
+      return ratio;
+    }
+
     internal static Strain Strain(GH_Component owner, IGH_DataAccess DA, int inputid, StrainUnit strainUnit, bool isOptional = false)
     {
       Strain strainFib = new Strain();
@@ -139,6 +226,7 @@ namespace ComposGH.Components
       }
       return Oasys.Units.Strain.Zero;
     }
+
     internal static Curvature Curvature(GH_Component owner, IGH_DataAccess DA, int inputid, CurvatureUnit curvatureUnit, bool isOptional = false)
     {
       Curvature crvature = new Curvature();
@@ -180,6 +268,7 @@ namespace ComposGH.Components
       }
       return Oasys.Units.Curvature.Zero;
     }
+
     internal static Force Force(GH_Component owner, IGH_DataAccess DA, int inputid, ForceUnit forceUnit, bool isOptional = false)
     {
       Force force = new Force();
@@ -221,6 +310,7 @@ namespace ComposGH.Components
       }
       return UnitsNet.Force.Zero;
     }
+
     internal static Moment Moment(GH_Component owner, IGH_DataAccess DA, int inputid, MomentUnit momentUnit, bool isOptional = false)
     {
       Moment moment = new Moment();
@@ -262,6 +352,7 @@ namespace ComposGH.Components
       }
       return Oasys.Units.Moment.Zero;
     }
+
     internal static ForcePerLength ForcePerLength(GH_Component owner, IGH_DataAccess DA, int inputid, ForcePerLengthUnit forceUnit, bool isOptional = false)
     {
       ForcePerLength force = new ForcePerLength();
