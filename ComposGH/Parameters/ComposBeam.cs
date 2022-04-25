@@ -148,7 +148,7 @@ namespace ComposGH.Parameters
 
       if (source == null) { return false; }
 
-      // Cast from GsaMaterial
+      //Cast from GsaMaterial
       if (typeof(ComposBeam).IsAssignableFrom(source.GetType()))
       {
         Value = (ComposBeam)source;
