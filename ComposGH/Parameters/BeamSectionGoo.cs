@@ -11,6 +11,7 @@ using Rhino.Collections;
 using UnitsNet;
 using UnitsNet.Units;
 using System.Globalization;
+using System.IO;
 
 namespace ComposGH.Parameters
 {
@@ -44,6 +45,7 @@ namespace ComposGH.Parameters
     public Length BottomFlangeWidth { get; set; }
     public Length TopFlangeThickness { get; set; }
     public Length BottomFlangeThickness { get; set; }
+    private Length RootRadius { get; set; } = Length.Zero;
     public Length WebThickness { get; set; }
     private bool m_isCatalogue;
 
@@ -192,13 +194,19 @@ namespace ComposGH.Parameters
       }
       else if (profile.StartsWith("CAT"))
       {
-        // to be done
-        //this.Depth = 
-        //this.TopFlangeWidth = 
-        //this.BottomFlangeWidth = 
-        //this.WebThickness = 
-        //this.TopFlangeThickness = 
-        //this.BottomFlangeThickness = 
+        string installPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Oasys", "Compos 8.6");
+        string path = Path.Combine(installPath, "sectlib.db3");
+        string prof = profile.Split(' ').Last();
+        List<double> sqlValues = Helpers.SqlReadValues.GetProfileValuesFromSQLite(path, prof);
+
+        LengthUnit unit = LengthUnit.Meter;
+        this.Depth = new Length(sqlValues[0], unit);
+        this.TopFlangeWidth = new Length(sqlValues[1], unit);
+        this.BottomFlangeWidth = new Length(sqlValues[1], unit);
+        this.WebThickness = new Length(sqlValues[2], unit);
+        this.TopFlangeThickness = new Length(sqlValues[3], unit);
+        this.BottomFlangeThickness = new Length(sqlValues[3], unit);
+        this.RootRadius = new Length(sqlValues[4], unit);
         this.SectionDescription = profile;
         this.m_isCatalogue = true;
       }
@@ -247,7 +255,14 @@ namespace ComposGH.Parameters
     }
     public override string ToString()
     {
-      return (this.SectionDescription == null) ? "Null profile" : this.SectionDescription;
+      string start = "";
+      if (this.StartPosition != Length.Zero)
+        start = ", Px:" + this.StartPosition.ToString("f0").Replace(" ", string.Empty);
+      string tapered = "";
+      if (this.TaperedToNext)
+        tapered = ", Tapered";
+
+      return (this.SectionDescription == null) ? "Null profile" : this.SectionDescription + start + tapered;
     }
     #endregion
   }
@@ -281,7 +296,7 @@ namespace ComposGH.Parameters
 
     #region properties
     public override bool IsValid => true;
-    public override string TypeName => "Stud Spec";
+    public override string TypeName => "Beam Section";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot
     {
@@ -312,6 +327,15 @@ namespace ComposGH.Parameters
           target = default;
         else
           target = (Q)(object)Value;
+        return true;
+      }
+
+      if (typeof(Q).IsAssignableFrom(typeof(string)))
+      {
+        if (Value == null)
+          target = default;
+        else
+          target = (Q)(object)Value.SectionDescription;
         return true;
       }
 
