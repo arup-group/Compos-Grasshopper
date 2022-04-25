@@ -27,6 +27,10 @@ namespace ComposGH.Parameters
       this.FinalDead = finalDead;
       this.FinalLive = finalLive;
     }
+    public Load Duplicate()
+    {
+      return (Load)this.MemberwiseClone();
+    }
   }
 
   public class NonConstantLoad : Load
@@ -36,6 +40,10 @@ namespace ComposGH.Parameters
       : base(consDead, consLive, finalDead, finalLive)
     {
       this.Position = position;
+    }
+    public new NonConstantLoad Duplicate()
+    {
+      return (NonConstantLoad)this.MemberwiseClone();
     }
   }
   #endregion
@@ -49,6 +57,12 @@ namespace ComposGH.Parameters
     {
       this.Load = new NonConstantLoad(consDead, consLive, finalDead, finalLive, position);
       this.m_type = LoadType.Point;
+    }
+    public override ComposLoad Duplicate()
+    {
+      PointLoad dup = (PointLoad)this.MemberwiseClone();
+      dup.Load = this.Load.Duplicate();
+      return (ComposLoad)dup;
     }
   }
   public class UniformLoad : ComposLoad
@@ -68,6 +82,12 @@ namespace ComposGH.Parameters
       this.Load = new Load(consDead, consLive, finalDead, finalLive);
       this.m_type = LoadType.Uniform;
       this.Distribution = LoadDistribution.Area;
+    }
+    public override ComposLoad Duplicate()
+    {
+      UniformLoad dup = (UniformLoad)this.MemberwiseClone();
+      dup.Load = this.Load.Duplicate();
+      return (ComposLoad)dup;
     }
   }
   public class LinearLoad : ComposLoad
@@ -95,6 +115,13 @@ namespace ComposGH.Parameters
       this.m_type = LoadType.Linear;
       this.Distribution = LoadDistribution.Area;
     }
+    public override ComposLoad Duplicate()
+    {
+      LinearLoad dup = (LinearLoad)this.MemberwiseClone();
+      dup.LoadW1 = this.LoadW1.Duplicate();
+      dup.LoadW2 = this.LoadW2.Duplicate();
+      return (ComposLoad)dup;
+    }
   }
   public class TriLinearLoad : ComposLoad
   {
@@ -120,6 +147,13 @@ namespace ComposGH.Parameters
       this.LoadW2 = new NonConstantLoad(consDeadW2, consLiveW2, finalDeadW2, finalLiveW2, positionW2);
       this.m_type = LoadType.TriLinear;
       this.Distribution = LoadDistribution.Area;
+    }
+    public override ComposLoad Duplicate()
+    {
+      TriLinearLoad dup = (TriLinearLoad)this.MemberwiseClone();
+      dup.LoadW1 = this.LoadW1.Duplicate();
+      dup.LoadW2 = this.LoadW2.Duplicate();
+      return (ComposLoad)dup;
     }
   }
   public class PatchLoad : ComposLoad
@@ -147,6 +181,13 @@ namespace ComposGH.Parameters
       this.m_type = LoadType.Patch;
       this.Distribution = LoadDistribution.Area;
     }
+    public override ComposLoad Duplicate()
+    {
+      PatchLoad dup = (PatchLoad)this.MemberwiseClone();
+      dup.LoadW1 = this.LoadW1.Duplicate();
+      dup.LoadW2 = this.LoadW2.Duplicate();
+      return (ComposLoad)dup;
+    }
   }
   public class MemberLoad : ComposLoad
   {
@@ -161,6 +202,11 @@ namespace ComposGH.Parameters
       this.MemberName = memberName;
       this.Support = supportSide;
       this.m_type = LoadType.MemberLoad;
+    }
+    public override ComposLoad Duplicate()
+    {
+      MemberLoad dup = (MemberLoad)this.MemberwiseClone();
+      return (ComposLoad)dup;
     }
   }
   public class AxialLoad : ComposLoad
@@ -180,6 +226,15 @@ namespace ComposGH.Parameters
       this.Depth1 = depth1;
       this.Depth2 = depth2;
       this.m_type = LoadType.Axial;
+    }
+    public override ComposLoad Duplicate()
+    {
+      AxialLoad dup = (AxialLoad)this.MemberwiseClone();
+      dup.LoadW1 = this.LoadW1.Duplicate();
+      dup.LoadW2 = this.LoadW2.Duplicate();
+      dup.Depth1 = this.Depth1.ToUnit(this.Depth1.Unit);
+      dup.Depth2 = this.Depth2.ToUnit(this.Depth2.Unit);
+      return (ComposLoad)dup;
     }
   }
 }
