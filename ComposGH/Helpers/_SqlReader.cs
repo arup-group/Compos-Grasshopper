@@ -191,7 +191,7 @@ namespace ComposGH.Helpers
         }
       }
 
-      section.Insert(0, "All");
+      //section.Insert(0, "All");
 
       return section;
     }

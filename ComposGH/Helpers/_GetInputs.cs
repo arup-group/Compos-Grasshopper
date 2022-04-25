@@ -561,5 +561,33 @@ namespace ComposGH.Components
       return goo.Value;
     }
     #endregion
+
+    #region beam
+    internal static string BeamSection(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    {
+      BeamSectionGoo goo = null;
+      string profile = "";
+      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+      if (DA.GetData(inputid, ref gh_typ))
+      {
+        if (gh_typ.Value is BeamSectionGoo)
+        {
+          goo = (BeamSectionGoo)gh_typ.Value;
+          return goo.Value.SectionDescription;
+        }
+        else if (gh_typ.CastTo(ref profile))
+          return profile;
+        else
+        {
+          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Web Opening");
+          return null;
+        }
+      }
+      else if (!isOptional)
+        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+      
+      return String.Empty;
+    }
+    #endregion
   }
 }
