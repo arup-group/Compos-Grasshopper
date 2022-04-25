@@ -70,7 +70,11 @@ namespace ComposGH.Parameters
     #endregion
 
     #region methods
-
+    public virtual ComposLoad Duplicate()
+    {
+      if (this == null) { return null; }
+      return (ComposLoad)this.MemberwiseClone();
+    }
     public override string ToString()
     {
       // update with better naming
