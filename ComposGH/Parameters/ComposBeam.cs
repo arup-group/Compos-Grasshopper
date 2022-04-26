@@ -9,6 +9,8 @@ using Rhino;
 using Grasshopper.Documentation;
 using Rhino.Collections;
 using UnitsNet;
+using ComposGH.Converters;
+using ComposGH.Helpers;
 
 namespace ComposGH.Parameters
 {
@@ -153,6 +155,39 @@ namespace ComposGH.Parameters
         return true;
       }
 
+      try
+      {
+        // Cast from GsaGH
+        if (GsaGHConverter.IsPresent())
+        {
+          Type type = GsaGHConverter.GetTypeFor(typeof(IComposBeam));
+          if (type.IsAssignableFrom(source.GetType()))
+          {
+            Value = (ComposBeam)GsaGHConverter.CastToComposBeam(source);
+            return true;
+          }
+        }
+        // Cast from AdSecGH
+        if (AdSecGHConverter.IsPresent())
+        {
+          Type type = AdSecGHConverter.GetTypeFor(typeof(IComposBeam));
+          if (type.IsAssignableFrom(source.GetType()))
+          {
+            Value = (ComposBeam)AdSecGHConverter.CastToComposBeam(source);
+            return true;
+          }
+        }
+        // Cast from Speckle
+        if (SpeckleConverter.IsPresent())
+        {
+          // todo: implement
+        }
+
+      }
+      catch (Exception)
+      {
+        return false;
+      }
       return false;
     }
     #endregion
