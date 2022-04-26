@@ -22,7 +22,7 @@ namespace ComposGH.Components
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
-    public override Guid ComponentGuid => new Guid("71c87cde-f442-475b-9131-8f2974c42499");
+    public override Guid ComponentGuid => new Guid("82c87cde-f442-475b-9131-8f2974c42499");
     public CreateRestraints()
       : base("Restraints", "Restraints", "Create Restraints for a Compos Beam",
             Ribbon.CategoryName.Name(),
@@ -31,7 +31,7 @@ namespace ComposGH.Components
 
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
 
-    //protected override System.Drawing.Bitmap Icon => Properties.Resources.BeamSection;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateRestraint;
     #endregion
 
     #region Input and output

@@ -79,26 +79,10 @@ namespace ComposGH.Parameters
     }
     public override string ToString()
     {
-      string sec = (this.SecondaryMemberIntermediateRestraint) ? ", Sec. mem. interm. res." : "";
-      string flange = (this.BothFlangesFreeToRotateOnPlanAtEnds) ? ", Flngs. free rot. ends" : "";
-      if (this.IntermediateRestraintPositions == IntermediateRestraint.Custom & CustomIntermediateRestraintPositions != null)
-      {
-        string res = "Restraint Pos: Start";
-        foreach (Length pos in this.CustomIntermediateRestraintPositions)
-          res += ", " + pos.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
-        res += ", End";
-        string joined = string.Join(" ", new List<string>() { res, sec, flange });
-        return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');
-      }
-      else
-      {
-        string res = "Restraint Pos: Start";
-        if (this.IntermediateRestraintPositions != IntermediateRestraint.None)
-          res += ", " + this.IntermediateRestraintPositions.ToString().Replace("__", "-").Replace("_", " ");
-        res += ", End";
-        string joined = string.Join("", new List<string>() { res, sec, flange });
-        return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');
-      }
+      string sec = (this.SecondaryMemberIntermediateRestraint) ? ", SMIR" : "";
+      string flange = (this.BothFlangesFreeToRotateOnPlanAtEnds) ? ", FFRE" : "";
+      string res = this.IntermediateRestraintPositions.ToString().Replace("__", "-").Replace("_", " ");
+      return res + sec + flange;
     }
     #endregion
   }

@@ -31,7 +31,7 @@ namespace ComposGH.Components
 
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
 
-    //protected override System.Drawing.Bitmap Icon => Properties.Resources.BeamSection;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateSupport;
     #endregion
 
     #region Custom UI

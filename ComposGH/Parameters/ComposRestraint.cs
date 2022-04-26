@@ -80,9 +80,11 @@ namespace ComposGH.Parameters
 
     public override string ToString()
     {
-      string top = (TopFlangeRestrained) ? "Top flng. rest., " : "";
+      string top = (TopFlangeRestrained) ? "TFLR, " : "";
       string con = "Constr.: " + this.ConstructionStageSupports.ToString();
-      string fin = ", Final: " + this.FinalStageSupports.ToString();
+      string fin = ", Final: None";
+      if (this.FinalStageSupports != null)
+        fin = ", Final: " + this.FinalStageSupports.ToString();
       return top + con + fin;
     }
 
@@ -187,7 +189,7 @@ namespace ComposGH.Parameters
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-    protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.DesignCodeParameter;
+    protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.RestraintParam;
 
     protected override GH_GetterResult Prompt_Plural(ref List<ComposRestraintGoo> values)
     {
