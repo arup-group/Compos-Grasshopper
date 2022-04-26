@@ -22,7 +22,7 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("a49e5e5e-502d-400e-81a2-3644577b3404");
     public CreateSteelConcreteModularRatio()
-      : base("Steel/Concrete Modular Ratios", "ModRatios", "Create steel/concrete modular ratios for concrete material",
+      : base("Steel/Concrete Modular Ratios", "ModRatios", "Create steel/concrete Young´s modulus ratios for concrete material",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = false; } // sets the initial state of the component to hidden
@@ -36,16 +36,16 @@ namespace ComposGH.Components
 
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddNumberParameter("Short Term", "ST", "Steel/concrete modular ratio for short term", GH_ParamAccess.item, 10);
-      pManager.AddNumberParameter("Long Term", "LT", "Steel/concrete modular ratio for long term", GH_ParamAccess.item, 25);
-      pManager.AddNumberParameter("Vibration", "V", "Steel/concrete modular ratio for vibration", GH_ParamAccess.item, 9.32);
-      pManager.AddNumberParameter("Shrinkage", "S", "Steel/concrete modular ratio for shrinkage", GH_ParamAccess.item, 0);
+      pManager.AddNumberParameter("Short Term", "ST", "Steel/concrete Young´s modulus ratio for short term", GH_ParamAccess.item, 10);
+      pManager.AddNumberParameter("Long Term", "LT", "Steel/concrete Young´s modulus ratio for long term", GH_ParamAccess.item, 25);
+      pManager.AddNumberParameter("Vibration", "V", "Steel/concrete Young´s modulus ratio for vibration", GH_ParamAccess.item, 9.32);
+      pManager.AddNumberParameter("Shrinkage", "S", "Steel/concrete Young´s modulus ratio for shrinkage", GH_ParamAccess.item, 0);
       pManager[3].Optional = true;
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Modular Ratios", "MR", "Steel/concrete modular ratios for concrete material", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Modular Ratios", "MR", "Steel/concrete Young´s modulus ratios for concrete material", GH_ParamAccess.item);
     }
     #endregion
 

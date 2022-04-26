@@ -25,6 +25,8 @@ namespace ComposGH.Parameters
 
     public double Shrinkage { get; set; }
 
+    bool UserDefined { get; } = false;
+
     #region constructors
     public SteelConcreteModularRatio() { }
 
@@ -33,6 +35,7 @@ namespace ComposGH.Parameters
       this.ShortTerm = shortTerm;
       this.LongTerm = longTerm;
       this.Vibration = vibration;
+      this.UserDefined = true;
     }
 
     public SteelConcreteModularRatio(double shortTerm, double longTerm, double vibration, double shrinkage) : this(shortTerm, longTerm, vibration)

@@ -129,7 +129,7 @@ namespace ComposGH.Components
 
       // optional
       pManager.AddNumberParameter("Dry Density [" + densityUnitAbbreviation + "]", "DD", "(Optional) Dry density", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Modular Ratios", "MR", "(Optional) Steel/concrete modular ratios", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Modular Ratios", "MR", "(Optional) Steel/concrete Young´s modulus ratios", GH_ParamAccess.item);
       pManager.AddNumberParameter("Imposed Load Percentage [%]", "ILP", "(Optional) Percentage of imposed load acting long term", GH_ParamAccess.item, 33);
       pManager.AddNumberParameter("Shrinkage Strain [" + strainUnitAbbreviation + "]", "SS", "(Optional) Shrinkage strain", GH_ParamAccess.item, -0.0005);
 
@@ -152,7 +152,7 @@ namespace ComposGH.Components
         dryDensity = GetInput.Density(this, DA, 0, this.DensityUnit);
       else
         if (this.Grade.ToString().StartsWith("L"))
-          dryDensity = new Density((double)this.DensityClass, DensityUnit.KilogramPerCubicMeter);
+        dryDensity = new Density((double)this.DensityClass, DensityUnit.KilogramPerCubicMeter);
 
       SteelConcreteModularRatio steelConcreteModularRatio = new SteelConcreteModularRatio();
       if (!DA.GetData(1, ref steelConcreteModularRatio))

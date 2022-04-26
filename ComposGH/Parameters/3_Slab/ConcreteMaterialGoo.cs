@@ -135,7 +135,7 @@ namespace ComposGH.Parameters
       this.Grade = grade.ToString();
       this.Type = type;
       this.DryDensity = dryDensity;
-      this.SteelConcreteModularRatio = new SteelConcreteModularRatio(6, 18, 5.39);
+      this.SteelConcreteModularRatio = new SteelConcreteModularRatio();
       this.ImposedLoadPercentage = percentageOfImposedLoadActingLongTerm;
       this.ShrinkageStrain = new Strain(-0.000325, StrainUnit.MilliStrain); ;
     }
@@ -156,6 +156,24 @@ namespace ComposGH.Parameters
       this.SteelConcreteModularRatio = steelConcreteModularRatio;
       this.ImposedLoadPercentage = percentageOfImposedLoadActingLongTerm;
       this.ShrinkageStrain = new Strain(-0.000325, StrainUnit.MilliStrain); ;
+    }
+
+    /// <summary>
+    /// "European" constructor
+    /// </summary>
+    /// <param name="grade"></param>
+    /// <param name="densityClass"></param>
+    /// <param name="dryDensity"></param>
+    /// <param name="percentageOfImposedLoadActingLongTerm"></param>
+    /// <param name="shrinkageStrain"></param>
+    public ConcreteMaterial(ConcreteGradeEN grade, DensityClass densityClass, Density dryDensity, double percentageOfImposedLoadActingLongTerm, Strain shrinkageStrain)
+    {
+      this.Grade = grade.ToString();
+      this.Class = densityClass;
+      this.DryDensity = dryDensity;
+      this.SteelConcreteModularRatio = new SteelConcreteModularRatio();
+      this.ImposedLoadPercentage = percentageOfImposedLoadActingLongTerm;
+      this.ShrinkageStrain = shrinkageStrain;
     }
 
     /// <summary>

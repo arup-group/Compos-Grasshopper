@@ -113,7 +113,7 @@ namespace ComposGH.Components
 
       // optional
       pManager.AddNumberParameter("Dry Density [" + densityUnitAbbreviation + "]", "DD", "(Optional) Dry density", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Modular Ratios", "MR", "(Optional) Steel/concrete modular ratios", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Modular Ratios", "MR", "(Optional) Steel/concrete Young´s modulus ratios", GH_ParamAccess.item);
       pManager.AddNumberParameter("Imposed Load Percentage [%]", "ILP", "(Optional) Percentage of imposed load acting long term", GH_ParamAccess.item, 33);
 
       pManager[0].Optional = true;
@@ -134,7 +134,7 @@ namespace ComposGH.Components
         dryDensity = GetInput.Density(this, DA, 0, this.DensityUnit);
       else
         if (this.Type == ConcreteMaterial.WeightType.Light)
-          dryDensity = new Density(1800, DensityUnit.KilogramPerCubicMeter);
+        dryDensity = new Density(1800, DensityUnit.KilogramPerCubicMeter);
 
       double imposedLoadPercentage = 33;
       DA.GetData(2, ref imposedLoadPercentage);
