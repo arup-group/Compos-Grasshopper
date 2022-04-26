@@ -10,6 +10,7 @@ using System.IO;
 using System.Reflection;
 using UnitsNet;
 using ComposGH.Helpers;
+using ComposGH.Parameters;
 
 namespace ComposGH.Components
 {
@@ -332,7 +333,7 @@ namespace ComposGH.Components
         // update spacer description to match catalogue dropdowns
         spacerDescriptions = new List<string>(new string[]
         {
-                    "Profile type", "Catalogue", "Type", "Profile"
+          "Profile type", "Catalogue", "Type", "Profile"
         });
 
         catalogueNames = cataloguedata.Item1;
@@ -353,7 +354,7 @@ namespace ComposGH.Components
         // update spacer description to match none-catalogue dropdowns
         spacerDescriptions = new List<string>(new string[]
         {
-                    "Profile type", "Measure", "Type", "Profile"
+          "Profile type", "Measure", "Type", "Profile"
         });
 
         typ = profileTypes[selecteditems[0]];
@@ -428,7 +429,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Profile", "Pf", "Profile for GSA Section", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Beam Section", "Bs", "Beam Section for a Compos Beam", GH_ParamAccess.item);
     }
     #endregion
     protected override void SolveInstance(IGH_DataAccess DA)
@@ -466,7 +467,7 @@ namespace ComposGH.Components
           this.ExpireSolution(true);
         }
 
-        DA.SetData(0, "CAT " + profileString);
+        DA.SetData(0, new BeamSectionGoo(new BeamSection("CAT " + profileString)));
 
         return;
       }
@@ -515,7 +516,7 @@ namespace ComposGH.Components
           return;
         }
 
-        DA.SetData(0, profile);
+        DA.SetData(0, new BeamSectionGoo(new BeamSection(profile)));
         return;
       }
       #endregion
