@@ -153,6 +153,16 @@ namespace ComposGH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CreateRestraint {
+            get {
+                object obj = ResourceManager.GetObject("CreateRestraint", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap CreateSteelMaterial {
             get {
                 object obj = ResourceManager.GetObject("CreateSteelMaterial", resourceCulture);
@@ -166,6 +176,16 @@ namespace ComposGH.Properties {
         internal static System.Drawing.Bitmap CreateStud {
             get {
                 object obj = ResourceManager.GetObject("CreateStud", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CreateSupport {
+            get {
+                object obj = ResourceManager.GetObject("CreateSupport", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -326,6 +346,16 @@ namespace ComposGH.Properties {
         internal static System.Drawing.Bitmap ReinforcementParam {
             get {
                 object obj = ResourceManager.GetObject("ReinforcementParam", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap RestraintParam {
+            get {
+                object obj = ResourceManager.GetObject("RestraintParam", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

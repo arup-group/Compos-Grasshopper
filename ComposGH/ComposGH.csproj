@@ -89,6 +89,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\1_Beam\CreateRestraints.cs" />
+    <Compile Include="Components\1_Beam\CreateSupport.cs" />
     <Compile Include="Components\1_Beam\CreateBeamSection.cs" />
     <Compile Include="Components\1_Beam\CreateWebOpeningStiffener.cs" />
     <Compile Include="Components\1_Beam\CreateProfile.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="Helpers\_GetInputs.cs" />
     <Compile Include="Helpers\_SqlReaderValues.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
+    <Compile Include="Parameters\ComposRestraint.cs" />
     <Compile Include="Parameters\Load.cs" />
     <Compile Include="Parameters\ComposLoad.cs" />
     <Compile Include="Parameters\ComposReinforcement.cs" />
@@ -128,6 +131,7 @@
     <Compile Include="Parameters\ComposWebOpening.cs" />
     <Compile Include="Parameters\StudDimensionsGoo.cs" />
     <Compile Include="Parameters\BeamSectionGoo.cs" />
+    <Compile Include="Parameters\SupportsGoo.cs" />
     <Compile Include="Parameters\WebOpeningStiffenersGoo.cs" />
     <Compile Include="Parameters\StudSpecGoo.cs" />
     <Compile Include="Parameters\StudSpacingGoo.cs" />
@@ -327,6 +331,15 @@
   <ItemGroup>
     <None Include="Properties\Icons\CreateConcreteMaterial.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreateRestraint.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreateSupport.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\RestraintParam.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -336,7 +349,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>Copy "$(TargetPath)" "$(TargetDir)$(ProjectName).gha"</PostBuildEvent>
+    <PostBuildEvent>Copy "$(TargetPath)" "$(TargetDir)Compos.gha"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <FallbackCulture>en-US</FallbackCulture>

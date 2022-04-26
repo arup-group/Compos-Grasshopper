@@ -126,14 +126,14 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class DesignCodeGoo : GH_Goo<ComposDesignCode>
+  public class ComposDesignCodeGoo : GH_Goo<ComposDesignCode>
   {
     #region constructors
-    public DesignCodeGoo()
+    public ComposDesignCodeGoo()
     {
       this.Value = new ComposDesignCode();
     }
-    public DesignCodeGoo(ComposDesignCode item)
+    public ComposDesignCodeGoo(ComposDesignCode item)
     {
       if (item == null)
         item = new ComposDesignCode();
@@ -144,9 +144,9 @@ namespace ComposGH.Parameters
     {
       return DuplicateGoo();
     }
-    public DesignCodeGoo DuplicateGoo()
+    public ComposDesignCodeGoo DuplicateGoo()
     {
-      return new DesignCodeGoo(Value == null ? new ComposDesignCode() : Value.Duplicate());
+      return new ComposDesignCodeGoo(Value == null ? new ComposDesignCode() : Value.Duplicate());
     }
     #endregion
 
@@ -211,7 +211,7 @@ namespace ComposGH.Parameters
   /// <summary>
   /// This class provides a Parameter interface for the CustomGoo type.
   /// </summary>
-  public class DesignCodeParameter : GH_PersistentParam<DesignCodeGoo>
+  public class DesignCodeParameter : GH_PersistentParam<ComposDesignCodeGoo>
   {
     public DesignCodeParameter()
       : base(new GH_InstanceDescription("DesignCode", "DC", "Compos Design Code", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
@@ -223,11 +223,11 @@ namespace ComposGH.Parameters
 
     protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.DesignCodeParameter;
 
-    protected override GH_GetterResult Prompt_Plural(ref List<DesignCodeGoo> values)
+    protected override GH_GetterResult Prompt_Plural(ref List<ComposDesignCodeGoo> values)
     {
       return GH_GetterResult.cancel;
     }
-    protected override GH_GetterResult Prompt_Singular(ref DesignCodeGoo value)
+    protected override GH_GetterResult Prompt_Singular(ref ComposDesignCodeGoo value)
     {
       return GH_GetterResult.cancel;
     }

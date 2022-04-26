@@ -21,6 +21,7 @@ namespace ComposGH.Parameters
   {
     public Length Length { get; set; }
     public ComposSteelMaterial Material { get; set; }
+    public ComposRestraint Restraint { get; set; }
     public List<BeamSection> BeamSections { get; set; }
     public List<ComposWebOpening> WebOpenings { get; set; }
 
@@ -63,6 +64,10 @@ namespace ComposGH.Parameters
     {
       if (this == null) { return null; }
       ComposBeam dup = (ComposBeam)this.MemberwiseClone();
+      dup.Material = this.Material.Duplicate();
+      dup.Restraint = this.Restraint.Duplicate();
+      dup.BeamSections = this.BeamSections.ToList();
+      dup.WebOpenings = this.WebOpenings.ToList();
       return dup;
     }
 
