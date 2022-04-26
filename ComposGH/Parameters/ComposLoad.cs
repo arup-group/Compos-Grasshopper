@@ -41,9 +41,6 @@ namespace ComposGH.Parameters
     {
       // empty constructor
     }
-
-    // add public constructors here
-
     #endregion
 
     #region properties

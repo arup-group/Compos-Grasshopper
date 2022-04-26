@@ -21,6 +21,7 @@ namespace ComposGH.Parameters
     public Supports ConstructionStageSupports { get; set; }
     public Supports FinalStageSupports { get; set; }
     public bool TopFlangeRestrained { get; set; }
+    private bool finalSupportsSet;
 
     #region constructors
     public ComposRestraint()
@@ -32,6 +33,13 @@ namespace ComposGH.Parameters
       this.TopFlangeRestrained = topFlangeRestrained;
       this.ConstructionStageSupports = constructionStageSupports;
       this.FinalStageSupports = finalStageSupports;
+      this.finalSupportsSet = true;
+    }
+    public ComposRestraint(bool topFlangeRestrained, Supports constructionStageSupports)
+    {
+      this.TopFlangeRestrained = topFlangeRestrained;
+      this.ConstructionStageSupports = constructionStageSupports;
+      this.finalSupportsSet = false;
     }
     #endregion
 
@@ -64,6 +72,9 @@ namespace ComposGH.Parameters
     {
       if (this == null) { return null; }
       ComposRestraint dup = (ComposRestraint)this.MemberwiseClone();
+      dup.ConstructionStageSupports = this.ConstructionStageSupports.Duplicate();
+      if (this.finalSupportsSet)
+        dup.FinalStageSupports = this.FinalStageSupports.Duplicate();
       return dup;
     }
 

@@ -10,10 +10,10 @@ namespace ComposGH.Parameters.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(Supports.IntermediateRestraint.None, true, false)]
-    [InlineData(Supports.IntermediateRestraint.MidSpan, true, true)]
-    [InlineData(Supports.IntermediateRestraint.ThirdPts, false, false)]
-    [InlineData(Supports.IntermediateRestraint.QuarterPts, false, true)]
-    public Supports TestConstructor(Supports.IntermediateRestraint intermediateRestraint, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds)
+    [InlineData(Supports.IntermediateRestraint.Mid__Span, true, true)]
+    [InlineData(Supports.IntermediateRestraint.Third_Points, false, false)]
+    [InlineData(Supports.IntermediateRestraint.Quarter_Points, false, true)]
+    public Supports TestSupportConstructor(Supports.IntermediateRestraint intermediateRestraint, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds)
     {
 
       // 2 create object instance with constructor
@@ -31,7 +31,7 @@ namespace ComposGH.Parameters.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(100, 500, 1500, true, false)]
-    public Supports TestConstructorCustom(double val1, double val2, double val3, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds)
+    public Supports TestSupportConstructorCustom(double val1, double val2, double val3, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds)
     {
       LengthUnit unit = LengthUnit.Millimeter;
       List<Length> customIntermediateRestraintPositions = new List<Length>();
@@ -54,12 +54,12 @@ namespace ComposGH.Parameters.Tests
     }
 
     [Fact]
-    public void TestStudSpecDuplicate()
+    public void TestSupportDuplicate()
     {
       LengthUnit unit = LengthUnit.Millimeter;
 
       // 1 create with constructor and duplicate
-      Supports original = TestConstructor(Supports.IntermediateRestraint.None, true, false);
+      Supports original = TestSupportConstructor(Supports.IntermediateRestraint.None, true, false);
       Supports duplicate = original.Duplicate();
 
       // 2 check that duplicate has duplicated values
@@ -71,10 +71,10 @@ namespace ComposGH.Parameters.Tests
       // 3 make some changes to duplicate
       duplicate.SecondaryMemberIntermediateRestraint = false;
       duplicate.BothFlangesFreeToRotateOnPlanAtEnds = true;
-      duplicate.IntermediateRestraintPositions = Supports.IntermediateRestraint.MidSpan;
+      duplicate.IntermediateRestraintPositions = Supports.IntermediateRestraint.Mid__Span;
 
       // 4 check that duplicate has set changes
-      Assert.Equal(Supports.IntermediateRestraint.MidSpan, duplicate.IntermediateRestraintPositions);
+      Assert.Equal(Supports.IntermediateRestraint.Mid__Span, duplicate.IntermediateRestraintPositions);
       Assert.False(duplicate.SecondaryMemberIntermediateRestraint);
       Assert.True(duplicate.BothFlangesFreeToRotateOnPlanAtEnds);
 
@@ -85,7 +85,7 @@ namespace ComposGH.Parameters.Tests
       Assert.Null(original.CustomIntermediateRestraintPositions);
 
       // 1 create with new constructor and duplicate
-      original = TestConstructorCustom(1, 2, 3, false, true);
+      original = TestSupportConstructorCustom(1, 2, 3, false, true);
       duplicate = original.Duplicate();
 
       // 2 check that duplicate has duplicated values

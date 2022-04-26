@@ -32,9 +32,9 @@ namespace ComposGH.Parameters
     public enum IntermediateRestraint
     {
       None,
-      MidSpan,
-      ThirdPts,
-      QuarterPts,
+      Mid__Span,
+      Third_Points,
+      Quarter_Points,
       Custom
     }
     public IntermediateRestraint IntermediateRestraintPositions { get; set; }
@@ -94,7 +94,7 @@ namespace ComposGH.Parameters
       {
         string res = "Restraint Pos: Start";
         if (this.IntermediateRestraintPositions != IntermediateRestraint.None)
-          res += ", " + this.IntermediateRestraintPositions.ToString();
+          res += ", " + this.IntermediateRestraintPositions.ToString().Replace("__", "-").Replace("_", " ");
         res += ", End";
         string joined = string.Join("", new List<string>() { res, sec, flange });
         return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');
