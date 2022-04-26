@@ -119,6 +119,7 @@
     <Compile Include="Helpers\_GetInputs.cs" />
     <Compile Include="Helpers\_SqlReaderValues.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
+    <Compile Include="Parameters\ComposRestraint.cs" />
     <Compile Include="Parameters\Load.cs" />
     <Compile Include="Parameters\ComposLoad.cs" />
     <Compile Include="Parameters\ComposReinforcement.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Parameters\ComposWebOpening.cs" />
     <Compile Include="Parameters\StudDimensionsGoo.cs" />
     <Compile Include="Parameters\BeamSectionGoo.cs" />
+    <Compile Include="Parameters\SupportsGoo.cs" />
     <Compile Include="Parameters\WebOpeningStiffenersGoo.cs" />
     <Compile Include="Parameters\StudSpecGoo.cs" />
     <Compile Include="Parameters\StudSpacingGoo.cs" />
