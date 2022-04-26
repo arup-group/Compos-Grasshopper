@@ -12,7 +12,6 @@ using UnitsNet;
 
 namespace ComposGH.Parameters
 {
-
   /// <summary>
   /// Custom class: this class defines the basic properties and methods for our custom class
   /// </summary>
@@ -74,9 +73,10 @@ namespace ComposGH.Parameters
 
     public override string ToString()
     {
-      // check value of optional field
-
-      return "ST: " + ShortTerm + ", LT: " + LongTerm + ", ";
+      string str = "ST: " + this.ShortTerm + ", LT: " + this.LongTerm + ", V: " + this.Vibration;
+      if (this.Shrinkage > 0)
+        str += ", S: " + this.Shrinkage;
+      return str;
     }
     #endregion
   }
@@ -126,7 +126,7 @@ namespace ComposGH.Parameters
       if (Value == null)
         return "Null";
       else
-        return "Compos " + TypeName + " {" + Value.ToString() + "}"; ;
+        return "Compos " + this.TypeName + " {" + Value.ToString() + "}"; ;
     }
     #endregion
 
@@ -136,10 +136,10 @@ namespace ComposGH.Parameters
       // This function is called when Grasshopper needs to convert this instance of our custom class into some other type Q.            
       if (typeof(Q).IsAssignableFrom(typeof(SteelConcreteModularRatio)))
       {
-        if (Value == null)
+        if (this.Value == null)
           target = default;
         else
-          target = (Q)(object)Value;
+          target = (Q)(object)this.Value;
         return true;
       }
 
@@ -154,7 +154,7 @@ namespace ComposGH.Parameters
 
       if (typeof(SteelConcreteModularRatio).IsAssignableFrom(source.GetType()))
       {
-        Value = (SteelConcreteModularRatio)source;
+        this.Value = (SteelConcreteModularRatio)source;
         return true;
       }
 

@@ -102,6 +102,7 @@
     <Compile Include="Components\2_Studs\StudSpec.cs" />
     <Compile Include="Components\2_Studs\StandardStudDims.cs" />
     <Compile Include="Components\2_Studs\CreateStud.cs" />
+    <Compile Include="Components\3_Slab\CreateConcreteMaterialEN.cs" />
     <Compile Include="Components\3_Slab\CreateSteelConcreteModularRatio.cs" />
     <Compile Include="Components\5_Rebar\CreateRebarMaterial.cs" />
     <Compile Include="Components\5_Rebar\TransverseReinforcement.cs" />
