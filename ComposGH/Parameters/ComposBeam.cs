@@ -99,8 +99,9 @@ namespace ComposGH.Parameters
       dup.Material = this.Material.Duplicate();
       dup.Restraint = this.Restraint.Duplicate();
       dup.BeamSections = this.BeamSections.ToList();
-      dup.WebOpenings = this.WebOpenings.ToList();
-      dup.Line = this.Line;
+      if (this.WebOpenings != null)
+        dup.WebOpenings = this.WebOpenings.ToList();
+      dup.Line = this.Line; // Get the public member will shallow copy the object
       return dup;
     }
 
@@ -108,11 +109,13 @@ namespace ComposGH.Parameters
     {
       string profile = (this.BeamSections.Count > 1) ? " multiple sections" : this.BeamSections[0].SectionDescription;
       string mat = this.Material.ToString();
-      return this.m_line.ToString() + " " + profile + " " + mat;
+      string line = "L:" + this.Length.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
+      return line + ", " + profile + ", " + mat;
     }
     #endregion
 
     #region preview geometry
+    private 
     internal void UpdatePreview()
     {
       // to do

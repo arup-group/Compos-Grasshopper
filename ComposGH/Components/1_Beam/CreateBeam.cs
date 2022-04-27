@@ -103,6 +103,9 @@ namespace ComposGH.Components
       pManager.AddGenericParameter("Beam Sections", "Bs", "Compos Beam Sections or Profile string descriptions like 'CAT IPE IPE200', 'STD I(cm) 20. 19. 8.5 1.27' or 'STD GI 400 300 250 12 25 20'", GH_ParamAccess.list);
       pManager.AddIntegerParameter("WebOpening", "WO", "Compos Web Openings or Notches", GH_ParamAccess.list);
       pManager[4].Optional = true;
+
+      // temp
+      pManager[2].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
@@ -120,7 +123,11 @@ namespace ComposGH.Components
         if (GH_Convert.ToLine(ghln, ref ln, GH_Conversion.Both))
         {
           ComposRestraint res = GetInput.Restraint(this, DA, 1);
-          ComposSteelMaterial mat = GetInput.SteelMaterial(this, DA, 2);
+
+          // temp
+          ComposSteelMaterial mat = new ComposSteelMaterial();
+          //ComposSteelMaterial mat = GetInput.SteelMaterial(this, DA, 2);
+
           List<BeamSection> beamSections = GetInput.BeamSections(this, DA, 3);
           if (this.Params.Input[4].Sources.Count > 0)
           {
