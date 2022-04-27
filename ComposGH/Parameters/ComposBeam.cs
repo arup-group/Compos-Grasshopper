@@ -11,6 +11,7 @@ using Rhino.Collections;
 using UnitsNet;
 using ComposGH.Converters;
 using ComposGH.Helpers;
+using UnitsNet.Units;
 
 namespace ComposGH.Parameters
 {
@@ -19,7 +20,29 @@ namespace ComposGH.Parameters
   /// </summary>
   public class ComposBeam
   {
-    public Length Length { get; set; }
+    public LineCurve Line
+    {
+      get { return (LineCurve)m_line.DuplicateShallow(); }
+      set
+      {
+        m_line = value;
+        UpdatePreview();
+      }
+    }
+
+    LengthUnit LengthUnit { get; set; }
+
+    private LineCurve m_line;
+    public Length Length
+    {
+      get
+      {
+        if (this.m_line == null)
+          throw new Exception("Line has not been set");
+        
+        return new Length(m_line.GetLength(), LengthUnit);
+      }
+    }
     public ComposSteelMaterial Material { get; set; }
     public ComposRestraint Restraint { get; set; }
     public List<BeamSection> BeamSections { get; set; }
@@ -68,6 +91,7 @@ namespace ComposGH.Parameters
       dup.Restraint = this.Restraint.Duplicate();
       dup.BeamSections = this.BeamSections.ToList();
       dup.WebOpenings = this.WebOpenings.ToList();
+      dup.Line = this.Line;
       return dup;
     }
 
@@ -77,13 +101,22 @@ namespace ComposGH.Parameters
       return "Beam";
     }
 
+
+
+    #endregion
+
+    #region preview geometry
+    internal void UpdatePreview()
+    {
+      // to do
+    }
     #endregion
   }
 
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class ComposBeamGoo : GH_Goo<ComposBeam> // needs to be upgraded to GeometryGoo eventually....
+  public class ComposBeamGoo : GH_GeometricGoo<ComposBeam>, IGH_PreviewData
   {
     #region constructors
     public ComposBeamGoo()
@@ -97,13 +130,9 @@ namespace ComposGH.Parameters
       this.Value = item.Duplicate();
     }
 
-    public override IGH_Goo Duplicate()
+    public override IGH_GeometricGoo DuplicateGeometry()
     {
-      return DuplicateGoo();
-    }
-    public ComposBeamGoo DuplicateGoo()
-    {
-      return new ComposBeamGoo(Value == null ? new ComposBeam() : Value.Duplicate());
+      return new ComposBeamGoo(Value == null ? new ComposBeam() : Value.Duplicate()); 
     }
     #endregion
 
@@ -126,6 +155,22 @@ namespace ComposGH.Parameters
       else
         return "Compos " + TypeName + " {" + Value.ToString() + "}"; ;
     }
+
+    public override BoundingBox Boundingbox
+    {
+      get
+      {
+        if (Value == null) { return BoundingBox.Empty; }
+        if (Value.Line == null) { return BoundingBox.Empty; }
+        return Value.Line.GetBoundingBox(false);
+      }
+    }
+    public override BoundingBox GetBoundingBox(Transform xform)
+    {
+      if (Value == null) { return BoundingBox.Empty; }
+      if (Value.Line == null) { return BoundingBox.Empty; }
+      return Value.Line.GetBoundingBox(xform);
+    }
     #endregion
 
     #region casting methods
@@ -140,6 +185,47 @@ namespace ComposGH.Parameters
           target = default;
         else
           target = (Q)(object)Value;
+        return true;
+      }
+
+      //Cast to Curve
+      if (typeof(Q).IsAssignableFrom(typeof(Line)))
+      {
+        if (Value == null)
+          target = default;
+        else
+          target = (Q)(object)Value.Line;
+        return true;
+      }
+      if (typeof(Q).IsAssignableFrom(typeof(GH_Line)))
+      {
+        if (Value == null)
+          target = default;
+        else
+        {
+          GH_Line ghLine = new GH_Line();
+          GH_Convert.ToGHLine(Value.Line, GH_Conversion.Both, ref ghLine);
+          target = (Q)(object)ghLine;
+        }
+
+        return true;
+      }
+      if (typeof(Q).IsAssignableFrom(typeof(Curve)))
+      {
+        if (Value == null)
+          target = default;
+        else
+          target = (Q)(object)Value.Line;
+        return true;
+      }
+      if (typeof(Q).IsAssignableFrom(typeof(GH_Curve)))
+      {
+        if (Value == null)
+          target = default;
+        else
+        {
+          target = (Q)(object)new GH_Curve(Value.Line);
+        }
         return true;
       }
 
@@ -193,7 +279,98 @@ namespace ComposGH.Parameters
       {
         return false;
       }
+
       return false;
+    }
+    #endregion
+    #region transformation methods
+    public override IGH_GeometricGoo Transform(Transform xform)
+    {
+      if (Value == null) { return null; }
+      if (Value.Line == null) { return null; }
+
+      ComposBeam elem = Value.Duplicate();
+      LineCurve xLn = elem.Line;
+      xLn.Transform(xform);
+      elem.Line = xLn;
+      elem.UpdatePreview();
+
+      return new ComposBeamGoo(elem);
+    }
+
+    public override IGH_GeometricGoo Morph(SpaceMorph xmorph)
+    {
+      if (Value == null) { return null; }
+      if (Value.Line == null) { return null; }
+
+      ComposBeam elem = Value.Duplicate();
+      LineCurve xLn = Value.Line;
+      xmorph.Morph(xLn);
+      elem.Line = xLn;
+      elem.UpdatePreview();
+
+      return new ComposBeamGoo(elem);
+    }
+
+    #endregion
+
+    #region drawing methods
+    public BoundingBox ClippingBox
+    {
+      get { return Boundingbox; }
+    }
+    public void DrawViewportMeshes(GH_PreviewMeshArgs args)
+    {
+      //Draw shape.
+      //no meshes to be drawn
+    }
+    public void DrawViewportWires(GH_PreviewWireArgs args)
+    {
+      if (Value == null) { return; }
+
+      //Draw lines
+      //if (Value.Line != null)
+      //{
+      //  if (args.Color == System.Drawing.Color.FromArgb(255, 150, 0, 0)) // this is a workaround to change colour between selected and not
+      //  {
+      //    if (Value.IsDummy)
+      //      args.Pipeline.DrawDottedLine(Value.previewPointStart, Value.previewPointEnd, UI.Colour.Dummy1D);
+      //    else
+      //    {
+      //      if ((System.Drawing.Color)Value.Colour != System.Drawing.Color.FromArgb(0, 0, 0))
+      //        args.Pipeline.DrawCurve(Value.Line, Value.Colour, 2);
+      //      else
+      //      {
+      //        System.Drawing.Color col = UI.Colour.ElementType(Value.Type);
+      //        args.Pipeline.DrawCurve(Value.Line, col, 2);
+      //      }
+      //      //args.Pipeline.DrawPoint(Value.previewPointStart, Rhino.Display.PointStyle.RoundSimple, 3, UI.Colour.Element1dNode);
+      //      //args.Pipeline.DrawPoint(Value.previewPointEnd, Rhino.Display.PointStyle.RoundSimple, 3, UI.Colour.Element1dNode);
+      //    }
+      //  }
+      //  else
+      //  {
+      //    if (Value.IsDummy)
+      //      args.Pipeline.DrawDottedLine(Value.previewPointStart, Value.previewPointEnd, UI.Colour.Element1dSelected);
+      //    else
+      //    {
+      //      args.Pipeline.DrawCurve(Value.Line, UI.Colour.Element1dSelected, 2);
+      //      //args.Pipeline.DrawPoint(Value.previewPointStart, Rhino.Display.PointStyle.RoundControlPoint, 3, UI.Colour.Element1dNodeSelected);
+      //      //args.Pipeline.DrawPoint(Value.previewPointEnd, Rhino.Display.PointStyle.RoundControlPoint, 3, UI.Colour.Element1dNodeSelected);
+      //    }
+      //  }
+      //}
+      ////Draw releases
+      //if (!Value.IsDummy)
+      //{
+      //  if (Value.previewGreenLines != null)
+      //  {
+      //    foreach (Line ln1 in Value.previewGreenLines)
+      //      args.Pipeline.DrawLine(ln1, UI.Colour.Support);
+      //    foreach (Line ln2 in Value.previewRedLines)
+      //      args.Pipeline.DrawLine(ln2, UI.Colour.Release);
+      //  }
+      //}
     }
     #endregion
   }
@@ -201,19 +378,21 @@ namespace ComposGH.Parameters
   /// <summary>
   /// This class provides a Parameter interface for the CustomGoo type.
   /// </summary>
-  public class ComposBeamParameter : GH_PersistentParam<ComposBeamGoo>
+  public class ComposBeamParameter : GH_PersistentGeometryParam<ComposBeamGoo>, IGH_PreviewObject
   {
     public ComposBeamParameter()
-      : base(new GH_InstanceDescription("Beam", "Bm", "Compos Beam", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
+      : base(new GH_InstanceDescription("1D Element", "E1D", "Maintains a collection of GSA 1D Element data.", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
 
-    public override Guid ComponentGuid => new Guid("2dc51bc1-9abb-4f26-845f-ca1e66236e9e");
+    public override Guid ComponentGuid => new Guid("dc61e94b-c326-4789-92f2-e0fe3caea4c7");
 
-    public override GH_Exposure Exposure => GH_Exposure.secondary;
+    public override GH_Exposure Exposure => GH_Exposure.primary;
 
-    protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.BeamParam;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.BeamParam;
 
+    //We do not allow users to pick parameter, 
+    //therefore the following 4 methods disable all this ui.
     protected override GH_GetterResult Prompt_Plural(ref List<ComposBeamGoo> values)
     {
       return GH_GetterResult.cancel;
@@ -242,15 +421,33 @@ namespace ComposGH.Parameters
     }
 
     #region preview methods
+    public BoundingBox ClippingBox
+    {
+      get
+      {
+        return Preview_ComputeClippingBox();
+      }
+    }
+    public void DrawViewportMeshes(IGH_PreviewArgs args)
+    {
+      //Use a standard method to draw gunk, you don't have to specifically implement this.
+      Preview_DrawMeshes(args);
+    }
+    public void DrawViewportWires(IGH_PreviewArgs args)
+    {
+      //Use a standard method to draw gunk, you don't have to specifically implement this.
+      Preview_DrawWires(args);
+    }
 
+    private bool m_hidden = false;
     public bool Hidden
     {
-      get { return true; }
-      //set { m_hidden = value; }
+      get { return m_hidden; }
+      set { m_hidden = value; }
     }
     public bool IsPreviewCapable
     {
-      get { return false; }
+      get { return true; }
     }
     #endregion
   }
