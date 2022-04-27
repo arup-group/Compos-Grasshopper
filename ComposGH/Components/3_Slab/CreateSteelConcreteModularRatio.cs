@@ -22,7 +22,7 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("a49e5e5e-502d-400e-81a2-3644577b3404");
     public CreateSteelConcreteModularRatio()
-      : base("Steel/Concrete Modular Ratios", "ModRatios", "Create steel/concrete Young´s modulus ratios for concrete material",
+      : base("Steel/Concrete Modular Ratios", "ERatios", "Create steel/concrete Young´s modulus ratios for concrete material",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = false; } // sets the initial state of the component to hidden
@@ -45,7 +45,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Modular Ratios", "MR", "Steel/concrete Young´s modulus ratios for concrete material", GH_ParamAccess.item);
+      pManager.AddGenericParameter("E Ratios", "ER", "Steel/concrete Young´s modulus ratios for concrete material", GH_ParamAccess.item);
     }
     #endregion
 

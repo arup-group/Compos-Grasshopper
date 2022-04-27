@@ -129,7 +129,7 @@ namespace ComposGH.Components
 
       // optional
       pManager.AddNumberParameter("Dry Density [" + densityUnitAbbreviation + "]", "DD", "(Optional) Dry density", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Modular Ratios", "MR", "(Optional) Steel/concrete Young´s modulus ratios", GH_ParamAccess.item);
+      pManager.AddGenericParameter("E Ratios", "ER", "(Optional) Steel/concrete Young´s modulus ratios", GH_ParamAccess.item);
       pManager.AddNumberParameter("Imposed Load Percentage [%]", "ILP", "(Optional) Percentage of imposed load acting long term", GH_ParamAccess.item, 33);
       pManager.AddNumberParameter("Shrinkage Strain [" + strainUnitAbbreviation + "]", "SS", "(Optional) Shrinkage strain", GH_ParamAccess.item, -0.0005);
 
@@ -148,8 +148,12 @@ namespace ComposGH.Components
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       Density dryDensity = new Density(2400, DensityUnit.KilogramPerCubicMeter);
+      bool userDensity = false;
       if (this.Params.Input[0].Sources.Count > 0)
+      {
         dryDensity = GetInput.Density(this, DA, 0, this.DensityUnit);
+        userDensity = true;
+      }
       else
         if (this.Grade.ToString().StartsWith("L"))
         dryDensity = new Density((double)this.DensityClass, DensityUnit.KilogramPerCubicMeter);
@@ -169,7 +173,7 @@ namespace ComposGH.Components
       if (this.Params.Input[3].Sources.Count > 0)
         shrinkageStrain = GetInput.Strain(this, DA, 3, StrainUnit, true);
 
-      ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, this.DensityClass, dryDensity, steelConcreteModularRatio, imposedLoadPercentage, shrinkageStrain);
+      ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, this.DensityClass, dryDensity, userDensity, steelConcreteModularRatio, imposedLoadPercentage, shrinkageStrain);
 
       DA.SetData(0, concreteMaterial);
     }

@@ -24,6 +24,7 @@ namespace ComposGH.Parameters
       C20,
       C25,
       C30,
+      C32,
       C35,
       C40,
       C45,
@@ -68,7 +69,7 @@ namespace ComposGH.Parameters
 
     public enum DensityClass
     {
-      DC8001_1000 = 1000,
+      DC801_1000 = 1000,
       DC1001_1200 = 1200,
       DC1201_1400 = 1400,
       DC1401_1600 = 1600,
@@ -84,32 +85,15 @@ namespace ComposGH.Parameters
 
     public Density DryDensity { get; set; }
 
+    public bool UserDensity { get; } = false;
+
     public SteelConcreteModularRatio SteelConcreteModularRatio { get; set; }
 
     public double ImposedLoadPercentage { get; set; }
 
     public Strain ShrinkageStrain { get; set; }
 
-    private void SetPropertiesFrom(ConcreteGrade grade, WeightType type)
-    {
-      switch (type)
-      {
-        case WeightType.Light:
-          this.DryDensity = new Density(1800, DensityUnit.KilogramPerCubicMeter);
-          //this.SteelConcreteModularRatioShortTerm = new Ratio(10, RatioUnit.DecimalFraction);
-          //this.SteelConcreteModularRatioLongTerm = new Ratio(25, RatioUnit.DecimalFraction);
-          //this.SteelConcreteModularRatioVibration = new Ratio(9.32, RatioUnit.DecimalFraction);
-          break;
-
-        case WeightType.Normal:
-        default:
-          this.DryDensity = new Density(2400, DensityUnit.KilogramPerCubicMeter);
-          //this.SteelConcreteModularRatioShortTerm = new Ratio(6, RatioUnit.DecimalFraction);
-          //this.SteelConcreteModularRatioLongTerm = new Ratio(18, RatioUnit.DecimalFraction);
-          //this.SteelConcreteModularRatioVibration = new Ratio(5.39, RatioUnit.DecimalFraction);
-          break;
-      }
-    }
+    public bool UserStrain { get; } = false;
 
     #region constructors
     public ConcreteMaterial()
@@ -128,34 +112,17 @@ namespace ComposGH.Parameters
     /// <param name="grade"></param>
     /// <param name="type"></param>
     /// <param name="dryDensity"></param>
+    /// <param name="userDensity"></param>
     /// <param name="steelConcreteModularRatio"></param>
     /// <param name="percentageOfImposedLoadActingLongTerm"></param>
-    public ConcreteMaterial(ConcreteGrade grade, WeightType type, Density dryDensity, double percentageOfImposedLoadActingLongTerm)
+    public ConcreteMaterial(ConcreteGrade grade, WeightType type, Density dryDensity, bool userDensity, SteelConcreteModularRatio steelConcreteModularRatio, double percentageOfImposedLoadActingLongTerm)
     {
       this.Grade = grade.ToString();
       this.Type = type;
       this.DryDensity = dryDensity;
-      this.SteelConcreteModularRatio = new SteelConcreteModularRatio();
-      this.ImposedLoadPercentage = percentageOfImposedLoadActingLongTerm;
-      this.ShrinkageStrain = new Strain(-0.000325, StrainUnit.MilliStrain); ;
-    }
-
-    /// <summary>
-    /// "British" constructor
-    /// </summary>
-    /// <param name="grade"></param>
-    /// <param name="type"></param>
-    /// <param name="dryDensity"></param>
-    /// <param name="steelConcreteModularRatio"></param>
-    /// <param name="percentageOfImposedLoadActingLongTerm"></param>
-    public ConcreteMaterial(ConcreteGrade grade, WeightType type, Density dryDensity, SteelConcreteModularRatio steelConcreteModularRatio, double percentageOfImposedLoadActingLongTerm)
-    {
-      this.Grade = grade.ToString();
-      this.Type = type;
-      this.DryDensity = dryDensity;
+      this.UserDensity = userDensity;
       this.SteelConcreteModularRatio = steelConcreteModularRatio;
       this.ImposedLoadPercentage = percentageOfImposedLoadActingLongTerm;
-      this.ShrinkageStrain = new Strain(-0.000325, StrainUnit.MilliStrain); ;
     }
 
     /// <summary>
@@ -164,35 +131,36 @@ namespace ComposGH.Parameters
     /// <param name="grade"></param>
     /// <param name="densityClass"></param>
     /// <param name="dryDensity"></param>
+    /// <param name="userDensity"></param>
+    /// <param name="steelConcreteModularRatio"></param>
     /// <param name="percentageOfImposedLoadActingLongTerm"></param>
     /// <param name="shrinkageStrain"></param>
-    public ConcreteMaterial(ConcreteGradeEN grade, DensityClass densityClass, Density dryDensity, double percentageOfImposedLoadActingLongTerm, Strain shrinkageStrain)
+    public ConcreteMaterial(ConcreteGradeEN grade, DensityClass densityClass, Density dryDensity, bool userDensity, SteelConcreteModularRatio steelConcreteModularRatio, double percentageOfImposedLoadActingLongTerm, Strain shrinkageStrain)
     {
       this.Grade = grade.ToString();
       this.Class = densityClass;
       this.DryDensity = dryDensity;
-      this.SteelConcreteModularRatio = new SteelConcreteModularRatio();
+      this.UserDensity = userDensity;
+      this.SteelConcreteModularRatio = steelConcreteModularRatio;
       this.ImposedLoadPercentage = percentageOfImposedLoadActingLongTerm;
       this.ShrinkageStrain = shrinkageStrain;
     }
 
     /// <summary>
-    /// "European" constructor
+    /// Generic constructor
     /// </summary>
     /// <param name="grade"></param>
-    /// <param name="densityClass"></param>
     /// <param name="dryDensity"></param>
+    /// <param name="userDensity"></param>
     /// <param name="steelConcreteModularRatio"></param>
     /// <param name="percentageOfImposedLoadActingLongTerm"></param>
-    /// <param name="shrinkageStrain"></param>
-    public ConcreteMaterial(ConcreteGradeEN grade, DensityClass densityClass, Density dryDensity, SteelConcreteModularRatio steelConcreteModularRatio, double percentageOfImposedLoadActingLongTerm, Strain shrinkageStrain)
+    public ConcreteMaterial(ConcreteGrade grade, Density dryDensity, bool userDensity, SteelConcreteModularRatio steelConcreteModularRatio, double percentageOfImposedLoadActingLongTerm)
     {
       this.Grade = grade.ToString();
-      this.Class = densityClass;
       this.DryDensity = dryDensity;
+      this.UserDensity = userDensity;
       this.SteelConcreteModularRatio = steelConcreteModularRatio;
       this.ImposedLoadPercentage = percentageOfImposedLoadActingLongTerm;
-      this.ShrinkageStrain = shrinkageStrain;
     }
     #endregion
 
@@ -228,8 +196,8 @@ namespace ComposGH.Parameters
 
     public override string ToString()
     {
-      string str = this.Grade.ToString().Replace("_", "/ , DD: " + this.DryDensity);
-      str += " " + this.Type;
+      string str = this.Grade.ToString().Replace("_", "/");
+      str += " " + this.Type + ", DD: " + this.DryDensity;
       return str;
     }
     #endregion
