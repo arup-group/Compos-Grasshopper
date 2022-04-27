@@ -69,6 +69,7 @@ namespace ComposGH.Parameters
 
     public enum DensityClass
     {
+      None = 0,
       DC801_1000 = 1000,
       DC1001_1200 = 1200,
       DC1201_1400 = 1400,
@@ -79,21 +80,21 @@ namespace ComposGH.Parameters
 
     public string Grade { get; set; }
 
-    public WeightType Type { get; set; }
+    public WeightType Type { get; set; } = WeightType.Normal;
 
-    public DensityClass Class { get; set; }
+    public DensityClass Class { get; set; } = DensityClass.None;
 
     public Density DryDensity { get; set; }
 
-    public bool UserDensity { get; } = false;
+    public bool UserDensity { get; set; } = false;
 
-    public SteelConcreteModularRatio SteelConcreteModularRatio { get; set; }
+    public ERatio ERatio { get; set; }
 
     public double ImposedLoadPercentage { get; set; }
 
     public Strain ShrinkageStrain { get; set; }
 
-    public bool UserStrain { get; } = false;
+    public bool UserStrain { get; set; } = false;
 
     #region constructors
     public ConcreteMaterial()
@@ -108,16 +109,16 @@ namespace ComposGH.Parameters
     /// <param name="type"></param>
     /// <param name="dryDensity"></param>
     /// <param name="userDensity"></param>
-    /// <param name="steelConcreteModularRatio"></param>
-    /// <param name="percentageOfImposedLoadActingLongTerm"></param>
-    public ConcreteMaterial(ConcreteGrade grade, WeightType type, Density dryDensity, bool userDensity, SteelConcreteModularRatio steelConcreteModularRatio, double percentageOfImposedLoadActingLongTerm)
+    /// <param name="eRatio"></param>
+    /// <param name="imposedLoadPercentage"></param>
+    public ConcreteMaterial(ConcreteGrade grade, WeightType type, Density dryDensity, bool userDensity, ERatio eRatio, double imposedLoadPercentage)
     {
       this.Grade = grade.ToString();
       this.Type = type;
       this.DryDensity = dryDensity;
       this.UserDensity = userDensity;
-      this.SteelConcreteModularRatio = steelConcreteModularRatio;
-      this.ImposedLoadPercentage = percentageOfImposedLoadActingLongTerm;
+      this.ERatio = eRatio;
+      this.ImposedLoadPercentage = imposedLoadPercentage;
     }
 
     /// <summary>
@@ -127,35 +128,58 @@ namespace ComposGH.Parameters
     /// <param name="densityClass"></param>
     /// <param name="dryDensity"></param>
     /// <param name="userDensity"></param>
-    /// <param name="steelConcreteModularRatio"></param>
-    /// <param name="percentageOfImposedLoadActingLongTerm"></param>
+    /// <param name="eRatio"></param>
+    /// <param name="imposedLoadPercentage"></param>
     /// <param name="shrinkageStrain"></param>
-    public ConcreteMaterial(ConcreteGradeEN grade, DensityClass densityClass, Density dryDensity, bool userDensity, SteelConcreteModularRatio steelConcreteModularRatio, double percentageOfImposedLoadActingLongTerm, Strain shrinkageStrain)
+    /// <param name="userStrain"></param>
+    public ConcreteMaterial(ConcreteGradeEN grade, DensityClass densityClass, Density dryDensity, bool userDensity, ERatio eRatio, double imposedLoadPercentage, Strain shrinkageStrain, bool userStrain)
     {
       this.Grade = grade.ToString();
+      if (this.Grade.StartsWith("L"))
+        this.Type = WeightType.Light;
       this.Class = densityClass;
       this.DryDensity = dryDensity;
       this.UserDensity = userDensity;
-      this.SteelConcreteModularRatio = steelConcreteModularRatio;
-      this.ImposedLoadPercentage = percentageOfImposedLoadActingLongTerm;
+      this.ERatio = eRatio;
+      this.ImposedLoadPercentage = imposedLoadPercentage;
       this.ShrinkageStrain = shrinkageStrain;
+      this.UserStrain = userStrain;
     }
 
     /// <summary>
-    /// Generic constructor
+    /// "HKSUOS" constructor
     /// </summary>
     /// <param name="grade"></param>
     /// <param name="dryDensity"></param>
     /// <param name="userDensity"></param>
-    /// <param name="steelConcreteModularRatio"></param>
-    /// <param name="percentageOfImposedLoadActingLongTerm"></param>
-    public ConcreteMaterial(ConcreteGrade grade, Density dryDensity, bool userDensity, SteelConcreteModularRatio steelConcreteModularRatio, double percentageOfImposedLoadActingLongTerm)
+    /// <param name="eRatio"></param>
+    /// <param name="imposedLoadPercentage"></param>
+    public ConcreteMaterial(ConcreteGrade grade, Density dryDensity, bool userDensity, ERatio eRatio, double imposedLoadPercentage)
     {
       this.Grade = grade.ToString();
       this.DryDensity = dryDensity;
       this.UserDensity = userDensity;
-      this.SteelConcreteModularRatio = steelConcreteModularRatio;
-      this.ImposedLoadPercentage = percentageOfImposedLoadActingLongTerm;
+      this.ERatio = eRatio;
+      this.ImposedLoadPercentage = imposedLoadPercentage;
+    }
+
+    /// <summary>
+    /// "AS/NZ" constructor
+    /// </summary>
+    /// <param name="grade"></param>
+    /// <param name="dryDensity"></param>
+    /// <param name="userDensity"></param>
+    /// <param name="eRatio"></param>
+    /// <param name="imposedLoadPercentage"></param>
+    public ConcreteMaterial(ConcreteGrade grade, Density dryDensity, bool userDensity, ERatio eRatio, double imposedLoadPercentage, Strain shrinkageStrain, bool userStrain)
+    {
+      this.Grade = grade.ToString();
+      this.DryDensity = dryDensity;
+      this.UserDensity = userDensity;
+      this.ERatio = eRatio;
+      this.ImposedLoadPercentage = imposedLoadPercentage;
+      this.ShrinkageStrain = shrinkageStrain;
+      this.UserStrain = userStrain;
     }
     #endregion
 

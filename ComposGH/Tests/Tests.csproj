@@ -26,4 +26,10 @@
     <ProjectReference Include="..\ComposGH.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="OasysUnits">
+      <HintPath>..\..\packages\OasysUnits.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

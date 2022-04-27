@@ -9,13 +9,13 @@ using UnitsNet.Units;
 
 namespace ComposGH.Components
 {
-  public class CreateConcreteMaterial : GH_Component, IGH_VariableParameterComponent
+  public class CreateConcreteMaterialHKSUOS : GH_Component, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("6781ee34-494e-414c-9542-6be29f1a5696");
-    public CreateConcreteMaterial()
-      : base("Concrete Material", "ConcMat", "Create concrete material for concrete slab",
+    public CreateConcreteMaterialHKSUOS()
+      : base("Concrete Material HKSUOS", "ConcMatHKSUOS", "Create concrete material (HKSUOS) for concrete slab",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = false; } // sets the initial state of the component to hidden
@@ -51,6 +51,9 @@ namespace ComposGH.Components
 
         // grade
         List<string> concreteGrades = Enum.GetValues(typeof(ConcreteMaterial.ConcreteGrade)).Cast<ConcreteMaterial.ConcreteGrade>().Select(x => x.ToString()).ToList();
+        concreteGrades.RemoveAt(0); // C20
+        concreteGrades.RemoveAt(2); // C32
+        concreteGrades.RemoveRange(8,4); // C70...C100
         this.DropDownItems.Add(concreteGrades);
         this.SelectedItems.Add(this.Grade.ToString());
 
@@ -73,7 +76,7 @@ namespace ComposGH.Components
 
       else if (i == 1) // change is made to density unit
         this.DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), this.SelectedItems[i]);
-
+      
       // update name of inputs (to display unit on sliders)
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
       ExpireSolution(true);
@@ -129,10 +132,10 @@ namespace ComposGH.Components
       double imposedLoadPercentage = 33;
       DA.GetData(2, ref imposedLoadPercentage);
 
-      SteelConcreteModularRatio steelConcreteModularRatio = new SteelConcreteModularRatio();
-      DA.GetData(1, ref steelConcreteModularRatio);
+      ERatio eRatio = new ERatio();
+      DA.GetData(1, ref eRatio);
 
-      ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, dryDensity, userDensity, steelConcreteModularRatio, imposedLoadPercentage);
+      ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, dryDensity, userDensity, eRatio, imposedLoadPercentage);
 
       DA.SetData(0, concreteMaterial);
     }

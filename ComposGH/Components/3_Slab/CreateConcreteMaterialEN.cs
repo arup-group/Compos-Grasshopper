@@ -64,6 +64,7 @@ namespace ComposGH.Components
 
         // density class
         List<string> densityClasses = Enum.GetValues(typeof(ConcreteMaterial.DensityClass)).Cast<ConcreteMaterial.DensityClass>().Select(x => x.ToString()).ToList();
+        densityClasses.RemoveAt(0);
         this.DropDownItems.Add(densityClasses);
         this.SelectedItems.Add(this.DensityClass.ToString());
 
@@ -158,22 +159,26 @@ namespace ComposGH.Components
         if (this.Grade.ToString().StartsWith("L"))
         dryDensity = new Density((double)this.DensityClass, DensityUnit.KilogramPerCubicMeter);
 
-      SteelConcreteModularRatio steelConcreteModularRatio = new SteelConcreteModularRatio();
-      if (!DA.GetData(1, ref steelConcreteModularRatio))
+      ERatio eRatio = new ERatio();
+      if (!DA.GetData(1, ref eRatio))
       {
-        steelConcreteModularRatio.ShortTerm = 6;
-        steelConcreteModularRatio.LongTerm = 18;
-        steelConcreteModularRatio.Vibration = 5.39;
+        eRatio.ShortTerm = 6;
+        eRatio.LongTerm = 18;
+        eRatio.Vibration = 5.39;
       }
 
       double imposedLoadPercentage = 33;
       DA.GetData(2, ref imposedLoadPercentage);
 
       Strain shrinkageStrain = new Strain(-0.0005, StrainUnit.MilliStrain);
+      bool userStrain = false;
       if (this.Params.Input[3].Sources.Count > 0)
+      {
         shrinkageStrain = GetInput.Strain(this, DA, 3, StrainUnit, true);
+        userStrain = true;
+      }
 
-      ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, this.DensityClass, dryDensity, userDensity, steelConcreteModularRatio, imposedLoadPercentage, shrinkageStrain);
+      ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, this.DensityClass, dryDensity, userDensity, eRatio, imposedLoadPercentage, shrinkageStrain, userStrain);
 
       DA.SetData(0, concreteMaterial);
     }

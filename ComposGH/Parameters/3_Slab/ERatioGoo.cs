@@ -15,7 +15,7 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Custom class: this class defines the basic properties and methods for our custom class
   /// </summary>
-  public class SteelConcreteModularRatio
+  public class ERatio
   {
     public double ShortTerm { get; set; }
 
@@ -25,22 +25,22 @@ namespace ComposGH.Parameters
 
     public double Shrinkage { get; set; }
 
-    bool UserDefined { get; } = false;
+    public bool UserDefined { get; } = false;
 
     #region constructors
-    public SteelConcreteModularRatio() { }
+    public ERatio() { }
 
-    public SteelConcreteModularRatio(double shortTerm, double longTerm, double vibration)
+    public ERatio(double shortTerm, double longTerm, double vibration) : this(shortTerm, longTerm, vibration, double.NaN)
+    {
+    }
+
+    public ERatio(double shortTerm, double longTerm, double vibration, double shrinkage)
     {
       this.ShortTerm = shortTerm;
       this.LongTerm = longTerm;
       this.Vibration = vibration;
-      this.UserDefined = true;
-    }
-
-    public SteelConcreteModularRatio(double shortTerm, double longTerm, double vibration, double shrinkage) : this(shortTerm, longTerm, vibration)
-    {
       this.Shrinkage = shrinkage;
+      this.UserDefined = true;
     }
     #endregion
 
@@ -55,7 +55,7 @@ namespace ComposGH.Parameters
     #endregion
 
     #region coa interop
-    internal SteelConcreteModularRatio(string coaString)
+    internal ERatio(string coaString)
     {
       // to do - implement from coa string method
     }
@@ -67,10 +67,10 @@ namespace ComposGH.Parameters
     #endregion
 
     #region methods
-    public SteelConcreteModularRatio Duplicate()
+    public ERatio Duplicate()
     {
       if (this == null) { return null; }
-      SteelConcreteModularRatio dup = (SteelConcreteModularRatio)this.MemberwiseClone();
+      ERatio dup = (ERatio)this.MemberwiseClone();
       return dup;
     }
 
@@ -87,17 +87,17 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class SteelConcreteModularRatioGoo : GH_Goo<SteelConcreteModularRatio>
+  public class ERatioGoo : GH_Goo<ERatio>
   {
     #region constructors
-    public SteelConcreteModularRatioGoo()
+    public ERatioGoo()
     {
-      this.Value = new SteelConcreteModularRatio();
+      this.Value = new ERatio();
     }
-    public SteelConcreteModularRatioGoo(SteelConcreteModularRatio item)
+    public ERatioGoo(ERatio item)
     {
       if (item == null)
-        item = new SteelConcreteModularRatio();
+        item = new ERatio();
       this.Value = item.Duplicate();
     }
 
@@ -105,9 +105,9 @@ namespace ComposGH.Parameters
     {
       return DuplicateGoo();
     }
-    public SteelConcreteModularRatioGoo DuplicateGoo()
+    public ERatioGoo DuplicateGoo()
     {
-      return new SteelConcreteModularRatioGoo(Value == null ? new SteelConcreteModularRatio() : Value.Duplicate());
+      return new ERatioGoo(Value == null ? new ERatio() : Value.Duplicate());
     }
     #endregion
 
@@ -137,7 +137,7 @@ namespace ComposGH.Parameters
     public override bool CastTo<Q>(ref Q target)
     {
       // This function is called when Grasshopper needs to convert this instance of our custom class into some other type Q.            
-      if (typeof(Q).IsAssignableFrom(typeof(SteelConcreteModularRatio)))
+      if (typeof(Q).IsAssignableFrom(typeof(ERatio)))
       {
         if (this.Value == null)
           target = default;
@@ -155,9 +155,9 @@ namespace ComposGH.Parameters
       // This function is called when Grasshopper needs to convert other data into our custom class.
       if (source == null) { return false; }
 
-      if (typeof(SteelConcreteModularRatio).IsAssignableFrom(source.GetType()))
+      if (typeof(ERatio).IsAssignableFrom(source.GetType()))
       {
-        this.Value = (SteelConcreteModularRatio)source;
+        this.Value = (ERatio)source;
         return true;
       }
 

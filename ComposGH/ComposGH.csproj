@@ -104,9 +104,10 @@
     <Compile Include="Components\2_Studs\StudSpec.cs" />
     <Compile Include="Components\2_Studs\StandardStudDims.cs" />
     <Compile Include="Components\2_Studs\CreateStud.cs" />
-    <Compile Include="Components\3_Slab\CreateConcreteMaterial.cs" />
+    <Compile Include="Components\3_Slab\CreateConcreteMaterialASNZ.cs" />
+    <Compile Include="Components\3_Slab\CreateConcreteMaterialHKSUOS.cs" />
     <Compile Include="Components\3_Slab\CreateConcreteMaterialEN.cs" />
-    <Compile Include="Components\3_Slab\CreateSteelConcreteModularRatio.cs" />
+    <Compile Include="Components\3_Slab\CreateERatio.cs" />
     <Compile Include="Components\5_Rebar\CreateRebarMaterial.cs" />
     <Compile Include="Components\5_Rebar\TransverseReinforcement.cs" />
     <Compile Include="Components\5_Rebar\MeshReinforcement.cs" />
@@ -126,7 +127,7 @@
     <Compile Include="Helpers\_SqlReaderValues.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
     <Compile Include="Parameters\3_Slab\ConcreteMaterialGoo.cs" />
-    <Compile Include="Parameters\3_Slab\SteelConcreteModularRatioGoo.cs" />
+    <Compile Include="Parameters\3_Slab\ERatioGoo.cs" />
     <Compile Include="Parameters\ComposRestraint.cs" />
     <Compile Include="Parameters\Load.cs" />
     <Compile Include="Parameters\ComposLoad.cs" />

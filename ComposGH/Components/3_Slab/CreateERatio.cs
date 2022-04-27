@@ -16,13 +16,13 @@ using System.Linq;
 
 namespace ComposGH.Components
 {
-  public class CreateSteelConcreteModularRatio : GH_Component
+  public class CreateERatio : GH_Component
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("a49e5e5e-502d-400e-81a2-3644577b3404");
-    public CreateSteelConcreteModularRatio()
-      : base("Steel/Concrete Modular Ratios", "ERatios", "Create steel/concrete Young´s modulus ratios for concrete material",
+    public CreateERatio()
+      : base("Steel/Concrete Modular Ratio", "ERatio", "Create steel/concrete Young´s modulus ratios for concrete material",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = false; } // sets the initial state of the component to hidden
@@ -60,7 +60,7 @@ namespace ComposGH.Components
       DA.GetData(2, ref vibration);
       DA.GetData(3, ref shrinkage);
 
-      DA.SetData(0, new SteelConcreteModularRatioGoo(new SteelConcreteModularRatio(shortTerm, longTerm, vibration, shrinkage)));
+      DA.SetData(0, new ERatioGoo(new ERatio(shortTerm, longTerm, vibration, shrinkage)));
     }
   }
 }
