@@ -79,21 +79,13 @@ namespace ComposGH.Parameters
     }
 
     public string Grade { get; set; }
-
     public WeightType Type { get; set; } = WeightType.Normal;
-
     public DensityClass Class { get; set; } = DensityClass.None;
-
     public Density DryDensity { get; set; }
-
     public bool UserDensity { get; set; } = false;
-
     public ERatio ERatio { get; set; }
-
     public double ImposedLoadPercentage { get; set; }
-
     public Strain ShrinkageStrain { get; set; }
-
     public bool UserStrain { get; set; } = false;
 
     #region constructors
@@ -119,6 +111,7 @@ namespace ComposGH.Parameters
       this.UserDensity = userDensity;
       this.ERatio = eRatio;
       this.ImposedLoadPercentage = imposedLoadPercentage;
+      this.ShrinkageStrain = new Strain(-0.000325, StrainUnit.MilliStrain);
     }
 
     /// <summary>
@@ -161,6 +154,7 @@ namespace ComposGH.Parameters
       this.UserDensity = userDensity;
       this.ERatio = eRatio;
       this.ImposedLoadPercentage = imposedLoadPercentage;
+      this.ShrinkageStrain = Strain.Zero;
     }
 
     /// <summary>
@@ -210,6 +204,7 @@ namespace ComposGH.Parameters
     {
       if (this == null) { return null; }
       ConcreteMaterial dup = (ConcreteMaterial)this.MemberwiseClone();
+      dup.ERatio = this.ERatio.Duplicate();
       return dup;
     }
 

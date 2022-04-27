@@ -18,13 +18,9 @@ namespace ComposGH.Parameters
   public class ERatio
   {
     public double ShortTerm { get; set; }
-
     public double LongTerm { get; set; }
-
     public double Vibration { get; set; }
-
     public double Shrinkage { get; set; }
-
     public bool UserDefined { get; } = false;
 
     #region constructors

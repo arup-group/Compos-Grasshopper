@@ -128,6 +128,7 @@
     <Compile Include="Helpers\_SqlReader.cs" />
     <Compile Include="Parameters\3_Slab\ConcreteMaterialGoo.cs" />
     <Compile Include="Parameters\3_Slab\ERatioGoo.cs" />
+    <Compile Include="Parameters\3_Slab\ConcreteSlabDimensionGoo.cs" />
     <Compile Include="Parameters\ComposRestraint.cs" />
     <Compile Include="Parameters\Load.cs" />
     <Compile Include="Parameters\ComposLoad.cs" />

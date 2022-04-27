@@ -7,7 +7,7 @@ using Xunit;
 
 namespace ComposGH.Parameters.Tests
 {
-  public class ERatioTest
+  public class ERatioGooTest
   {
     [Fact]
     public ERatio TestEmptyConstructor()

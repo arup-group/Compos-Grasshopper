@@ -35,8 +35,7 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(userDensity, concreteMaterial.UserDensity);
       Assert.Equal(eRatio, concreteMaterial.ERatio);
       Assert.Equal(imposedLoadPercentage, concreteMaterial.ImposedLoadPercentage);
-      // NotImplementedException??
-      //Assert.Equal(shrinkageStrain, concreteMaterial.ShrinkageStrain);
+      Assert.Equal(shrinkageStrain, concreteMaterial.ShrinkageStrain);
       Assert.Equal(userStrain, concreteMaterial.UserStrain);
 
       // (optionally return object for other tests)
@@ -72,8 +71,7 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(userDensity, concreteMaterial.UserDensity);
       Assert.Equal(eRatio, concreteMaterial.ERatio);
       Assert.Equal(imposedLoadPercentage, concreteMaterial.ImposedLoadPercentage);
-      // NotImplementedException??
-      //Assert.Equal(shrinkageStrain, concreteMaterial.ShrinkageStrain);
+      Assert.Equal(shrinkageStrain, concreteMaterial.ShrinkageStrain);
       Assert.Equal(userStrain, concreteMaterial.UserStrain);
 
       // (optionally return object for other tests)
@@ -101,8 +99,7 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(userDensity, concreteMaterial.UserDensity);
       Assert.Equal(eRatio, concreteMaterial.ERatio);
       Assert.Equal(imposedLoadPercentage, concreteMaterial.ImposedLoadPercentage);
-      // NotImplementedException??
-      //Assert.Equal(shrinkageStrain, concreteMaterial.ShrinkageStrain);
+      Assert.Equal(shrinkageStrain, concreteMaterial.ShrinkageStrain);
       Assert.Equal(userStrain, concreteMaterial.UserStrain);
 
       // (optionally return object for other tests)
@@ -131,8 +128,7 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(userDensity, concreteMaterial.UserDensity);
       Assert.Equal(eRatio, concreteMaterial.ERatio);
       Assert.Equal(imposedLoadPercentage, concreteMaterial.ImposedLoadPercentage);
-      // NotImplementedException??
-      //Assert.Equal(shrinkageStrain, concreteMaterial.ShrinkageStrain);
+      Assert.Equal(shrinkageStrain, concreteMaterial.ShrinkageStrain);
       Assert.Equal(userStrain, concreteMaterial.UserStrain);
 
       // (optionally return object for other tests)
@@ -145,7 +141,7 @@ namespace ComposGH.Parameters.Tests
     {
       // 1 create with constructor and duplicate
       Density dryDensity = new Density(dryDensityValue, DensityUnit.KilogramPerCubicCentimeter);
-      ERatio eRatio = new ERatio();
+      ERatio eRatio = new ERatio(9.87, 28.72, 9.55, 27.55);
       Strain shrinkageStrain = new Strain(shrinkageStrainValue, StrainUnit.MilliStrain);
       ConcreteMaterial original = new ConcreteMaterial(grade, densityClass, dryDensity, userDensity, eRatio, imposedLoadPercentage, shrinkageStrain, userStrain);
       ConcreteMaterial duplicate = original.Duplicate();
@@ -156,10 +152,12 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(densityClass, duplicate.Class);
       Assert.Equal(dryDensity, duplicate.DryDensity);
       Assert.Equal(userDensity, duplicate.UserDensity);
-      Assert.Equal(eRatio, duplicate.ERatio);
+      Assert.Equal(9.87, duplicate.ERatio.ShortTerm);
+      Assert.Equal(28.72, duplicate.ERatio.LongTerm);
+      Assert.Equal(9.55, duplicate.ERatio.Vibration);
+      Assert.Equal(27.55, duplicate.ERatio.Shrinkage);
       Assert.Equal(imposedLoadPercentage, duplicate.ImposedLoadPercentage);
-      // NotImplementedException??
-      //Assert.Equal(shrinkageStrain, duplicate.ShrinkageStrain);
+      Assert.Equal(shrinkageStrain, duplicate.ShrinkageStrain);
       Assert.Equal(userStrain, duplicate.UserStrain);
 
       // 3 make some changes to duplicate
@@ -189,8 +187,7 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(3, duplicate.ERatio.Vibration);
       Assert.Equal(4, duplicate.ERatio.Shrinkage);
       Assert.Equal(0.5, duplicate.ImposedLoadPercentage);
-      // NotImplementedException??
-      //Assert.Equal(duplicateStrain, duplicate.ShrinkageStrain);
+      Assert.Equal(duplicateStrain, duplicate.ShrinkageStrain);
       Assert.True(duplicate.UserStrain);
 
       // 5 check that original has not been changed
@@ -199,10 +196,12 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(densityClass, original.Class);
       Assert.Equal(dryDensity, original.DryDensity);
       Assert.Equal(userDensity, original.UserDensity);
-      Assert.Equal(eRatio, original.ERatio);
+      Assert.Equal(9.87, original.ERatio.ShortTerm);
+      Assert.Equal(28.72, original.ERatio.LongTerm);
+      Assert.Equal(9.55, original.ERatio.Vibration);
+      Assert.Equal(27.55, original.ERatio.Shrinkage);
       Assert.Equal(imposedLoadPercentage, original.ImposedLoadPercentage);
-      // NotImplementedException??
-      //Assert.Equal(shrinkageStrain, original.ShrinkageStrain);
+      Assert.Equal(shrinkageStrain, original.ShrinkageStrain);
       Assert.Equal(userStrain, original.UserStrain);
     }
   }
