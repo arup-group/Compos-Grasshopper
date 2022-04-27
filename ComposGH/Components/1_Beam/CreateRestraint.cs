@@ -17,13 +17,13 @@ using Grasshopper.Kernel.Parameters;
 
 namespace ComposGH.Components
 {
-  public class CreateRestraints : GH_Component
+  public class CreateRestraint : GH_Component
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("82c87cde-f442-475b-9131-8f2974c42499");
-    public CreateRestraints()
+    public CreateRestraint()
       : base("Restraints", "Restraints", "Create Restraints for a Compos Beam",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
@@ -46,7 +46,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Restraints", "Res", "Restraints for a Compos Beam", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Restraint", "Res", "Restraint for a Compos Beam", GH_ParamAccess.item);
     }
     #endregion
 

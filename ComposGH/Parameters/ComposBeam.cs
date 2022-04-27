@@ -43,10 +43,10 @@ namespace ComposGH.Parameters
         return new Length(m_line.GetLength(), LengthUnit);
       }
     }
-    public ComposSteelMaterial Material { get; set; }
     public ComposRestraint Restraint { get; set; }
-    public List<BeamSection> BeamSections { get; set; }
-    public List<ComposWebOpening> WebOpenings { get; set; }
+    public ComposSteelMaterial Material { get; set; }
+    public List<BeamSection> BeamSections { get; set; } = new List<BeamSection>();
+    public List<ComposWebOpening> WebOpenings { get; set; } = null;
 
     #region constructors
     public ComposBeam()
@@ -54,7 +54,16 @@ namespace ComposGH.Parameters
       // empty constructor
     }
 
-    // add public constructors here
+    public ComposBeam(LineCurve line, LengthUnit lengthUnit, ComposRestraint restraint, ComposSteelMaterial material, List<BeamSection> beamSections, List<ComposWebOpening> webOpenings = null)
+    {
+      this.m_line = line;
+      this.LengthUnit = lengthUnit;
+      this.Restraint = restraint;
+      this.Material = material;
+      this.BeamSections = beamSections;
+      this.WebOpenings = webOpenings;
+      this.UpdatePreview();
+    }
 
     #endregion
 
@@ -97,12 +106,10 @@ namespace ComposGH.Parameters
 
     public override string ToString()
     {
-      // update with better naming
-      return "Beam";
+      string profile = (this.BeamSections.Count > 1) ? " multiple sections" : this.BeamSections[0].SectionDescription;
+      string mat = this.Material.ToString();
+      return this.m_line.ToString() + " " + profile + " " + mat;
     }
-
-
-
     #endregion
 
     #region preview geometry
@@ -381,7 +388,7 @@ namespace ComposGH.Parameters
   public class ComposBeamParameter : GH_PersistentGeometryParam<ComposBeamGoo>, IGH_PreviewObject
   {
     public ComposBeamParameter()
-      : base(new GH_InstanceDescription("1D Element", "E1D", "Maintains a collection of GSA 1D Element data.", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+      : base(new GH_InstanceDescription("Beam", "Bm", "Maintains a collection of Compos Beam data.", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
 

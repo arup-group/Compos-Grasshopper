@@ -104,7 +104,7 @@ namespace ComposGH.Components
 
     private bool first = true;
     private ComposWebOpening.WebOpeningShape openingType = ComposWebOpening.WebOpeningShape.Rectangular;
-    private LengthUnit lengthUnit = Units.LengthUnitGeometry;
+    private LengthUnit lengthUnit = Units.LengthUnitSection;
     #endregion
 
     #region Input and output
