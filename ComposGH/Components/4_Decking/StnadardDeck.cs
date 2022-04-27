@@ -1,51 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
-using Grasshopper.Kernel;
-using Rhino.Geometry;
-using Grasshopper.Kernel.Types;
-using System.Text.RegularExpressions;
-using Grasshopper.Kernel.Parameters;
 using System.Linq;
+using Grasshopper;
+using Grasshopper.Kernel;
+using Grasshopper.Kernel.Data;
+using Grasshopper.Kernel.Types;
+using Grasshopper.Kernel.Parameters;
+using System.Text.RegularExpressions;
 using System.IO;
-using System.Reflection;
+using ComposGH.Parameters;
+using Rhino.Geometry;
 using UnitsNet;
+using UnitsNet.Units;
+using ComposGH.Components;
 using ComposGH.Helpers;
 
 namespace ComposGH.Components
 {
-
     public class StandardDeck : GH_Component, IGH_VariableParameterComponent
     {
         #region Name and Ribbon Layout
-        // This region handles how the component in displayed on the ribbon
-        // including name, exposure level and icon
-        public override Guid ComponentGuid => new Guid("CD98DB9D-D55B-4994-9535-720F13D6350A");
         public StandardDeck()
-          : base("Standard Decking", "StdDeck", "Create Standard Decking for Compos Slab",
+            : base("Standard Decking", "StdDeck", "Create Standard Decking for Compos Slab",
                 Ribbon.CategoryName.Name(),
                 Ribbon.SubCategoryName.Cat4())
-        { this.Hidden = true; } // sets the initial state of the component to hidden
-
+        { this.Hidden = false; }
+        public override Guid ComponentGuid => new Guid("6796D3E6-CF84-4AC6-ABB7-012C20E6DB9A");
         public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-        //protected override System.Drawing.Bitmap Icon => Properties.Resources.StandardDeck;
+        //protected override System.Drawing.Bitmap Icon => Properties.Resources.MeshReinforcement;
         #endregion
 
         #region Custom UI
         //This region overrides the typical component layout
-        public override void CreateAttributes()//TODO
+        public override void CreateAttributes()
         {
             if (first)
             {
                 dropdownitems = new List<List<string>>();
                 selecteditems = new List<string>();
 
-                //catalogue type
-                dropdownitems.Add(typeNames.ToList());
-                selecteditems.Add(typeNames.ToString());
+                // catalogue
+                dropdownitems.Add(catalogueNames);
+                selecteditems.Add(catalogueNames[0]);
+                catalogue = selecteditems[0];
 
-                //decking
-                //
+                // decking
+                sectionList = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), catalogue);
+                dropdownitems.Add(sectionList);
+                selecteditems.Add(sectionList[0]);
+                profile = selecteditems[1];
 
                 first = false;
             }
@@ -53,73 +57,38 @@ namespace ComposGH.Components
             m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, dropdownitems, selecteditems, spacerDescriptions);
         }
 
-        public void SetSelected(int i, int j) //TODO
+        public void SetSelected(int i, int j)
         {
-            string cat = "Kingspan"; //TODO
-            
+
             // change selected item
             selecteditems[i] = dropdownitems[i][j];
 
-            if (i == 0) // change is made to firstdropdown
+
+            if (i == 0)  // change is made to code 
             {
-                // set types to all
-                typeIndex = -1;
-                // update typelist with all catalogues
-                typedata = SqlReader.GetDeckTypesDataFromSQLite(catalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), inclSS);
-                typeNames = typedata.Item1;
-                typeNumbers = typedata.Item2;
-
-                // update section list to all types
-                sectionList = SqlReader.GetDeckingDataFromSQLite(typeNumbers, Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), cat, inclSS);
-
-                // add catalogues (they will always be the same so no need to rerun sql call)
-                dropdownitems.Add(typeNames);
+                // update selected section to be all
+                dropdownitems[1] = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), selecteditems[0]);
             }
-
-                // type list
-                // if second list (i.e. catalogue list) is changed, update types list to account for that catalogue
+            
             if (i == 1)
             {
-                // update typelist with selected input catalogue
-                typedata = SqlReader.GetDeckTypesDataFromSQLite(catalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), inclSS);
-                typeNames = typedata.Item1;
-                typeNumbers = typedata.Item2;
-
-                // update section list from new types (all new types in catalogue)
-                List<int> types = typeNumbers.ToList();
-                types.RemoveAt(0); // remove -1 from beginning of list
-                sectionList = SqlReader.GetDeckingDataFromSQLite(types, Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), cat, inclSS);
-
-                // update selections to display first item in new list
-                selecteditems[0] = typeNames[0];
-                selecteditems[1] = filteredlist[0];
+                // update displayed selected
+                profile = selecteditems[1];
             }
+            //profile = selecteditems[1];
 
-            //dropdownitems.Add(typeNames);
-            //dropdownitems.Add(filteredlist);
-            //profileString = selecteditems[1];
-
-
-            // update name of inputs (to display unit on sliders) 
             (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
             ExpireSolution(true);
             Params.OnParametersChanged();
             this.OnDisplayExpired(true);
-
         }
 
-        private void UpdateUIFromSelectedItems() //TODO
+
+        private void UpdateUIFromSelectedItems()
         {
-            typedata = SqlReader.GetDeckTypesDataFromSQLite(catalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), inclSS);
-            typedata = SqlReader.GetDeckTypesDataFromSQLite(catalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), inclSS);
-            typeNames = typedata.Item1;
-            typeNumbers = typedata.Item2;
-
-            // call graphics update
-            comingFromSave = true;
-            comingFromSave = false;
-
-            profileString = selecteditems[1];
+            sectionList = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), catalogue);
+            //catalogue = selecteditems[0];
+            //profile = selecteditems[1];
 
             CreateAttributes();
             ExpireSolution(true);
@@ -127,93 +96,74 @@ namespace ComposGH.Components
             Params.OnParametersChanged();
             this.OnDisplayExpired(true);
         }
-        #endregion 
+        #endregion
 
         #region Input and output
-        // list of lists with all dropdown lists conctent
+
+        // list of lists with all dropdown lists content
         List<List<string>> dropdownitems;
         // list of selected items
         List<string> selecteditems;
         // list of descriptions 
         List<string> spacerDescriptions = new List<string>(new string[]
         {
-            "Type", "Decking"
+            "Type", 
+            "Decking"
         });
-
         private bool first = true;
+        string catalogue = null;
+        string profile = null;
+        #endregion
 
-        #region catalogue sections
 
-        // Types
-        Tuple<List<string>, List<int>> typedata = SqlReader.GetCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"));
-        List<int> typeNumbers = new List<int>(); //  internal db type numbers
-        List<string> typeNames = new List<string>(); // list of displayed types
+        #region catalogue section
+        // Catalogues
+        List<string> catalogueNames = SqlReader.GetDeckCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"));
 
         // Sections
-        bool inclSS;
-        List<string> sectionList = SqlReader.GetDeckingDataFromSQLite(new List<int> { -1 }, Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), "Kingspan", false);
+        // list of displayed sections
+        List<string> sectionList = null;
         List<string> filteredlist = new List<string>();
+        //List<string> sectionList = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), catalogue);
 
-        int catalogueIndex = -1; //-1 is all
-        int typeIndex = -1;
 
-        // list of sections as outcome from selections
-        string profileString = "Multideck 50 (0.8)";
-        string search = "";
         #endregion
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            //empty
+
+            //pManager.AddGenericParameter("Cover [" + unitAbbreviation + "]", "Cov", "Reinforcement cover", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Rotated", "Rot", "If the mesh type is assymetrical, setting 'Rotated' to true will align the stronger direction with the beam's direction", GH_ParamAccess.item, false);
+
         }
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Decking", "Deck", "Decking profile for Compos slab", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Reinforcement", "Rb", "Mesh Reinforcement for Compos Slab", GH_ParamAccess.item);
         }
-        #endregion
-        protected override void SolveInstance(IGH_DataAccess DA) //TODO
+
+        protected override void SolveInstance(IGH_DataAccess DA)
         {
-            this.ClearRuntimeMessages();
-            for (int i = 0; i < this.Params.Input.Count; i++)
-                this.Params.Input[i].ClearRuntimeMessages();
-
-            #region catalogue
-            this.ClearRuntimeMessages();
-
-            // get user input filter search string
-            bool incl = false;
-            if (DA.GetData(1, ref incl))
-            {
-                if (inclSS != incl)
-                {
-                    SetSelected(-1, 0);
-                    this.ExpireSolution(true);
-                }
-            }
-
-            DA.SetData(0, "CAT " + profileString);
-
-            return;
-
-            #endregion
-
+            DA.SetData(0, "hi");
         }
+
 
         #region (de)serialization
-        public override bool Write(GH_IO.Serialization.GH_IWriter writer) 
+        public override bool Write(GH_IO.Serialization.GH_IWriter writer)
         {
-            DeSerialization.writeDropDownComponents(ref writer, dropdownitems, selecteditems, spacerDescriptions);
+            Helpers.DeSerialization.writeDropDownComponents(ref writer, dropdownitems, selecteditems, spacerDescriptions);
             return base.Write(writer);
         }
-        public override bool Read(GH_IO.Serialization.GH_IReader reader) 
+        public override bool Read(GH_IO.Serialization.GH_IReader reader)
         {
-
-            DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
+            Helpers.DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
             UpdateUIFromSelectedItems();
             first = false;
             return base.Read(reader);
         }
-        bool comingFromSave = false;
+
+        #endregion
+
+        #region IGH_VariableParameterComponent null implementation
         bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
         {
             return false;
@@ -230,13 +180,12 @@ namespace ComposGH.Components
         {
             return false;
         }
-        #endregion
 
-        #region IGH_VariableParameterComponent null implementation
-        void IGH_VariableParameterComponent.VariableParameterMaintenance() 
+        void IGH_VariableParameterComponent.VariableParameterMaintenance()
         {
             //empty
         }
-        #endregion  
+
     }
+    #endregion
 }

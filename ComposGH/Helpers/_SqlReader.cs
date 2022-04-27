@@ -208,58 +208,63 @@ namespace ComposGH.Helpers
         /// <param name="filePath">Path to SecLib.db3</param>
         /// <param name="inclSuperseeded">True if you want to include superseeded items</param>
         /// <returns></returns>
-        public static Tuple<List<string>, List<int>> GetDeckTypesDataFromSQLite(int catalogue_number, string filePath, bool inclSuperseeded = false)
+        public static List<string> GetDeckCataloguesDataFromSQLite(string filePath)
         {
             // Create empty lists to work on:
-            List<string> typeNames = new List<string>();
-            List<int> typeNumber = new List<int>();
-
-            // get Catalogue numbers if input is -1 (All catalogues)
-            List<int> catNumbers = new List<int>();
-            if (catalogue_number == -1)
-            {
-                Tuple<List<string>, List<int>> catalogueData = GetCataloguesDataFromSQLite(filePath);
-                catNumbers = catalogueData.Item2;
-                catNumbers.RemoveAt(0); // remove -1 from beginning of list
-            }
-            else
-                catNumbers.Add(catalogue_number);
+            List<string> catNames = new List<string>();
 
             using (var db = Connection(filePath))
             {
+                db.Open();
+                SQLiteCommand cmd = db.CreateCommand();
+                cmd.CommandText = @"Select Catalogue_Name || ' -- ' || Catalogue_ID as Catalogue_Name from Catalogue";
 
-            db.Open();
-            SQLiteCommand cmd = db.CreateCommand();
-            cmd.CommandText = $"Select Catalogue_Name || ' -- ' || Catalogue_ID as Catalogue_Name from Catalogue";
-            cmd.CommandType = CommandType.Text;
-            SQLiteDataReader r = cmd.ExecuteReader();
-            while (r.Read())
+                cmd.CommandType = CommandType.Text;
+                SQLiteDataReader r = cmd.ExecuteReader();
+                while (r.Read())
+                {
+                    // get data
+                    string sqlData = System.Convert.ToString(r["Catalogue_Name"]);
+
+                    // split text string
+                    catNames.Add(sqlData.Split(new string[] { " -- " }, StringSplitOptions.None)[0]);
+                }
+                db.Close();
+            }
+            return new List<string>(catNames);
+        }
+
+        public static List<string> GetDeckingDataFromSQLite(string filePath, string cat)
+        {
+            // Create empty lists to work on:
+            List<string> catNames = new List<string>();
+
+            using (var db = Connection(filePath))
             {
-            // get data
-            string sqlData = System.Convert.ToString(r["Catalogue_Name"]);
+                db.Open();
+                SQLiteCommand cmd = db.CreateCommand();
+                //cmd.CommandText = $"Select Type_{cat}.TYPE_ABR || ' ' || Deck_Name as Deck_Name from Deck_{cat} INNER JOIN Type_{cat} ON Deck_{cat}.Deck_Type_ID = Type_{cat}.TYPE_ID ORDER BY Deck_Thickness";
+                cmd.CommandText = $"Select Deck_Name from Deck_{cat} ORDER BY Deck_Thickness";
+                cmd.CommandType = CommandType.Text;
+                SQLiteDataReader r = cmd.ExecuteReader();
+                while (r.Read())
+                {
+                    // get data
+                    string sqlData = System.Convert.ToString(r["Deck_Name"]);
 
-            // split text string
-            // example: Universal Beams -- 51
-            typeNames.Add(sqlData.Split(new string[] { " -- " }, StringSplitOptions.None)[0]);
-            typeNumber.Add(Int32.Parse(sqlData.Split(new string[] { " -- " }, StringSplitOptions.None)[1]));
+                    // split text string
+                    catNames.Add(sqlData);
+                }
+                db.Close();
             }
-            db.Close();
-
-            }
-            typeNames.Insert(0, "All");
-            typeNumber.Insert(0, -1);
-            return new Tuple<List<string>, List<int>>(typeNames, typeNumber);
+            return new List<string>(catNames);
         }
 
 
-        /// <summary>
-        /// Get a list of decking profile strings from SQLite file (.db3). The method returns a string that includes type abbriviation as accepted by GSA. 
-        /// </summary>
-        /// <param name="type_numbers">List of types to get sections from</param>
-        /// <param name="filePath">Path to SecLib.db3</param>
-        /// <param name="inclSuperseeded">True if you want to include superseeded items</param>
-        /// <returns></returns>
-        public static List<string> GetDeckingDataFromSQLite(List<int> type_numbers, string filePath, string cat, bool inclSuperseeded = false)
+
+
+
+        public static List<string> GetDeckingDataFromSQLiteWrong(List<int> type_numbers, string filePath, string cat, bool inclSuperseeded = false)
         {
             // Create empty list to work on:
             List<string> section = new List<string>();
@@ -280,12 +285,9 @@ namespace ComposGH.Helpers
 
                 db.Open();
                 SQLiteCommand cmd = db.CreateCommand();
-                //cat = "Kingspan";
-                //querry
-                //Select Type_TATA.TYPE_ABR || ' ' || Deck_Name || ' -- ' || Date_Added as Deck_Name from Deck_TATA INNER JOIN Type_TATA ON Deck_TATA.Deck_Type_ID = Type_TATA.TYPE_ID ORDER BY Deck_Thickness 
 
-
-                cmd.CommandText = $"Select Type_{cat}.TYPE_ABR || ' ' || Deck_Name || ' -- ' || Date_Added as Deck_Name from Deck_{cat} INNER JOIN Type_{cat} ON Deck_Kingspan.Deck_Type_ID = Type_{cat}.TYPE_ID ORDER BY Deck_Thickness";
+                //Select Type_Kingspan.TYPE_ABR || ' ' || Deck_Name || ' -- ' || Date_Added as Deck_Name from Deck_Kingspan INNER JOIN Type_Kingspan ON Deck_Kingspan.Deck_Type_ID = Type_Kingspan.TYPE_ID ORDER BY Deck_Thickness
+                cmd.CommandText = $"Select Type_{cat}.TYPE_ABR || ' ' || Deck_Name || ' -- ' || Date_Added as Deck_Name from Deck_{cat} INNER JOIN Type_{cat} ON Deck_{cat}.Deck_Type_ID = Type_{cat}.TYPE_ID ORDER BY Deck_Thickness";
 
                 cmd.CommandType = CommandType.Text;
                 SQLiteDataReader r = cmd.ExecuteReader();
