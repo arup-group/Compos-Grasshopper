@@ -28,15 +28,14 @@ namespace ComposGH.Parameters
         if (this.m_isCatalogue)
           return false;
         else
-          return this.m_taper; 
+          return TaperedToNext; 
       }
       set
       {
         if (!this.m_isCatalogue)
-          this.m_taper = value;
+          TaperedToNext = value;
       }
     }
-    private bool m_taper;
     public Length StartPosition { get; set; } = Length.Zero;
 
     // Dimensions
