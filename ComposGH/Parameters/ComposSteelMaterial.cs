@@ -22,16 +22,79 @@ namespace ComposGH.Parameters
         public Density Density { get; set; }
         public bool ReductionFactorMpl { get; set; }
 
-        // add public enum(s) for standard materials here
-        // add enum for weld material
+        public enum MatType
+        {
+            Standard,
+            Custom
+        }
+
+
+        public enum SteelType
+        {
+            S235,
+            S275,
+            S355,
+            S450,
+            S460
+        }
+
+        public enum WeldMat
+        {
+            Grade35,
+            Grade42,
+            Grade50
+        }
+
+        private void SetValuesFromStandard(SteelType steelType)
+        {
+            switch (steelType)
+            {
+                case SteelType.S235:
+                    this.fy = new Pressure(2.35e+008, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.E = new Pressure(2.05e+011, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
+                    break;
+                case SteelType.S275:
+                    this.fy = new Pressure(2.75e+008, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.E = new Pressure(2.05e+011, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
+                    break;
+                case SteelType.S355:
+                    this.fy = new Pressure(3.55e+008, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.E = new Pressure(2.05e+011, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
+                    break;
+                case SteelType.S450:
+                    this.fy = new Pressure(4.5e+008, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.E = new Pressure(2.05e+011, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
+                    break;
+                case SteelType.S460:
+                    this.fy = new Pressure(4.6e+008, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.E = new Pressure(2.05e+011, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
+                    break;
+            }
+        }
 
         #region constructors
         public ComposSteelMaterial()
         {
             // empty constructor
         }
-        
-        // add public constructors here
+
+        public ComposSteelMaterial(Pressure fy, Pressure E, Density Density)
+        {
+            this.fy = fy;
+            this.E = E;
+            this.Density = Density;
+            //this.ReductionFactorMpl = ReductionFactorMpl;
+        }
+
+        public ComposSteelMaterial(SteelType steelType)
+        {
+            SetValuesFromStandard(steelType);
+        }
 
         #endregion
 
@@ -69,8 +132,10 @@ namespace ComposGH.Parameters
 
         public override string ToString()
         {
-            // update with better naming
-            return fy.ToString().Replace(" ", string.Empty);
+            string f = fy.ToUnit(Units.StressUnit).ToString("f0");
+            string e = E.ToUnit(Units.StressUnit).ToString("f0");
+            string ro = Density.ToUnit(Units.DensityUnit).ToString("f0");
+            return (f.Replace(" ", string.Empty) + "," + e.Replace(" ", string.Empty) + "," + ro.Replace(" ", string.Empty));
         }
 
         #endregion
@@ -165,7 +230,7 @@ namespace ComposGH.Parameters
     /// This class provides a Parameter interface for the CustomGoo type.
     /// </summary>
 
-    public class ComposSteelMaterialParameter: GH_PersistentParam<ComposSteelMaterialGoo>
+    public class ComposSteelMaterialParameter : GH_PersistentParam<ComposSteelMaterialGoo>
     {
         public ComposSteelMaterialParameter()
           : base(new GH_InstanceDescription("Steel", "Ste", "Compos Steel Material", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))

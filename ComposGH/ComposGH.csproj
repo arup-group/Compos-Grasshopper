@@ -89,6 +89,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\1_Beam\CreateStandardSteelMaterial.cs" />
     <Compile Include="Components\1_Beam\CreateWebOpeningStiffener.cs" />
     <Compile Include="Components\1_Beam\CreateProfile.cs" />
     <Compile Include="Components\1_Beam\CreateNotch.cs" />

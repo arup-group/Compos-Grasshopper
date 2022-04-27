@@ -166,6 +166,11 @@ namespace ComposGH.UI
             get { return Color.FromArgb(255, 130, 169, 241); }
         }
 
+        public static Color GsaLightGrey
+        {
+            get { return Color.FromArgb(255, 244, 244, 244); }
+        }
+
         //Set colours for Component UI
         public static Brush ButtonColour
         {
