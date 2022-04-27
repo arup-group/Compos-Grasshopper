@@ -63,11 +63,11 @@ namespace ComposGH.Components
             // change selected item
             selecteditems[i] = dropdownitems[i][j];
 
-
             if (i == 0)  // change is made to code 
             {
                 // update selected section to be all
-                dropdownitems[1] = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), selecteditems[0]);
+                catalogue = selecteditems[0];
+                dropdownitems[1] = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), catalogue);
             }
             
             if (i == 1)
@@ -75,7 +75,6 @@ namespace ComposGH.Components
                 // update displayed selected
                 profile = selecteditems[1];
             }
-            //profile = selecteditems[1];
 
             (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
             ExpireSolution(true);
@@ -121,19 +120,14 @@ namespace ComposGH.Components
         List<string> catalogueNames = SqlReader.GetDeckCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"));
 
         // Sections
-        // list of displayed sections
         List<string> sectionList = null;
-        List<string> filteredlist = new List<string>();
-        //List<string> sectionList = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), catalogue);
-
-
         #endregion
 
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
 
             //pManager.AddGenericParameter("Cover [" + unitAbbreviation + "]", "Cov", "Reinforcement cover", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Rotated", "Rot", "If the mesh type is assymetrical, setting 'Rotated' to true will align the stronger direction with the beam's direction", GH_ParamAccess.item, false);
+            //pManager.AddBooleanParameter("Rotated", "Rot", "If the mesh type is assymetrical, setting 'Rotated' to true will align the stronger direction with the beam's direction", GH_ParamAccess.item, false);
 
         }
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
@@ -143,7 +137,7 @@ namespace ComposGH.Components
 
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            DA.SetData(0, "hi");
+            DA.SetData(0, catalogue + " " + profile);
         }
 
 
