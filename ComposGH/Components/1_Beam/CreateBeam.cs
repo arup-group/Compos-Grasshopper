@@ -21,7 +21,7 @@ namespace ComposGH.Components
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
-    public override Guid ComponentGuid => new Guid("49328e6d-eebe-405c-b58c-060b8bdc1bef");
+    public override Guid ComponentGuid => new Guid("060641e49fc648eb8d7699f2d6697111");
     public CreateBeam()
       : base("Create Beam", "Beam", "Create a Compos Beam",
             Ribbon.CategoryName.Name(),
@@ -97,7 +97,7 @@ namespace ComposGH.Components
       IQuantity length = new Length(0, lengthUnit);
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
-      pManager.AddCurveParameter("Line", "L", "Line to create GSA Element", GH_ParamAccess.item);
+      pManager.AddCurveParameter("Line [" + unitAbbreviation + "]", "L", "Line to create GSA Element", GH_ParamAccess.item);
       pManager.AddGenericParameter("Restraint", "Res", "Compos Restraint", GH_ParamAccess.item);
       pManager.AddGenericParameter("Material", "SMt", "Compos Steel Material", GH_ParamAccess.item);
       pManager.AddGenericParameter("Beam Sections", "Bs", "Compos Beam Sections or Profile string descriptions like 'CAT IPE IPE200', 'STD I(cm) 20. 19. 8.5 1.27' or 'STD GI 400 300 250 12 25 20'", GH_ParamAccess.list);
@@ -124,14 +124,17 @@ namespace ComposGH.Components
           List<BeamSection> beamSections = GetInput.BeamSections(this, DA, 3);
           if (this.Params.Input[4].Sources.Count > 0)
           {
-
+            List<ComposWebOpening> webOpenings = GetInput.WebOpenings(this, DA, 4);
+            ComposBeam beam = new ComposBeam(new LineCurve(ln), lengthUnit, res, mat, beamSections, webOpenings);
+            DA.SetData(0, new ComposBeamGoo(beam));
           }
-          ComposBeam beam = new ComposBeam(new LineCurve(ln), lengthUnit, )
+          else
+          {
+            ComposBeam beam = new ComposBeam(new LineCurve(ln), lengthUnit, res, mat, beamSections);
+            DA.SetData(0, new ComposBeamGoo(beam));
+          }
         }
       }
-          
-
-      DA.SetData(0, new StudGroupSpacingGoo(new StudGroupSpacing(start, rows, lines, spacing)));
     }
 
     #region (de)serialization
@@ -174,8 +177,7 @@ namespace ComposGH.Components
       IQuantity length = new Length(0, lengthUnit);
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
-      Params.Input[0].Name = "Pos x [" + unitAbbreviation + "]";
-      Params.Input[3].Name = "Spacing [" + unitAbbreviation + "]";
+      Params.Input[0].Name = "Line [" + unitAbbreviation + "]";
     }
     #endregion
   }
