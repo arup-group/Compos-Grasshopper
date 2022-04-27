@@ -228,6 +228,10 @@ namespace ComposGH.Parameters
     {
       if (this == null) { return null; }
       ComposReinforcement dup = (ComposReinforcement)this.MemberwiseClone();
+      if (this.Type == ReinforcementType.Mesh)
+        dup.Mesh = this.Mesh.Duplicate();
+      if (this.Type == ReinforcementType.Transverse)
+        dup.Transverse = this.Transverse.Duplicate();
       return dup;
     }
 

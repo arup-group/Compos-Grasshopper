@@ -178,6 +178,8 @@ namespace ComposGH.Parameters
     {
       if (this == null) { return null; }
       ComposWebOpening dup = (ComposWebOpening)this.MemberwiseClone();
+      if (this.OpeningStiffeners != null)
+        dup.OpeningStiffeners = this.OpeningStiffeners.Duplicate();
       return dup;
     }
 

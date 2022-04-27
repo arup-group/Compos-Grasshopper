@@ -12,34 +12,34 @@ using UnitsNet;
 
 namespace ComposGH.Parameters
 {
+
   /// <summary>
   /// Custom class: this class defines the basic properties and methods for our custom class
   /// </summary>
-  public class ComposLoad
+  public class ComposRestraint
   {
-    public enum LoadType
-    {
-      Point,
-      Uniform,
-      Linear,
-      TriLinear,
-      Patch,
-      MemberLoad,
-      Axial
-    }
-    public enum LoadDistribution
-    {
-      Line,
-      Area
-    }
-
-    public LoadType Type { get { return m_type; } }
-    internal LoadType m_type;
+    public Supports ConstructionStageSupports { get; set; }
+    public Supports FinalStageSupports { get; set; }
+    public bool TopFlangeRestrained { get; set; }
+    private bool finalSupportsSet;
 
     #region constructors
-    public ComposLoad()
+    public ComposRestraint()
     {
-      // empty constructor
+      // empty constructore
+    }
+    public ComposRestraint(bool topFlangeRestrained, Supports constructionStageSupports, Supports finalStageSupports)
+    {
+      this.TopFlangeRestrained = topFlangeRestrained;
+      this.ConstructionStageSupports = constructionStageSupports;
+      this.FinalStageSupports = finalStageSupports;
+      this.finalSupportsSet = true;
+    }
+    public ComposRestraint(bool topFlangeRestrained, Supports constructionStageSupports)
+    {
+      this.TopFlangeRestrained = topFlangeRestrained;
+      this.ConstructionStageSupports = constructionStageSupports;
+      this.finalSupportsSet = false;
     }
     #endregion
 
@@ -54,28 +54,38 @@ namespace ComposGH.Parameters
     #endregion
 
     #region coa interop
-    internal ComposLoad(string coaString)
+    internal ComposRestraint(string coaString)
     {
-      // to do - implement from coa string method
+      // to be done
     }
 
-    internal string ToCoaString()
+    internal string Coa()
     {
-      // to do - implement to coa string method
-      return string.Empty;
+      // to be done
+      return "";
     }
     #endregion
 
     #region methods
-    public virtual ComposLoad Duplicate()
+
+    public ComposRestraint Duplicate()
     {
       if (this == null) { return null; }
-      return (ComposLoad)this.MemberwiseClone();
+      ComposRestraint dup = (ComposRestraint)this.MemberwiseClone();
+      dup.ConstructionStageSupports = this.ConstructionStageSupports.Duplicate();
+      if (this.finalSupportsSet)
+        dup.FinalStageSupports = this.FinalStageSupports.Duplicate();
+      return dup;
     }
+
     public override string ToString()
     {
-      // update with better naming
-      return this.Type.ToString() + " Load";
+      string top = (TopFlangeRestrained) ? "TFLR, " : "";
+      string con = "Constr.: " + this.ConstructionStageSupports.ToString();
+      string fin = ", Final: None";
+      if (this.FinalStageSupports != null)
+        fin = ", Final: " + this.FinalStageSupports.ToString();
+      return top + con + fin;
     }
 
     #endregion
@@ -84,33 +94,33 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class ComposLoadGoo : GH_Goo<ComposLoad> // needs to be upgraded to GeometryGoo eventually....
+  public class ComposRestraintGoo : GH_Goo<ComposRestraint>
   {
     #region constructors
-    public ComposLoadGoo()
+    public ComposRestraintGoo()
     {
-      this.Value = new ComposLoad();
+      this.Value = new ComposRestraint();
     }
-    public ComposLoadGoo(ComposLoad item)
+    public ComposRestraintGoo(ComposRestraint item)
     {
       if (item == null)
-        item = new ComposLoad();
-      this.Value = item;
+        item = new ComposRestraint();
+      this.Value = item.Duplicate();
     }
 
     public override IGH_Goo Duplicate()
     {
       return DuplicateGoo();
     }
-    public ComposLoadGoo DuplicateGoo()
+    public ComposRestraintGoo DuplicateGoo()
     {
-      return new ComposLoadGoo(Value == null ? new ComposLoad() : Value);
+      return new ComposRestraintGoo(Value == null ? new ComposRestraint() : Value.Duplicate());
     }
     #endregion
 
     #region properties
     public override bool IsValid => true;
-    public override string TypeName => "Load";
+    public override string TypeName => "Restraints";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot
     {
@@ -135,7 +145,7 @@ namespace ComposGH.Parameters
       // This function is called when Grasshopper needs to convert this 
       // instance of our custom class into some other type Q.            
 
-      if (typeof(Q).IsAssignableFrom(typeof(ComposLoad)))
+      if (typeof(Q).IsAssignableFrom(typeof(ComposRestraint)))
       {
         if (Value == null)
           target = default;
@@ -155,9 +165,9 @@ namespace ComposGH.Parameters
       if (source == null) { return false; }
 
       //Cast from GsaMaterial
-      if (typeof(ComposLoad).IsAssignableFrom(source.GetType()))
+      if (typeof(ComposRestraint).IsAssignableFrom(source.GetType()))
       {
-        Value = (ComposLoad)source;
+        Value = (ComposRestraint)source;
         return true;
       }
 
@@ -169,24 +179,23 @@ namespace ComposGH.Parameters
   /// <summary>
   /// This class provides a Parameter interface for the CustomGoo type.
   /// </summary>
-  public class ComposLoadParameter : GH_PersistentParam<ComposLoadGoo>
+  public class ComposRestraintParameter : GH_PersistentParam<ComposRestraintGoo>
   {
-    public ComposLoadParameter()
-      : base(new GH_InstanceDescription("Load", "Ld", "Compos Load", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
+    public ComposRestraintParameter()
+      : base(new GH_InstanceDescription("Restraint", "Res", "Compos Restraint", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
-
-    public override Guid ComponentGuid => new Guid("3dc51bc1-9abb-4f26-845f-ca1e66236e9e");
+    public override Guid ComponentGuid => new Guid("496ab030-c665-4fbf-a3b9-15fa25713b20");
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-    protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.LoadParam;
+    protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.RestraintParam;
 
-    protected override GH_GetterResult Prompt_Plural(ref List<ComposLoadGoo> values)
+    protected override GH_GetterResult Prompt_Plural(ref List<ComposRestraintGoo> values)
     {
       return GH_GetterResult.cancel;
     }
-    protected override GH_GetterResult Prompt_Singular(ref ComposLoadGoo value)
+    protected override GH_GetterResult Prompt_Singular(ref ComposRestraintGoo value)
     {
       return GH_GetterResult.cancel;
     }
