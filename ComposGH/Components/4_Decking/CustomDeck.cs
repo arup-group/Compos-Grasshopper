@@ -142,7 +142,7 @@ namespace ComposGH.Components
             Length thickness = GetInput.Length(this, DA, 6, lengthUnit);
             Pressure stress = GetInput.Stress(this, DA, 7, stressUnit);
 
-            DA.SetData(0, new DeckDimGoo(new DeckDim(distB1, distB2, distB3, distB4, distB5, depth, thickness, stress)));
+            DA.SetData(0, new DeckingGoo(new Decking(distB1, distB2, distB3, distB4, distB5, depth, thickness, stress)));
         }
 
 

@@ -190,25 +190,12 @@ namespace ComposGH.Helpers
           db.Close();
         }
       }
-
             section.Insert(0, "All");
-            
             return section;
-        }
+    }
 
 
-        /// <summary>
-        /// Get decking type data from SQLite file (.db3). The method returns a tuple with:
-        /// Item1 = list of type name (string)
-        /// where first item will be "All"
-        /// Item2 = list of type number (int)
-        /// where first item will be "-1" representing All
-        /// </summary>
-        /// <param name="catalogue_number">Catalogue number to get section types from. Input -1 in first item of the input list to get all types</param>
-        /// <param name="filePath">Path to SecLib.db3</param>
-        /// <param name="inclSuperseeded">True if you want to include superseeded items</param>
-        /// <returns></returns>
-        public static List<string> GetDeckCataloguesDataFromSQLite(string filePath)
+    public static List<string> GetDeckCataloguesDataFromSQLite(string filePath)
         {
             // Create empty lists to work on:
             List<string> catNames = new List<string>();
@@ -234,7 +221,7 @@ namespace ComposGH.Helpers
             return new List<string>(catNames);
         }
 
-        public static List<string> GetDeckingDataFromSQLite(string filePath, string cat)
+    public static List<string> GetDeckingDataFromSQLite(string filePath, string cat)
         {
             // Create empty lists to work on:
             List<string> catNames = new List<string>();
@@ -260,61 +247,5 @@ namespace ComposGH.Helpers
             return new List<string>(catNames);
         }
 
-
-
-
-
-        public static List<string> GetDeckingDataFromSQLiteWrong(List<int> type_numbers, string filePath, string cat, bool inclSuperseeded = false)
-        {
-            // Create empty list to work on:
-            List<string> section = new List<string>();
-
-            List<int> types = new List<int>();
-            if (type_numbers[0] == -1)
-            {
-                Tuple<List<string>, List<int>> typeData = GetTypesDataFromSQLite(-1, filePath, inclSuperseeded);
-                types = typeData.Item2;
-                types.RemoveAt(0); // remove -1 from beginning of list
-            }
-            else
-                types = type_numbers;
-
-            using (var db = Connection(filePath))
-            {
-                // get section name
-
-                db.Open();
-                SQLiteCommand cmd = db.CreateCommand();
-
-                //Select Type_Kingspan.TYPE_ABR || ' ' || Deck_Name || ' -- ' || Date_Added as Deck_Name from Deck_Kingspan INNER JOIN Type_Kingspan ON Deck_Kingspan.Deck_Type_ID = Type_Kingspan.TYPE_ID ORDER BY Deck_Thickness
-                cmd.CommandText = $"Select Type_{cat}.TYPE_ABR || ' ' || Deck_Name || ' -- ' || Date_Added as Deck_Name from Deck_{cat} INNER JOIN Type_{cat} ON Deck_{cat}.Deck_Type_ID = Type_{cat}.TYPE_ID ORDER BY Deck_Thickness";
-
-                cmd.CommandType = CommandType.Text;
-                SQLiteDataReader r = cmd.ExecuteReader();
-                while (r.Read())
-                {
-                    if (inclSuperseeded)
-                    {
-                        string full = System.Convert.ToString(r["Deck_Name"]);
-                        // BSI-IPE IPEAA80 -- 2017-09-01 00:00:00.000
-                        string profile = full.Split(new string[] { " -- " }, StringSplitOptions.None)[0];
-                        string date = full.Split(new string[] { " -- " }, StringSplitOptions.None)[1];
-                        date = date.Replace("-", "");
-                        date = date.Substring(0, 8);
-                        section.Add(profile + " " + date);
-                    }
-                    else
-                    {
-                        string profile = System.Convert.ToString(r["Deck_Name"]);
-                        // BSI-IPE IPEAA80                           
-                        section.Add(profile);
-                    }
-                    db.Close();
-                }
-            }
-
-            section.Insert(0, "All");
-            return section;
-        }
     }
 }
