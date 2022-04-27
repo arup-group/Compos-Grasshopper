@@ -11,6 +11,22 @@ namespace ComposGH.Parameters.Tests
 {
   public class SteelConcreteModularRatioTest
   {
+    [Theory]
+    publicSteelConcreteModularRatio TestEmptyConstructor()
+    {
+      // 2 create object instance with constructor
+      SteelConcreteModularRatio steelConcreteModularRatio = new SteelConcreteModularRatio();
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(shortTerm, steelConcreteModularRatio.ShortTerm);
+      Assert.Equal(longTerm, steelConcreteModularRatio.LongTerm);
+      Assert.Equal(vibration, steelConcreteModularRatio.Vibration);
+      Assert.Equal(0, steelConcreteModularRatio.Shrinkage);
+
+      // (optionally return object for other tests)
+      return steelConcreteModularRatio;
+    }
+
     // 1 setup inputs
     [Theory]
     [InlineData(6, 18, 5.39)]

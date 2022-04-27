@@ -101,11 +101,6 @@ namespace ComposGH.Parameters
       // empty constructor
     }
 
-    public ConcreteMaterial(Density dryDensitiy)
-    {
-      this.DryDensity = dryDensitiy;
-    }
-
     /// <summary>
     /// "British" constructor
     /// </summary>
