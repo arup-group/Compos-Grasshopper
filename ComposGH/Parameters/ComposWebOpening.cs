@@ -126,9 +126,7 @@ namespace ComposGH.Parameters
     /// </summary>
     /// <param name="width"></param>
     /// <param name="height"></param>
-    /// <param name="positionCentroidFromStart"></param>
-    /// <param name="positionCentroidFromTop"></param>
-    /// <param name="stiffeners"></param>
+    /// <param name="stiffeners"></param> 
     public ComposWebOpening(Length width, Length height, NotchPosition position, WebOpeningStiffeners stiffeners = null)
     {
       // static type for this constructor
@@ -180,6 +178,8 @@ namespace ComposGH.Parameters
     {
       if (this == null) { return null; }
       ComposWebOpening dup = (ComposWebOpening)this.MemberwiseClone();
+      if (this.OpeningStiffeners != null)
+        dup.OpeningStiffeners = this.OpeningStiffeners.Duplicate();
       return dup;
     }
 

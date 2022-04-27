@@ -89,6 +89,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\1_Beam\CreateRestraints.cs" />
+    <Compile Include="Components\1_Beam\CreateSupport.cs" />
+    <Compile Include="Components\1_Beam\CreateBeamSection.cs" />
     <Compile Include="Components\1_Beam\CreateWebOpeningStiffener.cs" />
     <Compile Include="Components\1_Beam\CreateProfile.cs" />
     <Compile Include="Components\1_Beam\CreateNotch.cs" />
@@ -106,13 +109,23 @@
     <Compile Include="Components\5_Rebar\CreateRebarMaterial.cs" />
     <Compile Include="Components\5_Rebar\TransverseReinforcement.cs" />
     <Compile Include="Components\5_Rebar\MeshReinforcement.cs" />
+    <Compile Include="Components\6_Load\PatchLoad.cs" />
+    <Compile Include="Components\6_Load\AxialLoad.cs" />
+    <Compile Include="Components\6_Load\TriLinearLoad.cs" />
+    <Compile Include="Components\6_Load\LinearLoad.cs" />
+    <Compile Include="Components\6_Load\UniformLoad.cs" />
+    <Compile Include="Components\6_Load\PointLoad.cs" />
     <Compile Include="ComposGHInfo.cs" />
     <Compile Include="Helpers\DeSerialization.cs" />
     <Compile Include="Helpers\GhRibbonLayout.cs" />
     <Compile Include="Helpers\LoadMainMenu.cs" />
     <Compile Include="Helpers\_ComposResultsHelper.cs" />
     <Compile Include="Helpers\_GetInputs.cs" />
+    <Compile Include="Helpers\_SqlReaderValues.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
+    <Compile Include="Parameters\ComposRestraint.cs" />
+    <Compile Include="Parameters\Load.cs" />
+    <Compile Include="Parameters\ComposLoad.cs" />
     <Compile Include="Parameters\ComposReinforcement.cs" />
     <Compile Include="Parameters\ReinforcementMaterialGoo.cs" />
     <Compile Include="Parameters\ComposBeam.cs" />
@@ -120,6 +133,7 @@
     <Compile Include="Parameters\ComposWebOpening.cs" />
     <Compile Include="Parameters\StudDimensionsGoo.cs" />
     <Compile Include="Parameters\BeamSectionGoo.cs" />
+    <Compile Include="Parameters\SupportsGoo.cs" />
     <Compile Include="Parameters\WebOpeningStiffenersGoo.cs" />
     <Compile Include="Parameters\StudSpecGoo.cs" />
     <Compile Include="Parameters\StudSpacingGoo.cs" />
@@ -194,6 +208,7 @@
   <ItemGroup>
     <Folder Include="Components\0_Model\" />
     <Folder Include="Components\3_Slab\" />
+    <Folder Include="Components\4_Decking\" />
     <Folder Include="Components\6_Load\" />
     <Folder Include="Components\7_Design\" />
     <Folder Include="Components\8_Analysis\" />
@@ -292,6 +307,46 @@
   <ItemGroup>
     <None Include="Properties\Icons\CustomStudDims.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Converters\Converters.csproj">
+      <Project>{0bf1ed34-39f9-4842-b788-31d8bea0825e}</Project>
+      <Name>Converters</Name>
+    </ProjectReference>
+    <None Include="Properties\Icons\AxialLoad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\LinearLoad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\LoadParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\PatchLoad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\PointLoad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\TriLinearLoad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\UniformLoad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\BeamSection.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreateConcreteMaterial.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreateRestraint.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreateSupport.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\RestraintParam.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -301,7 +356,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>Copy "$(TargetPath)" "$(TargetDir)$(ProjectName).gha"</PostBuildEvent>
+    <PostBuildEvent>Copy "$(TargetPath)" "$(TargetDir)Compos.gha"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <FallbackCulture>en-US</FallbackCulture>

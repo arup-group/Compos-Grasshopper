@@ -85,7 +85,7 @@ namespace ComposGH.Parameters
       }
     }
 
-    public Force CharacterStrength 
+    public Force CharacterStrength
     {
       get { return this.m_strength; }
       set
@@ -133,33 +133,68 @@ namespace ComposGH.Parameters
     {
       // empty constructor
     }
+    /// <summary>
+    /// Create Custom size with strength from Stress
+    /// </summary>
+    /// <param name="diameter"></param>
+    /// <param name="height"></param>
+    /// <param name="fu"></param>
     public StudDimensions(Length diameter, Length height, Pressure fu)
     {
       this.Diameter = diameter;
       this.Height = height;
       this.Fu = fu;
     }
+    /// <summary>
+    /// Create Custom size with strength from Force
+    /// </summary>
+    /// <param name="diameter"></param>
+    /// <param name="height"></param>
+    /// <param name="strength"></param>
     public StudDimensions(Length diameter, Length height, Force strength)
     {
       this.Diameter = diameter;
       this.Height = height;
       this.CharacterStrength = strength;
     }
+    /// <summary>
+    /// Create Standard size with strength from Stress
+    /// </summary>
+    /// <param name="size"></param>
+    /// <param name="strength"></param>
     public StudDimensions(StandardSize size, Force strength)
     {
       SetSizeFromStandard(size);
       this.CharacterStrength = strength;
     }
+
+    /// <summary>
+    /// Create Standard size with strength from Stress
+    /// </summary>
+    /// <param name="size"></param>
+    /// <param name="fu"></param>
     public StudDimensions(StandardSize size, Pressure fu)
     {
       SetSizeFromStandard(size);
       this.Fu = fu;
     }
+    /// <summary>
+    /// Create Standard size with Standard Grade
+    /// </summary>
+    /// <param name="size"></param>
+    /// <param name="standardGrade"></param>
     public StudDimensions(StandardSize size, StandardGrade standardGrade)
     {
       SetSizeFromStandard(size);
       SetGradeFromStandard(standardGrade);
     }
+
+    /// <summary>
+    /// Create Custom size with Standard Grade
+    /// </summary>
+    /// <param name="diameter"></param>
+    /// <param name="height"></param>
+    /// <param name="standardGrade"></param>
     public StudDimensions(Length diameter, Length height, StandardGrade standardGrade)
     {
       this.Diameter = diameter;
