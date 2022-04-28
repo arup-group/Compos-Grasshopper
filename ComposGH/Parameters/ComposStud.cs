@@ -150,6 +150,10 @@ namespace ComposGH.Parameters
     {
       if (this == null) { return null; }
       ComposStud dup = (ComposStud)this.MemberwiseClone();
+      dup.StudDimension = this.StudDimension.Duplicate();
+      dup.StudSpecification = this.StudSpecification.Duplicate();
+      if (this.CustomSpacing != null)
+        dup.CustomSpacing = this.CustomSpacing.ToList();
       return dup;
     }
 
@@ -262,7 +266,7 @@ namespace ComposGH.Parameters
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-    //protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
+    protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.StudParam;
 
     protected override GH_GetterResult Prompt_Plural(ref List<ComposStudGoo> values)
     {
