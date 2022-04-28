@@ -150,6 +150,8 @@ namespace ComposGH.Parameters
     {
       if (this == null) { return null; }
       ComposStud dup = (ComposStud)this.MemberwiseClone();
+      dup.StudDimension = this.StudDimension.Duplicate();
+      dup.StudSpecification = this.StudSpecification.Duplicate();
       if (this.CustomSpacing != null)
         dup.CustomSpacing = this.CustomSpacing.ToList();
       return dup;

@@ -12,26 +12,89 @@ using UnitsNet;
 
 namespace ComposGH.Parameters
 {
-  /// <summary>
-  /// Custom class: this class defines the basic properties and methods for our custom class
-  /// </summary>
-  public class ComposSteelMaterial
-  {
-    public Pressure fy { get; set; }
-    public Pressure E { get; set; }
-    public Density Density { get; set; }
-    public bool ReductionFactorMpl { get; set; }
-
-    // add public enum(s) for standard materials here
-    // add enum for weld material
-
-    #region constructors
-    public ComposSteelMaterial()
+    /// <summary>
+    /// Custom class: this class defines the basic properties and methods for our custom class
+    /// </summary>
+    public class ComposSteelMaterial
     {
-      // empty constructor
-    }
+        public Pressure fy { get; set; }
+        public Pressure E { get; set; }
+        public Density Density { get; set; }
+        public bool ReductionFactorMpl { get; set; }
 
-    // add public constructors here
+        public enum MatType
+        {
+            Standard,
+            Custom
+        }
+
+
+        public enum SteelType
+        {
+            S235,
+            S275,
+            S355,
+            S450,
+            S460
+        }
+
+        public enum WeldMat
+        {
+            Grade35,
+            Grade42,
+            Grade50
+        }
+
+        private void SetValuesFromStandard(SteelType steelType)
+        {
+            switch (steelType)
+            {
+                case SteelType.S235:
+                    this.fy = new Pressure(2.35e+008, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.E = new Pressure(2.05e+011, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
+                    break;
+                case SteelType.S275:
+                    this.fy = new Pressure(2.75e+008, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.E = new Pressure(2.05e+011, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
+                    break;
+                case SteelType.S355:
+                    this.fy = new Pressure(3.55e+008, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.E = new Pressure(2.05e+011, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
+                    break;
+                case SteelType.S450:
+                    this.fy = new Pressure(4.5e+008, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.E = new Pressure(2.05e+011, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
+                    break;
+                case SteelType.S460:
+                    this.fy = new Pressure(4.6e+008, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.E = new Pressure(2.05e+011, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
+                    this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
+                    break;
+            }
+        }
+
+        #region constructors
+        public ComposSteelMaterial()
+        {
+            // empty constructor
+        }
+
+        public ComposSteelMaterial(Pressure fy, Pressure E, Density Density)
+        {
+            this.fy = fy;
+            this.E = E;
+            this.Density = Density;
+            //this.ReductionFactorMpl = ReductionFactorMpl;
+        }
+
+        public ComposSteelMaterial(SteelType steelType)
+        {
+            SetValuesFromStandard(steelType);
+        }
 
     #endregion
 
@@ -67,11 +130,13 @@ namespace ComposGH.Parameters
       return dup;
     }
 
-    public override string ToString()
-    {
-      // update with better naming
-      return fy.ToString().Replace(" ", string.Empty);
-    }
+        public override string ToString()
+        {
+            string f = fy.ToUnit(Units.StressUnit).ToString("f0");
+            string e = E.ToUnit(Units.StressUnit).ToString("f0");
+            string ro = Density.ToUnit(Units.DensityUnit).ToString("f0");
+            return (f.Replace(" ", string.Empty) + "," + e.Replace(" ", string.Empty) + "," + ro.Replace(" ", string.Empty));
+        }
 
     #endregion
   }

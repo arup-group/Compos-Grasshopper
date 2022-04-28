@@ -90,7 +90,7 @@ namespace ComposGH.Components
           else
           {
             owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to UnitNumber");
-            return null;
+            continue;
           }
         }
         return lengths;
@@ -458,7 +458,7 @@ namespace ComposGH.Components
           else
           {
             owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Stud Spacing");
-            return null;
+            continue;
           }
         }
         return items;
@@ -514,7 +514,7 @@ namespace ComposGH.Components
           else
           {
             owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Compos Reinforcement");
-            return null;
+            continue;
           }
         }
         return items;
@@ -578,6 +578,34 @@ namespace ComposGH.Components
       }
       return goo.Value;
     }
+    internal static List<ComposWebOpening> WebOpenings(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    {
+      List<ComposWebOpening> items = new List<ComposWebOpening>();
+      List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
+      if (DA.GetDataList(inputid, gh_typs))
+      {
+        for (int i = 0; i < gh_typs.Count; i++)
+        {
+          // try cast directly to quantity type
+          if (gh_typs[i].Value is ComposWebOpeningGoo)
+          {
+            ComposWebOpeningGoo goo = (ComposWebOpeningGoo)gh_typs[i].Value;
+            items.Add(goo.Value);
+          }
+          else
+          {
+            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Compos Web Openings");
+            continue;
+          }
+        }
+        return items;
+      }
+      else if (!isOptional)
+      {
+        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+      }
+      return null;
+    }
 
     internal static ComposWebOpening WebOpening(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
@@ -604,7 +632,48 @@ namespace ComposGH.Components
       }
       return goo.Value;
     }
-    
+    internal static List<BeamSection> BeamSections(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    {
+      List<BeamSection> items = new List<BeamSection>();
+      List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
+      if (DA.GetDataList(inputid, gh_typs))
+      {
+        for (int i = 0; i < gh_typs.Count; i++)
+        {
+          string profile = "";
+          // try cast directly to quantity type
+          if (gh_typs[i].Value is BeamSectionGoo)
+          {
+            BeamSectionGoo goo = (BeamSectionGoo)gh_typs[i].Value;
+            items.Add(goo.Value);
+          }
+          else if (gh_typs[i].CastTo(ref profile))
+          {
+            try
+            {
+              items.Add(new BeamSection(profile));
+            }
+            catch (Exception e)
+            {
+              owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Compos Beam Section: " 
+                + System.Environment.NewLine + e.Message);
+              continue;
+            }
+          }
+          else
+          {
+            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Compos Beam Section");
+            continue;
+          }
+        }
+        return items;
+      }
+      else if (!isOptional)
+      {
+        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+      }
+      return null;
+    }
     internal static string BeamSection(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
       BeamSectionGoo goo = null;
@@ -644,6 +713,58 @@ namespace ComposGH.Components
         else
         {
           owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Support");
+          return null;
+        }
+      }
+      else if (!isOptional)
+        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+      else
+      {
+        if (goo == null)
+          return null;
+      }
+      return goo.Value;
+    }
+
+    internal static ComposRestraint Restraint(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    {
+      ComposRestraintGoo goo = null;
+      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+      if (DA.GetData(inputid, ref gh_typ))
+      {
+        if (gh_typ.Value is ComposRestraintGoo)
+        {
+          goo = (ComposRestraintGoo)gh_typ.Value;
+        }
+        else
+        {
+          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Restraint");
+          return null;
+        }
+      }
+      else if (!isOptional)
+        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+      else
+      {
+        if (goo == null)
+          return null;
+      }
+      return goo.Value;
+    }
+
+    internal static ComposSteelMaterial SteelMaterial(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    {
+      ComposSteelMaterialGoo goo = null;
+      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+      if (DA.GetData(inputid, ref gh_typ))
+      {
+        if (gh_typ.Value is ComposSteelMaterialGoo)
+        {
+          goo = (ComposSteelMaterialGoo)gh_typ.Value;
+        }
+        else
+        {
+          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Steel Material");
           return null;
         }
       }
