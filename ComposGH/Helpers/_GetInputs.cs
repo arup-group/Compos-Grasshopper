@@ -659,7 +659,7 @@ namespace ComposGH.Components
         #endregion
 
     #region Decking
-        internal static DeckConfiguration Decking(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        internal static DeckConfiguration DeckConfiguration(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
         {
             DeckConfigurationGoo goo = null;
             GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
