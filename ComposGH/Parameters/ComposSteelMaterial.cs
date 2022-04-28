@@ -22,8 +22,53 @@ namespace ComposGH.Parameters
     public Density Density { get; set; }
     public bool ReductionFactorMpl { get; set; }
 
-    // add public enum(s) for standard materials here
-    // add enum for weld material
+    public enum MatType
+    {
+      Standard,
+      Custom
+    }
+
+
+    public enum SteelType
+    {
+      S235,
+      S275,
+      S355,
+      S450,
+      S460
+    }
+
+    public enum WeldMat
+    {
+      Grade35,
+      Grade42,
+      Grade50
+    }
+
+    private void SetValuesFromStandard(SteelType steelType)
+    {
+      this.E = new Pressure(205, UnitsNet.Units.PressureUnit.Gigapascal);
+      this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
+
+      switch (steelType)
+      {
+        case SteelType.S235:
+          this.fy = new Pressure(235, UnitsNet.Units.PressureUnit.Megapascal);
+          break;
+        case SteelType.S275:
+          this.fy = new Pressure(275, UnitsNet.Units.PressureUnit.Megapascal);
+          break;
+        case SteelType.S355:
+          this.fy = new Pressure(355, UnitsNet.Units.PressureUnit.Megapascal);
+          break;
+        case SteelType.S450:
+          this.fy = new Pressure(450, UnitsNet.Units.PressureUnit.Megapascal);
+          break;
+        case SteelType.S460:
+          this.fy = new Pressure(460, UnitsNet.Units.PressureUnit.Megapascal);
+          break;
+      }
+    }
 
     #region constructors
     public ComposSteelMaterial()
@@ -31,7 +76,18 @@ namespace ComposGH.Parameters
       // empty constructor
     }
 
-    // add public constructors here
+    public ComposSteelMaterial(Pressure fy, Pressure E, Density Density)
+    {
+      this.fy = fy;
+      this.E = E;
+      this.Density = Density;
+      //this.ReductionFactorMpl = ReductionFactorMpl;
+    }
+
+    public ComposSteelMaterial(SteelType steelType)
+    {
+      SetValuesFromStandard(steelType);
+    }
 
     #endregion
 
@@ -69,8 +125,10 @@ namespace ComposGH.Parameters
 
     public override string ToString()
     {
-      // update with better naming
-      return fy.ToString().Replace(" ", string.Empty);
+      string f = fy.ToUnit(Units.StressUnit).ToString("f0");
+      string e = E.ToUnit(Units.StressUnit).ToString("f0");
+      string ro = Density.ToUnit(Units.DensityUnit).ToString("f0");
+      return (f.Replace(" ", string.Empty) + "," + e.Replace(" ", string.Empty) + "," + ro.Replace(" ", string.Empty));
     }
 
     #endregion
@@ -168,7 +226,7 @@ namespace ComposGH.Parameters
   public class ComposSteelMaterialParameter : GH_PersistentParam<ComposSteelMaterialGoo>
   {
     public ComposSteelMaterialParameter()
-      : base(new GH_InstanceDescription("Steel", "Ste", "Compos Steel Material", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
+      : base(new GH_InstanceDescription("Steel Material", "MSt", "Compos Steel Material", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
 
@@ -176,7 +234,7 @@ namespace ComposGH.Parameters
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-    protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.SteelMaterialParam;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.SteelMaterialParam;
 
     protected override GH_GetterResult Prompt_Plural(ref List<ComposSteelMaterialGoo> values)
     {
