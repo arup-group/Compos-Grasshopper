@@ -97,11 +97,11 @@ namespace ComposGH.Components
       IQuantity length = new Length(0, lengthUnit);
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
-      pManager.AddCurveParameter("Line [" + unitAbbreviation + "]", "L", "Line to create GSA Element", GH_ParamAccess.item);
+      pManager.AddCurveParameter("Line [" + unitAbbreviation + "]", "L", "Line drawn to selected units to create Compos Beam from", GH_ParamAccess.item);
       pManager.AddGenericParameter("Restraint", "Res", "Compos Restraint", GH_ParamAccess.item);
       pManager.AddGenericParameter("Material", "SMt", "Compos Steel Material", GH_ParamAccess.item);
       pManager.AddGenericParameter("Beam Sections", "Bs", "Compos Beam Sections or Profile string descriptions like 'CAT IPE IPE200', 'STD I(cm) 20. 19. 8.5 1.27' or 'STD GI 400 300 250 12 25 20'", GH_ParamAccess.list);
-      pManager.AddIntegerParameter("WebOpening", "WO", "Compos Web Openings or Notches", GH_ParamAccess.list);
+      pManager.AddGenericParameter("WebOpening", "WO", "Compos Web Openings or Notches", GH_ParamAccess.list);
       pManager[4].Optional = true;
 
       // temp
@@ -129,16 +129,24 @@ namespace ComposGH.Components
           //ComposSteelMaterial mat = GetInput.SteelMaterial(this, DA, 2);
 
           List<BeamSection> beamSections = GetInput.BeamSections(this, DA, 3);
-          if (this.Params.Input[4].Sources.Count > 0)
+          try
           {
-            List<ComposWebOpening> webOpenings = GetInput.WebOpenings(this, DA, 4);
-            ComposBeam beam = new ComposBeam(new LineCurve(ln), lengthUnit, res, mat, beamSections, webOpenings);
-            DA.SetData(0, new ComposBeamGoo(beam));
+            if (this.Params.Input[4].Sources.Count > 0)
+            {
+              List<ComposWebOpening> webOpenings = GetInput.WebOpenings(this, DA, 4);
+              ComposBeam beam = new ComposBeam(new LineCurve(ln), lengthUnit, res, mat, beamSections, webOpenings);
+              DA.SetData(0, new ComposBeamGoo(beam));
+            }
+            else
+            {
+              ComposBeam beam = new ComposBeam(new LineCurve(ln), lengthUnit, res, mat, beamSections);
+              DA.SetData(0, new ComposBeamGoo(beam));
+            }
           }
-          else
+          catch (Exception e)
           {
-            ComposBeam beam = new ComposBeam(new LineCurve(ln), lengthUnit, res, mat, beamSections);
-            DA.SetData(0, new ComposBeamGoo(beam));
+            AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+            return;
           }
         }
       }

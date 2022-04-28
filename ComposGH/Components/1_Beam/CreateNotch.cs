@@ -135,8 +135,11 @@ namespace ComposGH.Components
       Length width = GetInput.Length(this, DA, 0, lengthUnit);
       Length height = GetInput.Length(this, DA, 1, lengthUnit);
       WebOpeningStiffeners stiff = GetInput.WebOpeningStiffeners(this, DA, 2, true);
-      if (stiff.BottomStiffenerWidth != Length.Zero)
-        AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "For Beam Notches only top stiffener(s) will be used.");
+      if (stiff != null)
+      {
+        if (stiff.BottomStiffenerWidth != Length.Zero)
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "For Beam Notches only top stiffener(s) will be used.");
+      }
 
       switch (openingType)
       {
