@@ -28,12 +28,12 @@ namespace ComposGH.Parameters
         if (this.m_isCatalogue)
           return false;
         else
-          return this.m_taper; 
+          return m_taper; 
       }
       set
       {
         if (!this.m_isCatalogue)
-          this.m_taper = value;
+          m_taper = value;
       }
     }
     private bool m_taper;
@@ -45,9 +45,9 @@ namespace ComposGH.Parameters
     public Length BottomFlangeWidth { get; set; }
     public Length TopFlangeThickness { get; set; }
     public Length BottomFlangeThickness { get; set; }
-    private Length RootRadius { get; set; } = Length.Zero;
+    internal Length RootRadius { get; set; } = Length.Zero;
     public Length WebThickness { get; set; }
-    private bool m_isCatalogue;
+    internal bool m_isCatalogue;
 
     public string SectionDescription { get; set; }
 
@@ -110,7 +110,7 @@ namespace ComposGH.Parameters
       this.TopFlangeThickness = flangeThickness;
       this.BottomFlangeThickness = TopFlangeThickness;
       this.m_isCatalogue = false;
-      this.TaperedToNext = taperToNext;
+      this.m_taper = taperToNext;
 
       LengthUnit unit = this.Depth.Unit;
       string u = " ";
@@ -155,6 +155,7 @@ namespace ComposGH.Parameters
           this.BottomFlangeThickness = TopFlangeThickness;
           this.SectionDescription = profile;
           this.m_isCatalogue = false;
+          
         }
         catch (Exception)
         {
@@ -209,6 +210,7 @@ namespace ComposGH.Parameters
         this.RootRadius = new Length(sqlValues[4], unit);
         this.SectionDescription = profile;
         this.m_isCatalogue = true;
+        this.m_taper = false;
       }
       else
         throw new ArgumentException("Unrecognisable profile type. String must start with 'STD I', 'STD GI' or 'CAT'.");
@@ -257,7 +259,7 @@ namespace ComposGH.Parameters
     {
       string start = "";
       if (this.StartPosition != Length.Zero)
-        start = ", Px:" + this.StartPosition.ToString("f0").Replace(" ", string.Empty);
+        start = ", Px:" + this.StartPosition.ToUnit(Units.LengthUnitGeometry).ToString("f2").Replace(" ", string.Empty);
       string tapered = "";
       if (this.TaperedToNext)
         tapered = ", Tapered";

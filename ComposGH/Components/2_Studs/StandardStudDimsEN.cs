@@ -155,7 +155,7 @@ namespace ComposGH.Components
 
     private bool first = true;
     private PressureUnit stressUnit = Units.StressUnit;
-    private LengthUnit lengthUnit = Units.LengthUnitGeometry;
+    private LengthUnit lengthUnit = Units.LengthUnitSection;
     private StudDimensions.StandardGrade stdGrd = StudDimensions.StandardGrade.SD1_EN13918;
     private StudDimensions.StandardSize stdSize = StudDimensions.StandardSize.D19mmH100mm;
     #endregion

@@ -107,7 +107,7 @@ namespace ComposGH.Components
             "Unit"
     });
     private bool first = true;
-    private LengthUnit lengthUnit = Units.LengthUnitGeometry;
+    private LengthUnit lengthUnit = Units.LengthUnitSection;
     private MeshReinforcement.ReinforcementMeshType mesh = MeshReinforcement.ReinforcementMeshType.A393;
     #endregion
 

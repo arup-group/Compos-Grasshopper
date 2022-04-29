@@ -89,13 +89,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\1_Beam\CreateRestraints.cs" />
+    <Compile Include="Components\1_Beam\CreateRestraint.cs" />
     <Compile Include="Components\1_Beam\CreateSupport.cs" />
     <Compile Include="Components\1_Beam\CreateBeamSection.cs" />
     <Compile Include="Components\1_Beam\CreateWebOpeningStiffener.cs" />
     <Compile Include="Components\1_Beam\CreateProfile.cs" />
     <Compile Include="Components\1_Beam\CreateNotch.cs" />
     <Compile Include="Components\1_Beam\CreateWebOpening.cs" />
+    <Compile Include="Components\1_Beam\CreateBeam.cs" />
     <Compile Include="Components\2_Studs\CustomStudSpacing.cs" />
     <Compile Include="Components\2_Studs\CustomStudDims.cs" />
     <Compile Include="Components\2_Studs\StandardStudDimsEN.cs" />

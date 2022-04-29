@@ -98,7 +98,7 @@ namespace ComposGH.Components
     });
 
     private bool first = true;
-    private LengthUnit lengthUnit = Units.LengthUnitGeometry;
+    private LengthUnit lengthUnit = Units.LengthUnitSection;
     private ForceUnit forceUnit = Units.ForceUnit;
     #endregion
 
