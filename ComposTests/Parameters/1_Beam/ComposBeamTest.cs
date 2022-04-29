@@ -1,36 +1,36 @@
-﻿using Xunit;
-using UnitsNet;
-using UnitsNet.Units;
-using System.Collections.Generic;
-using Rhino.Geometry;
+﻿//using Xunit;
+//using UnitsNet;
+//using UnitsNet.Units;
+//using System.Collections.Generic;
+//using Rhino.Geometry;
 
-namespace ComposGH.Parameters.Tests
-{
-  public partial class ComposBeamTest
-  {
+//namespace ComposGH.Parameters.Tests
+//{
+//  public partial class ComposBeamTest
+//  {
 
-    [Fact]
-    public ComposBeam TestConstructorProfile(string profile, double expDepth, double expTopFlangeWidth, double expBottomFlangeWidth, double expWebThickness, double expTopFlangeThickness, double expBottomFlangeThickness)
-    {
-      // 1 setup inputs
-      LineCurve line = new LineCurve(new Point3d(0, 0, 0), new Point3d(15, 0, 0));
-      ComposRestraint restraint = new ComposRestraint();
+//    [Fact]
+//    public ComposBeam TestConstructorProfile(string profile, double expDepth, double expTopFlangeWidth, double expBottomFlangeWidth, double expWebThickness, double expTopFlangeThickness, double expBottomFlangeThickness)
+//    {
+//      // 1 setup inputs
+//      LineCurve line = new LineCurve(new Point3d(0, 0, 0), new Point3d(15, 0, 0));
+//      ComposRestraint restraint = new ComposRestraint();
 
-      // 2 create object instance with constructor
-      ComposBeam beam = new ComposBeam(line, LengthUnit.Centimeter, restraint, material, beamSections, webOpenings)
+//      // 2 create object instance with constructor
+//      ComposBeam beam = new ComposBeam(line, LengthUnit.Centimeter, restraint, material, beamSections, webOpenings);
 
-      // 3 check that inputs are set in object's members
-      Assert.Equal(expDepth, beam.Depth.Millimeters, 3);
-      Assert.Equal(expTopFlangeWidth, beam.TopFlangeWidth.Millimeters, 3);
-      Assert.Equal(expBottomFlangeWidth, beam.BottomFlangeWidth.Millimeters, 3);
-      Assert.Equal(expWebThickness, beam.WebThickness.Millimeters, 3);
-      Assert.Equal(expTopFlangeThickness, beam.TopFlangeThickness.Millimeters, 3);
-      Assert.Equal(expBottomFlangeThickness, beam.BottomFlangeThickness.Millimeters, 3);
+//      // 3 check that inputs are set in object's members
+//      Assert.Equal(expDepth, beam.Depth.Millimeters, 3);
+//      Assert.Equal(expTopFlangeWidth, beam.TopFlangeWidth.Millimeters, 3);
+//      Assert.Equal(expBottomFlangeWidth, beam.BottomFlangeWidth.Millimeters, 3);
+//      Assert.Equal(expWebThickness, beam.WebThickness.Millimeters, 3);
+//      Assert.Equal(expTopFlangeThickness, beam.TopFlangeThickness.Millimeters, 3);
+//      Assert.Equal(expBottomFlangeThickness, beam.BottomFlangeThickness.Millimeters, 3);
 
-      return beam;
-    }
-  }
-}
+//      return beam;
+//    }
+//  }
+//}
     //[Theory]
     //[InlineData("STD R 200 190.5")]
     //[InlineData("STD O 200")]
