@@ -12,89 +12,87 @@ using UnitsNet;
 
 namespace ComposGH.Parameters
 {
-    /// <summary>
-    /// Custom class: this class defines the basic properties and methods for our custom class
-    /// </summary>
-    public class ComposSteelMaterial
+  /// <summary>
+  /// Custom class: this class defines the basic properties and methods for our custom class
+  /// </summary>
+  public class ComposSteelMaterial
+  {
+    public Pressure fy { get; set; }
+    public Pressure E { get; set; }
+    public Density Density { get; set; }
+
+    public string wm { get; set; }
+
+    public bool isCustom { get; set; }
+    public bool ReductionFactorMpl { get; set; }
+
+    public enum SteelType
     {
-        public Pressure fy { get; set; }
-        public Pressure E { get; set; }
-        public Density Density { get; set; }
-        public bool ReductionFactorMpl { get; set; }
+      S235,
+      S275,
+      S355,
+      S450,
+      S460
+    }
 
-        public enum MatType
-        {
-            Standard,
-            Custom
-        }
+    public enum WeldMat
+    {
+      Grade35,
+      Grade42,
+      Grade50
+    }
+
+    private void SetValuesFromStandard(SteelType steelType)
+    {
+      this.E = new Pressure(205, UnitsNet.Units.PressureUnit.Gigapascal);
+      this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
+      this.isCustom = false;
+      switch (steelType)
+      {
+        case SteelType.S235:
+          this.fy = new Pressure(235, UnitsNet.Units.PressureUnit.Megapascal);
+          this.wm = "Grade 35";
+          break;
+        case SteelType.S275:
+          this.fy = new Pressure(275, UnitsNet.Units.PressureUnit.Megapascal);
+          this.wm = "Grade 35";
+          break;
+        case SteelType.S355:
+          this.fy = new Pressure(355, UnitsNet.Units.PressureUnit.Megapascal);
+          this.wm = "Grade 42";
+          break;
+        case SteelType.S450:
+          this.fy = new Pressure(450, UnitsNet.Units.PressureUnit.Megapascal);
+          this.wm = "Grade 50";
+          break;
+        case SteelType.S460:
+          this.fy = new Pressure(460, UnitsNet.Units.PressureUnit.Megapascal);
+          this.wm = "Grade 50";
+          break;
+      }
+    }
 
 
-        public enum SteelType
-        {
-            S235,
-            S275,
-            S355,
-            S450,
-            S460
-        }
+    #region constructors
+    public ComposSteelMaterial()
+    {
+      // empty constructor
+    }
 
-        public enum WeldMat
-        {
-            Grade35,
-            Grade42,
-            Grade50
-        }
+    public ComposSteelMaterial(Pressure fy, Pressure E, Density Density, string wm, bool isCustom, bool ReductionFacorMpl)
+    {
+      this.fy = fy;
+      this.E = E;
+      this.Density = Density;
+      this.isCustom = isCustom;
+      this.wm = wm;
+      this.ReductionFactorMpl = ReductionFactorMpl;
+    }
 
-        private void SetValuesFromStandard(SteelType steelType)
-        {
-            switch (steelType)
-            {
-                case SteelType.S235:
-                    this.fy = new Pressure(2.35e+008, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
-                    this.E = new Pressure(2.05e+011, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
-                    this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
-                    break;
-                case SteelType.S275:
-                    this.fy = new Pressure(2.75e+008, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
-                    this.E = new Pressure(2.05e+011, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
-                    this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
-                    break;
-                case SteelType.S355:
-                    this.fy = new Pressure(3.55e+008, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
-                    this.E = new Pressure(2.05e+011, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
-                    this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
-                    break;
-                case SteelType.S450:
-                    this.fy = new Pressure(4.5e+008, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
-                    this.E = new Pressure(2.05e+011, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
-                    this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
-                    break;
-                case SteelType.S460:
-                    this.fy = new Pressure(4.6e+008, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
-                    this.E = new Pressure(2.05e+011, UnitsNet.Units.PressureUnit.NewtonPerSquareMeter);
-                    this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
-                    break;
-            }
-        }
-
-        #region constructors
-        public ComposSteelMaterial()
-        {
-            // empty constructor
-        }
-
-        public ComposSteelMaterial(Pressure fy, Pressure E, Density Density)
-        {
-            this.fy = fy;
-            this.E = E;
-            this.Density = Density;
-            //this.ReductionFactorMpl = ReductionFactorMpl;
-        }
-
-        public ComposSteelMaterial(SteelType steelType)
-        {
-            SetValuesFromStandard(steelType);
-        }
+    public ComposSteelMaterial(SteelType steelType)
+    {
+      SetValuesFromStandard(steelType);
+    }
 
     #endregion
 
@@ -130,13 +128,34 @@ namespace ComposGH.Parameters
       return dup;
     }
 
-        public override string ToString()
-        {
-            string f = fy.ToUnit(Units.StressUnit).ToString("f0");
-            string e = E.ToUnit(Units.StressUnit).ToString("f0");
-            string ro = Density.ToUnit(Units.DensityUnit).ToString("f0");
-            return (f.Replace(" ", string.Empty) + "," + e.Replace(" ", string.Empty) + "," + ro.Replace(" ", string.Empty));
-        }
+    public override string ToString()
+    {
+
+      string isCust = string.Empty;
+      string f = string.Empty;
+      string e = string.Empty;
+      string ro = string.Empty;
+      string wMat = wm;
+
+      if (isCustom == false)
+      {
+        isCust = "STD";
+        f = "S" + fy.ToString().Substring(0, 3);
+
+        return (isCust.Replace(" ", string.Empty) + " " + f.Replace(" ", string.Empty) + "," + wm);
+      }
+      else if (isCustom == true)
+      {
+        isCust = "USER";
+        f = fy.ToUnit(Units.StressUnit).ToString("f0");
+        e = E.ToUnit(Units.StressUnit).ToString("f0");
+        ro = Density.ToUnit(Units.DensityUnit).ToString("f0");
+
+        return (isCust.Replace(" ", string.Empty) + "," + f.Replace(" ", string.Empty) + "," + e.Replace(" ", string.Empty) + "," + ro.Replace(" ", string.Empty) + "," + wm);
+      }
+
+      return string.Empty;
+    }
 
     #endregion
   }
