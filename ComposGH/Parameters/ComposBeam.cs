@@ -53,11 +53,8 @@ namespace ComposGH.Parameters
     #region constructors
     public ComposBeam()
     {
-        public Length Length { get; set; }
-        public ComposSteelMaterial Material { get; set; }
-        public ComposRestraint Restraint { get; set; }
-        public List<BeamSection> BeamSections { get; set; }
-        public List<ComposWebOpening> WebOpenings { get; set; }
+      // empty constructor
+    }
 
     public ComposBeam(LineCurve line, LengthUnit lengthUnit, ComposRestraint restraint, ComposSteelMaterial material, List<BeamSection> beamSections, List<ComposWebOpening> webOpenings = null)
     {
@@ -77,19 +74,32 @@ namespace ComposGH.Parameters
       this.UpdatePreview();
     }
 
-        // add public constructors here
+    #endregion
 
-        #endregion
+    #region properties
+    public bool IsValid
+    {
+      get
+      {
+        return true;
+      }
+    }
+    #endregion
 
-        #region properties
-        public bool IsValid
-        {
-            get
-            {
-                return true;
-            }
-        }
-        #endregion
+    #region coa interop
+    internal ComposBeam(string coaString)
+    {
+      // to do - implement from coa string method
+    }
+
+    internal string ToCoaString()
+    {
+      // to do - implement to coa string method
+      return string.Empty;
+    }
+    #endregion
+
+    #region methods
 
     public ComposBeam Duplicate()
     {
@@ -749,7 +759,24 @@ namespace ComposGH.Parameters
     }
     #endregion
 
-        #endregion
+    #region properties
+    public override bool IsValid => true;
+    public override string TypeName => "Beam";
+    public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
+    public override string IsValidWhyNot
+    {
+      get
+      {
+        if (Value.IsValid) { return string.Empty; }
+        return Value.IsValid.ToString(); //Todo: beef this up to be more informative.
+      }
+    }
+    public override string ToString()
+    {
+      if (Value == null)
+        return "Null";
+      else
+        return "Compos " + TypeName + " {" + Value.ToString() + "}"; ;
     }
 
     public override BoundingBox Boundingbox
@@ -769,10 +796,8 @@ namespace ComposGH.Parameters
     }
     #endregion
 
-    /// <summary>
-    /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
-    /// </summary>
-    public class ComposBeamGoo : GH_Goo<ComposBeam> // needs to be upgraded to GeometryGoo eventually....
+    #region casting methods
+    public override bool CastTo<Q>(ref Q target)
     {
       // This function is called when Grasshopper needs to convert this 
       // instance of our custom class into some other type Q.            
@@ -837,68 +862,40 @@ namespace ComposGH.Parameters
 
       if (source == null) { return false; }
 
-        public override IGH_Goo Duplicate()
+      //Cast from GsaMaterial
+      if (typeof(ComposBeam).IsAssignableFrom(source.GetType()))
+      {
+        Value = (ComposBeam)source;
+        return true;
+      }
+
+      try
+      {
+        // Cast from GsaGH
+        if (GsaGHConverter.IsPresent())
         {
-            return DuplicateGoo();
+          Type type = GsaGHConverter.GetTypeFor(typeof(IComposBeam));
+          if (type.IsAssignableFrom(source.GetType()))
+          {
+            Value = (ComposBeam)GsaGHConverter.CastToComposBeam(source);
+            return true;
+          }
         }
-        public ComposBeamGoo DuplicateGoo()
+        // Cast from AdSecGH
+        if (AdSecGHConverter.IsPresent())
         {
-            return new ComposBeamGoo(Value == null ? new ComposBeam() : Value.Duplicate());
+          Type type = AdSecGHConverter.GetTypeFor(typeof(IComposBeam));
+          if (type.IsAssignableFrom(source.GetType()))
+          {
+            Value = (ComposBeam)AdSecGHConverter.CastToComposBeam(source);
+            return true;
+          }
         }
-        #endregion
-
-        #region properties
-        public override bool IsValid => true;
-        public override string TypeName => "Beam";
-        public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
-        public override string IsValidWhyNot
+        // Cast from Speckle
+        if (SpeckleConverter.IsPresent())
         {
-            get
-            {
-                if (Value.IsValid) { return string.Empty; }
-                return Value.IsValid.ToString(); //Todo: beef this up to be more informative.
-            }
+          // todo: implement
         }
-        public override string ToString()
-        {
-            if (Value == null)
-                return "Null";
-            else
-                return "Compos " + TypeName + " {" + Value.ToString() + "}"; ;
-        }
-        #endregion
-
-        #region casting methods
-        public override bool CastTo<Q>(ref Q target)
-        {
-            // This function is called when Grasshopper needs to convert this 
-            // instance of our custom class into some other type Q.            
-
-            if (typeof(Q).IsAssignableFrom(typeof(ComposBeam)))
-            {
-                if (Value == null)
-                    target = default;
-                else
-                    target = (Q)(object)Value;
-                return true;
-            }
-
-            target = default;
-            return false;
-        }
-        public override bool CastFrom(object source)
-        {
-            // This function is called when Grasshopper needs to convert other data 
-            // into our custom class.
-
-            if (source == null) { return false; }
-
-            //Cast from GsaMaterial
-            if (typeof(ComposBeam).IsAssignableFrom(source.GetType()))
-            {
-                Value = (ComposBeam)source;
-                return true;
-            }
 
       }
       catch (Exception)
