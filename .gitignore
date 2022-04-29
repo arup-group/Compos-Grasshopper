@@ -6,7 +6,11 @@
 /Compos/obj
 /ComposGH/bin
 /ComposGH/obj
-/ComposGH/Tests/bin
-/ComposGH/Tests/obj
 /ComposGH/Converters/obj
 /ComposGH/Converters/bin
+/ComposTests/bin
+/ComposTests/obj
+/ComposGHTests/bin
+/ComposGHTests/obj
+/IntegrationTests/bin
+/IntegrationTests/obj
