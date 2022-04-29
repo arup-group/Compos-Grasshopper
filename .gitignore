@@ -1,6 +1,8 @@
 ﻿*.suo
 *.bak
 /.vs
+.vs/
+/.vs/ComposGH/DesignTimeBuild/.dtbcache.v2
 /packages
 /ComposGH/bin
 /ComposGH/obj

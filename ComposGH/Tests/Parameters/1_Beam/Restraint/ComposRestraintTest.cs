@@ -7,12 +7,12 @@ namespace ComposGH.Parameters.Tests
 {
   public partial class ComposRestraintTest
   {
+    // 1 setup inputs
+    public static Supports construction = TestSupportConstructor(Supports.IntermediateRestraint.Mid__Span, false, false);
+    Supports final = TestSupportConstructor(Supports.IntermediateRestraint.None, true, true);
     [Fact]
     public ComposRestraint TestConstructor()
     {
-      // 1 setup inputs
-      Supports construction = TestSupportConstructor(Supports.IntermediateRestraint.Mid__Span, false, false);
-      Supports final = TestSupportConstructor(Supports.IntermediateRestraint.None, true, true);
 
       // 2 create object instance with constructor
       ComposRestraint restraint = new ComposRestraint(true, construction, final);
