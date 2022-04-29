@@ -778,8 +778,6 @@ namespace ComposGH.Components
       return goo.Value;
     }
     #endregion
-  }
-        #endregion
 
     #region Decking
         internal static DeckConfiguration DeckConfiguration(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)

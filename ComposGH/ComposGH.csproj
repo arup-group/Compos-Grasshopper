@@ -126,9 +126,6 @@
     <Compile Include="Helpers\_SqlReaderValues.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
     <Compile Include="Parameters\DeckConfigGoo.cs" />
-    <Compile Include="Parameters\ComposRestraint.cs" />
-    <Compile Include="Parameters\Load.cs" />
-    <Compile Include="Parameters\ComposLoad.cs" />
     <Compile Include="Parameters\1_Beam\Restraint\ComposRestraint.cs" />
     <Compile Include="Parameters\Load\Load.cs" />
     <Compile Include="Parameters\Load\ComposLoad.cs" />
