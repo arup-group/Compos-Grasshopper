@@ -56,7 +56,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
     <Reference Include="OasysUnits">
-      <HintPath>..\packages\OasysUnits.dll</HintPath>
+      <HintPath>lib\OasysUnits.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.UI, Version=6.27.20176.5000, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
       <HintPath>..\packages\RhinoCommon.6.27.20176.5001\lib\net45\Rhino.UI.dll</HintPath>
@@ -122,22 +122,22 @@
     <Compile Include="Helpers\_GetInputs.cs" />
     <Compile Include="Helpers\_SqlReaderValues.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
-    <Compile Include="Parameters\ComposRestraint.cs" />
-    <Compile Include="Parameters\Load.cs" />
-    <Compile Include="Parameters\ComposLoad.cs" />
+    <Compile Include="Parameters\1_Beam\Restraint\ComposRestraint.cs" />
+    <Compile Include="Parameters\Load\Load.cs" />
+    <Compile Include="Parameters\Load\ComposLoad.cs" />
     <Compile Include="Parameters\ComposReinforcement.cs" />
     <Compile Include="Parameters\ReinforcementMaterialGoo.cs" />
-    <Compile Include="Parameters\ComposBeam.cs" />
+    <Compile Include="Parameters\1_Beam\ComposBeam.cs" />
     <Compile Include="Parameters\ComposSteelMaterial.cs" />
-    <Compile Include="Parameters\ComposWebOpening.cs" />
-    <Compile Include="Parameters\StudDimensionsGoo.cs" />
-    <Compile Include="Parameters\BeamSectionGoo.cs" />
-    <Compile Include="Parameters\SupportsGoo.cs" />
-    <Compile Include="Parameters\WebOpeningStiffenersGoo.cs" />
-    <Compile Include="Parameters\StudSpecGoo.cs" />
-    <Compile Include="Parameters\StudSpacingGoo.cs" />
-    <Compile Include="Parameters\ComposDesignCode.cs" />
-    <Compile Include="Parameters\ComposStud.cs" />
+    <Compile Include="Parameters\1_Beam\WebOpening\ComposWebOpening.cs" />
+    <Compile Include="Parameters\2_Stud\StudDimensionsGoo.cs" />
+    <Compile Include="Parameters\1_Beam\BeamSectionGoo.cs" />
+    <Compile Include="Parameters\1_Beam\Restraint\SupportsGoo.cs" />
+    <Compile Include="Parameters\1_Beam\WebOpening\WebOpeningStiffenersGoo.cs" />
+    <Compile Include="Parameters\2_Stud\StudSpecGoo.cs" />
+    <Compile Include="Parameters\2_Stud\StudSpacingGoo.cs" />
+    <Compile Include="Parameters\7_Design\ComposDesignCode.cs" />
+    <Compile Include="Parameters\2_Stud\ComposStud.cs" />
     <Compile Include="Parameters\GH_UnitNumber.cs" />
     <Compile Include="Parameters\_Units.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -210,6 +210,7 @@
     <Folder Include="Components\7_Design\" />
     <Folder Include="Components\8_Analysis\" />
     <Folder Include="Components\9_Results\" />
+    <Folder Include="Parameters\1_Beam\SteelMaterial\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\BeamParam.png" />
