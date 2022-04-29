@@ -17,14 +17,14 @@ using Grasshopper.Kernel.Parameters;
 
 namespace ComposGH.Components
 {
-  public class CreateStandardSteelMaterial : GH_Component, IGH_VariableParameterComponent
+  public class CreateSteelMaterial : GH_Component, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("2C3C07F4-C395-4747-A111-D5A67B250104");
-    public CreateStandardSteelMaterial()
-      : base("STD Steel Material", "StdSteelMat", "Create Standard Steel Material for a Compos Beam",
+    public CreateSteelMaterial()
+      : base("Steel Material", "SteelMat", "Create Standard Steel Material for a Compos Beam",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = false; } // sets the initial state of the component to hidden
