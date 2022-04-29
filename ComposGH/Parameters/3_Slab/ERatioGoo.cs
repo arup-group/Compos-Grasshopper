@@ -2,84 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using Compos.Model;
+using Grasshopper.Documentation;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
-using Rhino.Geometry;
 using Rhino;
-using Grasshopper.Documentation;
 using Rhino.Collections;
+using Rhino.Geometry;
 using UnitsNet;
 
 namespace ComposGH.Parameters
 {
-  /// <summary>
-  /// Custom class: this class defines the basic properties and methods for our custom class
-  /// </summary>
-  public class ERatio
-  {
-    public double ShortTerm { get; set; }
-    public double LongTerm { get; set; }
-    public double Vibration { get; set; }
-    public double Shrinkage { get; set; }
-    public bool UserDefined { get; } = false;
-
-    #region constructors
-    public ERatio() { }
-
-    public ERatio(double shortTerm, double longTerm, double vibration) : this(shortTerm, longTerm, vibration, double.NaN)
-    {
-    }
-
-    public ERatio(double shortTerm, double longTerm, double vibration, double shrinkage)
-    {
-      this.ShortTerm = shortTerm;
-      this.LongTerm = longTerm;
-      this.Vibration = vibration;
-      this.Shrinkage = shrinkage;
-      this.UserDefined = true;
-    }
-    #endregion
-
-    #region properties
-    public bool IsValid
-    {
-      get
-      {
-        return true;
-      }
-    }
-    #endregion
-
-    #region coa interop
-    internal ERatio(string coaString)
-    {
-      // to do - implement from coa string method
-    }
-    internal string ToCoaString()
-    {
-      // to do - implement to coa string method
-      return string.Empty;
-    }
-    #endregion
-
-    #region methods
-    public ERatio Duplicate()
-    {
-      if (this == null) { return null; }
-      ERatio dup = (ERatio)this.MemberwiseClone();
-      return dup;
-    }
-
-    public override string ToString()
-    {
-      string str = "ST: " + this.ShortTerm + ", LT: " + this.LongTerm + ", V: " + this.Vibration;
-      if (this.Shrinkage > 0)
-        str += ", S: " + this.Shrinkage;
-      return str;
-    }
-    #endregion
-  }
-
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>

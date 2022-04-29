@@ -28,13 +28,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="OasysUnits">
-      <HintPath>..\lib\OasysUnits.dll</HintPath>
-    </Reference>
+    <Folder Include="Parameters\1_Beam\SteelMaterial\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Parameters\1_Beam\SteelMaterial\" />
+    <Reference Include="OasysUnits">
+      <HintPath>..\..\Compos\lib\OasysUnits.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

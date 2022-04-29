@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Xunit;
+
+using Compos.Model;
+using Oasys.Units;
 using UnitsNet;
 using UnitsNet.Units;
-using Oasys.Units;
-using static ComposGH.Parameters.ConcreteMaterial;
+using Xunit;
+using static Compos.Model.ConcreteMaterial;
 
 namespace ComposGH.Parameters.Tests
 {

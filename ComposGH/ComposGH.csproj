@@ -55,8 +55,9 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
-    <Reference Include="OasysUnits">
-      <HintPath>lib\OasysUnits.dll</HintPath>
+    <Reference Include="OasysUnits, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Compos\lib\OasysUnits.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.UI, Version=6.27.20176.5000, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
       <HintPath>..\packages\RhinoCommon.6.27.20176.5001\lib\net45\Rhino.UI.dll</HintPath>
@@ -310,6 +311,10 @@
     <None Include="Properties\Icons\CustomStudDims.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Compos\Compos.csproj">
+      <Project>{a9e78d60-33b5-4ea1-a779-154fb2d4a9e1}</Project>
+      <Name>Compos</Name>
+    </ProjectReference>
     <ProjectReference Include="Converters\Converters.csproj">
       <Project>{0bf1ed34-39f9-4842-b788-31d8bea0825e}</Project>
       <Name>Converters</Name>
