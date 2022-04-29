@@ -13,6 +13,8 @@ using ComposGH.Parameters;
 using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
+using ComposAPI.Loads;
+using static ComposAPI.Loads.Load;
 
 namespace ComposGH.Components
 {
@@ -127,8 +129,8 @@ namespace ComposGH.Components
       Force finalLive = GetInput.Force(this, DA, 3, forceUnit);
       Length pos = GetInput.Length(this, DA, 4, lengthUnit);
 
-      Parameters.PointLoad load = new Parameters.PointLoad(constDead, constLive, finalDead, finalLive, pos);
-      DA.SetData(0, new ComposLoadGoo(load));
+      Load load = new ComposAPI.Loads.PointLoad(constDead, constLive, finalDead, finalLive, pos);
+      DA.SetData(0, new LoadGoo(load));
     }
 
     #region (de)serialization

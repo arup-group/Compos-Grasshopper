@@ -55,8 +55,9 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
-    <Reference Include="OasysUnits">
-      <HintPath>lib\OasysUnits.dll</HintPath>
+    <Reference Include="OasysUnits, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Compos\lib\OasysUnits.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.UI, Version=6.27.20176.5000, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
       <HintPath>..\packages\RhinoCommon.6.27.20176.5001\lib\net45\Rhino.UI.dll</HintPath>
@@ -90,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\1_Beam\CreateRestraint.cs" />
+    <Compile Include="Components\1_Beam\CreateSteelMaterial.cs" />
     <Compile Include="Components\1_Beam\CreateSupport.cs" />
     <Compile Include="Components\1_Beam\CreateBeamSection.cs" />
     <Compile Include="Components\1_Beam\CreateWebOpeningStiffener.cs" />
@@ -105,6 +107,10 @@
     <Compile Include="Components\2_Studs\StudSpec.cs" />
     <Compile Include="Components\2_Studs\StandardStudDims.cs" />
     <Compile Include="Components\2_Studs\CreateStud.cs" />
+    <Compile Include="Components\3_Slab\CreateConcreteMaterialASNZ.cs" />
+    <Compile Include="Components\3_Slab\CreateConcreteMaterialHKSUOS.cs" />
+    <Compile Include="Components\3_Slab\CreateConcreteMaterialEN.cs" />
+    <Compile Include="Components\3_Slab\CreateERatio.cs" />
     <Compile Include="Components\5_Rebar\CreateRebarMaterial.cs" />
     <Compile Include="Components\5_Rebar\TransverseReinforcement.cs" />
     <Compile Include="Components\5_Rebar\MeshReinforcement.cs" />
@@ -114,6 +120,7 @@
     <Compile Include="Components\6_Load\LinearLoad.cs" />
     <Compile Include="Components\6_Load\UniformLoad.cs" />
     <Compile Include="Components\6_Load\PointLoad.cs" />
+    <Compile Include="Components\3_Slab\CreateConcreteMaterialBS.cs" />
     <Compile Include="ComposGHInfo.cs" />
     <Compile Include="Helpers\DeSerialization.cs" />
     <Compile Include="Helpers\GhRibbonLayout.cs" />
@@ -122,22 +129,24 @@
     <Compile Include="Helpers\_GetInputs.cs" />
     <Compile Include="Helpers\_SqlReaderValues.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
-    <Compile Include="Parameters\1_Beam\Restraint\ComposRestraint.cs" />
-    <Compile Include="Parameters\Load\Load.cs" />
-    <Compile Include="Parameters\Load\ComposLoad.cs" />
-    <Compile Include="Parameters\ComposReinforcement.cs" />
-    <Compile Include="Parameters\ReinforcementMaterialGoo.cs" />
-    <Compile Include="Parameters\1_Beam\ComposBeam.cs" />
-    <Compile Include="Parameters\ComposSteelMaterial.cs" />
-    <Compile Include="Parameters\1_Beam\WebOpening\ComposWebOpening.cs" />
+    <Compile Include="Parameters\3_Slab\ConcreteMaterial\ConcreteMaterialGoo.cs" />
+    <Compile Include="Parameters\3_Slab\ConcreteMaterial\ERatioGoo.cs" />
+    <Compile Include="Parameters\3_Slab\ConcreteSlabDimensionGoo.cs" />
+    <Compile Include="Parameters\1_Beam\Restraint\RestraintGoo.cs" />
+    <Compile Include="Parameters\6_Load\LoadGoo.cs" />
+    <Compile Include="Parameters\3_Slab\Reinforcement\ReinforcementGoo.cs" />
+    <Compile Include="Parameters\3_Slab\Reinforcement\ReinforcementMaterialGoo.cs" />
+    <Compile Include="Parameters\1_Beam\BeamGeometryGoo.cs" />
+    <Compile Include="Parameters\1_Beam\SteelMaterial\SteelMaterialGoo.cs" />
+    <Compile Include="Parameters\1_Beam\WebOpening\WebOpeningGoo.cs" />
     <Compile Include="Parameters\2_Stud\StudDimensionsGoo.cs" />
     <Compile Include="Parameters\1_Beam\BeamSectionGoo.cs" />
     <Compile Include="Parameters\1_Beam\Restraint\SupportsGoo.cs" />
     <Compile Include="Parameters\1_Beam\WebOpening\WebOpeningStiffenersGoo.cs" />
     <Compile Include="Parameters\2_Stud\StudSpecGoo.cs" />
     <Compile Include="Parameters\2_Stud\StudSpacingGoo.cs" />
-    <Compile Include="Parameters\7_Design\ComposDesignCode.cs" />
-    <Compile Include="Parameters\2_Stud\ComposStud.cs" />
+    <Compile Include="Parameters\7_DesignCode\DesignCode.cs" />
+    <Compile Include="Parameters\2_Stud\StudGoo.cs" />
     <Compile Include="Parameters\GH_UnitNumber.cs" />
     <Compile Include="Parameters\_Units.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -205,12 +214,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Components\0_Model\" />
-    <Folder Include="Components\3_Slab\" />
     <Folder Include="Components\4_Decking\" />
     <Folder Include="Components\7_Design\" />
     <Folder Include="Components\8_Analysis\" />
     <Folder Include="Components\9_Results\" />
-    <Folder Include="Parameters\1_Beam\SteelMaterial\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\BeamParam.png" />
@@ -303,6 +310,10 @@
     <None Include="Properties\Icons\CustomStudDims.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Compos\ComposAPI.csproj">
+      <Project>{a9e78d60-33b5-4ea1-a779-154fb2d4a9e1}</Project>
+      <Name>ComposAPI</Name>
+    </ProjectReference>
     <ProjectReference Include="Converters\Converters.csproj">
       <Project>{0bf1ed34-39f9-4842-b788-31d8bea0825e}</Project>
       <Name>Converters</Name>
@@ -341,6 +352,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\RestraintParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreateConcreteMaterialAZ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreateConcreteMaterialBS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreateConcreteMaterialEN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreateConcreteMaterialHK.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\ERatio.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

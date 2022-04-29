@@ -13,6 +13,8 @@ using ComposGH.Parameters;
 using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
+using ComposAPI.Loads;
+using static ComposAPI.Loads.Load;
 
 namespace ComposGH.Components
 {
@@ -43,8 +45,8 @@ namespace ComposGH.Components
         selecteditems = new List<string>();
 
         // type
-        dropdownitems.Add(Enum.GetValues(typeof(ComposLoad.LoadDistribution)).Cast<ComposLoad.LoadDistribution>().Select(x => x.ToString()).ToList()); 
-        selecteditems.Add(ComposLoad.LoadDistribution.Area.ToString());
+        dropdownitems.Add(Enum.GetValues(typeof(LoadDistribution)).Cast<LoadDistribution>().Select(x => x.ToString()).ToList()); 
+        selecteditems.Add(LoadDistribution.Area.ToString());
 
         // force unit
         dropdownitems.Add(Units.FilteredForcePerAreaUnits);
@@ -61,8 +63,8 @@ namespace ComposGH.Components
 
       if (i == 0)
       {
-        distribution = (ComposLoad.LoadDistribution)Enum.Parse(typeof(ComposLoad.LoadDistribution), selecteditems[i]);
-        if (distribution == ComposLoad.LoadDistribution.Line)
+        distribution = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), selecteditems[i]);
+        if (distribution == LoadDistribution.Line)
         {
           dropdownitems[1] = Units.FilteredForcePerLengthUnits;
           selecteditems[1] = forceUnit.ToString();
@@ -75,7 +77,7 @@ namespace ComposGH.Components
       }
       if (i == 1)
       {
-        if (distribution == ComposLoad.LoadDistribution.Line)
+        if (distribution == LoadDistribution.Line)
           forceUnit = (ForcePerLengthUnit)Enum.Parse(typeof(ForcePerLengthUnit), selecteditems[i]);
         else
           stressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), selecteditems[i]);
@@ -90,8 +92,8 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      distribution = (ComposLoad.LoadDistribution)Enum.Parse(typeof(ComposLoad.LoadDistribution), selecteditems[0]);
-      if (distribution == ComposLoad.LoadDistribution.Line)
+      distribution = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), selecteditems[0]);
+      if (distribution == LoadDistribution.Line)
         forceUnit = (ForcePerLengthUnit)Enum.Parse(typeof(ForcePerLengthUnit), selecteditems[1]);
       else
         stressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), selecteditems[1]);
@@ -117,7 +119,7 @@ namespace ComposGH.Components
     private bool first = true;
     private ForcePerLengthUnit forceUnit = Units.ForcePerLengthUnit;
     private PressureUnit stressUnit = Units.StressUnit;
-    private ComposLoad.LoadDistribution distribution = ComposLoad.LoadDistribution.Area;
+    private LoadDistribution distribution = LoadDistribution.Area;
     #endregion
 
     #region Input and output
@@ -141,22 +143,22 @@ namespace ComposGH.Components
     {
       switch (distribution)
       {
-        case ComposLoad.LoadDistribution.Line:
+        case LoadDistribution.Line:
           ForcePerLength constDeadL = GetInput.ForcePerLength(this, DA, 0, forceUnit);
           ForcePerLength constLiveL = GetInput.ForcePerLength(this, DA, 1, forceUnit);
           ForcePerLength finalDeadL = GetInput.ForcePerLength(this, DA, 2, forceUnit);
           ForcePerLength finalLiveL = GetInput.ForcePerLength(this, DA, 3, forceUnit);
-          Parameters.UniformLoad loadL = new Parameters.UniformLoad(constDeadL, constLiveL, finalDeadL, finalLiveL);
-          DA.SetData(0, new ComposLoadGoo(loadL));
+          Load loadL = new ComposAPI.Loads.UniformLoad(constDeadL, constLiveL, finalDeadL, finalLiveL);
+          DA.SetData(0, new LoadGoo(loadL));
           break;
 
-        case ComposLoad.LoadDistribution.Area:
+        case LoadDistribution.Area:
           Pressure constDeadA = GetInput.Stress(this, DA, 0, stressUnit);
           Pressure constLiveA = GetInput.Stress(this, DA, 1, stressUnit);
           Pressure finalDeadA = GetInput.Stress(this, DA, 2, stressUnit);
           Pressure finalLiveA = GetInput.Stress(this, DA, 3, stressUnit);
-          Parameters.UniformLoad loadA = new Parameters.UniformLoad(constDeadA, constLiveA, finalDeadA, finalLiveA);
-          DA.SetData(0, new ComposLoadGoo(loadA));
+          Load loadA = new ComposAPI.Loads.UniformLoad(constDeadA, constLiveA, finalDeadA, finalLiveA);
+          DA.SetData(0, new LoadGoo(loadA));
           break;
       }
     }
@@ -199,7 +201,7 @@ namespace ComposGH.Components
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
       string unitAbbreviation = "";
-      if (distribution == ComposLoad.LoadDistribution.Line)
+      if (distribution == LoadDistribution.Line)
       {
         IQuantity force = new ForcePerLength(0, forceUnit);
         unitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));

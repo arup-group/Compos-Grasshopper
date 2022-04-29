@@ -34,10 +34,10 @@ namespace ComposGH.UI
       {
         List<string> spacers = new List<string>();
         spacers.Add(SpacerTxt);
-        float sp = ComposGH.UI.ComponentUI.MaxTextWidth(spacers, GH_FontServer.Small);
+        float sp = ComponentUI.MaxTextWidth(spacers, GH_FontServer.Small);
         List<string> buttons = new List<string>();
         buttons.Add(buttonText);
-        float bt = ComposGH.UI.ComponentUI.MaxTextWidth(buttons, GH_FontServer.Standard);
+        float bt = ComponentUI.MaxTextWidth(buttons, GH_FontServer.Standard);
 
         float num = Math.Max(Math.Max(sp, bt), 90);
         return num;
@@ -76,7 +76,7 @@ namespace ComposGH.UI
 
       if (channel == GH_CanvasChannel.Objects)
       {
-        Pen spacer = new Pen(UI.Colour.SpacerColour);
+        Pen spacer = new Pen(Colour.SpacerColour);
 
         Font font = GH_FontServer.Standard;
         // adjust fontsize to high resolution displays
@@ -89,25 +89,25 @@ namespace ComposGH.UI
         //Draw divider line
         if (SpacerTxt != "")
         {
-          graphics.DrawString(SpacerTxt, sml, UI.Colour.AnnotationTextDark, SpacerBounds, GH_TextRenderingConstants.CenterCenter);
+          graphics.DrawString(SpacerTxt, sml, Colour.AnnotationTextDark, SpacerBounds, GH_TextRenderingConstants.CenterCenter);
           graphics.DrawLine(spacer, SpacerBounds.X, SpacerBounds.Y + SpacerBounds.Height / 2, SpacerBounds.X + (SpacerBounds.Width - GH_FontServer.StringWidth(SpacerTxt, sml)) / 2 - 4, SpacerBounds.Y + SpacerBounds.Height / 2);
           graphics.DrawLine(spacer, SpacerBounds.X + (SpacerBounds.Width - GH_FontServer.StringWidth(SpacerTxt, sml)) / 2 + GH_FontServer.StringWidth(SpacerTxt, sml) + 4, SpacerBounds.Y + SpacerBounds.Height / 2, SpacerBounds.X + SpacerBounds.Width, SpacerBounds.Y + SpacerBounds.Height / 2);
         }
 
         // Draw button box
-        System.Drawing.Drawing2D.GraphicsPath button = UI.ButtonsUI.Button.RoundedRect(ButtonBounds, 2);
+        System.Drawing.Drawing2D.GraphicsPath button = ButtonsUI.Button.RoundedRect(ButtonBounds, 2);
 
-        Brush normal_colour = UI.Colour.ButtonColour;
-        Brush hover_colour = UI.Colour.HoverButtonColour;
-        Brush clicked_colour = UI.Colour.ClickedButtonColour;
+        Brush normal_colour = Colour.ButtonColour;
+        Brush hover_colour = Colour.HoverButtonColour;
+        Brush clicked_colour = Colour.ClickedButtonColour;
 
         Brush butCol = (mouseOver) ? hover_colour : normal_colour;
         graphics.FillPath(mouseDown ? clicked_colour : butCol, button);
 
         // draw button edge
-        Color edgeColor = UI.Colour.ButtonBorderColour;
-        Color edgeHover = UI.Colour.HoverBorderColour;
-        Color edgeClick = UI.Colour.ClickedBorderColour;
+        Color edgeColor = Colour.ButtonBorderColour;
+        Color edgeHover = Colour.HoverBorderColour;
+        Color edgeClick = Colour.ClickedBorderColour;
         Color edgeCol = (mouseOver) ? edgeHover : edgeColor;
         Pen pen = new Pen(mouseDown ? edgeClick : edgeCol)
         {
@@ -116,11 +116,11 @@ namespace ComposGH.UI
         graphics.DrawPath(pen, button);
 
         // draw button glow
-        System.Drawing.Drawing2D.GraphicsPath overlay = UI.ButtonsUI.Button.RoundedRect(ButtonBounds, 2, true);
+        System.Drawing.Drawing2D.GraphicsPath overlay = ButtonsUI.Button.RoundedRect(ButtonBounds, 2, true);
         graphics.FillPath(new SolidBrush(Color.FromArgb(mouseDown ? 0 : mouseOver ? 40 : 60, 255, 255, 255)), overlay);
 
         // draw button text
-        graphics.DrawString(buttonText, font, UI.Colour.AnnotationTextBright, ButtonBounds, GH_TextRenderingConstants.CenterCenter);
+        graphics.DrawString(buttonText, font, Colour.AnnotationTextBright, ButtonBounds, GH_TextRenderingConstants.CenterCenter);
       }
     }
     public override GH_ObjectResponse RespondToMouseDown(GH_Canvas sender, GH_CanvasMouseEvent e)
@@ -173,7 +173,7 @@ namespace ComposGH.UI
       {
         mouseOver = false;
         Owner.OnDisplayExpired(false);
-        Grasshopper.Instances.CursorServer.ResetCursor(sender);
+        Instances.CursorServer.ResetCursor(sender);
         return GH_ObjectResponse.Release;
       }
 
@@ -202,7 +202,7 @@ namespace ComposGH.UI
       // secondly update position of input and output parameter text
       // first find the maximum text width of parameters
 
-      foreach (IGH_Param item in base.Owner.Params.Output)
+      foreach (IGH_Param item in Owner.Params.Output)
       {
         PointF pivot = item.Attributes.Pivot; // original anchor location of output
         RectangleF bounds = item.Attributes.Bounds; // text box itself
@@ -217,12 +217,12 @@ namespace ComposGH.UI
       }
       // for input params first find the widest input text box as these are right-aligned
       float inputwidth = 0f;
-      foreach (IGH_Param item in base.Owner.Params.Input)
+      foreach (IGH_Param item in Owner.Params.Input)
       {
         if (inputwidth < item.Attributes.Bounds.Width)
           inputwidth = item.Attributes.Bounds.Width;
       }
-      foreach (IGH_Param item2 in base.Owner.Params.Input)
+      foreach (IGH_Param item2 in Owner.Params.Input)
       {
         PointF pivot2 = item2.Attributes.Pivot; // original anchor location of input
         RectangleF bounds2 = item2.Attributes.Bounds;

@@ -13,6 +13,7 @@ using ComposGH.Parameters;
 using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
+using ComposAPI.ConcreteSlab;
 
 namespace ComposGH.Components
 {
@@ -34,7 +35,7 @@ namespace ComposGH.Components
     #endregion
 
     #region Custom UI
-    //This region overrides the typical component layout
+    // This region overrides the typical component layout
     public override void CreateAttributes()
     {
       if (first)
@@ -111,7 +112,7 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      RebarMaterial mat = GetInput.RebarMaterial(this, DA, 0);
+      ReinforcementMaterial mat = GetInput.RebarMaterial(this, DA, 0);
       // get default length inputs used for all cases
       Length start = GetInput.Length(this, DA, 1, lengthUnit);
       Length end = GetInput.Length(this, DA, 2, lengthUnit);
@@ -119,7 +120,7 @@ namespace ComposGH.Components
       Length spacing = GetInput.Length(this, DA, 4, lengthUnit);
       Length cov = GetInput.Length(this, DA, 5, lengthUnit);
 
-      DA.SetData(0, new ComposReinforcementGoo(new ComposReinforcement(mat, start, end, dia, spacing, cov)));
+      DA.SetData(0, new ReinforcementGoo(new Reinforcement(mat, start, end, dia, spacing, cov)));
     }
 
     #region (de)serialization

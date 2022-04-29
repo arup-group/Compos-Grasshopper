@@ -14,6 +14,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
 using Grasshopper.Kernel.Parameters;
+using ComposAPI.Studs;
 
 namespace ComposGH.Components
 {
@@ -35,7 +36,7 @@ namespace ComposGH.Components
     #endregion
 
     #region Custom UI
-    //This region overrides the typical component layout
+    // This region overrides the typical component layout
     public override void CreateAttributes()
     {
       if (first)
@@ -103,9 +104,10 @@ namespace ComposGH.Components
     {
       pManager.AddGenericParameter("Stud Dims", "Sdm", "Compos Shear Stud Dimensions", GH_ParamAccess.item);
       pManager.AddGenericParameter("Stud Spec", "Spc", "Compos Shear Stud Specification", GH_ParamAccess.item);
-      pManager.AddNumberParameter("Min Saving", "Msm", "Fraction for Minimum Savnig for using Multiple Zones (Default = 0.2 (20%))", GH_ParamAccess.item, 0.2);
+      pManager.AddNumberParameter("Min Saving", "Msm", "Fraction for Minimum Saving for using Multiple Zones (Default = 0.2 (20%))", GH_ParamAccess.item, 0.2);
       pManager[2].Optional = true;
     }
+
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
       pManager.AddGenericParameter("Stud", "Stu", "Compos Shear Stud", GH_ParamAccess.item);
@@ -122,24 +124,24 @@ namespace ComposGH.Components
         case StudGroupSpacing.StudSpacingType.Automatic:
         case StudGroupSpacing.StudSpacingType.Min_Num_of_Studs:
           DA.GetData(2, ref minSav);
-          DA.SetData(0, new ComposStudGoo(
-              new ComposStud(studDimensions, studSpec, minSav, spacingType)));
+          DA.SetData(0, new StudGoo(
+              new Stud(studDimensions, studSpec, minSav, spacingType)));
           break;
 
         case StudGroupSpacing.StudSpacingType.Partial_Interaction:
           DA.GetData(2, ref minSav);
           double interaction = 0.85;
           DA.GetData(3, ref interaction);
-          DA.SetData(0, new ComposStudGoo(
-              new ComposStud(studDimensions, studSpec, minSav, interaction)));
+          DA.SetData(0, new StudGoo(
+              new Stud(studDimensions, studSpec, minSav, interaction)));
           break;
 
         case StudGroupSpacing.StudSpacingType.Custom:
           List<StudGroupSpacing> spacings = GetInput.StudSpacings(this, DA, 2);
           bool check = false;
           DA.GetData(3, ref check);
-          DA.SetData(0, new ComposStudGoo(
-              new ComposStud(studDimensions, studSpec, spacings, check)));
+          DA.SetData(0, new StudGoo(
+              new Stud(studDimensions, studSpec, spacings, check)));
           break;
       }
     }

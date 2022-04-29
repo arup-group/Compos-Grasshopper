@@ -44,7 +44,7 @@ namespace ComposGH.Helpers
         while (r.Read())
         {
           // get data
-          string sqlData = System.Convert.ToString(r["SECT_NAME"]);
+          string sqlData = Convert.ToString(r["SECT_NAME"]);
 
           // split text string
           // example (IPE100): 0.1 --  0.055 -- 0.0041 -- 0.0057 -- 0.007

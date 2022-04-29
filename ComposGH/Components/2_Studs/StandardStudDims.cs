@@ -13,6 +13,7 @@ using ComposGH.Parameters;
 using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
+using ComposAPI.Studs;
 
 namespace ComposGH.Components
 {

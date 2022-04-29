@@ -123,9 +123,39 @@ namespace ComposGH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap CreateConcreteMaterial {
+        internal static System.Drawing.Bitmap CreateConcreteMaterialAZ {
             get {
-                object obj = ResourceManager.GetObject("CreateConcreteMaterial", resourceCulture);
+                object obj = ResourceManager.GetObject("CreateConcreteMaterialAZ", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CreateConcreteMaterialBS {
+            get {
+                object obj = ResourceManager.GetObject("CreateConcreteMaterialBS", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CreateConcreteMaterialEN {
+            get {
+                object obj = ResourceManager.GetObject("CreateConcreteMaterialEN", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CreateConcreteMaterialHK {
+            get {
+                object obj = ResourceManager.GetObject("CreateConcreteMaterialHK", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -246,6 +276,16 @@ namespace ComposGH.Properties {
         internal static System.Drawing.Bitmap DesignCodeParameter {
             get {
                 object obj = ResourceManager.GetObject("DesignCodeParameter", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ERatio {
+            get {
+                object obj = ResourceManager.GetObject("ERatio", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -436,16 +476,6 @@ namespace ComposGH.Properties {
         internal static System.Drawing.Bitmap StandardStudSpecsEN {
             get {
                 object obj = ResourceManager.GetObject("StandardStudSpecsEN", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap SteelMaterialParam {
-            get {
-                object obj = ResourceManager.GetObject("SteelMaterialParam", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

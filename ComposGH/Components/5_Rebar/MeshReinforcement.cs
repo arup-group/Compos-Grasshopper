@@ -12,6 +12,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using ComposGH.Components;
 using ComposGH.Helpers;
+using ComposAPI.ConcreteSlab;
 
 namespace ComposGH.Components
 {
@@ -134,19 +135,19 @@ namespace ComposGH.Components
 
       bool rotated = false;
       DA.GetData(1, ref rotated);
-      DA.SetData(0, new ComposReinforcementGoo(new ComposReinforcement(cov, mesh, rotated)));
+      DA.SetData(0, new ReinforcementGoo(new Reinforcement(cov, mesh, rotated)));
     }
 
 
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, dropdownitems, selecteditems, spacerDescriptions);
+      DeSerialization.writeDropDownComponents(ref writer, dropdownitems, selecteditems, spacerDescriptions);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
+      DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
       UpdateUIFromSelectedItems();
       first = false;
       return base.Read(reader);

@@ -11,12 +11,56 @@ using UnitsNet.GH;
 using UnitsNet;
 using UnitsNet.Units;
 using Oasys.Units;
+using ComposAPI.SteelBeam;
+using ComposAPI.Studs;
+using ComposAPI.ConcreteSlab;
 
 namespace ComposGH.Components
 {
   class GetInput
   {
     #region UnitsNet
+    internal static Density Density(GH_Component owner, IGH_DataAccess DA, int inputid, DensityUnit densityUnit, bool isOptional = false)
+    {
+      GH_UnitNumber unitNumber = null;
+      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+      if (DA.GetData(inputid, ref gh_typ))
+      {
+        // try cast directly to quantity type
+        if (gh_typ.Value is GH_UnitNumber)
+        {
+          unitNumber = (GH_UnitNumber)gh_typ.Value;
+          // check that unit is of right type
+          if (!unitNumber.Value.QuantityInfo.UnitType.Equals(typeof(DensityUnit)))
+          {
+            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Error in " + owner.Params.Input[inputid].NickName + " input: Wrong unit type"
+                + Environment.NewLine + "Unit type is " + unitNumber.Value.QuantityInfo.Name + " but must be Density");
+            return UnitsNet.Density.Zero;
+          }
+        }
+        // try cast to double
+        else if (GH_Convert.ToDouble(gh_typ.Value, out double val, GH_Conversion.Both))
+        {
+          // create new quantity from default units
+          unitNumber = new GH_UnitNumber(new Density(val, densityUnit));
+        }
+        else
+        {
+          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber");
+          return UnitsNet.Density.Zero;
+        }
+      }
+      else if (!isOptional)
+        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+      else
+      {
+        if (unitNumber == null)
+          return UnitsNet.Density.Zero;
+      }
+
+      return (Density)unitNumber.Value;
+    }
+
     internal static Length Length(GH_Component owner, IGH_DataAccess DA, int inputid, LengthUnit docLengthUnit, bool isOptional = false)
     {
       GH_UnitNumber unitNumber = null;
@@ -142,6 +186,52 @@ namespace ComposGH.Components
       }
       return Pressure.Zero;
     }
+
+    internal static Ratio Ratio(GH_Component owner, IGH_DataAccess DA, int inputid, RatioUnit ratioUnit, bool isOptional = false)
+    {
+      Ratio ratio = new Ratio();
+
+      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+      if (DA.GetData(inputid, ref gh_typ))
+      {
+        GH_UnitNumber inRatio;
+
+        // try cast directly to quantity type
+        if (gh_typ.Value is GH_UnitNumber)
+        {
+          inRatio = (GH_UnitNumber)gh_typ.Value;
+          if (!inRatio.Value.QuantityInfo.UnitType.Equals(typeof(RatioUnit)))
+          {
+            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Error in " + owner.Params.Input[inputid].NickName + " input: Wrong unit type"
+                + Environment.NewLine + "Unit type is " + inRatio.Value.QuantityInfo.Name + " but must be Ratio");
+            inRatio = new GH_UnitNumber(new Ratio(0, ratioUnit));
+            ratio = (Ratio)inRatio.Value;
+          }
+          ratio = (Ratio)inRatio.Value.ToUnit(ratioUnit);
+        }
+        // try cast to double
+        else if (GH_Convert.ToDouble(gh_typ.Value, out double val, GH_Conversion.Both))
+        {
+          // create new quantity from default units
+          inRatio = new GH_UnitNumber(new Ratio(val, ratioUnit));
+          ratio = (Ratio)inRatio.Value;
+        }
+        else
+        {
+          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber of Ratio");
+          inRatio = new GH_UnitNumber(new Ratio(0, ratioUnit));
+          ratio = (Ratio)inRatio.Value;
+        }
+        return ratio;
+      }
+      else if (!isOptional)
+      {
+        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+      }
+      ratio = new Ratio(0, ratioUnit);
+      return ratio;
+    }
+
     internal static Strain Strain(GH_Component owner, IGH_DataAccess DA, int inputid, StrainUnit strainUnit, bool isOptional = false)
     {
       Strain strainFib = new Strain();
@@ -183,6 +273,7 @@ namespace ComposGH.Components
       }
       return Oasys.Units.Strain.Zero;
     }
+    
     internal static Curvature Curvature(GH_Component owner, IGH_DataAccess DA, int inputid, CurvatureUnit curvatureUnit, bool isOptional = false)
     {
       Curvature crvature = new Curvature();
@@ -224,6 +315,7 @@ namespace ComposGH.Components
       }
       return Oasys.Units.Curvature.Zero;
     }
+
     internal static Force Force(GH_Component owner, IGH_DataAccess DA, int inputid, ForceUnit forceUnit, bool isOptional = false)
     {
       Force force = new Force();
@@ -265,6 +357,7 @@ namespace ComposGH.Components
       }
       return UnitsNet.Force.Zero;
     }
+
     internal static Moment Moment(GH_Component owner, IGH_DataAccess DA, int inputid, MomentUnit momentUnit, bool isOptional = false)
     {
       Moment moment = new Moment();
@@ -306,6 +399,7 @@ namespace ComposGH.Components
       }
       return Oasys.Units.Moment.Zero;
     }
+
     internal static ForcePerLength ForcePerLength(GH_Component owner, IGH_DataAccess DA, int inputid, ForcePerLengthUnit forceUnit, bool isOptional = false)
     {
       ForcePerLength force = new ForcePerLength();
@@ -322,7 +416,7 @@ namespace ComposGH.Components
           if (!inForce.Value.QuantityInfo.UnitType.Equals(typeof(ForceUnit)))
           {
             owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Error in " + owner.Params.Input[inputid].NickName + " input: Wrong unit type"
-                + System.Environment.NewLine + "Unit type is " + inForce.Value.QuantityInfo.Name + " but must be ForcePerLength");
+                + Environment.NewLine + "Unit type is " + inForce.Value.QuantityInfo.Name + " but must be ForcePerLength");
             return UnitsNet.ForcePerLength.Zero;
           }
           force = (ForcePerLength)inForce.Value.ToUnit(forceUnit);
@@ -472,15 +566,15 @@ namespace ComposGH.Components
     #endregion
 
     #region Reinforcement
-    internal static ComposReinforcement Reinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static Reinforcement Reinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
-      ComposReinforcementGoo goo = null;
+      ReinforcementGoo goo = null;
       GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
       if (DA.GetData(inputid, ref gh_typ))
       {
-        if (gh_typ.Value is ComposReinforcementGoo)
+        if (gh_typ.Value is ReinforcementGoo)
         {
-          goo = (ComposReinforcementGoo)gh_typ.Value;
+          goo = (ReinforcementGoo)gh_typ.Value;
         }
         else
         {
@@ -497,18 +591,18 @@ namespace ComposGH.Components
       }
       return goo.Value;
     }
-    internal static List<ComposReinforcement> TransverseReinforcements(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static List<Reinforcement> TransverseReinforcements(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
-      List<ComposReinforcement> items = new List<ComposReinforcement>();
+      List<Reinforcement> items = new List<Reinforcement>();
       List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
       if (DA.GetDataList(inputid, gh_typs))
       {
         for (int i = 0; i < gh_typs.Count; i++)
         {
           // try cast directly to quantity type
-          if (gh_typs[i].Value is ComposReinforcementGoo)
+          if (gh_typs[i].Value is ReinforcementGoo)
           {
-            ComposReinforcementGoo goo = (ComposReinforcementGoo)gh_typs[i].Value;
+            ReinforcementGoo goo = (ReinforcementGoo)gh_typs[i].Value;
             items.Add(goo.Value);
           }
           else
@@ -525,15 +619,15 @@ namespace ComposGH.Components
       }
       return null;
     }
-    internal static RebarMaterial RebarMaterial(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static ReinforcementMaterial RebarMaterial(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
-      RebarMaterialGoo goo = null;
+      ReinforcementMaterialGoo goo = null;
       GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
       if (DA.GetData(inputid, ref gh_typ))
       {
-        if (gh_typ.Value is RebarMaterialGoo)
+        if (gh_typ.Value is ReinforcementMaterialGoo)
         {
-          goo = (RebarMaterialGoo)gh_typ.Value;
+          goo = (ReinforcementMaterialGoo)gh_typ.Value;
         }
         else
         {
@@ -552,7 +646,7 @@ namespace ComposGH.Components
     }
     #endregion
 
-    #region beam
+    #region Beam
     internal static WebOpeningStiffeners WebOpeningStiffeners(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
       WebOpeningStiffenersGoo goo = null;
@@ -578,18 +672,18 @@ namespace ComposGH.Components
       }
       return goo.Value;
     }
-    internal static List<ComposWebOpening> WebOpenings(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static List<WebOpening> WebOpenings(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
-      List<ComposWebOpening> items = new List<ComposWebOpening>();
+      List<WebOpening> items = new List<WebOpening>();
       List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
       if (DA.GetDataList(inputid, gh_typs))
       {
         for (int i = 0; i < gh_typs.Count; i++)
         {
           // try cast directly to quantity type
-          if (gh_typs[i].Value is ComposWebOpeningGoo)
+          if (gh_typs[i].Value is WebOpeningGoo)
           {
-            ComposWebOpeningGoo goo = (ComposWebOpeningGoo)gh_typs[i].Value;
+            WebOpeningGoo goo = (WebOpeningGoo)gh_typs[i].Value;
             items.Add(goo.Value);
           }
           else
@@ -607,15 +701,15 @@ namespace ComposGH.Components
       return null;
     }
 
-    internal static ComposWebOpening WebOpening(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static WebOpening WebOpening(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
-      ComposWebOpeningGoo goo = null;
+      WebOpeningGoo goo = null;
       GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
       if (DA.GetData(inputid, ref gh_typ))
       {
-        if (gh_typ.Value is ComposWebOpeningGoo)
+        if (gh_typ.Value is WebOpeningGoo)
         {
-          goo = (ComposWebOpeningGoo)gh_typ.Value;
+          goo = (WebOpeningGoo)gh_typ.Value;
         }
         else
         {
@@ -656,7 +750,7 @@ namespace ComposGH.Components
             catch (Exception e)
             {
               owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Compos Beam Section: " 
-                + System.Environment.NewLine + e.Message);
+                + Environment.NewLine + e.Message);
               continue;
             }
           }
@@ -726,15 +820,15 @@ namespace ComposGH.Components
       return goo.Value;
     }
 
-    internal static ComposRestraint Restraint(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static Restraint Restraint(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
-      ComposRestraintGoo goo = null;
+      RestraintGoo goo = null;
       GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
       if (DA.GetData(inputid, ref gh_typ))
       {
-        if (gh_typ.Value is ComposRestraintGoo)
+        if (gh_typ.Value is RestraintGoo)
         {
-          goo = (ComposRestraintGoo)gh_typ.Value;
+          goo = (RestraintGoo)gh_typ.Value;
         }
         else
         {
@@ -752,15 +846,15 @@ namespace ComposGH.Components
       return goo.Value;
     }
 
-    internal static ComposSteelMaterial SteelMaterial(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static SteelMaterial SteelMaterial(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
-      ComposSteelMaterialGoo goo = null;
+      SteelMaterialGoo goo = null;
       GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
       if (DA.GetData(inputid, ref gh_typ))
       {
-        if (gh_typ.Value is ComposSteelMaterialGoo)
+        if (gh_typ.Value is SteelMaterialGoo)
         {
-          goo = (ComposSteelMaterialGoo)gh_typ.Value;
+          goo = (SteelMaterialGoo)gh_typ.Value;
         }
         else
         {
@@ -778,5 +872,26 @@ namespace ComposGH.Components
       return goo.Value;
     }
     #endregion
+
+    internal static object GenericGoo<Type>(GH_Component owner, IGH_DataAccess DA, int inputid)
+    {
+      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+      if (DA.GetData(inputid, ref gh_typ))
+      {
+        if (gh_typ.Value is Type)
+        {
+          return (Type)gh_typ.Value;
+        }
+        else
+        {
+          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to " + typeof(Type).Name);
+          return null;
+        }
+      }
+      else if (!owner.Params.Input[inputid].Optional)
+        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+
+      return null;
+    }
   }
 }

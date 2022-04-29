@@ -54,7 +54,7 @@ namespace ComposGH.Helpers
         while (r.Read())
         {
           // get data
-          string sqlData = System.Convert.ToString(r["CAT_NAME"]);
+          string sqlData = Convert.ToString(r["CAT_NAME"]);
 
           // split text string
           // example: British -- 2
@@ -113,7 +113,7 @@ namespace ComposGH.Helpers
           while (r.Read())
           {
             // get data
-            string sqlData = System.Convert.ToString(r["TYPE_NAME"]);
+            string sqlData = Convert.ToString(r["TYPE_NAME"]);
 
             // split text string
             // example: Universal Beams -- 51
@@ -171,7 +171,7 @@ namespace ComposGH.Helpers
           {
             if (inclSuperseeded)
             {
-              string full = System.Convert.ToString(r["SECT_NAME"]);
+              string full = Convert.ToString(r["SECT_NAME"]);
               // BSI-IPE IPEAA80 -- 2017-09-01 00:00:00.000
               string profile = full.Split(new string[] { " -- " }, StringSplitOptions.None)[0];
               string date = full.Split(new string[] { " -- " }, StringSplitOptions.None)[1];
@@ -181,7 +181,7 @@ namespace ComposGH.Helpers
             }
             else
             {
-              string profile = System.Convert.ToString(r["SECT_NAME"]);
+              string profile = Convert.ToString(r["SECT_NAME"]);
               // BSI-IPE IPEAA80                           
               section.Add(profile);
             }

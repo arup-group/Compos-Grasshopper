@@ -14,6 +14,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
 using Grasshopper.Kernel.Parameters;
+using ComposAPI.SteelBeam;
 
 namespace ComposGH.Components
 {
@@ -144,17 +145,17 @@ namespace ComposGH.Components
       switch (openingType)
       {
         case notch_types.Start:
-          DA.SetData(0, new ComposWebOpeningGoo(new ComposWebOpening(width, height, ComposWebOpening.NotchPosition.Start, stiff)));
+          DA.SetData(0, new WebOpeningGoo(new WebOpening(width, height, WebOpening.NotchPosition.Start, stiff)));
           break;
 
         case notch_types.End:
-          DA.SetData(0, new ComposWebOpeningGoo(new ComposWebOpening(width, height, ComposWebOpening.NotchPosition.End, stiff)));
+          DA.SetData(0, new WebOpeningGoo(new WebOpening(width, height, WebOpening.NotchPosition.End, stiff)));
           break;
 
         case notch_types.Both_ends:
-          List<ComposWebOpeningGoo> both = new List<ComposWebOpeningGoo>();
-          both.Add(new ComposWebOpeningGoo(new ComposWebOpening(width, height, ComposWebOpening.NotchPosition.Start, stiff)));
-          both.Add(new ComposWebOpeningGoo(new ComposWebOpening(width, height, ComposWebOpening.NotchPosition.End, stiff)));
+          List<WebOpeningGoo> both = new List<WebOpeningGoo>();
+          both.Add(new WebOpeningGoo(new WebOpening(width, height, WebOpening.NotchPosition.Start, stiff)));
+          both.Add(new WebOpeningGoo(new WebOpening(width, height, WebOpening.NotchPosition.End, stiff)));
           DA.SetDataList(0, both);
           break;
       }
