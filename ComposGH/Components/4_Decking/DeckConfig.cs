@@ -30,7 +30,7 @@ namespace ComposGH.Components
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-    //protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateStudZoneLength;
+    //protected override System.Drawing.Bitmap Icon => Properties.Resources.;
     #endregion
 
     private AngleUnit angleUnit = AngleUnit.Radian;
@@ -48,7 +48,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Deck Config", "DeckConfig", "Compos Deck Configuration setup", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Deck Config", "dConf", "Compos Deck Configuration setup", GH_ParamAccess.item);
     }
     #endregion
 

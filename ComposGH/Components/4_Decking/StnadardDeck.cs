@@ -26,9 +26,9 @@ namespace ComposGH.Components
             Ribbon.SubCategoryName.Cat4())
     { this.Hidden = false; }
     public override Guid ComponentGuid => new Guid("6796D3E6-CF84-4AC6-ABB7-012C20E6DB9A");
-    public override GH_Exposure Exposure => GH_Exposure.secondary;
+    public override GH_Exposure Exposure => GH_Exposure.primary;
 
-    //protected override System.Drawing.Bitmap Icon => Properties.Resources.MeshReinforcement;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.StandardDecking;
     #endregion
 
     #region Custom UI
@@ -139,12 +139,12 @@ namespace ComposGH.Components
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
 
-      pManager.AddGenericParameter("Deck Config", "DeckConfig", "Compos Deck Configuration setup", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Deck Config", "dConf", "Compos Deck Configuration setup", GH_ParamAccess.item);
 
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Reinforcement", "Rb", "Mesh Reinforcement for Compos Slab", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Custom Deck", "Dk", "Standard Compos Deck", GH_ParamAccess.item);
     }
 
     protected override void SolveInstance(IGH_DataAccess DA)
