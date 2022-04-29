@@ -27,4 +27,14 @@
     <ProjectReference Include="..\ComposGH.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="OasysUnits">
+      <HintPath>..\lib\OasysUnits.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Parameters\1_Beam\SteelMaterial\" />
+  </ItemGroup>
+
 </Project>
