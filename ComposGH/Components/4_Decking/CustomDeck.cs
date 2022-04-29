@@ -69,11 +69,9 @@ namespace ComposGH.Components
         stressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), selecteditems[i]);
       }
 
-        //lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[i]);
-        //stressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), selecteditems[i]);
 
         // update name of inputs (to display unit on sliders)
-        (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
+      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
       ExpireSolution(true);
       Params.OnParametersChanged();
       this.OnDisplayExpired(true);
@@ -123,7 +121,6 @@ namespace ComposGH.Components
       pManager.AddGenericParameter("Depth [" + unitAbbreviation + "]", "D", "Depth of a deck. See the decking picture in helps", GH_ParamAccess.item);
       pManager.AddGenericParameter("Thickness [" + unitAbbreviation + "]", "Th", "Thickness of a deck sheet. See the decking picture in helps", GH_ParamAccess.item);
       pManager.AddGenericParameter("Strength [" + stressunitAbbreviation + "]", "fu", "characteristic strength of Steel Deck", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Material", "RMt", "Reinforcement Material", GH_ParamAccess.item);
       pManager.AddGenericParameter("Deck Config", "DeckConfig", "Compos Deck Configuration setup", GH_ParamAccess.item);
       
     }
@@ -143,7 +140,7 @@ namespace ComposGH.Components
       Length depth = GetInput.Length(this, DA, 5, lengthUnit);
       Length thickness = GetInput.Length(this, DA, 6, lengthUnit);
       Pressure stress = GetInput.Stress(this, DA, 7, stressUnit);
-      DeckConfiguration dconf = GetInput.DeckConfiguration(this, DA, 0);
+      DeckConfiguration dconf = GetInput.DeckConfiguration(this, DA, 8);
 
       DA.SetData(0, new ComposDeckGoo(new ComposDeck(distB1, distB2, distB3, distB4, distB5, depth, thickness, stress, dconf)));
     }

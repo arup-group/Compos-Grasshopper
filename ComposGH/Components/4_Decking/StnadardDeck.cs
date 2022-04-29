@@ -117,7 +117,8 @@ namespace ComposGH.Components
     List<string> spacerDescriptions = new List<string>(new string[]
     {
             "Type",
-            "Decking"
+            "Decking",
+            "Steel Type"
     });
     private bool first = true;
     string catalogue = null;

@@ -15,8 +15,6 @@ namespace ComposGH.Parameters
 
   public class ComposCustomDeck
   {
-    private DeckConfiguration dconf;
-
     public Length DistanceB1 { get; set; }
     public Length DistanceB2 { get; set; }
     public Length DistanceB3 { get; set; }
@@ -33,7 +31,7 @@ namespace ComposGH.Parameters
       // empty constructor
     }
 
-    public ComposCustomDeck(Length distanceB1, Length distanceB2, Length distanceB3, Length distanceB4, Length distanceB5, Length depth, Length thickness, Pressure stress)
+    public ComposCustomDeck(Length distanceB1, Length distanceB2, Length distanceB3, Length distanceB4, Length distanceB5, Length depth, Length thickness, Pressure stress, DeckConfiguration dconf)
     {
       this.DistanceB1 = distanceB1;
       this.DistanceB2 = distanceB2;
@@ -43,12 +41,7 @@ namespace ComposGH.Parameters
       this.Depth = depth;
       this.Thickness = thickness;
       this.Strength = stress;
-
-    }
-
-    public ComposCustomDeck(Length distanceB1, Length distanceB2, Length distanceB3, Length distanceB4, Length distanceB5, Length depth, Length thickness, Pressure stress, DeckConfiguration dconf) : this(distanceB1, distanceB2, distanceB3, distanceB4, distanceB5, depth, thickness, stress)
-    {
-      this.dconf = dconf;
+      this.DeckConfiguration = dconf;
     }
 
     #endregion
@@ -92,7 +85,7 @@ namespace ComposGH.Parameters
   {
     public string Catalogue { get; set; }
     public string Profile { get; set; }
-    public DeckSteelType SteelType { get; set; }
+    public DeckSteelType Type { get; set; }
     public DeckConfiguration DeckConfiguration { get; set; }
 
     public enum DeckSteelType
@@ -110,9 +103,8 @@ namespace ComposGH.Parameters
     {
       this.Catalogue = catalogue;
       this.Profile = profile;
-      this.SteelType = deckSteelType;
+      this.Type = deckSteelType;
       this.DeckConfiguration = deckConfiguration;
-
     }
 
     #endregion
@@ -139,7 +131,7 @@ namespace ComposGH.Parameters
     {
       string catalogue = this.Catalogue.ToString();
       string profile = this.Profile.ToString();
-      string deckSteelType = this.SteelType.ToString();
+      string deckSteelType = this.Type.ToString();
       string deckConfiguration = this.DeckConfiguration.ToString();
 
       string joined = string.Join(" ", new List<string>() { catalogue, profile, deckSteelType, deckConfiguration });
@@ -150,10 +142,6 @@ namespace ComposGH.Parameters
 
   public class ComposDeck
   {
-    private string profile;
-    private string catalogue;
-    private DeckConfiguration dconf;
-    private ComposStandardDeck.DeckSteelType steelType;
 
     public ComposCustomDeck CustomDeck { get; set; }
     public ComposStandardDeck StandardDeck { get; set; }
@@ -178,6 +166,7 @@ namespace ComposGH.Parameters
     public ComposDeck(Length distB1, Length distB2, Length distB3, Length distB4, Length distB5, Length depth, Length thickness, Pressure stress, DeckConfiguration dconf)
     {
       this.CustomDeck = new ComposCustomDeck(distB1, distB2, distB3, distB4, distB5, depth, thickness, stress, dconf);
+      this.Type = DeckType.CustomDeck;
     }
 
     public ComposDeck(ComposStandardDeck standardDeck)
@@ -185,15 +174,11 @@ namespace ComposGH.Parameters
       this.StandardDeck = standardDeck;
       this.Type = DeckType.StandardDeck;
     }
-    public enum DeckSteelType
-    {
-      S280,
-      S350
-    }
 
-    public ComposDeck(string catalogue, string profile, DeckSteelType steelType,DeckConfiguration dconf)
+    public ComposDeck(string catalogue, string profile, ComposStandardDeck.DeckSteelType deckSteelType,DeckConfiguration dconf)
     {
-      this.StandardDeck = new ComposStandardDeck(catalogue, profile, steelType, dconf);
+      this.StandardDeck = new ComposStandardDeck(catalogue, profile, deckSteelType, dconf);
+      this.Type = DeckType.StandardDeck;
     }
 
 
@@ -213,20 +198,6 @@ namespace ComposGH.Parameters
     internal ComposDeck(string coaString)
     {
       // to do - implement from coa string method
-    }
-
-    public ComposDeck(string coaString, string profile, DeckType deckSteelType, DeckConfiguration dconf) : this(coaString)
-    {
-      this.profile = profile;
-      this.steelType = deckSteelType;
-      this.dconf = dconf;
-    }
-
-    public ComposDeck(string coaString, string profile, ComposStandardDeck.DeckSteelType steelType, DeckConfiguration dconf) : this(coaString)
-    {
-      this.profile = profile;
-      this.steelType = steelType;
-      this.dconf = dconf;
     }
 
     internal string ToCoaString()
@@ -288,7 +259,7 @@ namespace ComposGH.Parameters
 
     #region properties
     public override bool IsValid => true;
-    public override string TypeName => "Deck Dimension";
+    public override string TypeName => "Deck ";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot
     {

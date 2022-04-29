@@ -665,7 +665,7 @@ namespace ComposGH.Components
             GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
             if (DA.GetData(inputid, ref gh_typ))
             {
-                if (gh_typ.Value is ComposReinforcementGoo)
+                if (gh_typ.Value is DeckConfigurationGoo)
                 {
                     goo = (DeckConfigurationGoo)gh_typ.Value;
                 }
