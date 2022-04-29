@@ -13,7 +13,7 @@ namespace ComposGH.Parameters.Tests
     [InlineData(Supports.IntermediateRestraint.Mid__Span, true, true)]
     [InlineData(Supports.IntermediateRestraint.Third_Points, false, false)]
     [InlineData(Supports.IntermediateRestraint.Quarter_Points, false, true)]
-    public Supports TestSupportConstructor(Supports.IntermediateRestraint intermediateRestraint, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds)
+    public static Supports TestSupportConstructor(Supports.IntermediateRestraint intermediateRestraint, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds)
     {
 
       // 2 create object instance with constructor
