@@ -29,18 +29,17 @@ namespace ComposGH.Components
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.RebarMaterial;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.ERatio;
     #endregion
 
     #region Input and output
 
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddNumberParameter("Short Term", "ST", "Steel/concrete Young´s modulus ratio for short term", GH_ParamAccess.item, 10);
-      pManager.AddNumberParameter("Long Term", "LT", "Steel/concrete Young´s modulus ratio for long term", GH_ParamAccess.item, 25);
-      pManager.AddNumberParameter("Vibration", "V", "Steel/concrete Young´s modulus ratio for vibration", GH_ParamAccess.item, 9.32);
-      pManager.AddNumberParameter("Shrinkage", "S", "Steel/concrete Young´s modulus ratio for shrinkage", GH_ParamAccess.item, 0);
-      pManager[3].Optional = true;
+      pManager.AddNumberParameter("Short Term", "ST", "Steel/concrete Young´s modulus ratio for short term", GH_ParamAccess.item, 6.24304);
+      pManager.AddNumberParameter("Long Term", "LT", "Steel/concrete Young´s modulus ratio for long term", GH_ParamAccess.item, 23.5531);
+      pManager.AddNumberParameter("Vibration", "V", "Steel/concrete Young´s modulus ratio for vibration", GH_ParamAccess.item, 5.526);
+      pManager.AddNumberParameter("Shrinkage", "S", "Steel/concrete Young´s modulus ratio for shrinkage", GH_ParamAccess.item, 22.3517);
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
@@ -59,6 +58,13 @@ namespace ComposGH.Components
       DA.GetData(1, ref longTerm);
       DA.GetData(2, ref vibration);
       DA.GetData(3, ref shrinkage);
+      if (this.Params.Input[0].Sources.Count == 0
+        & this.Params.Input[1].Sources.Count == 0
+        & this.Params.Input[2].Sources.Count == 0
+        & this.Params.Input[3].Sources.Count == 0)
+      {
+        AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Default values for EC4 C30/37 concrete");
+      }
 
       DA.SetData(0, new ERatioGoo(new ERatio(shortTerm, longTerm, vibration, shrinkage)));
     }

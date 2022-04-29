@@ -16,14 +16,14 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("0f51c6bb-e8cc-4b8a-add2-03b91ed2ca9b");
     public CreateConcreteMaterialASNZ()
-      : base("Concrete Material AS/NZ", "ConcMatASNZ", "Create concrete material (AS/NZ) for concrete slab",
+      : base("AS/NZ Concrete Material", "ConcMatASNZ", "Create concrete material (AS/NZ) for concrete slab",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = false; } // sets the initial state of the component to hidden
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateConcreteMaterial;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateConcreteMaterialAZ;
     #endregion
 
     #region Custom UI

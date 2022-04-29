@@ -138,7 +138,7 @@
     <Compile Include="Parameters\ComposReinforcement.cs" />
     <Compile Include="Parameters\ReinforcementMaterialGoo.cs" />
     <Compile Include="Parameters\1_Beam\ComposBeam.cs" />
-    <Compile Include="Parameters\ComposSteelMaterial.cs" />
+    <Compile Include="Parameters\SteelMaterialGoo.cs" />
     <Compile Include="Parameters\1_Beam\WebOpening\ComposWebOpening.cs" />
     <Compile Include="Parameters\2_Stud\StudDimensionsGoo.cs" />
     <Compile Include="Parameters\1_Beam\BeamSectionGoo.cs" />
@@ -355,6 +355,21 @@
   <ItemGroup>
     <None Include="Properties\Icons\RestraintParam.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreateConcreteMaterialAZ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreateConcreteMaterialBS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreateConcreteMaterialEN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreateConcreteMaterialHK.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\ERatio.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -364,7 +379,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>Copy "$(TargetPath)" "$(TargetDir)ComposGH.gha"</PostBuildEvent>
+    <PostBuildEvent>Copy "$(TargetPath)" "$(TargetDir)Compos.gha"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <FallbackCulture>en-US</FallbackCulture>
