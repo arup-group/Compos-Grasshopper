@@ -2,6 +2,8 @@
 *.bak
 /.vs
 /packages
+/Compos/bin
+/Compos/obj
 /ComposGH/bin
 /ComposGH/obj
 /ComposGH/Tests/bin

@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31624.102
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComposGH", "ComposGH\ComposGH.csproj", "{5274EA0F-5CF8-4F74-ACE6-A273F4196522}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "ComposGH\Tests\Tests.csproj", "{F4B03B06-A806-4114-835E-5775A0EB2F1A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Converters", "ComposGH\Converters\Converters.csproj", "{0BF1ED34-39F9-4842-B788-31D8BEA0825E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Compos", "Compos\Compos.csproj", "{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +42,14 @@ Global
 		{0BF1ED34-39F9-4842-B788-31D8BEA0825E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0BF1ED34-39F9-4842-B788-31D8BEA0825E}.Release|x64.ActiveCfg = Release|Any CPU
 		{0BF1ED34-39F9-4842-B788-31D8BEA0825E}.Release|x64.Build.0 = Release|Any CPU
+		{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}.Debug|x64.Build.0 = Debug|Any CPU
+		{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}.Release|x64.ActiveCfg = Release|Any CPU
+		{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
