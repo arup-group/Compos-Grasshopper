@@ -14,6 +14,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
 using Grasshopper.Kernel.Parameters;
+using ComposAPI.SteelBeam;
 
 namespace ComposGH.Components
 {
@@ -43,11 +44,11 @@ namespace ComposGH.Components
         selecteditems = new List<string>();
 
         // SteelType
-        dropdownitems.Add(Enum.GetValues(typeof(ComposSteelMaterial.SteelType)).Cast<ComposSteelMaterial.SteelType>().Select(x => x.ToString()).ToList());
+        dropdownitems.Add(Enum.GetValues(typeof(SteelMaterial.SteelMaterialGrade)).Cast<SteelMaterial.SteelMaterialGrade>().Select(x => x.ToString()).ToList());
         selecteditems.Add(ST.ToString());
 
         // WeldMaterial
-        dropdownitems.Add(Enum.GetValues(typeof(ComposSteelMaterial.WeldMat)).Cast<ComposSteelMaterial.WeldMat>().Select(x => x.ToString()).ToList());
+        dropdownitems.Add(Enum.GetValues(typeof(SteelMaterial.WeldMaterialGrade)).Cast<SteelMaterial.WeldMaterialGrade>().Select(x => x.ToString()).ToList());
         selecteditems.Add(WM.ToString());
 
         // Stress
@@ -74,18 +75,16 @@ namespace ComposGH.Components
         if (ST.ToString() == selecteditems[i])
           return; // return if selected value is same as before
 
-        ST = (ComposSteelMaterial.SteelType)Enum.Parse(typeof(ComposSteelMaterial.SteelType), selecteditems[i]);
+        ST = (SteelMaterial.SteelMaterialGrade)Enum.Parse(typeof(SteelMaterial.SteelMaterialGrade), selecteditems[i]);
 
-        //ToggleInput();
       }
       if (i == 1)  // change is made to code 
       {
         if (WM.ToString() == selecteditems[i])
           return; // return if selected value is same as before
 
-        WM = (ComposSteelMaterial.WeldMat)Enum.Parse(typeof(ComposSteelMaterial.WeldMat), selecteditems[i]);
+        WM = (SteelMaterial.WeldMaterialGrade)Enum.Parse(typeof(SteelMaterial.WeldMaterialGrade), selecteditems[i]);
 
-        //ToggleInput();
       }
       if (i == 2)
       {
@@ -96,8 +95,8 @@ namespace ComposGH.Components
         densityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), selecteditems[i]);
       }
 
-        // update name of inputs (to display unit on sliders)
-        (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
+      // update name of inputs (to display unit on sliders)
+      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
       ExpireSolution(true);
       Params.OnParametersChanged();
       this.OnDisplayExpired(true);
@@ -106,10 +105,10 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      ST = (ComposSteelMaterial.SteelType)Enum.Parse(typeof(ComposSteelMaterial.SteelType), selecteditems[1]);
-      WM = (ComposSteelMaterial.WeldMat)Enum.Parse(typeof(ComposSteelMaterial.WeldMat), selecteditems[2]);
-      stressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), selecteditems[3]);
-      densityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), selecteditems[4]);
+      ST = (SteelMaterial.SteelMaterialGrade)Enum.Parse(typeof(SteelMaterial.SteelMaterialGrade), selecteditems[0]);
+      WM = (SteelMaterial.WeldMaterialGrade)Enum.Parse(typeof(SteelMaterial.WeldMaterialGrade), selecteditems[1]);
+      stressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), selecteditems[2]);
+      densityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), selecteditems[3]);
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -137,21 +136,19 @@ namespace ComposGH.Components
     private bool first = true;
     private PressureUnit stressUnit = Units.StressUnit;
     private DensityUnit densityUnit = Units.DensityUnit;
-    private ComposSteelMaterial.SteelType ST = ComposSteelMaterial.SteelType.S235;
-    private ComposSteelMaterial.WeldMat WM = ComposSteelMaterial.WeldMat.Grade35;
+    private SteelMaterial.SteelMaterialGrade ST = SteelMaterial.SteelMaterialGrade.S235;
+    private SteelMaterial.WeldMaterialGrade WM = SteelMaterial.WeldMaterialGrade.Grade35;
 
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity stress1 = new Pressure(0, stressUnit);
-      IQuantity stress2 = new Pressure(0, stressUnit);
+      IQuantity stress = new Pressure(0, stressUnit);
       IQuantity density = new Density(0, densityUnit);
 
-      string stress1unitAbbreviation = string.Concat(stress1.ToString().Where(char.IsLetter));
-      string stress2unitAbbreviation = string.Concat(stress2.ToString().Where(char.IsLetter));
+      string stressunitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
       string densityunitAbbreviation = string.Concat(density.ToString().Where(char.IsLetter));
 
-      pManager.AddGenericParameter("Strength [" + stress1unitAbbreviation + "]", "fy", "Steel Yield Strength", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Strength [" + stress2unitAbbreviation + "]", "E", "Steel Young's Modulus", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Strength [" + stressunitAbbreviation + "]", "fy", "Steel Yield Strength", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Young's Modulus [" + stressunitAbbreviation + "]", "E", "Steel Young's Modulus", GH_ParamAccess.item);
       pManager.AddGenericParameter("Density [" + densityunitAbbreviation + "]", "ρ", "Steel Density", GH_ParamAccess.item);
       pManager.AddBooleanParameter("Reduction Factor", "RF", "Apply reduction factor for plastic moment capacity", GH_ParamAccess.item, false);
       pManager[0].Optional = true;
@@ -176,10 +173,14 @@ namespace ComposGH.Components
       if (this.Params.Input[0].Sources.Count > 0)
       {
         selecteditems[0] = "Custom";
-        DA.SetData(0, new ComposSteelMaterialGoo(new ComposSteelMaterial(GetInput.Stress(this, DA, 0, stressUnit), GetInput.Stress(this, DA, 1, stressUnit), GetInput.Density(this, DA, 2, densityUnit), selecteditems[1].ToString(), true, redFact)));
+        DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(
+          GetInput.Stress(this, DA, 0, stressUnit), 
+          GetInput.Stress(this, DA, 1, stressUnit), 
+          GetInput.Density(this, DA, 2, densityUnit), 
+          WM, true, redFact)));
       }
       else
-        DA.SetData(0, new ComposSteelMaterialGoo(new ComposSteelMaterial(ST)));
+        DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(ST)));
     }
 
     #region (de)serialization
@@ -219,7 +220,15 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
+      IQuantity stress = new Pressure(0, stressUnit);
+      IQuantity density = new Density(0, densityUnit);
 
+      string stressunitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
+      string densityunitAbbreviation = string.Concat(density.ToString().Where(char.IsLetter));
+
+      Params.Input[0].Name = "Strength [" + stressunitAbbreviation + "]";
+      Params.Input[1].Name = "Young's Modulus [" + stressunitAbbreviation + "]";
+      Params.Input[2].Name = "Density [" + densityunitAbbreviation + "]";
     }
     #endregion
 

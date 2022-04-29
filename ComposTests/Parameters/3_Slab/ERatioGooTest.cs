@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-using Compos.Model;
 using Xunit;
+using ComposAPI.ConcreteSlab;
 
-namespace ComposGH.Parameters.Tests
+namespace ComposAPI.Tests
 {
   public class ERatioGooTest
   {

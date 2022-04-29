@@ -1,10 +1,11 @@
 ﻿using Xunit;
 using UnitsNet;
 using UnitsNet.Units;
+using ComposAPI.SteelBeam;
 
-namespace ComposGH.Parameters.Tests
+namespace ComposAPI.Tests
 {
-  public partial class ComposWebOpeningTest
+  public partial class WebOpeningTest
   {
     // 1 setup inputs
     [Theory]

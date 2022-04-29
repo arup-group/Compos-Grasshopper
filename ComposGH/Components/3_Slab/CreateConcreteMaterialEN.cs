@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Compos.Model;
 using Grasshopper.Kernel;
 using Oasys.Units;
 using UnitsNet;
 using UnitsNet.Units;
+using ComposAPI.ConcreteSlab;
 
 namespace ComposGH.Components
 {
@@ -127,7 +126,7 @@ namespace ComposGH.Components
       IQuantity density = new Density(0, this.DensityUnit);
       string densityUnitAbbreviation = string.Concat(density.ToString().Where(char.IsLetter));
 
-      string strainUnitAbbreviation = Oasys.Units.Strain.GetAbbreviation(this.StrainUnit);
+      string strainUnitAbbreviation = Strain.GetAbbreviation(this.StrainUnit);
 
       // optional
       pManager.AddNumberParameter("Dry Density [" + densityUnitAbbreviation + "]", "DD", "(Optional) Dry density", GH_ParamAccess.item);

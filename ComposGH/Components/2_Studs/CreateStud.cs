@@ -14,6 +14,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
 using Grasshopper.Kernel.Parameters;
+using ComposAPI.Studs;
 
 namespace ComposGH.Components
 {
@@ -123,24 +124,24 @@ namespace ComposGH.Components
         case StudGroupSpacing.StudSpacingType.Automatic:
         case StudGroupSpacing.StudSpacingType.Min_Num_of_Studs:
           DA.GetData(2, ref minSav);
-          DA.SetData(0, new ComposStudGoo(
-              new ComposStud(studDimensions, studSpec, minSav, spacingType)));
+          DA.SetData(0, new StudGoo(
+              new Stud(studDimensions, studSpec, minSav, spacingType)));
           break;
 
         case StudGroupSpacing.StudSpacingType.Partial_Interaction:
           DA.GetData(2, ref minSav);
           double interaction = 0.85;
           DA.GetData(3, ref interaction);
-          DA.SetData(0, new ComposStudGoo(
-              new ComposStud(studDimensions, studSpec, minSav, interaction)));
+          DA.SetData(0, new StudGoo(
+              new Stud(studDimensions, studSpec, minSav, interaction)));
           break;
 
         case StudGroupSpacing.StudSpacingType.Custom:
           List<StudGroupSpacing> spacings = GetInput.StudSpacings(this, DA, 2);
           bool check = false;
           DA.GetData(3, ref check);
-          DA.SetData(0, new ComposStudGoo(
-              new ComposStud(studDimensions, studSpec, spacings, check)));
+          DA.SetData(0, new StudGoo(
+              new Stud(studDimensions, studSpec, spacings, check)));
           break;
       }
     }

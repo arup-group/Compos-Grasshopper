@@ -14,6 +14,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
 using Grasshopper.Kernel.Parameters;
+using ComposAPI.SteelBeam;
 
 namespace ComposGH.Components
 {

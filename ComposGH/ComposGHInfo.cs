@@ -31,10 +31,10 @@ namespace ComposGH
 
       // ### Set system environment variables to allow user rights to read above dll ###
       const string name = "PATH";
-      string pathvar = System.Environment.GetEnvironmentVariable(name);
+      string pathvar = Environment.GetEnvironmentVariable(name);
       var value = pathvar + ";" + InstallPath;
       var target = EnvironmentVariableTarget.Process;
-      System.Environment.SetEnvironmentVariable(name, value, target);
+      Environment.SetEnvironmentVariable(name, value, target);
 
       // ### use the API and trigger a license check if possible
 

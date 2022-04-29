@@ -13,6 +13,7 @@ using ComposGH.Parameters;
 using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
+using ComposAPI.SteelBeam;
 
 namespace ComposGH.Components
 {
@@ -122,25 +123,21 @@ namespace ComposGH.Components
         Line ln = new Line();
         if (GH_Convert.ToLine(ghln, ref ln, GH_Conversion.Both))
         {
-          ComposRestraint res = GetInput.Restraint(this, DA, 1);
+          Restraint res = GetInput.Restraint(this, DA, 1);
 
-          // temp
-          ComposSteelMaterial mat = new ComposSteelMaterial();
-          //ComposSteelMaterial mat = GetInput.SteelMaterial(this, DA, 2);
+          SteelMaterial mat = GetInput.SteelMaterial(this, DA, 2);
 
           List<BeamSection> beamSections = GetInput.BeamSections(this, DA, 3);
           try
           {
             if (this.Params.Input[4].Sources.Count > 0)
             {
-              List<ComposWebOpening> webOpenings = GetInput.WebOpenings(this, DA, 4);
-              ComposBeam beam = new ComposBeam(new LineCurve(ln), lengthUnit, res, mat, beamSections, webOpenings);
-              DA.SetData(0, new ComposBeamGoo(beam));
+              List<WebOpening> webOpenings = GetInput.WebOpenings(this, DA, 4);
+              DA.SetData(0, new BeamGoo(new LineCurve(ln), lengthUnit, res, mat, beamSections, webOpenings));
             }
             else
             {
-              ComposBeam beam = new ComposBeam(new LineCurve(ln), lengthUnit, res, mat, beamSections);
-              DA.SetData(0, new ComposBeamGoo(beam));
+              DA.SetData(0, new BeamGoo(new LineCurve(ln), lengthUnit, res, mat, beamSections));
             }
           }
           catch (Exception e)

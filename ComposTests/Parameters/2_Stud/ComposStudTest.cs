@@ -2,13 +2,14 @@
 using UnitsNet;
 using UnitsNet.Units;
 using System.Collections.Generic;
+using ComposAPI.Studs;
 
-namespace ComposGH.Parameters.Tests
+namespace ComposAPI.Tests
 {
-  public partial class ComposStudTest
+  public partial class StudTest
   {
     [Fact]
-    public ComposStud TestConstructorStudCustomSpacing()
+    public Stud TestConstructorStudCustomSpacing()
     {
       // 1 setup inputs
       StudDimensions dimensions = new StudDimensions(StudDimensions.StandardSize.D13mmH65mm, StudDimensions.StandardGrade.SD1_EN13918);
@@ -18,7 +19,7 @@ namespace ComposGH.Parameters.Tests
       studSpacings.Add(new StudGroupSpacing(Length.Zero, 1, 2, new Length(35, LengthUnit.Centimeter)));
 
       // 2 create object instance with constructor
-      ComposStud stud = new ComposStud(dimensions, specification, studSpacings, true);
+      Stud stud = new Stud(dimensions, specification, studSpacings, true);
 
       // 3 check that inputs are set in object's members
       // dimensions
@@ -58,14 +59,14 @@ namespace ComposGH.Parameters.Tests
     [Theory]
     [InlineData(StudGroupSpacing.StudSpacingType.Min_Num_of_Studs, 0.2)]
     [InlineData(StudGroupSpacing.StudSpacingType.Automatic, 0.3)]
-    public ComposStud TestConstructorStudAutomaticOrMinSpacing(StudGroupSpacing.StudSpacingType type, double minSaving)
+    public Stud TestConstructorStudAutomaticOrMinSpacing(StudGroupSpacing.StudSpacingType type, double minSaving)
     {
       // 1b setup inputs
       StudDimensions dimensions = new StudDimensions(StudDimensions.StandardSize.D13mmH65mm, StudDimensions.StandardGrade.SD1_EN13918);
       StudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
 
       // 2 create object instance with constructor
-      ComposStud stud = new ComposStud(dimensions, specification, minSaving, type);
+      Stud stud = new Stud(dimensions, specification, minSaving, type);
 
       // 3 check that inputs are set in object's members
       // dimensions
@@ -102,14 +103,14 @@ namespace ComposGH.Parameters.Tests
     [Theory]
     [InlineData(0.2, 0.95)]
     [InlineData(0.3, 0.85)]
-    public ComposStud TestConstructorStudPartialSpacing(double minSaving, double interaction)
+    public Stud TestConstructorStudPartialSpacing(double minSaving, double interaction)
     {
       // 1b setup inputs
       StudDimensions dimensions = new StudDimensions(StudDimensions.StandardSize.D13mmH65mm, StudDimensions.StandardGrade.SD1_EN13918);
       StudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
 
       // 2 create object instance with constructor
-      ComposStud stud = new ComposStud(dimensions, specification, minSaving, interaction);
+      Stud stud = new Stud(dimensions, specification, minSaving, interaction);
 
       // 3 check that inputs are set in object's members
       // dimensions
@@ -134,11 +135,11 @@ namespace ComposGH.Parameters.Tests
     }
 
     [Fact]
-    public void TestComposStudDuplicate()
+    public void TestStudDuplicate()
     {
       // 1 create with constructor and duplicate
-      ComposStud original = TestConstructorStudCustomSpacing();
-      ComposStud duplicate = original.Duplicate();
+      Stud original = TestConstructorStudCustomSpacing();
+      Stud duplicate = original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       // dimensions

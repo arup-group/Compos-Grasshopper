@@ -43,8 +43,8 @@ namespace ComposGH.UI
       get
       {
         List<string> texts = new List<string>() { spacerTxt };
-        float sp = ComposGH.UI.ComponentUI.MaxTextWidth(texts, new Font(GH_FontServer.FamilyStandard, 7));
-        float dd1 = ComposGH.UI.ComponentUI.MaxTextWidth(displayTexts, new Font(GH_FontServer.FamilyStandard, 7));
+        float sp = ComponentUI.MaxTextWidth(texts, new Font(GH_FontServer.FamilyStandard, 7));
+        float dd1 = ComponentUI.MaxTextWidth(displayTexts, new Font(GH_FontServer.FamilyStandard, 7));
         float num = Math.Max(Math.Max(sp, dd1 + 15), 90);
         return num;
       }
@@ -102,8 +102,8 @@ namespace ComposGH.UI
 
       if (channel == GH_CanvasChannel.Objects)
       {
-        Pen spacer = new Pen(UI.Colour.SpacerColour);
-        Pen pen = new Pen(UI.Colour.GsaDarkBlue)
+        Pen spacer = new Pen(Colour.SpacerColour);
+        Pen pen = new Pen(Colour.GsaDarkBlue)
         {
           Width = 0.5f
         };
@@ -115,13 +115,13 @@ namespace ComposGH.UI
         // adjust fontsize to high resolution displays
         sml = new Font(sml.FontFamily, sml.Size / GH_GraphicsUtil.UiScale, FontStyle.Regular);
 
-        Brush fontColour = UI.Colour.AnnotationTextDark;
+        Brush fontColour = Colour.AnnotationTextDark;
 
 
         // #### spacer ####
         if (spacerTxt != "")
         {
-          graphics.DrawString(spacerTxt, sml, UI.Colour.AnnotationTextDark, SpacerBound, GH_TextRenderingConstants.CenterCenter);
+          graphics.DrawString(spacerTxt, sml, Colour.AnnotationTextDark, SpacerBound, GH_TextRenderingConstants.CenterCenter);
           graphics.DrawLine(spacer, SpacerBound.X, SpacerBound.Y + SpacerBound.Height / 2, SpacerBound.X + (SpacerBound.Width - GH_FontServer.StringWidth(spacerTxt, sml)) / 2 - 4, SpacerBound.Y + SpacerBound.Height / 2);
           graphics.DrawLine(spacer, SpacerBound.X + (SpacerBound.Width - GH_FontServer.StringWidth(spacerTxt, sml)) / 2 + GH_FontServer.StringWidth(spacerTxt, sml) + 4, SpacerBound.Y + SpacerBound.Height / 2, SpacerBound.X + SpacerBound.Width, SpacerBound.Y + SpacerBound.Height / 2);
         }
@@ -129,7 +129,7 @@ namespace ComposGH.UI
         // #### check boxes ####
         for (int i = 0; i < displayTexts.Count; i++)
         {
-          Color myColour = UI.Colour.GsaDarkBlue;
+          Color myColour = Colour.GsaDarkBlue;
           Brush myBrush = new SolidBrush(myColour);
           Brush activeFillBrush = myBrush;
           Brush passiveFillBrush = Brushes.LightGray;
@@ -145,7 +145,7 @@ namespace ComposGH.UI
           List<string> incl = new List<string>();
           incl.Add(displayTexts[i]);
           RectangleF txtBound = TextBound[i];
-          txtBound.Width = ComposGH.UI.ComponentUI.MaxTextWidth(incl, font);
+          txtBound.Width = ComponentUI.MaxTextWidth(incl, font);
           TextBound[i] = txtBound;
         }
       }
@@ -187,7 +187,7 @@ namespace ComposGH.UI
       if (mouseOver)
       {
         mouseOver = false;
-        Grasshopper.Instances.CursorServer.ResetCursor(sender);
+        Instances.CursorServer.ResetCursor(sender);
         return GH_ObjectResponse.Release;
       }
 
@@ -216,7 +216,7 @@ namespace ComposGH.UI
       // secondly update position of input and output parameter text
       // first find the maximum text width of parameters
 
-      foreach (IGH_Param item in base.Owner.Params.Output)
+      foreach (IGH_Param item in Owner.Params.Output)
       {
         PointF pivot = item.Attributes.Pivot; // original anchor location of output
         RectangleF bounds = item.Attributes.Bounds; // text box itself
@@ -231,12 +231,12 @@ namespace ComposGH.UI
       }
       // for input params first find the widest input text box as these are right-aligned
       float inputwidth = 0f;
-      foreach (IGH_Param item in base.Owner.Params.Input)
+      foreach (IGH_Param item in Owner.Params.Input)
       {
         if (inputwidth < item.Attributes.Bounds.Width)
           inputwidth = item.Attributes.Bounds.Width;
       }
-      foreach (IGH_Param item2 in base.Owner.Params.Input)
+      foreach (IGH_Param item2 in Owner.Params.Input)
       {
         PointF pivot2 = item2.Attributes.Pivot; // original anchor location of input
         RectangleF bounds2 = item2.Attributes.Bounds;

@@ -2,8 +2,9 @@
 using UnitsNet;
 using UnitsNet.Units;
 using System.Collections.Generic;
+using ComposAPI.SteelBeam;
 
-namespace ComposGH.Parameters.Tests
+namespace ComposAPI.Tests
 {
   public partial class ComposBeamTest
   {

@@ -1,16 +1,18 @@
 ﻿using Xunit;
 using UnitsNet;
 using UnitsNet.Units;
+using ComposAPI.Loads;
+using static ComposAPI.Loads.Load;
 
-namespace ComposGH.Parameters.Tests
+namespace ComposAPI.Tests
 {
-  public partial class ComposLoadTest
+  public partial class LoadTest
   {
     // 1 setup inputs
     [Theory]
     [InlineData(1, 1.5, 3, 5, 5000)]
     [InlineData(3, 4.5, 6, 5, 0)]
-    public ComposLoad TestPointLoadConstructor(double consDead, double consLive, double finalDead, double finalLive, double position)
+    public Load TestPointLoadConstructor(double consDead, double consLive, double finalDead, double finalLive, double position)
     {
       LengthUnit length = LengthUnit.Millimeter;
       ForceUnit force = ForceUnit.Kilonewton;
@@ -26,7 +28,7 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(finalDead, load.Load.FinalDead.As(force));
       Assert.Equal(finalLive, load.Load.FinalLive.As(force));
       Assert.Equal(position, load.Load.Position.Millimeters);
-      Assert.Equal(ComposLoad.LoadType.Point, load.Type);
+      Assert.Equal(LoadType.Point, load.Type);
 
       return load;
     }
@@ -35,7 +37,7 @@ namespace ComposGH.Parameters.Tests
     [Theory]
     [InlineData(1, 1.5, 3, 5)]
     [InlineData(3, 4.5, 6, 5)]
-    public ComposLoad TestUniformLineLoadConstructor(double consDead, double consLive, double finalDead, double finalLive)
+    public Load TestUniformLineLoadConstructor(double consDead, double consLive, double finalDead, double finalLive)
     {
       ForcePerLengthUnit force = ForcePerLengthUnit.KilonewtonPerMeter;
 
@@ -48,8 +50,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(consLive, load.Load.ConstantLive.As(force));
       Assert.Equal(finalDead, load.Load.FinalDead.As(force));
       Assert.Equal(finalLive, load.Load.FinalLive.As(force));
-      Assert.Equal(ComposLoad.LoadType.Uniform, load.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Line, load.Distribution);
+      Assert.Equal(LoadType.Uniform, load.Type);
+      Assert.Equal(LoadDistribution.Line, load.Distribution);
 
       return load;
     }
@@ -58,7 +60,7 @@ namespace ComposGH.Parameters.Tests
     [Theory]
     [InlineData(1, 1.5, 3, 5)]
     [InlineData(3, 4.5, 6, 5)]
-    public ComposLoad TestUniformAreaLoadConstructor(double consDead, double consLive, double finalDead, double finalLive)
+    public Load TestUniformAreaLoadConstructor(double consDead, double consLive, double finalDead, double finalLive)
     {
       PressureUnit force = PressureUnit.KilonewtonPerSquareMeter;
 
@@ -71,8 +73,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(consLive, load.Load.ConstantLive.As(force));
       Assert.Equal(finalDead, load.Load.FinalDead.As(force));
       Assert.Equal(finalLive, load.Load.FinalLive.As(force));
-      Assert.Equal(ComposLoad.LoadType.Uniform, load.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Area, load.Distribution);
+      Assert.Equal(LoadType.Uniform, load.Type);
+      Assert.Equal(LoadDistribution.Area, load.Distribution);
 
       return load;
     }
@@ -80,7 +82,7 @@ namespace ComposGH.Parameters.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(1, 1.5, 3, 5, 3, 4.5, 6, 5)]
-    public ComposLoad TestLinearLineLoadConstructor(double consDead1, double consLive1, double finalDead1, double finalLive1,
+    public Load TestLinearLineLoadConstructor(double consDead1, double consLive1, double finalDead1, double finalLive1,
       double consDead2, double consLive2, double finalDead2, double finalLive2)
     {
       ForcePerLengthUnit force = ForcePerLengthUnit.KilonewtonPerMeter;
@@ -99,8 +101,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(consLive2, load.LoadW2.ConstantLive.As(force));
       Assert.Equal(finalDead2, load.LoadW2.FinalDead.As(force));
       Assert.Equal(finalLive2, load.LoadW2.FinalLive.As(force));
-      Assert.Equal(ComposLoad.LoadType.Linear, load.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Line, load.Distribution);
+      Assert.Equal(LoadType.Linear, load.Type);
+      Assert.Equal(LoadDistribution.Line, load.Distribution);
 
       return load;
     }
@@ -108,7 +110,7 @@ namespace ComposGH.Parameters.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(1, 1.5, 3, 5, 3, 4.5, 6, 5)]
-    public ComposLoad TestLinearAreaLoadConstructor(double consDead1, double consLive1, double finalDead1, double finalLive1,
+    public Load TestLinearAreaLoadConstructor(double consDead1, double consLive1, double finalDead1, double finalLive1,
       double consDead2, double consLive2, double finalDead2, double finalLive2)
     {
       PressureUnit force = PressureUnit.KilonewtonPerSquareMeter;
@@ -127,8 +129,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(consLive2, load.LoadW2.ConstantLive.As(force));
       Assert.Equal(finalDead2, load.LoadW2.FinalDead.As(force));
       Assert.Equal(finalLive2, load.LoadW2.FinalLive.As(force));
-      Assert.Equal(ComposLoad.LoadType.Linear, load.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Area, load.Distribution);
+      Assert.Equal(LoadType.Linear, load.Type);
+      Assert.Equal(LoadDistribution.Area, load.Distribution);
 
       return load;
     }
@@ -136,7 +138,7 @@ namespace ComposGH.Parameters.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(1, 1.5, 3, 5, 4000, 3, 4.5, 6, 5, 6000)]
-    public ComposLoad TestTriLinearLineLoadConstructor(double consDead1, double consLive1, double finalDead1, double finalLive1, double positionW1,
+    public Load TestTriLinearLineLoadConstructor(double consDead1, double consLive1, double finalDead1, double finalLive1, double positionW1,
       double consDead2, double consLive2, double finalDead2, double finalLive2, double positionW2)
     {
       LengthUnit length = LengthUnit.Millimeter;
@@ -158,8 +160,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(finalDead2, load.LoadW2.FinalDead.As(force));
       Assert.Equal(finalLive2, load.LoadW2.FinalLive.As(force));
       Assert.Equal(positionW2, load.LoadW2.Position.Millimeters);
-      Assert.Equal(ComposLoad.LoadType.TriLinear, load.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Line, load.Distribution);
+      Assert.Equal(LoadType.TriLinear, load.Type);
+      Assert.Equal(LoadDistribution.Line, load.Distribution);
 
       return load;
     }
@@ -167,7 +169,7 @@ namespace ComposGH.Parameters.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(1, 1.5, 3, 5, 4000, 3, 4.5, 6, 5, 6000)]
-    public ComposLoad TestTriLinearAreaLoadConstructor(double consDead1, double consLive1, double finalDead1, double finalLive1, double positionW1, 
+    public Load TestTriLinearAreaLoadConstructor(double consDead1, double consLive1, double finalDead1, double finalLive1, double positionW1, 
       double consDead2, double consLive2, double finalDead2, double finalLive2, double positionW2)
     {
       LengthUnit length = LengthUnit.Millimeter;
@@ -189,8 +191,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(finalDead2, load.LoadW2.FinalDead.As(force));
       Assert.Equal(finalLive2, load.LoadW2.FinalLive.As(force));
       Assert.Equal(positionW2, load.LoadW2.Position.Millimeters);
-      Assert.Equal(ComposLoad.LoadType.TriLinear, load.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Area, load.Distribution);
+      Assert.Equal(LoadType.TriLinear, load.Type);
+      Assert.Equal(LoadDistribution.Area, load.Distribution);
 
       return load;
     }
@@ -198,7 +200,7 @@ namespace ComposGH.Parameters.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(1, 1.5, 3, 5, 4000, 3, 4.5, 6, 5, 6000)]
-    public ComposLoad TestPatchLineLoadConstructor(double consDead1, double consLive1, double finalDead1, double finalLive1, double positionW1,
+    public Load TestPatchLineLoadConstructor(double consDead1, double consLive1, double finalDead1, double finalLive1, double positionW1,
       double consDead2, double consLive2, double finalDead2, double finalLive2, double positionW2)
     {
       LengthUnit length = LengthUnit.Millimeter;
@@ -220,8 +222,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(finalDead2, load.LoadW2.FinalDead.As(force));
       Assert.Equal(finalLive2, load.LoadW2.FinalLive.As(force));
       Assert.Equal(positionW2, load.LoadW2.Position.Millimeters);
-      Assert.Equal(ComposLoad.LoadType.Patch, load.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Line, load.Distribution);
+      Assert.Equal(LoadType.Patch, load.Type);
+      Assert.Equal(LoadDistribution.Line, load.Distribution);
 
       return load;
     }
@@ -229,7 +231,7 @@ namespace ComposGH.Parameters.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(1, 1.5, 3, 5, 4000, 3, 4.5, 6, 5, 6000)]
-    public ComposLoad TestPatchAreaLoadConstructor(double consDead1, double consLive1, double finalDead1, double finalLive1, double positionW1,
+    public Load TestPatchAreaLoadConstructor(double consDead1, double consLive1, double finalDead1, double finalLive1, double positionW1,
       double consDead2, double consLive2, double finalDead2, double finalLive2, double positionW2)
     {
       LengthUnit length = LengthUnit.Millimeter;
@@ -251,8 +253,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(finalDead2, load.LoadW2.FinalDead.As(force));
       Assert.Equal(finalLive2, load.LoadW2.FinalLive.As(force));
       Assert.Equal(positionW2, load.LoadW2.Position.Millimeters);
-      Assert.Equal(ComposLoad.LoadType.Patch, load.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Area, load.Distribution);
+      Assert.Equal(LoadType.Patch, load.Type);
+      Assert.Equal(LoadDistribution.Area, load.Distribution);
 
       return load;
     }
@@ -260,7 +262,7 @@ namespace ComposGH.Parameters.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(1, 1.5, 3, 5, 150, 3, 4.5, 6, 5, 200)]
-    public ComposLoad TestAxialLoadConstructor(double consDead1, double consLive1, double finalDead1, double finalLive1, double depth1,
+    public Load TestAxialLoadConstructor(double consDead1, double consLive1, double finalDead1, double finalLive1, double depth1,
       double consDead2, double consLive2, double finalDead2, double finalLive2, double depth2)
     {
       LengthUnit length = LengthUnit.Millimeter;
@@ -282,7 +284,7 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(finalDead2, load.LoadW2.FinalDead.As(force));
       Assert.Equal(finalLive2, load.LoadW2.FinalLive.As(force));
       Assert.Equal(depth2, load.Depth2.Millimeters);
-      Assert.Equal(ComposLoad.LoadType.Axial, load.Type);
+      Assert.Equal(LoadType.Axial, load.Type);
 
       return load;
     }
@@ -291,7 +293,7 @@ namespace ComposGH.Parameters.Tests
     [Theory]
     [InlineData(100, "MEMBER-2", MemberLoad.SupportSide.Right)]
     [InlineData(4000, "MEMBER-1", MemberLoad.SupportSide.Left)]
-    public ComposLoad TestMemberLoadConstructor(double position, string name, MemberLoad.SupportSide side)
+    public Load TestMemberLoadConstructor(double position, string name, MemberLoad.SupportSide side)
     {
       LengthUnit length = LengthUnit.Millimeter;
 
@@ -302,7 +304,7 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(position, load.Position.Millimeters);
       Assert.Equal(name, load.MemberName);
       Assert.Equal(side, load.Support);
-      Assert.Equal(ComposLoad.LoadType.MemberLoad, load.Type);
+      Assert.Equal(LoadType.MemberLoad, load.Type);
 
       return load;
     }

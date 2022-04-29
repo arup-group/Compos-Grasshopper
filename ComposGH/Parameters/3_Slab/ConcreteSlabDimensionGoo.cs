@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Compos.Model;
 using Grasshopper.Documentation;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
@@ -11,6 +10,7 @@ using Rhino.Geometry;
 using Rhino.Collections;
 using UnitsNet;
 using UnitsNet.Units;
+using ComposAPI.ConcreteSlab;
 
 namespace ComposGH.Parameters
 {

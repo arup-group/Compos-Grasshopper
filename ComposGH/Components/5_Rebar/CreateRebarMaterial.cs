@@ -13,6 +13,7 @@ using ComposGH.Parameters;
 using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
+using ComposAPI.ConcreteSlab;
 
 namespace ComposGH.Components
 {
@@ -43,7 +44,7 @@ namespace ComposGH.Components
         selecteditems = new List<string>();
 
         // grade
-        dropdownitems.Add(Enum.GetValues(typeof(RebarMaterial.StandardGrade)).Cast<RebarMaterial.StandardGrade>().Select(x => x.ToString()).ToList());
+        dropdownitems.Add(Enum.GetValues(typeof(ReinforcementMaterial.StandardGrade)).Cast<ReinforcementMaterial.StandardGrade>().Select(x => x.ToString()).ToList());
         selecteditems.Add(mat.ToString());
 
         // strength
@@ -61,7 +62,7 @@ namespace ComposGH.Components
 
       if (i == 0) // change is made to grade
       {
-        mat = (RebarMaterial.StandardGrade)Enum.Parse(typeof(RebarMaterial.StandardGrade), selecteditems[i]);
+        mat = (ReinforcementMaterial.StandardGrade)Enum.Parse(typeof(ReinforcementMaterial.StandardGrade), selecteditems[i]);
       }
       if (i == 1) // change is made to unit
       {
@@ -79,7 +80,7 @@ namespace ComposGH.Components
     private void UpdateUIFromSelectedItems()
     {
       if (selecteditems[0] != "Custom")
-        mat = (RebarMaterial.StandardGrade)Enum.Parse(typeof(RebarMaterial.StandardGrade), selecteditems[0]);
+        mat = (ReinforcementMaterial.StandardGrade)Enum.Parse(typeof(ReinforcementMaterial.StandardGrade), selecteditems[0]);
 
       stressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), selecteditems[1]);
 
@@ -104,7 +105,7 @@ namespace ComposGH.Components
 
     private bool first = true;
     private PressureUnit stressUnit = Units.StressUnit;
-    private RebarMaterial.StandardGrade mat = RebarMaterial.StandardGrade.EN_500B;
+    private ReinforcementMaterial.StandardGrade mat = ReinforcementMaterial.StandardGrade.EN_500B;
 
     #endregion
 
@@ -129,10 +130,10 @@ namespace ComposGH.Components
       if (this.Params.Input[0].Sources.Count > 0)
       {
         selecteditems[0] = "Custom";
-        DA.SetData(0, new RebarMaterialGoo(new RebarMaterial(GetInput.Stress(this, DA, 0, stressUnit))));
+        DA.SetData(0, new ReinforcementMaterialGoo(new ReinforcementMaterial(GetInput.Stress(this, DA, 0, stressUnit))));
       }
       else
-        DA.SetData(0, new RebarMaterialGoo(new RebarMaterial(mat)));
+        DA.SetData(0, new ReinforcementMaterialGoo(new ReinforcementMaterial(mat)));
     }
 
 

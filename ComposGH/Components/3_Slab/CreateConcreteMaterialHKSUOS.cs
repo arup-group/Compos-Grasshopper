@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Compos.Model;
 using Grasshopper.Kernel;
 using UnitsNet;
 using UnitsNet.Units;
+using ComposAPI.ConcreteSlab;
 
 namespace ComposGH.Components
 {

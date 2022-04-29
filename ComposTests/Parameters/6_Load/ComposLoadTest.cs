@@ -1,12 +1,12 @@
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
+using ComposAPI.Loads;
+using static ComposAPI.Loads.Load;
 
-using static ComposGH.Parameters.ComposDesignCode;
-
-namespace ComposGH.Parameters.Tests
+namespace ComposAPI.Tests
 {
-  public partial class ComposLoadTest
+  public partial class LoadTest
   {
     [Fact]
     public void TestPointLoadDuplicate()
@@ -15,8 +15,8 @@ namespace ComposGH.Parameters.Tests
       ForceUnit force = ForceUnit.Kilonewton;
 
       // 1 create with constructor and duplicate
-      ComposLoad originalParent = TestPointLoadConstructor(0, 0, 1, 1, 0.5);
-      ComposLoad duplicateParent = originalParent.Duplicate();
+      Load originalParent = TestPointLoadConstructor(0, 0, 1, 1, 0.5);
+      Load duplicateParent = originalParent.Duplicate();
 
       // 1b create child
       PointLoad duplicateChild = (PointLoad)duplicateParent;
@@ -29,7 +29,7 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(1, duplicateChild.Load.FinalDead.As(force));
       Assert.Equal(1, duplicateChild.Load.FinalLive.As(force));
       Assert.Equal(0.5, duplicateChild.Load.Position.As(length));
-      Assert.Equal(ComposLoad.LoadType.Point, duplicateChild.Type);
+      Assert.Equal(LoadType.Point, duplicateChild.Type);
 
       // 3 make some changes to duplicate
       duplicateChild.Load.ConstantDead = new Force(15, force);
@@ -44,7 +44,7 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(-10, duplicateChild.Load.FinalDead.As(force));
       Assert.Equal(-5, duplicateChild.Load.FinalLive.As(force));
       Assert.Equal(5000, duplicateChild.Load.Position.As(length));
-      Assert.Equal(ComposLoad.LoadType.Point, duplicateChild.Type);
+      Assert.Equal(LoadType.Point, duplicateChild.Type);
 
       // 5 check that original has not been changed
       Assert.Equal(0, originalChild.Load.ConstantDead.As(force));
@@ -52,7 +52,7 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(1, originalChild.Load.FinalDead.As(force));
       Assert.Equal(1, originalChild.Load.FinalLive.As(force));
       Assert.Equal(0.5, originalChild.Load.Position.As(length));
-      Assert.Equal(ComposLoad.LoadType.Point, originalChild.Type);
+      Assert.Equal(LoadType.Point, originalChild.Type);
     }
 
     [Fact]
@@ -62,8 +62,8 @@ namespace ComposGH.Parameters.Tests
       PressureUnit area = PressureUnit.KilonewtonPerSquareMeter;
 
       // 1 create with constructor and duplicate
-      ComposLoad originalParent = TestUniformLineLoadConstructor(0, 0, 1, 1);
-      ComposLoad duplicateParent = originalParent.Duplicate();
+      Load originalParent = TestUniformLineLoadConstructor(0, 0, 1, 1);
+      Load duplicateParent = originalParent.Duplicate();
 
       // 1b create child
       UniformLoad duplicateChildLine = (UniformLoad)duplicateParent;
@@ -74,8 +74,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(0, duplicateChildLine.Load.ConstantLive.As(length));
       Assert.Equal(1, duplicateChildLine.Load.FinalDead.As(length));
       Assert.Equal(1, duplicateChildLine.Load.FinalLive.As(length));
-      Assert.Equal(ComposLoad.LoadType.Uniform, duplicateChildLine.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Line, duplicateChildLine.Distribution);
+      Assert.Equal(LoadType.Uniform, duplicateChildLine.Type);
+      Assert.Equal(LoadDistribution.Line, duplicateChildLine.Distribution);
 
       // 3 make some changes to duplicate
       duplicateChildLine.Load.ConstantDead = new ForcePerLength(15, length);
@@ -88,16 +88,16 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(20, duplicateChildLine.Load.ConstantLive.As(length));
       Assert.Equal(-10, duplicateChildLine.Load.FinalDead.As(length));
       Assert.Equal(-5, duplicateChildLine.Load.FinalLive.As(length));
-      Assert.Equal(ComposLoad.LoadType.Uniform, duplicateChildLine.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Line, duplicateChildLine.Distribution);
+      Assert.Equal(LoadType.Uniform, duplicateChildLine.Type);
+      Assert.Equal(LoadDistribution.Line, duplicateChildLine.Distribution);
 
       // 5 check that original has not been changed
       Assert.Equal(0, originalChildLine.Load.ConstantDead.As(length));
       Assert.Equal(0, originalChildLine.Load.ConstantLive.As(length));
       Assert.Equal(1, originalChildLine.Load.FinalDead.As(length));
       Assert.Equal(1, originalChildLine.Load.FinalLive.As(length));
-      Assert.Equal(ComposLoad.LoadType.Uniform, originalChildLine.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Line, originalChildLine.Distribution);
+      Assert.Equal(LoadType.Uniform, originalChildLine.Type);
+      Assert.Equal(LoadDistribution.Line, originalChildLine.Distribution);
 
 
       // 1 create with constructor and duplicate
@@ -113,8 +113,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(0, duplicateChildArea.Load.ConstantLive.As(area));
       Assert.Equal(1, duplicateChildArea.Load.FinalDead.As(area));
       Assert.Equal(1, duplicateChildArea.Load.FinalLive.As(area));
-      Assert.Equal(ComposLoad.LoadType.Uniform, duplicateChildArea.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Area, duplicateChildArea.Distribution);
+      Assert.Equal(LoadType.Uniform, duplicateChildArea.Type);
+      Assert.Equal(LoadDistribution.Area, duplicateChildArea.Distribution);
 
       // 3 make some changes to duplicate
       duplicateChildArea.Load.ConstantDead = new Pressure(15, area);
@@ -127,16 +127,16 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(20, duplicateChildArea.Load.ConstantLive.As(area));
       Assert.Equal(-10, duplicateChildArea.Load.FinalDead.As(area));
       Assert.Equal(-5, duplicateChildArea.Load.FinalLive.As(area));
-      Assert.Equal(ComposLoad.LoadType.Uniform, duplicateChildArea.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Area, duplicateChildArea.Distribution);
+      Assert.Equal(LoadType.Uniform, duplicateChildArea.Type);
+      Assert.Equal(LoadDistribution.Area, duplicateChildArea.Distribution);
 
       // 5 check that original has not been changed
       Assert.Equal(0, originalChildArea.Load.ConstantDead.As(area));
       Assert.Equal(0, originalChildArea.Load.ConstantLive.As(area));
       Assert.Equal(1, originalChildArea.Load.FinalDead.As(area));
       Assert.Equal(1, originalChildArea.Load.FinalLive.As(area));
-      Assert.Equal(ComposLoad.LoadType.Uniform, originalChildArea.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Area, originalChildArea.Distribution);
+      Assert.Equal(LoadType.Uniform, originalChildArea.Type);
+      Assert.Equal(LoadDistribution.Area, originalChildArea.Distribution);
     }
 
     [Fact]
@@ -146,8 +146,8 @@ namespace ComposGH.Parameters.Tests
       PressureUnit area = PressureUnit.KilonewtonPerSquareMeter;
 
       // 1 create with constructor and duplicate
-      ComposLoad originalParent = TestLinearLineLoadConstructor(0, 0, 1, 1, 2, 2, 3, 3);
-      ComposLoad duplicateParent = originalParent.Duplicate();
+      Load originalParent = TestLinearLineLoadConstructor(0, 0, 1, 1, 2, 2, 3, 3);
+      Load duplicateParent = originalParent.Duplicate();
 
       // 1b create child
       LinearLoad duplicateChildLine = (LinearLoad)duplicateParent;
@@ -162,8 +162,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(2, duplicateChildLine.LoadW2.ConstantLive.As(length));
       Assert.Equal(3, duplicateChildLine.LoadW2.FinalDead.As(length));
       Assert.Equal(3, duplicateChildLine.LoadW2.FinalLive.As(length));
-      Assert.Equal(ComposLoad.LoadType.Linear, duplicateChildLine.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Line, duplicateChildLine.Distribution);
+      Assert.Equal(LoadType.Linear, duplicateChildLine.Type);
+      Assert.Equal(LoadDistribution.Line, duplicateChildLine.Distribution);
 
       // 3 make some changes to duplicate
       duplicateChildLine.LoadW1.ConstantDead = new ForcePerLength(15, length);
@@ -184,8 +184,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(2, duplicateChildLine.LoadW2.ConstantLive.As(length));
       Assert.Equal(3, duplicateChildLine.LoadW2.FinalDead.As(length));
       Assert.Equal(4, duplicateChildLine.LoadW2.FinalLive.As(length));
-      Assert.Equal(ComposLoad.LoadType.Linear, duplicateChildLine.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Line, duplicateChildLine.Distribution);
+      Assert.Equal(LoadType.Linear, duplicateChildLine.Type);
+      Assert.Equal(LoadDistribution.Line, duplicateChildLine.Distribution);
 
       // 5 check that original has not been changed
       Assert.Equal(0, originalChildLine.LoadW1.ConstantDead.As(length));
@@ -196,8 +196,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(2, originalChildLine.LoadW2.ConstantLive.As(length));
       Assert.Equal(3, originalChildLine.LoadW2.FinalDead.As(length));
       Assert.Equal(3, originalChildLine.LoadW2.FinalLive.As(length));
-      Assert.Equal(ComposLoad.LoadType.Linear, originalChildLine.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Line, originalChildLine.Distribution);
+      Assert.Equal(LoadType.Linear, originalChildLine.Type);
+      Assert.Equal(LoadDistribution.Line, originalChildLine.Distribution);
 
 
       // 1 create with constructor and duplicate
@@ -217,8 +217,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(2, duplicateChildArea.LoadW2.ConstantLive.As(area));
       Assert.Equal(3, duplicateChildArea.LoadW2.FinalDead.As(area));
       Assert.Equal(3, duplicateChildArea.LoadW2.FinalLive.As(area));
-      Assert.Equal(ComposLoad.LoadType.Linear, duplicateChildArea.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Area, duplicateChildArea.Distribution);
+      Assert.Equal(LoadType.Linear, duplicateChildArea.Type);
+      Assert.Equal(LoadDistribution.Area, duplicateChildArea.Distribution);
 
       // 3 make some changes to duplicate
       duplicateChildArea.LoadW1.ConstantDead = new Pressure(15, area);
@@ -239,8 +239,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(2, duplicateChildArea.LoadW2.ConstantLive.As(area));
       Assert.Equal(3, duplicateChildArea.LoadW2.FinalDead.As(area));
       Assert.Equal(4, duplicateChildArea.LoadW2.FinalLive.As(area));
-      Assert.Equal(ComposLoad.LoadType.Linear, duplicateChildArea.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Area, duplicateChildArea.Distribution);
+      Assert.Equal(LoadType.Linear, duplicateChildArea.Type);
+      Assert.Equal(LoadDistribution.Area, duplicateChildArea.Distribution);
 
       // 5 check that original has not been changed
       Assert.Equal(0, originalChildArea.LoadW1.ConstantDead.As(area));
@@ -251,8 +251,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(2, originalChildArea.LoadW2.ConstantLive.As(area));
       Assert.Equal(3, originalChildArea.LoadW2.FinalDead.As(area));
       Assert.Equal(3, originalChildArea.LoadW2.FinalLive.As(area));
-      Assert.Equal(ComposLoad.LoadType.Linear, originalChildArea.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Area, originalChildArea.Distribution);
+      Assert.Equal(LoadType.Linear, originalChildArea.Type);
+      Assert.Equal(LoadDistribution.Area, originalChildArea.Distribution);
     }
 
     [Fact]
@@ -263,8 +263,8 @@ namespace ComposGH.Parameters.Tests
       PressureUnit farea = PressureUnit.KilonewtonPerSquareMeter;
 
       // 1 create with constructor and duplicate
-      ComposLoad originalParent = TestTriLinearLineLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
-      ComposLoad duplicateParent = originalParent.Duplicate();
+      Load originalParent = TestTriLinearLineLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
+      Load duplicateParent = originalParent.Duplicate();
 
       // 1b create child
       TriLinearLoad duplicateChildLine = (TriLinearLoad)duplicateParent;
@@ -281,8 +281,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(3, duplicateChildLine.LoadW2.FinalDead.As(flength));
       Assert.Equal(3, duplicateChildLine.LoadW2.FinalLive.As(flength));
       Assert.Equal(1.5, duplicateChildLine.LoadW2.Position.As(length));
-      Assert.Equal(ComposLoad.LoadType.TriLinear, duplicateChildLine.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Line, duplicateChildLine.Distribution);
+      Assert.Equal(LoadType.TriLinear, duplicateChildLine.Type);
+      Assert.Equal(LoadDistribution.Line, duplicateChildLine.Distribution);
 
       // 3 make some changes to duplicate
       duplicateChildLine.LoadW1.ConstantDead = new ForcePerLength(15, flength);
@@ -307,8 +307,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(3, duplicateChildLine.LoadW2.FinalDead.As(flength));
       Assert.Equal(4, duplicateChildLine.LoadW2.FinalLive.As(flength));
       Assert.Equal(9000, duplicateChildLine.LoadW2.Position.As(length));
-      Assert.Equal(ComposLoad.LoadType.TriLinear, duplicateChildLine.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Line, duplicateChildLine.Distribution);
+      Assert.Equal(LoadType.TriLinear, duplicateChildLine.Type);
+      Assert.Equal(LoadDistribution.Line, duplicateChildLine.Distribution);
 
       // 5 check that original has not been changed
       Assert.Equal(0, originalChildLine.LoadW1.ConstantDead.As(flength));
@@ -321,8 +321,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(3, originalChildLine.LoadW2.FinalDead.As(flength));
       Assert.Equal(3, originalChildLine.LoadW2.FinalLive.As(flength));
       Assert.Equal(1.5, originalChildLine.LoadW2.Position.As(length));
-      Assert.Equal(ComposLoad.LoadType.TriLinear, originalChildLine.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Line, originalChildLine.Distribution);
+      Assert.Equal(LoadType.TriLinear, originalChildLine.Type);
+      Assert.Equal(LoadDistribution.Line, originalChildLine.Distribution);
 
 
       // 1 create with constructor and duplicate
@@ -344,8 +344,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(3, duplicateChildArea.LoadW2.FinalDead.As(farea));
       Assert.Equal(3, duplicateChildArea.LoadW2.FinalLive.As(farea));
       Assert.Equal(1.5, duplicateChildArea.LoadW2.Position.As(length));
-      Assert.Equal(ComposLoad.LoadType.TriLinear, duplicateChildArea.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Area, duplicateChildArea.Distribution);
+      Assert.Equal(LoadType.TriLinear, duplicateChildArea.Type);
+      Assert.Equal(LoadDistribution.Area, duplicateChildArea.Distribution);
 
       // 3 make some changes to duplicate
       duplicateChildArea.LoadW1.ConstantDead = new Pressure(15, farea);
@@ -369,8 +369,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(2, duplicateChildArea.LoadW2.ConstantLive.As(farea));
       Assert.Equal(3, duplicateChildArea.LoadW2.FinalDead.As(farea));
       Assert.Equal(4, duplicateChildArea.LoadW2.FinalLive.As(farea));
-      Assert.Equal(ComposLoad.LoadType.TriLinear, duplicateChildArea.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Area, duplicateChildArea.Distribution);
+      Assert.Equal(LoadType.TriLinear, duplicateChildArea.Type);
+      Assert.Equal(LoadDistribution.Area, duplicateChildArea.Distribution);
 
       // 5 check that original has not been changed
       Assert.Equal(0, originalChildArea.LoadW1.ConstantDead.As(farea));
@@ -383,8 +383,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(3, originalChildArea.LoadW2.FinalDead.As(farea));
       Assert.Equal(3, originalChildArea.LoadW2.FinalLive.As(farea));
       Assert.Equal(1.5, originalChildArea.LoadW2.Position.As(length));
-      Assert.Equal(ComposLoad.LoadType.TriLinear, originalChildArea.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Area, originalChildArea.Distribution);
+      Assert.Equal(LoadType.TriLinear, originalChildArea.Type);
+      Assert.Equal(LoadDistribution.Area, originalChildArea.Distribution);
     }
 
     [Fact]
@@ -395,8 +395,8 @@ namespace ComposGH.Parameters.Tests
       PressureUnit farea = PressureUnit.KilonewtonPerSquareMeter;
 
       // 1 create with constructor and duplicate
-      ComposLoad originalParent = TestPatchLineLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
-      ComposLoad duplicateParent = originalParent.Duplicate();
+      Load originalParent = TestPatchLineLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
+      Load duplicateParent = originalParent.Duplicate();
 
       // 1b create child
       PatchLoad duplicateChildLine = (PatchLoad)duplicateParent;
@@ -413,8 +413,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(3, duplicateChildLine.LoadW2.FinalDead.As(flength));
       Assert.Equal(3, duplicateChildLine.LoadW2.FinalLive.As(flength));
       Assert.Equal(1.5, duplicateChildLine.LoadW2.Position.As(length));
-      Assert.Equal(ComposLoad.LoadType.Patch, duplicateChildLine.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Line, duplicateChildLine.Distribution);
+      Assert.Equal(LoadType.Patch, duplicateChildLine.Type);
+      Assert.Equal(LoadDistribution.Line, duplicateChildLine.Distribution);
 
       // 3 make some changes to duplicate
       duplicateChildLine.LoadW1.ConstantDead = new ForcePerLength(15, flength);
@@ -439,8 +439,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(3, duplicateChildLine.LoadW2.FinalDead.As(flength));
       Assert.Equal(4, duplicateChildLine.LoadW2.FinalLive.As(flength));
       Assert.Equal(9000, duplicateChildLine.LoadW2.Position.As(length));
-      Assert.Equal(ComposLoad.LoadType.Patch, duplicateChildLine.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Line, duplicateChildLine.Distribution);
+      Assert.Equal(LoadType.Patch, duplicateChildLine.Type);
+      Assert.Equal(LoadDistribution.Line, duplicateChildLine.Distribution);
 
       // 5 check that original has not been changed
       Assert.Equal(0, originalChildLine.LoadW1.ConstantDead.As(flength));
@@ -453,8 +453,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(3, originalChildLine.LoadW2.FinalDead.As(flength));
       Assert.Equal(3, originalChildLine.LoadW2.FinalLive.As(flength));
       Assert.Equal(1.5, originalChildLine.LoadW2.Position.As(length));
-      Assert.Equal(ComposLoad.LoadType.Patch, originalChildLine.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Line, originalChildLine.Distribution);
+      Assert.Equal(LoadType.Patch, originalChildLine.Type);
+      Assert.Equal(LoadDistribution.Line, originalChildLine.Distribution);
 
 
       // 1 create with constructor and duplicate
@@ -476,8 +476,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(3, duplicateChildArea.LoadW2.FinalDead.As(farea));
       Assert.Equal(3, duplicateChildArea.LoadW2.FinalLive.As(farea));
       Assert.Equal(1.5, duplicateChildArea.LoadW2.Position.As(length));
-      Assert.Equal(ComposLoad.LoadType.Patch, duplicateChildArea.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Area, duplicateChildArea.Distribution);
+      Assert.Equal(LoadType.Patch, duplicateChildArea.Type);
+      Assert.Equal(LoadDistribution.Area, duplicateChildArea.Distribution);
 
       // 3 make some changes to duplicate
       duplicateChildArea.LoadW1.ConstantDead = new Pressure(15, farea);
@@ -501,8 +501,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(2, duplicateChildArea.LoadW2.ConstantLive.As(farea));
       Assert.Equal(3, duplicateChildArea.LoadW2.FinalDead.As(farea));
       Assert.Equal(4, duplicateChildArea.LoadW2.FinalLive.As(farea));
-      Assert.Equal(ComposLoad.LoadType.Patch, duplicateChildArea.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Area, duplicateChildArea.Distribution);
+      Assert.Equal(LoadType.Patch, duplicateChildArea.Type);
+      Assert.Equal(LoadDistribution.Area, duplicateChildArea.Distribution);
 
       // 5 check that original has not been changed
       Assert.Equal(0, originalChildArea.LoadW1.ConstantDead.As(farea));
@@ -515,8 +515,8 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(3, originalChildArea.LoadW2.FinalDead.As(farea));
       Assert.Equal(3, originalChildArea.LoadW2.FinalLive.As(farea));
       Assert.Equal(1.5, originalChildArea.LoadW2.Position.As(length));
-      Assert.Equal(ComposLoad.LoadType.Patch, originalChildArea.Type);
-      Assert.Equal(ComposLoad.LoadDistribution.Area, originalChildArea.Distribution);
+      Assert.Equal(LoadType.Patch, originalChildArea.Type);
+      Assert.Equal(LoadDistribution.Area, originalChildArea.Distribution);
     }
 
     [Fact]
@@ -525,8 +525,8 @@ namespace ComposGH.Parameters.Tests
       LengthUnit length = LengthUnit.Millimeter;
 
       // 1 create with constructor and duplicate
-      ComposLoad originalParent = TestMemberLoadConstructor(150, "Original", MemberLoad.SupportSide.Left);
-      ComposLoad duplicateParent = originalParent.Duplicate();
+      Load originalParent = TestMemberLoadConstructor(150, "Original", MemberLoad.SupportSide.Left);
+      Load duplicateParent = originalParent.Duplicate();
 
       // 1b create child
       MemberLoad duplicateChild = (MemberLoad)duplicateParent;
@@ -536,7 +536,7 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(150, duplicateChild.Position.As(length));
       Assert.Equal("Original", duplicateChild.MemberName);
       Assert.Equal(MemberLoad.SupportSide.Left, duplicateChild.Support);
-      Assert.Equal(ComposLoad.LoadType.MemberLoad, duplicateChild.Type);
+      Assert.Equal(LoadType.MemberLoad, duplicateChild.Type);
 
       // 3 make some changes to duplicate
       duplicateChild.Position = new Length(9000, length);
@@ -547,13 +547,13 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(9000, duplicateChild.Position.As(length));
       Assert.Equal("Duplicate", duplicateChild.MemberName);
       Assert.Equal(MemberLoad.SupportSide.Right, duplicateChild.Support);
-      Assert.Equal(ComposLoad.LoadType.MemberLoad, duplicateChild.Type);
+      Assert.Equal(LoadType.MemberLoad, duplicateChild.Type);
 
       // 5 check that original has not been changed
       Assert.Equal(150, originalChild.Position.As(length));
       Assert.Equal("Original", originalChild.MemberName);
       Assert.Equal(MemberLoad.SupportSide.Left, originalChild.Support);
-      Assert.Equal(ComposLoad.LoadType.MemberLoad, originalChild.Type);
+      Assert.Equal(LoadType.MemberLoad, originalChild.Type);
     }
 
     [Fact]
@@ -563,8 +563,8 @@ namespace ComposGH.Parameters.Tests
       ForceUnit force = ForceUnit.Kilonewton;
 
       // 1 create with constructor and duplicate
-      ComposLoad originalParent = TestAxialLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
-      ComposLoad duplicateParent = originalParent.Duplicate();
+      Load originalParent = TestAxialLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
+      Load duplicateParent = originalParent.Duplicate();
 
       // 1b create child
       AxialLoad duplicateChildLine = (AxialLoad)duplicateParent;
@@ -581,7 +581,7 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(3, duplicateChildLine.LoadW2.FinalDead.As(force));
       Assert.Equal(3, duplicateChildLine.LoadW2.FinalLive.As(force));
       Assert.Equal(1.5, duplicateChildLine.Depth2.As(length));
-      Assert.Equal(ComposLoad.LoadType.Axial, duplicateChildLine.Type);
+      Assert.Equal(LoadType.Axial, duplicateChildLine.Type);
 
       // 3 make some changes to duplicate
       duplicateChildLine.LoadW1.ConstantDead = new Force(15, force);
@@ -606,7 +606,7 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(3, duplicateChildLine.LoadW2.FinalDead.As(force));
       Assert.Equal(4, duplicateChildLine.LoadW2.FinalLive.As(force));
       Assert.Equal(9000, duplicateChildLine.Depth2.As(length));
-      Assert.Equal(ComposLoad.LoadType.Axial, duplicateChildLine.Type);
+      Assert.Equal(LoadType.Axial, duplicateChildLine.Type);
 
       // 5 check that original has not been changed
       Assert.Equal(0, originalChildLine.LoadW1.ConstantDead.As(force));
@@ -619,7 +619,7 @@ namespace ComposGH.Parameters.Tests
       Assert.Equal(3, originalChildLine.LoadW2.FinalDead.As(force));
       Assert.Equal(3, originalChildLine.LoadW2.FinalLive.As(force));
       Assert.Equal(1.5, originalChildLine.Depth2.As(length));
-      Assert.Equal(ComposLoad.LoadType.Axial, originalChildLine.Type);
+      Assert.Equal(LoadType.Axial, originalChildLine.Type);
     }
   }
 }

@@ -1,10 +1,11 @@
 ﻿using Xunit;
 using UnitsNet;
 using UnitsNet.Units;
+using ComposAPI.Studs;
 
-namespace ComposGH.Parameters.Tests
+namespace ComposAPI.Tests
 {
-  public partial class ComposStudTest
+  public partial class StudTest
   {
     // 1 setup inputs
     [Theory]

@@ -14,6 +14,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
 using Grasshopper.Kernel.Parameters;
+using ComposAPI.SteelBeam;
 
 namespace ComposGH.Components
 {
@@ -60,13 +61,13 @@ namespace ComposGH.Components
       if (this.Params.Input[2].Sources.Count > 0)
       {
         Supports final = GetInput.Supports(this, DA, 2);
-        ComposRestraint res = new ComposRestraint(tflr, construction, final);
-        DA.SetData(0, new ComposRestraintGoo(res));
+        Restraint res = new Restraint(tflr, construction, final);
+        DA.SetData(0, new RestraintGoo(res));
       }
       else
       {
-        ComposRestraint res = new ComposRestraint(tflr, construction);
-        DA.SetData(0, new ComposRestraintGoo(res));
+        Restraint res = new Restraint(tflr, construction);
+        DA.SetData(0, new RestraintGoo(res));
       }
     }
   }

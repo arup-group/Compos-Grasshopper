@@ -11,6 +11,7 @@ using System.Reflection;
 using UnitsNet;
 using ComposGH.Helpers;
 using ComposGH.Parameters;
+using ComposAPI.SteelBeam;
 
 namespace ComposGH.Components
 {

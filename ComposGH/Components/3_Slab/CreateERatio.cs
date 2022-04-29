@@ -3,7 +3,6 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 
-using Compos.Model;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Attributes;
@@ -13,6 +12,7 @@ using Grasshopper.GUI.Canvas;
 using Rhino.Geometry;
 using UnitsNet;
 using UnitsNet.Units;
+using ComposAPI.ConcreteSlab;
 
 namespace ComposGH.Components
 {

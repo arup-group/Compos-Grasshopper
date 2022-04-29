@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnitsNet;
 using UnitsNet.Units;
-using Compos.Model;
 using Grasshopper.Kernel;
 using Oasys.Units;
+using ComposAPI.ConcreteSlab;
 
 namespace ComposGH.Components
 {
