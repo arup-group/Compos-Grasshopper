@@ -29,7 +29,7 @@ namespace ComposGH.Components
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = false; } // sets the initial state of the component to hidden
 
-    public override GH_Exposure Exposure => GH_Exposure.quarternary;
+    public override GH_Exposure Exposure => GH_Exposure.quinary;
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.WebOpening;
     #endregion
@@ -104,7 +104,7 @@ namespace ComposGH.Components
 
     private bool first = true;
     private ComposWebOpening.WebOpeningShape openingType = ComposWebOpening.WebOpeningShape.Rectangular;
-    private LengthUnit lengthUnit = Units.LengthUnitGeometry;
+    private LengthUnit lengthUnit = Units.LengthUnitSection;
     #endregion
 
     #region Input and output

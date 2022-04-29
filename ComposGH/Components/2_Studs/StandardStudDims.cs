@@ -73,8 +73,8 @@ namespace ComposGH.Components
         forceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), selecteditems[i]);
       }
 
-        // update name of inputs (to display unit on sliders)
-        (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
+      // update name of inputs (to display unit on sliders)
+      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
       ExpireSolution(true);
       Params.OnParametersChanged();
       this.OnDisplayExpired(true);

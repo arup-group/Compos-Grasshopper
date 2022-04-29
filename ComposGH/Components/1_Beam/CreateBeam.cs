@@ -13,25 +13,24 @@ using ComposGH.Parameters;
 using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
-using Grasshopper.Kernel.Parameters;
 
 namespace ComposGH.Components
 {
-  public class CreateBeamSection : GH_Component, IGH_VariableParameterComponent
+  public class CreateBeam : GH_Component, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
-    public override Guid ComponentGuid => new Guid("de792051-ae6a-4249-8699-7ea0cfe8c528");
-    public CreateBeamSection()
-      : base("Beam Section", "BeamSection", "Create Beam Section for a Compos Beam",
+    public override Guid ComponentGuid => new Guid("060641e49fc648eb8d7699f2d6697111");
+    public CreateBeam()
+      : base("Create Beam", "Beam", "Create a Compos Beam",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = false; } // sets the initial state of the component to hidden
 
-    public override GH_Exposure Exposure => GH_Exposure.quarternary;
+    public override GH_Exposure Exposure => GH_Exposure.primary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.BeamSection;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateBeam;
     #endregion
 
     #region Custom UI
@@ -56,7 +55,9 @@ namespace ComposGH.Components
       // change selected item
       selecteditems[i] = dropdownitems[i][j];
 
+
       lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[i]);
+
 
       // update name of inputs (to display unit on sliders)
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -82,7 +83,7 @@ namespace ComposGH.Components
     // list of descriptions 
     List<string> spacerDescriptions = new List<string>(new string[]
     {
-      "Unit"
+      "Unit",
     });
 
     private bool first = true;
@@ -96,34 +97,59 @@ namespace ComposGH.Components
       IQuantity length = new Length(0, lengthUnit);
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
-      pManager.AddGenericParameter("Beam Section", "Bs", "Beam Section or Profile string description like 'CAT IPE IPE200', 'STD I(cm) 20. 19. 8.5 1.27' or 'STD GI 400 300 250 12 25 20'", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Start [" + unitAbbreviation + "]", "Px", "(Optional) Start Position of this profile (beam local x-axis)", GH_ParamAccess.item);
-      pManager.AddBooleanParameter("Taper Next", "Tp", "Taper to next (default = false)", GH_ParamAccess.item, false);
-      pManager[1].Optional = true;
+      pManager.AddCurveParameter("Line [" + unitAbbreviation + "]", "L", "Line drawn to selected units to create Compos Beam from", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Restraint", "Res", "Compos Restraint", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Material", "SMt", "Compos Steel Material", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Beam Sections", "Bs", "Compos Beam Sections or Profile string descriptions like 'CAT IPE IPE200', 'STD I(cm) 20. 19. 8.5 1.27' or 'STD GI 400 300 250 12 25 20'", GH_ParamAccess.list);
+      pManager.AddGenericParameter("WebOpening", "WO", "Compos Web Openings or Notches", GH_ParamAccess.list);
+      pManager[4].Optional = true;
+
+      // temp
       pManager[2].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Beam Section", "Bs", "Beam Section for a Compos Beam", GH_ParamAccess.list);
+      pManager.AddGenericParameter("Beam", "Bm", "Compos Beam", GH_ParamAccess.item);
     }
     #endregion
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      string profile = GetInput.BeamSection(this, DA, 0, false);
-      Length start = GetInput.Length(this, DA, 1, lengthUnit, true);
-
-      bool taper = false;
-      if (DA.GetData(2, ref taper))
+      GH_Line ghln = new GH_Line();
+      if (DA.GetData(0, ref ghln))
       {
-        if (taper & profile.StartsWith("CAT"))
-          AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Catalogue profiles cannot taper - use a custom welded section instead");
-      }
+        if (ghln == null) { AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Line input is null"); }
+        Line ln = new Line();
+        if (GH_Convert.ToLine(ghln, ref ln, GH_Conversion.Both))
+        {
+          ComposRestraint res = GetInput.Restraint(this, DA, 1);
 
-      BeamSection beamSection = new BeamSection(profile);
-      beamSection.StartPosition = start;
-      beamSection.TaperedToNext = taper;
-      DA.SetData(0, new BeamSectionGoo(beamSection));
+          // temp
+          ComposSteelMaterial mat = new ComposSteelMaterial();
+          //ComposSteelMaterial mat = GetInput.SteelMaterial(this, DA, 2);
+
+          List<BeamSection> beamSections = GetInput.BeamSections(this, DA, 3);
+          try
+          {
+            if (this.Params.Input[4].Sources.Count > 0)
+            {
+              List<ComposWebOpening> webOpenings = GetInput.WebOpenings(this, DA, 4);
+              ComposBeam beam = new ComposBeam(new LineCurve(ln), lengthUnit, res, mat, beamSections, webOpenings);
+              DA.SetData(0, new ComposBeamGoo(beam));
+            }
+            else
+            {
+              ComposBeam beam = new ComposBeam(new LineCurve(ln), lengthUnit, res, mat, beamSections);
+              DA.SetData(0, new ComposBeamGoo(beam));
+            }
+          }
+          catch (Exception e)
+          {
+            AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+            return;
+          }
+        }
+      }
     }
 
     #region (de)serialization
@@ -165,7 +191,8 @@ namespace ComposGH.Components
     {
       IQuantity length = new Length(0, lengthUnit);
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
-      Params.Input[1].Name = "Start [" + unitAbbreviation + "]";
+
+      Params.Input[0].Name = "Line [" + unitAbbreviation + "]";
     }
     #endregion
   }
