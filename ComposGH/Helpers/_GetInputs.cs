@@ -271,6 +271,47 @@ namespace ComposGH.Components
       return Oasys.Units.Strain.Zero;
     }
 
+    internal static Density Density(GH_Component owner, IGH_DataAccess DA, int inputid, DensityUnit densityUnit, bool isOptional = false)
+    {
+      Density densityFib = new Density();
+
+      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+      if (DA.GetData(inputid, ref gh_typ))
+      {
+        GH_UnitNumber inDensity;
+
+        // try cast directly to quantity type
+        if (gh_typ.Value is GH_UnitNumber)
+        {
+          inDensity = (GH_UnitNumber)gh_typ.Value;
+          if (!inDensity.Value.QuantityInfo.UnitType.Equals(typeof(DensityUnit)))
+          {
+            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Error in " + owner.Params.Input[inputid].NickName + " input: Wrong unit type"
+                + Environment.NewLine + "Unit type is " + inDensity.Value.QuantityInfo.Name + " but must be Density");
+            return UnitsNet.Density.Zero;
+          }
+          densityFib = (Density)inDensity.Value.ToUnit(densityUnit);
+        }
+        // try cast to double
+        else if (GH_Convert.ToDouble(gh_typ.Value, out double val, GH_Conversion.Both))
+        {
+          // create new quantity from default units
+          inDensity = new GH_UnitNumber(new Density(val, densityUnit));
+          densityFib = (Density)inDensity.Value;
+        }
+        else
+        {
+          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber of Density");
+          return UnitsNet.Density.Zero;
+        }
+        return densityFib;
+      }
+      else if (!isOptional)
+      {
+        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+      }
+      return UnitsNet.Density.Zero;
+    }
     internal static Curvature Curvature(GH_Component owner, IGH_DataAccess DA, int inputid, CurvatureUnit curvatureUnit, bool isOptional = false)
     {
       Curvature crvature = new Curvature();

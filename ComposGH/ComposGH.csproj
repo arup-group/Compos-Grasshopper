@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\1_Beam\CreateRestraint.cs" />
+    <Compile Include="Components\1_Beam\CreateSteelMaterial.cs" />
     <Compile Include="Components\1_Beam\CreateSupport.cs" />
     <Compile Include="Components\1_Beam\CreateBeamSection.cs" />
     <Compile Include="Components\1_Beam\CreateWebOpeningStiffener.cs" />
