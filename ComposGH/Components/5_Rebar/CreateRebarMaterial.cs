@@ -113,8 +113,8 @@ namespace ComposGH.Components
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       IQuantity stress = new Pressure(0, stressUnit);
-      string stressunitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
-      pManager.AddGenericParameter("Strength [" + stressunitAbbreviation + "]", "fu", "(Optional) Custom Characteristic Steel Strength", GH_ParamAccess.item);
+      string stressUnitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
+      pManager.AddGenericParameter("Strength [" + stressUnitAbbreviation + "]", "fu", "(Optional) Custom Characteristic Steel Strength", GH_ParamAccess.item);
       pManager[0].Optional = true;
 
     }
@@ -174,8 +174,8 @@ namespace ComposGH.Components
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
       IQuantity stress = new Pressure(0, stressUnit);
-      string stressunitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
-      Params.Input[0].Name = "Strength [" + stressunitAbbreviation + "]";
+      string stressUnitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
+      Params.Input[0].Name = "Strength [" + stressUnitAbbreviation + "]";
     }
     #endregion
   }

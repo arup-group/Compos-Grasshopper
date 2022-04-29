@@ -105,6 +105,10 @@
     <Compile Include="Components\2_Studs\StudSpec.cs" />
     <Compile Include="Components\2_Studs\StandardStudDims.cs" />
     <Compile Include="Components\2_Studs\CreateStud.cs" />
+    <Compile Include="Components\3_Slab\CreateConcreteMaterialASNZ.cs" />
+    <Compile Include="Components\3_Slab\CreateConcreteMaterialHKSUOS.cs" />
+    <Compile Include="Components\3_Slab\CreateConcreteMaterialEN.cs" />
+    <Compile Include="Components\3_Slab\CreateERatio.cs" />
     <Compile Include="Components\5_Rebar\CreateRebarMaterial.cs" />
     <Compile Include="Components\5_Rebar\TransverseReinforcement.cs" />
     <Compile Include="Components\5_Rebar\MeshReinforcement.cs" />
@@ -114,6 +118,7 @@
     <Compile Include="Components\6_Load\LinearLoad.cs" />
     <Compile Include="Components\6_Load\UniformLoad.cs" />
     <Compile Include="Components\6_Load\PointLoad.cs" />
+    <Compile Include="Components\3_Slab\CreateConcreteMaterialBS.cs" />
     <Compile Include="ComposGHInfo.cs" />
     <Compile Include="Helpers\DeSerialization.cs" />
     <Compile Include="Helpers\GhRibbonLayout.cs" />
@@ -122,6 +127,9 @@
     <Compile Include="Helpers\_GetInputs.cs" />
     <Compile Include="Helpers\_SqlReaderValues.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
+    <Compile Include="Parameters\3_Slab\ConcreteMaterialGoo.cs" />
+    <Compile Include="Parameters\3_Slab\ERatioGoo.cs" />
+    <Compile Include="Parameters\3_Slab\ConcreteSlabDimensionGoo.cs" />
     <Compile Include="Parameters\1_Beam\Restraint\ComposRestraint.cs" />
     <Compile Include="Parameters\Load\Load.cs" />
     <Compile Include="Parameters\Load\ComposLoad.cs" />
@@ -205,7 +213,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Components\0_Model\" />
-    <Folder Include="Components\3_Slab\" />
     <Folder Include="Components\4_Decking\" />
     <Folder Include="Components\7_Design\" />
     <Folder Include="Components\8_Analysis\" />

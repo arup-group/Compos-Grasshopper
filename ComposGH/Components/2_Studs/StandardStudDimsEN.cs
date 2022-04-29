@@ -165,9 +165,9 @@ namespace ComposGH.Components
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       IQuantity stress = new Pressure(0, stressUnit);
-      string stressunitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
+      string stressUnitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
 
-      pManager.AddGenericParameter("Grade [" + stressunitAbbreviation + "]", "fu", "(Optional) Custom Stud Steel Grade", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Grade [" + stressUnitAbbreviation + "]", "fu", "(Optional) Custom Stud Steel Grade", GH_ParamAccess.item);
       pManager[0].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
@@ -275,7 +275,7 @@ namespace ComposGH.Components
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
       IQuantity stress = new Pressure(0, stressUnit);
-      string stressunitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
+      string stressUnitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
 
       if (selecteditems[0] == standardSize[0]) // custom size
       {
@@ -292,14 +292,14 @@ namespace ComposGH.Components
         Params.Input[1].Description = "Height of stud";
         Params.Input[1].Optional = false;
 
-        Params.Input[2].Name = "Grade [" + stressunitAbbreviation + "]";
+        Params.Input[2].Name = "Grade [" + stressUnitAbbreviation + "]";
         Params.Input[2].NickName = "fu";
         Params.Input[2].Description = "Stud Steel Grade";
         Params.Input[2].Optional = true;
       }
       if (selecteditems[0] != standardSize[0]) // standard size
       {
-        Params.Input[0].Name = "Grade [" + stressunitAbbreviation + "]";
+        Params.Input[0].Name = "Grade [" + stressUnitAbbreviation + "]";
         Params.Input[0].NickName = "fu";
         Params.Input[0].Description = "(Optional) Custom Stud Steel Grade";
         Params.Input[0].Optional = true;
