@@ -51,9 +51,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\3_Slab\ConcreteMaterialGoo.cs" />
-    <Compile Include="Model\3_Slab\ConcreteSlabDimensionGoo.cs" />
-    <Compile Include="Model\3_Slab\ERatioGoo.cs" />
+    <Compile Include="Model\3_Slab\ConcreteMaterial.cs" />
+    <Compile Include="Model\3_Slab\ConcreteSlabDimension.cs" />
+    <Compile Include="Model\3_Slab\ERatio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
