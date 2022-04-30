@@ -874,15 +874,15 @@ namespace ComposGH.Components
     #endregion
 
     #region Decking
-        internal static DeckConfiguration DeckConfiguration(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        internal static DeckingConfiguration DeckConfiguration(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
         {
-            DeckConfigurationGoo goo = null;
+            DeckingConfigGoo goo = null;
             GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
             if (DA.GetData(inputid, ref gh_typ))
             {
-                if (gh_typ.Value is DeckConfigurationGoo)
+                if (gh_typ.Value is DeckingConfigGoo)
                 {
-                    goo = (DeckConfigurationGoo)gh_typ.Value;
+                    goo = (DeckingConfigGoo)gh_typ.Value;
                 }
                 else
                 {

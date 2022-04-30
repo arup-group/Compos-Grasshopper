@@ -77,16 +77,6 @@ namespace ComposAPI.Studs
 
     #endregion
 
-    #region properties
-    public bool IsValid
-    {
-      get
-      {
-        return true;
-      }
-    }
-    #endregion
-
     #region methods
 
     public StudSpecification Duplicate()

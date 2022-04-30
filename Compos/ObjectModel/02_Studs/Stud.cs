@@ -115,16 +115,6 @@ namespace ComposAPI.Studs
 
     #endregion
 
-    #region properties
-    public bool IsValid
-    {
-      get
-      {
-        return true;
-      }
-    }
-    #endregion
-
     #region coa interop
     internal Stud(string coaString)
     {

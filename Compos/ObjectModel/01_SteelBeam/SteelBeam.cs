@@ -37,16 +37,6 @@ namespace ComposAPI.SteelBeam
 
     #endregion
 
-    #region properties
-    public bool IsValid
-    {
-      get
-      {
-        return true;
-      }
-    }
-    #endregion
-
     #region coa interop
     internal SteelBeam(string coaString)
     {

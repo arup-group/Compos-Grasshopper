@@ -56,9 +56,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\Compos\ComposIO.cs" />
-    <Compile Include="Helpers\SQLite\ReadSQLValues.cs" />
-    <Compile Include="Helpers\Units\Units.cs" />
+    <Compile Include="Helpers\ComposIO.cs" />
+    <Compile Include="Helpers\ReadSQLValues.cs" />
+    <Compile Include="Helpers\Units.cs" />
     <Compile Include="ObjectModel\01_SteelBeam\BeamSection\BeamSection.cs" />
     <Compile Include="ObjectModel\01_SteelBeam\SteelBeam.cs" />
     <Compile Include="ObjectModel\01_SteelBeam\Restraint\Restraint.cs" />
@@ -73,6 +73,10 @@
     <Compile Include="ObjectModel\03_ConcreteSlab\ConcreteMaterial\ConcreteMaterial.cs" />
     <Compile Include="ObjectModel\03_ConcreteSlab\ConcreteSlabDimension.cs" />
     <Compile Include="ObjectModel\03_ConcreteSlab\ConcreteMaterial\ERatio.cs" />
+    <Compile Include="ObjectModel\04_Decking\CustomDeck.cs" />
+    <Compile Include="ObjectModel\04_Decking\Deck.cs" />
+    <Compile Include="ObjectModel\04_Decking\CatalogueDeck.cs" />
+    <Compile Include="ObjectModel\04_Decking\DeckingConfiguration.cs" />
     <Compile Include="ObjectModel\05_Rebar\Mesh.cs" />
     <Compile Include="ObjectModel\05_Rebar\ReinforcementMaterial.cs" />
     <Compile Include="ObjectModel\05_Rebar\Transverse.cs" />
@@ -88,7 +92,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ObjectModel\00_File\" />
-    <Folder Include="ObjectModel\04_Decking\" />
     <Folder Include="ObjectModel\08_Member\" />
     <Folder Include="ObjectModel\09_Analysis\" />
     <Folder Include="ObjectModel\10_Results\" />

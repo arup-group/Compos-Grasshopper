@@ -20,7 +20,7 @@ namespace ComposAPI.Loads
     {
       PointLoad dup = (PointLoad)this.MemberwiseClone();
       dup.Load = this.Load.Duplicate();
-      return (Load)dup;
+      return dup;
     }
   }
   public class UniformLoad : Load
@@ -45,7 +45,7 @@ namespace ComposAPI.Loads
     {
       UniformLoad dup = (UniformLoad)this.MemberwiseClone();
       dup.Load = this.Load.Duplicate();
-      return (Load)dup;
+      return dup;
     }
   }
   public class LinearLoad : Load
@@ -78,7 +78,7 @@ namespace ComposAPI.Loads
       LinearLoad dup = (LinearLoad)this.MemberwiseClone();
       dup.LoadW1 = this.LoadW1.Duplicate();
       dup.LoadW2 = this.LoadW2.Duplicate();
-      return (Load)dup;
+      return dup;
     }
   }
   public class TriLinearLoad : Load
@@ -111,7 +111,7 @@ namespace ComposAPI.Loads
       TriLinearLoad dup = (TriLinearLoad)this.MemberwiseClone();
       dup.LoadW1 = this.LoadW1.Duplicate();
       dup.LoadW2 = this.LoadW2.Duplicate();
-      return (Load)dup;
+      return dup;
     }
   }
   public class PatchLoad : Load
@@ -144,7 +144,7 @@ namespace ComposAPI.Loads
       PatchLoad dup = (PatchLoad)this.MemberwiseClone();
       dup.LoadW1 = this.LoadW1.Duplicate();
       dup.LoadW2 = this.LoadW2.Duplicate();
-      return (Load)dup;
+      return dup;
     }
   }
   public class MemberLoad : Load
@@ -164,7 +164,7 @@ namespace ComposAPI.Loads
     public override Load Duplicate()
     {
       MemberLoad dup = (MemberLoad)this.MemberwiseClone();
-      return (Load)dup;
+      return dup;
     }
   }
   public class AxialLoad : Load
@@ -192,7 +192,7 @@ namespace ComposAPI.Loads
       dup.LoadW2 = this.LoadW2.Duplicate();
       dup.Depth1 = this.Depth1.ToUnit(this.Depth1.Unit);
       dup.Depth2 = this.Depth2.ToUnit(this.Depth2.Unit);
-      return (Load)dup;
+      return dup;
     }
   }
 }

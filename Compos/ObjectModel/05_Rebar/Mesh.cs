@@ -49,16 +49,6 @@ namespace ComposAPI.ConcreteSlab
 
     #endregion
 
-    #region properties
-    public bool IsValid
-    {
-      get
-      {
-        return true;
-      }
-    }
-    #endregion
-
     #region methods
 
     public MeshReinforcement Duplicate()

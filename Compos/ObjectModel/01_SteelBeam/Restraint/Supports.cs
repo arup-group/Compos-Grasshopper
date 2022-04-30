@@ -52,16 +52,6 @@ namespace ComposAPI.SteelBeam
     }
     #endregion
 
-    #region properties
-    public bool IsValid
-    {
-      get
-      {
-        return true;
-      }
-    }
-    #endregion
-
     #region methods
 
     public Supports Duplicate()

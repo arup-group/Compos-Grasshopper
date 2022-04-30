@@ -78,7 +78,7 @@ namespace ComposGH.Helpers
         while (r.Read())
         {
           // get data
-          string sqlData = System.Convert.ToString(r["Deck_Name"]);
+          string sqlData = Convert.ToString(r["Deck_Name"]);
 
           // split text string
           data.Add(sqlData);

@@ -32,16 +32,6 @@ namespace ComposAPI.ConcreteSlab
     }
     #endregion
 
-    #region properties
-    public bool IsValid
-    {
-      get
-      {
-        return true;
-      }
-    }
-    #endregion
-
     #region coa interop
     internal ERatio(string coaString)
     {

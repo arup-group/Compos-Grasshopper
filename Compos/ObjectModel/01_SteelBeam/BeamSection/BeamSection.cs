@@ -226,21 +226,9 @@ namespace ComposAPI.SteelBeam
           throw new ArgumentException("unrecognised unit - must be mm, cm, m, in or ft.");
       }
     }
-
-    #endregion
-
-    #region properties
-    public bool IsValid
-    {
-      get
-      {
-        return true;
-      }
-    }
     #endregion
 
     #region methods
-
     public BeamSection Duplicate()
     {
       if (this == null) { return null; }

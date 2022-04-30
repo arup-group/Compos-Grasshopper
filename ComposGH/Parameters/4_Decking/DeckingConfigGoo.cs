@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
@@ -9,24 +8,24 @@ using Rhino;
 using Grasshopper.Documentation;
 using Rhino.Collections;
 using UnitsNet;
-using ComposAPI.SteelBeam;
+using ComposAPI.Decking;
 
 namespace ComposGH.Parameters
 {
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class RestraintGoo : GH_Goo<Restraint>
+  public class DeckingConfigGoo : GH_Goo<DeckingConfiguration>
   {
     #region constructors
-    public RestraintGoo()
+    public DeckingConfigGoo()
     {
-      this.Value = new Restraint();
+      this.Value = new DeckingConfiguration();
     }
-    public RestraintGoo(Restraint item)
+    public DeckingConfigGoo(DeckingConfiguration item)
     {
       if (item == null)
-        item = new Restraint();
+        item = new DeckingConfiguration();
       this.Value = item.Duplicate();
     }
 
@@ -34,15 +33,15 @@ namespace ComposGH.Parameters
     {
       return DuplicateGoo();
     }
-    public RestraintGoo DuplicateGoo()
+    public DeckingConfigGoo DuplicateGoo()
     {
-      return new RestraintGoo(Value == null ? new Restraint() : Value.Duplicate());
+      return new DeckingConfigGoo(Value == null ? new DeckingConfiguration() : Value.Duplicate());
     }
     #endregion
 
     #region properties
-    public override bool IsValid => (this.Value == null) ? false : true;
-    public override string TypeName => "Restraints";
+     public override bool IsValid => (this.Value == null) ? false : true;
+    public override string TypeName => "Deck Config.";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot
     {
@@ -67,7 +66,7 @@ namespace ComposGH.Parameters
       // This function is called when Grasshopper needs to convert this 
       // instance of our custom class into some other type Q.            
 
-      if (typeof(Q).IsAssignableFrom(typeof(Restraint)))
+      if (typeof(Q).IsAssignableFrom(typeof(DeckingConfiguration)))
       {
         if (Value == null)
           target = default;
@@ -87,9 +86,9 @@ namespace ComposGH.Parameters
       if (source == null) { return false; }
 
       //Cast from GsaMaterial
-      if (typeof(Restraint).IsAssignableFrom(source.GetType()))
+      if (typeof(DeckingConfiguration).IsAssignableFrom(source.GetType()))
       {
-        Value = (Restraint)source;
+        Value = (DeckingConfiguration)source;
         return true;
       }
 
@@ -97,5 +96,4 @@ namespace ComposGH.Parameters
     }
     #endregion
   }
-
 }

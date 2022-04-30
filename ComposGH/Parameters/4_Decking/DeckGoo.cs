@@ -9,41 +9,40 @@ using Rhino;
 using Grasshopper.Documentation;
 using Rhino.Collections;
 using UnitsNet;
-using ComposAPI.Loads;
+using ComposAPI.Decking;
 
 namespace ComposGH.Parameters
 {
-
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class LoadGoo : GH_Goo<Load> // needs to be upgraded to GeometryGoo eventually....
+  public class DeckGoo : GH_Goo<Deck>
   {
     #region constructors
-    public LoadGoo()
+    public DeckGoo()
     {
-      this.Value = new Load();
+      this.Value = new Deck();
     }
-    public LoadGoo(Load item)
+    public DeckGoo(Deck item)
     {
       if (item == null)
-        item = new Load();
-      this.Value = item;
+        item = new Deck();
+      this.Value = item.Duplicate();
     }
 
     public override IGH_Goo Duplicate()
     {
       return DuplicateGoo();
     }
-    public LoadGoo DuplicateGoo()
+    public DeckGoo DuplicateGoo()
     {
-      return new LoadGoo(base.Value == null ? new Load() : base.Value);
+      return new DeckGoo(Value == null ? new Deck() : Value.Duplicate());
     }
     #endregion
 
     #region properties
      public override bool IsValid => (this.Value == null) ? false : true;
-    public override string TypeName => "Load";
+    public override string TypeName => "Deck ";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot
     {
@@ -68,12 +67,12 @@ namespace ComposGH.Parameters
       // This function is called when Grasshopper needs to convert this 
       // instance of our custom class into some other type Q.            
 
-      if (typeof(Q).IsAssignableFrom(typeof(Load)))
+      if (typeof(Q).IsAssignableFrom(typeof(Deck)))
       {
-        if (base.Value == null)
+        if (Value == null)
           target = default;
         else
-          target = (Q)(object)base.Value;
+          target = (Q)(object)Value;
         return true;
       }
 
@@ -88,9 +87,9 @@ namespace ComposGH.Parameters
       if (source == null) { return false; }
 
       //Cast from GsaMaterial
-      if (typeof(Load).IsAssignableFrom(source.GetType()))
+      if (typeof(Deck).IsAssignableFrom(source.GetType()))
       {
-        base.Value = (Load)source;
+        Value = (Deck)source;
         return true;
       }
 
@@ -102,24 +101,24 @@ namespace ComposGH.Parameters
   /// <summary>
   /// This class provides a Parameter interface for the CustomGoo type.
   /// </summary>
-  public class ComposLoadParameter : GH_PersistentParam<LoadGoo>
+  public class ComposDeckParameter : GH_PersistentParam<DeckGoo>
   {
-    public ComposLoadParameter()
-      : base(new GH_InstanceDescription("Load", "Ld", "Compos Load", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+    public ComposDeckParameter()
+      : base(new GH_InstanceDescription("Deck", "Dk", "Compos Slab Deck", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
 
-    public override Guid ComponentGuid => new Guid("3dc51bc1-9abb-4f26-845f-ca1e66236e9e");
+    public override Guid ComponentGuid => new Guid("81411C5C-6EF7-4782-B173-CFB2C7355F4F");
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.LoadParam;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.DeckingParam;
 
-    protected override GH_GetterResult Prompt_Plural(ref List<LoadGoo> values)
+    protected override GH_GetterResult Prompt_Plural(ref List<DeckGoo> values)
     {
       return GH_GetterResult.cancel;
     }
-    protected override GH_GetterResult Prompt_Singular(ref LoadGoo value)
+    protected override GH_GetterResult Prompt_Singular(ref DeckGoo value)
     {
       return GH_GetterResult.cancel;
     }
@@ -155,5 +154,4 @@ namespace ComposGH.Parameters
     }
     #endregion
   }
-
 }

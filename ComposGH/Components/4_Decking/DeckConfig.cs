@@ -60,7 +60,7 @@ namespace ComposGH.Components
       DA.GetData(1, ref isDiscontinous);
       DA.GetData(2, ref isWelded);
 
-      DA.SetData(0, new DeckConfigurationGoo(new DeckConfiguration(angle, isDiscontinous, isWelded)));
+      DA.SetData(0, new DeckingConfigGoo(new DeckingConfiguration(angle, isDiscontinous, isWelded)));
     }
   }
 }

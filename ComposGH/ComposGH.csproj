@@ -108,7 +108,7 @@
     <Compile Include="Components\2_Studs\StandardStudDims.cs" />
     <Compile Include="Components\2_Studs\CreateStud.cs" />
     <Compile Include="Components\4_Decking\DeckConfig.cs" />
-    <Compile Include="Components\4_Decking\StnadardDeck.cs" />
+    <Compile Include="Components\4_Decking\CatalogueDeck.cs" />
     <Compile Include="Components\4_Decking\CustomDeck.cs" />
     <Compile Include="Components\3_Slab\CreateConcreteMaterialASNZ.cs" />
     <Compile Include="Components\3_Slab\CreateConcreteMaterialHKSUOS.cs" />
@@ -150,9 +150,10 @@
     <Compile Include="Parameters\2_Stud\StudSpacingGoo.cs" />
     <Compile Include="Parameters\7_DesignCode\DesignCode.cs" />
     <Compile Include="Parameters\2_Stud\StudGoo.cs" />
+    <Compile Include="Parameters\4_Decking\DeckingConfigGoo.cs" />
     <Compile Include="Parameters\GH_UnitNumber.cs" />
     <Compile Include="Parameters\_Units.cs" />
-    <Compile Include="Parameters\ComposDeck.cs" />
+    <Compile Include="Parameters\4_Decking\DeckGoo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -218,8 +219,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Components\0_Model\" />
-    <Folder Include="Components\3_Slab\" />
-    <Folder Include="Components\4_Decking\" />
     <Folder Include="Components\7_Design\" />
     <Folder Include="Components\8_Analysis\" />
     <Folder Include="Components\9_Results\" />
