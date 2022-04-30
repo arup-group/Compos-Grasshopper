@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnitsNet;
 
-namespace ComposAPI.Decking
+namespace ComposAPI.ConcreteSlab
 {
   /// <summary>
   /// Custom class: this class defines the basic properties and methods for our custom class
@@ -17,7 +17,10 @@ namespace ComposAPI.Decking
     public bool IsWelded { get; set; }
     public DeckingConfiguration()
     {
-      // empty constructor
+      // default values:
+      this.Angle = new Angle(90, UnitsNet.Units.AngleUnit.Degree);
+      this.IsDiscontinous = false;
+      this.IsWelded = false;
     }
     public DeckingConfiguration(Angle angle, bool isDiscontinous, bool isWelded)
     {

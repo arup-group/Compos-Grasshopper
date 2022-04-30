@@ -17,18 +17,18 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class ConcreteSlabDimensionGoo : GH_Goo<ConcreteSlabDimension>
+  public class ConcreteSlabDimensionGoo : GH_Goo<SlabDimension>
   {
     #region constructors
     public ConcreteSlabDimensionGoo()
     {
-      this.Value = new ConcreteSlabDimension();
+      this.Value = new SlabDimension();
     }
 
-    public ConcreteSlabDimensionGoo(ConcreteSlabDimension item)
+    public ConcreteSlabDimensionGoo(SlabDimension item)
     {
       if (item == null)
-        item = new ConcreteSlabDimension();
+        item = new SlabDimension();
       this.Value = item.Duplicate();
     }
 
@@ -38,7 +38,7 @@ namespace ComposGH.Parameters
     }
     public ConcreteSlabDimensionGoo DuplicateGoo()
     {
-      return new ConcreteSlabDimensionGoo(this.Value == null ? new ConcreteSlabDimension() : this.Value.Duplicate());
+      return new ConcreteSlabDimensionGoo(this.Value == null ? new SlabDimension() : this.Value.Duplicate());
     }
     #endregion
 
@@ -69,7 +69,7 @@ namespace ComposGH.Parameters
       // This function is called when Grasshopper needs to convert this 
       // instance of our custom class into some other type Q.            
 
-      if (typeof(Q).IsAssignableFrom(typeof(ConcreteSlabDimension)))
+      if (typeof(Q).IsAssignableFrom(typeof(SlabDimension)))
       {
         if (this.Value == null)
           target = default;
@@ -99,9 +99,9 @@ namespace ComposGH.Parameters
       if (source == null) { return false; }
 
       //Cast from custom type
-      if (typeof(ConcreteSlabDimension).IsAssignableFrom(source.GetType()))
+      if (typeof(SlabDimension).IsAssignableFrom(source.GetType()))
       {
-        this.Value = (ConcreteSlabDimension)source;
+        this.Value = (SlabDimension)source;
         return true;
       }
 

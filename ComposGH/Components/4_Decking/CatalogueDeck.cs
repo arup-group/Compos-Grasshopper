@@ -14,6 +14,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using ComposGH.Components;
 using ComposGH.Helpers;
+using ComposAPI.ConcreteSlab;
 
 namespace ComposGH.Components
 {
@@ -52,7 +53,7 @@ namespace ComposGH.Components
         profile = selecteditems[1];
 
         // steel
-        dropdownitems.Add(Enum.GetValues(typeof(ComposStandardDeck.DeckSteelType)).Cast<ComposStandardDeck.DeckSteelType>().Select(x => x.ToString()).ToList());
+        dropdownitems.Add(Enum.GetValues(typeof(CatalogueDeck.DeckingSteelGrade)).Cast<CatalogueDeck.DeckingSteelGrade>().Select(x => x.ToString()).ToList());
         selecteditems.Add(steelType.ToString());
 
         first = false;
@@ -82,7 +83,7 @@ namespace ComposGH.Components
 
       if(i ==2)
       {
-        steelType = (ComposStandardDeck.DeckSteelType)Enum.Parse(typeof(ComposStandardDeck.DeckSteelType), selecteditems[i]);
+        steelType = (CatalogueDeck.DeckingSteelGrade)Enum.Parse(typeof(CatalogueDeck.DeckingSteelGrade), selecteditems[i]);
       }
 
         (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -97,7 +98,7 @@ namespace ComposGH.Components
       sectionList = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), catalogue);
       catalogue = selecteditems[0];
       profile = selecteditems[1];
-      steelType = (ComposStandardDeck.DeckSteelType)Enum.Parse(typeof(ComposStandardDeck.DeckSteelType), selecteditems[2]);
+      steelType = (CatalogueDeck.DeckingSteelGrade)Enum.Parse(typeof(CatalogueDeck.DeckingSteelGrade), selecteditems[2]);
 
       CreateAttributes();
       ExpireSolution(true);
@@ -123,7 +124,7 @@ namespace ComposGH.Components
     private bool first = true;
     string catalogue = null;
     string profile = null;
-    private ComposStandardDeck.DeckSteelType steelType = ComposStandardDeck.DeckSteelType.S350;
+    private CatalogueDeck.DeckingSteelGrade steelType = CatalogueDeck.DeckingSteelGrade.S350;
 
     #endregion
 
@@ -139,20 +140,23 @@ namespace ComposGH.Components
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
 
-      pManager.AddGenericParameter("Deck Config", "dConf", "Compos Deck Configuration setup", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Deck Config", "DC", "Compos Deck Configuration", GH_ParamAccess.item);
+      pManager[0].Optional = true;
 
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Custom Deck", "Dk", "Standard Compos Deck", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Catalogue Decking", "Dk", "Compos Decking", GH_ParamAccess.item);
     }
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      DeckingConfiguration dconf = GetInput.DeckConfiguration(this, DA, 0);
+      DeckingConfiguration dconf = new DeckingConfiguration(); // default values
 
-      DA.SetData(0, new DeckGoo(new ComposDeck(catalogue, profile, steelType, dconf)));
-      
+      if (this.Params.Input[0].Sources.Count > 0)
+        dconf = GetInput.DeckConfiguration(this, DA, 0);
+
+      DA.SetData(0, new DeckingGoo(new CatalogueDeck(catalogue, profile, steelType, dconf)));
     }
 
 

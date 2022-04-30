@@ -2,7 +2,7 @@
 using UnitsNet;
 using UnitsNet.Units;
 
-namespace ComposAPI.Decking
+namespace ComposAPI.ConcreteSlab
 {
   public class CatalogueDeck : Deck
   {

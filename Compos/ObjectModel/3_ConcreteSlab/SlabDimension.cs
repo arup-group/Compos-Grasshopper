@@ -9,7 +9,7 @@ namespace ComposAPI.ConcreteSlab
   /// <summary>
   /// Slab dimensions such as Depth, Width, Effective Width, starting position and if the section is tapered to next section.
   /// </summary>
-  public class ConcreteSlabDimension
+  public class SlabDimension
   {
     public Length StartPosition { get; set; } = Length.Zero;
 
@@ -24,12 +24,12 @@ namespace ComposAPI.ConcreteSlab
     public bool TaperedToNext { get; set; }
 
     #region constructors
-    public ConcreteSlabDimension()
+    public SlabDimension()
     {
       // empty constructor
     }
 
-    public ConcreteSlabDimension(Length startPosition, Length overallDepth, Length availableWidthLeft, Length availableWidthRight, bool overrideEffectiveWidth, 
+    public SlabDimension(Length startPosition, Length overallDepth, Length availableWidthLeft, Length availableWidthRight, bool overrideEffectiveWidth, 
       Length effectiveWidthLeft, Length effectiveWidthRight, bool taperedToNext = false)
     {
       this.StartPosition = startPosition;
@@ -45,10 +45,10 @@ namespace ComposAPI.ConcreteSlab
 
     #region methods
 
-    public ConcreteSlabDimension Duplicate()
+    public SlabDimension Duplicate()
     {
       if (this == null) { return null; }
-      ConcreteSlabDimension dup = (ConcreteSlabDimension)this.MemberwiseClone();
+      SlabDimension dup = (SlabDimension)this.MemberwiseClone();
       return dup;
     }
     public override string ToString()

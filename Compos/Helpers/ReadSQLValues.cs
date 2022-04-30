@@ -15,7 +15,7 @@ namespace ComposAPI.Helpers
     }
     public static SQLiteConnection ConnectDeckingCatalogue()
     {
-      string filePath = Path.Combine(ComposIO.InstallPath, "sectlib.db3");
+      string filePath = Path.Combine(ComposIO.InstallPath, "decking.db3");
       return new SQLiteConnection($"URI=file:{filePath};mode=ReadOnly");
     }
   }

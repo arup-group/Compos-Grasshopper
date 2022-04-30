@@ -13,6 +13,7 @@ using ComposGH.Parameters;
 using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
+using ComposAPI.ConcreteSlab;
 
 namespace ComposGH.Components
 {
@@ -121,12 +122,12 @@ namespace ComposGH.Components
       pManager.AddGenericParameter("Depth [" + unitAbbreviation + "]", "D", "Depth of a deck. See the decking picture in helps", GH_ParamAccess.item);
       pManager.AddGenericParameter("Thickness [" + unitAbbreviation + "]", "Th", "Thickness of a deck sheet. See the decking picture in helps", GH_ParamAccess.item);
       pManager.AddGenericParameter("Strength [" + stressunitAbbreviation + "]", "fu", "characteristic strength of Steel Deck", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Deck Config", "dConf", "Compos Deck Configuration setup", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Deck Config", "DC", "Compos Deck Configuration", GH_ParamAccess.item);
       
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Custom Deck", "Dk", "Custom Compos Deck", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Decking", "Dk", "Compos Decking", GH_ParamAccess.item);
     }
     #endregion
 
@@ -142,7 +143,7 @@ namespace ComposGH.Components
       Pressure stress = GetInput.Stress(this, DA, 7, stressUnit);
       DeckingConfiguration dconf = GetInput.DeckConfiguration(this, DA, 8);
 
-      DA.SetData(0, new DeckGoo(new ComposDeck(distB1, distB2, distB3, distB4, distB5, depth, thickness, stress, dconf)));
+      DA.SetData(0, new DeckingGoo(new ComposAPI.ConcreteSlab.CustomDeck(distB1, distB2, distB3, distB4, distB5, depth, thickness, stress, dconf)));
     }
 
 

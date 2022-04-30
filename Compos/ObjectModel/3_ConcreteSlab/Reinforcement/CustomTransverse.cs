@@ -12,6 +12,7 @@ namespace ComposAPI.ConcreteSlab
     public Length Diameter { get; set; }
     public Length Spacing { get; set; }
     public Length Cover { get; set; }
+    public TransverseReinforcmentLayout() { }
     public TransverseReinforcmentLayout(Length distanceFromStart, Length distanceFromEnd, Length diameter, Length spacing, Length cover)
     {
       this.DistanceFromStart = distanceFromStart;

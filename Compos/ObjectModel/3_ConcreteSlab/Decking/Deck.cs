@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnitsNet;
 
-namespace ComposAPI.Decking
+namespace ComposAPI.ConcreteSlab
 {
   public class Deck
   {

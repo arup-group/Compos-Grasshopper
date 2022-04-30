@@ -9,21 +9,21 @@ using Rhino;
 using Grasshopper.Documentation;
 using Rhino.Collections;
 using UnitsNet;
-using ComposAPI.Decking;
+using ComposAPI.ConcreteSlab;
 
 namespace ComposGH.Parameters
 {
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class DeckGoo : GH_Goo<Deck>
+  public class DeckingGoo : GH_Goo<Deck>
   {
     #region constructors
-    public DeckGoo()
+    public DeckingGoo()
     {
       this.Value = new Deck();
     }
-    public DeckGoo(Deck item)
+    public DeckingGoo(Deck item)
     {
       if (item == null)
         item = new Deck();
@@ -34,15 +34,15 @@ namespace ComposGH.Parameters
     {
       return DuplicateGoo();
     }
-    public DeckGoo DuplicateGoo()
+    public DeckingGoo DuplicateGoo()
     {
-      return new DeckGoo(Value == null ? new Deck() : Value.Duplicate());
+      return new DeckingGoo(Value == null ? new Deck() : Value.Duplicate());
     }
     #endregion
 
     #region properties
      public override bool IsValid => (this.Value == null) ? false : true;
-    public override string TypeName => "Deck ";
+    public override string TypeName => "Decking";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot
     {
@@ -101,10 +101,10 @@ namespace ComposGH.Parameters
   /// <summary>
   /// This class provides a Parameter interface for the CustomGoo type.
   /// </summary>
-  public class ComposDeckParameter : GH_PersistentParam<DeckGoo>
+  public class ComposDeckingParameter : GH_PersistentParam<DeckingGoo>
   {
-    public ComposDeckParameter()
-      : base(new GH_InstanceDescription("Deck", "Dk", "Compos Slab Deck", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+    public ComposDeckingParameter()
+      : base(new GH_InstanceDescription("Decking", "Dk", "Compos Decking", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
 
@@ -114,11 +114,11 @@ namespace ComposGH.Parameters
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.DeckingParam;
 
-    protected override GH_GetterResult Prompt_Plural(ref List<DeckGoo> values)
+    protected override GH_GetterResult Prompt_Plural(ref List<DeckingGoo> values)
     {
       return GH_GetterResult.cancel;
     }
-    protected override GH_GetterResult Prompt_Singular(ref DeckGoo value)
+    protected override GH_GetterResult Prompt_Singular(ref DeckingGoo value)
     {
       return GH_GetterResult.cancel;
     }

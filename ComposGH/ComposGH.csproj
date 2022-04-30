@@ -115,6 +115,7 @@
     <Compile Include="Components\3_Slab\CreateConcreteMaterialEN.cs" />
     <Compile Include="Components\3_Slab\CreateERatio.cs" />
     <Compile Include="Components\5_Rebar\CreateRebarMaterial.cs" />
+    <Compile Include="Components\5_Rebar\CustomTransverseReinforcementLayout.cs" />
     <Compile Include="Components\5_Rebar\TransverseReinforcement.cs" />
     <Compile Include="Components\5_Rebar\MeshReinforcement.cs" />
     <Compile Include="Components\6_Load\PatchLoad.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="Parameters\3_Slab\ConcreteMaterial\ERatioGoo.cs" />
     <Compile Include="Parameters\3_Slab\ConcreteSlabDimensionGoo.cs" />
     <Compile Include="Parameters\1_Beam\Restraint\RestraintGoo.cs" />
+    <Compile Include="Parameters\3_Slab\Reinforcement\TransverseReinforcementLayoutGoo.cs" />
     <Compile Include="Parameters\6_Load\LoadGoo.cs" />
     <Compile Include="Parameters\3_Slab\Reinforcement\ReinforcementGoo.cs" />
     <Compile Include="Parameters\3_Slab\Reinforcement\ReinforcementMaterialGoo.cs" />
@@ -153,7 +155,7 @@
     <Compile Include="Parameters\4_Decking\DeckingConfigGoo.cs" />
     <Compile Include="Parameters\GH_UnitNumber.cs" />
     <Compile Include="Parameters\_Units.cs" />
-    <Compile Include="Parameters\4_Decking\DeckGoo.cs" />
+    <Compile Include="Parameters\4_Decking\DeckingGoo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -374,6 +376,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\ERatio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\DeckingConfig.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
@@ -15,17 +16,17 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class DeckingConfigGoo : GH_Goo<DeckingConfiguration>
+  public class TransverseReinforcmentLayoutGoo : GH_Goo<TransverseReinforcmentLayout>
   {
     #region constructors
-    public DeckingConfigGoo()
+    public TransverseReinforcmentLayoutGoo()
     {
-      this.Value = new DeckingConfiguration();
+      this.Value = new TransverseReinforcmentLayout();
     }
-    public DeckingConfigGoo(DeckingConfiguration item)
+    public TransverseReinforcmentLayoutGoo(TransverseReinforcmentLayout item)
     {
       if (item == null)
-        item = new DeckingConfiguration();
+        item = new TransverseReinforcmentLayout();
       this.Value = item.Duplicate();
     }
 
@@ -33,15 +34,15 @@ namespace ComposGH.Parameters
     {
       return DuplicateGoo();
     }
-    public DeckingConfigGoo DuplicateGoo()
+    public TransverseReinforcmentLayoutGoo DuplicateGoo()
     {
-      return new DeckingConfigGoo(Value == null ? new DeckingConfiguration() : Value.Duplicate());
+      return new TransverseReinforcmentLayoutGoo(Value == null ? new TransverseReinforcmentLayout() : Value.Duplicate());
     }
     #endregion
 
     #region properties
      public override bool IsValid => (this.Value == null) ? false : true;
-    public override string TypeName => "Deck Config.";
+    public override string TypeName => "Transverse Reinforcement Layout";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot
     {
@@ -66,7 +67,7 @@ namespace ComposGH.Parameters
       // This function is called when Grasshopper needs to convert this 
       // instance of our custom class into some other type Q.            
 
-      if (typeof(Q).IsAssignableFrom(typeof(DeckingConfiguration)))
+      if (typeof(Q).IsAssignableFrom(typeof(TransverseReinforcmentLayout)))
       {
         if (Value == null)
           target = default;
@@ -86,9 +87,9 @@ namespace ComposGH.Parameters
       if (source == null) { return false; }
 
       //Cast from GsaMaterial
-      if (typeof(DeckingConfiguration).IsAssignableFrom(source.GetType()))
+      if (typeof(TransverseReinforcmentLayout).IsAssignableFrom(source.GetType()))
       {
-        Value = (DeckingConfiguration)source;
+        Value = (TransverseReinforcmentLayout)source;
         return true;
       }
 
