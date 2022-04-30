@@ -59,43 +59,44 @@
     <Compile Include="Helpers\ComposIO.cs" />
     <Compile Include="Helpers\ReadSQLValues.cs" />
     <Compile Include="Helpers\Units.cs" />
-    <Compile Include="ObjectModel\01_SteelBeam\BeamSection\BeamSection.cs" />
-    <Compile Include="ObjectModel\01_SteelBeam\SteelBeam.cs" />
-    <Compile Include="ObjectModel\01_SteelBeam\Restraint\Restraint.cs" />
-    <Compile Include="ObjectModel\01_SteelBeam\Restraint\Supports.cs" />
-    <Compile Include="ObjectModel\01_SteelBeam\SteelMaterial\SteelMaterial.cs" />
-    <Compile Include="ObjectModel\01_SteelBeam\WebOpening\WebOpening.cs" />
-    <Compile Include="ObjectModel\01_SteelBeam\WebOpening\WebOpeningStiffeners.cs" />
-    <Compile Include="ObjectModel\02_Studs\Stud.cs" />
-    <Compile Include="ObjectModel\02_Studs\StudDimensions.cs" />
-    <Compile Include="ObjectModel\02_Studs\StudSpacing.cs" />
-    <Compile Include="ObjectModel\02_Studs\StudSpecification.cs" />
-    <Compile Include="ObjectModel\03_ConcreteSlab\ConcreteMaterial\ConcreteMaterial.cs" />
-    <Compile Include="ObjectModel\03_ConcreteSlab\ConcreteSlabDimension.cs" />
-    <Compile Include="ObjectModel\03_ConcreteSlab\ConcreteMaterial\ERatio.cs" />
-    <Compile Include="ObjectModel\04_Decking\CustomDeck.cs" />
-    <Compile Include="ObjectModel\04_Decking\Deck.cs" />
-    <Compile Include="ObjectModel\04_Decking\CatalogueDeck.cs" />
-    <Compile Include="ObjectModel\04_Decking\DeckingConfiguration.cs" />
-    <Compile Include="ObjectModel\05_Rebar\Mesh.cs" />
-    <Compile Include="ObjectModel\05_Rebar\ReinforcementMaterial.cs" />
-    <Compile Include="ObjectModel\05_Rebar\Transverse.cs" />
-    <Compile Include="ObjectModel\05_Rebar\Reinforcement.cs" />
-    <Compile Include="ObjectModel\06_Load\Load.cs" />
-    <Compile Include="ObjectModel\06_Load\LoadValues.cs" />
-    <Compile Include="ObjectModel\06_Load\LoadChildren.cs" />
-    <Compile Include="ObjectModel\07_DesignCode\DesignCode.cs" />
+    <Compile Include="ObjectModel\1_SteelBeam\BeamSection\BeamSection.cs" />
+    <Compile Include="ObjectModel\1_SteelBeam\SteelBeam.cs" />
+    <Compile Include="ObjectModel\1_SteelBeam\Restraint\Restraint.cs" />
+    <Compile Include="ObjectModel\1_SteelBeam\Restraint\Supports.cs" />
+    <Compile Include="ObjectModel\1_SteelBeam\SteelMaterial\SteelMaterial.cs" />
+    <Compile Include="ObjectModel\1_SteelBeam\WebOpening\WebOpening.cs" />
+    <Compile Include="ObjectModel\1_SteelBeam\WebOpening\WebOpeningStiffeners.cs" />
+    <Compile Include="ObjectModel\2_Studs\Stud.cs" />
+    <Compile Include="ObjectModel\2_Studs\StudDimensions.cs" />
+    <Compile Include="ObjectModel\2_Studs\StudSpacing.cs" />
+    <Compile Include="ObjectModel\2_Studs\StudSpecification.cs" />
+    <Compile Include="ObjectModel\3_ConcreteSlab\ConcreteMaterial\ConcreteMaterial.cs" />
+    <Compile Include="ObjectModel\3_ConcreteSlab\ConcreteSlabDimension.cs" />
+    <Compile Include="ObjectModel\3_ConcreteSlab\ConcreteMaterial\ERatio.cs" />
+    <Compile Include="ObjectModel\3_ConcreteSlab\Decking\CustomDeck.cs" />
+    <Compile Include="ObjectModel\3_ConcreteSlab\Decking\Deck.cs" />
+    <Compile Include="ObjectModel\3_ConcreteSlab\Decking\CatalogueDeck.cs" />
+    <Compile Include="ObjectModel\3_ConcreteSlab\Decking\DeckingConfiguration.cs" />
+    <Compile Include="ObjectModel\3_ConcreteSlab\Reinforcement\Mesh.cs" />
+    <Compile Include="ObjectModel\3_ConcreteSlab\Reinforcement\ReinforcementMaterial.cs" />
+    <Compile Include="ObjectModel\3_ConcreteSlab\Reinforcement\CustomTransverse.cs" />
+    <Compile Include="ObjectModel\3_ConcreteSlab\Reinforcement\Transverse.cs" />
+    <Compile Include="ObjectModel\3_ConcreteSlab\Reinforcement\Reinforcement.cs" />
+    <Compile Include="ObjectModel\4_Load\Load.cs" />
+    <Compile Include="ObjectModel\4_Load\LoadValues.cs" />
+    <Compile Include="ObjectModel\4_Load\LoadChildren.cs" />
+    <Compile Include="ObjectModel\5_DesignCode\DesignCode\DesignCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ObjectModel\00_File\" />
-    <Folder Include="ObjectModel\08_Member\" />
-    <Folder Include="ObjectModel\09_Analysis\" />
-    <Folder Include="ObjectModel\10_Results\" />
-    <Folder Include="ObjectModel\11_Design\" />
+    <Folder Include="ObjectModel\0_File\" />
+    <Folder Include="ObjectModel\6_Member\" />
+    <Folder Include="ObjectModel\7_Analysis\" />
+    <Folder Include="ObjectModel\8_Results\" />
+    <Folder Include="ObjectModel\9_Design\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />

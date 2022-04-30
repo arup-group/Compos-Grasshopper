@@ -8,11 +8,11 @@ namespace ComposAPI.ConcreteSlab
   /// <summary>
   /// Custom class: this class defines the basic properties and methods for our custom class
   /// </summary>
-  public class MeshReinforcement
+  public class MeshReinforcement : Reinforcement
   {
     public Length Cover { get; set; }
-    public ReinforcementMeshType Type { get; set; }
     public bool Rotated { get; set; }
+    public ReinforcementMeshType MeshType { get; set; }
 
     public enum ReinforcementMeshType
     {
@@ -37,21 +37,22 @@ namespace ComposAPI.ConcreteSlab
     #region constructors
     public MeshReinforcement()
     {
-      //empty constructor
+      this.m_type = ReinforcementType.Mesh;
     }
 
     public MeshReinforcement(Length cover, ReinforcementMeshType meshType = ReinforcementMeshType.A393, bool rotated = false)
     {
       this.Cover = cover;
-      this.Type = meshType;
+      this.MeshType = meshType;
       this.Rotated = rotated;
+      this.m_type = ReinforcementType.Mesh;
     }
 
     #endregion
 
     #region methods
 
-    public MeshReinforcement Duplicate()
+    public override Reinforcement Duplicate()
     {
       if (this == null) { return null; }
       MeshReinforcement dup = (MeshReinforcement)this.MemberwiseClone();
@@ -60,7 +61,7 @@ namespace ComposAPI.ConcreteSlab
     public override string ToString()
     {
       string cov = Cover.ToString("f0");
-      string msh = Type.ToString();
+      string msh = MeshType.ToString();
 
       string rotated = (this.Rotated == true) ? " (rotated)" : "";
 
