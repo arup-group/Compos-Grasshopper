@@ -31,7 +31,5 @@ namespace ComposGH.Converters
       }
       return true;
     }
-
-
   }
 }

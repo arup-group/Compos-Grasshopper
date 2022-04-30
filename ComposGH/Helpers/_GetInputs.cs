@@ -873,6 +873,35 @@ namespace ComposGH.Components
     }
     #endregion
 
+    #region Decking
+        internal static DeckConfiguration DeckConfiguration(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+        {
+            DeckConfigurationGoo goo = null;
+            GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+            if (DA.GetData(inputid, ref gh_typ))
+            {
+                if (gh_typ.Value is DeckConfigurationGoo)
+                {
+                    goo = (DeckConfigurationGoo)gh_typ.Value;
+                }
+                else
+                {
+                    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Reinforcement");
+                    return null;
+                }
+            }
+            else if (!isOptional)
+                owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+            else
+            {
+                if (goo == null)
+                    return null;
+            }
+            return goo.Value;
+        }
+        #endregion
+    }
+
     internal static object GenericGoo<Type>(GH_Component owner, IGH_DataAccess DA, int inputid)
     {
       GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
