@@ -7,11 +7,11 @@ using UnitsNet;
 namespace ComposAPI.Studs
 {
   /// <summary>
-  /// Stud class containing <see cref="ComposGH.Stud.StudDimensions"/>, <see cref="ComposGH.Stud.StudSpecification"/>, and spacing/layout settings (custom or automatic)
+  /// Stud class containing <see cref="Studs.StudDimensions"/>, <see cref="Studs.StudSpecification"/>, and spacing/layout settings (custom or automatic)
   /// </summary>
   public class Stud
   {
-    public StudDimensions StudDimension { get; set; }
+    public StudDimensions StudDimensions { get; set; }
     public StudSpecification StudSpecification { get; set; }
 
     // Stud Spacing
@@ -62,7 +62,7 @@ namespace ComposAPI.Studs
     /// <param name="checkSpacing"></param>
     public Stud(StudDimensions stud, StudSpecification spec, List<StudGroupSpacing> spacings, bool checkSpacing)
     {
-      this.StudDimension = stud;
+      this.StudDimensions = stud;
       this.StudSpecification = spec;
       this.CustomSpacing = spacings;
       this.CheckStudSpacing = checkSpacing;
@@ -81,7 +81,7 @@ namespace ComposAPI.Studs
     /// <exception cref="ArgumentException"></exception>
     public Stud(StudDimensions stud, StudSpecification spec, double minSaving, StudGroupSpacing.StudSpacingType type)
     {
-      this.StudDimension = stud;
+      this.StudDimensions = stud;
       this.StudSpecification = spec;
       this.StudSpacingType = type;
       this.MinSavingMultipleZones = minSaving;
@@ -106,7 +106,7 @@ namespace ComposAPI.Studs
     /// <param name="interaction"></param>
     public Stud(StudDimensions stud, StudSpecification spec, double minSaving, double interaction)
     {
-      this.StudDimension = stud;
+      this.StudDimensions = stud;
       this.StudSpecification = spec;
       this.StudSpacingType = StudGroupSpacing.StudSpacingType.Partial_Interaction;
       this.MinSavingMultipleZones = minSaving;
@@ -134,7 +134,7 @@ namespace ComposAPI.Studs
     {
       if (this == null) { return null; }
       Stud dup = (Stud)this.MemberwiseClone();
-      dup.StudDimension = this.StudDimension.Duplicate();
+      dup.StudDimensions = this.StudDimensions.Duplicate();
       dup.StudSpecification = this.StudSpecification.Duplicate();
       if (this.CustomSpacing != null)
         dup.CustomSpacing = this.CustomSpacing.ToList();
@@ -143,7 +143,7 @@ namespace ComposAPI.Studs
 
     public override string ToString()
     {
-      string size = this.StudDimension.Diameter.As(Helpers.Units.FileUnits.LengthUnitSection).ToString("f0") + "/" + this.StudDimension.Height.ToUnit(Helpers.Units.FileUnits.LengthUnitSection).ToString("f0");
+      string size = this.StudDimensions.Diameter.As(Helpers.Units.FileUnits.LengthUnitSection).ToString("f0") + "/" + this.StudDimensions.Height.ToUnit(Helpers.Units.FileUnits.LengthUnitSection).ToString("f0");
       return size.Replace(" ", string.Empty);
     }
 

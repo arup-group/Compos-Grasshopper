@@ -7,7 +7,7 @@ using UnitsNet;
 
 namespace ComposAPI.ConcreteSlab
 {
-  public class CustomDeck : Deck
+  public class CustomDeck : Decking
   {
     public Pressure Strength { get; set; }
 
@@ -29,7 +29,7 @@ namespace ComposAPI.ConcreteSlab
       this.m_type = DeckingType.Custom;
     }
 
-    public override Deck Duplicate()
+    public override Decking Duplicate()
     {
       if (this == null) { return null; }
       CustomDeck dup = (CustomDeck)this.MemberwiseClone();

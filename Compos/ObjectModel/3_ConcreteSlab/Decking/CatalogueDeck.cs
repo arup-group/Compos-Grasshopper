@@ -4,7 +4,7 @@ using UnitsNet.Units;
 
 namespace ComposAPI.ConcreteSlab
 {
-  public class CatalogueDeck : Deck
+  public class CatalogueDeck : Decking
   {
     public string Catalogue { get; set; }
     public string Profile { get; set; }
@@ -36,7 +36,7 @@ namespace ComposAPI.ConcreteSlab
       this.b5 = new Length(sqlValues[5], unit);
       this.Thickness = new Length(sqlValues[6], unit);
     }
-    public override Deck Duplicate()
+    public override Decking Duplicate()
     {
       if (this == null) { return null; }
       CatalogueDeck dup = (CatalogueDeck)this.MemberwiseClone();

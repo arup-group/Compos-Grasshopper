@@ -65,7 +65,6 @@ namespace ComposAPI.ConcreteSlab
 
       string rotated = (this.Rotated == true) ? " (rotated)" : "";
 
-
       return msh.Replace(" ", string.Empty) + rotated + ", c:" + cov.Replace(" ", string.Empty);
     }
     #endregion

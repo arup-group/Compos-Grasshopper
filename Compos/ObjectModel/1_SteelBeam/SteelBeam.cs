@@ -66,7 +66,7 @@ namespace ComposAPI.SteelBeam
 
     public override string ToString()
     {
-      string profile = (this.BeamSections.Count > 1) ? string.Join(":", this.BeamSections.Select(x => x.SectionDescription).ToArray()) : this.BeamSections[0].SectionDescription;
+      string profile = (this.BeamSections.Count > 1) ? string.Join(" : ", this.BeamSections.Select(x => x.SectionDescription).ToArray()) : this.BeamSections[0].SectionDescription;
       string mat = this.Material.ToString();
       string line = "L:" + this.Length.ToUnit(Helpers.Units.FileUnits.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
       return line + ", " + profile + ", " + mat;

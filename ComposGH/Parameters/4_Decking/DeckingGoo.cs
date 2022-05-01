@@ -16,17 +16,17 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class DeckingGoo : GH_Goo<Deck>
+  public class DeckingGoo : GH_Goo<Decking>
   {
     #region constructors
     public DeckingGoo()
     {
-      this.Value = new Deck();
+      this.Value = new Decking();
     }
-    public DeckingGoo(Deck item)
+    public DeckingGoo(Decking item)
     {
       if (item == null)
-        item = new Deck();
+        item = new Decking();
       this.Value = item.Duplicate();
     }
 
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public DeckingGoo DuplicateGoo()
     {
-      return new DeckingGoo(Value == null ? new Deck() : Value.Duplicate());
+      return new DeckingGoo(Value == null ? new Decking() : Value.Duplicate());
     }
     #endregion
 
@@ -67,7 +67,7 @@ namespace ComposGH.Parameters
       // This function is called when Grasshopper needs to convert this 
       // instance of our custom class into some other type Q.            
 
-      if (typeof(Q).IsAssignableFrom(typeof(Deck)))
+      if (typeof(Q).IsAssignableFrom(typeof(Decking)))
       {
         if (Value == null)
           target = default;
@@ -87,9 +87,9 @@ namespace ComposGH.Parameters
       if (source == null) { return false; }
 
       //Cast from GsaMaterial
-      if (typeof(Deck).IsAssignableFrom(source.GetType()))
+      if (typeof(Decking).IsAssignableFrom(source.GetType()))
       {
-        Value = (Deck)source;
+        Value = (Decking)source;
         return true;
       }
 

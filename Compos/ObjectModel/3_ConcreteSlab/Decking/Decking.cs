@@ -7,7 +7,7 @@ using UnitsNet;
 
 namespace ComposAPI.ConcreteSlab
 {
-  public class Deck
+  public class Decking
   {
     public Length b1 { get; set; }
     public Length b2 { get; set; }
@@ -25,12 +25,12 @@ namespace ComposAPI.ConcreteSlab
     public DeckingType Type { get { return m_type; } }
     internal DeckingType m_type;
 
-    public Deck()
+    public Decking()
     {
       // empty constructor
     }
 
-    internal Deck(string coaString)
+    internal Decking(string coaString)
     {
       // to do - implement from coa string method
     }
@@ -41,10 +41,10 @@ namespace ComposAPI.ConcreteSlab
       return string.Empty;
     }
 
-    public virtual Deck Duplicate()
+    public virtual Decking Duplicate()
     {
       if (this == null) { return null; }
-      Deck dup = (Deck)this.MemberwiseClone();
+      Decking dup = (Decking)this.MemberwiseClone();
       dup.DeckConfiguration = this.DeckConfiguration.Duplicate();
       return dup;
     }

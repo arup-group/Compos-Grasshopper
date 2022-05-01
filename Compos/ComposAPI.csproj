@@ -71,10 +71,11 @@
     <Compile Include="ObjectModel\2_Studs\StudSpacing.cs" />
     <Compile Include="ObjectModel\2_Studs\StudSpecification.cs" />
     <Compile Include="ObjectModel\3_ConcreteSlab\ConcreteMaterial\ConcreteMaterial.cs" />
-    <Compile Include="ObjectModel\3_ConcreteSlab\SlabDimension.cs" />
+    <Compile Include="ObjectModel\3_ConcreteSlab\ConcreteSlab.cs" />
+    <Compile Include="ObjectModel\3_ConcreteSlab\SlabDimension\SlabDimension.cs" />
     <Compile Include="ObjectModel\3_ConcreteSlab\ConcreteMaterial\ERatio.cs" />
     <Compile Include="ObjectModel\3_ConcreteSlab\Decking\CustomDeck.cs" />
-    <Compile Include="ObjectModel\3_ConcreteSlab\Decking\Deck.cs" />
+    <Compile Include="ObjectModel\3_ConcreteSlab\Decking\Decking.cs" />
     <Compile Include="ObjectModel\3_ConcreteSlab\Decking\CatalogueDeck.cs" />
     <Compile Include="ObjectModel\3_ConcreteSlab\Decking\DeckingConfiguration.cs" />
     <Compile Include="ObjectModel\3_ConcreteSlab\Reinforcement\MeshReinforcement.cs" />
@@ -85,7 +86,9 @@
     <Compile Include="ObjectModel\4_Load\Load.cs" />
     <Compile Include="ObjectModel\4_Load\LoadValues.cs" />
     <Compile Include="ObjectModel\4_Load\LoadChildren.cs" />
-    <Compile Include="ObjectModel\5_DesignCode\DesignCode\DesignCode.cs" />
+    <Compile Include="ObjectModel\5_DesignCode\DesignCode.cs" />
+    <Compile Include="ObjectModel\5_DesignCode\CodeOptions.cs" />
+    <Compile Include="ObjectModel\5_DesignCode\DesignOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

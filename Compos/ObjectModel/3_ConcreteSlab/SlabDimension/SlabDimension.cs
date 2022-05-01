@@ -17,10 +17,11 @@ namespace ComposAPI.ConcreteSlab
     public Length OverallDepth { get; set; }
     public Length AvailableWidthLeft { get; set; }
     public Length AvailableWidtRight { get; set; }
-    public bool OverrideEffectiveWidth { get; set; }
+    public bool CustomEffectiveWidth { get; set; }
     public Length EffectiveWidthLeft { get; set; }
     public Length EffectiveWidthRight { get; set; }
-
+    
+    // Settings
     public bool TaperedToNext { get; set; }
 
     #region constructors
@@ -28,15 +29,23 @@ namespace ComposAPI.ConcreteSlab
     {
       // empty constructor
     }
-
-    public SlabDimension(Length startPosition, Length overallDepth, Length availableWidthLeft, Length availableWidthRight, bool overrideEffectiveWidth, 
+    public SlabDimension(Length startPosition, Length overallDepth, Length availableWidthLeft, Length availableWidthRight, bool taperedToNext = false)
+    {
+      this.StartPosition = startPosition;
+      this.OverallDepth = overallDepth;
+      this.AvailableWidthLeft = availableWidthLeft;
+      this.AvailableWidtRight = availableWidthRight;
+      this.CustomEffectiveWidth = false;
+      this.TaperedToNext = taperedToNext;
+    }
+    public SlabDimension(Length startPosition, Length overallDepth, Length availableWidthLeft, Length availableWidthRight,
       Length effectiveWidthLeft, Length effectiveWidthRight, bool taperedToNext = false)
     {
       this.StartPosition = startPosition;
       this.OverallDepth = overallDepth;
       this.AvailableWidthLeft = availableWidthLeft;
       this.AvailableWidtRight = availableWidthRight;
-      this.OverrideEffectiveWidth = overrideEffectiveWidth;
+      this.CustomEffectiveWidth = true;
       this.EffectiveWidthLeft = effectiveWidthLeft;
       this.EffectiveWidthRight = effectiveWidthRight;
       this.TaperedToNext = taperedToNext;
@@ -55,13 +64,16 @@ namespace ComposAPI.ConcreteSlab
     {
       string start = "";
       if (this.StartPosition != Length.Zero)
-        start = ", Px:" + this.StartPosition.ToString("f0").Replace(" ", string.Empty);
+        start = ", Px:" + this.StartPosition.ToUnit(Helpers.Units.FileUnits.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
       string tapered = "";
       if (this.TaperedToNext)
         tapered = ", Tapered";
 
-      //return (this.SectionDescription == null) ? "Null profile" : this.SectionDescription + start + tapered;
-      return "";
+      string d = "d:" + this.OverallDepth.ToUnit(Helpers.Units.FileUnits.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
+      string w = ", w:" + (this.AvailableWidthLeft + this.AvailableWidtRight).ToUnit(Helpers.Units.FileUnits.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
+      if (this.CustomEffectiveWidth)
+        w = ", weff:" + (this.EffectiveWidthLeft + this.EffectiveWidthRight).ToUnit(Helpers.Units.FileUnits.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
+      return d + w + start + tapered;
     }
     #endregion
   }
