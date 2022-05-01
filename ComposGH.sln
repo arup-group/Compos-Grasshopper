@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComposAPI", "Compos\ComposA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComposGHTests", "ComposGHTests\ComposGHTests.csproj", "{35B5560B-87F2-4A01-A378-1CDD3A6EEEA0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComposTests", "ComposTests\ComposTests.csproj", "{582B072D-04D0-4EEE-B34C-B02CFF218D1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComposAPITests", "ComposTests\ComposAPITests.csproj", "{582B072D-04D0-4EEE-B34C-B02CFF218D1B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{98C1EAE3-9930-4816-8C2D-26B82CA2100B}"
 EndProject

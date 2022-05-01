@@ -101,7 +101,7 @@ namespace ComposAPI.Member
   public class EN1994 : DesignCode
   {
     public NationalAnnex NationalAnnex { get; set; } = NationalAnnex.Generic;
-    public EN1994Options CodeOptions { get; set; } = new EN1994Options();
+    public EC4Options CodeOptions { get; set; } = new EC4Options();
     public new EC4SafetyFactors SafetyFactors { get; set; } = new EC4SafetyFactors();
     public EN1994()
     {
@@ -126,7 +126,7 @@ namespace ComposAPI.Member
     public CodeOptions CodeOptions { get; set; } = new CodeOptions();
     public ASNZS2327()
     {
-      this.Code = Code.EN1994_1_1_2004;
+      this.Code = Code.AS_NZS2327_2017;
     }
     public override DesignCode Duplicate()
     {

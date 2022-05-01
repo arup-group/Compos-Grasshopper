@@ -77,8 +77,8 @@ namespace ComposAPI.ConcreteSlab
 
       string dim = (this.Dimensions.Count > 1) ? string.Join(" : ", this.Dimensions.Select(x => x.ToString()).ToArray()) : this.Dimensions[0].ToString();
       string mat = this.Material.ToString();
-      string reinf = this.Reinforcement.ToString();
-      return line + ", " + profile + ", " + mat;
+      string reinf = this.MeshReinforcement.ToString() + " / " + this.TransverseReinforcement.ToString();
+      return dim + ", " + mat + ", " + reinf;
     }
     #endregion
 
