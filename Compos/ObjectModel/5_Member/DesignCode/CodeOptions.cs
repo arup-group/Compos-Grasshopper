@@ -9,10 +9,12 @@ namespace ComposAPI.Member
   {
     public bool ConsiderShrinkageDeflection { get; set; } = false;
     public virtual CreepShrinkageParameters LongTerm { get; set; } = new CreepShrinkageParameters()
-    { CreepMultiplier = 2.0 };
+    { CreepCoefficient = 2.0 };
     public virtual CreepShrinkageParameters ShortTerm { get; set; } = new CreepShrinkageParameters()
-    { CreepMultiplier = 2.0 };
-
+    { CreepCoefficient = 2.0 };
+    /// <summary>
+    /// Deafult constructor with AS/NZ values and members
+    /// </summary>
     public CodeOptions()
     {
       // default initialiser
@@ -25,7 +27,7 @@ namespace ComposAPI.Member
       return dup;
     }
   }
-  public class EN1994Options : CodeOptions
+  public class EC4Options : CodeOptions
   {
     public enum CementClass
     {
@@ -45,17 +47,17 @@ namespace ComposAPI.Member
     /// </summary>
     public bool ApproxModularRatios { get; set; } = false;
     public new CreepShrinkageEuroCodeParameters LongTerm { get; set; } = new CreepShrinkageEuroCodeParameters() 
-    { ConcreteAgeAtLoad = 28, CreepMultiplier = 1.1, FinalConcreteAgeCreep = 36500, RelativeHumidity = 0.5 };
+    { ConcreteAgeAtLoad = 28, CreepCoefficient = 1.1, FinalConcreteAgeCreep = 36500, RelativeHumidity = 0.5 };
     public new CreepShrinkageEuroCodeParameters ShortTerm { get; set; } = new CreepShrinkageEuroCodeParameters()
-    { ConcreteAgeAtLoad = 1, CreepMultiplier = 0.55, FinalConcreteAgeCreep = 36500, RelativeHumidity = 0.5 };
-    public EN1994Options()
+    { ConcreteAgeAtLoad = 1, CreepCoefficient = 0.55, FinalConcreteAgeCreep = 36500, RelativeHumidity = 0.5 };
+    public EC4Options()
     {
       // default initialiser
     }
-    public new EN1994Options Duplicate()
+    public new EC4Options Duplicate()
     {
       if (this == null) { return null; }
-      EN1994Options dup = (EN1994Options)this.MemberwiseClone();
+      EC4Options dup = (EC4Options)this.MemberwiseClone();
       dup.LongTerm = this.LongTerm.Duplicate();
       dup.ShortTerm = this.ShortTerm.Duplicate();
       return dup;
@@ -66,7 +68,7 @@ namespace ComposAPI.Member
     /// <summary>
     /// Creep multiplier used for calculating E ratio for long term and shrinkage (see clause 5.4.2.2 of EN 1994-1-1:2004) 
     /// </summary>
-    public double CreepMultiplier { get; set; }
+    public double CreepCoefficient { get; set; }
     public CreepShrinkageParameters() { }
     public CreepShrinkageParameters Duplicate()
     {

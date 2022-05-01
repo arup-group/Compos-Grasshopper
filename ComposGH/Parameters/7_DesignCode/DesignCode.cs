@@ -9,7 +9,7 @@ using Rhino;
 using Grasshopper.Documentation;
 using Rhino.Collections;
 using UnitsNet;
-using ComposAPI.DesignCode;
+using ComposAPI.Member;
 
 namespace ComposGH.Parameters
 {

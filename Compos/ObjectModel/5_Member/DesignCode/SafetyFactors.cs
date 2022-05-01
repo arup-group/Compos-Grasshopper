@@ -114,10 +114,10 @@ namespace ComposAPI.Member
   /// </summary>
   public class LoadCombinationFactors
   {
-    public double ConstantDead { get; set; } = 1.0;
-    public double ConstantLive { get; set; } = 1.0;
-    public double FinalDead { get; set; } = 1.35;
-    public double FinalLive { get; set; } = 1.5;
+    public double xi { get; set; } = 1.0;
+    public double psi_0 { get; set; } = 1.0;
+    public double psi_G { get; set; } = 1.35;
+    public double psi_Q { get; set; } = 1.5;
     public LoadCombinationFactors() { }
     public LoadCombinationFactors Duplicate()
     {
