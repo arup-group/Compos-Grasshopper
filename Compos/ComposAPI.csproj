@@ -60,7 +60,7 @@
     <Compile Include="Helpers\ReadSQLValues.cs" />
     <Compile Include="Helpers\Units.cs" />
     <Compile Include="ObjectModel\1_SteelBeam\BeamSection\BeamSection.cs" />
-    <Compile Include="ObjectModel\1_SteelBeam\SteelBeam.cs" />
+    <Compile Include="ObjectModel\1_SteelBeam\Beam.cs" />
     <Compile Include="ObjectModel\1_SteelBeam\Restraint\Restraint.cs" />
     <Compile Include="ObjectModel\1_SteelBeam\Restraint\Supports.cs" />
     <Compile Include="ObjectModel\1_SteelBeam\SteelMaterial\SteelMaterial.cs" />
@@ -71,7 +71,7 @@
     <Compile Include="ObjectModel\2_Studs\StudSpacing.cs" />
     <Compile Include="ObjectModel\2_Studs\StudSpecification.cs" />
     <Compile Include="ObjectModel\3_ConcreteSlab\ConcreteMaterial\ConcreteMaterial.cs" />
-    <Compile Include="ObjectModel\3_ConcreteSlab\ConcreteSlab.cs" />
+    <Compile Include="ObjectModel\3_ConcreteSlab\Slab.cs" />
     <Compile Include="ObjectModel\3_ConcreteSlab\SlabDimension\SlabDimension.cs" />
     <Compile Include="ObjectModel\3_ConcreteSlab\ConcreteMaterial\ERatio.cs" />
     <Compile Include="ObjectModel\3_ConcreteSlab\Decking\CustomDeck.cs" />
@@ -83,12 +83,14 @@
     <Compile Include="ObjectModel\3_ConcreteSlab\Reinforcement\CustomTransverse.cs" />
     <Compile Include="ObjectModel\3_ConcreteSlab\Reinforcement\TransverseReinforcement.cs" />
     <Compile Include="ObjectModel\3_ConcreteSlab\Reinforcement\Reinforcement.cs" />
-    <Compile Include="ObjectModel\4_Load\Load.cs" />
-    <Compile Include="ObjectModel\4_Load\LoadValues.cs" />
-    <Compile Include="ObjectModel\4_Load\LoadChildren.cs" />
-    <Compile Include="ObjectModel\5_DesignCode\DesignCode.cs" />
-    <Compile Include="ObjectModel\5_DesignCode\CodeOptions.cs" />
-    <Compile Include="ObjectModel\5_DesignCode\DesignOptions.cs" />
+    <Compile Include="ObjectModel\4_Loads\Load.cs" />
+    <Compile Include="ObjectModel\4_Loads\LoadValues.cs" />
+    <Compile Include="ObjectModel\4_Loads\LoadChildren.cs" />
+    <Compile Include="ObjectModel\5_Member\DesignCode\DesignCode.cs" />
+    <Compile Include="ObjectModel\5_Member\DesignCode\CodeOptions.cs" />
+    <Compile Include="ObjectModel\5_Member\DesignCode\SafetyFactors.cs" />
+    <Compile Include="ObjectModel\5_Member\DesignCode\DesignOptions.cs" />
+    <Compile Include="ObjectModel\5_Member\Member.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -97,7 +99,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ObjectModel\0_File\" />
-    <Folder Include="ObjectModel\6_Member\" />
     <Folder Include="ObjectModel\7_Analysis\" />
     <Folder Include="ObjectModel\8_Results\" />
     <Folder Include="ObjectModel\9_Design\" />

@@ -10,7 +10,7 @@ namespace ComposAPI.SteelBeam
   /// <summary>
   /// Custom class: this class defines the basic properties and methods for our custom class
   /// </summary>
-  public class SteelBeam
+  public class Beam
   {
 
     public Length Length { get; set; }
@@ -20,12 +20,12 @@ namespace ComposAPI.SteelBeam
     public List<WebOpening> WebOpenings { get; internal set; } = null;
 
     #region constructors
-    public SteelBeam()
+    public Beam()
     {
       // empty constructor
     }
 
-    public SteelBeam(Length length, Restraint restraint, SteelMaterial material, List<BeamSection> beamSections, List<WebOpening> webOpenings = null)
+    public Beam(Length length, Restraint restraint, SteelMaterial material, List<BeamSection> beamSections, List<WebOpening> webOpenings = null)
     {
       this.Length = length;
       this.Restraint = restraint;
@@ -38,7 +38,7 @@ namespace ComposAPI.SteelBeam
     #endregion
 
     #region coa interop
-    internal SteelBeam(string coaString)
+    internal Beam(string coaString)
     {
       // to do - implement from coa string method
     }
@@ -52,10 +52,10 @@ namespace ComposAPI.SteelBeam
 
     #region methods
 
-    public SteelBeam Duplicate()
+    public Beam Duplicate()
     {
       if (this == null) { return null; }
-      SteelBeam dup = (SteelBeam)this.MemberwiseClone();
+      Beam dup = (Beam)this.MemberwiseClone();
       dup.Material = this.Material.Duplicate();
       dup.Restraint = this.Restraint.Duplicate();
       dup.BeamSections = this.BeamSections.ToList();

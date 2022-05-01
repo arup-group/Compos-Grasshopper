@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnitsNet;
 
-namespace ComposAPI.DesignCode
+namespace ComposAPI.Member
 {
   public class DesignOptions
   {
@@ -15,6 +15,13 @@ namespace ComposAPI.DesignCode
     public DesignOptions()
     {
       // default initialiser
+    }
+
+    public DesignOptions Duplicate()
+    {
+      if (this == null) { return null; }
+      DesignOptions dup = (DesignOptions)this.MemberwiseClone();
+      return dup;
     }
   }
 }

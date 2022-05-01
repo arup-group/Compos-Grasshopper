@@ -15,14 +15,14 @@ namespace ComposAPI.SteelBeam
   public class BeamSection
   {
     // Setting out
-    public bool TaperedToNext 
+    public bool TaperedToNext
     {
-      get 
+      get
       {
         if (this.isCatalogue)
           return false;
         else
-          return m_taper; 
+          return m_taper;
       }
       set
       {
@@ -60,7 +60,7 @@ namespace ComposAPI.SteelBeam
     /// <param name="webThickness"></param>
     /// <param name="topFlangeThickness"></param>
     /// <param name="bottomFlangeThickness"></param>
-    public BeamSection(Length depth, Length topFlangeWidth, Length bottomFlangeWidth, Length webThickness, 
+    public BeamSection(Length depth, Length topFlangeWidth, Length bottomFlangeWidth, Length webThickness,
       Length topFlangeThickness, Length bottomFlangeThickness, bool taperToNext = false)
     {
       this.Depth = depth;
@@ -84,7 +84,7 @@ namespace ComposAPI.SteelBeam
         this.WebThickness.As(unit).ToString(),
         this.TopFlangeThickness.As(unit).ToString(),
         this.BottomFlangeThickness.As(unit).ToString());
-      
+
       this.SectionDescription = "STD GI" + u + dims.Replace(',', '.');
     }
 
@@ -149,7 +149,7 @@ namespace ComposAPI.SteelBeam
           this.BottomFlangeThickness = TopFlangeThickness;
           this.SectionDescription = profile;
           this.isCatalogue = false;
-          
+
         }
         catch (Exception)
         {

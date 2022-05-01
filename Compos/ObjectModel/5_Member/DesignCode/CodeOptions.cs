@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnitsNet;
 
-namespace ComposAPI.DesignCode
+namespace ComposAPI.Member
 {
-  
   public class CodeOptions
   {
     public bool ConsiderShrinkageDeflection { get; set; } = false;
@@ -17,6 +16,13 @@ namespace ComposAPI.DesignCode
     public CodeOptions()
     {
       // default initialiser
+    }
+    public CodeOptions Duplicate()
+    {
+      if (this == null) { return null; }
+      CodeOptions dup = (CodeOptions)this.MemberwiseClone();
+      dup.LongTerm = this.LongTerm.Duplicate();
+      return dup;
     }
   }
   public class EN1994Options : CodeOptions
@@ -46,6 +52,14 @@ namespace ComposAPI.DesignCode
     {
       // default initialiser
     }
+    public new EN1994Options Duplicate()
+    {
+      if (this == null) { return null; }
+      EN1994Options dup = (EN1994Options)this.MemberwiseClone();
+      dup.LongTerm = this.LongTerm.Duplicate();
+      dup.ShortTerm = this.ShortTerm.Duplicate();
+      return dup;
+    }
   }
   public class CreepShrinkageParameters
   {
@@ -53,6 +67,13 @@ namespace ComposAPI.DesignCode
     /// Creep multiplier used for calculating E ratio for long term and shrinkage (see clause 5.4.2.2 of EN 1994-1-1:2004) 
     /// </summary>
     public double CreepMultiplier { get; set; }
+    public CreepShrinkageParameters() { }
+    public CreepShrinkageParameters Duplicate()
+    {
+      if (this == null) { return null; }
+      CreepShrinkageParameters dup = (CreepShrinkageParameters)this.MemberwiseClone();
+      return dup;
+    }
   }
   public class CreepShrinkageEuroCodeParameters : CreepShrinkageParameters
   {
@@ -68,5 +89,12 @@ namespace ComposAPI.DesignCode
     /// Relative humidity as fraction (0.5 => 50%), used to calculate the creep coefficient 
     /// </summary>
     public double RelativeHumidity { get; set; } = 0.5;
+    public CreepShrinkageEuroCodeParameters() { }
+    public new CreepShrinkageEuroCodeParameters Duplicate()
+    {
+      if (this == null) { return null; }
+      CreepShrinkageEuroCodeParameters dup = (CreepShrinkageEuroCodeParameters)this.MemberwiseClone();
+      return dup;
+    }
   }
 }

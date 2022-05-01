@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnitsNet;
 
-namespace ComposAPI.DesignCode
+namespace ComposAPI.Member
 {
   public enum Code
   {
@@ -19,31 +19,15 @@ namespace ComposAPI.DesignCode
     Generic,
     United_Kingdom
   }
-  public class EN1994 : DesignCode
-  {
-    public NationalAnnex NationalAnnex { get; set; } = NationalAnnex.Generic;
-    public EN1994Options CodeOptions { get; set; } = new EN1994Options();
-    public EN1994()
-    {
-      this.Code = Code.EN1994_1_1_2004;
-    }
-  }
-  public class ASNZS2327 : DesignCode
-  {
-    public CodeOptions CodeOptions { get; set; } = new CodeOptions();
-    public ASNZS2327()
-    {
-      this.Code = Code.EN1994_1_1_2004;
-    }
-  }
 
   /// <summary>
-  /// Custom class: this class defines the basic properties and methods for our custom class
+  /// Use this class to create a DesignCode. Use inheriting <see cref="EN1994"/> or <see cref="ASNZS2327"/> specifically for those codes respectively.
   /// </summary>
   public class DesignCode
   {
     public Code Code { get; set; }
     public DesignOptions DesignOptions { get; set; } = new DesignOptions();
+    public SafetyFactors SafetyFactors { get; set; } = new SafetyFactors();
     public DesignCode() { }
     public DesignCode(Code designcode)
     {
@@ -53,7 +37,18 @@ namespace ComposAPI.DesignCode
       if (designcode == Code.AS_NZS2327_2017)
         throw new Exception("Must use the ASNZS2327 class to create a AS/NZS2327:2017 DesignCode");
     }
-
+    public virtual DesignCode Duplicate()
+    {
+      if (this == null) { return null; }
+      DesignCode dup = (DesignCode)this.MemberwiseClone();
+      dup.DesignOptions = this.DesignOptions.Duplicate();
+      dup.SafetyFactors = this.SafetyFactors.Duplicate();
+      return dup;
+    }
+    public override string ToString()
+    {
+      return Coa();
+    }
     #region coa interop
     internal DesignCode FromCoa(string coaString)
     {
@@ -98,11 +93,49 @@ namespace ComposAPI.DesignCode
     #endregion
 
     
+  }
 
-    public override string ToString()
+  /// <summary>
+  /// <see cref="DesignCode"/> inherit class specific to EN 1994-1-1:2004
+  /// </summary>
+  public class EN1994 : DesignCode
+  {
+    public NationalAnnex NationalAnnex { get; set; } = NationalAnnex.Generic;
+    public EN1994Options CodeOptions { get; set; } = new EN1994Options();
+    public new EC4SafetyFactors SafetyFactors { get; set; } = new EC4SafetyFactors();
+    public EN1994()
     {
-      return Coa();
+      this.Code = Code.EN1994_1_1_2004;
     }
+    public override DesignCode Duplicate()
+    {
+      if (this == null) { return null; }
+      EN1994 dup = (EN1994)this.MemberwiseClone();
+      dup.DesignOptions = this.DesignOptions.Duplicate();
+      dup.CodeOptions = this.CodeOptions.Duplicate();
+      dup.SafetyFactors = this.SafetyFactors.Duplicate();
+      return dup;
+    }
+  }
 
+  /// <summary>
+  /// <see cref="DesignCode"/> inherit class specific to AS/NZS2327:2017
+  /// </summary>
+  public class ASNZS2327 : DesignCode
+  {
+    public CodeOptions CodeOptions { get; set; } = new CodeOptions();
+    public ASNZS2327()
+    {
+      this.Code = Code.EN1994_1_1_2004;
+    }
+    public override DesignCode Duplicate()
+    {
+      if (this == null) { return null; }
+      ASNZS2327 dup = (ASNZS2327)this.MemberwiseClone();
+      dup.DesignOptions = this.DesignOptions.Duplicate();
+      dup.CodeOptions = this.CodeOptions.Duplicate();
+      dup.SafetyFactors = this.SafetyFactors.Duplicate();
+      return dup;
+    }
   }
 }
