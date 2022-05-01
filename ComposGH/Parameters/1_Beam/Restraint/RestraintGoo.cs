@@ -41,15 +41,15 @@ namespace ComposGH.Parameters
     #endregion
 
     #region properties
-    public override bool IsValid => true;
+    public override bool IsValid => (this.Value == null) ? false : true;
     public override string TypeName => "Restraints";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot
     {
       get
       {
-        if (Value.IsValid) { return string.Empty; }
-        return Value.IsValid.ToString(); //Todo: beef this up to be more informative.
+        if (IsValid) { return string.Empty; }
+        return IsValid.ToString(); //Todo: beef this up to be more informative.
       }
     }
     public override string ToString()
@@ -97,61 +97,5 @@ namespace ComposGH.Parameters
     }
     #endregion
   }
-
-  ///// <summary>
-  ///// This class provides a Parameter interface for the CustomGoo type.
-  ///// </summary>
-  //public class RestraintParameter : GH_PersistentParam<RestraintGoo>
-  //{
-  //  public RestraintParameter()
-  //    : base(new GH_InstanceDescription("Restraint", "Res", "Compos Restraint", ComposGH.Components.Ribbon.CategoryName.Name(), ComposGH.Components.Ribbon.SubCategoryName.Cat10()))
-  //  {
-  //  }
-  //  public override Guid ComponentGuid => new Guid("496ab030-c665-4fbf-a3b9-15fa25713b20");
-
-  //  public override GH_Exposure Exposure => GH_Exposure.secondary;
-
-  //  protected override System.Drawing.Bitmap Icon => ComposGH.Properties.Resources.RestraintParam;
-
-  //  protected override GH_GetterResult Prompt_Plural(ref List<RestraintGoo> values)
-  //  {
-  //    return GH_GetterResult.cancel;
-  //  }
-  //  protected override GH_GetterResult Prompt_Singular(ref RestraintGoo value)
-  //  {
-  //    return GH_GetterResult.cancel;
-  //  }
-  //  protected override System.Windows.Forms.ToolStripMenuItem Menu_CustomSingleValueItem()
-  //  {
-  //    System.Windows.Forms.ToolStripMenuItem item = new System.Windows.Forms.ToolStripMenuItem
-  //    {
-  //      Text = "Not available",
-  //      Visible = false
-  //    };
-  //    return item;
-  //  }
-  //  protected override System.Windows.Forms.ToolStripMenuItem Menu_CustomMultiValueItem()
-  //  {
-  //    System.Windows.Forms.ToolStripMenuItem item = new System.Windows.Forms.ToolStripMenuItem
-  //    {
-  //      Text = "Not available",
-  //      Visible = false
-  //    };
-  //    return item;
-  //  }
-
-  //  #region preview methods
-
-  //  public bool Hidden
-  //  {
-  //    get { return true; }
-  //    //set { m_hidden = value; }
-  //  }
-  //  public bool IsPreviewCapable
-  //  {
-  //    get { return false; }
-  //  }
-  //  #endregion
-  //}
 
 }

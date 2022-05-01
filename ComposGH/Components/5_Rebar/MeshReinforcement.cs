@@ -135,7 +135,7 @@ namespace ComposGH.Components
 
       bool rotated = false;
       DA.GetData(1, ref rotated);
-      DA.SetData(0, new ReinforcementGoo(new Reinforcement(cov, mesh, rotated)));
+      DA.SetData(0, new ReinforcementGoo(new MeshReinforcement(cov, mesh, rotated)));
     }
 
 

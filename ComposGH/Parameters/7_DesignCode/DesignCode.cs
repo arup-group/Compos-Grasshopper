@@ -9,7 +9,7 @@ using Rhino;
 using Grasshopper.Documentation;
 using Rhino.Collections;
 using UnitsNet;
-using ComposAPI.Design;
+using ComposAPI.DesignCode;
 
 namespace ComposGH.Parameters
 {
@@ -41,15 +41,15 @@ namespace ComposGH.Parameters
     #endregion
 
     #region properties
-    public override bool IsValid => true;
+     public override bool IsValid => (this.Value == null) ? false : true;
     public override string TypeName => "DesignCode";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot
     {
       get
       {
-        if (Value.IsValid) { return string.Empty; }
-        return Value.IsValid.ToString(); //Todo: beef this up to be more informative.
+        if (IsValid) { return string.Empty; }
+        return IsValid.ToString(); //Todo: beef this up to be more informative.
       }
     }
     public override string ToString()

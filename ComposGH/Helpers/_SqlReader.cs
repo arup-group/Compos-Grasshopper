@@ -190,10 +190,62 @@ namespace ComposGH.Helpers
           db.Close();
         }
       }
-
-      //section.Insert(0, "All");
-
-      return section;
+            section.Insert(0, "All");
+            return section;
     }
-  }
+
+
+    public static List<string> GetDeckCataloguesDataFromSQLite(string filePath)
+        {
+            // Create empty lists to work on:
+            List<string> catNames = new List<string>();
+
+            using (var db = Connection(filePath))
+            {
+                db.Open();
+                SQLiteCommand cmd = db.CreateCommand();
+                cmd.CommandText = @"Select Catalogue_Name || ' -- ' || Catalogue_ID as Catalogue_Name from Catalogue";
+
+                cmd.CommandType = CommandType.Text;
+                SQLiteDataReader r = cmd.ExecuteReader();
+                while (r.Read())
+                {
+                    // get data
+                    string sqlData = System.Convert.ToString(r["Catalogue_Name"]);
+
+                    // split text string
+                    catNames.Add(sqlData.Split(new string[] { " -- " }, StringSplitOptions.None)[0]);
+                }
+                db.Close();
+            }
+            return new List<string>(catNames);
+        }
+
+    public static List<string> GetDeckingDataFromSQLite(string filePath, string cat)
+        {
+            // Create empty lists to work on:
+            List<string> catNames = new List<string>();
+
+            using (var db = Connection(filePath))
+            {
+                db.Open();
+                SQLiteCommand cmd = db.CreateCommand();
+                //cmd.CommandText = $"Select Type_{cat}.TYPE_ABR || ' ' || Deck_Name as Deck_Name from Deck_{cat} INNER JOIN Type_{cat} ON Deck_{cat}.Deck_Type_ID = Type_{cat}.TYPE_ID ORDER BY Deck_Thickness";
+                cmd.CommandText = $"Select Deck_Name from Deck_{cat} ORDER BY Deck_Thickness";
+                cmd.CommandType = CommandType.Text;
+                SQLiteDataReader r = cmd.ExecuteReader();
+                while (r.Read())
+                {
+                    // get data
+                    string sqlData = System.Convert.ToString(r["Deck_Name"]);
+
+                    // split text string
+                    catNames.Add(sqlData);
+                }
+                db.Close();
+            }
+            return new List<string>(catNames);
+        }
+
+    }
 }

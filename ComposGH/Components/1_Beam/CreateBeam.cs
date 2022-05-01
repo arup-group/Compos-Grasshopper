@@ -105,8 +105,6 @@ namespace ComposGH.Components
       pManager.AddGenericParameter("WebOpening", "WO", "Compos Web Openings or Notches", GH_ParamAccess.list);
       pManager[4].Optional = true;
 
-      // temp
-      pManager[2].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {

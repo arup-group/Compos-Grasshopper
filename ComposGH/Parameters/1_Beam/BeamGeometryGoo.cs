@@ -21,7 +21,7 @@ namespace ComposGH.Parameters
   /// <summary>
   /// GeometryGoo wrapper class, makes sure our custom class can be used and displayed in Grasshopper.
   /// </summary>
-  public class BeamGoo : GH_GeometricGoo<SteelBeam>, IGH_PreviewData
+  public class BeamGoo : GH_GeometricGoo<Beam>, IGH_PreviewData
   {
     public LineCurve Line { get; set; }
     LengthUnit LengthUnit { get; set; }
@@ -32,17 +32,17 @@ namespace ComposGH.Parameters
       this.Line = line;
       this.LengthUnit = lengthUnit;
       Length length = new Length(line.GetLength(), lengthUnit);
-      this.Value = new SteelBeam(length, restraint, material, beamSections, webOpenings);
+      this.Value = new Beam(length, restraint, material, beamSections, webOpenings);
       UpdatePreview();
     }
     public BeamGoo()
     {
-      this.Value = new SteelBeam();
+      this.Value = new Beam();
     }
-    public BeamGoo(LineCurve line, LengthUnit lengthUnit, SteelBeam item)
+    public BeamGoo(LineCurve line, LengthUnit lengthUnit, Beam item)
     {
       if (item == null)
-        item = new SteelBeam();
+        item = new Beam();
       this.Line = (LineCurve)line.DuplicateShallow();
       this.LengthUnit = lengthUnit;
       this.Value = item.Duplicate();
@@ -73,15 +73,15 @@ namespace ComposGH.Parameters
     #endregion
 
     #region properties
-    public override bool IsValid => true;
+     public override bool IsValid => (this.Value == null) ? false : true;
     public override string TypeName => "Beam";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot
     {
       get
       {
-        if (Value.IsValid) { return string.Empty; }
-        return Value.IsValid.ToString(); //Todo: beef this up to be more informative.
+        if (IsValid) { return string.Empty; }
+        return IsValid.ToString(); //Todo: beef this up to be more informative.
       }
     }
     public override string ToString()
@@ -115,7 +115,7 @@ namespace ComposGH.Parameters
       // This function is called when Grasshopper needs to convert this 
       // instance of our custom class into some other type Q.            
 
-      if (typeof(Q).IsAssignableFrom(typeof(SteelBeam)))
+      if (typeof(Q).IsAssignableFrom(typeof(Beam)))
       {
         if (Value == null)
           target = default;
@@ -176,9 +176,9 @@ namespace ComposGH.Parameters
       if (source == null) { return false; }
 
       //Cast from GsaMaterial
-      if (typeof(SteelBeam).IsAssignableFrom(source.GetType()))
+      if (typeof(Beam).IsAssignableFrom(source.GetType()))
       {
-        Value = (SteelBeam)source;
+        Value = (Beam)source;
         return true;
       }
 
@@ -190,7 +190,7 @@ namespace ComposGH.Parameters
           Type type = GsaGHConverter.GetTypeFor(typeof(IComposBeam));
           if (type.IsAssignableFrom(source.GetType()))
           {
-            Value = (SteelBeam)GsaGHConverter.CastToComposBeam(source);
+            Value = (Beam)GsaGHConverter.CastToComposBeam(source);
             return true;
           }
         }
@@ -200,7 +200,7 @@ namespace ComposGH.Parameters
           Type type = AdSecGHConverter.GetTypeFor(typeof(IComposBeam));
           if (type.IsAssignableFrom(source.GetType()))
           {
-            Value = (SteelBeam)AdSecGHConverter.CastToComposBeam(source);
+            Value = (Beam)AdSecGHConverter.CastToComposBeam(source);
             return true;
           }
         }
