@@ -1,7 +1,6 @@
 ﻿*.suo
 *.bak
 /.vs
-.vs/
 /.vs/ComposGH/DesignTimeBuild/.dtbcache.v2
 /packages
 /Compos/bin
@@ -16,5 +15,3 @@
 /ComposGHTests/obj
 /IntegrationTests/bin
 /IntegrationTests/obj
-/ComposGH/Tests/bin
-/ComposGH/Tests/obj

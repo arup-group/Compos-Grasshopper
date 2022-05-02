@@ -95,6 +95,7 @@
     <Compile Include="Components\1_Beam\3_Tertiary\CreateSteelMaterial.cs" />
     <Compile Include="Components\1_Beam\2_Secondary\CreateSupport.cs" />
     <Compile Include="Components\1_Beam\4_Quarternary\CreateBeamSection.cs" />
+    <Compile Include="Components\3_Slab\2_Secondary\CreateSlabDimension.cs" />
     <Compile Include="Components\1_Beam\5_Quinary\CreateWebOpeningStiffener.cs" />
     <Compile Include="Components\1_Beam\4_Quarternary\CreateProfile.cs" />
     <Compile Include="Components\1_Beam\5_Quinary\CreateNotch.cs" />
@@ -225,7 +226,6 @@
   <ItemGroup>
     <Folder Include="Components\0_File\" />
     <Folder Include="Components\3_Slab\1_Primary\" />
-    <Folder Include="Components\3_Slab\2_Secondary\" />
     <Folder Include="Components\4_Loads\3_Tertiary\" />
     <Folder Include="Components\4_Loads\4_Quarternary\" />
     <Folder Include="Components\4_Loads\5_Quinary\" />

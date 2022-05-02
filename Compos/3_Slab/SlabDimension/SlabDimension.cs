@@ -64,7 +64,7 @@ namespace ComposAPI
     {
       string start = "";
       if (this.StartPosition != Length.Zero)
-        start = ", Px:" + this.StartPosition.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
+        start = ", Px:" + this.StartPosition.ToUnit(Units.LengthUnitGeometry).ToString("f0.0#").Replace(" ", string.Empty);
       string tapered = "";
       if (this.TaperedToNext)
         tapered = ", Tapered";
