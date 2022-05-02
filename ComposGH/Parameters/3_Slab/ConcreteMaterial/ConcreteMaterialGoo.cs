@@ -11,7 +11,7 @@ using Rhino.Geometry;
 using UnitsNet;
 using UnitsNet.Units;
 using Oasys.Units;
-using ComposAPI.ConcreteSlab;
+using ComposAPI;
 
 namespace ComposGH.Parameters
 {

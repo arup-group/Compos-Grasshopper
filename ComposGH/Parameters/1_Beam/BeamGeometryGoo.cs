@@ -14,7 +14,7 @@ using ComposGH.Helpers;
 using UnitsNet.Units;
 using System.Drawing;
 using Grasshopper;
-using ComposAPI.SteelBeam;
+using ComposAPI;
 
 namespace ComposGH.Parameters
 {
@@ -73,7 +73,7 @@ namespace ComposGH.Parameters
     #endregion
 
     #region properties
-     public override bool IsValid => (this.Value == null) ? false : true;
+    public override bool IsValid => (this.Value == null) ? false : true;
     public override string TypeName => "Beam";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot
@@ -231,7 +231,7 @@ namespace ComposGH.Parameters
       xLn.Transform(xform);
       dup.Line = xLn;
       dup.UpdatePreview();
-      
+
       return dup;
     }
 

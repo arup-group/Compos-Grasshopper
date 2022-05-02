@@ -9,7 +9,7 @@ using Rhino;
 using Grasshopper.Documentation;
 using Rhino.Collections;
 using UnitsNet;
-using ComposAPI.ConcreteSlab;
+using ComposAPI;
 
 namespace ComposGH.Parameters
 {

@@ -9,7 +9,7 @@ using Rhino;
 using Rhino.Collections;
 using Rhino.Geometry;
 using UnitsNet;
-using ComposAPI.ConcreteSlab;
+using ComposAPI;
 
 namespace ComposGH.Parameters
 {

@@ -42,7 +42,7 @@
     </AssociationLine>
     <TypeIdentifier>
       <HashCode>AEQAAEAAAAAAAAgEAAAAAABAAAAAIAAAAAAABAAAAAA=</HashCode>
-      <FileName>ObjectModel\1_SteelBeam\Beam.cs</FileName>
+      <FileName>1_SteelBeam\Beam.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Restraint" />
@@ -61,18 +61,18 @@
     <NestedTypes>
       <Enum Name="ComposAPI.SteelBeam.SteelMaterial.SteelMaterialGrade" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>ObjectModel\1_SteelBeam\SteelMaterial\SteelMaterial.cs</NewMemberFileName>
+          <NewMemberFileName>1_SteelBeam\SteelMaterial\SteelMaterial.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
       <Enum Name="ComposAPI.SteelBeam.SteelMaterial.WeldMaterialGrade" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>ObjectModel\1_SteelBeam\SteelMaterial\SteelMaterial.cs</NewMemberFileName>
+          <NewMemberFileName>1_SteelBeam\SteelMaterial\SteelMaterial.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
       <HashCode>AAAAAEAAAAAAAAAEAAACAABBAABAIABAAAAAAgEAAAg=</HashCode>
-      <FileName>ObjectModel\1_SteelBeam\SteelMaterial\SteelMaterial.cs</FileName>
+      <FileName>1_SteelBeam\SteelMaterial\SteelMaterial.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.SteelBeam.Restraint">
@@ -83,7 +83,7 @@
     </Compartments>
     <TypeIdentifier>
       <HashCode>ggAAAAAAAAAAFAAEAAAAAAAAAAEAIAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ObjectModel\1_SteelBeam\Restraint\Restraint.cs</FileName>
+      <FileName>1_SteelBeam\Restraint\Restraint.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.SteelBeam.WebOpening">
@@ -95,17 +95,17 @@
     <NestedTypes>
       <Enum Name="ComposAPI.SteelBeam.WebOpening.WebOpeningShape" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>ObjectModel\1_SteelBeam\WebOpening\WebOpening.cs</NewMemberFileName>
+          <NewMemberFileName>1_SteelBeam\WebOpening\WebOpening.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
       <Enum Name="ComposAPI.SteelBeam.WebOpening.NotchPosition" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>ObjectModel\1_SteelBeam\WebOpening\WebOpening.cs</NewMemberFileName>
+          <NewMemberFileName>1_SteelBeam\WebOpening\WebOpening.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
       <Enum Name="ComposAPI.SteelBeam.WebOpening.OpeningType" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>ObjectModel\1_SteelBeam\WebOpening\WebOpening.cs</NewMemberFileName>
+          <NewMemberFileName>1_SteelBeam\WebOpening\WebOpening.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
     </NestedTypes>
@@ -121,7 +121,7 @@
     </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAEAAJAAAAAAEAAAAAEAAAAAAIAAAAgCBAIAAEAA=</HashCode>
-      <FileName>ObjectModel\1_SteelBeam\WebOpening\WebOpening.cs</FileName>
+      <FileName>1_SteelBeam\WebOpening\WebOpening.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="OpeningStiffeners" />
@@ -135,7 +135,7 @@
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAAJAEAAEIAAAAAEAAAAAEACAAAQIBAgAAAIAAEAACA=</HashCode>
-      <FileName>ObjectModel\1_SteelBeam\BeamSection\BeamSection.cs</FileName>
+      <FileName>1_SteelBeam\BeamSection\BeamSection.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.SteelBeam.WebOpeningStiffeners">
@@ -145,7 +145,7 @@
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAAIAIAAQAAAAAAEEAAAAAAAAAAAIAAAgAAAAAAIAAA=</HashCode>
-      <FileName>ObjectModel\1_SteelBeam\WebOpening\WebOpeningStiffeners.cs</FileName>
+      <FileName>1_SteelBeam\WebOpening\WebOpeningStiffeners.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.ConcreteSlab.Slab">
@@ -187,7 +187,7 @@
     </AssociationLine>
     <TypeIdentifier>
       <HashCode>AUAAAEAAAAAAAAAEAAAAAEICAAAAIAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ObjectModel\3_ConcreteSlab\Slab.cs</FileName>
+      <FileName>3_ConcreteSlab\Slab.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Material" />
@@ -208,13 +208,13 @@
     <NestedTypes>
       <Enum Name="ComposAPI.ConcreteSlab.Decking.DeckingType" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>ObjectModel\3_ConcreteSlab\Decking\Decking.cs</NewMemberFileName>
+          <NewMemberFileName>3_ConcreteSlab\Decking\Decking.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
       <HashCode>EgAAIEAAAAABAAAAAAAAAAAAgABAIAAgAQAgAAAAIAA=</HashCode>
-      <FileName>ObjectModel\3_ConcreteSlab\Decking\Decking.cs</FileName>
+      <FileName>3_ConcreteSlab\Decking\Decking.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.ConcreteSlab.SlabDimension">
@@ -224,7 +224,7 @@
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAgEAAAAEAIAAAAEAAAAQAAAAAAAIAAAAgAIAAAACAA=</HashCode>
-      <FileName>ObjectModel\3_ConcreteSlab\SlabDimension\SlabDimension.cs</FileName>
+      <FileName>3_ConcreteSlab\SlabDimension\SlabDimension.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.ConcreteSlab.ConcreteMaterial">
@@ -235,28 +235,28 @@
     <NestedTypes>
       <Enum Name="ComposAPI.ConcreteSlab.ConcreteMaterial.ConcreteGrade" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>ObjectModel\3_ConcreteSlab\ConcreteMaterial\ConcreteMaterial.cs</NewMemberFileName>
+          <NewMemberFileName>3_ConcreteSlab\ConcreteMaterial\ConcreteMaterial.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
       <Enum Name="ComposAPI.ConcreteSlab.ConcreteMaterial.ConcreteGradeEN" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>ObjectModel\3_ConcreteSlab\ConcreteMaterial\ConcreteMaterial.cs</NewMemberFileName>
+          <NewMemberFileName>3_ConcreteSlab\ConcreteMaterial\ConcreteMaterial.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
       <Enum Name="ComposAPI.ConcreteSlab.ConcreteMaterial.WeightType" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>ObjectModel\3_ConcreteSlab\ConcreteMaterial\ConcreteMaterial.cs</NewMemberFileName>
+          <NewMemberFileName>3_ConcreteSlab\ConcreteMaterial\ConcreteMaterial.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
       <Enum Name="ComposAPI.ConcreteSlab.ConcreteMaterial.DensityClass" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>ObjectModel\3_ConcreteSlab\ConcreteMaterial\ConcreteMaterial.cs</NewMemberFileName>
+          <NewMemberFileName>3_ConcreteSlab\ConcreteMaterial\ConcreteMaterial.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
       <HashCode>AAACAEAAAAAAAAAEAAJEAAAAgAAAIEAAAQABAAEAAAA=</HashCode>
-      <FileName>ObjectModel\3_ConcreteSlab\ConcreteMaterial\ConcreteMaterial.cs</FileName>
+      <FileName>3_ConcreteSlab\ConcreteMaterial\ConcreteMaterial.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.ConcreteSlab.TransverseReinforcement">
@@ -268,13 +268,13 @@
     <NestedTypes>
       <Enum Name="ComposAPI.ConcreteSlab.TransverseReinforcement.LayoutMethod" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>ObjectModel\3_ConcreteSlab\Reinforcement\TransverseReinforcement.cs</NewMemberFileName>
+          <NewMemberFileName>3_ConcreteSlab\Reinforcement\TransverseReinforcement.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
       <HashCode>AEAAAAAAAAAAAAAEAAACAAAAAAAAIAAIAAAAAAAAAAA=</HashCode>
-      <FileName>ObjectModel\3_ConcreteSlab\Reinforcement\TransverseReinforcement.cs</FileName>
+      <FileName>3_ConcreteSlab\Reinforcement\TransverseReinforcement.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.ConcreteSlab.MeshReinforcement">
@@ -285,13 +285,13 @@
     <NestedTypes>
       <Enum Name="ComposAPI.ConcreteSlab.MeshReinforcement.ReinforcementMeshType" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>ObjectModel\3_ConcreteSlab\Reinforcement\MeshReinforcement.cs</NewMemberFileName>
+          <NewMemberFileName>3_ConcreteSlab\Reinforcement\MeshReinforcement.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAEAAAAEAAAAACAAAAAAIAAAAAAAACAAAAA=</HashCode>
-      <FileName>ObjectModel\3_ConcreteSlab\Reinforcement\MeshReinforcement.cs</FileName>
+      <FileName>3_ConcreteSlab\Reinforcement\MeshReinforcement.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.Studs.Stud">
@@ -301,7 +301,7 @@
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAFAAAAAAEAAkAgEAAAAAAAAAIAACAEAQAAAAAAA=</HashCode>
-      <FileName>ObjectModel\2_Studs\Stud.cs</FileName>
+      <FileName>2_Studs\Stud.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="StudDimensions" />
@@ -320,18 +320,18 @@
     <NestedTypes>
       <Enum Name="ComposAPI.Studs.StudDimensions.StandardSize" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>ObjectModel\2_Studs\StudDimensions.cs</NewMemberFileName>
+          <NewMemberFileName>2_Studs\StudDimensions.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
       <Enum Name="ComposAPI.Studs.StudDimensions.StandardGrade" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>ObjectModel\2_Studs\StudDimensions.cs</NewMemberFileName>
+          <NewMemberFileName>2_Studs\StudDimensions.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
       <HashCode>ACAAAAAAhAAAAAAEEAAAACAAAAACIAAAIAABAAAAAAA=</HashCode>
-      <FileName>ObjectModel\2_Studs\StudDimensions.cs</FileName>
+      <FileName>2_Studs\StudDimensions.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.Studs.StudSpecification">
@@ -343,13 +343,13 @@
     <NestedTypes>
       <Enum Name="ComposAPI.Studs.StudSpecification.StudSpecType" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>ObjectModel\2_Studs\StudSpecification.cs</NewMemberFileName>
+          <NewMemberFileName>2_Studs\StudSpecification.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
       <HashCode>ACAAAAAAAAIBAAAEAgAAAAAAAAAAIEAAAAAAAAQAQAA=</HashCode>
-      <FileName>ObjectModel\2_Studs\StudSpecification.cs</FileName>
+      <FileName>2_Studs\StudSpecification.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.Studs.StudGroupSpacing">
@@ -360,13 +360,13 @@
     <NestedTypes>
       <Enum Name="ComposAPI.Studs.StudGroupSpacing.StudSpacingType" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>ObjectModel\2_Studs\StudSpacing.cs</NewMemberFileName>
+          <NewMemberFileName>2_Studs\StudSpacing.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
       <HashCode>AAAAQAAACAAAAAAECAAAAAAAAAAAIAAAAAAAAAAAAAE=</HashCode>
-      <FileName>ObjectModel\2_Studs\StudSpacing.cs</FileName>
+      <FileName>2_Studs\StudSpacing.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.Loads.Load" Collapsed="true">
@@ -378,7 +378,7 @@
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAIEAAAAAAAAAEAAgAAAAAAAAAIAAAAQAAAAAAAAA=</HashCode>
-      <FileName>ObjectModel\4_Loads\Load.cs</FileName>
+      <FileName>4_Loads\Load.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.Loads.PointLoad" Collapsed="true">
@@ -396,7 +396,7 @@
     </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ObjectModel\4_Loads\LoadChildren.cs</FileName>
+      <FileName>4_Loads\LoadChildren.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Load" />
@@ -419,7 +419,7 @@
     </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAgAAAAAAAAAQAAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ObjectModel\4_Loads\LoadChildren.cs</FileName>
+      <FileName>4_Loads\LoadChildren.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Load" />
@@ -455,7 +455,7 @@
     </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAIAAAAAAAAAQAAAA=</HashCode>
-      <FileName>ObjectModel\4_Loads\LoadChildren.cs</FileName>
+      <FileName>4_Loads\LoadChildren.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="LoadW1" />
@@ -492,7 +492,7 @@
     </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAIAAAAAAAAAQAAAA=</HashCode>
-      <FileName>ObjectModel\4_Loads\LoadChildren.cs</FileName>
+      <FileName>4_Loads\LoadChildren.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="LoadW1" />
@@ -531,7 +531,7 @@
     </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAIAAAAAAAAAQAAAA=</HashCode>
-      <FileName>ObjectModel\4_Loads\LoadChildren.cs</FileName>
+      <FileName>4_Loads\LoadChildren.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="LoadW1" />
@@ -553,7 +553,7 @@
     </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAIAAAIAgAAAAAAAAAAAA=</HashCode>
-      <FileName>ObjectModel\4_Loads\LoadChildren.cs</FileName>
+      <FileName>4_Loads\LoadChildren.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.Loads.AxialLoad" Collapsed="true">
@@ -586,7 +586,7 @@
     </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAgAAAAAAQAAAA=</HashCode>
-      <FileName>ObjectModel\4_Loads\LoadChildren.cs</FileName>
+      <FileName>4_Loads\LoadChildren.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="LoadW1" />
@@ -600,7 +600,7 @@
     </Compartments>
     <TypeIdentifier>
       <HashCode>gAAAAAAIAAAAAAAAAAAAAAQAAAAAMAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ObjectModel\4_Loads\LoadValues.cs</FileName>
+      <FileName>4_Loads\LoadValues.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.Loads.NonConstantLoad">
@@ -618,7 +618,7 @@
     </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ObjectModel\4_Loads\LoadValues.cs</FileName>
+      <FileName>4_Loads\LoadValues.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.Member.Member">
@@ -634,14 +634,6 @@
         <Point X="13" Y="2.931" />
       </Path>
     </AssociationLine>
-    <AssociationLine Name="Loads" Type="ComposAPI.Loads.Load" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="19.5" Y="10.504" />
-        <Point X="15.246" Y="10.504" />
-        <Point X="15.246" Y="24.781" />
-        <Point X="13" Y="24.781" />
-      </Path>
-    </AssociationLine>
     <AssociationLine Name="Slab" Type="ComposAPI.ConcreteSlab.Slab" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="19.5" Y="10.175" />
@@ -650,14 +642,22 @@
         <Point X="13" Y="15.84" />
       </Path>
     </AssociationLine>
+    <AssociationLine Name="Loads" Type="ComposAPI.Loads.Load" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="19.5" Y="10.504" />
+        <Point X="15.246" Y="10.504" />
+        <Point X="15.246" Y="24.781" />
+        <Point X="13" Y="24.781" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAQAAAAAAAAAAAQEQAAAIAACAABAgAEAAAA=</HashCode>
-      <FileName>ObjectModel\5_Member\Member.cs</FileName>
+      <FileName>5_Member\Member.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Beam" />
-      <Property Name="Slab" />
       <Property Name="Stud" />
+      <Property Name="Slab" />
       <Property Name="DesignCode" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
@@ -671,7 +671,7 @@
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAgAAAAAAAEAAAAEAAAgAAAAAAEAIAAAAAAIAAAAAAA=</HashCode>
-      <FileName>ObjectModel\5_Member\DesignCode\DesignCode.cs</FileName>
+      <FileName>5_Member\DesignCode\DesignCode.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="DesignOptions" />
@@ -682,7 +682,7 @@
     <Position X="21" Y="15.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAEAAAAAAAAQQAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ObjectModel\5_Member\DesignCode\DesignCode.cs</FileName>
+      <FileName>5_Member\DesignCode\DesignCode.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="CodeOptions" />
@@ -711,7 +711,7 @@
     </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ObjectModel\5_Member\DesignCode\DesignCode.cs</FileName>
+      <FileName>5_Member\DesignCode\DesignCode.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="CodeOptions" />
@@ -724,7 +724,7 @@
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAGABAAAAAAAAAAAIAAAAAAAAAAAAAQ=</HashCode>
-      <FileName>ObjectModel\5_Member\DesignCode\DesignOptions.cs</FileName>
+      <FileName>5_Member\DesignCode\DesignOptions.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.Member.SafetyFactors">
@@ -734,22 +734,22 @@
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAgAAAAAAgAAAAIAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ObjectModel\5_Member\DesignCode\SafetyFactors.cs</FileName>
+      <FileName>5_Member\DesignCode\SafetyFactors.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="LoadFactors" />
       <Property Name="MaterialFactors" />
+      <Property Name="LoadFactors" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="ComposAPI.Member.EN1994Options">
+  <Class Name="ComposAPI.Member.EC4Options">
     <Position X="21.5" Y="18.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <NestedTypes>
-      <Enum Name="ComposAPI.Member.EN1994Options.CementClass" Collapsed="true">
+      <Enum Name="ComposAPI.Member.EC4Options.CementClass" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>ObjectModel\5_Member\DesignCode\CodeOptions.cs</NewMemberFileName>
+          <NewMemberFileName>5_Member\DesignCode\CodeOptions.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
     </NestedTypes>
@@ -761,7 +761,7 @@
     </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAIAAIQAAAAAAAAAg=</HashCode>
-      <FileName>ObjectModel\5_Member\DesignCode\CodeOptions.cs</FileName>
+      <FileName>5_Member\DesignCode\CodeOptions.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.Member.CodeOptions">
@@ -771,7 +771,7 @@
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAQAAAAAAACAAAAAAIAAIAAAAAAAAAAA=</HashCode>
-      <FileName>ObjectModel\5_Member\DesignCode\CodeOptions.cs</FileName>
+      <FileName>5_Member\DesignCode\CodeOptions.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.Member.LoadFactors">
@@ -781,7 +781,7 @@
     </Compartments>
     <TypeIdentifier>
       <HashCode>gAAAAAAIAAAAAAAAAAAAAAQAAAAAMAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ObjectModel\5_Member\DesignCode\SafetyFactors.cs</FileName>
+      <FileName>5_Member\DesignCode\SafetyFactors.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.Member.MaterialPartialFactors">
@@ -791,7 +791,7 @@
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAAEAAAAAAAIAABAAAAAAAAAAAAAIAAgAAwAAAAAAAA=</HashCode>
-      <FileName>ObjectModel\5_Member\DesignCode\SafetyFactors.cs</FileName>
+      <FileName>5_Member\DesignCode\SafetyFactors.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.Member.EC4SafetyFactors">
@@ -807,9 +807,14 @@
         <Point X="26" Y="19.125" />
       </Path>
     </InheritanceLine>
+    <AssociationLine Name="MaterialFactors" Type="ComposAPI.Member.EC4MaterialPartialFactors">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.255" Y="0.07" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAgAAAAAAgAAAAIAAAAQAAAAAAAAA=</HashCode>
-      <FileName>ObjectModel\5_Member\DesignCode\SafetyFactors.cs</FileName>
+      <FileName>5_Member\DesignCode\SafetyFactors.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="MaterialFactors" />
@@ -823,14 +828,14 @@
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAABAACAAAAAgAAAAAAAgICAAAAAAAAEAAAI=</HashCode>
-      <FileName>ObjectModel\5_Member\DesignCode\SafetyFactors.cs</FileName>
+      <FileName>5_Member\DesignCode\SafetyFactors.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ComposAPI.Member.LoadCombinationFactors">
     <Position X="23.75" Y="21" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>gAAAAAAIAAAAAAAAAAAAAAQAAAAAMAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ObjectModel\5_Member\DesignCode\SafetyFactors.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAgDAAAAAAAAAIAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>5_Member\DesignCode\SafetyFactors.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
