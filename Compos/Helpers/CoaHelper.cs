@@ -8,10 +8,10 @@ namespace ComposAPI.Helpers
 {
   public class CoaHelper
   {
-    internal static void AddParameter(List<string> parameters, string parameter, bool b)
+    internal static void AddParameter(List<string> parameters, string parameter, bool flag)
     {
       string str = parameter + "_";
-      if (b)
+      if (flag)
         str += "YES";
       else
         str += "NO";
@@ -27,6 +27,18 @@ namespace ComposAPI.Helpers
       return str;
     }
 
+    public static string RemoveWhitespace(string str)
+    {
+      return string.Join("", str.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
+    }
+
+    public static List<string> Split(string coaString)
+    {
+      List<string> parameters = coaString.Split('\t').ToList();
+      foreach(string param in parameters)
+        RemoveWhitespace(param);
+      return parameters;
+    }
 
   }
 }

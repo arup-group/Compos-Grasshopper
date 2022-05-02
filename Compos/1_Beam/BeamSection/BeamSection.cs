@@ -190,7 +190,7 @@ namespace ComposAPI
       else if (profile.StartsWith("CAT"))
       {
         string prof = profile.Split(' ').Last();
-        List<double> sqlValues = Helper.CatalogueValues.GetCatalogueProfileValues(prof);
+        List<double> sqlValues = Helpers.CatalogueValues.GetCatalogueProfileValues(prof);
 
         LengthUnit unit = LengthUnit.Meter;
         this.Depth = new Length(sqlValues[0], unit);

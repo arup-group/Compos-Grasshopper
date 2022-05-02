@@ -26,7 +26,7 @@ namespace ComposAPI
       this.DeckConfiguration = deckConfiguration;
       this.m_type = DeckingType.Catalogue;
 
-      List<double> sqlValues = Helper.CatalogueValues.GetCatalogueDeckingValues(catalogue, profile);
+      List<double> sqlValues = Helpers.CatalogueValues.GetCatalogueDeckingValues(catalogue, profile);
       LengthUnit unit = LengthUnit.Meter;
       this.Depth = new Length(sqlValues[0], unit);
       this.b1 = new Length(sqlValues[1], unit);
