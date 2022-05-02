@@ -74,7 +74,7 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      spacingType = (StudGroupSpacing.StudSpacingType)Enum.Parse(typeof(StudGroupSpacing.StudSpacingType), selecteditems[0]);
+      spacingType = (StudGroupSpacing.StudSpacingType)Enum.Parse(typeof(StudGroupSpacing.StudSpacingType), selecteditems[0].Replace(" ", "_"));
 
       ModeChangeClicked();
 

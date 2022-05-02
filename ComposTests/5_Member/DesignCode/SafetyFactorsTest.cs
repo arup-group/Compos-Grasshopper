@@ -176,8 +176,8 @@ namespace ComposAPI.Tests
       // 3 check that inputs are set in object's members
       Assert.Equal(1.0, loadFactors.xi);
       Assert.Equal(1.0, loadFactors.psi_0);
-      Assert.Equal(1.35, loadFactors.psi_G);
-      Assert.Equal(1.5, loadFactors.psi_Q);
+      Assert.Equal(1.35, loadFactors.gamma_G);
+      Assert.Equal(1.5, loadFactors.gamma_Q);
 
       // (optionally return object for other tests)
       return loadFactors;
@@ -210,8 +210,8 @@ namespace ComposAPI.Tests
       Assert.Equal(1.15, duplicate.MaterialFactors.gamma_S);
       Assert.Equal(1.0, duplicate.LoadFactors.xi);
       Assert.Equal(1.0, duplicate.LoadFactors.psi_0);
-      Assert.Equal(1.35, duplicate.LoadFactors.psi_G);
-      Assert.Equal(1.5, duplicate.LoadFactors.psi_Q);
+      Assert.Equal(1.35, duplicate.LoadFactors.gamma_G);
+      Assert.Equal(1.5, duplicate.LoadFactors.gamma_Q);
 
       // 3 make some changes to duplicate
       duplicate.MaterialFactors.gamma_M0 = 1.2;
@@ -223,8 +223,8 @@ namespace ComposAPI.Tests
       duplicate.MaterialFactors.gamma_S = 1.5;
       duplicate.LoadFactors.xi = 1.15;
       duplicate.LoadFactors.psi_0 = 1.45;
-      duplicate.LoadFactors.psi_G = 1.55;
-      duplicate.LoadFactors.psi_Q = 0.95;
+      duplicate.LoadFactors.gamma_G = 1.55;
+      duplicate.LoadFactors.gamma_Q = 0.95;
 
       // 4 check that duplicate has set changes
       Assert.Equal(1.2, duplicate.MaterialFactors.gamma_M0);
@@ -236,8 +236,8 @@ namespace ComposAPI.Tests
       Assert.Equal(1.5, duplicate.MaterialFactors.gamma_S);
       Assert.Equal(1.15, duplicate.LoadFactors.xi);
       Assert.Equal(1.45, duplicate.LoadFactors.psi_0);
-      Assert.Equal(1.55, duplicate.LoadFactors.psi_G);
-      Assert.Equal(0.95, duplicate.LoadFactors.psi_Q);
+      Assert.Equal(1.55, duplicate.LoadFactors.gamma_G);
+      Assert.Equal(0.95, duplicate.LoadFactors.gamma_Q);
 
       // 5 check that original has not been changed
       Assert.Equal(1.0, original.MaterialFactors.gamma_M0);
@@ -249,8 +249,8 @@ namespace ComposAPI.Tests
       Assert.Equal(1.15, original.MaterialFactors.gamma_S);
       Assert.Equal(1.0, original.LoadFactors.xi);
       Assert.Equal(1.0, original.LoadFactors.psi_0);
-      Assert.Equal(1.35, original.LoadFactors.psi_G);
-      Assert.Equal(1.5, original.LoadFactors.psi_Q);
+      Assert.Equal(1.35, original.LoadFactors.gamma_G);
+      Assert.Equal(1.5, original.LoadFactors.gamma_Q);
     }
   }
 }

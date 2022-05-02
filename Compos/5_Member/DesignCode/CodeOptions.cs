@@ -24,6 +24,7 @@ namespace ComposAPI
       if (this == null) { return null; }
       CodeOptions dup = (CodeOptions)this.MemberwiseClone();
       dup.LongTerm = this.LongTerm.Duplicate();
+      dup.ShortTerm = this.ShortTerm.Duplicate();
       return dup;
     }
   }
