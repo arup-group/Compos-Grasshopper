@@ -6,6 +6,7 @@ using UnitsNet.Units;
 using Grasshopper.Kernel;
 using Oasys.Units;
 using ComposAPI;
+using ComposGH.Parameters;
 
 namespace ComposGH.Components
 {
@@ -149,7 +150,7 @@ namespace ComposGH.Components
 
       ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, this.Type, dryDensity, userDensity, eRatio, imposedLoadPercentage);
 
-      DA.SetData(0, concreteMaterial);
+      DA.SetData(0, new ConcreteMaterialGoo(concreteMaterial));
     }
 
     #region (de)serialization

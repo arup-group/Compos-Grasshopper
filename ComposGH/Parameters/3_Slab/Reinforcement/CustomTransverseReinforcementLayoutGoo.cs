@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Grasshopper.Documentation;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
-using Rhino;
 using Rhino.Geometry;
+using Rhino;
+using Grasshopper.Documentation;
 using Rhino.Collections;
 using UnitsNet;
-using UnitsNet.Units;
 using ComposAPI;
 
 namespace ComposGH.Parameters
@@ -17,18 +16,17 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class SlabDimensionGoo : GH_Goo<SlabDimension>
+  public class CustomTransverseReinforcmentLayoutGoo : GH_Goo<CustomTransverseReinforcementLayout>
   {
     #region constructors
-    public SlabDimensionGoo()
+    public CustomTransverseReinforcmentLayoutGoo()
     {
-      this.Value = new SlabDimension();
+      this.Value = new CustomTransverseReinforcementLayout();
     }
-
-    public SlabDimensionGoo(SlabDimension item)
+    public CustomTransverseReinforcmentLayoutGoo(CustomTransverseReinforcementLayout item)
     {
       if (item == null)
-        item = new SlabDimension();
+        item = new CustomTransverseReinforcementLayout();
       this.Value = item.Duplicate();
     }
 
@@ -36,15 +34,15 @@ namespace ComposGH.Parameters
     {
       return DuplicateGoo();
     }
-    public SlabDimensionGoo DuplicateGoo()
+    public CustomTransverseReinforcmentLayoutGoo DuplicateGoo()
     {
-      return new SlabDimensionGoo(this.Value == null ? new SlabDimension() : this.Value.Duplicate());
+      return new CustomTransverseReinforcmentLayoutGoo(Value == null ? new CustomTransverseReinforcementLayout() : Value.Duplicate());
     }
     #endregion
 
     #region properties
      public override bool IsValid => (this.Value == null) ? false : true;
-    public override string TypeName => "Concrete Slab Dimension";
+    public override string TypeName => "Transverse Reinforcement Layout";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot
     {
@@ -56,38 +54,42 @@ namespace ComposGH.Parameters
     }
     public override string ToString()
     {
-      if (this.Value == null)
+      if (Value == null)
         return "Null";
       else
-        return "Compos " + this.TypeName + " {" + this.Value.ToString() + "}"; ;
+        return "Compos " + TypeName + " {" + Value.ToString() + "}"; ;
     }
     #endregion
 
     #region casting methods
     public override bool CastTo<Q>(ref Q target)
     {
-      // This function is called when Grasshopper needs to convert this instance of our custom class into some other type Q.            
-      if (typeof(Q).IsAssignableFrom(typeof(SlabDimension)))
+      // This function is called when Grasshopper needs to convert this 
+      // instance of our custom class into some other type Q.            
+
+      if (typeof(Q).IsAssignableFrom(typeof(CustomTransverseReinforcementLayout)))
       {
-        if (this.Value == null)
+        if (Value == null)
           target = default;
         else
-          target = (Q)(object)this.Value;
+          target = (Q)(object)Value;
         return true;
       }
 
       target = default;
       return false;
     }
-
     public override bool CastFrom(object source)
     {
-      // This function is called when Grasshopper needs to convert other data into our custom class.
+      // This function is called when Grasshopper needs to convert other data 
+      // into our custom class.
+
       if (source == null) { return false; }
 
-      if (typeof(SlabDimension).IsAssignableFrom(source.GetType()))
+      //Cast from GsaMaterial
+      if (typeof(CustomTransverseReinforcementLayout).IsAssignableFrom(source.GetType()))
       {
-        this.Value = (SlabDimension)source;
+        Value = (CustomTransverseReinforcementLayout)source;
         return true;
       }
 

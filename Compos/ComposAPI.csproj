@@ -80,7 +80,7 @@
     <Compile Include="3_Slab\Decking\DeckingConfiguration.cs" />
     <Compile Include="3_Slab\Reinforcement\MeshReinforcement.cs" />
     <Compile Include="3_Slab\Reinforcement\ReinforcementMaterial.cs" />
-    <Compile Include="3_Slab\Reinforcement\CustomTransverse.cs" />
+    <Compile Include="3_Slab\Reinforcement\CustomTransverseReinforcement.cs" />
     <Compile Include="3_Slab\Reinforcement\TransverseReinforcement.cs" />
     <Compile Include="3_Slab\Reinforcement\Reinforcement.cs" />
     <Compile Include="4_Loads\Load.cs" />

@@ -5,15 +5,17 @@ using UnitsNet;
 
 namespace ComposAPI
 {
-  public class TransverseReinforcmentLayout
+  public class CustomTransverseReinforcementLayout
   {
     public Length DistanceFromStart { get; set; }
     public Length DistanceFromEnd { get; set; }
     public Length Diameter { get; set; }
     public Length Spacing { get; set; }
     public Length Cover { get; set; }
-    public TransverseReinforcmentLayout() { }
-    public TransverseReinforcmentLayout(Length distanceFromStart, Length distanceFromEnd, Length diameter, Length spacing, Length cover)
+
+    public CustomTransverseReinforcementLayout() { }
+
+    public CustomTransverseReinforcementLayout(Length distanceFromStart, Length distanceFromEnd, Length diameter, Length spacing, Length cover)
     {
       this.DistanceFromStart = distanceFromStart;
       this.DistanceFromEnd = distanceFromEnd;
@@ -21,10 +23,12 @@ namespace ComposAPI
       this.Spacing = spacing;
       this.Cover = cover;
     }
-    public TransverseReinforcmentLayout Duplicate()
+
+    public CustomTransverseReinforcementLayout Duplicate()
     {
-      return (TransverseReinforcmentLayout)this.MemberwiseClone();
+      return (CustomTransverseReinforcementLayout)this.MemberwiseClone();
     }
+
     public override string ToString()
     {
       string start = (this.DistanceFromStart.Value == 0) ? "" : this.DistanceFromStart.ToUnit(Units.LengthUnitGeometry).ToString("f2").Replace(" ", string.Empty) + "<-";
@@ -39,9 +43,10 @@ namespace ComposAPI
       return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');
     }
   }
+
   public class CustomTransverseReinforcement : TransverseReinforcement
   {
-    List<TransverseReinforcmentLayout> CustomReinforcementLayouts { get; set; }
+    List<CustomTransverseReinforcementLayout> CustomReinforcementLayouts { get; set; }
     
     public CustomTransverseReinforcement()
     {
@@ -49,7 +54,7 @@ namespace ComposAPI
       this.m_layout = LayoutMethod.Custom;
     }
 
-    public CustomTransverseReinforcement(ReinforcementMaterial material, List<TransverseReinforcmentLayout> transverseReinforcmentLayout)
+    public CustomTransverseReinforcement(ReinforcementMaterial material, List<CustomTransverseReinforcementLayout> transverseReinforcmentLayout)
     {
       this.Material = material;
       this.CustomReinforcementLayouts = transverseReinforcmentLayout;

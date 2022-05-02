@@ -2,6 +2,7 @@
 using UnitsNet;
 using UnitsNet.Units;
 using System.Collections.Generic;
+using Moq;
 
 namespace ComposAPI.Tests
 {
@@ -18,6 +19,9 @@ namespace ComposAPI.Tests
     //[InlineData("CAT IPE IPE100", 100, 55, 55, 4.1, 5.7, 5.7)] //issue with loading GH referencing in testing environment
     public BeamSection TestBeamSectionConstructorProfile(string profile, double expDepth, double expTopFlangeWidth, double expBottomFlangeWidth, double expWebThickness, double expTopFlangeThickness, double expBottomFlangeThickness)
     {
+      //var mock = new Mock<BeamSection>();
+      //mock.Setup(x => x.)
+      
       // 2 create object instance with constructor
       BeamSection beam = new BeamSection(profile);
 

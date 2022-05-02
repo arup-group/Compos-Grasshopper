@@ -99,6 +99,7 @@ namespace ComposGH.Components
 
       return (Length)unitNumber.Value;
     }
+
     internal static List<Length> Lengths(GH_Component owner, IGH_DataAccess DA, int inputid, LengthUnit docLengthUnit, bool isOptional = false)
     {
       List<Length> lengths = new List<Length>();
@@ -439,6 +440,7 @@ namespace ComposGH.Components
       }
       return UnitsNet.ForcePerLength.Zero;
     }
+
     internal static Angle Angle(GH_Component owner, IGH_DataAccess DA, int inputid, AngleUnit angleUnit, bool isOptional = false)
     {
       GH_UnitNumber a1 = new GH_UnitNumber(new Angle(0, angleUnit));
@@ -589,18 +591,19 @@ namespace ComposGH.Components
       }
       return goo.Value;
     }
-    internal static List<TransverseReinforcmentLayout> TransverseReinforcementLayouts(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+
+    internal static List<CustomTransverseReinforcementLayout> TransverseReinforcementLayouts(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
-      List<TransverseReinforcmentLayout> items = new List<TransverseReinforcmentLayout>();
+      List<ComposAPI.CustomTransverseReinforcementLayout> items = new List<ComposAPI.CustomTransverseReinforcementLayout>();
       List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
       if (DA.GetDataList(inputid, gh_typs))
       {
         for (int i = 0; i < gh_typs.Count; i++)
         {
           // try cast directly to quantity type
-          if (gh_typs[i].Value is TransverseReinforcmentLayoutGoo)
+          if (gh_typs[i].Value is CustomTransverseReinforcmentLayoutGoo)
           {
-            TransverseReinforcmentLayoutGoo goo = (TransverseReinforcmentLayoutGoo)gh_typs[i].Value;
+            CustomTransverseReinforcmentLayoutGoo goo = (CustomTransverseReinforcmentLayoutGoo)gh_typs[i].Value;
             items.Add(goo.Value);
           }
           else
@@ -617,6 +620,7 @@ namespace ComposGH.Components
       }
       return null;
     }
+
     internal static ReinforcementMaterial RebarMaterial(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
       ReinforcementMaterialGoo goo = null;
@@ -629,7 +633,7 @@ namespace ComposGH.Components
         }
         else
         {
-          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Rebar material");
+          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Rebar material");
           return null;
         }
       }
@@ -670,6 +674,7 @@ namespace ComposGH.Components
       }
       return goo.Value;
     }
+
     internal static List<WebOpening> WebOpenings(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
       List<WebOpening> items = new List<WebOpening>();
@@ -871,7 +876,133 @@ namespace ComposGH.Components
     }
     #endregion
 
+    #region Slab
+    internal static ConcreteMaterial ConcreteMaterial(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    {
+      ConcreteMaterialGoo goo = null;
+      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+      if (DA.GetData(inputid, ref gh_typ))
+      {
+        if (gh_typ.Value is ConcreteMaterialGoo)
+        {
+          goo = (ConcreteMaterialGoo)gh_typ.Value;
+        }
+        else
+        {
+          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Concrete Material");
+          return null;
+        }
+      }
+      else if (!isOptional)
+        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+      else
+      {
+        if (goo == null)
+          return null;
+      }
+      return goo.Value;
+    }
+
+    internal static List<SlabDimension> SlabDimensions(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    {
+      List<SlabDimension> items = new List<SlabDimension>();
+      List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
+      if (DA.GetDataList(inputid, gh_typs))
+      {
+        for (int i = 0; i < gh_typs.Count; i++)
+        {
+          // try cast directly
+          if (gh_typs[i].Value is SlabDimensionGoo goo)
+          {
+            items.Add(goo.Value);
+          }
+          else
+          {
+            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Compos Slab Dimension");
+            continue;
+          }
+        }
+        return items;
+      }
+      else if (!isOptional)
+      {
+        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+      }
+      return null;
+    }
+
+    internal static TransverseReinforcement TransverseReinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    {
+      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+      if (DA.GetData(inputid, ref gh_typ))
+      {
+        if (gh_typ.Value is ReinforcementGoo)
+        {
+          if (Reinforcement(owner, DA, inputid, isOptional) is TransverseReinforcement reinforcement)
+          {
+            return reinforcement;
+          }
+        }
+        else
+        {
+          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Transverse Reinforcement");
+        }
+      }
+      else if (!isOptional)
+        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+      return null;
+    }
+
+    internal static MeshReinforcement MeshReinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    {
+      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+      if (DA.GetData(inputid, ref gh_typ))
+      {
+        if (gh_typ.Value is ReinforcementGoo)
+        {
+          if (Reinforcement(owner, DA, inputid, isOptional) is MeshReinforcement reinforcement)
+          {
+            return reinforcement;
+          }
+        }
+        else
+        {
+          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Mesh Reinforcement");
+        }
+      }
+      else if (!isOptional)
+        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+      return null;
+    }
+    #endregion
+
     #region Decking
+    internal static Decking Decking(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    {
+      DeckingGoo goo = null;
+      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+      if (DA.GetData(inputid, ref gh_typ))
+      {
+        if (gh_typ.Value is DeckingGoo)
+        {
+          goo = (DeckingGoo)gh_typ.Value;
+        }
+        else
+        {
+          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Decking");
+          return null;
+        }
+      }
+      else if (!isOptional)
+        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+      else
+      {
+        if (goo == null)
+          return null;
+      }
+      return goo.Value;
+    }
+
     internal static DeckingConfiguration DeckConfiguration(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
       DeckingConfigGoo goo = null;
@@ -884,7 +1015,7 @@ namespace ComposGH.Components
         }
         else
         {
-          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Reinforcement");
+          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Deck Configuration");
           return null;
         }
       }
@@ -898,6 +1029,7 @@ namespace ComposGH.Components
       return goo.Value;
     }
     #endregion
+
     internal static object GenericGoo<Type>(GH_Component owner, IGH_DataAccess DA, int inputid)
     {
       GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
