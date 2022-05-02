@@ -32,6 +32,7 @@ namespace ComposAPI
       this.MeshReinforcement = meshReinforcement;
       this.Decking = decking;
     }
+
     public Slab(ConcreteMaterial material, SlabDimension dimensions, TransverseReinforcement transverseReinforcement, MeshReinforcement meshReinforcement = null, Decking decking = null)
     {
       this.Material = material;
@@ -40,7 +41,6 @@ namespace ComposAPI
       this.MeshReinforcement = meshReinforcement;
       this.Decking = decking;
     }
-
     #endregion
 
     #region coa interop
@@ -77,7 +77,10 @@ namespace ComposAPI
 
       string dim = (this.Dimensions.Count > 1) ? string.Join(" : ", this.Dimensions.Select(x => x.ToString()).ToArray()) : this.Dimensions[0].ToString();
       string mat = this.Material.ToString();
-      string reinf = this.MeshReinforcement.ToString() + " / " + this.TransverseReinforcement.ToString();
+      string reinf = "";
+      if (this.MeshReinforcement != null)
+        reinf = this.MeshReinforcement.ToString() + " / ";
+      reinf += this.TransverseReinforcement.ToString();
       return dim + ", " + mat + ", " + reinf;
     }
     #endregion

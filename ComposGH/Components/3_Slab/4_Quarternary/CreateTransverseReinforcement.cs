@@ -17,12 +17,12 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class TransverseReinforcement : GH_Component
+  public class CreateTransverseReinforcement : GH_Component
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
-    public TransverseReinforcement()
+    public CreateTransverseReinforcement()
       : base("Transeverse Reinforcement", "TransRb", "Create Transverse Reinforcement for Compos Slab",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
@@ -45,7 +45,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Reinforcement", "Rb", "Transverse Reinforcement for Compos Slab", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Transverse Reinforcement", "TRb", "Transverse Reinforcement for Compos Slab", GH_ParamAccess.item);
     }
     #endregion
 
@@ -55,7 +55,7 @@ namespace ComposGH.Components
 
       if (this.Params.Input[1].Sources.Count > 0)
       {
-        List<TransverseReinforcmentLayout> transverseReinforcmentLayouts = GetInput.TransverseReinforcementLayouts(this, DA, 1);
+        List<ComposAPI.CustomTransverseReinforcementLayout> transverseReinforcmentLayouts = GetInput.TransverseReinforcementLayouts(this, DA, 1);
         DA.SetData(0, new ReinforcementGoo(new CustomTransverseReinforcement(mat, transverseReinforcmentLayouts)));
       }
       else

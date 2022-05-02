@@ -6,6 +6,7 @@ using Oasys.Units;
 using UnitsNet;
 using UnitsNet.Units;
 using ComposAPI;
+using ComposGH.Parameters;
 
 namespace ComposGH.Components
 {
@@ -156,7 +157,7 @@ namespace ComposGH.Components
 
       ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, dryDensity, userDensity, eRatio, imposedLoadPercentage, shrinkageStrain, userStrain);
 
-      DA.SetData(0, concreteMaterial);
+      DA.SetData(0, new ConcreteMaterialGoo(concreteMaterial));
     }
 
     #region (de)serialization
