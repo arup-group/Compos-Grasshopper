@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using ComposAPI.Helpers;
 using UnitsNet;
 
 namespace ComposAPI
@@ -20,7 +21,7 @@ namespace ComposAPI
     public bool CustomEffectiveWidth { get; set; }
     public Length EffectiveWidthLeft { get; set; }
     public Length EffectiveWidthRight { get; set; }
-    
+
     // Settings
     public bool TaperedToNext { get; set; }
 
@@ -29,6 +30,7 @@ namespace ComposAPI
     {
       // empty constructor
     }
+
     public SlabDimension(Length startPosition, Length overallDepth, Length availableWidthLeft, Length availableWidthRight, bool taperedToNext = false)
     {
       this.StartPosition = startPosition;
@@ -38,6 +40,7 @@ namespace ComposAPI
       this.CustomEffectiveWidth = false;
       this.TaperedToNext = taperedToNext;
     }
+
     public SlabDimension(Length startPosition, Length overallDepth, Length availableWidthLeft, Length availableWidthRight,
       Length effectiveWidthLeft, Length effectiveWidthRight, bool taperedToNext = false)
     {
@@ -52,14 +55,37 @@ namespace ComposAPI
     }
     #endregion
 
-    #region methods
+    #region coa interop
+    internal SlabDimension(string coaString)
+    {
+      // to do - implement from coa string method
+    }
 
+    /// <summary>
+    /// SLAB_DIMENSION | name | num | index | x | depth | width_l | width_r | tapered | override | eff_width_l | eff_width_r
+    /// SLAB_DIMENSION | name | num | index | x | depth | width_l | width_r | tapered | override
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="num"></param>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    internal string ToCoaString(string name, string num, string index)
+    {
+      List<string> parameters = new List<string>() { "SLAB_DIMENSION", name, num, index, this.StartPosition.Value.ToString(), this.OverallDepth.Value.ToString(), this.AvailableWidthLeft.Value.ToString(), this.AvailableWidtRight.Value.ToString() };
+      CoaHelper.AddParameter(parameters, "TAPERED", this.TaperedToNext);
+      CoaHelper.AddParameter(parameters, "EFFECTIVE_WIDTH", this.CustomEffectiveWidth);
+      return CoaHelper.CreateString(parameters);
+    }
+    #endregion
+
+    #region methods
     public SlabDimension Duplicate()
     {
       if (this == null) { return null; }
       SlabDimension dup = (SlabDimension)this.MemberwiseClone();
       return dup;
     }
+
     public override string ToString()
     {
       string start = "";
