@@ -8,7 +8,7 @@ using Rhino;
 using Grasshopper.Documentation;
 using Rhino.Collections;
 using UnitsNet;
-using ComposAPI.SteelBeam;
+using ComposAPI;
 
 namespace ComposGH.Parameters
 {

@@ -45,27 +45,27 @@
 
     public static string Cat4()
     {
-      return new string(' ', 6) + "Decking";
+      return new string(' ', 6) + "Loads";
     }
 
     public static string Cat5()
     {
-      return new string(' ', 5) + "Rebar";
+      return new string(' ', 5) + "Member";
     }
 
     public static string Cat6()
     {
-      return new string(' ', 4) + "Load";
+      return new string(' ', 4) + "Analyse";
     }
 
     public static string Cat7()
     {
-      return new string(' ', 3) + "Design";
+      return new string(' ', 3) + "Results";
     }
 
     public static string Cat8()
     {
-      return new string(' ', 2) + "Analyse";
+      return new string(' ', 2) + "Design";
     }
 
     public static string Cat9()

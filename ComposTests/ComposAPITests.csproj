@@ -8,6 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="1_Beam\SteelMaterial\**" />
+    <Compile Remove="Parameters\**" />
+    <EmbeddedResource Remove="1_Beam\SteelMaterial\**" />
+    <EmbeddedResource Remove="Parameters\**" />
+    <None Remove="1_Beam\SteelMaterial\**" />
+    <None Remove="Parameters\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="UnitsNet" Version="4.89.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -19,10 +28,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Parameters\1_Beam\SteelMaterial\" />
   </ItemGroup>
 
   <ItemGroup>

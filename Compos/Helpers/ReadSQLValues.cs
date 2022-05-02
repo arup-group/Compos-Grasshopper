@@ -4,7 +4,7 @@ using System.Data;
 using System.Data.SQLite;
 using System.IO;
 
-namespace ComposAPI.Helpers
+namespace ComposAPI.Helper
 {
   public static class SqlDBconnection
   {
