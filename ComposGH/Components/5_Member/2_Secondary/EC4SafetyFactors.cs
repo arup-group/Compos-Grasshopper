@@ -32,7 +32,7 @@ namespace ComposGH.Components
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-    //protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateStud;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.EC4SafetyFactors;
     #endregion
 
     #region Custom UI
@@ -139,7 +139,10 @@ namespace ComposGH.Components
         & this.Params.Input[2].Sources.Count == 0
         & this.Params.Input[3].Sources.Count == 0)
       {
-        AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Default Load Factor values from BS5950-1.1:1990+A1:2010");
+        string remark = (loadcombinationType == LoadCombination.Equation6_10) ?
+          "Load combination factors following Equation 6.10 will be used" :
+          "Load combination factors for the worse of Equation 6.10a and 6.10b will be used (not applicable for storage structures)";
+        AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, remark);
         lf = null;
         selecteditems[0] = loadcombinationType.ToString().Replace("__", " or ").Replace("_", ".");
       }
@@ -180,7 +183,7 @@ namespace ComposGH.Components
         & this.Params.Input[9].Sources.Count == 0
         & this.Params.Input[10].Sources.Count == 0)
       {
-        AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Default Material Partial Safety Factor values from EN1994-1-1");
+        AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Default Material Partial Safety Factor values from EN1994-1-1 will be used");
         mf = null;
       }
 

@@ -29,7 +29,7 @@ namespace ComposGH.Components
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-    //protected override System.Drawing.Bitmap Icon => Properties.Resources.ERatio;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.SafetyFactors;
     #endregion
 
     #region Input and output
