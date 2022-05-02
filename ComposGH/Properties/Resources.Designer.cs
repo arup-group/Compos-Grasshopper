@@ -123,6 +123,16 @@ namespace ComposGH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CreateConcreteMaterial {
+            get {
+                object obj = ResourceManager.GetObject("CreateConcreteMaterial", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap CreateConcreteMaterialAZ {
             get {
                 object obj = ResourceManager.GetObject("CreateConcreteMaterialAZ", resourceCulture);
@@ -186,6 +196,16 @@ namespace ComposGH.Properties {
         internal static System.Drawing.Bitmap CreateRestraint {
             get {
                 object obj = ResourceManager.GetObject("CreateRestraint", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CreateSlab {
+            get {
+                object obj = ResourceManager.GetObject("CreateSlab", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -286,6 +306,16 @@ namespace ComposGH.Properties {
         internal static System.Drawing.Bitmap DesignCodeParameter {
             get {
                 object obj = ResourceManager.GetObject("DesignCodeParameter", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap EC4SafetyFactors {
+            get {
+                object obj = ResourceManager.GetObject("EC4SafetyFactors", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -413,9 +443,29 @@ namespace ComposGH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap SafetyFactors {
+            get {
+                object obj = ResourceManager.GetObject("SafetyFactors", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap SaveModel {
             get {
                 object obj = ResourceManager.GetObject("SaveModel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SlabDimensions {
+            get {
+                object obj = ResourceManager.GetObject("SlabDimensions", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -486,6 +536,16 @@ namespace ComposGH.Properties {
         internal static System.Drawing.Bitmap StandardStudSpecsEN {
             get {
                 object obj = ResourceManager.GetObject("StandardStudSpecsEN", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SteelMaterialParam {
+            get {
+                object obj = ResourceManager.GetObject("SteelMaterialParam", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

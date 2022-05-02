@@ -409,6 +409,18 @@
       <Name>Converters</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreateSlab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\SlabDimensions.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\EC4SafetyFactors.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\SafetyFactors.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
