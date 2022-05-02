@@ -127,6 +127,7 @@
     <Compile Include="Components\4_Loads\1_Primary\UniformLoad.cs" />
     <Compile Include="Components\4_Loads\1_Primary\PointLoad.cs" />
     <Compile Include="Components\3_Slab\3_Tertiary\CreateConcreteMaterialBS.cs" />
+    <Compile Include="Components\5_Member\2_Secondary\DesignCode.cs" />
     <Compile Include="Components\5_Member\2_Secondary\EC4SafetyFactors.cs" />
     <Compile Include="Components\5_Member\2_Secondary\SafetyFactors.cs" />
     <Compile Include="ComposGHInfo.cs" />

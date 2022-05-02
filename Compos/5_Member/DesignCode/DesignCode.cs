@@ -7,12 +7,12 @@ namespace ComposAPI
 {
   public enum Code
   {
-    BS5950_3_1_1990_Superseeded,
-    BS5950_3_1_1990_A1_2010,
-    EN1994_1_1_2004,
-    HKSUOS_2005,
-    HKSUOS_2011,
-    AS_NZS2327_2017
+    BS5950_3_1_1990_Superseeded = 0,
+    BS5950_3_1_1990_A1_2010 = 1,
+    EN1994_1_1_2004 = 2,
+    HKSUOS_2005 = 3,
+    HKSUOS_2011 = 4,
+    AS_NZS2327_2017 = 5
   }
   public enum NationalAnnex
   {
