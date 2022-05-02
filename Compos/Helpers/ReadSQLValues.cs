@@ -117,6 +117,9 @@ namespace ComposAPI.Helper
         }
         db.Close();
 
+        if(data == null || data.Count < 1)
+          return values;
+
         string[] vals = data[0].Split(new string[] { " -- " }, StringSplitOptions.None);
 
         foreach (string val in vals)

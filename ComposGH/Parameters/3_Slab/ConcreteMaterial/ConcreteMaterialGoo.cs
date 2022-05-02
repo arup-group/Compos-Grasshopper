@@ -85,7 +85,6 @@ namespace ComposGH.Parameters
       // This function is called when Grasshopper needs to convert other data  into our custom class.
       if (source == null) { return false; }
 
-      // Cast from GsaMaterial
       if (typeof(ConcreteMaterial).IsAssignableFrom(source.GetType()))
       {
         this.Value = (ConcreteMaterial)source;

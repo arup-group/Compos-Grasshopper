@@ -17,13 +17,13 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class RebarMat : GH_Component, IGH_VariableParameterComponent
+  public class CreateRebarMaterial: GH_Component, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("E91D37A1-81D4-427D-9910-E8A514466F3C");
-    public RebarMat()
+    public CreateRebarMaterial()
       : base("Rebar Material", "RebarMat", "Create Rebar Material for Compos Transverse Reinforcement",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())

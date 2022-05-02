@@ -36,6 +36,7 @@ namespace ComposAPI
       dup.Material = this.Material.Duplicate();
       return dup;
     }
+
     public override string ToString()
     {
       string mat = this.Material.ToString();

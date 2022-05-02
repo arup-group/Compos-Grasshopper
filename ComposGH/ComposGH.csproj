@@ -95,6 +95,8 @@
     <Compile Include="Components\1_Beam\3_Tertiary\CreateSteelMaterial.cs" />
     <Compile Include="Components\1_Beam\2_Secondary\CreateSupport.cs" />
     <Compile Include="Components\1_Beam\4_Quarternary\CreateBeamSection.cs" />
+    <Compile Include="Components\3_Slab\1_Primary\CreateSlab.cs" />
+    <Compile Include="Components\3_Slab\2_Secondary\CreateSlabDimension.cs" />
     <Compile Include="Components\1_Beam\5_Quinary\CreateWebOpeningStiffener.cs" />
     <Compile Include="Components\1_Beam\4_Quarternary\CreateProfile.cs" />
     <Compile Include="Components\1_Beam\5_Quinary\CreateNotch.cs" />
@@ -115,9 +117,9 @@
     <Compile Include="Components\3_Slab\3_Tertiary\CreateConcreteMaterialEN.cs" />
     <Compile Include="Components\3_Slab\3_Tertiary\CreateERatio.cs" />
     <Compile Include="Components\3_Slab\4_Quarternary\CreateRebarMaterial.cs" />
-    <Compile Include="Components\3_Slab\4_Quarternary\CustomTransverseReinforcementLayout.cs" />
-    <Compile Include="Components\3_Slab\4_Quarternary\TransverseReinforcement.cs" />
-    <Compile Include="Components\3_Slab\4_Quarternary\MeshReinforcement.cs" />
+    <Compile Include="Components\3_Slab\4_Quarternary\CreateCustomTransverseReinforcementLayout.cs" />
+    <Compile Include="Components\3_Slab\4_Quarternary\CreateTransverseReinforcement.cs" />
+    <Compile Include="Components\3_Slab\4_Quarternary\CreateMeshReinforcement.cs" />
     <Compile Include="Components\4_Loads\2_Secondary\PatchLoad.cs" />
     <Compile Include="Components\4_Loads\2_Secondary\AxialLoad.cs" />
     <Compile Include="Components\4_Loads\2_Secondary\TriLinearLoad.cs" />
@@ -139,9 +141,10 @@
     <Compile Include="Parameters\2_Studs\StudGoo.cs" />
     <Compile Include="Parameters\3_Slab\ConcreteMaterial\ConcreteMaterialGoo.cs" />
     <Compile Include="Parameters\3_Slab\ConcreteMaterial\ERatioGoo.cs" />
+    <Compile Include="Parameters\3_Slab\Slab.cs" />
     <Compile Include="Parameters\3_Slab\SlabDimension\SlabDimensionGoo.cs" />
     <Compile Include="Parameters\1_Beam\Restraints\RestraintGoo.cs" />
-    <Compile Include="Parameters\3_Slab\Reinforcement\TransverseReinforcementLayoutGoo.cs" />
+    <Compile Include="Parameters\3_Slab\Reinforcement\CustomTransverseReinforcementLayoutGoo.cs" />
     <Compile Include="Parameters\4_Loads\LoadGoo.cs" />
     <Compile Include="Parameters\3_Slab\Reinforcement\ReinforcementGoo.cs" />
     <Compile Include="Parameters\3_Slab\Reinforcement\ReinforcementMaterialGoo.cs" />
@@ -226,8 +229,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Components\0_File\" />
-    <Folder Include="Components\3_Slab\1_Primary\" />
-    <Folder Include="Components\3_Slab\2_Secondary\" />
     <Folder Include="Components\4_Loads\3_Tertiary\" />
     <Folder Include="Components\4_Loads\4_Quarternary\" />
     <Folder Include="Components\4_Loads\5_Quinary\" />
