@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ComposAPITests": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
