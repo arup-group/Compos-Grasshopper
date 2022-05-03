@@ -157,6 +157,7 @@
     <Compile Include="Parameters\1_Beam\WebOpening\WebOpeningStiffenersGoo.cs" />
     <Compile Include="Parameters\2_Studs\StudSpecGoo.cs" />
     <Compile Include="Parameters\2_Studs\StudSpacingGoo.cs" />
+    <Compile Include="Parameters\5_Member\DesignCode\CreepShrinkageEC4ParamGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\SafetyFactorsGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\DesignOptionsGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\CodeOptionsGoo.cs" />

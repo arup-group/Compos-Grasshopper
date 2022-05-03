@@ -160,7 +160,7 @@ namespace ComposGH.UI
         {
           if (ButtonBound[i].Contains(e.CanvasLocation) || TextBound[i].Contains(e.CanvasLocation))
           {
-            comp.RecordUndoEvent("Toggle Incl. superseeded");
+            comp.RecordUndoEvent("Toggle Incl. superseded");
             toggles[i] = !toggles[i];
             action(toggles);
             comp.ExpireSolution(true);

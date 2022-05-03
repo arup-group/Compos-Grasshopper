@@ -92,7 +92,7 @@ namespace ComposGH.Components
         }
         switch (code)
         {
-          case Code.BS5950_3_1_1990_Superseeded:
+          case Code.BS5950_3_1_1990_Superseded:
           case Code.BS5950_3_1_1990_A1_2010:
           case Code.HKSUOS_2005:
           case Code.HKSUOS_2011:
@@ -188,7 +188,7 @@ namespace ComposGH.Components
     });
     List<string> designcodesPretty = new List<string>(new string[]
     {
-      "BS5950-3.1:1990 (superseeded)",
+      "BS5950-3.1:1990 (superseded)",
       "BS5950-3.1:1990+A1:2010",
       "EN1994-1-1:2004",
       "HKSUOS:2005",
