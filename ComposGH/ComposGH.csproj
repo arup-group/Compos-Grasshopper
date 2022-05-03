@@ -127,6 +127,8 @@
     <Compile Include="Components\4_Loads\1_Primary\UniformLoad.cs" />
     <Compile Include="Components\4_Loads\1_Primary\PointLoad.cs" />
     <Compile Include="Components\3_Slab\3_Tertiary\CreateConcreteMaterialBS.cs" />
+    <Compile Include="Components\5_Member\2_Secondary\EC4SafetyFactors.cs" />
+    <Compile Include="Components\5_Member\2_Secondary\SafetyFactors.cs" />
     <Compile Include="ComposGHInfo.cs" />
     <Compile Include="Helpers\DeSerialization.cs" />
     <Compile Include="Helpers\GhRibbonLayout.cs" />
@@ -231,7 +233,6 @@
     <Folder Include="Components\4_Loads\4_Quarternary\" />
     <Folder Include="Components\4_Loads\5_Quinary\" />
     <Folder Include="Components\5_Member\1_Primary\" />
-    <Folder Include="Components\5_Member\2_Secondary\" />
     <Folder Include="Components\5_Member\3_Tertiary\" />
     <Folder Include="Components\5_Member\4_Quarternary\" />
     <Folder Include="Components\5_Member\5_Quinary\" />
@@ -407,6 +408,18 @@
       <Project>{0BF1ED34-39F9-4842-B788-31D8BEA0825E}</Project>
       <Name>Converters</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreateSlab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\SlabDimensions.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\EC4SafetyFactors.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\SafetyFactors.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

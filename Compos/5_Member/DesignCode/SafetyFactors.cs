@@ -106,7 +106,7 @@ namespace ComposAPI
   public enum LoadCombination
   {
     Equation6_10,
-    Equation6_10a_6_10b,
+    Equation6_10a__6_10b,
     Custom
   }
   /// <summary>
@@ -116,8 +116,8 @@ namespace ComposAPI
   {
     public double xi { get; set; } = 1.0;
     public double psi_0 { get; set; } = 1.0;
-    public double psi_G { get; set; } = 1.35;
-    public double psi_Q { get; set; } = 1.5;
+    public double gamma_G { get; set; } = 1.35;
+    public double gamma_Q { get; set; } = 1.5;
     public LoadCombinationFactors() { }
     public LoadCombinationFactors Duplicate()
     {
