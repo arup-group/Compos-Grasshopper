@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Compos_8_6;
@@ -15,12 +16,6 @@ namespace ComposAPI
 
     public static IAutomation Open(string pathName)
     {
-      string assemblyPath = Path.Combine(InstallPath, "Compos.exe");
-      if (!File.Exists(assemblyPath))
-        return null;
-
-      Assembly compos = Assembly.LoadFile(assemblyPath);
-
       IAutomation automation = new Automation();
       automation.Open(pathName);
       return automation;
