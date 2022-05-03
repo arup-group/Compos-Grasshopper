@@ -13,6 +13,7 @@ namespace ComposAPI
     public Length Cover { get; set; }
     public bool Rotated { get; set; }
     public ReinforcementMeshType MeshType { get; set; }
+    public const string CoaIdentifier = "REBAR_WESH";
 
     public enum ReinforcementMeshType
     {
@@ -48,6 +49,18 @@ namespace ComposAPI
       this.m_type = ReinforcementType.Mesh;
     }
 
+    #endregion
+
+    #region coa interop
+    internal MeshReinforcement(List<string> parameters)
+    {
+
+    }
+
+    internal string ToCoaString(string name)
+    {
+      return String.Empty;
+    }
     #endregion
 
     #region methods

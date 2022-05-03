@@ -18,7 +18,7 @@ namespace ComposAPI.Helpers
       parameters.Add(str);
     }
 
-    public static string CreateString(List<string> parameters)
+    internal static string CreateString(List<string> parameters)
     {
       string str = "";
       foreach (string param in parameters)
@@ -27,17 +27,23 @@ namespace ComposAPI.Helpers
       return str;
     }
 
-    public static string RemoveWhitespace(string str)
+    internal static string RemoveWhitespace(string str)
     {
       return string.Join("", str.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
     }
 
-    public static List<string> Split(string coaString)
+    internal static List<string> Split(string coaString)
     {
       List<string> parameters = coaString.Split('\t').ToList();
       foreach(string param in parameters)
         RemoveWhitespace(param);
       return parameters;
+    }
+
+    internal static List<string> SplitLines(string coaString)
+    {
+      List<string> lines = coaString.Split('\n').ToList();
+      return lines;
     }
 
   }

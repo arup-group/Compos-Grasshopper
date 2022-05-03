@@ -9,6 +9,12 @@ namespace ComposAPI
 {
   public class Decking
   {
+    public enum DeckingType
+    {
+      Custom,
+      Catalogue
+    }
+
     public Length b1 { get; set; }
     public Length b2 { get; set; }
     public Length b3 { get; set; }
@@ -17,30 +23,29 @@ namespace ComposAPI
     public Length Depth { get; set; }
     public Length Thickness { get; set; }
     public DeckingConfiguration DeckConfiguration { get; set; }
-    public enum DeckingType
-    {
-      Custom,
-      Catalogue
-    }
     public DeckingType Type { get { return m_type; } }
     internal DeckingType m_type;
+    public const string CoaIdentifier = "DECKING_CATALOGUE";
+
 
     public Decking()
     {
       // empty constructor
     }
 
-    internal Decking(string coaString)
+    #region coa interop
+    internal Decking(List<string> parameters)
     {
-      // to do - implement from coa string method
+
     }
 
     internal string ToCoaString()
     {
-      // to do - implement to coa string method
-      return string.Empty;
+      return String.Empty;
     }
+    #endregion
 
+    #region methods
     public virtual Decking Duplicate()
     {
       if (this == null) { return null; }
@@ -48,5 +53,6 @@ namespace ComposAPI
       dup.DeckConfiguration = this.DeckConfiguration.Duplicate();
       return dup;
     }
+    #endregion
   }
 }

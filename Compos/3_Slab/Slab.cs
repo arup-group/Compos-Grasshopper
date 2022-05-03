@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
+using ComposAPI.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
-using System.Drawing;
 
 namespace ComposAPI
 {
@@ -44,15 +45,57 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal Slab(string coaString)
+    internal Slab(string coaString, LengthUnit lengthUnit, DensityUnit densityUnit)
     {
-      // to do - implement from coa string method
+      List<string> lines = CoaHelper.SplitLines(coaString);
+      foreach(string line in lines)
+      {
+        List<string> parameters = CoaHelper.Split(line);
+        switch(parameters[0])
+        {
+          case (ConcreteMaterial.CoaIdentifier):
+            this.Material = new ConcreteMaterial(lines, densityUnit);
+            break;
+
+          case (SlabDimension.CoaIdentifier):
+            SlabDimension dimension = new SlabDimension(parameters, lengthUnit);
+            this.Dimensions.Add(dimension);
+            break;
+
+          case (TransverseReinforcement.CoaIdentifier):
+            this.TransverseReinforcement = new TransverseReinforcement(parameters);
+            break;
+
+          case (MeshReinforcement.CoaIdentifier):
+            this.MeshReinforcement = new MeshReinforcement(parameters);
+            break;
+
+          case (Decking.CoaIdentifier):
+            this.Decking = new Decking(parameters);
+            break;
+
+          default:
+            throw new Exception("Unable to convert " + line + " to Compos Slab.");
+        }
+      }
     }
 
-    internal string ToCoaString()
+    internal string ToCoaString(string name)
     {
-      // to do - implement to coa string method
-      return string.Empty;
+      string str = this.Material.ToCoaString(name);
+      int num = 1;
+      int index = this.Dimensions.Count + 1;
+      foreach (SlabDimension dimension in this.Dimensions)
+      {
+        str += dimension.ToCoaString(name, num, index);
+        num++;
+      }
+      str += this.TransverseReinforcement.ToCoaString();
+      if (this.MeshReinforcement != null)
+        str += this.MeshReinforcement.ToCoaString();
+      if (this.Decking != null)
+        str += this.Decking.ToCoaString();
+      return str;
     }
     #endregion
 

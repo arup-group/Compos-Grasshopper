@@ -32,18 +32,6 @@ namespace ComposAPI
     }
     #endregion
 
-    #region coa interop
-    internal ERatio(string coaString)
-    {
-      // to do - implement from coa string method
-    }
-    internal string ToCoaString()
-    {
-      // to do - implement to coa string method
-      return string.Empty;
-    }
-    #endregion
-
     #region methods
     public ERatio Duplicate()
     {

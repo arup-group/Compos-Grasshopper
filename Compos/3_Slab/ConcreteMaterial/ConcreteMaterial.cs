@@ -84,6 +84,8 @@ namespace ComposAPI
     public Strain ShrinkageStrain { get; set; } //	Concrete Shrinkage strain
     public bool UserStrain { get; set; } = false; //	code or user defined shrinkage strain
 
+    public const string CoaIdentifier = "SLAB_CONCRETE_MATERIAL";
+
     #region constructors
     public ConcreteMaterial()
     {
@@ -174,9 +176,8 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal ConcreteMaterial(string coaString, DensityUnit densityUnit)
+    internal ConcreteMaterial(List<string> parameters, DensityUnit densityUnit)
     {
-      List<string> parameters = CoaHelper.Split(coaString);
       if (parameters[1].Length < 4)
       {
         // BS5950 GRADES
@@ -197,9 +198,6 @@ namespace ComposAPI
         i++;
       }
 
-
-
- 
     }
 
     /// <summary>
@@ -209,7 +207,7 @@ namespace ComposAPI
     /// <returns></returns>
     internal string ToCoaString(string name)
     {
-      List<string> parameters = new List<string>() { "SLAB_CONCRETE_MATERIAL", name, this.Grade.Replace("_", "/"), this.Type.ToString() };
+      List<string> parameters = new List<string>() { ConcreteMaterial.CoaIdentifier, name, this.Grade.Replace("_", "/"), this.Type.ToString() };
       if (this.UserDensity)
       {
         parameters.Add("USER_DENSITY");

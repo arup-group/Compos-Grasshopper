@@ -26,6 +26,8 @@ namespace ComposAPI
     // Settings
     public bool TaperedToNext { get; set; } // Tapered to next section flag
 
+    public const string CoaIdentifier = "SLAB_DIMENSION";
+
     #region constructors
     public SlabDimension()
     {
@@ -57,12 +59,11 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal SlabDimension(string coaString, LengthUnit unit)
+    internal SlabDimension(List<string> parameters, LengthUnit unit)
     {
-      List<string> parameters = CoaHelper.Split(coaString);
       if (parameters.Count < 10)
       {
-        throw new Exception("Unable to convert " + coaString + " to Compos Slab Dimension.");
+        throw new Exception("Unable to convert " + parameters + " to Compos Slab Dimension.");
       }
       this.StartPosition = new Length(Convert.ToDouble(parameters[4]), unit);
       this.OverallDepth = new Length(Convert.ToDouble(parameters[5]), unit);
@@ -79,7 +80,7 @@ namespace ComposAPI
         this.CustomEffectiveWidth = true;
         if (parameters.Count != 12)
         {
-          throw new Exception("Unable to convert " + coaString + " to Compos Slab Dimension.");
+          throw new Exception("Unable to convert " + parameters + " to Compos Slab Dimension.");
         }
         this.EffectiveWidthLeft = new Length(Convert.ToDouble(parameters[9]), unit);
         this.EffectiveWidthRight = new Length(Convert.ToDouble(parameters[9]), unit);
@@ -94,9 +95,9 @@ namespace ComposAPI
     /// <param name="num">number of total slab section to be defined</param>
     /// <param name="index">index of current slab section (1 based)</param>
     /// <returns></returns>
-    internal string ToCoaString(string name, string num, string index)
+    internal string ToCoaString(string name, int num, int index)
     {
-      List<string> parameters = new List<string>() { "SLAB_DIMENSION", name, num, index, this.StartPosition.Value.ToString(), this.OverallDepth.Value.ToString(), this.AvailableWidthLeft.Value.ToString(), this.AvailableWidthRight.Value.ToString() };
+      List<string> parameters = new List<string>() { SlabDimension.CoaIdentifier, name, Convert.ToString(num), Convert.ToString(index), this.StartPosition.Value.ToString(), this.OverallDepth.Value.ToString(), this.AvailableWidthLeft.Value.ToString(), this.AvailableWidthRight.Value.ToString() };
       CoaHelper.AddParameter(parameters, "TAPERED", this.TaperedToNext);
       CoaHelper.AddParameter(parameters, "EFFECTIVE_WIDTH", this.CustomEffectiveWidth);
       return CoaHelper.CreateString(parameters);
