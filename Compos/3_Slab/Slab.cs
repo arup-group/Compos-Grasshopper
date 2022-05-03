@@ -18,7 +18,7 @@ namespace ComposAPI
     public List<SlabDimension> Dimensions { get; set; } = new List<SlabDimension>();
     public TransverseReinforcement TransverseReinforcement { get; set; }
     public MeshReinforcement MeshReinforcement { get; set; } = null;
-    public Decking Decking { get; set; } = null;
+    public Decking Decking { get; set; } = null; // null, if option "No decking (solid slab)" is selected
 
     #region constructors
     public Slab()
@@ -72,7 +72,7 @@ namespace ComposAPI
             break;
 
           case (CatalogueDecking.CoaIdentifier):
-            this.Decking = new CatalogueDecking(parameters);
+            this.Decking = new CatalogueDecking(parameters, angleUnit);
             break;
 
           case (CustomDecking.CoaIdentifier):

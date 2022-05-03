@@ -11,6 +11,16 @@ using static ComposAPI.ConcreteMaterial;
 
 namespace ComposAPI.Tests
 {
+  public static class ConcreteMaterialMother
+  {
+    public static ConcreteMaterial CreateConcreteMaterial()
+    {
+      Density dryDensity = new Density(2400, DensityUnit.KilogramPerCubicCentimeter);
+      ERatio eRatio = ERatioMother.CreateERatio();
+      return new ConcreteMaterial(ConcreteGrade.C30, WeightType.Normal, dryDensity, false, eRatio, 0.33);
+    }
+  }
+
   public class ConcreteMaterialTest
   {
     // 1 setup inputs
@@ -19,7 +29,7 @@ namespace ComposAPI.Tests
     [InlineData(ConcreteGrade.C30, WeightType.Normal, DensityClass.NOT_APPLY, 2300, true, 0.33, -0.000325, false)]
     [InlineData(ConcreteGrade.C30, WeightType.Light, DensityClass.NOT_APPLY, 1800, false, 0.33, -0.000325, false)]
     [InlineData(ConcreteGrade.C30, WeightType.Light, DensityClass.NOT_APPLY, 1900, true, 0.33, -0.000325, false)]
-    public ConcreteMaterial TestBritishConstructor(ConcreteGrade grade, WeightType type, DensityClass densityClass, double dryDensityValue, bool userDensity, double imposedLoadPercentage, double shrinkageStrainValue, bool userStrain)
+    public void TestBritishConstructor(ConcreteGrade grade, WeightType type, DensityClass densityClass, double dryDensityValue, bool userDensity, double imposedLoadPercentage, double shrinkageStrainValue, bool userStrain)
     {
       // 2 create object instance with constructor
       Density dryDensity = new Density(dryDensityValue, DensityUnit.KilogramPerCubicCentimeter);
@@ -37,9 +47,6 @@ namespace ComposAPI.Tests
       Assert.Equal(imposedLoadPercentage, concreteMaterial.ImposedLoadPercentage);
       Assert.Equal(shrinkageStrain, concreteMaterial.ShrinkageStrain);
       Assert.Equal(userStrain, concreteMaterial.UserStrain);
-
-      // (optionally return object for other tests)
-      return concreteMaterial;
     }
 
     // 1 setup inputs
@@ -55,7 +62,7 @@ namespace ComposAPI.Tests
     [InlineData(ConcreteGradeEN.LC30_33, WeightType.Light, DensityClass.DC1801_2000, 2000, false, 0.33, -0.000325, false)]
     [InlineData(ConcreteGradeEN.LC30_33, WeightType.Light, DensityClass.DC1801_2000, 1800, true, 0.33, -0.000325, false)]
     [InlineData(ConcreteGradeEN.LC30_33, WeightType.Light, DensityClass.DC1801_2000, 1800, true, 0.33, -0.0003, true)]
-    public ConcreteMaterial TestEuropeanConstructor(ConcreteGradeEN grade, WeightType type, DensityClass densityClass, double dryDensityValue, bool userDensity, double imposedLoadPercentage, double shrinkageStrainValue, bool userStrain)
+    public void TestEuropeanConstructor(ConcreteGradeEN grade, WeightType type, DensityClass densityClass, double dryDensityValue, bool userDensity, double imposedLoadPercentage, double shrinkageStrainValue, bool userStrain)
     {
       // 2 create object instance with constructor
       Density dryDensity = new Density(dryDensityValue, DensityUnit.KilogramPerCubicCentimeter);
@@ -73,9 +80,6 @@ namespace ComposAPI.Tests
       Assert.Equal(imposedLoadPercentage, concreteMaterial.ImposedLoadPercentage);
       Assert.Equal(shrinkageStrain, concreteMaterial.ShrinkageStrain);
       Assert.Equal(userStrain, concreteMaterial.UserStrain);
-
-      // (optionally return object for other tests)
-      return concreteMaterial;
     }
 
     // 1 setup inputs
@@ -83,7 +87,7 @@ namespace ComposAPI.Tests
     // HKSUOS
     [InlineData(ConcreteGrade.C35, WeightType.Normal, DensityClass.NOT_APPLY, 2450, false, 0.33, 0.0, false)]
     [InlineData(ConcreteGrade.C35, WeightType.Normal, DensityClass.NOT_APPLY, 2400, true, 0.33, 0.0, false)]
-    public ConcreteMaterial TestHKSUOSConstructor(ConcreteGrade grade, WeightType type, DensityClass densityClass, double dryDensityValue, bool userDensity, double imposedLoadPercentage, double shrinkageStrainValue, bool userStrain)
+    public void TestHKSUOSConstructor(ConcreteGrade grade, WeightType type, DensityClass densityClass, double dryDensityValue, bool userDensity, double imposedLoadPercentage, double shrinkageStrainValue, bool userStrain)
     {
       // 2 create object instance with constructor
       Density dryDensity = new Density(dryDensityValue, DensityUnit.KilogramPerCubicCentimeter);
@@ -101,9 +105,6 @@ namespace ComposAPI.Tests
       Assert.Equal(imposedLoadPercentage, concreteMaterial.ImposedLoadPercentage);
       Assert.Equal(shrinkageStrain, concreteMaterial.ShrinkageStrain);
       Assert.Equal(userStrain, concreteMaterial.UserStrain);
-
-      // (optionally return object for other tests)
-      return concreteMaterial;
     }
 
     // 1 setup inputs
@@ -112,7 +113,7 @@ namespace ComposAPI.Tests
     [InlineData(ConcreteGrade.C25, WeightType.Normal, DensityClass.NOT_APPLY, 2400, false, 0.33, -0.00085, false)]
     [InlineData(ConcreteGrade.C25, WeightType.Normal, DensityClass.NOT_APPLY, 2200, true, 0.33, -0.00085, false)]
     [InlineData(ConcreteGrade.C25, WeightType.Normal, DensityClass.NOT_APPLY, 2400, false, 0.33, -0.0003, true)]
-    public ConcreteMaterial TestASNZConstructor(ConcreteGrade grade, WeightType type, DensityClass densityClass, double dryDensityValue, bool userDensity, double imposedLoadPercentage, double shrinkageStrainValue, bool userStrain)
+    public void TestASNZConstructor(ConcreteGrade grade, WeightType type, DensityClass densityClass, double dryDensityValue, bool userDensity, double imposedLoadPercentage, double shrinkageStrainValue, bool userStrain)
     {
       // 2 create object instance with constructor
       Density dryDensity = new Density(dryDensityValue, DensityUnit.KilogramPerCubicCentimeter);
@@ -130,9 +131,6 @@ namespace ComposAPI.Tests
       Assert.Equal(imposedLoadPercentage, concreteMaterial.ImposedLoadPercentage);
       Assert.Equal(shrinkageStrain, concreteMaterial.ShrinkageStrain);
       Assert.Equal(userStrain, concreteMaterial.UserStrain);
-
-      // (optionally return object for other tests)
-      return concreteMaterial;
     }
 
     [Theory]

@@ -7,7 +7,15 @@ using Xunit;
 
 namespace ComposAPI.Tests
 {
-  public class ERatioGooTest
+  public static class ERatioMother
+  {
+    public static ERatio CreateERatio()
+    {
+      return new ERatio(9.87, 28.72, 9.55, 27.55);
+    }
+  }
+
+  public class ERatioTest
   {
     [Fact]
     public ERatio TestEmptyConstructor()
@@ -22,7 +30,7 @@ namespace ComposAPI.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(6, 18, 5.39)]
-    public ERatio TestConstructor1(double shortTerm, double longTerm, double vibration)
+    public void TestConstructor1(double shortTerm, double longTerm, double vibration)
     {
       // 2 create object instance with constructor
       ERatio eRatio = new ERatio(shortTerm, longTerm, vibration);
@@ -33,15 +41,12 @@ namespace ComposAPI.Tests
       Assert.Equal(vibration, eRatio.Vibration);
       Assert.Equal(double.NaN, eRatio.Shrinkage);
       Assert.True(eRatio.UserDefined);
-
-      // (optionally return object for other tests)
-      return eRatio;
     }
 
     // 1 setup inputs
     [Theory]
     [InlineData(9.87, 28.72, 9.55, 27.55)]
-    public ERatio TestConstructor2(double shortTerm, double longTerm, double vibration, double shrinkage)
+    public void TestConstructor2(double shortTerm, double longTerm, double vibration, double shrinkage)
     {
       // 2 create object instance with constructor
       ERatio eRatio = new ERatio(shortTerm, longTerm, vibration, shrinkage);
@@ -52,14 +57,11 @@ namespace ComposAPI.Tests
       Assert.Equal(vibration, eRatio.Vibration);
       Assert.Equal(shrinkage, eRatio.Shrinkage);
       Assert.True(eRatio.UserDefined);
-
-      // (optionally return object for other tests)
-      return eRatio;
     }
 
     [Theory]
     [InlineData(9.87, 28.72, 9.55, 27.55)]
-    public void TestDuplicat(double shortTerm, double longTerm, double vibration, double shrinkage)
+    public void TestDuplicate(double shortTerm, double longTerm, double vibration, double shrinkage)
     {
       // 1 create with constructor and duplicate
       ERatio original = new ERatio(shortTerm, longTerm, vibration, shrinkage);
