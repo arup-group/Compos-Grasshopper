@@ -12,7 +12,6 @@ namespace ComposAPI
   /// </summary>
   public class Beam
   {
-
     public Length Length { get; set; }
     public Restraint Restraint { get; set; }
     public SteelMaterial Material { get; set; }

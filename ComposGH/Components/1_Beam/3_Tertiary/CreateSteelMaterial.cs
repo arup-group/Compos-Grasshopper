@@ -137,7 +137,7 @@ namespace ComposGH.Components
     private PressureUnit stressUnit = Units.StressUnit;
     private DensityUnit densityUnit = Units.DensityUnit;
     private SteelMaterial.SteelMaterialGrade ST = SteelMaterial.SteelMaterialGrade.S235;
-    private SteelMaterial.WeldMaterialGrade WM = SteelMaterial.WeldMaterialGrade.Grade35;
+    private SteelMaterial.WeldMaterialGrade WM = SteelMaterial.WeldMaterialGrade.Grade_35;
 
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {

@@ -75,9 +75,9 @@
     <Compile Include="3_Slab\Slab.cs" />
     <Compile Include="3_Slab\SlabDimension\SlabDimension.cs" />
     <Compile Include="3_Slab\ConcreteMaterial\ERatio.cs" />
-    <Compile Include="3_Slab\Decking\CustomDeck.cs" />
+    <Compile Include="3_Slab\Decking\CustomDecking.cs" />
     <Compile Include="3_Slab\Decking\Decking.cs" />
-    <Compile Include="3_Slab\Decking\CatalogueDeck.cs" />
+    <Compile Include="3_Slab\Decking\CatalogueDecking.cs" />
     <Compile Include="3_Slab\Decking\DeckingConfiguration.cs" />
     <Compile Include="3_Slab\Reinforcement\MeshReinforcement.cs" />
     <Compile Include="3_Slab\Reinforcement\ReinforcementMaterial.cs" />

@@ -53,7 +53,7 @@ namespace ComposGH.Components
         profile = selecteditems[1];
 
         // steel
-        dropdownitems.Add(Enum.GetValues(typeof(CatalogueDeck.DeckingSteelGrade)).Cast<CatalogueDeck.DeckingSteelGrade>().Select(x => x.ToString()).ToList());
+        dropdownitems.Add(Enum.GetValues(typeof(CatalogueDecking.DeckingSteelGrade)).Cast<CatalogueDecking.DeckingSteelGrade>().Select(x => x.ToString()).ToList());
         selecteditems.Add(steelType.ToString());
 
         first = false;
@@ -83,7 +83,7 @@ namespace ComposGH.Components
 
       if(i ==2)
       {
-        steelType = (CatalogueDeck.DeckingSteelGrade)Enum.Parse(typeof(CatalogueDeck.DeckingSteelGrade), selecteditems[i]);
+        steelType = (CatalogueDecking.DeckingSteelGrade)Enum.Parse(typeof(CatalogueDecking.DeckingSteelGrade), selecteditems[i]);
       }
 
         (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -98,7 +98,7 @@ namespace ComposGH.Components
       sectionList = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), catalogue);
       catalogue = selecteditems[0];
       profile = selecteditems[1];
-      steelType = (CatalogueDeck.DeckingSteelGrade)Enum.Parse(typeof(CatalogueDeck.DeckingSteelGrade), selecteditems[2]);
+      steelType = (CatalogueDecking.DeckingSteelGrade)Enum.Parse(typeof(CatalogueDecking.DeckingSteelGrade), selecteditems[2]);
 
       CreateAttributes();
       ExpireSolution(true);
@@ -124,7 +124,7 @@ namespace ComposGH.Components
     private bool first = true;
     string catalogue = null;
     string profile = null;
-    private CatalogueDeck.DeckingSteelGrade steelType = CatalogueDeck.DeckingSteelGrade.S350;
+    private CatalogueDecking.DeckingSteelGrade steelType = CatalogueDecking.DeckingSteelGrade.S350;
 
     #endregion
 
@@ -156,7 +156,7 @@ namespace ComposGH.Components
       if (this.Params.Input[0].Sources.Count > 0)
         dconf = GetInput.DeckConfiguration(this, DA, 0);
 
-      DA.SetData(0, new DeckingGoo(new CatalogueDeck(catalogue, profile, steelType, dconf)));
+      DA.SetData(0, new DeckingGoo(new CatalogueDecking(catalogue, profile, steelType, dconf)));
     }
 
 

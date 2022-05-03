@@ -23,6 +23,7 @@ namespace ComposGH.Parameters
     {
       this.Value = new Decking();
     }
+
     public DeckingGoo(Decking item)
     {
       if (item == null)
@@ -34,6 +35,7 @@ namespace ComposGH.Parameters
     {
       return DuplicateGoo();
     }
+
     public DeckingGoo DuplicateGoo()
     {
       return new DeckingGoo(Value == null ? new Decking() : Value.Duplicate());

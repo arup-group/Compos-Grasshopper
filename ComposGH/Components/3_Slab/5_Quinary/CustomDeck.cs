@@ -143,7 +143,7 @@ namespace ComposGH.Components
       Pressure stress = GetInput.Stress(this, DA, 7, stressUnit);
       DeckingConfiguration dconf = GetInput.DeckConfiguration(this, DA, 8);
 
-      DA.SetData(0, new DeckingGoo(new ComposAPI.CustomDeck(distB1, distB2, distB3, distB4, distB5, depth, thickness, stress, dconf)));
+      DA.SetData(0, new DeckingGoo(new ComposAPI.CustomDecking(distB1, distB2, distB3, distB4, distB5, depth, thickness, stress, dconf)));
     }
 
 

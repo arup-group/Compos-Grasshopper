@@ -5,6 +5,7 @@ using System.Linq;
 using ComposAPI.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
+using Oasys.Units;
 
 namespace ComposAPI
 {
@@ -45,16 +46,16 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal Slab(string coaString, LengthUnit lengthUnit, DensityUnit densityUnit)
+    internal Slab(string coaString, AngleUnit angleUnit, DensityUnit densityUnit, LengthUnit lengthUnit, PressureUnit pressureUnit, StrainUnit strainUnit)
     {
       List<string> lines = CoaHelper.SplitLines(coaString);
-      foreach(string line in lines)
+      foreach (string line in lines)
       {
         List<string> parameters = CoaHelper.Split(line);
-        switch(parameters[0])
+        switch (parameters[0])
         {
           case (ConcreteMaterial.CoaIdentifier):
-            this.Material = new ConcreteMaterial(lines, densityUnit);
+            this.Material = new ConcreteMaterial(lines, densityUnit, strainUnit);
             break;
 
           case (SlabDimension.CoaIdentifier):
@@ -70,8 +71,15 @@ namespace ComposAPI
             this.MeshReinforcement = new MeshReinforcement(parameters);
             break;
 
-          case (Decking.CoaIdentifier):
-            this.Decking = new Decking(parameters);
+          case (CatalogueDecking.CoaIdentifier):
+            this.Decking = new CatalogueDecking(parameters);
+            break;
+
+          case (CustomDecking.CoaIdentifier):
+            if (parameters[2] == "USER_DEFINED")
+              this.Decking = new CustomDecking(parameters, angleUnit, lengthUnit, pressureUnit);
+            //else
+              // do nothing
             break;
 
           default:
@@ -80,21 +88,23 @@ namespace ComposAPI
       }
     }
 
-    internal string ToCoaString(string name)
+    internal string ToCoaString(string name, AngleUnit angleUnit, DensityUnit densityUnit, LengthUnit lengthUnit, PressureUnit pressureUnit, StrainUnit strainUnit)
     {
-      string str = this.Material.ToCoaString(name);
+      string str = this.Material.ToCoaString(name, densityUnit, strainUnit);
       int num = 1;
       int index = this.Dimensions.Count + 1;
       foreach (SlabDimension dimension in this.Dimensions)
       {
-        str += dimension.ToCoaString(name, num, index);
+        str += dimension.ToCoaString(name, num, index, lengthUnit);
         num++;
       }
       str += this.TransverseReinforcement.ToCoaString();
       if (this.MeshReinforcement != null)
         str += this.MeshReinforcement.ToCoaString();
       if (this.Decking != null)
-        str += this.Decking.ToCoaString();
+      {
+        str += this.Decking.ToCoaString(name, angleUnit, lengthUnit, pressureUnit);
+      }
       return str;
     }
     #endregion

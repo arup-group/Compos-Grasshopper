@@ -176,7 +176,7 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal ConcreteMaterial(List<string> parameters, DensityUnit densityUnit)
+    internal ConcreteMaterial(List<string> parameters, DensityUnit densityUnit, StrainUnit strainUnit)
     {
       if (parameters[1].Length < 4)
       {
@@ -198,6 +198,7 @@ namespace ComposAPI
         i++;
       }
 
+      // todo: implement!
     }
 
     /// <summary>
@@ -205,20 +206,20 @@ namespace ComposAPI
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
-    internal string ToCoaString(string name)
+    internal string ToCoaString(string name, DensityUnit densityUnit, StrainUnit strainUnit)
     {
       List<string> parameters = new List<string>() { ConcreteMaterial.CoaIdentifier, name, this.Grade.Replace("_", "/"), this.Type.ToString() };
       if (this.UserDensity)
       {
         parameters.Add("USER_DENSITY");
-        parameters.Add(this.DryDensity.ToString());
+        parameters.Add(this.DryDensity.ToUnit(densityUnit).ToString());
       }
       else
       {
         parameters.Add("CODE_DENSITY");
         parameters.Add(this.Class.ToString());
       }
-      parameters.Add(this.ERatio.ToString());
+      parameters.Add(this.ImposedLoadPercentage.ToString());
       if (this.ERatio.UserDefined)
       {
         parameters.Add("USER_E_RATIO");
@@ -232,7 +233,7 @@ namespace ComposAPI
       if (this.UserStrain)
       {
         parameters.Add("USER_STRAIN");
-        parameters.Add(this.ShrinkageStrain.ToString());
+        parameters.Add(this.ShrinkageStrain.ToUnit(strainUnit).ToString());
       }
       else
         parameters.Add("CODE_STRAIN");

@@ -19,7 +19,7 @@ namespace ComposAPI
     public Length OverallDepth { get; set; } //	depth of slab
     public Length AvailableWidthLeft { get; set; } // left hand side width of slab 
     public Length AvailableWidthRight { get; set; } //	right hand side width of slab
-    public bool CustomEffectiveWidth { get; set; } // override effective width
+    public bool UserEffectiveWidth { get; set; } // override effective width
     public Length EffectiveWidthLeft { get; set; } //	left hand side effective width of slab
     public Length EffectiveWidthRight { get; set; } //	right hand side effective width of slab
 
@@ -40,7 +40,7 @@ namespace ComposAPI
       this.OverallDepth = overallDepth;
       this.AvailableWidthLeft = availableWidthLeft;
       this.AvailableWidthRight = availableWidthRight;
-      this.CustomEffectiveWidth = false;
+      this.UserEffectiveWidth = false;
       this.TaperedToNext = taperedToNext;
     }
 
@@ -51,7 +51,7 @@ namespace ComposAPI
       this.OverallDepth = overallDepth;
       this.AvailableWidthLeft = availableWidthLeft;
       this.AvailableWidthRight = availableWidthRight;
-      this.CustomEffectiveWidth = true;
+      this.UserEffectiveWidth = true;
       this.EffectiveWidthLeft = effectiveWidthLeft;
       this.EffectiveWidthRight = effectiveWidthRight;
       this.TaperedToNext = taperedToNext;
@@ -77,7 +77,7 @@ namespace ComposAPI
 
       if (parameters[8] == "EFFECTIVE_WIDTH_YES")
       {
-        this.CustomEffectiveWidth = true;
+        this.UserEffectiveWidth = true;
         if (parameters.Count != 12)
         {
           throw new Exception("Unable to convert " + parameters + " to Compos Slab Dimension.");
@@ -95,11 +95,16 @@ namespace ComposAPI
     /// <param name="num">number of total slab section to be defined</param>
     /// <param name="index">index of current slab section (1 based)</param>
     /// <returns></returns>
-    internal string ToCoaString(string name, int num, int index)
+    internal string ToCoaString(string name, int num, int index, LengthUnit lengthUnit)
     {
-      List<string> parameters = new List<string>() { SlabDimension.CoaIdentifier, name, Convert.ToString(num), Convert.ToString(index), this.StartPosition.Value.ToString(), this.OverallDepth.Value.ToString(), this.AvailableWidthLeft.Value.ToString(), this.AvailableWidthRight.Value.ToString() };
+      List<string> parameters = new List<string>() { SlabDimension.CoaIdentifier, name, Convert.ToString(num), Convert.ToString(index), this.StartPosition.ToUnit(lengthUnit).ToString(), this.OverallDepth.ToUnit(lengthUnit).ToString(), this.AvailableWidthLeft.ToUnit(lengthUnit).ToString(), this.AvailableWidthRight.ToUnit(lengthUnit).ToString() };
       CoaHelper.AddParameter(parameters, "TAPERED", this.TaperedToNext);
-      CoaHelper.AddParameter(parameters, "EFFECTIVE_WIDTH", this.CustomEffectiveWidth);
+      CoaHelper.AddParameter(parameters, "EFFECTIVE_WIDTH", this.UserEffectiveWidth);
+      if(this.UserEffectiveWidth)
+      {
+        parameters.Add(this.EffectiveWidthLeft.ToUnit(lengthUnit).ToString());
+        parameters.Add(this.EffectiveWidthRight.ToUnit(lengthUnit).ToString());
+      }
       return CoaHelper.CreateString(parameters);
     }
     #endregion
@@ -123,7 +128,7 @@ namespace ComposAPI
 
       string d = "d:" + this.OverallDepth.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
       string w = ", w:" + (this.AvailableWidthLeft + this.AvailableWidthRight).ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
-      if (this.CustomEffectiveWidth)
+      if (this.UserEffectiveWidth)
         w = ", weff:" + (this.EffectiveWidthLeft + this.EffectiveWidthRight).ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
       return d + w + start + tapered;
     }
