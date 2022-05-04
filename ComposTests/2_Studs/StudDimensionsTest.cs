@@ -160,7 +160,7 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void TestStudDimensionsDuplicate()
+    public void TestStudDimensionsDuplicate1()
     {
       LengthUnit length = LengthUnit.Millimeter;
       PressureUnit stress = PressureUnit.Megapascal;
@@ -168,7 +168,7 @@ namespace ComposAPI.Tests
 
       // 1 create with constructor and duplicate
       StudDimensions original = TestConstructorStudDimensionsCustomSizeStress(19, 100, 450);
-      StudDimensions duplicate = original.Duplicate();
+      StudDimensions duplicate = original.Duplicate() as StudDimensions;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(19, duplicate.Diameter.Millimeters);
@@ -192,10 +192,18 @@ namespace ComposAPI.Tests
       Assert.Equal(100, original.Height.Millimeters);
       Assert.Equal(450, original.Fu.Megapascals);
       Assert.Equal(Force.Zero, original.CharacterStrength);
+    }
+
+    [Fact]
+    public void TestStudDimensionsDuplicate2()
+    {
+      LengthUnit length = LengthUnit.Millimeter;
+      PressureUnit stress = PressureUnit.Megapascal;
+      ForceUnit force = ForceUnit.Kilonewton;
 
       // 1 create with new constructor and duplicate
-      original = TestConstructorStudDimensionsCustomSizeForce(16, 75, 90);
-      duplicate = original.Duplicate();
+      StudDimensions original = TestConstructorStudDimensionsCustomSizeForce(16, 75, 90);
+      StudDimensions duplicate = original.Duplicate() as StudDimensions;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(16, duplicate.Diameter.Millimeters);

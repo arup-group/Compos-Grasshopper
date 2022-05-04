@@ -10,6 +10,13 @@ namespace ComposAPI
   /// </summary>
   public class StudSpecification
   {
+    public enum StudSpecType
+    {
+      EC4,
+      BS5950,
+      Other
+    }
+
     // Stud Specifications
     public bool Welding { get; set; }
     public bool NCCI { get; set; }
@@ -17,13 +24,7 @@ namespace ComposAPI
     public Length NoStudZoneStart { get; set; }
     public Length NoStudZoneEnd { get; set; }
     public Length ReinforcementPosition { get; set; }
-    public enum StudSpecType
-    {
-      EC4,
-      BS5950,
-      Other
-    }
-    public StudSpecType SpecType;
+    public StudSpecType SpecType { get; set; }
 
     #region constructors
     public StudSpecification()
@@ -78,13 +79,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-
-    public StudSpecification Duplicate()
-    {
-      if (this == null) { return null; }
-      StudSpecification dup = (StudSpecification)this.MemberwiseClone();
-      return dup;
-    }
     public override string ToString()
     {
       string noStudStart = (this.NoStudZoneStart.Value == 0) ? "" : "NSZS:" + this.NoStudZoneStart.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);

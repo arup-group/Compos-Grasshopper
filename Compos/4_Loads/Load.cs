@@ -60,17 +60,11 @@ namespace ComposAPI
     #endregion
 
     #region methods
-    public virtual Load Duplicate()
-    {
-      if (this == null) { return null; }
-      return (Load)this.MemberwiseClone();
-    }
     public override string ToString()
     {
       // update with better naming
       return this.Type.ToString() + " Load";
     }
-
     #endregion
   }
 }

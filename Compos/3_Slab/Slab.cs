@@ -57,21 +57,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-
-    public Slab Duplicate()
-    {
-      if (this == null) { return null; }
-      Slab dup = (Slab)this.MemberwiseClone();
-      dup.Material = this.Material.Duplicate();
-      dup.Dimensions = this.Dimensions.ToList();
-      dup.TransverseReinforcement = (TransverseReinforcement)this.TransverseReinforcement.Duplicate();
-      if (this.MeshReinforcement != null)
-        dup.MeshReinforcement = (MeshReinforcement)this.MeshReinforcement.Duplicate();
-      if (this.Decking != null)
-        dup.Decking = this.Decking.Duplicate();
-      return dup;
-    }
-
     public override string ToString()
     {
 

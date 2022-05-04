@@ -53,13 +53,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-
-    public SlabDimension Duplicate()
-    {
-      if (this == null) { return null; }
-      SlabDimension dup = (SlabDimension)this.MemberwiseClone();
-      return dup;
-    }
     public override string ToString()
     {
       string start = "";

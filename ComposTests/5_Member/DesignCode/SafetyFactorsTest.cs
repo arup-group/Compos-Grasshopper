@@ -65,7 +65,7 @@ namespace ComposAPI.Tests
     {
       // 1 create with constructor and duplicate
       SafetyFactors original = new SafetyFactors();
-      SafetyFactors duplicate = original.Duplicate();
+      SafetyFactors duplicate = original.Duplicate() as SafetyFactors;
 
       // 2 check that duplicate has duplicated values
       Assert.Null(duplicate.MaterialFactors);
@@ -74,7 +74,7 @@ namespace ComposAPI.Tests
       // 1 create member objects and duplicate again
       original.MaterialFactors = new MaterialPartialFactors();
       original.LoadFactors = new LoadFactors();
-      duplicate = original.Duplicate();
+      duplicate = original.Duplicate() as SafetyFactors;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(1.0, duplicate.MaterialFactors.SteelBeam);
@@ -188,7 +188,7 @@ namespace ComposAPI.Tests
     {
       // 1 create with constructor and duplicate
       EC4SafetyFactors original = new EC4SafetyFactors();
-      EC4SafetyFactors duplicate = original.Duplicate();
+      EC4SafetyFactors duplicate = original.Duplicate() as EC4SafetyFactors;
 
       // 2 check that duplicate has duplicated values
       Assert.Null(duplicate.MaterialFactors);
@@ -198,7 +198,7 @@ namespace ComposAPI.Tests
       // 1 create member objects and duplicate again
       original.MaterialFactors = new EC4MaterialPartialFactors();
       original.LoadFactors = new LoadCombinationFactors();
-      duplicate = original.Duplicate();
+      duplicate = original.Duplicate() as EC4SafetyFactors;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(1.0, duplicate.MaterialFactors.gamma_M0);

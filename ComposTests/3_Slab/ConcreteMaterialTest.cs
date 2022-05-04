@@ -144,7 +144,7 @@ namespace ComposAPI.Tests
       ERatio eRatio = new ERatio(9.87, 28.72, 9.55, 27.55);
       Strain shrinkageStrain = new Strain(shrinkageStrainValue, StrainUnit.MilliStrain);
       ConcreteMaterial original = new ConcreteMaterial(grade, densityClass, dryDensity, userDensity, eRatio, imposedLoadPercentage, shrinkageStrain, userStrain);
-      ConcreteMaterial duplicate = original.Duplicate();
+      ConcreteMaterial? duplicate = original.Duplicate() as ConcreteMaterial;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(grade.ToString(), duplicate.Grade);

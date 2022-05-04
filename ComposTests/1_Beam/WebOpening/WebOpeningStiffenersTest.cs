@@ -68,7 +68,7 @@ namespace ComposAPI.Tests
 
       // 1 create with constructor and duplicate
       WebOpeningStiffeners original = TestConstructorStiffenersWebOpening(25, 75, 12, 125, 15, false);
-      WebOpeningStiffeners duplicate = original.Duplicate();
+      WebOpeningStiffeners duplicate = original.Duplicate() as WebOpeningStiffeners;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(25, duplicate.DistanceFrom.Millimeters);
@@ -107,7 +107,7 @@ namespace ComposAPI.Tests
 
       // 1 create with new constructor and duplicate
       original = TestConstructorStiffenersNotch(27, 77, 14, true);
-      duplicate = original.Duplicate();
+      duplicate = original.Duplicate() as WebOpeningStiffeners;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(27, duplicate.DistanceFrom.Millimeters);

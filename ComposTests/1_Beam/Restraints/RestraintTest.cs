@@ -51,7 +51,7 @@ namespace ComposAPI.Tests
     {
       // 1 create with constructor and duplicate
       Restraint original = TestConstructor();
-      Restraint duplicate = original.Duplicate();
+      Restraint duplicate = original.Duplicate() as Restraint;
 
       // 2 check that duplicate has duplicated values
       Assert.True(duplicate.TopFlangeRestrained);
@@ -91,7 +91,7 @@ namespace ComposAPI.Tests
 
       // 1 create with new constructor and duplicate
       original = TestConstructorNoFinalSupports();
-      duplicate = original.Duplicate();
+      duplicate = original.Duplicate() as Restraint;
 
       // 2 check that duplicate has duplicated values
       Assert.False(duplicate.TopFlangeRestrained);

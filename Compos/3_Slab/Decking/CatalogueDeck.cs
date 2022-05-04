@@ -36,13 +36,7 @@ namespace ComposAPI
       this.b5 = new Length(sqlValues[5], unit);
       this.Thickness = new Length(sqlValues[6], unit);
     }
-    public override Decking Duplicate()
-    {
-      if (this == null) { return null; }
-      CatalogueDeck dup = (CatalogueDeck)this.MemberwiseClone();
-      dup.DeckConfiguration = this.DeckConfiguration.Duplicate();
-      return dup;
-    }
+
     public override string ToString()
     {
       string catalogue = this.Catalogue.ToString();

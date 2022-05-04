@@ -15,7 +15,7 @@ namespace ComposAPI.Tests
 
       // 1 create with constructor and duplicate
       Load originalParent = TestPointLoadConstructor(0, 0, 1, 1, 0.5);
-      Load duplicateParent = originalParent.Duplicate();
+      Load duplicateParent = originalParent.Duplicate() as Load;
 
       // 1b create child
       PointLoad duplicateChild = (PointLoad)duplicateParent;
@@ -62,7 +62,7 @@ namespace ComposAPI.Tests
 
       // 1 create with constructor and duplicate
       Load originalParent = TestUniformLineLoadConstructor(0, 0, 1, 1);
-      Load duplicateParent = originalParent.Duplicate();
+      Load duplicateParent = originalParent.Duplicate() as Load;
 
       // 1b create child
       UniformLoad duplicateChildLine = (UniformLoad)duplicateParent;
@@ -101,7 +101,7 @@ namespace ComposAPI.Tests
 
       // 1 create with constructor and duplicate
       originalParent = TestUniformAreaLoadConstructor(0, 0, 1, 1);
-      duplicateParent = originalParent.Duplicate();
+      duplicateParent = originalParent.Duplicate() as Load;
 
       // 1b create child
       UniformLoad duplicateChildArea = (UniformLoad)duplicateParent;
@@ -146,7 +146,7 @@ namespace ComposAPI.Tests
 
       // 1 create with constructor and duplicate
       Load originalParent = TestLinearLineLoadConstructor(0, 0, 1, 1, 2, 2, 3, 3);
-      Load duplicateParent = originalParent.Duplicate();
+      Load duplicateParent = originalParent.Duplicate() as Load;
 
       // 1b create child
       LinearLoad duplicateChildLine = (LinearLoad)duplicateParent;
@@ -201,7 +201,7 @@ namespace ComposAPI.Tests
 
       // 1 create with constructor and duplicate
       originalParent = TestLinearAreaLoadConstructor(0, 0, 1, 1, 2, 2, 3, 3);
-      duplicateParent = originalParent.Duplicate();
+      duplicateParent = originalParent.Duplicate() as Load;
 
       // 1b create child
       LinearLoad duplicateChildArea = (LinearLoad)duplicateParent;
@@ -263,7 +263,7 @@ namespace ComposAPI.Tests
 
       // 1 create with constructor and duplicate
       Load originalParent = TestTriLinearLineLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
-      Load duplicateParent = originalParent.Duplicate();
+      Load duplicateParent = originalParent.Duplicate() as Load;
 
       // 1b create child
       TriLinearLoad duplicateChildLine = (TriLinearLoad)duplicateParent;
@@ -326,7 +326,7 @@ namespace ComposAPI.Tests
 
       // 1 create with constructor and duplicate
       originalParent = TestTriLinearAreaLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
-      duplicateParent = originalParent.Duplicate();
+      duplicateParent = originalParent.Duplicate() as Load;
 
       // 1b create child
       TriLinearLoad duplicateChildArea = (TriLinearLoad)duplicateParent;
@@ -395,7 +395,7 @@ namespace ComposAPI.Tests
 
       // 1 create with constructor and duplicate
       Load originalParent = TestPatchLineLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
-      Load duplicateParent = originalParent.Duplicate();
+      Load duplicateParent = originalParent.Duplicate() as Load;
 
       // 1b create child
       PatchLoad duplicateChildLine = (PatchLoad)duplicateParent;
@@ -458,7 +458,7 @@ namespace ComposAPI.Tests
 
       // 1 create with constructor and duplicate
       originalParent = TestPatchAreaLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
-      duplicateParent = originalParent.Duplicate();
+      duplicateParent = originalParent.Duplicate() as Load;
 
       // 1b create child
       PatchLoad duplicateChildArea = (PatchLoad)duplicateParent;
@@ -525,7 +525,7 @@ namespace ComposAPI.Tests
 
       // 1 create with constructor and duplicate
       Load originalParent = TestMemberLoadConstructor(150, "Original", MemberLoad.SupportSide.Left);
-      Load duplicateParent = originalParent.Duplicate();
+      Load duplicateParent = originalParent.Duplicate() as Load;
 
       // 1b create child
       MemberLoad duplicateChild = (MemberLoad)duplicateParent;
@@ -563,7 +563,7 @@ namespace ComposAPI.Tests
 
       // 1 create with constructor and duplicate
       Load originalParent = TestAxialLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
-      Load duplicateParent = originalParent.Duplicate();
+      Load duplicateParent = originalParent.Duplicate() as Load;
 
       // 1b create child
       AxialLoad duplicateChildLine = (AxialLoad)duplicateParent;

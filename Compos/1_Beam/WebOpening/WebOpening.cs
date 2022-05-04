@@ -156,16 +156,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-
-    public WebOpening Duplicate()
-    {
-      if (this == null) { return null; }
-      WebOpening dup = (WebOpening)this.MemberwiseClone();
-      if (this.OpeningStiffeners != null)
-        dup.OpeningStiffeners = this.OpeningStiffeners.Duplicate();
-      return dup;
-    }
-
     public override string ToString()
     {
       string size = "";

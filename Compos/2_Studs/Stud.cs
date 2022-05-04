@@ -129,18 +129,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-
-    public Stud Duplicate()
-    {
-      if (this == null) { return null; }
-      Stud dup = (Stud)this.MemberwiseClone();
-      dup.StudDimensions = this.StudDimensions.Duplicate();
-      dup.StudSpecification = this.StudSpecification.Duplicate();
-      if (this.CustomSpacing != null)
-        dup.CustomSpacing = this.CustomSpacing.ToList();
-      return dup;
-    }
-
     public override string ToString()
     {
       string size = this.StudDimensions.Diameter.As(Units.LengthUnitSection).ToString("f0") + "/" + this.StudDimensions.Height.ToUnit(Units.LengthUnitSection).ToString("f0");

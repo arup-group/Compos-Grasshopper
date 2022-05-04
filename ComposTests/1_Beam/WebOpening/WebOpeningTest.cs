@@ -179,7 +179,7 @@ namespace ComposAPI.Tests
     {
       // 1 create with constructor and duplicate
       WebOpening original = TestConstructorRectangularWebOpeningWithStiffener(400, 300, 6000, 70);
-      WebOpening duplicate = original.Duplicate();
+      WebOpening duplicate = original.Duplicate() as WebOpening;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(WebOpening.OpeningType.Rectangular, duplicate.WebOpeningType);
@@ -238,7 +238,7 @@ namespace ComposAPI.Tests
 
       // 1 create with new constructor and duplicate
       original = TestConstructorCircularWebOpeningWithStiffener(300, 7000, 150);
-      duplicate = original.Duplicate();
+      duplicate = original.Duplicate() as WebOpening;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(WebOpening.OpeningType.Circular, duplicate.WebOpeningType);

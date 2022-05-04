@@ -29,7 +29,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new BeamSection();
-      this.Value = item.Duplicate();
+      this.Value = item.Duplicate() as BeamSection;
     }
 
     public override IGH_Goo Duplicate()
@@ -38,7 +38,7 @@ namespace ComposGH.Parameters
     }
     public BeamSectionGoo DuplicateGoo()
     {
-      return new BeamSectionGoo(Value == null ? new BeamSection() : Value.Duplicate());
+      return new BeamSectionGoo(Value == null ? new BeamSection() : Value.Duplicate() as BeamSection);
     }
     #endregion
 

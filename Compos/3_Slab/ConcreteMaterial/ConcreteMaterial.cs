@@ -184,14 +184,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-    public ConcreteMaterial Duplicate()
-    {
-      if (this == null) { return null; }
-      ConcreteMaterial dup = (ConcreteMaterial)this.MemberwiseClone();
-      dup.ERatio = this.ERatio.Duplicate();
-      return dup;
-    }
-
     public override string ToString()
     {
       string str = this.Grade.ToString().Replace("_", "/");

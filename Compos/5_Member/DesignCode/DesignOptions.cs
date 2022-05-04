@@ -16,12 +16,5 @@ namespace ComposAPI
     {
       // default initialiser
     }
-
-    public DesignOptions Duplicate()
-    {
-      if (this == null) { return null; }
-      DesignOptions dup = (DesignOptions)this.MemberwiseClone();
-      return dup;
-    }
   }
 }

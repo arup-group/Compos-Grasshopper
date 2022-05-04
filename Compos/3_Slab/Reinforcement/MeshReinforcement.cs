@@ -51,13 +51,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-
-    public override Reinforcement Duplicate()
-    {
-      if (this == null) { return null; }
-      MeshReinforcement dup = (MeshReinforcement)this.MemberwiseClone();
-      return dup;
-    }
     public override string ToString()
     {
       string cov = Cover.ToString("f0");

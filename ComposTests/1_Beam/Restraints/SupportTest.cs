@@ -60,7 +60,7 @@ namespace ComposAPI.Tests
 
       // 1 create with constructor and duplicate
       Supports original = TestSupportConstructor(Supports.IntermediateRestraint.None, true, false);
-      Supports duplicate = original.Duplicate();
+      Supports duplicate = original.Duplicate() as Supports;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(Supports.IntermediateRestraint.None, duplicate.IntermediateRestraintPositions);
@@ -86,7 +86,7 @@ namespace ComposAPI.Tests
 
       // 1 create with new constructor and duplicate
       original = TestSupportConstructorCustom(1, 2, 3, false, true);
-      duplicate = original.Duplicate();
+      duplicate = original.Duplicate() as Supports;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(Supports.IntermediateRestraint.Custom, duplicate.IntermediateRestraintPositions);

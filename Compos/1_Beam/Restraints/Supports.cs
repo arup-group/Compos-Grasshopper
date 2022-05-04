@@ -53,13 +53,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-
-    public Supports Duplicate()
-    {
-      if (this == null) { return null; }
-      Supports dup = (Supports)this.MemberwiseClone();
-      return dup;
-    }
     public override string ToString()
     {
       string sec = (this.SecondaryMemberIntermediateRestraint) ? ", SMIR" : "";

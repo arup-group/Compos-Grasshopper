@@ -37,18 +37,12 @@ namespace ComposAPI
       if (designcode == Code.AS_NZS2327_2017)
         throw new Exception("Must use the ASNZS2327 class to create a AS/NZS2327:2017 DesignCode");
     }
-    public virtual DesignCode Duplicate()
-    {
-      if (this == null) { return null; }
-      DesignCode dup = (DesignCode)this.MemberwiseClone();
-      dup.DesignOptions = this.DesignOptions.Duplicate();
-      dup.SafetyFactors = this.SafetyFactors.Duplicate();
-      return dup;
-    }
+
     public override string ToString()
     {
       return Coa();
     }
+
     #region coa interop
     internal DesignCode FromCoa(string coaString)
     {
@@ -91,8 +85,6 @@ namespace ComposAPI
       return "";
     }
     #endregion
-
-    
   }
 
   /// <summary>
@@ -107,15 +99,6 @@ namespace ComposAPI
     {
       this.Code = Code.EN1994_1_1_2004;
     }
-    public override DesignCode Duplicate()
-    {
-      if (this == null) { return null; }
-      EN1994 dup = (EN1994)this.MemberwiseClone();
-      dup.DesignOptions = this.DesignOptions.Duplicate();
-      dup.CodeOptions = this.CodeOptions.Duplicate();
-      dup.SafetyFactors = this.SafetyFactors.Duplicate();
-      return dup;
-    }
   }
 
   /// <summary>
@@ -127,15 +110,6 @@ namespace ComposAPI
     public ASNZS2327()
     {
       this.Code = Code.AS_NZS2327_2017;
-    }
-    public override DesignCode Duplicate()
-    {
-      if (this == null) { return null; }
-      ASNZS2327 dup = (ASNZS2327)this.MemberwiseClone();
-      dup.DesignOptions = this.DesignOptions.Duplicate();
-      dup.CodeOptions = this.CodeOptions.Duplicate();
-      dup.SafetyFactors = this.SafetyFactors.Duplicate();
-      return dup;
     }
   }
 }

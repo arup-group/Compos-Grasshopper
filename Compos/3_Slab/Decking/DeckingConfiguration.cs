@@ -30,12 +30,6 @@ namespace ComposAPI
 
     }
     public bool IsValid { get { return true; } }
-    public DeckingConfiguration Duplicate()
-    {
-      if (this == null) { return null; }
-      DeckingConfiguration dup = (DeckingConfiguration)this.MemberwiseClone();
-      return dup;
-    }
     public override string ToString()
     {
       string angle = (this.Angle.Value == 0) ? "" : this.Angle.ToUnit(UnitsNet.Units.AngleUnit.Degree).ToString().Replace(" ", string.Empty);

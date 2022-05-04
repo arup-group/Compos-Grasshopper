@@ -27,7 +27,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new CustomTransverseReinforcementLayout();
-      this.Value = item.Duplicate();
+      this.Value = item.Duplicate() as CustomTransverseReinforcementLayout;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public CustomTransverseReinforcmentLayoutGoo DuplicateGoo()
     {
-      return new CustomTransverseReinforcmentLayoutGoo(Value == null ? new CustomTransverseReinforcementLayout() : Value.Duplicate());
+      return new CustomTransverseReinforcmentLayoutGoo(Value == null ? new CustomTransverseReinforcementLayout() : Value.Duplicate() as CustomTransverseReinforcementLayout);
     }
     #endregion
 

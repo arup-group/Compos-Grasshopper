@@ -113,14 +113,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-
-    public SteelMaterial Duplicate()
-    {
-      if (this == null) { return null; }
-      SteelMaterial dup = (SteelMaterial)this.MemberwiseClone();
-      return dup;
-    }
-
     public override string ToString()
     {
       string isCust = string.Empty;

@@ -229,12 +229,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-    public BeamSection Duplicate()
-    {
-      if (this == null) { return null; }
-      BeamSection dup = (BeamSection)this.MemberwiseClone();
-      return dup;
-    }
     public override string ToString()
     {
       string start = "";

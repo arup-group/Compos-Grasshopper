@@ -59,18 +59,18 @@ namespace ComposAPI.Tests
 
     [Theory]
     [InlineData(9.87, 28.72, 9.55, 27.55)]
-    public void TestDuplicat(double shortTerm, double longTerm, double vibration, double shrinkage)
+    public void TestDuplicate(double shortTerm, double longTerm, double vibration, double shrinkage)
     {
       // 1 create with constructor and duplicate
       ERatio original = new ERatio(shortTerm, longTerm, vibration, shrinkage);
-      ERatio duplicate = original.Duplicate();
+      ERatio? duplicate = original.Duplicate() as ERatio;
 
       // 2 check that duplicate has duplicated values
-      Assert.Equal(shortTerm, duplicate.ShortTerm);
-      Assert.Equal(longTerm, duplicate.LongTerm);
-      Assert.Equal(vibration, duplicate.Vibration);
-      Assert.Equal(shrinkage, duplicate.Shrinkage);
-      Assert.True(duplicate.UserDefined);
+      Assert.Equal(original.ShortTerm, duplicate.ShortTerm);
+      Assert.Equal(original.LongTerm, duplicate.LongTerm);
+      Assert.Equal(original.Vibration, duplicate.Vibration);
+      Assert.Equal(original.Shrinkage, duplicate.Shrinkage);
+      Assert.Equal(original.UserDefined, duplicate.UserDefined);
 
       // 3 make some changes to duplicate
       duplicate.ShortTerm = 6;

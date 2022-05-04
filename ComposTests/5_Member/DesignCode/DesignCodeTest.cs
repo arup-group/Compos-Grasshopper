@@ -101,7 +101,7 @@ namespace ComposAPI.Tests
 
       // 1 create with constructor and duplicate
       DesignCode original = new DesignCode(code);
-      DesignCode duplicate = original.Duplicate();
+      DesignCode duplicate = original.Duplicate() as DesignCode;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(code, duplicate.Code);

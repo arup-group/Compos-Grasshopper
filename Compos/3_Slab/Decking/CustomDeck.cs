@@ -29,13 +29,6 @@ namespace ComposAPI
       this.m_type = DeckingType.Custom;
     }
 
-    public override Decking Duplicate()
-    {
-      if (this == null) { return null; }
-      CustomDeck dup = (CustomDeck)this.MemberwiseClone();
-      dup.DeckConfiguration = this.DeckConfiguration.Duplicate();
-      return dup;
-    }
     public override string ToString()
     {
       string distanceB1 = (this.b1.Value == 0) ? "" : "b1:" + this.b1.ToString().Replace(" ", string.Empty);

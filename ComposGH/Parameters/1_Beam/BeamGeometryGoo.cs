@@ -45,21 +45,21 @@ namespace ComposGH.Parameters
         item = new Beam();
       this.Line = (LineCurve)line.DuplicateShallow();
       this.LengthUnit = lengthUnit;
-      this.Value = item.Duplicate();
+      this.Value = item.Duplicate() as Beam;
       UpdatePreview();
     }
     private BeamGoo(BeamGoo goo)
     {
       this.Line = (LineCurve)goo.Line.Duplicate();
       this.LengthUnit = goo.LengthUnit;
-      this.Value = goo.Value.Duplicate();
+      this.Value = goo.Value.Duplicate() as Beam;
     }
     public override IGH_Goo Duplicate()
     {
       BeamGoo dup = new BeamGoo();
       dup.Line = (LineCurve)this.Line.DuplicateShallow();
       dup.LengthUnit = this.LengthUnit;
-      dup.Value = this.Value.Duplicate();
+      dup.Value = this.Value.Duplicate() as Beam;
       dup.UpdatePreview();
       return dup;
     }
@@ -293,7 +293,7 @@ namespace ComposGH.Parameters
           }
           else
           {
-            BeamSection beamSectionNext = beamSection.Duplicate();
+            BeamSection beamSectionNext = beamSection.Duplicate() as BeamSection;
             beamSectionNext.StartPosition = beamSectionsSorted[i + 1].StartPosition;
             PolyCurve nextOutline = CreateLocalPlaneOutline(beamSectionNext);
             profileOutlines.Add(nextOutline);
@@ -639,7 +639,7 @@ namespace ComposGH.Parameters
       beamSectionsSorted = beamSectionsSorted.OrderByDescending(x => x.StartPosition.As(LengthUnit)).Reverse().ToList();
       if (beamSectionsSorted.First().StartPosition != Length.Zero)
       {
-        BeamSection newStart = beamSectionsSorted.First().Duplicate();
+        BeamSection newStart = beamSectionsSorted.First().Duplicate() as BeamSection;
         newStart.StartPosition = Length.Zero;
         newStart.TaperedToNext = true;
         beamSectionsSorted.Insert(0, newStart);
@@ -647,7 +647,7 @@ namespace ComposGH.Parameters
       if (beamSectionsSorted.Last().StartPosition != this.Value.Length)
       {
         beamSectionsSorted.Last().TaperedToNext = true;
-        BeamSection newEnd = beamSectionsSorted.Last().Duplicate();
+        BeamSection newEnd = beamSectionsSorted.Last().Duplicate() as BeamSection;
         newEnd.StartPosition = this.Value.Length;
         beamSectionsSorted.Add(newEnd);
       }

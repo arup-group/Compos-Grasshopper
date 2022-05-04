@@ -27,7 +27,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new Restraint();
-      this.Value = item.Duplicate();
+      this.Value = item.Duplicate() as Restraint;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public RestraintGoo DuplicateGoo()
     {
-      return new RestraintGoo(Value == null ? new Restraint() : Value.Duplicate());
+      return new RestraintGoo(Value == null ? new Restraint() : Value.Duplicate() as Restraint);
     }
     #endregion
 

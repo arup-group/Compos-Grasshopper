@@ -19,15 +19,8 @@ namespace ComposAPI
     {
       // default initialiser
     }
-    public CodeOptions Duplicate()
-    {
-      if (this == null) { return null; }
-      CodeOptions dup = (CodeOptions)this.MemberwiseClone();
-      dup.LongTerm = this.LongTerm.Duplicate();
-      dup.ShortTerm = this.ShortTerm.Duplicate();
-      return dup;
-    }
   }
+
   public class EC4Options : CodeOptions
   {
     public enum CementClass
@@ -55,15 +48,8 @@ namespace ComposAPI
     {
       // default initialiser
     }
-    public new EC4Options Duplicate()
-    {
-      if (this == null) { return null; }
-      EC4Options dup = (EC4Options)this.MemberwiseClone();
-      dup.LongTerm = this.LongTerm.Duplicate();
-      dup.ShortTerm = this.ShortTerm.Duplicate();
-      return dup;
-    }
   }
+
   public class CreepShrinkageParameters
   {
     /// <summary>
@@ -71,13 +57,8 @@ namespace ComposAPI
     /// </summary>
     public double CreepCoefficient { get; set; }
     public CreepShrinkageParameters() { }
-    public CreepShrinkageParameters Duplicate()
-    {
-      if (this == null) { return null; }
-      CreepShrinkageParameters dup = (CreepShrinkageParameters)this.MemberwiseClone();
-      return dup;
-    }
   }
+
   public class CreepShrinkageEuroCodeParameters : CreepShrinkageParameters
   {
     /// <summary>
@@ -93,11 +74,5 @@ namespace ComposAPI
     /// </summary>
     public double RelativeHumidity { get; set; } = 0.5;
     public CreepShrinkageEuroCodeParameters() { }
-    public new CreepShrinkageEuroCodeParameters Duplicate()
-    {
-      if (this == null) { return null; }
-      CreepShrinkageEuroCodeParameters dup = (CreepShrinkageEuroCodeParameters)this.MemberwiseClone();
-      return dup;
-    }
   }
 }

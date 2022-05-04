@@ -29,7 +29,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new Slab();
-      this.Value = item.Duplicate();
+      this.Value = item.Duplicate() as Slab;
     }
 
     public override IGH_Goo Duplicate()
@@ -38,7 +38,7 @@ namespace ComposGH.Parameters
     }
     public SlabGoo DuplicateGoo()
     {
-      return new SlabGoo(this.Value == null ? new Slab() : this.Value.Duplicate());
+      return new SlabGoo(this.Value == null ? new Slab() : this.Value.Duplicate() as Slab);
     }
     #endregion
 

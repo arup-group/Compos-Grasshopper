@@ -24,11 +24,6 @@ namespace ComposAPI
       this.Cover = cover;
     }
 
-    public CustomTransverseReinforcementLayout Duplicate()
-    {
-      return (CustomTransverseReinforcementLayout)this.MemberwiseClone();
-    }
-
     public override string ToString()
     {
       string start = (this.DistanceFromStart.Value == 0) ? "" : this.DistanceFromStart.ToUnit(Units.LengthUnitGeometry).ToString("f2").Replace(" ", string.Empty) + "<-";
@@ -62,14 +57,6 @@ namespace ComposAPI
       this.m_layout = LayoutMethod.Custom;
     }
 
-    public override Reinforcement Duplicate()
-    {
-      if (this == null) { return null; }
-      CustomTransverseReinforcement dup = (CustomTransverseReinforcement)this.MemberwiseClone();
-      dup.Material = this.Material.Duplicate();
-      dup.CustomReinforcementLayouts = this.CustomReinforcementLayouts.ToList();
-      return dup;
-    }
     public override string ToString()
     {
       string rebar = string.Join(":", this.CustomReinforcementLayouts.Select(x => x.ToString()).ToList());

@@ -139,13 +139,13 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void TestBeamSectionDuplicate()
+    public void TestBeamSectionDuplicate1()
     {
       LengthUnit unit = LengthUnit.Millimeter;
       // 1 create with constructor and duplicate
       BeamSection original = new BeamSection(new Length(400, unit), new Length(300, unit),
         new Length(15, unit), new Length(12, unit), true);
-      BeamSection duplicate = original.Duplicate();
+      BeamSection duplicate = original.Duplicate() as BeamSection;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(400, duplicate.Depth.Millimeters);
@@ -182,11 +182,16 @@ namespace ComposAPI.Tests
       Assert.Equal(12, original.TopFlangeThickness.Millimeters);
       Assert.Equal(12, original.BottomFlangeThickness.Millimeters);
       Assert.True(original.TaperedToNext);
+    }
 
+    [Fact]
+    public void TestBeamSectionDuplicate2()
+    {
+      LengthUnit unit = LengthUnit.Millimeter;
       // 1 create with new constructor and duplicate
-      original = new BeamSection(new Length(420, unit), new Length(310, unit), new Length(350, unit),
+      BeamSection original = new BeamSection(new Length(420, unit), new Length(310, unit), new Length(350, unit),
         new Length(10, unit), new Length(11, unit), new Length(12, unit), false);
-      duplicate = original.Duplicate();
+      BeamSection duplicate = original.Duplicate() as BeamSection;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(420, duplicate.Depth.Millimeters);

@@ -34,12 +34,5 @@ namespace ComposAPI
       return string.Empty;
     }
 
-
-    public virtual Reinforcement Duplicate()
-    {
-      if (this == null) { return null; }
-      Reinforcement dup = (Reinforcement)this.MemberwiseClone();
-      return dup;
-    }
   }
 }

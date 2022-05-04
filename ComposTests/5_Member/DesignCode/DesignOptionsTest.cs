@@ -28,7 +28,7 @@ namespace ComposAPI.Tests
     {
       // 1 create with constructor and duplicate
       DesignOptions original = new DesignOptions();
-      DesignOptions duplicate = original.Duplicate();
+      DesignOptions duplicate = original.Duplicate() as DesignOptions;
 
       // 2 check that duplicate has duplicated values
       Assert.True(duplicate.ProppedDuringConstruction);

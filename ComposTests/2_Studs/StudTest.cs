@@ -138,7 +138,7 @@ namespace ComposAPI.Tests
     {
       // 1 create with constructor and duplicate
       Stud original = TestConstructorStudCustomSpacing();
-      Stud duplicate = original.Duplicate();
+      Stud duplicate = original.Duplicate() as Stud;
 
       // 2 check that duplicate has duplicated values
       // dimensions
@@ -241,7 +241,7 @@ namespace ComposAPI.Tests
 
       // 1 create with new constructor and duplicate
       original = TestConstructorStudAutomaticOrMinSpacing(StudGroupSpacing.StudSpacingType.Automatic, 0.2);
-      duplicate = original.Duplicate();
+      duplicate = original.Duplicate() as Stud;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(StudGroupSpacing.StudSpacingType.Automatic, duplicate.StudSpacingType);
@@ -260,7 +260,7 @@ namespace ComposAPI.Tests
 
       // 1 create with new constructor and duplicate
       original = TestConstructorStudPartialSpacing(0.15, 0.90);
-      duplicate = original.Duplicate();
+      duplicate = original.Duplicate() as Stud;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(StudGroupSpacing.StudSpacingType.Partial_Interaction, duplicate.StudSpacingType);

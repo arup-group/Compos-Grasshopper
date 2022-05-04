@@ -27,7 +27,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new StudGroupSpacing();
-      this.Value = item.Duplicate();
+      this.Value = item.Duplicate() as StudGroupSpacing;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public StudGroupSpacingGoo DuplicateGoo()
     {
-      return new StudGroupSpacingGoo(Value == null ? new StudGroupSpacing() : Value.Duplicate());
+      return new StudGroupSpacingGoo(Value == null ? new StudGroupSpacing() : Value.Duplicate() as StudGroupSpacing);
     }
     #endregion
 

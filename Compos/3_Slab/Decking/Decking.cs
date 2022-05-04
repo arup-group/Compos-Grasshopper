@@ -40,13 +40,5 @@ namespace ComposAPI
       // to do - implement to coa string method
       return string.Empty;
     }
-
-    public virtual Decking Duplicate()
-    {
-      if (this == null) { return null; }
-      Decking dup = (Decking)this.MemberwiseClone();
-      dup.DeckConfiguration = this.DeckConfiguration.Duplicate();
-      return dup;
-    }
   }
 }

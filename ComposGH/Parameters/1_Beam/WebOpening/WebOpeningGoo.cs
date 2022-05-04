@@ -27,7 +27,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new WebOpening();
-      this.Value = item.Duplicate();
+      this.Value = item.Duplicate() as WebOpening;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public WebOpeningGoo DuplicateGoo()
     {
-      return new WebOpeningGoo(Value == null ? new WebOpening() : Value.Duplicate());
+      return new WebOpeningGoo(Value == null ? new WebOpening() : Value.Duplicate() as WebOpening);
     }
     #endregion
 

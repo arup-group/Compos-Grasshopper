@@ -27,7 +27,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new ERatio();
-      this.Value = item.Duplicate();
+      this.Value = item.Duplicate() as ERatio; 
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public ERatioGoo DuplicateGoo()
     {
-      return new ERatioGoo(Value == null ? new ERatio() : Value.Duplicate());
+      return new ERatioGoo(Value == null ? new ERatio() : Value.Duplicate() as ERatio);
     }
     #endregion
 

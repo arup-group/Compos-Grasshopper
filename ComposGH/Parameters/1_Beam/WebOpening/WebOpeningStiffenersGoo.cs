@@ -26,7 +26,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new WebOpeningStiffeners();
-      this.Value = item.Duplicate();
+      this.Value = item.Duplicate() as WebOpeningStiffeners;
     }
 
     public override IGH_Goo Duplicate()
@@ -35,7 +35,7 @@ namespace ComposGH.Parameters
     }
     public WebOpeningStiffenersGoo DuplicateGoo()
     {
-      return new WebOpeningStiffenersGoo(Value == null ? new WebOpeningStiffeners() : Value.Duplicate());
+      return new WebOpeningStiffenersGoo(Value == null ? new WebOpeningStiffeners() : Value.Duplicate() as WebOpeningStiffeners);
     }
     #endregion
 

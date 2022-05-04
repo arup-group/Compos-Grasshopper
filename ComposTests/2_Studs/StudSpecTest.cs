@@ -76,13 +76,13 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void TestStudSpecDuplicate()
+    public void TestStudSpecDuplicate1()
     {
       LengthUnit unit = LengthUnit.Millimeter;
 
       // 1 create with constructor and duplicate
       StudSpecification original = TestConstructorStudSpecEC4(25, 75, 15, false, true);
-      StudSpecification duplicate = original.Duplicate();
+      StudSpecification duplicate = original.Duplicate() as StudSpecification;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(25, duplicate.NoStudZoneStart.Millimeters);
@@ -114,10 +114,16 @@ namespace ComposAPI.Tests
       Assert.False(original.Welding);
       Assert.True(original.NCCI);
       Assert.Equal(StudSpecification.StudSpecType.EC4, original.SpecType);
+    }
+
+    [Fact]
+    public void TestStudSpecDuplicate2()
+    {
+      LengthUnit unit = LengthUnit.Millimeter;
 
       // 1 create with new constructor and duplicate
-      original = TestConstructorStudSpecBS5950(false, 25, 75);
-      duplicate = original.Duplicate();
+      StudSpecification original = TestConstructorStudSpecBS5950(false, 25, 75);
+      StudSpecification duplicate = original.Duplicate() as StudSpecification;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(25, duplicate.NoStudZoneStart.Millimeters);
@@ -142,10 +148,16 @@ namespace ComposAPI.Tests
       Assert.Equal(75, original.NoStudZoneEnd.Millimeters);
       Assert.False(original.EC4_Limit);
       Assert.Equal(StudSpecification.StudSpecType.BS5950, original.SpecType);
+    }
+
+    [Fact]
+    public void TestStudSpecDuplicate3()
+    {
+      LengthUnit unit = LengthUnit.Millimeter;
 
       // 1 create with new constructor and duplicate
-      original = TestConstructorStudSpec(19, 20, true);
-      duplicate = original.Duplicate();
+      StudSpecification original = TestConstructorStudSpec(19, 20, true);
+      StudSpecification duplicate = original.Duplicate() as StudSpecification;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(19, duplicate.NoStudZoneStart.Millimeters);

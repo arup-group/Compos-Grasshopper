@@ -30,7 +30,7 @@ namespace ComposAPI.Tests
     {
       // 1 create with constructor and duplicate
       CodeOptions original = new CodeOptions();
-      CodeOptions duplicate = original.Duplicate();
+      CodeOptions duplicate = original.Duplicate() as CodeOptions;
 
       // 2 check that duplicate has duplicated values
       Assert.False(duplicate.ConsiderShrinkageDeflection);
@@ -88,7 +88,7 @@ namespace ComposAPI.Tests
     {
       // 1 create with constructor and duplicate
       EC4Options original = new EC4Options();
-      EC4Options duplicate = original.Duplicate();
+      EC4Options duplicate = original.Duplicate() as EC4Options;
 
       // 2 check that duplicate has duplicated values
       Assert.False(duplicate.ApproxModularRatios);

@@ -50,17 +50,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-
-    public Restraint Duplicate()
-    {
-      if (this == null) { return null; }
-      Restraint dup = (Restraint)this.MemberwiseClone();
-      dup.ConstructionStageSupports = this.ConstructionStageSupports.Duplicate();
-      if (this.finalSupportsSet)
-        dup.FinalStageSupports = this.FinalStageSupports.Duplicate();
-      return dup;
-    }
-
     public override string ToString()
     {
       string top = (TopFlangeRestrained) ? "TFLR, " : "";

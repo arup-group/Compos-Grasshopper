@@ -44,13 +44,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-
-    public StudGroupSpacing Duplicate()
-    {
-      if (this == null) { return null; }
-      StudGroupSpacing dup = (StudGroupSpacing)this.MemberwiseClone();
-      return dup;
-    }
     public override string ToString()
     {
       string start = (this.DistanceFromStart.Value == 0) ? "" : "From:" + this.DistanceFromStart.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);

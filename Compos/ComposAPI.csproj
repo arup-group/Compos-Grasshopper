@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\ComposIO.cs" />
+    <Compile Include="ObjectExtension.cs" />
     <Compile Include="Helpers\ReadSQLValues.cs" />
     <Compile Include="Helpers\Units.cs" />
     <Compile Include="1_Beam\BeamSection\BeamSection.cs" />

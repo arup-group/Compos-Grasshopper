@@ -74,13 +74,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-
-    public ReinforcementMaterial Duplicate()
-    {
-      if (this == null) { return null; }
-      ReinforcementMaterial dup = (ReinforcementMaterial)this.MemberwiseClone();
-      return dup;
-    }
     public override string ToString()
     {
 

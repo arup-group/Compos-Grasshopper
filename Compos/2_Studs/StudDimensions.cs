@@ -198,13 +198,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-
-    public StudDimensions Duplicate()
-    {
-      if (this == null) { return null; }
-      StudDimensions dup = (StudDimensions)this.MemberwiseClone();
-      return dup;
-    }
     public override string ToString()
     {
       string dia = Diameter.As(Units.LengthUnitSection).ToString("f0");

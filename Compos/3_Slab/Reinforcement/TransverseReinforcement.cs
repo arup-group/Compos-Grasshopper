@@ -29,14 +29,6 @@ namespace ComposAPI
       this.m_layout = LayoutMethod.Automatic;
     }
 
-    public override Reinforcement Duplicate()
-    {
-      if (this == null) { return null; }
-      TransverseReinforcement dup = (TransverseReinforcement)this.MemberwiseClone();
-      dup.Material = this.Material.Duplicate();
-      return dup;
-    }
-
     public override string ToString()
     {
       string mat = this.Material.ToString();

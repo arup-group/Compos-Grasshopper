@@ -13,16 +13,13 @@ namespace ComposAPI
     public IQuantity FinalDead { get; set; }
     public IQuantity FinalLive { get; set; }
 
+    public LoadValues() { }
     public LoadValues(IQuantity consDead, IQuantity consLive, IQuantity finalDead, IQuantity finalLive)
     {
       this.ConstantDead = consDead;
       this.ConstantLive = consLive;
       this.FinalDead = finalDead;
       this.FinalLive = finalLive;
-    }
-    public LoadValues Duplicate()
-    {
-      return (LoadValues)this.MemberwiseClone();
     }
   }
 
@@ -34,9 +31,7 @@ namespace ComposAPI
     {
       this.Position = position;
     }
-    public new NonConstantLoad Duplicate()
-    {
-      return (NonConstantLoad)this.MemberwiseClone();
-    }
+
+    public NonConstantLoad() { }
   }
 }
