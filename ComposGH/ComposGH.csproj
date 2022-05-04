@@ -120,15 +120,16 @@
     <Compile Include="Components\3_Slab\4_Quarternary\CreateCustomTransverseReinforcementLayout.cs" />
     <Compile Include="Components\3_Slab\4_Quarternary\CreateTransverseReinforcement.cs" />
     <Compile Include="Components\3_Slab\4_Quarternary\CreateMeshReinforcement.cs" />
-    <Compile Include="Components\4_Loads\2_Secondary\PatchLoad.cs" />
-    <Compile Include="Components\4_Loads\2_Secondary\AxialLoad.cs" />
-    <Compile Include="Components\4_Loads\2_Secondary\TriLinearLoad.cs" />
+    <Compile Include="Components\4_Loads\1_Primary\PatchLoad.cs" />
+    <Compile Include="Components\4_Loads\1_Primary\AxialLoad.cs" />
+    <Compile Include="Components\4_Loads\1_Primary\TriLinearLoad.cs" />
     <Compile Include="Components\4_Loads\1_Primary\LinearLoad.cs" />
     <Compile Include="Components\4_Loads\1_Primary\UniformLoad.cs" />
     <Compile Include="Components\4_Loads\1_Primary\PointLoad.cs" />
     <Compile Include="Components\3_Slab\3_Tertiary\CreateConcreteMaterialBS.cs" />
     <Compile Include="Components\5_Member\2_Secondary\DesignCode.cs" />
     <Compile Include="Components\5_Member\2_Secondary\EC4SafetyFactors.cs" />
+    <Compile Include="Components\5_Member\2_Secondary\CreepShrinkageParams.cs" />
     <Compile Include="Components\5_Member\2_Secondary\SafetyFactors.cs" />
     <Compile Include="ComposGHInfo.cs" />
     <Compile Include="Helpers\DeSerialization.cs" />
@@ -231,9 +232,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Components\0_File\" />
-    <Folder Include="Components\4_Loads\3_Tertiary\" />
-    <Folder Include="Components\4_Loads\4_Quarternary\" />
-    <Folder Include="Components\4_Loads\5_Quinary\" />
     <Folder Include="Components\5_Member\1_Primary\" />
     <Folder Include="Components\5_Member\3_Tertiary\" />
     <Folder Include="Components\5_Member\4_Quarternary\" />
@@ -422,6 +420,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\SafetyFactors.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CreepShrinkageParams.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CustomRebarLayout.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -221,9 +221,9 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter("Creep&Shrinkage Shrinkage", "cs", "(Optional) Creep and Shrinkage parameters for Shrinkage", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Creep&Shrinkage", "CS", "(Optional) Creep and Shrinkage parameters Long term", GH_ParamAccess.item);
       pManager.AddGenericParameter("EC4 Safety Factors", "SF", "(Optional) EC4 Safety Factors", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Creep&Shrinkage Shrinkage", "csp", "(Optional) Creep and Shrinkage parameters for Shrinkage situation. If no input default code values will be used", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Creep&Shrinkage Long Term", "CSP", "(Optional) Creep and Shrinkage parameters Long term situation. If no input default code values will be used", GH_ParamAccess.item);
       
       for (int i = 0; i < pManager.ParamCount; i++)
         pManager[i].Optional = true;
@@ -239,7 +239,46 @@ namespace ComposGH.Components
     {
       
     }
+    #region update input params
+    private void ModeChangeClicked()
+    {
+      RecordUndoEvent("Changed Parameters");
+      switch (code)
+      {
+        case Code.BS5950_3_1_1990_Superseded:
+        case Code.BS5950_3_1_1990_A1_2010:
+        case Code.HKSUOS_2005:
+        case Code.HKSUOS_2011:
+          //remove input parameters 
+          while (Params.Input.Count > 1)
+            Params.UnregisterInputParameter(Params.Input[1], true);
+          break;
 
+        case Code.EN1994_1_1_2004:
+          //remove input parameters
+          while (Params.Input.Count > 1)
+            Params.UnregisterInputParameter(Params.Input[1], true);
+
+          //add input parameters of generic type
+          Params.RegisterInputParam(new Param_GenericObject());
+          Params.RegisterInputParam(new Param_GenericObject());
+          break;
+
+        case Code.AS_NZS2327_2017:
+          //remove input parameters
+          while (Params.Input.Count > 1)
+            Params.UnregisterInputParameter(Params.Input[1], true);
+
+          //add input parameters of number type
+          Params.RegisterInputParam(new Param_Number());
+          Params.RegisterInputParam(new Param_Number());
+          break;
+
+        default:
+          break;
+      }
+    }
+    #endregion
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
@@ -277,7 +316,33 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      
+      switch (code)
+      {
+        case Code.EN1994_1_1_2004:
+          Params.Input[1].Name = "Creep&Shrinkage Shrinkage";
+          Params.Input[1].NickName = "csp";
+          Params.Input[1].Description = "(Optional) Creep and Shrinkage parameters for Shrinkage situation. If no input default code values will be used";
+          Params.Input[1].Optional = true;
+          Params.Input[2].Name = "Creep&Shrinkage Long Term";
+          Params.Input[2].NickName = "CSP";
+          Params.Input[2].Description = "(Optional) Creep and Shrinkage parameters for Long Term situation. If no input default code values will be used";
+          Params.Input[2].Optional = true;
+          break;
+
+        case Code.AS_NZS2327_2017:
+          Params.Input[1].Name = "Creep coefficient Shrinkage";
+          Params.Input[1].NickName = "crp";
+          Params.Input[1].Description = "(Optional) Creep coefficient for Shrinkage situation. If no input default code values will be used";
+          Params.Input[1].Optional = true;
+          Params.Input[2].Name = "Creep coefficient Long Term";
+          Params.Input[2].NickName = "CRP";
+          Params.Input[2].Description = "(Optional) Creep coefficient for Long Term situation. If no input default code values will be used";
+          Params.Input[2].Optional = true;
+          break;
+
+        default:
+          break;
+      }
     }
     #endregion
   }

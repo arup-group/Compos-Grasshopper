@@ -253,9 +253,29 @@ namespace ComposGH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CreepShrinkageParams {
+            get {
+                object obj = ResourceManager.GetObject("CreepShrinkageParams", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap CustomDecking {
             get {
                 object obj = ResourceManager.GetObject("CustomDecking", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CustomRebarLayout {
+            get {
+                object obj = ResourceManager.GetObject("CustomRebarLayout", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
