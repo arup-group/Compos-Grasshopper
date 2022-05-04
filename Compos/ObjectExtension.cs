@@ -22,8 +22,15 @@ namespace ComposAPI
         // check whether property can be written to
         if (property.CanWrite)
         {
+          object value = property.GetValue(objSource, null);
+          Type propertyType;
+          if (value != null)
+            propertyType = value.GetType();
+          else
+            propertyType = property.PropertyType;
+
           // check whether property type is value type, enum or string type
-          if (property.PropertyType.IsValueType || property.PropertyType.IsEnum || property.PropertyType.Equals(typeof(System.String)))
+          if (propertyType.IsValueType || propertyType.IsEnum || propertyType.Equals(typeof(System.String)))
           {
             property.SetValue(objTarget, property.GetValue(objSource, null), null);
           }

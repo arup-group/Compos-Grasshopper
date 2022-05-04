@@ -4,13 +4,24 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using ComposAPI;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
 
-namespace ComposAPITests
+namespace ComposAPI.Tests
 {
+  internal static class ChildMother
+  {
+
+
+    internal static Child CreateChild2()
+    {
+      Child child = new Child(2.0, 2, "b", TestEnum.Value2, new Force(2, ForceUnit.Kilonewton));
+
+      return child;
+    }
+  }
+
   public class ObjectExtensionTest
   {
 
@@ -19,13 +30,23 @@ namespace ComposAPITests
     [Fact]
     void DuplicateTest1()
     {
-      Child child = new Child(1.0, 1, "a", TestEnum.Value1, new Force(1, ForceUnit.Kilonewton));
-      Parent parent = new Parent(child);
-      GrandParent grandParent = new GrandParent(parent);
+      Force quantity = new Force(1, ForceUnit.Kilonewton);
+      Child child = new Child(1.0, 1, "a", TestEnum.Value1, quantity);
 
-      GrandParent duplicateGrandParent = grandParent.Duplicate() as GrandParent;
+      GrandParent original = new GrandParent(new Parent(child));
+      GrandParent duplicate = original.Duplicate() as GrandParent;
 
+      //original.Parent.Child.D = -1.0;
+      //original.Parent.Child.I = -1;
+      //original.Parent.Child.S = "z";
+      //original.Parent.Child.TestEnum = TestEnum.None;
+      original.Parent.Child.Quantity = new Pressure(-1.0, PressureUnit.KilonewtonPerSquareMeter);
 
+      //Assert.Equal(1.0, duplicate.Parent.Child.D);
+      //Assert.Equal(1, duplicate.Parent.Child.I);
+      //Assert.Equal("a", duplicate.Parent.Child.S);
+      //Assert.Equal(TestEnum.Value1, duplicate.Parent.Child.TestEnum);
+      Assert.Equal(quantity, duplicate.Parent.Child.Quantity);
     }
 
   }
@@ -34,34 +55,35 @@ namespace ComposAPITests
   {
     Value1 = 1,
     Value2 = 2,
-    Value3 = 3
+    Value3 = 3,
+    None = -1
   }
 
-  internal class Child
+  public class Child
   {
-    private double D { get; set; }
-    private int I { get; set; }
-    private string S { get; set; }
-    private TestEnum TestEnum { get; set; }
-    private IQuantity Quantity { get; set; }
+    //internal double D { get; set; }
+    //internal int I { get; set; }
+    //internal string S { get; set; }
+    //internal TestEnum TestEnum { get; set; }
+    internal IQuantity Quantity { get; set; }
 
-    internal Child() { }
+    public Child() { }
 
     internal Child(double d, int i, string s, TestEnum testEnum, IQuantity quantity)
     {
-      this.D = d;
-      this.I = i;
-      this.S = s;
-      this.TestEnum = testEnum;
+      //this.D = d;
+      //this.I = i;
+      //this.S = s;
+      //this.TestEnum = testEnum;
       this.Quantity = quantity;
     }
   }
 
-  internal class Parent : Child
+  public class Parent : Child
   {
-    private Child Child { get; set; }
+    internal Child Child { get; set; }
 
-    internal Parent() { }
+    public Parent() { }
 
     internal Parent(Child child)
     {
@@ -69,11 +91,11 @@ namespace ComposAPITests
     }
   }
 
-  internal class GrandParent : Parent
+  public class GrandParent : Parent
   {
-    internal Parent Parent { get; set; }  
+    internal Parent Parent { get; set; }
 
-    internal GrandParent() { }  
+    public GrandParent() { }  
 
     internal GrandParent(Parent parent)
     {
