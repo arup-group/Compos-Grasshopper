@@ -14,6 +14,7 @@ namespace ComposAPI
     public IQuantity FinalLive { get; set; }
 
     public LoadValues() { }
+
     public LoadValues(IQuantity consDead, IQuantity consLive, IQuantity finalDead, IQuantity finalLive)
     {
       this.ConstantDead = consDead;
@@ -26,6 +27,7 @@ namespace ComposAPI
   public class NonConstantLoad : LoadValues
   {
     public Length Position { get; set; }
+
     public NonConstantLoad(IQuantity consDead, IQuantity consLive, IQuantity finalDead, IQuantity finalLive, Length position)
       : base(consDead, consLive, finalDead, finalLive)
     {

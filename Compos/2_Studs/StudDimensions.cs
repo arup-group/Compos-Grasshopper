@@ -87,7 +87,7 @@ namespace ComposAPI
         this.m_fu = Pressure.Zero;
       }
     }
-    private Force m_strength;
+    private Force m_strength { get; set; }
     public Pressure Fu
     {
       get { return this.m_fu; }
@@ -97,7 +97,7 @@ namespace ComposAPI
         this.m_strength = Force.Zero;
       }
     }
-    private Pressure m_fu;
+    private Pressure m_fu { get; set; }
 
     public enum StandardGrade
     {
