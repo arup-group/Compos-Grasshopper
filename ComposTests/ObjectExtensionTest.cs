@@ -10,42 +10,28 @@ using Xunit;
 
 namespace ComposAPI.Tests
 {
-  internal static class ChildMother
-  {
-
-
-    internal static TestObject CreateTestObject()
-    {
-      TestObject child = new TestObject(2.0, 2, "b", TestEnum.Value2, new Force(2, ForceUnit.Kilonewton), new List<TestObject>());
-
-      return child;
-    }
-  }
-
   public class ObjectExtensionTest
   {
-
-
-
     [Fact]
-    void DuplicateTest1()
+    public void DuplicateTest1()
     {
       Force quantity = new Force(1, ForceUnit.Kilonewton);
       TestObject grandChild = new TestObject(1.0, 1, "a", TestEnum.Value1, quantity, new List<TestObject>());
       TestObject original = new TestObject(new TestObject(grandChild));
 
+      object o = original.Duplicate();
       TestObject duplicate = original.Duplicate() as TestObject;
 
-      //original.Parent.Child.D = -1.0;
-      //original.Parent.Child.I = -1;
-      //original.Parent.Child.S = "z";
-      //original.Parent.Child.TestEnum = TestEnum.None;
+      original.Children[0].Children[0].D = -1.0;
+      original.Children[0].Children[0].I = -1;
+      original.Children[0].Children[0].S = "z";
+      original.Children[0].Children[0].TestEnum = TestEnum.None;
       original.Children[0].Children[0].Quantity = new Pressure(-1.0, PressureUnit.KilonewtonPerSquareMeter);
 
-      //Assert.Equal(1.0, duplicate.Parent.Child.D);
-      //Assert.Equal(1, duplicate.Parent.Child.I);
-      //Assert.Equal("a", duplicate.Parent.Child.S);
-      //Assert.Equal(TestEnum.Value1, duplicate.Parent.Child.TestEnum);
+      Assert.Equal(1.0, duplicate.Children[0].Children[0].D);
+      Assert.Equal(1, duplicate.Children[0].Children[0].I);
+      Assert.Equal("a", duplicate.Children[0].Children[0].S);
+      Assert.Equal(TestEnum.Value1, duplicate.Children[0].Children[0].TestEnum);
       Assert.Equal(quantity, duplicate.Children[0].Children[0].Quantity);
     }
 
@@ -61,10 +47,10 @@ namespace ComposAPI.Tests
 
   public class TestObject
   {
-    //internal double D { get; set; }
-    //internal int I { get; set; }
-    //internal string S { get; set; }
-    //internal TestEnum TestEnum { get; set; }
+    internal double D { get; set; }
+    internal int I { get; set; }
+    internal string S { get; set; }
+    internal TestEnum TestEnum { get; set; }
     internal IQuantity Quantity { get; set; }
     internal List<TestObject> Children { get; set; } = new List<TestObject>();
 
@@ -82,10 +68,10 @@ namespace ComposAPI.Tests
 
     internal TestObject(double d, int i, string s, TestEnum testEnum, IQuantity quantity, List<TestObject> children)
     {
-      //this.D = d;
-      //this.I = i;
-      //this.S = s;
-      //this.TestEnum = testEnum;
+      this.D = d;
+      this.I = i;
+      this.S = s;
+      this.TestEnum = testEnum;
       this.Quantity = quantity;
       this.Children = children;
     }

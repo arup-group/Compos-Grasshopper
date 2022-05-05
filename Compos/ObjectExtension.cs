@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -22,29 +23,75 @@ namespace ComposAPI
         // check whether property can be written to
         if (property.CanWrite)
         {
-          object objPropertyValue = property.GetValue(objSource, null);
-          Type propertyType;
-          if (objPropertyValue != null)
-            propertyType = objPropertyValue.GetType();
-          else
-            propertyType = property.PropertyType;
+          object objPropertyValue;
+          Type propertyType = property.PropertyType;
+          try
+          {
+            objPropertyValue = property.GetValue(objSource, null);
 
-          // check whether property type is value type, enum or string type
-          if (propertyType.IsValueType || propertyType.IsEnum || propertyType.Equals(typeof(System.String)))
-          {
-            property.SetValue(objTarget, property.GetValue(objSource, null), null);
-          }
-          // else property type is object/complex types, so need to recursively call this method until the end of the tree is reached
-          else
-          {
-            if (objPropertyValue == null)
+            // check wether property is an interface
+            if (propertyType.IsInterface)
             {
-              property.SetValue(objTarget, null, null);
+              if (objPropertyValue != null)
+                propertyType = objPropertyValue.GetType();
             }
+
+            // check wether property is an enumerable
+            if (typeof(IEnumerable).IsAssignableFrom(propertyType) && !typeof(string).IsAssignableFrom(propertyType))
+            {
+              if (objPropertyValue == null)
+              {
+                property.SetValue(objTarget, null, null);
+              }
+              else
+              {
+                IEnumerable<object> enumerable = ((IEnumerable)objPropertyValue).Cast<object>();
+                Type enumrableType = enumerable.GetType().GetGenericArguments()[0];
+
+                // if type is a struct, we have to check the actual list items
+                if (enumrableType.ToString() is "System.Object")
+                {
+                  if (enumerable.Any())
+                  {
+                    enumrableType = enumerable.First().GetType();
+                  }
+                }
+
+                Type genericListType = typeof(List<>).MakeGenericType(enumrableType);
+
+                IList list = (IList)Activator.CreateInstance(genericListType);
+                using (var enumerator = enumerable.GetEnumerator())
+                {
+                  while (enumerator.MoveNext())
+                  {
+                    list.Add(enumerator.Current.Duplicate());
+                  }
+                }
+                property.SetValue(objTarget, list, null);
+              }
+            }
+
+            // check whether property type is value type, enum or string type
+            else if (propertyType.IsValueType || propertyType.IsEnum || propertyType.Equals(typeof(System.String)))
+            {
+              property.SetValue(objTarget, objPropertyValue, null);
+            }
+            // else property type is object/complex types, so need to recursively call this method until the end of the tree is reached
             else
             {
-              property.SetValue(objTarget, objPropertyValue.Duplicate(), null);
+              if (objPropertyValue == null)
+              {
+                property.SetValue(objTarget, null, null);
+              }
+              else
+              {
+                property.SetValue(objTarget, objPropertyValue.Duplicate(), null);
+              }
             }
+          }
+          catch (TargetParameterCountException ex)
+          {
+            propertyType = property.PropertyType;
           }
         }
       }
