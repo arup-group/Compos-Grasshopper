@@ -5,7 +5,7 @@ using UnitsNet;
 
 namespace ComposAPI
 {
-  public class CustomTransverseReinforcementLayout
+  public class CustomTransverseReinforcementLayout : ICustomTransverseReinforcementLayout
   {
     public Length DistanceFromStart { get; set; }
     public Length DistanceFromEnd { get; set; }
@@ -41,7 +41,7 @@ namespace ComposAPI
 
   public class CustomTransverseReinforcement : TransverseReinforcement
   {
-    List<CustomTransverseReinforcementLayout> CustomReinforcementLayouts { get; set; }
+    List<ICustomTransverseReinforcementLayout> CustomReinforcementLayouts { get; set; }
     
     public CustomTransverseReinforcement()
     {
@@ -49,7 +49,7 @@ namespace ComposAPI
       this.m_layout = LayoutMethod.Custom;
     }
 
-    public CustomTransverseReinforcement(ReinforcementMaterial material, List<CustomTransverseReinforcementLayout> transverseReinforcmentLayout)
+    public CustomTransverseReinforcement(IReinforcementMaterial material, List<ICustomTransverseReinforcementLayout> transverseReinforcmentLayout)
     {
       this.Material = material;
       this.CustomReinforcementLayouts = transverseReinforcmentLayout;

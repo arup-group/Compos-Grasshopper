@@ -5,18 +5,18 @@ using UnitsNet;
 
 namespace ComposAPI
 {
+  public enum StudSpecType
+  {
+    EC4,
+    BS5950,
+    Other
+  }
+
   /// <summary>
   /// Object for setting various (code dependent) specifications for a <see cref="ComposGH.Stud.Stud"/>
   /// </summary>
-  public class StudSpecification
+  public class StudSpecification : IStudSpecification
   {
-    public enum StudSpecType
-    {
-      EC4,
-      BS5950,
-      Other
-    }
-
     // Stud Specifications
     public bool Welding { get; set; }
     public bool NCCI { get; set; }

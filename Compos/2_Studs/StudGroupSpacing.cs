@@ -16,7 +16,7 @@ namespace ComposAPI
   /// <summary>
   /// Object for setting custom spacing/layout for a <see cref="Stud"/>
   /// </summary>
-  public class StudGroupSpacing
+  public class StudGroupSpacing : IStudGroupSpacing
   {
     public Length DistanceFromStart { get; set; }
     public int NumberOfRows { get; set; } = 2;

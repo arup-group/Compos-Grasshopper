@@ -11,9 +11,9 @@ namespace ComposAPI.Tests
     public Stud TestConstructorStudCustomSpacing()
     {
       // 1 setup inputs
-      StudDimensions dimensions = new StudDimensions(StudDimensions.StandardSize.D13mmH65mm, StudDimensions.StandardGrade.SD1_EN13918);
-      StudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
-      List<StudGroupSpacing> studSpacings = new List<StudGroupSpacing>();
+      IStudDimensions dimensions = new StudDimensions(StandardSize.D13mmH65mm, StandardGrade.SD1_EN13918);
+      IStudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
+      List<IStudGroupSpacing> studSpacings = new List<IStudGroupSpacing>();
       studSpacings.Add(new StudGroupSpacing(Length.Zero, 2, 1, new Length(25, LengthUnit.Centimeter)));
       studSpacings.Add(new StudGroupSpacing(Length.Zero, 1, 2, new Length(35, LengthUnit.Centimeter)));
 
@@ -46,7 +46,7 @@ namespace ComposAPI.Tests
       Assert.Equal(2, stud.CustomSpacing[1].NumberOfLines);
       Assert.Equal(35, stud.CustomSpacing[1].Spacing.Centimeters);
       //other
-      Assert.Equal(StudGroupSpacing.StudSpacingType.Custom, stud.StudSpacingType);
+      Assert.Equal(StudSpacingType.Custom, stud.StudSpacingType);
       Assert.True(stud.CheckStudSpacing);
       Assert.Equal(double.NaN, stud.Interaction);
       Assert.Equal(double.NaN, stud.MinSavingMultipleZones);
@@ -56,13 +56,13 @@ namespace ComposAPI.Tests
 
     // 1 setup inputs
     [Theory]
-    [InlineData(StudGroupSpacing.StudSpacingType.Min_Num_of_Studs, 0.2)]
-    [InlineData(StudGroupSpacing.StudSpacingType.Automatic, 0.3)]
-    public Stud TestConstructorStudAutomaticOrMinSpacing(StudGroupSpacing.StudSpacingType type, double minSaving)
+    [InlineData(StudSpacingType.Min_Num_of_Studs, 0.2)]
+    [InlineData(StudSpacingType.Automatic, 0.3)]
+    public Stud TestConstructorStudAutomaticOrMinSpacing(StudSpacingType type, double minSaving)
     {
       // 1b setup inputs
-      StudDimensions dimensions = new StudDimensions(StudDimensions.StandardSize.D13mmH65mm, StudDimensions.StandardGrade.SD1_EN13918);
-      StudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
+      IStudDimensions dimensions = new StudDimensions(StandardSize.D13mmH65mm, StandardGrade.SD1_EN13918);
+      IStudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
 
       // 2 create object instance with constructor
       Stud stud = new Stud(dimensions, specification, minSaving, type);
@@ -90,9 +90,9 @@ namespace ComposAPI.Tests
     }
 
     [Theory]
-    [InlineData(StudGroupSpacing.StudSpacingType.Custom)]
-    [InlineData(StudGroupSpacing.StudSpacingType.Partial_Interaction)]
-    public void TestConstructorStudAutomaticOrMinSpacingExceptions(StudGroupSpacing.StudSpacingType type)
+    [InlineData(StudSpacingType.Custom)]
+    [InlineData(StudSpacingType.Partial_Interaction)]
+    public void TestConstructorStudAutomaticOrMinSpacingExceptions(StudSpacingType type)
     {
       // check that exceptions are thrown if inputs does not comply with allowed
       Assert.Throws<System.ArgumentException>(() => TestConstructorStudAutomaticOrMinSpacing(type, 0.2));
@@ -105,8 +105,8 @@ namespace ComposAPI.Tests
     public Stud TestConstructorStudPartialSpacing(double minSaving, double interaction)
     {
       // 1b setup inputs
-      StudDimensions dimensions = new StudDimensions(StudDimensions.StandardSize.D13mmH65mm, StudDimensions.StandardGrade.SD1_EN13918);
-      StudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
+      IStudDimensions dimensions = new StudDimensions(StandardSize.D13mmH65mm, StandardGrade.SD1_EN13918);
+      IStudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
 
       // 2 create object instance with constructor
       Stud stud = new Stud(dimensions, specification, minSaving, interaction);
@@ -128,7 +128,7 @@ namespace ComposAPI.Tests
       //other
       Assert.Equal(minSaving, stud.MinSavingMultipleZones);
       Assert.Equal(interaction, stud.Interaction);
-      Assert.Equal(StudGroupSpacing.StudSpacingType.Partial_Interaction, stud.StudSpacingType);
+      Assert.Equal(StudSpacingType.Partial_Interaction, stud.StudSpacingType);
 
       return stud;
     }
@@ -166,15 +166,15 @@ namespace ComposAPI.Tests
       Assert.Equal(2, duplicate.CustomSpacing[1].NumberOfLines);
       Assert.Equal(35, duplicate.CustomSpacing[1].Spacing.Centimeters);
       //other
-      Assert.Equal(StudGroupSpacing.StudSpacingType.Custom, duplicate.StudSpacingType);
+      Assert.Equal(StudSpacingType.Custom, duplicate.StudSpacingType);
       Assert.True(duplicate.CheckStudSpacing);
       Assert.Equal(double.NaN, duplicate.Interaction);
       Assert.Equal(double.NaN, duplicate.MinSavingMultipleZones);
 
       // 3 make some changes to duplicate
-      StudDimensions dimensions = new StudDimensions(StudDimensions.StandardSize.D25mmH100mm, StudDimensions.StandardGrade.SD3_EN13918);
-      StudSpecification specification = new StudSpecification(new Length(25, LengthUnit.Centimeter), new Length(35, LengthUnit.Centimeter), false);
-      List<StudGroupSpacing> studSpacings = new List<StudGroupSpacing>();
+      IStudDimensions dimensions = new StudDimensions(StandardSize.D25mmH100mm, StandardGrade.SD3_EN13918);
+      IStudSpecification specification = new StudSpecification(new Length(25, LengthUnit.Centimeter), new Length(35, LengthUnit.Centimeter), false);
+      List<IStudGroupSpacing> studSpacings = new List<IStudGroupSpacing>();
       studSpacings.Add(new StudGroupSpacing(Length.Zero, 3, 2, new Length(10, LengthUnit.Centimeter)));
 
       duplicate.StudDimensions = dimensions;
@@ -203,7 +203,7 @@ namespace ComposAPI.Tests
       Assert.Equal(2, duplicate.CustomSpacing[0].NumberOfLines);
       Assert.Equal(10, duplicate.CustomSpacing[0].Spacing.Centimeters);
       //other
-      Assert.Equal(StudGroupSpacing.StudSpacingType.Custom, duplicate.StudSpacingType);
+      Assert.Equal(StudSpacingType.Custom, duplicate.StudSpacingType);
       Assert.False(duplicate.CheckStudSpacing);
       Assert.Equal(double.NaN, duplicate.Interaction);
       Assert.Equal(double.NaN, duplicate.MinSavingMultipleZones);
@@ -234,17 +234,17 @@ namespace ComposAPI.Tests
       Assert.Equal(2, original.CustomSpacing[1].NumberOfLines);
       Assert.Equal(35, original.CustomSpacing[1].Spacing.Centimeters);
       //other
-      Assert.Equal(StudGroupSpacing.StudSpacingType.Custom, original.StudSpacingType);
+      Assert.Equal(StudSpacingType.Custom, original.StudSpacingType);
       Assert.True(original.CheckStudSpacing);
       Assert.Equal(double.NaN, original.Interaction);
       Assert.Equal(double.NaN, original.MinSavingMultipleZones);
 
       // 1 create with new constructor and duplicate
-      original = TestConstructorStudAutomaticOrMinSpacing(StudGroupSpacing.StudSpacingType.Automatic, 0.2);
+      original = TestConstructorStudAutomaticOrMinSpacing(StudSpacingType.Automatic, 0.2);
       duplicate = original.Duplicate() as Stud;
 
       // 2 check that duplicate has duplicated values
-      Assert.Equal(StudGroupSpacing.StudSpacingType.Automatic, duplicate.StudSpacingType);
+      Assert.Equal(StudSpacingType.Automatic, duplicate.StudSpacingType);
       Assert.Null(duplicate.CustomSpacing);
       Assert.Equal(0.2, duplicate.MinSavingMultipleZones);
       Assert.Equal(double.NaN, duplicate.Interaction);
@@ -263,7 +263,7 @@ namespace ComposAPI.Tests
       duplicate = original.Duplicate() as Stud;
 
       // 2 check that duplicate has duplicated values
-      Assert.Equal(StudGroupSpacing.StudSpacingType.Partial_Interaction, duplicate.StudSpacingType);
+      Assert.Equal(StudSpacingType.Partial_Interaction, duplicate.StudSpacingType);
       Assert.Null(duplicate.CustomSpacing);
       Assert.Equal(0.15, duplicate.MinSavingMultipleZones);
       Assert.Equal(0.90, duplicate.Interaction);

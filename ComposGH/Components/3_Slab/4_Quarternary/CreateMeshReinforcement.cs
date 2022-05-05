@@ -40,7 +40,7 @@ namespace ComposGH.Components
         selecteditems = new List<string>();
 
         // mesh
-        dropdownitems.Add(Enum.GetValues(typeof(MeshReinforcement.ReinforcementMeshType)).Cast<MeshReinforcement.ReinforcementMeshType>().Select(x => x.ToString()).ToList());
+        dropdownitems.Add(Enum.GetValues(typeof(ReinforcementMeshType)).Cast<ReinforcementMeshType>().Select(x => x.ToString()).ToList());
         dropdownitems[0].RemoveAt(0); //
         selecteditems.Add(mesh.ToString());
 
@@ -65,7 +65,7 @@ namespace ComposGH.Components
         if (mesh.ToString() == selecteditems[i])
           return; // return if selected value is same as before
 
-        mesh = (MeshReinforcement.ReinforcementMeshType)Enum.Parse(typeof(MeshReinforcement.ReinforcementMeshType), selecteditems[i]);
+        mesh = (ReinforcementMeshType)Enum.Parse(typeof(ReinforcementMeshType), selecteditems[i]);
 
         //ToggleInput();
       }
@@ -84,7 +84,7 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      mesh = (MeshReinforcement.ReinforcementMeshType)Enum.Parse(typeof(MeshReinforcement.ReinforcementMeshType), selecteditems[0]);
+      mesh = (ReinforcementMeshType)Enum.Parse(typeof(ReinforcementMeshType), selecteditems[0]);
       lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[1]);
 
       CreateAttributes();
@@ -109,7 +109,7 @@ namespace ComposGH.Components
     });
     private bool first = true;
     private LengthUnit lengthUnit = Units.LengthUnitSection;
-    private MeshReinforcement.ReinforcementMeshType mesh = MeshReinforcement.ReinforcementMeshType.A393;
+    private ReinforcementMeshType mesh = ReinforcementMeshType.A393;
     #endregion
 
     protected override void RegisterInputParams(GH_InputParamManager pManager)

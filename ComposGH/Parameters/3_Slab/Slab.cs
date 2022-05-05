@@ -17,7 +17,7 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class SlabGoo : GH_Goo<Slab>
+  public class SlabGoo : GH_Goo<ISlab>
   {
     #region constructors
     public SlabGoo()
@@ -25,11 +25,11 @@ namespace ComposGH.Parameters
       this.Value = new Slab();
     }
 
-    public SlabGoo(Slab item)
+    public SlabGoo(ISlab item)
     {
       if (item == null)
         item = new Slab();
-      this.Value = item.Duplicate() as Slab;
+      this.Value = item.Duplicate() as ISlab;
     }
 
     public override IGH_Goo Duplicate()
@@ -38,7 +38,7 @@ namespace ComposGH.Parameters
     }
     public SlabGoo DuplicateGoo()
     {
-      return new SlabGoo(this.Value == null ? new Slab() : this.Value.Duplicate() as Slab);
+      return new SlabGoo(this.Value == null ? new Slab() : this.Value.Duplicate() as ISlab);
     }
     #endregion
 

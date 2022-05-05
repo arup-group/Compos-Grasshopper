@@ -49,7 +49,7 @@ namespace ComposGH.Components
         selecteditems.Add(stdSize.ToString().Replace("D", "Ø").Replace("mmH", "/"));
 
         // grade
-        dropdownitems.Add(Enum.GetValues(typeof(StudDimensions.StandardGrade)).Cast<StudDimensions.StandardGrade>().Select(x => x.ToString()).ToList());
+        dropdownitems.Add(Enum.GetValues(typeof(StandardGrade)).Cast<StandardGrade>().Select(x => x.ToString()).ToList());
         selecteditems.Add(stdGrd.ToString());
 
         // strength
@@ -70,7 +70,7 @@ namespace ComposGH.Components
         if (selecteditems[0] != standardSize[0])
         {
           string sz = selecteditems[i].Replace("Ø", "D").Replace("/", "mmH");
-          stdSize = (StudDimensions.StandardSize)Enum.Parse(typeof(StudDimensions.StandardSize), sz);
+          stdSize = (StandardSize)Enum.Parse(typeof(StandardSize), sz);
           if (dropdownitems.Count > 3)
           {
             // remove length dropdown
@@ -89,7 +89,7 @@ namespace ComposGH.Components
       }
       if (i == 1) // change is made to grade
       {
-        stdGrd = (StudDimensions.StandardGrade)Enum.Parse(typeof(StudDimensions.StandardGrade), selecteditems[i]);
+        stdGrd = (StandardGrade)Enum.Parse(typeof(StandardGrade), selecteditems[i]);
       }
       if (i == 2) // change is made to grade
       {
@@ -112,8 +112,8 @@ namespace ComposGH.Components
       if (selecteditems[0] != standardSize[0])
       {
         string sz = selecteditems[0].Replace("Ø", "D").Replace("/", "mmH");
-        stdSize = (StudDimensions.StandardSize)Enum.Parse(typeof(StudDimensions.StandardSize), sz);
-        stdGrd = (StudDimensions.StandardGrade)Enum.Parse(typeof(StudDimensions.StandardGrade), selecteditems[1]);
+        stdSize = (StandardSize)Enum.Parse(typeof(StandardSize), sz);
+        stdGrd = (StandardGrade)Enum.Parse(typeof(StandardGrade), selecteditems[1]);
       }
       else
       {
@@ -157,8 +157,8 @@ namespace ComposGH.Components
     private bool first = true;
     private PressureUnit stressUnit = Units.StressUnit;
     private LengthUnit lengthUnit = Units.LengthUnitSection;
-    private StudDimensions.StandardGrade stdGrd = StudDimensions.StandardGrade.SD1_EN13918;
-    private StudDimensions.StandardSize stdSize = StudDimensions.StandardSize.D19mmH100mm;
+    private StandardGrade stdGrd = StandardGrade.SD1_EN13918;
+    private StandardSize stdSize = StandardSize.D19mmH100mm;
     #endregion
 
     #region Input and output

@@ -481,7 +481,7 @@ namespace ComposGH.Components
     #endregion
 
     #region Studs
-    internal static StudDimensions StudDim(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static IStudDimensions StudDim(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
       StudDimensionsGoo goo = null;
       GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
@@ -508,7 +508,7 @@ namespace ComposGH.Components
 
       return goo.Value;
     }
-    internal static StudSpecification StudSpec(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static IStudSpecification StudSpec(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
       StudSpecificationGoo goo = null;
       GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
@@ -535,9 +535,9 @@ namespace ComposGH.Components
 
       return goo.Value;
     }
-    internal static List<StudGroupSpacing> StudSpacings(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static List<IStudGroupSpacing> StudSpacings(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
-      List<StudGroupSpacing> items = new List<StudGroupSpacing>();
+      List<IStudGroupSpacing> items = new List<IStudGroupSpacing>();
       List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
       if (DA.GetDataList(inputid, gh_typs))
       {
@@ -566,7 +566,7 @@ namespace ComposGH.Components
     #endregion
 
     #region Reinforcement
-    internal static Reinforcement Reinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static IReinforcement Reinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
       ReinforcementGoo goo = null;
       GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
@@ -592,9 +592,9 @@ namespace ComposGH.Components
       return goo.Value;
     }
 
-    internal static List<CustomTransverseReinforcementLayout> TransverseReinforcementLayouts(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static List<ICustomTransverseReinforcementLayout> TransverseReinforcementLayouts(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
-      List<ComposAPI.CustomTransverseReinforcementLayout> items = new List<ComposAPI.CustomTransverseReinforcementLayout>();
+      List<ICustomTransverseReinforcementLayout> items = new List<ICustomTransverseReinforcementLayout>();
       List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
       if (DA.GetDataList(inputid, gh_typs))
       {
@@ -621,7 +621,7 @@ namespace ComposGH.Components
       return null;
     }
 
-    internal static ReinforcementMaterial RebarMaterial(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static IReinforcementMaterial RebarMaterial(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
       ReinforcementMaterialGoo goo = null;
       GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
@@ -877,7 +877,7 @@ namespace ComposGH.Components
     #endregion
 
     #region Slab
-    internal static ConcreteMaterial ConcreteMaterial(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static IConcreteMaterial ConcreteMaterial(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
       ConcreteMaterialGoo goo = null;
       GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
@@ -903,9 +903,9 @@ namespace ComposGH.Components
       return goo.Value;
     }
 
-    internal static List<SlabDimension> SlabDimensions(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static List<ISlabDimension> SlabDimensions(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
-      List<SlabDimension> items = new List<SlabDimension>();
+      List<ISlabDimension> items = new List<ISlabDimension>();
       List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
       if (DA.GetDataList(inputid, gh_typs))
       {
@@ -931,14 +931,14 @@ namespace ComposGH.Components
       return null;
     }
 
-    internal static TransverseReinforcement TransverseReinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static ITransverseReinforcement TransverseReinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
       GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
       if (DA.GetData(inputid, ref gh_typ))
       {
         if (gh_typ.Value is ReinforcementGoo)
         {
-          if (Reinforcement(owner, DA, inputid, isOptional) is TransverseReinforcement reinforcement)
+          if (Reinforcement(owner, DA, inputid, isOptional) is ITransverseReinforcement reinforcement)
           {
             return reinforcement;
           }
@@ -953,7 +953,7 @@ namespace ComposGH.Components
       return null;
     }
 
-    internal static MeshReinforcement MeshReinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static IMeshReinforcement MeshReinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
       GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
       if (DA.GetData(inputid, ref gh_typ))
@@ -977,7 +977,7 @@ namespace ComposGH.Components
     #endregion
 
     #region Decking
-    internal static Decking Decking(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static IDecking Decking(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
       DeckingGoo goo = null;
       GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
@@ -1003,7 +1003,7 @@ namespace ComposGH.Components
       return goo.Value;
     }
 
-    internal static DeckingConfiguration DeckConfiguration(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static IDeckingConfiguration DeckConfiguration(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
       DeckingConfigGoo goo = null;
       GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();

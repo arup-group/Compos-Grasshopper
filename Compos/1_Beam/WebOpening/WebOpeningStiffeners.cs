@@ -8,7 +8,7 @@ namespace ComposAPI
   /// <summary>
   /// Define Stiffener Plate information used for a <see cref="WebOpening"/>.
   /// </summary>
-  public class WebOpeningStiffeners
+  public class WebOpeningStiffeners : IWebOpeningStiffeners
   {
     public Length DistanceFrom { get; set; }
     public Length TopStiffenerWidth { get; set; }

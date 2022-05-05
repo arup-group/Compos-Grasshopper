@@ -51,11 +51,11 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      ReinforcementMaterial mat = GetInput.RebarMaterial(this, DA, 0);
+      IReinforcementMaterial mat = GetInput.RebarMaterial(this, DA, 0);
 
       if (this.Params.Input[1].Sources.Count > 0)
       {
-        List<ComposAPI.CustomTransverseReinforcementLayout> transverseReinforcmentLayouts = GetInput.TransverseReinforcementLayouts(this, DA, 1);
+        List<ICustomTransverseReinforcementLayout> transverseReinforcmentLayouts = GetInput.TransverseReinforcementLayouts(this, DA, 1);
         DA.SetData(0, new ReinforcementGoo(new CustomTransverseReinforcement(mat, transverseReinforcmentLayouts)));
       }
       else

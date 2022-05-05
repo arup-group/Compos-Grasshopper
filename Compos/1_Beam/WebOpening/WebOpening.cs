@@ -5,30 +5,31 @@ using UnitsNet;
 
 namespace ComposAPI
 {
+  public enum WebOpeningShape
+  {
+    Rectangular,
+    Circular
+  }
+
+  public enum NotchPosition
+  {
+    Start,
+    End
+  }
+
+  public enum OpeningType
+  {
+    Rectangular,
+    Circular,
+    Start_notch,
+    End_notch
+  }
+
   /// <summary>
   /// Web Opening or Notch for a <see cref="Beam"/> object containing information about opening shape and optionally contains a <see cref="WebOpeningStiffeners"/>.
   /// </summary>
-  public class WebOpening
+  public class WebOpening : IWebOpening
   {
-    public enum WebOpeningShape
-    {
-      Rectangular,
-      Circular
-    }
-
-    public enum NotchPosition
-    {
-      Start,
-      End
-    }
-
-    public enum OpeningType
-    {
-      Rectangular,
-      Circular,
-      Start_notch,
-      End_notch
-    }
 
     public OpeningType WebOpeningType
     {
@@ -60,7 +61,7 @@ namespace ComposAPI
     public Length Diameter { get; set; }
     public Length CentroidPosFromStart { get; set; }
     public Length CentroidPosFromTop { get; set; }
-    public WebOpeningStiffeners OpeningStiffeners { get; set; } = null;
+    public IWebOpeningStiffeners OpeningStiffeners { get; set; } = null;
 
     #region constructors
     public WebOpening()

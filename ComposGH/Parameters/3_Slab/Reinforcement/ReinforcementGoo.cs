@@ -16,7 +16,7 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class ReinforcementGoo : GH_Goo<Reinforcement>
+  public class ReinforcementGoo : GH_Goo<IReinforcement>
   {
     #region constructors
     public ReinforcementGoo()

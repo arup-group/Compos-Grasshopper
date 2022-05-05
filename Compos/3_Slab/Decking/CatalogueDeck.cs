@@ -20,7 +20,7 @@ namespace ComposAPI
       this.m_type = DeckingType.Catalogue;
     }
 
-    public CatalogueDeck(string catalogue, string profile, DeckingSteelGrade deckSteelType, DeckingConfiguration deckConfiguration)
+    public CatalogueDeck(string catalogue, string profile, DeckingSteelGrade deckSteelType, IDeckingConfiguration deckConfiguration)
     {
       this.Catalogue = catalogue;
       this.Profile = profile;

@@ -10,7 +10,7 @@ namespace ComposAPI
   /// <summary>
   /// Custom class: this class defines the basic properties and methods for our custom class
   /// </summary>
-  public class DeckingConfiguration
+  public class DeckingConfiguration : IDeckingConfiguration
   {
     public Angle Angle { get; set; }
     public bool IsDiscontinous { get; set; }

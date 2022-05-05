@@ -15,7 +15,7 @@ namespace ComposAPI
     {
       this.m_type = DeckingType.Custom;
     }
-    public CustomDeck(Length distanceB1, Length distanceB2, Length distanceB3, Length distanceB4, Length distanceB5, Length depth, Length thickness, Pressure stress, DeckingConfiguration dconf)
+    public CustomDeck(Length distanceB1, Length distanceB2, Length distanceB3, Length distanceB4, Length distanceB5, Length depth, Length thickness, Pressure stress, IDeckingConfiguration dconf)
     {
       this.b1 = distanceB1;
       this.b2 = distanceB2;

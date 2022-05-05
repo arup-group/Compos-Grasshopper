@@ -45,9 +45,9 @@ namespace ComposGH.Components
         selecteditems = new List<string>();
 
         // type
-        dropdownitems.Add(Enum.GetValues(typeof(WebOpening.WebOpeningShape)).Cast<WebOpening.WebOpeningShape>()
+        dropdownitems.Add(Enum.GetValues(typeof(WebOpeningShape)).Cast<WebOpeningShape>()
             .Select(x => x.ToString()).ToList());
-        selecteditems.Add(WebOpening.WebOpeningShape.Rectangular.ToString());
+        selecteditems.Add(WebOpeningShape.Rectangular.ToString());
 
         // length
         dropdownitems.Add(Units.FilteredLengthUnits);
@@ -66,7 +66,7 @@ namespace ComposGH.Components
       {
         if (selecteditems[i] == openingType.ToString())
           return;
-        openingType = (WebOpening.WebOpeningShape)Enum.Parse(typeof(WebOpening.WebOpeningShape), selecteditems[i]);
+        openingType = (WebOpeningShape)Enum.Parse(typeof(WebOpeningShape), selecteditems[i]);
         ModeChangeClicked();
       }
       else if (i == 1) // change is made to length unit
@@ -83,7 +83,7 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      openingType = (WebOpening.WebOpeningShape)Enum.Parse(typeof(WebOpening.WebOpeningShape), selecteditems[0]);
+      openingType = (WebOpeningShape)Enum.Parse(typeof(WebOpeningShape), selecteditems[0]);
       lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[1]);
       CreateAttributes();
       ModeChangeClicked();
@@ -104,7 +104,7 @@ namespace ComposGH.Components
     });
 
     private bool first = true;
-    private WebOpening.WebOpeningShape openingType = WebOpening.WebOpeningShape.Rectangular;
+    private WebOpeningShape openingType = WebOpeningShape.Rectangular;
     private LengthUnit lengthUnit = Units.LengthUnitSection;
     #endregion
 
@@ -131,18 +131,18 @@ namespace ComposGH.Components
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       Length width_dia = GetInput.Length(this, DA, 0, lengthUnit);
-      Length height = (openingType == WebOpening.WebOpeningShape.Rectangular) ? GetInput.Length(this, DA, 1, lengthUnit) : Length.Zero;
-      Length x = GetInput.Length(this, DA, (openingType == WebOpening.WebOpeningShape.Rectangular) ? 2 : 1, lengthUnit);
-      Length z = GetInput.Length(this, DA, (openingType == WebOpening.WebOpeningShape.Rectangular) ? 3 : 2, lengthUnit);
-      WebOpeningStiffeners stiff = GetInput.WebOpeningStiffeners(this, DA, (openingType == WebOpening.WebOpeningShape.Rectangular) ? 4 : 3, true);
+      Length height = (openingType == WebOpeningShape.Rectangular) ? GetInput.Length(this, DA, 1, lengthUnit) : Length.Zero;
+      Length x = GetInput.Length(this, DA, (openingType == WebOpeningShape.Rectangular) ? 2 : 1, lengthUnit);
+      Length z = GetInput.Length(this, DA, (openingType == WebOpeningShape.Rectangular) ? 3 : 2, lengthUnit);
+      WebOpeningStiffeners stiff = GetInput.WebOpeningStiffeners(this, DA, (openingType == WebOpeningShape.Rectangular) ? 4 : 3, true);
 
       switch (openingType)
       {
-        case WebOpening.WebOpeningShape.Rectangular:
+        case WebOpeningShape.Rectangular:
           DA.SetData(0, new WebOpeningGoo(new WebOpening(width_dia, height, x, z, stiff)));
           break;
 
-        case WebOpening.WebOpeningShape.Circular:
+        case WebOpeningShape.Circular:
           DA.SetData(0, new WebOpeningGoo(new WebOpening(width_dia, x, z, stiff)));
           break;
       }
@@ -152,7 +152,7 @@ namespace ComposGH.Components
     {
       RecordUndoEvent("Changed Parameters");
 
-      if (openingType == WebOpening.WebOpeningShape.Rectangular)
+      if (openingType == WebOpeningShape.Rectangular)
       {
         if (this.Params.Input.Count == 5)
           return;
@@ -173,7 +173,7 @@ namespace ComposGH.Components
         Params.RegisterInputParam(z);
         Params.RegisterInputParam(stiff);
       }
-      if (openingType == WebOpening.WebOpeningShape.Circular)
+      if (openingType == WebOpeningShape.Circular)
       {
         if (this.Params.Input.Count == 4)
           return;
@@ -224,7 +224,7 @@ namespace ComposGH.Components
       IQuantity length = new Length(0, lengthUnit);
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
-      if (openingType == WebOpening.WebOpeningShape.Rectangular)
+      if (openingType == WebOpeningShape.Rectangular)
       {
         int i = 0;
         Params.Input[i].Name = "Width [" + unitAbbreviation + "]";
@@ -252,7 +252,7 @@ namespace ComposGH.Components
         Params.Input[i].Description = "(Optional) Web Opening Stiffeners";
         Params.Input[i].Optional = true;
       }
-      if (openingType == WebOpening.WebOpeningShape.Circular)
+      if (openingType == WebOpeningShape.Circular)
       {
         int i = 0;
         Params.Input[i].Name = "Diameter [" + unitAbbreviation + "]";

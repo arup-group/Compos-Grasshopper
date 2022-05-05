@@ -5,15 +5,16 @@ using UnitsNet;
 
 namespace ComposAPI
 {
-  public class TransverseReinforcement : Reinforcement
+  public enum LayoutMethod
   {
-    public ReinforcementMaterial Material { get; set; }
+    Automatic,
+    Custom
+  }
 
-    public enum LayoutMethod
-    {
-      Automatic,
-      Custom
-    }
+  public class TransverseReinforcement : Reinforcement, ITransverseReinforcement
+  {
+    public IReinforcementMaterial Material { get; set; }
+
     public LayoutMethod Layout { get { return m_layout; } }
     internal LayoutMethod m_layout;
     public TransverseReinforcement()
@@ -22,7 +23,7 @@ namespace ComposAPI
       this.m_layout = LayoutMethod.Automatic;
     }
 
-    public TransverseReinforcement(ReinforcementMaterial material)
+    public TransverseReinforcement(IReinforcementMaterial material)
     {
       this.Material = material;
       this.m_type = ReinforcementType.Transverse;

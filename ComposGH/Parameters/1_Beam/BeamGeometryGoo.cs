@@ -324,8 +324,8 @@ namespace ComposGH.Parameters
           bool found = false;
           for (int i = 0; i < profileExtrusions.Count; i++)
           {
-            if (webOpening.WebOpeningType == WebOpening.OpeningType.Rectangular |
-                webOpening.WebOpeningType == WebOpening.OpeningType.Circular)
+            if (webOpening.WebOpeningType == OpeningType.Rectangular |
+                webOpening.WebOpeningType == OpeningType.Circular)
             {
               Brep[] cuts = profileExtrusions[i].Split(cutter, Units.Tolerance.As(LengthUnit));
               if (cuts.Length > 0)
@@ -369,7 +369,7 @@ namespace ComposGH.Parameters
       Plane local = new Plane();
 
       double t = webOpening.CentroidPosFromStart.As(LengthUnit);
-      if (webOpening.WebOpeningType == WebOpening.OpeningType.End_notch)
+      if (webOpening.WebOpeningType == OpeningType.End_notch)
         t = this.Value.Length.As(LengthUnit);
 
       if (t > this.Value.Length.As(LengthUnit))
@@ -384,7 +384,7 @@ namespace ComposGH.Parameters
 
       switch (webOpening.WebOpeningType)
       {
-        case WebOpening.OpeningType.Rectangular:
+        case OpeningType.Rectangular:
           PolyCurve rect = RectangularOpening(webOpening);
           rect.Transform(maptToLocal);
           // move curve away from web
@@ -402,7 +402,7 @@ namespace ComposGH.Parameters
 
           break;
 
-        case WebOpening.OpeningType.Circular:
+        case OpeningType.Circular:
           ArcCurve circ = CircularOpening(webOpening);
           circ.Transform(maptToLocal);
           // move curve away from web
@@ -415,7 +415,7 @@ namespace ComposGH.Parameters
 
           break;
 
-        case WebOpening.OpeningType.Start_notch:
+        case OpeningType.Start_notch:
           BeamSection beamstart = beamSectionsSorted.First();
           PolyCurve start = StartNotch(webOpening, beamstart.Depth);
           start.Transform(maptToLocal);
@@ -433,7 +433,7 @@ namespace ComposGH.Parameters
           }
           break;
 
-        case WebOpening.OpeningType.End_notch:
+        case OpeningType.End_notch:
           BeamSection beamend = beamSectionsSorted.Last();
           PolyCurve end = EndNotch(webOpening, beamend.Depth);
           end.Transform(maptToLocal);
@@ -476,7 +476,7 @@ namespace ComposGH.Parameters
       {
         LengthUnit unit = LengthUnit;
 
-        if (webOpening.WebOpeningType == WebOpening.OpeningType.Rectangular)
+        if (webOpening.WebOpeningType == OpeningType.Rectangular)
         {
           m_crv = new PolyCurve();
           // top left
@@ -530,7 +530,7 @@ namespace ComposGH.Parameters
       {
         LengthUnit unit = LengthUnit;
 
-        if (webOpening.WebOpeningType == WebOpening.OpeningType.End_notch)
+        if (webOpening.WebOpeningType == OpeningType.End_notch)
         {
           m_crv = new PolyCurve();
           // top left
@@ -585,7 +585,7 @@ namespace ComposGH.Parameters
       {
         LengthUnit unit = LengthUnit;
 
-        if (webOpening.WebOpeningType == WebOpening.OpeningType.Start_notch)
+        if (webOpening.WebOpeningType == OpeningType.Start_notch)
         {
           m_crv = new PolyCurve();
           // top left
@@ -623,7 +623,7 @@ namespace ComposGH.Parameters
       {
         LengthUnit unit = this.LengthUnit;
 
-        if (webOpening.WebOpeningType == WebOpening.OpeningType.Circular)
+        if (webOpening.WebOpeningType == OpeningType.Circular)
         {
           Point3d CP = new Point3d(
             0, // X

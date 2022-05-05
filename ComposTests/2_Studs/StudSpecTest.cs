@@ -28,7 +28,7 @@ namespace ComposAPI.Tests
       Assert.Equal(reinforcementPosition, studSpec.ReinforcementPosition.Millimeters);
       Assert.Equal(welding, studSpec.Welding);
       Assert.Equal(ncci, studSpec.NCCI);
-      Assert.Equal(StudSpecification.StudSpecType.EC4, studSpec.SpecType);
+      Assert.Equal(StudSpecType.EC4, studSpec.SpecType);
 
       return studSpec;
     }
@@ -49,7 +49,7 @@ namespace ComposAPI.Tests
       Assert.Equal(noStudZoneStart, studSpec.NoStudZoneStart.Millimeters);
       Assert.Equal(noStudZoneEnd, studSpec.NoStudZoneEnd.Millimeters);
       Assert.Equal(useEC4Limit, studSpec.EC4_Limit);
-      Assert.Equal(StudSpecification.StudSpecType.BS5950, studSpec.SpecType);
+      Assert.Equal(StudSpecType.BS5950, studSpec.SpecType);
 
       return studSpec;
     }
@@ -70,7 +70,7 @@ namespace ComposAPI.Tests
       Assert.Equal(noStudZoneStart, studSpec.NoStudZoneStart.Millimeters);
       Assert.Equal(noStudZoneEnd, studSpec.NoStudZoneEnd.Millimeters);
       Assert.Equal(welding, studSpec.Welding);
-      Assert.Equal(StudSpecification.StudSpecType.Other, studSpec.SpecType);
+      Assert.Equal(StudSpecType.Other, studSpec.SpecType);
 
       return studSpec;
     }
@@ -90,7 +90,7 @@ namespace ComposAPI.Tests
       Assert.Equal(15, duplicate.ReinforcementPosition.Millimeters);
       Assert.False(duplicate.Welding);
       Assert.True(duplicate.NCCI);
-      Assert.Equal(StudSpecification.StudSpecType.EC4, duplicate.SpecType);
+      Assert.Equal(StudSpecType.EC4, duplicate.SpecType);
 
       // 3 make some changes to duplicate
       duplicate.NoStudZoneStart = new Length(26, unit);
@@ -105,7 +105,7 @@ namespace ComposAPI.Tests
       Assert.Equal(13, duplicate.ReinforcementPosition.Millimeters);
       Assert.True(duplicate.Welding);
       Assert.False(duplicate.NCCI);
-      Assert.Equal(StudSpecification.StudSpecType.EC4, duplicate.SpecType);
+      Assert.Equal(StudSpecType.EC4, duplicate.SpecType);
 
       // 5 check that original has not been changed
       Assert.Equal(25, original.NoStudZoneStart.Millimeters);
@@ -113,7 +113,7 @@ namespace ComposAPI.Tests
       Assert.Equal(15, original.ReinforcementPosition.Millimeters);
       Assert.False(original.Welding);
       Assert.True(original.NCCI);
-      Assert.Equal(StudSpecification.StudSpecType.EC4, original.SpecType);
+      Assert.Equal(StudSpecType.EC4, original.SpecType);
     }
 
     [Fact]
@@ -129,7 +129,7 @@ namespace ComposAPI.Tests
       Assert.Equal(25, duplicate.NoStudZoneStart.Millimeters);
       Assert.Equal(75, duplicate.NoStudZoneEnd.Millimeters);
       Assert.False(duplicate.EC4_Limit);
-      Assert.Equal(StudSpecification.StudSpecType.BS5950, duplicate.SpecType);
+      Assert.Equal(StudSpecType.BS5950, duplicate.SpecType);
 
       // 3 make some changes to duplicate
       duplicate.NoStudZoneStart = new Length(26, unit);
@@ -141,13 +141,13 @@ namespace ComposAPI.Tests
       Assert.Equal(77, duplicate.NoStudZoneEnd.Millimeters);
       Assert.Equal(Length.Zero, duplicate.ReinforcementPosition);
       Assert.True(duplicate.EC4_Limit);
-      Assert.Equal(StudSpecification.StudSpecType.BS5950, duplicate.SpecType);
+      Assert.Equal(StudSpecType.BS5950, duplicate.SpecType);
 
       // 5 check that original has not been changed
       Assert.Equal(25, original.NoStudZoneStart.Millimeters);
       Assert.Equal(75, original.NoStudZoneEnd.Millimeters);
       Assert.False(original.EC4_Limit);
-      Assert.Equal(StudSpecification.StudSpecType.BS5950, original.SpecType);
+      Assert.Equal(StudSpecType.BS5950, original.SpecType);
     }
 
     [Fact]
@@ -163,7 +163,7 @@ namespace ComposAPI.Tests
       Assert.Equal(19, duplicate.NoStudZoneStart.Millimeters);
       Assert.Equal(20, duplicate.NoStudZoneEnd.Millimeters);
       Assert.True(duplicate.Welding);
-      Assert.Equal(StudSpecification.StudSpecType.Other, duplicate.SpecType);
+      Assert.Equal(StudSpecType.Other, duplicate.SpecType);
 
       // 3 make some changes to duplicate
       duplicate.NoStudZoneStart = new Length(18, unit);
@@ -175,13 +175,13 @@ namespace ComposAPI.Tests
       Assert.Equal(21, duplicate.NoStudZoneEnd.Millimeters);
       Assert.Equal(Length.Zero, duplicate.ReinforcementPosition);
       Assert.False(duplicate.Welding);
-      Assert.Equal(StudSpecification.StudSpecType.Other, duplicate.SpecType);
+      Assert.Equal(StudSpecType.Other, duplicate.SpecType);
 
       // 5 check that original has not been changed
       Assert.Equal(19, original.NoStudZoneStart.Millimeters);
       Assert.Equal(20, original.NoStudZoneEnd.Millimeters);
       Assert.True(original.Welding);
-      Assert.Equal(StudSpecification.StudSpecType.Other, original.SpecType);
+      Assert.Equal(StudSpecType.Other, original.SpecType);
     }
   }
 }

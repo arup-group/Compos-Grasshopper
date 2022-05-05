@@ -16,18 +16,18 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class CustomTransverseReinforcmentLayoutGoo : GH_Goo<CustomTransverseReinforcementLayout>
+  public class CustomTransverseReinforcmentLayoutGoo : GH_Goo<ICustomTransverseReinforcementLayout>
   {
     #region constructors
     public CustomTransverseReinforcmentLayoutGoo()
     {
       this.Value = new CustomTransverseReinforcementLayout();
     }
-    public CustomTransverseReinforcmentLayoutGoo(CustomTransverseReinforcementLayout item)
+    public CustomTransverseReinforcmentLayoutGoo(ICustomTransverseReinforcementLayout item)
     {
       if (item == null)
         item = new CustomTransverseReinforcementLayout();
-      this.Value = item.Duplicate() as CustomTransverseReinforcementLayout;
+      this.Value = item.Duplicate() as ICustomTransverseReinforcementLayout;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public CustomTransverseReinforcmentLayoutGoo DuplicateGoo()
     {
-      return new CustomTransverseReinforcmentLayoutGoo(Value == null ? new CustomTransverseReinforcementLayout() : Value.Duplicate() as CustomTransverseReinforcementLayout);
+      return new CustomTransverseReinforcmentLayoutGoo(Value == null ? new CustomTransverseReinforcementLayout() : Value.Duplicate() as ICustomTransverseReinforcementLayout);
     }
     #endregion
 

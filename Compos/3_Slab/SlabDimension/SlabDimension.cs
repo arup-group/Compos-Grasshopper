@@ -9,7 +9,7 @@ namespace ComposAPI
   /// <summary>
   /// Slab dimensions such as Depth, Width, Effective Width, starting position and if the section is tapered to next section.
   /// </summary>
-  public class SlabDimension
+  public class SlabDimension : ISlabDimension
   {
     public Length StartPosition { get; set; } = Length.Zero;
 
