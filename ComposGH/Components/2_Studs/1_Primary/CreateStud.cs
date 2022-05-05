@@ -45,9 +45,9 @@ namespace ComposGH.Components
         selecteditems = new List<string>();
 
         // spacing
-        dropdownitems.Add(Enum.GetValues(typeof(StudGroupSpacing.StudSpacingType)).Cast<StudGroupSpacing.StudSpacingType>()
+        dropdownitems.Add(Enum.GetValues(typeof(StudSpacingType)).Cast<StudSpacingType>()
             .Select(x => x.ToString().Replace("_", " ")).ToList());
-        selecteditems.Add(StudGroupSpacing.StudSpacingType.Automatic.ToString().Replace("_", " "));
+        selecteditems.Add(StudSpacingType.Automatic.ToString().Replace("_", " "));
 
         first = false;
       }
@@ -61,7 +61,7 @@ namespace ComposGH.Components
       if (spacingType.ToString().Replace("_", " ") == selecteditems[i])
         return;
 
-      spacingType = (StudGroupSpacing.StudSpacingType)Enum.Parse(typeof(StudGroupSpacing.StudSpacingType), selecteditems[i].Replace(" ", "_"));
+      spacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), selecteditems[i].Replace(" ", "_"));
 
       ModeChangeClicked();
 
@@ -74,7 +74,7 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      spacingType = (StudGroupSpacing.StudSpacingType)Enum.Parse(typeof(StudGroupSpacing.StudSpacingType), selecteditems[0].Replace(" ", "_"));
+      spacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), selecteditems[0].Replace(" ", "_"));
 
       ModeChangeClicked();
 
@@ -95,7 +95,7 @@ namespace ComposGH.Components
     });
 
     private bool first = true;
-    private StudGroupSpacing.StudSpacingType spacingType = StudGroupSpacing.StudSpacingType.Automatic;
+    private StudSpacingType spacingType = StudSpacingType.Automatic;
     #endregion
 
     #region Input and output
@@ -116,19 +116,19 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      StudDimensions studDimensions = GetInput.StudDim(this, DA, 0);
-      StudSpecification studSpec = GetInput.StudSpec(this, DA, 1);
+      IStudDimensions studDimensions = GetInput.StudDim(this, DA, 0);
+      IStudSpecification studSpec = GetInput.StudSpec(this, DA, 1);
       double minSav = 0.2;
       switch (spacingType)
       {
-        case StudGroupSpacing.StudSpacingType.Automatic:
-        case StudGroupSpacing.StudSpacingType.Min_Num_of_Studs:
+        case StudSpacingType.Automatic:
+        case StudSpacingType.Min_Num_of_Studs:
           DA.GetData(2, ref minSav);
           DA.SetData(0, new StudGoo(
               new Stud(studDimensions, studSpec, minSav, spacingType)));
           break;
 
-        case StudGroupSpacing.StudSpacingType.Partial_Interaction:
+        case StudSpacingType.Partial_Interaction:
           DA.GetData(2, ref minSav);
           double interaction = 0.85;
           DA.GetData(3, ref interaction);
@@ -136,8 +136,8 @@ namespace ComposGH.Components
               new Stud(studDimensions, studSpec, minSav, interaction)));
           break;
 
-        case StudGroupSpacing.StudSpacingType.Custom:
-          List<StudGroupSpacing> spacings = GetInput.StudSpacings(this, DA, 2);
+        case StudSpacingType.Custom:
+          List<IStudGroupSpacing> spacings = GetInput.StudSpacings(this, DA, 2);
           bool check = false;
           DA.GetData(3, ref check);
           DA.SetData(0, new StudGoo(
@@ -152,8 +152,8 @@ namespace ComposGH.Components
 
       switch (spacingType)
       {
-        case StudGroupSpacing.StudSpacingType.Automatic:
-        case StudGroupSpacing.StudSpacingType.Min_Num_of_Studs:
+        case StudSpacingType.Automatic:
+        case StudSpacingType.Min_Num_of_Studs:
           //remove input parameters
           while (Params.Input.Count > 2)
             Params.UnregisterInputParameter(Params.Input[2], true);
@@ -162,7 +162,7 @@ namespace ComposGH.Components
           Params.RegisterInputParam(new Param_Number());
           break;
 
-        case StudGroupSpacing.StudSpacingType.Partial_Interaction:
+        case StudSpacingType.Partial_Interaction:
           //remove input parameters
           while (Params.Input.Count > 2)
             Params.UnregisterInputParameter(Params.Input[2], true);
@@ -172,7 +172,7 @@ namespace ComposGH.Components
           Params.RegisterInputParam(new Param_Number());
           break;
 
-        case StudGroupSpacing.StudSpacingType.Custom:
+        case StudSpacingType.Custom:
           //remove input parameters
           while (Params.Input.Count > 2)
             Params.UnregisterInputParameter(Params.Input[2], true);
@@ -224,15 +224,15 @@ namespace ComposGH.Components
     {
       switch (spacingType)
       {
-        case StudGroupSpacing.StudSpacingType.Automatic:
-        case StudGroupSpacing.StudSpacingType.Min_Num_of_Studs:
+        case StudSpacingType.Automatic:
+        case StudSpacingType.Min_Num_of_Studs:
           Params.Input[2].Name = "Min Saving";
           Params.Input[2].NickName = "Msm";
           Params.Input[2].Description = "Fraction for Minimum Savnig for using Multiple Zones (Default = 0.2 (20%))";
           Params.Input[2].Optional = true;
           break;
 
-        case StudGroupSpacing.StudSpacingType.Partial_Interaction:
+        case StudSpacingType.Partial_Interaction:
           Params.Input[2].Name = "Min Saving";
           Params.Input[2].NickName = "Msm";
           Params.Input[2].Description = "Fraction for Minimum Savnig for using Multiple Zones (Default = 0.2 (20%))";
@@ -243,7 +243,7 @@ namespace ComposGH.Components
           Params.Input[3].Optional = true;
           break;
 
-        case StudGroupSpacing.StudSpacingType.Custom:
+        case StudSpacingType.Custom:
           Params.Input[2].Name = "Stud Spacings";
           Params.Input[2].NickName = "Spa";
           Params.Input[2].Description = "List of Custom Compos Shear Stud Spacing";

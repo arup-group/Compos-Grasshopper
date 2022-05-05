@@ -5,16 +5,6 @@ using UnitsNet;
 
 namespace ComposAPI
 {
-  /// <summary>
-  /// Custom class: this class defines the basic properties and methods for our custom class
-  /// </summary>
-  public class MeshReinforcement : Reinforcement
-  {
-    public Length Cover { get; set; }
-    public bool Rotated { get; set; }
-    public ReinforcementMeshType MeshType { get; set; }
-    public const string CoaIdentifier = "REBAR_WESH";
-
     public enum ReinforcementMeshType
     {
       A393,
@@ -34,6 +24,17 @@ namespace ComposAPI
       C385,
       C283
     }
+
+  /// <summary>
+  /// Custom class: this class defines the basic properties and methods for our custom class
+  /// </summary>
+  public class MeshReinforcement : Reinforcement, IMeshReinforcement
+  {
+    public Length Cover { get; set; }
+    public bool Rotated { get; set; }
+    public ReinforcementMeshType MeshType { get; set; }
+    public const string CoaIdentifier = "REBAR_WESH";
+
 
     #region constructors
     public MeshReinforcement()
@@ -64,13 +65,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-
-    public override Reinforcement Duplicate()
-    {
-      if (this == null) { return null; }
-      MeshReinforcement dup = (MeshReinforcement)this.MemberwiseClone();
-      return dup;
-    }
     public override string ToString()
     {
       string cov = Cover.ToString("f0");

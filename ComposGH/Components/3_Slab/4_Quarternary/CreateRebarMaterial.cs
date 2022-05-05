@@ -44,7 +44,7 @@ namespace ComposGH.Components
         selecteditems = new List<string>();
 
         // grade
-        dropdownitems.Add(Enum.GetValues(typeof(ReinforcementMaterial.StandardGrade)).Cast<ReinforcementMaterial.StandardGrade>().Select(x => x.ToString()).ToList());
+        dropdownitems.Add(Enum.GetValues(typeof(StandardGrade)).Cast<StandardGrade>().Select(x => x.ToString()).ToList());
         selecteditems.Add(mat.ToString());
 
         // strength
@@ -62,7 +62,7 @@ namespace ComposGH.Components
 
       if (i == 0) // change is made to grade
       {
-        mat = (ReinforcementMaterial.StandardGrade)Enum.Parse(typeof(ReinforcementMaterial.StandardGrade), selecteditems[i]);
+        mat = (RebarGrade)Enum.Parse(typeof(RebarGrade), selecteditems[i]);
       }
       if (i == 1) // change is made to unit
       {
@@ -80,7 +80,7 @@ namespace ComposGH.Components
     private void UpdateUIFromSelectedItems()
     {
       if (selecteditems[0] != "Custom")
-        mat = (ReinforcementMaterial.StandardGrade)Enum.Parse(typeof(ReinforcementMaterial.StandardGrade), selecteditems[0]);
+        mat = (RebarGrade)Enum.Parse(typeof(RebarGrade), selecteditems[0]);
 
       stressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), selecteditems[1]);
 
@@ -105,7 +105,7 @@ namespace ComposGH.Components
 
     private bool first = true;
     private PressureUnit stressUnit = Units.StressUnit;
-    private ReinforcementMaterial.StandardGrade mat = ReinforcementMaterial.StandardGrade.EN_500B;
+    private RebarGrade mat = RebarGrade.EN_500B;
 
     #endregion
 

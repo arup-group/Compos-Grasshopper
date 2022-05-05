@@ -5,7 +5,13 @@ using UnitsNet;
 
 namespace ComposAPI
 {
-  public class TransverseReinforcement : Reinforcement
+  public enum LayoutMethod
+  {
+    Automatic,
+    Custom
+  }
+
+  public class TransverseReinforcement : Reinforcement, ITransverseReinforcement
   {
     public enum LayoutMethod
     {
@@ -13,8 +19,9 @@ namespace ComposAPI
       Custom
     }
 
-    public ReinforcementMaterial Material { get; set; }
+    public IReinforcementMaterial Material { get; set; }
     public const string CoaIdentifier = "REBAR_TRANSVERSE";
+
     public LayoutMethod Layout { get { return m_layout; } }
     internal LayoutMethod m_layout;
 
@@ -24,7 +31,7 @@ namespace ComposAPI
       this.m_layout = LayoutMethod.Automatic;
     }
 
-    public TransverseReinforcement(ReinforcementMaterial material)
+    public TransverseReinforcement(IReinforcementMaterial material)
     {
       this.Material = material;
       this.m_type = ReinforcementType.Transverse;
@@ -44,14 +51,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-    public override Reinforcement Duplicate()
-    {
-      if (this == null) { return null; }
-      TransverseReinforcement dup = (TransverseReinforcement)this.MemberwiseClone();
-      dup.Material = this.Material.Duplicate();
-      return dup;
-    }
-
     public override string ToString()
     {
       string mat = this.Material.ToString();

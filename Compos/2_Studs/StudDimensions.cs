@@ -5,28 +5,36 @@ using UnitsNet;
 
 namespace ComposAPI
 {
+  public enum StandardSize
+  {
+    D13mmH65mm,
+    D16mmH70mm,
+    D16mmH75mm,
+    D19mmH75mm,
+    D19mmH95mm,
+    D19mmH100mm,
+    D19mmH125mm,
+    D22mmH95mm,
+    D22mmH100mm,
+    D25mmH95mm,
+    D25mmH100mm,
+  }
+
+  public enum StandardGrade
+  {
+    SD1_EN13918,
+    SD2_EN13918,
+    SD3_EN13918,
+  }
+
   /// <summary>
   /// Object for setting dimensions and strength for a <see cref="ComposGH.Stud.Stud"/>
   /// </summary>
-  public class StudDimensions
+  public class StudDimensions : IStudDimensions
   {
     public Length Diameter { get; set; }
     public Length Height { get; set; }
 
-    public enum StandardSize
-    {
-      D13mmH65mm,
-      D16mmH70mm,
-      D16mmH75mm,
-      D19mmH75mm,
-      D19mmH95mm,
-      D19mmH100mm,
-      D19mmH125mm,
-      D22mmH95mm,
-      D22mmH100mm,
-      D25mmH95mm,
-      D25mmH100mm,
-    }
     private void SetSizeFromStandard(StandardSize size)
     {
       switch (size)
@@ -87,7 +95,8 @@ namespace ComposAPI
         this.m_fu = Pressure.Zero;
       }
     }
-    private Force m_strength;
+
+    private Force m_strength { get; set; }
     public Pressure Fu
     {
       get { return this.m_fu; }
@@ -97,14 +106,8 @@ namespace ComposAPI
         this.m_strength = Force.Zero;
       }
     }
-    private Pressure m_fu;
+    private Pressure m_fu { get; set; }
 
-    public enum StandardGrade
-    {
-      SD1_EN13918,
-      SD2_EN13918,
-      SD3_EN13918,
-    }
     private void SetGradeFromStandard(StandardGrade standardGrade)
     {
       switch (standardGrade)
@@ -198,13 +201,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-
-    public StudDimensions Duplicate()
-    {
-      if (this == null) { return null; }
-      StudDimensions dup = (StudDimensions)this.MemberwiseClone();
-      return dup;
-    }
     public override string ToString()
     {
       string dia = Diameter.As(Units.LengthUnitSection).ToString("f0");

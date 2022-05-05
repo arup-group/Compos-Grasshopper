@@ -65,14 +65,14 @@ namespace ComposAPI.Tests
     {
       // 1 create with constructor and duplicate
       ERatio original = new ERatio(shortTerm, longTerm, vibration, shrinkage);
-      ERatio duplicate = original.Duplicate();
+      ERatio? duplicate = original.Duplicate() as ERatio;
 
       // 2 check that duplicate has duplicated values
-      Assert.Equal(shortTerm, duplicate.ShortTerm);
-      Assert.Equal(longTerm, duplicate.LongTerm);
-      Assert.Equal(vibration, duplicate.Vibration);
-      Assert.Equal(shrinkage, duplicate.Shrinkage);
-      Assert.True(duplicate.UserDefined);
+      Assert.Equal(original.ShortTerm, duplicate.ShortTerm);
+      Assert.Equal(original.LongTerm, duplicate.LongTerm);
+      Assert.Equal(original.Vibration, duplicate.Vibration);
+      Assert.Equal(original.Shrinkage, duplicate.Shrinkage);
+      Assert.Equal(original.UserDefined, duplicate.UserDefined);
 
       // 3 make some changes to duplicate
       duplicate.ShortTerm = 6;

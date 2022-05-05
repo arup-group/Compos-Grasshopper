@@ -40,16 +40,5 @@ namespace ComposAPI
       this.Slab = slab;
       this.Loads = loads;
     }
-    public Member Duplicate()
-    {
-      if (this == null) { return null; }
-      Member dup = (Member)this.MemberwiseClone();
-      dup.DesignCode = this.DesignCode.Duplicate();
-      dup.Beam = this.Beam.Duplicate();
-      dup.Stud = this.Stud.Duplicate();
-      dup.Slab = this.Slab.Duplicate();
-      dup.Loads = this.Loads.ToList();
-      return dup;
-    }
   }
 }

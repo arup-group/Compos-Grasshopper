@@ -27,7 +27,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new DesignCode();
-      this.Value = item.Duplicate();
+      this.Value = item.Duplicate() as DesignCode;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public DesignCodeGoo DuplicateGoo()
     {
-      return new DesignCodeGoo(Value == null ? new DesignCode() : Value.Duplicate());
+      return new DesignCodeGoo(Value == null ? new DesignCode() : Value.Duplicate() as DesignCode);
     }
     #endregion
 

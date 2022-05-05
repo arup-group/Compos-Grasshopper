@@ -27,7 +27,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new StudDimensions();
-      this.Value = item.Duplicate();
+      this.Value = item.Duplicate() as StudDimensions;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public StudDimensionsGoo DuplicateGoo()
     {
-      return new StudDimensionsGoo(Value == null ? new StudDimensions() : Value.Duplicate());
+      return new StudDimensionsGoo(Value == null ? new StudDimensions() : Value.Duplicate() as StudDimensions);
     }
     #endregion
 

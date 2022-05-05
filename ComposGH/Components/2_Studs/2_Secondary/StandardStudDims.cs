@@ -44,7 +44,7 @@ namespace ComposGH.Components
         selecteditems = new List<string>();
 
         // spacing
-        dropdownitems.Add(Enum.GetValues(typeof(StudDimensions.StandardSize)).Cast<StudDimensions.StandardSize>()
+        dropdownitems.Add(Enum.GetValues(typeof(StandardSize)).Cast<StandardSize>()
             .Select(x => x.ToString()).ToList());
         for (int i = 0; i < dropdownitems[0].Count; i++)
           dropdownitems[0][i] = dropdownitems[0][i].Replace("D", "Ø").Replace("mmH", "/");
@@ -67,7 +67,7 @@ namespace ComposGH.Components
       if (i == 0) // change is made to size
       {
         string sz = selecteditems[i].Replace("Ø", "D").Replace("/", "mmH");
-        stdSize = (StudDimensions.StandardSize)Enum.Parse(typeof(StudDimensions.StandardSize), sz);
+        stdSize = (StandardSize)Enum.Parse(typeof(StandardSize), sz);
       }
       else if (i == 1) // change is made to grade
       {
@@ -84,7 +84,7 @@ namespace ComposGH.Components
     private void UpdateUIFromSelectedItems()
     {
       string sz = selecteditems[0].Replace("Ø", "D").Replace("/", "mmH");
-      stdSize = (StudDimensions.StandardSize)Enum.Parse(typeof(StudDimensions.StandardSize), sz);
+      stdSize = (StandardSize)Enum.Parse(typeof(StandardSize), sz);
       forceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), selecteditems[1]);
 
       CreateAttributes();
@@ -119,7 +119,7 @@ namespace ComposGH.Components
     });
     private bool first = true;
     private ForceUnit forceUnit = Units.ForceUnit;
-    private StudDimensions.StandardSize stdSize = StudDimensions.StandardSize.D19mmH100mm;
+    private StandardSize stdSize = StandardSize.D19mmH100mm;
     #endregion
 
     #region Input and output

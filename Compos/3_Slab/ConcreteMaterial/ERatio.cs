@@ -7,7 +7,7 @@ namespace ComposAPI
   /// <summary>
   /// Define the Steel/Concrete Modular Ratio used for a <see cref="ConcreteMaterial"/> object.
   /// </summary>
-  public class ERatio
+  public class ERatio : IERatio
   {
     public double ShortTerm { get; set; } //	user defined steel to concrete modulus ratio for short term londing
     public double LongTerm { get; set; } // user defined steel to concrete modulus ratio for long term londing
@@ -33,13 +33,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-    public ERatio Duplicate()
-    {
-      if (this == null) { return null; }
-      ERatio dup = (ERatio)this.MemberwiseClone();
-      return dup;
-    }
-
     public override string ToString()
     {
       string str = "ST: " + this.ShortTerm + ", LT: " + this.LongTerm + ", V: " + this.Vibration;

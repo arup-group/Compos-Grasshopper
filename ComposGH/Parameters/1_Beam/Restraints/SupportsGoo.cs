@@ -27,7 +27,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new Supports();
-      this.Value = item.Duplicate();
+      this.Value = item.Duplicate() as Supports;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public SupportsGoo DuplicateGoo()
     {
-      return new SupportsGoo(Value == null ? new Supports() : Value.Duplicate());
+      return new SupportsGoo(Value == null ? new Supports() : Value.Duplicate() as Supports);
     }
     #endregion
 

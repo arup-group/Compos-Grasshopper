@@ -5,8 +5,16 @@ using UnitsNet;
 
 namespace ComposAPI
 {
+  public enum StudSpacingType
+  {
+    Automatic,
+    Partial_Interaction,
+    Min_Num_of_Studs,
+    Custom
+  }
+
   /// <summary>
-  /// Object for setting custom spacing/layout for a <see cref="ComposGH.Stud.Stud"/>
+  /// Object for setting custom spacing/layout for a <see cref="Stud"/>
   /// </summary>
   public class StudGroupSpacing
   {
@@ -15,14 +23,6 @@ namespace ComposAPI
     public int NumberOfLines { get; set; } = 1;
     public Length Spacing { get; set; }
 
-    // Stud spacing
-    public enum StudSpacingType
-    {
-      Automatic,
-      Partial_Interaction,
-      Min_Num_of_Studs,
-      Custom
-    }
     #region constructors
     public StudGroupSpacing()
     {
@@ -44,13 +44,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-
-    public StudGroupSpacing Duplicate()
-    {
-      if (this == null) { return null; }
-      StudGroupSpacing dup = (StudGroupSpacing)this.MemberwiseClone();
-      return dup;
-    }
     public override string ToString()
     {
       string start = (this.DistanceFromStart.Value == 0) ? "" : "From:" + this.DistanceFromStart.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);

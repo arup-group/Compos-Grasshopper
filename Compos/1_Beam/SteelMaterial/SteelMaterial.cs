@@ -7,10 +7,26 @@ using UnitsNet.Units;
 
 namespace ComposAPI
 {
+  public enum SteelMaterialGrade
+  {
+    S235,
+    S275,
+    S355,
+    S450,
+    S460
+  }
+  public enum WeldMaterialGrade
+  {
+    None,
+    Grade35,
+    Grade42,
+    Grade50
+  }
+
   /// <summary>
   /// Steel Material for a <see cref="Beam"/>. Contains information about strength, density and Young's Modulus, as well as grade.
   /// </summary>
-  public class SteelMaterial
+  public class SteelMaterial : ISteelMaterial
   {
     public enum SteelMaterialGrade
     {
@@ -160,13 +176,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-    public SteelMaterial Duplicate()
-    {
-      if (this == null) { return null; }
-      SteelMaterial dup = (SteelMaterial)this.MemberwiseClone();
-      return dup;
-    }
-
     public override string ToString()
     {
       string isCust = string.Empty;

@@ -8,14 +8,13 @@ using UnitsNet.Units;
 
 namespace ComposAPI
 {
-  public class Decking
+  public enum DeckingType
   {
-    public enum DeckingType
-    {
-      Custom,
-      Catalogue
-    }
-
+    Custom,
+    Catalogue
+  }
+  public class Decking : IDecking
+  {
     public Length b1 { get; set; } // dimensions of decking see decking page of property wizard of the program
     public Length b2 { get; set; }
     public Length b3 { get; set; }
@@ -32,14 +31,7 @@ namespace ComposAPI
       // empty constructor
     }
 
-    #region methods
-    public virtual Decking Duplicate()
-    {
-      if (this == null) { return null; }
-      Decking dup = (Decking)this.MemberwiseClone();
-      dup.DeckingConfiguration = this.DeckingConfiguration.Duplicate();
-      return dup;
-    }
+    #region coa interop
 
     internal virtual string ToCoaString(string name, AngleUnit angleUnit, LengthUnit lengthUnit, PressureUnit pressureUnit)
     {
@@ -47,5 +39,15 @@ namespace ComposAPI
     }
 
     #endregion
+    internal Decking(string coaString)
+    {
+      // to do - implement from coa string method
+    }
+
+    internal string ToCoaString()
+    {
+      // to do - implement to coa string method
+      return string.Empty;
+    }
   }
 }

@@ -50,19 +50,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-
-    public Beam Duplicate()
-    {
-      if (this == null) { return null; }
-      Beam dup = (Beam)this.MemberwiseClone();
-      dup.Material = this.Material.Duplicate();
-      dup.Restraint = this.Restraint.Duplicate();
-      dup.BeamSections = this.BeamSections.ToList();
-      if (this.WebOpenings != null)
-        dup.WebOpenings = this.WebOpenings.ToList();
-      return dup;
-    }
-
     public override string ToString()
     {
       string profile = (this.BeamSections.Count > 1) ? string.Join(" : ", this.BeamSections.Select(x => x.SectionDescription).ToArray()) : this.BeamSections[0].SectionDescription;

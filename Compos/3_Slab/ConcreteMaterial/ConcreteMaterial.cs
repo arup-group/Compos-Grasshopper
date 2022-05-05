@@ -2,60 +2,61 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using UnitsNet;
-using Oasys.Units;
 using ComposAPI.Helpers;
+using Oasys.Units;
+using UnitsNet;
 using UnitsNet.Units;
 
 namespace ComposAPI
 {
+  public enum ConcreteGrade
+  {
+    C20,
+    C25,
+    C30,
+    C32,
+    C35,
+    C40,
+    C45,
+    C50,
+    C55,
+    C60,
+    C70,
+    C80,
+    C90,
+    C100
+  }
+
+  // EN1994-1-1:2004
+  public enum ConcreteGradeEN
+  {
+    C20_25,
+    C25_30,
+    C30_37,
+    C32_40,
+    C35_45,
+    C40_50,
+    C45_55,
+    C50_60,
+    C55_67,
+    C60_75,
+    LC20_22,
+    LC25_28,
+    LC30_33,
+    LC35_38,
+    LC40_44,
+    LC45_50,
+    LC50_55,
+    LC55_60,
+    LC60_66
+  }
+
   /// <summary>
   /// A Concrete Material object contains information about the material
   /// such as strength, grade, weight type, Young's modulus ratio, etc.
   /// /// </summary>
-  public class ConcreteMaterial
+  public class ConcreteMaterial : IConcreteMaterial
   {
-    public enum ConcreteGrade
-    {
-      C20,
-      C25,
-      C30,
-      C32,
-      C35,
-      C40,
-      C45,
-      C50,
-      C55,
-      C60,
-      C70,
-      C80,
-      C90,
-      C100
-    }
-
-    // EN1994-1-1:2004
-    public enum ConcreteGradeEN
-    {
-      C20_25,
-      C25_30,
-      C30_37,
-      C32_40,
-      C35_45,
-      C40_50,
-      C45_55,
-      C50_60,
-      C55_67,
-      C60_75,
-      LC20_22,
-      LC25_28,
-      LC30_33,
-      LC35_38,
-      LC40_44,
-      LC45_50,
-      LC50_55,
-      LC55_60,
-      LC60_66
-    }
 
     public enum WeightType
     {
@@ -243,14 +244,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-    public ConcreteMaterial Duplicate()
-    {
-      if (this == null) { return null; }
-      ConcreteMaterial dup = (ConcreteMaterial)this.MemberwiseClone();
-      dup.ERatio = this.ERatio.Duplicate();
-      return dup;
-    }
-
     public override string ToString()
     {
       string str = this.Grade.ToString().Replace("_", "/");

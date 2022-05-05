@@ -10,7 +10,7 @@ namespace ComposAPI
   /// <summary>
   /// Custom class: this class defines the basic properties and methods for our custom class
   /// </summary>
-  public class DeckingConfiguration
+  public class DeckingConfiguration : IDeckingConfiguration
   {
     public Angle Angle { get; set; } // decking angle relative to steel beam in degrees
     public bool IsDiscontinous { get; set; } // is decking jointed
@@ -31,13 +31,6 @@ namespace ComposAPI
       this.IsDiscontinous = isDiscontinous;
       this.IsWelded = isWelded;
 
-    }
-
-    public DeckingConfiguration Duplicate()
-    {
-      if (this == null) { return null; }
-      DeckingConfiguration dup = (DeckingConfiguration)this.MemberwiseClone();
-      return dup;
     }
 
     public override string ToString()

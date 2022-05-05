@@ -73,7 +73,7 @@ namespace ComposGH.Components
 
     public void SetSelected(int i, int j)
     {
-      // input -1 to force update of catalogue sections to include/exclude superseeded
+      // input -1 to force update of catalogue sections to include/exclude superseded
       bool updateCat = false;
       if (i == -1)
       {
@@ -424,7 +424,7 @@ namespace ComposGH.Components
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       pManager.AddTextParameter("Search", "S", "Text to search from", GH_ParamAccess.item);
-      pManager.AddBooleanParameter("InclSuperseeded", "iSS", "Input true to include superseeded catalogue sections", GH_ParamAccess.item);
+      pManager.AddBooleanParameter("InclSuperseded", "iSS", "Input true to include superseded catalogue sections", GH_ParamAccess.item);
       pManager[0].Optional = true;
       pManager[1].Optional = true;
     }
@@ -825,8 +825,8 @@ namespace ComposGH.Components
 
         i++;
         Params.Input[i].NickName = "iSS";
-        Params.Input[i].Name = "InclSuperseeded";
-        Params.Input[i].Description = "Input true to include superseeded catalogue sections";
+        Params.Input[i].Name = "InclSuperseded";
+        Params.Input[i].Description = "Input true to include superseded catalogue sections";
         Params.Input[i].Access = GH_ParamAccess.item;
         Params.Input[i].Optional = true;
       }

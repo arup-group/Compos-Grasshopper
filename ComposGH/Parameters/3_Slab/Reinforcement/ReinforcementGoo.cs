@@ -16,7 +16,7 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class ReinforcementGoo : GH_Goo<Reinforcement>
+  public class ReinforcementGoo : GH_Goo<IReinforcement>
   {
     #region constructors
     public ReinforcementGoo()
@@ -27,7 +27,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new Reinforcement();
-      this.Value = item.Duplicate();
+      this.Value = item.Duplicate() as Reinforcement;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public ReinforcementGoo DuplicateGoo()
     {
-      return new ReinforcementGoo(Value == null ? new Reinforcement() : Value.Duplicate());
+      return new ReinforcementGoo(Value == null ? new Reinforcement() : Value.Duplicate() as Reinforcement);
     }
     #endregion
 

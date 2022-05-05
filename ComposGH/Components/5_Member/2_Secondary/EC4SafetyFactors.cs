@@ -73,7 +73,7 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      loadcombinationType = (LoadCombination)Enum.Parse(typeof(StudGroupSpacing.StudSpacingType), selecteditems[0].Replace(" or ", "__").Replace(".", "_"));
+      loadcombinationType = (LoadCombination)Enum.Parse(typeof(StudSpacingType), selecteditems[0].Replace(" or ", "__").Replace(".", "_"));
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();

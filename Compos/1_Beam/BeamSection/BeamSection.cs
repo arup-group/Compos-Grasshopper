@@ -12,7 +12,7 @@ namespace ComposAPI
   /// A Beam Section object contains information about the profile dimensions, 
   /// start position and if the section is tapered to next section.
   /// </summary>
-  public class BeamSection
+  public class BeamSection : IBeamSection
   {
     // Setting out
     public bool TaperedToNext
@@ -230,12 +230,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-    public BeamSection Duplicate()
-    {
-      if (this == null) { return null; }
-      BeamSection dup = (BeamSection)this.MemberwiseClone();
-      return dup;
-    }
     public override string ToString()
     {
       string start = "";

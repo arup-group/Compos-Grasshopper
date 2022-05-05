@@ -8,7 +8,7 @@ namespace ComposAPI
   /// <summary>
   /// Define Stiffener Plate information used for a <see cref="WebOpening"/>.
   /// </summary>
-  public class WebOpeningStiffeners
+  public class WebOpeningStiffeners : IWebOpeningStiffeners
   {
     public Length DistanceFrom { get; set; }
     public Length TopStiffenerWidth { get; set; }
@@ -60,13 +60,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-
-    public WebOpeningStiffeners Duplicate()
-    {
-      if (this == null) { return null; }
-      WebOpeningStiffeners dup = (WebOpeningStiffeners)this.MemberwiseClone();
-      return dup;
-    }
     public override string ToString()
     {
       string start = (this.DistanceFrom.Value == 0) ? "" : "d:" + this.DistanceFrom.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);

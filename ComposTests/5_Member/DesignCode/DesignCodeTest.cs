@@ -101,7 +101,7 @@ namespace ComposAPI.Tests
 
       // 1 create with constructor and duplicate
       DesignCode original = new DesignCode(code);
-      DesignCode duplicate = original.Duplicate();
+      DesignCode duplicate = original.Duplicate() as DesignCode;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(code, duplicate.Code);
@@ -115,10 +115,10 @@ namespace ComposAPI.Tests
       Assert.Null(duplicate.SafetyFactors.LoadFactors);
 
       // 3 make some changes to duplicate
-      duplicate.Code = Code.BS5950_3_1_1990_Superseeded;
+      duplicate.Code = Code.BS5950_3_1_1990_Superseded;
 
       // 4 check that duplicate has set changes
-      Assert.Equal(Code.BS5950_3_1_1990_Superseeded, duplicate.Code);
+      Assert.Equal(Code.BS5950_3_1_1990_Superseded, duplicate.Code);
       Assert.False(object.ReferenceEquals(duplicate.DesignOptions, original.DesignOptions));
       Assert.False(object.ReferenceEquals(duplicate.SafetyFactors, original.SafetyFactors));
 
