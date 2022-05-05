@@ -33,8 +33,6 @@ namespace ComposAPI
     public Length Cover { get; set; }
     public bool Rotated { get; set; }
     public ReinforcementMeshType MeshType { get; set; }
-    public const string CoaIdentifier = "REBAR_WESH";
-
 
     #region constructors
     public MeshReinforcement()
@@ -58,7 +56,7 @@ namespace ComposAPI
 
     }
 
-    internal string ToCoaString(string name)
+    public string ToCoaString(string name)
     {
       return String.Empty;
     }

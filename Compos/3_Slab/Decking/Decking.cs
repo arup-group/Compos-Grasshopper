@@ -22,7 +22,7 @@ namespace ComposAPI
     public Length b5 { get; set; }
     public Length Depth { get; set; } // overall depth of decking
     public Length Thickness { get; set; } // 	decking sheet thickness
-    public DeckingConfiguration DeckingConfiguration { get; set; }
+    public IDeckingConfiguration DeckingConfiguration { get; set; }
     public DeckingType Type { get { return m_type; } }
     internal DeckingType m_type;
 
@@ -39,12 +39,12 @@ namespace ComposAPI
     }
 
     #endregion
-    internal Decking(string coaString)
+    public Decking(string coaString)
     {
       // to do - implement from coa string method
     }
 
-    internal string ToCoaString()
+    public string ToCoaString(string name)
     {
       // to do - implement to coa string method
       return string.Empty;

@@ -13,10 +13,10 @@ namespace ComposAPI.Tests
 {
   public static class ConcreteMaterialMother
   {
-    public static ConcreteMaterial CreateConcreteMaterial()
+    public static IConcreteMaterial CreateConcreteMaterial()
     {
       Density dryDensity = new Density(2400, DensityUnit.KilogramPerCubicCentimeter);
-      ERatio eRatio = ERatioMother.CreateERatio();
+      IERatio eRatio = ERatioMother.CreateERatio();
       return new ConcreteMaterial(ConcreteGrade.C30, WeightType.Normal, dryDensity, false, eRatio, 0.33);
     }
   }

@@ -26,8 +26,8 @@ namespace ComposAPI.Tests
     [Fact]
     public void TestConstructor1()
     {
-      ConcreteMaterial material = ConcreteMaterialMother.CreateConcreteMaterial();
-      List<SlabDimension> dimensions = new List<SlabDimension>() { SlabDimensionMother.CreateSlabDimension() };
+      IConcreteMaterial material = ConcreteMaterialMother.CreateConcreteMaterial();
+      List<ISlabDimension> dimensions = new List<ISlabDimension>() { SlabDimensionMother.CreateSlabDimension() };
       //TransverseReinforcement transverseReinforcement = new TransverseReinforcementMother.CreateTransverseReinforcement() };
       //Slab slab = new Slab(material, dimensions, transverseReinforcement, meshReinforcement, decking);
 
@@ -44,8 +44,8 @@ namespace ComposAPI.Tests
     public void TestConstructor2()
     {
       // 2 create object instance with constructor
-      ConcreteMaterial material = ConcreteMaterialMother.CreateConcreteMaterial();
-      List<SlabDimension> dimensions = new List<SlabDimension>() { SlabDimensionMother.CreateSlabDimension() };
+      IConcreteMaterial material = ConcreteMaterialMother.CreateConcreteMaterial();
+      List<ISlabDimension> dimensions = new List<ISlabDimension>() { SlabDimensionMother.CreateSlabDimension() };
       //TransverseReinforcement transverseReinforcement = new TransverseReinforcementMother.CreateTransverseReinforcement() };
       //MeshReinforcement meshReinforcement = new MeshReinforcementMother.CreateMeshReinforcement() };
       //Decking decking = new DeckingMother.CreateDecking() };

@@ -11,18 +11,12 @@ namespace ComposAPI
     Custom
   }
 
-  public class TransverseReinforcement : Reinforcement, ITransverseReinforcement
+  public class TransverseReinforcement : Reinforcement, ITransverseReinforcement, ICoaObject
   {
-    public enum LayoutMethod
-    {
-      Automatic,
-      Custom
-    }
-
     public IReinforcementMaterial Material { get; set; }
-    public const string CoaIdentifier = "REBAR_TRANSVERSE";
 
     public LayoutMethod Layout { get { return m_layout; } }
+
     internal LayoutMethod m_layout;
 
     public TransverseReinforcement()
@@ -41,10 +35,10 @@ namespace ComposAPI
     #region coa interop
     internal TransverseReinforcement(List<string> parameters)
     {
-    
+
     }
 
-    internal string ToCoaString(string name)
+    public new string ToCoaString()
     {
       return String.Empty;
     }

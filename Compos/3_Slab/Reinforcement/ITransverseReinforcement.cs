@@ -4,5 +4,7 @@
   {
     IReinforcementMaterial Material { get; }
     LayoutMethod Layout { get; }
+
+    string ToCoaString();
   }
 }

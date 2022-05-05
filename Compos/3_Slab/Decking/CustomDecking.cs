@@ -16,9 +16,8 @@ namespace ComposAPI
     {
       this.m_type = DeckingType.Custom;
     }
-    public const string CoaIdentifier = "DECKING_USER";
 
-    public CustomDecking(Length distanceB1, Length distanceB2, Length distanceB3, Length distanceB4, Length distanceB5, Length depth, Length thickness, Pressure stress, DeckingConfiguration dconf)
+    public CustomDecking(Length distanceB1, Length distanceB2, Length distanceB3, Length distanceB4, Length distanceB5, Length depth, Length thickness, Pressure stress, IDeckingConfiguration dconf)
     {
       this.b1 = distanceB1;
       this.b2 = distanceB2;
@@ -36,8 +35,8 @@ namespace ComposAPI
     internal CustomDecking(List<string> parameters, AngleUnit angleUnit, LengthUnit lengthUnit, PressureUnit pressureUnit)
     {
       this.Strength = new Pressure(Convert.ToDouble(parameters[3]), pressureUnit);
-      this.DeckingConfiguration = new DeckingConfiguration();
-      this.DeckingConfiguration.Angle = new Angle(Convert.ToDouble(parameters[4]), angleUnit);
+      DeckingConfiguration deckingConfiguration = new DeckingConfiguration();
+      deckingConfiguration.Angle = new Angle(Convert.ToDouble(parameters[4]), angleUnit);
       this.b1 = new Length(Convert.ToDouble(parameters[5]), lengthUnit);
       this.b2 = new Length(Convert.ToDouble(parameters[6]), lengthUnit);
       this.b3 = new Length(Convert.ToDouble(parameters[7]), lengthUnit);
@@ -47,14 +46,15 @@ namespace ComposAPI
       this.b5 = new Length(Convert.ToDouble(parameters[11]), lengthUnit);
 
       if (parameters[12] == "DECKING_JOINTED")
-        this.DeckingConfiguration.IsDiscontinous = true;
+        deckingConfiguration.IsDiscontinous = true;
       else
-        this.DeckingConfiguration.IsDiscontinous = false;
+        deckingConfiguration.IsDiscontinous = false;
 
       if (parameters[12] == "JOINT_WELDED")
-        this.DeckingConfiguration.IsWelded = true;
+        deckingConfiguration.IsWelded = true;
       else
-        this.DeckingConfiguration.IsWelded = false;
+        deckingConfiguration.IsWelded = false;
+      this.DeckingConfiguration = deckingConfiguration;
     }
 
     internal override string ToCoaString(string name, AngleUnit angleUnit, LengthUnit lengthUnit, PressureUnit pressureUnit)
@@ -89,13 +89,6 @@ namespace ComposAPI
     }
     #endregion
 
-    public override Decking Duplicate()
-    {
-      if (this == null) { return null; }
-      CustomDecking dup = (CustomDecking)this.MemberwiseClone();
-      dup.DeckingConfiguration = this.DeckingConfiguration.Duplicate();
-      return dup;
-    }
     public override string ToString()
     {
       string distanceB1 = (this.b1.Value == 0) ? "" : "b1:" + this.b1.ToString().Replace(" ", string.Empty);

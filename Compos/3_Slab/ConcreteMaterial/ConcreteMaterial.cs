@@ -80,12 +80,12 @@ namespace ComposAPI
     public DensityClass Class { get; set; } = DensityClass.NOT_APPLY; //	Leight weight material density class
     public Density DryDensity { get; set; } // material density
     public bool UserDensity { get; set; } = false; //	code density or user defined density
-    public ERatio ERatio { get; set; } // steel to concrete Young's modulus ratio
+    public IERatio ERatio { get; set; } // steel to concrete Young's modulus ratio
     public double ImposedLoadPercentage { get; set; } // percentage of live load acting long term (as dead load)
     public Strain ShrinkageStrain { get; set; } //	Concrete Shrinkage strain
     public bool UserStrain { get; set; } = false; //	code or user defined shrinkage strain
 
-    public const string CoaIdentifier = "SLAB_CONCRETE_MATERIAL";
+
 
     #region constructors
     public ConcreteMaterial()
@@ -102,7 +102,7 @@ namespace ComposAPI
     /// <param name="userDensity"></param>
     /// <param name="eRatio"></param>
     /// <param name="imposedLoadPercentage"></param>
-    public ConcreteMaterial(ConcreteGrade grade, WeightType type, Density dryDensity, bool userDensity, ERatio eRatio, double imposedLoadPercentage)
+    public ConcreteMaterial(ConcreteGrade grade, WeightType type, Density dryDensity, bool userDensity, IERatio eRatio, double imposedLoadPercentage)
     {
       this.Grade = grade.ToString();
       this.Type = type;
@@ -124,7 +124,7 @@ namespace ComposAPI
     /// <param name="imposedLoadPercentage"></param>
     /// <param name="shrinkageStrain"></param>
     /// <param name="userStrain"></param>
-    public ConcreteMaterial(ConcreteGradeEN grade, DensityClass densityClass, Density dryDensity, bool userDensity, ERatio eRatio, double imposedLoadPercentage, Strain shrinkageStrain, bool userStrain)
+    public ConcreteMaterial(ConcreteGradeEN grade, DensityClass densityClass, Density dryDensity, bool userDensity, IERatio eRatio, double imposedLoadPercentage, Strain shrinkageStrain, bool userStrain)
     {
       this.Grade = grade.ToString();
       if (this.Grade.StartsWith("L"))
@@ -146,7 +146,7 @@ namespace ComposAPI
     /// <param name="userDensity"></param>
     /// <param name="eRatio"></param>
     /// <param name="imposedLoadPercentage"></param>
-    public ConcreteMaterial(ConcreteGrade grade, Density dryDensity, bool userDensity, ERatio eRatio, double imposedLoadPercentage)
+    public ConcreteMaterial(ConcreteGrade grade, Density dryDensity, bool userDensity, IERatio eRatio, double imposedLoadPercentage)
     {
       this.Grade = grade.ToString();
       this.DryDensity = dryDensity;
@@ -164,7 +164,7 @@ namespace ComposAPI
     /// <param name="userDensity"></param>
     /// <param name="eRatio"></param>
     /// <param name="imposedLoadPercentage"></param>
-    public ConcreteMaterial(ConcreteGrade grade, Density dryDensity, bool userDensity, ERatio eRatio, double imposedLoadPercentage, Strain shrinkageStrain, bool userStrain)
+    public ConcreteMaterial(ConcreteGrade grade, Density dryDensity, bool userDensity, IERatio eRatio, double imposedLoadPercentage, Strain shrinkageStrain, bool userStrain)
     {
       this.Grade = grade.ToString();
       this.DryDensity = dryDensity;
@@ -207,9 +207,9 @@ namespace ComposAPI
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
-    internal string ToCoaString(string name, DensityUnit densityUnit, StrainUnit strainUnit)
+    public string ToCoaString(string name, DensityUnit densityUnit, StrainUnit strainUnit)
     {
-      List<string> parameters = new List<string>() { ConcreteMaterial.CoaIdentifier, name, this.Grade.Replace("_", "/"), this.Type.ToString() };
+      List<string> parameters = new List<string>() { CoaIdentifier.SlabConcreteMaterial, name, this.Grade.Replace("_", "/"), this.Type.ToString() };
       if (this.UserDensity)
       {
         parameters.Add("USER_DENSITY");

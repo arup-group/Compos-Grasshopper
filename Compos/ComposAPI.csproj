@@ -87,7 +87,9 @@
     <Compile Include="5_Member\DesignCode\ILoadFactors.cs" />
     <Compile Include="5_Member\DesignCode\IMaterialPartialFactors.cs" />
     <Compile Include="5_Member\DesignCode\ISafetyFactors.cs" />
+    <Compile Include="Helpers\CoaIdentifier.cs" />
     <Compile Include="Helpers\ComposIO.cs" />
+    <Compile Include="ICoaObject.cs" />
     <Compile Include="ObjectExtension.cs" />
     <Compile Include="Helpers\ReadSQLValues.cs" />
     <Compile Include="Helpers\Units.cs" />

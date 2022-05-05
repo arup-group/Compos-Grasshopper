@@ -11,7 +11,7 @@ namespace ComposAPI
   /// <summary>
   /// Slab dimensions such as Depth, Width, Effective Width, starting position and if the section is tapered to next section.
   /// </summary>
-  public class SlabDimension : ISlabDimension
+  public class SlabDimension : ISlabDimension, ICoaObject
   {
     public Length StartPosition { get; set; } = Length.Zero;
 
@@ -26,7 +26,6 @@ namespace ComposAPI
     // Settings
     public bool TaperedToNext { get; set; } // Tapered to next section flag
 
-    public const string CoaIdentifier = "SLAB_DIMENSION";
 
     #region constructors
     public SlabDimension()
@@ -97,10 +96,10 @@ namespace ComposAPI
     /// <returns></returns>
     internal string ToCoaString(string name, int num, int index, LengthUnit lengthUnit)
     {
-      List<string> parameters = new List<string>() { SlabDimension.CoaIdentifier, name, Convert.ToString(num), Convert.ToString(index), this.StartPosition.ToUnit(lengthUnit).ToString(), this.OverallDepth.ToUnit(lengthUnit).ToString(), this.AvailableWidthLeft.ToUnit(lengthUnit).ToString(), this.AvailableWidthRight.ToUnit(lengthUnit).ToString() };
+      List<string> parameters = new List<string>() { CoaIdentifier.SlabDimension, name, Convert.ToString(num), Convert.ToString(index), this.StartPosition.ToUnit(lengthUnit).ToString(), this.OverallDepth.ToUnit(lengthUnit).ToString(), this.AvailableWidthLeft.ToUnit(lengthUnit).ToString(), this.AvailableWidthRight.ToUnit(lengthUnit).ToString() };
       CoaHelper.AddParameter(parameters, "TAPERED", this.TaperedToNext);
       CoaHelper.AddParameter(parameters, "EFFECTIVE_WIDTH", this.UserEffectiveWidth);
-      if(this.UserEffectiveWidth)
+      if (this.UserEffectiveWidth)
       {
         parameters.Add(this.EffectiveWidthLeft.ToUnit(lengthUnit).ToString());
         parameters.Add(this.EffectiveWidthRight.ToUnit(lengthUnit).ToString());

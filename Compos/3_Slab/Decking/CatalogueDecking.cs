@@ -23,7 +23,7 @@ namespace ComposAPI
     }
     public const string CoaIdentifier = "DECKING_CATALOGUE";
 
-    public CatalogueDecking(string catalogue, string profile, DeckingSteelGrade deckingSteelGrade, DeckingConfiguration deckingConfiguration)
+    public CatalogueDecking(string catalogue, string profile, DeckingSteelGrade deckingSteelGrade, IDeckingConfiguration deckingConfiguration)
     {
       this.Catalogue = catalogue;
       this.Profile = profile;
@@ -48,18 +48,19 @@ namespace ComposAPI
       this.Catalogue = parameters[2];
       this.Profile = parameters[3];
       this.Grade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), parameters[4]);
-      this.DeckingConfiguration = new DeckingConfiguration();
-      this.DeckingConfiguration.Angle = new Angle(Convert.ToDouble(parameters[5]), angleUnit);
+      DeckingConfiguration deckingConfiguration = new DeckingConfiguration();
+      deckingConfiguration.Angle = new Angle(Convert.ToDouble(parameters[5]), angleUnit);
 
       if (parameters[6] == "DECKING_JOINTED")
-        this.DeckingConfiguration.IsDiscontinous = true;
+        deckingConfiguration.IsDiscontinous = true;
       else
-        this.DeckingConfiguration.IsDiscontinous = false;
+        deckingConfiguration.IsDiscontinous = false;
 
       if (parameters[7] == "JOINT_WELDED")
-        this.DeckingConfiguration.IsWelded = true;
+        deckingConfiguration.IsWelded = true;
       else
-        this.DeckingConfiguration.IsWelded = false;
+        deckingConfiguration.IsWelded = false;
+      this.DeckingConfiguration = deckingConfiguration;
     }
 
     internal override string ToCoaString(string name, AngleUnit angleUnit, LengthUnit lengthUnit, PressureUnit pressureUnit)
@@ -85,14 +86,6 @@ namespace ComposAPI
       return CoaHelper.CreateString(parameters);
     }
     #endregion
-
-    public override Decking Duplicate()
-    {
-      if (this == null) { return null; }
-      CatalogueDecking dup = (CatalogueDecking)this.MemberwiseClone();
-      dup.DeckingConfiguration = this.DeckingConfiguration.Duplicate();
-      return dup;
-    }
 
     public override string ToString()
     {

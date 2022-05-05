@@ -44,7 +44,6 @@ namespace ComposAPI
     public bool isCatalogue;
 
     public string SectionDescription { get; set; }
-    public const string CoaIdentifierPrefix = "BEAM_SECTION_AT_X";
 
     #region constructors
     public BeamSection()

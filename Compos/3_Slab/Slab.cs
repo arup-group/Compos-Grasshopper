@@ -15,7 +15,7 @@ namespace ComposAPI
   public class Slab : ISlab
   {
     public IConcreteMaterial Material { get; set; }
-    public List<ISlabDimension> Dimensions { get; set; } = new List<SlabDimension>();
+    public List<ISlabDimension> Dimensions { get; set; } = new List<ISlabDimension>();
     public ITransverseReinforcement TransverseReinforcement { get; set; }
     public IMeshReinforcement MeshReinforcement { get; set; } = null;
     public IDecking Decking { get; set; } = null; // null, if option "No decking (solid slab)" is selected
@@ -54,28 +54,28 @@ namespace ComposAPI
         List<string> parameters = CoaHelper.Split(line);
         switch (parameters[0])
         {
-          case (ConcreteMaterial.CoaIdentifier):
+          case (CoaIdentifier.SlabConcreteMaterial):
             this.Material = new ConcreteMaterial(lines, densityUnit, strainUnit);
             break;
 
-          case (SlabDimension.CoaIdentifier):
+          case (CoaIdentifier.SlabDimension):
             SlabDimension dimension = new SlabDimension(parameters, lengthUnit);
             this.Dimensions.Add(dimension);
             break;
 
-          case (TransverseReinforcement.CoaIdentifier):
+          case (CoaIdentifier.RebarTransverse):
             this.TransverseReinforcement = new TransverseReinforcement(parameters);
             break;
 
-          case (MeshReinforcement.CoaIdentifier):
+          case (CoaIdentifier.RebarWesh):
             this.MeshReinforcement = new MeshReinforcement(parameters);
             break;
 
-          case (CatalogueDecking.CoaIdentifier):
+          case (CoaIdentifier.DeckingCatalogue):
             this.Decking = new CatalogueDecking(parameters, angleUnit);
             break;
 
-          case (CustomDecking.CoaIdentifier):
+          case (CoaIdentifier.DeckingUser):
             if (parameters[2] == "USER_DEFINED")
               this.Decking = new CustomDecking(parameters, angleUnit, lengthUnit, pressureUnit);
             //else
@@ -100,10 +100,10 @@ namespace ComposAPI
       }
       str += this.TransverseReinforcement.ToCoaString();
       if (this.MeshReinforcement != null)
-        str += this.MeshReinforcement.ToCoaString();
+        str += this.MeshReinforcement.ToCoaString(name);
       if (this.Decking != null)
       {
-        str += this.Decking.ToCoaString(name, angleUnit, lengthUnit, pressureUnit);
+        str += this.Decking.ToCoaString(name);
       }
       return str;
     }

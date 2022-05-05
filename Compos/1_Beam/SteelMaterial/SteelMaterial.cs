@@ -28,23 +28,6 @@ namespace ComposAPI
   /// </summary>
   public class SteelMaterial : ISteelMaterial
   {
-    public enum SteelMaterialGrade
-    {
-      S235,
-      S275,
-      S355,
-      S450,
-      S460
-    }
-
-    public enum WeldMaterialGrade
-    {
-      //None,
-      Grade_35,
-      Grade_42,
-      Grade_50
-    }
-
     public Pressure fy { get; set; } //	characteristic strength
     public Pressure E { get; set; } //	Young's modulus
     public Density Density { get; set; } //	material density
@@ -64,27 +47,27 @@ namespace ComposAPI
       {
         case SteelMaterialGrade.S235:
           this.fy = new Pressure(235, UnitsNet.Units.PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          this.WeldGrade = WeldMaterialGrade.Grade35;
           break;
 
         case SteelMaterialGrade.S275:
           this.fy = new Pressure(275, UnitsNet.Units.PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          this.WeldGrade = WeldMaterialGrade.Grade35;
           break;
 
         case SteelMaterialGrade.S355:
           this.fy = new Pressure(355, UnitsNet.Units.PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_42;
+          this.WeldGrade = WeldMaterialGrade.Grade42;
           break;
 
         case SteelMaterialGrade.S450:
           this.fy = new Pressure(450, UnitsNet.Units.PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_50;
+          this.WeldGrade = WeldMaterialGrade.Grade50;
           break;
 
         case SteelMaterialGrade.S460:
           this.fy = new Pressure(460, UnitsNet.Units.PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_50;
+          this.WeldGrade = WeldMaterialGrade.Grade50;
           break;
 
         default:

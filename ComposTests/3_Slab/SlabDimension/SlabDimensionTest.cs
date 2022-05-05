@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
+using ComposAPI;
 
 namespace ComposAPI.Tests
 {
   public static class SlabDimensionMother
   {
-    public static SlabDimension CreateSlabDimension()
+    public static ISlabDimension CreateSlabDimension()
     {
       LengthUnit lenghtUnit = LengthUnit.Millimeter;
       return new SlabDimension(new Length(1000, lenghtUnit), new Length(200, lenghtUnit), new Length(300, lenghtUnit), new Length(300, lenghtUnit), new Length(250, lenghtUnit), new Length(250, lenghtUnit), true);
@@ -28,7 +29,7 @@ namespace ComposAPI.Tests
     {
       // 2 create object instance with constructor
       LengthUnit lengthUnit = LengthUnit.Millimeter;
-      SlabDimension slabDimension = new SlabDimension(new Length(startPosition, lengthUnit), new Length(overallDepth, lengthUnit), new Length(availableWidthLeft, lengthUnit), new Length(availableWidthRight, lengthUnit), taperedToNext);
+      ISlabDimension slabDimension = new SlabDimension(new Length(startPosition, lengthUnit), new Length(overallDepth, lengthUnit), new Length(availableWidthLeft, lengthUnit), new Length(availableWidthRight, lengthUnit), taperedToNext);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(startPosition, slabDimension.StartPosition.Value);
@@ -46,7 +47,7 @@ namespace ComposAPI.Tests
     {
       // 2 create object instance with constructor
       LengthUnit lengthUnit = LengthUnit.Millimeter;
-      SlabDimension slabDimension = new SlabDimension(new Length(startPosition, lengthUnit), new Length(overallDepth, lengthUnit), new Length(availableWidthLeft, lengthUnit), new Length(availableWidthRight, lengthUnit), new Length(effectiveWidthLeft, lengthUnit), new Length(effectiveWidthRight, lengthUnit), taperedToNext);
+      ISlabDimension slabDimension = new SlabDimension(new Length(startPosition, lengthUnit), new Length(overallDepth, lengthUnit), new Length(availableWidthLeft, lengthUnit), new Length(availableWidthRight, lengthUnit), new Length(effectiveWidthLeft, lengthUnit), new Length(effectiveWidthRight, lengthUnit), taperedToNext);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(startPosition, slabDimension.StartPosition.Value);
@@ -64,8 +65,8 @@ namespace ComposAPI.Tests
     {
       // 1 create with constructor and duplicate
       LengthUnit lengthUnit = LengthUnit.Millimeter;
-      SlabDimension original = new SlabDimension(new Length(startPosition, lengthUnit), new Length(overallDepth, lengthUnit), new Length(availableWidthLeft, lengthUnit), new Length(availableWidthRight, lengthUnit), new Length(effectiveWidthLeft, lengthUnit), new Length(effectiveWidthRight, lengthUnit), taperedToNext);
-      SlabDimension duplicate = original.Duplicate();
+      ISlabDimension original = new SlabDimension(new Length(startPosition, lengthUnit), new Length(overallDepth, lengthUnit), new Length(availableWidthLeft, lengthUnit), new Length(availableWidthRight, lengthUnit), new Length(effectiveWidthLeft, lengthUnit), new Length(effectiveWidthRight, lengthUnit), taperedToNext);
+      ISlabDimension duplicate = original.Duplicate() as ISlabDimension;
 
       // 2 check that duplicate has duplicated values
       //Assert.Equal(shortTerm, duplicate.ShortTerm);
