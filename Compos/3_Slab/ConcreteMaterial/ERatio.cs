@@ -9,11 +9,11 @@ namespace ComposAPI
   /// </summary>
   public class ERatio : IERatio
   {
-    public double ShortTerm { get; set; }
-    public double LongTerm { get; set; }
-    public double Vibration { get; set; }
-    public double Shrinkage { get; set; }
-    public bool UserDefined { get; set; } = false;
+    public double ShortTerm { get; set; } //	user defined steel to concrete modulus ratio for short term londing
+    public double LongTerm { get; set; } // user defined steel to concrete modulus ratio for long term londing
+    public double Vibration { get; set; } // user defined steel to concrete modulus ratio for vibration calculation
+    public double Shrinkage { get; set; } // user defined steel to concrete modulus ratio for shrinkage concrete
+    public bool UserDefined { get; } = false; // code or user defined steel to concrete Young's modulus ratio
 
     #region constructors
     public ERatio() { }
@@ -29,18 +29,6 @@ namespace ComposAPI
       this.Vibration = vibration;
       this.Shrinkage = shrinkage;
       this.UserDefined = true;
-    }
-    #endregion
-
-    #region coa interop
-    internal ERatio(string coaString)
-    {
-      // to do - implement from coa string method
-    }
-    internal string ToCoaString()
-    {
-      // to do - implement to coa string method
-      return string.Empty;
     }
     #endregion
 

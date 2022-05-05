@@ -11,8 +11,8 @@ namespace ComposAPI
     // Dimensions
     Length OverallDepth { get; }
     Length AvailableWidthLeft { get; }
-    Length AvailableWidtRight { get; }
-    bool CustomEffectiveWidth { get; }
+    Length AvailableWidthRight { get; }
+    bool UserEffectiveWidth { get; }
     Length EffectiveWidthLeft { get; }
     Length EffectiveWidthRight { get; }
     // Settings

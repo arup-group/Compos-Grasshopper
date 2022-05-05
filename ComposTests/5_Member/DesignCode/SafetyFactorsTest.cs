@@ -77,18 +77,18 @@ namespace ComposAPI.Tests
       duplicate = original.Duplicate() as SafetyFactors;
 
       // 2 check that duplicate has duplicated values
-      //Assert.Equal(1.0, duplicate.MaterialFactors.SteelBeam);
-      //Assert.Equal(1.5, duplicate.MaterialFactors.ConcreteCompression);
-      //Assert.Equal(1.25, duplicate.MaterialFactors.ConcreteShear);
-      //Assert.Equal(1.0, duplicate.MaterialFactors.MetalDecking);
-      //Assert.Equal(1.25, duplicate.MaterialFactors.ShearStud);
-      //Assert.Equal(1.15, duplicate.MaterialFactors.Reinforcement);
-      //Assert.Equal(1.4, duplicate.LoadFactors.ConstantDead);
-      //Assert.Equal(1.4, duplicate.LoadFactors.ConstantLive);
-      //Assert.Equal(1.6, duplicate.LoadFactors.FinalDead);
-      //Assert.Equal(1.6, duplicate.LoadFactors.FinalLive);
+      Assert.Equal(1.0, duplicate.MaterialFactors.SteelBeam);
+      Assert.Equal(1.5, duplicate.MaterialFactors.ConcreteCompression);
+      Assert.Equal(1.25, duplicate.MaterialFactors.ConcreteShear);
+      Assert.Equal(1.0, duplicate.MaterialFactors.MetalDecking);
+      Assert.Equal(1.25, duplicate.MaterialFactors.ShearStud);
+      Assert.Equal(1.15, duplicate.MaterialFactors.Reinforcement);
+      Assert.Equal(1.4, duplicate.LoadFactors.ConstantDead);
+      Assert.Equal(1.4, duplicate.LoadFactors.ConstantLive);
+      Assert.Equal(1.6, duplicate.LoadFactors.FinalDead);
+      Assert.Equal(1.6, duplicate.LoadFactors.FinalLive);
 
-      //// 3 make some changes to duplicate
+      // 3 make some changes to duplicate
       //duplicate.MaterialFactors.SteelBeam = 1.2;
       //duplicate.MaterialFactors.ConcreteCompression = 1.25;
       //duplicate.MaterialFactors.ConcreteShear = 1.3;
@@ -98,9 +98,9 @@ namespace ComposAPI.Tests
       //duplicate.LoadFactors.ConstantDead = 1.15;
       //duplicate.LoadFactors.ConstantLive = 1.45;
       //duplicate.LoadFactors.FinalDead = 1.55;
-      //duplicate.LoadFactors.FinalLive = 0.95; 
+      //duplicate.LoadFactors.FinalLive = 0.95;
 
-      //// 4 check that duplicate has set changes
+      // 4 check that duplicate has set changes
       //Assert.Equal(1.2, duplicate.MaterialFactors.SteelBeam);
       //Assert.Equal(1.25, duplicate.MaterialFactors.ConcreteCompression);
       //Assert.Equal(1.3, duplicate.MaterialFactors.ConcreteShear);

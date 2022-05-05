@@ -12,9 +12,11 @@ namespace ComposAPI
   /// </summary>
   public class DeckingConfiguration : IDeckingConfiguration
   {
-    public Angle Angle { get; set; }
-    public bool IsDiscontinous { get; set; }
-    public bool IsWelded { get; set; }
+    public Angle Angle { get; set; } // decking angle relative to steel beam in degrees
+    public bool IsDiscontinous { get; set; } // is decking jointed
+    public bool IsWelded { get; set; } // 	is joint welded
+    public bool IsValid { get { return true; } }
+
     public DeckingConfiguration()
     {
       // default values:
@@ -22,6 +24,7 @@ namespace ComposAPI
       this.IsDiscontinous = false;
       this.IsWelded = false;
     }
+
     public DeckingConfiguration(Angle angle, bool isDiscontinous, bool isWelded)
     {
       this.Angle = angle;
@@ -29,7 +32,7 @@ namespace ComposAPI
       this.IsWelded = isWelded;
 
     }
-    public bool IsValid { get { return true; } }
+
     public override string ToString()
     {
       string angle = (this.Angle.Value == 0) ? "" : this.Angle.ToUnit(UnitsNet.Units.AngleUnit.Degree).ToString().Replace(" ", string.Empty);
