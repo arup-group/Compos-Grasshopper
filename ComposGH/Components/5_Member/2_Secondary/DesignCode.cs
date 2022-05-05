@@ -19,13 +19,13 @@ using static ComposAPI.EC4Options;
 
 namespace ComposGH.Components
 {
-  public class DesignCode : GH_Component, IGH_VariableParameterComponent
+  public class CreateDesignCode : GH_Component, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("f89b420e-a35e-4197-9c64-87504fe02b59");
-    public DesignCode()
+    public CreateDesignCode()
       : base("Design Code", "DC", "Create Compos Design Code",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
@@ -101,8 +101,10 @@ namespace ComposGH.Components
               dropdownitems.RemoveAt(1);
             while (selecteditems.Count > 1)
               selecteditems.RemoveAt(1);
-
-
+            while (checkboxes.Count > 5)
+              checkboxes.RemoveAt(5);
+            while (checkboxNames.Count > 5)
+              checkboxNames.RemoveAt(5);
 
             break;
 
@@ -119,8 +121,19 @@ namespace ComposGH.Components
             // cement type
             dropdownitems.Add(Enum.GetValues(typeof(CementClass)).Cast<CementClass>()
                 .Select(x => "Cement class " + x.ToString()).ToList());
-            selecteditems.Add("Cement class " + cementClass.ToString()); 
+            selecteditems.Add("Cement class " + cementClass.ToString());
 
+            while (checkboxes.Count > 5)
+              checkboxes.RemoveAt(5);
+            while (checkboxNames.Count > 5)
+              checkboxNames.RemoveAt(5);
+            checkboxes.Add(ec4codeOptions.ConsiderShrinkageDeflection);
+            checkboxes.Add(ec4codeOptions.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
+            checkboxes.Add(ec4codeOptions.ApproxModularRatios);
+            checkboxNames.Add("Consider shrikage declection");
+            checkboxNames.Add("Ignore shrinkage def. if L/d < 20");
+            checkboxNames.Add("Use approx. modular ratios");
+      
             break;
 
           case Code.AS_NZS2327_2017:
@@ -129,6 +142,13 @@ namespace ComposGH.Components
               dropdownitems.RemoveAt(1);
             while (selecteditems.Count > 1)
               selecteditems.RemoveAt(1);
+            while (checkboxes.Count > 5)
+              checkboxes.RemoveAt(5);
+            while (checkboxNames.Count > 5)
+              checkboxNames.RemoveAt(5);
+
+            checkboxes.Add(codeOptions.ConsiderShrinkageDeflection);
+            checkboxNames.Add("Consider shrikage declection");
 
             break;
           
@@ -149,9 +169,10 @@ namespace ComposGH.Components
       this.OnDisplayExpired(true);
     }
 
-    private void CheckBoxToggles(List<bool> checkboxes)
+    private void CheckBoxToggles(List<bool> newcheckboxes)
     {
-
+      for (int i = 0; i < checkboxes.Count; i++)
+        checkboxes[i] = newcheckboxes[i];
     }
 
     private void UpdateUIFromSelectedItems()
@@ -237,6 +258,65 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
+      SafetyFactorsGoo safetyFactorsGoo = (SafetyFactorsGoo)GetInput.GenericGoo<SafetyFactorsGoo>(this, DA, 0);
+
+      ComposAPI.SafetyFactors safetyFactors = (safetyFactorsGoo == null) ? null : safetyFactorsGoo.Value;
+      switch (code)
+      {
+        case Code.BS5950_3_1_1990_Superseded:
+        case Code.BS5950_3_1_1990_A1_2010:
+        case Code.HKSUOS_2005:
+        case Code.HKSUOS_2011:
+          DesignCode otherCodes = new DesignCode();
+          otherCodes.Code = code;
+          otherCodes.DesignOptions = designOptions;
+          
+          if (safetyFactors != null)
+            otherCodes.SafetyFactors = safetyFactors;
+          
+          DA.SetData(0, new DesignCodeGoo(otherCodes));
+          break;
+
+        case Code.EN1994_1_1_2004:
+          EN1994 ec4 = new EN1994();
+          ec4.NationalAnnex = NA;
+          ec4.DesignOptions = designOptions;
+          ec4.CodeOptions = ec4codeOptions;
+
+          CreepShrinkageEuroCodeParameters shrink = (CreepShrinkageEuroCodeParameters)GetInput.GenericGoo<CreepShrinkageEuroCodeParametersGoo>(this, DA, 1);
+          if (shrink != null)
+            ec4.CodeOptions.ShortTerm = shrink;
+          CreepShrinkageEuroCodeParameters longt = (CreepShrinkageEuroCodeParameters)GetInput.GenericGoo<CreepShrinkageEuroCodeParametersGoo>(this, DA, 2);
+          if (longt != null)
+            ec4.CodeOptions.LongTerm = longt;
+
+          ComposAPI.EC4SafetyFactors safetyFactorsEC4 = (ComposAPI.EC4SafetyFactors)safetyFactors;
+          if (safetyFactorsEC4 != null)
+            ec4.SafetyFactors = safetyFactorsEC4;
+
+          DA.SetData(0, new DesignCodeGoo(ec4));
+          break;
+
+        case Code.AS_NZS2327_2017:
+          ASNZS2327 asnz = new ASNZS2327();
+          asnz.DesignOptions = designOptions;
+          asnz.CodeOptions = codeOptions;
+          double shrinkageparam = 0;
+          if (DA.GetData(1, ref shrinkageparam))
+            asnz.CodeOptions.ShortTerm.CreepCoefficient = shrinkageparam;
+          double longtermparam = 0;
+          if (DA.GetData(2, ref longtermparam))
+            asnz.CodeOptions.LongTerm.CreepCoefficient = longtermparam;
+
+          if (safetyFactors != null)
+            asnz.SafetyFactors = safetyFactors;
+
+          DA.SetData(0, new DesignCodeGoo(asnz));
+          break;
+
+        default:
+          break;
+      }
       
     }
     #region update input params

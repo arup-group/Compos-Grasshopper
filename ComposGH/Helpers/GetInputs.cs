@@ -1033,6 +1033,9 @@ namespace ComposGH.Components
     internal static object GenericGoo<Type>(GH_Component owner, IGH_DataAccess DA, int inputid)
     {
       GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+      if (owner.Params.Input[inputid].Sources.Count == 0 & owner.Params.Input[inputid].Optional)
+        return null;
+
       if (DA.GetData(inputid, ref gh_typ))
       {
         if (gh_typ.Value is Type)
@@ -1041,7 +1044,7 @@ namespace ComposGH.Components
         }
         else
         {
-          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to " + typeof(Type).Name);
+          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " input (" + gh_typ.Value.GetType().Name + ") to " + typeof(Type).Name.Replace("Goo", string.Empty));
           return null;
         }
       }
