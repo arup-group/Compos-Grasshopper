@@ -49,7 +49,7 @@ namespace ComposGH.Components
     private bool First = true;
     string Catalogue = null;
     string Profile = null;
-    private CatalogueDeck.DeckingSteelGrade SteelGrade = CatalogueDeck.DeckingSteelGrade.S350;
+    private CatalogueDecking.DeckingSteelGrade SteelGrade = CatalogueDecking.DeckingSteelGrade.S350;
     // Catalogues
     List<string> CatalogueNames = SqlReader.GetDeckCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"));
 
@@ -75,7 +75,7 @@ namespace ComposGH.Components
         Profile = SelectedItems[1];
 
         // steel
-        DropdownItems.Add(Enum.GetValues(typeof(CatalogueDeck.DeckingSteelGrade)).Cast<CatalogueDeck.DeckingSteelGrade>().Select(x => x.ToString()).ToList());
+        DropdownItems.Add(Enum.GetValues(typeof(CatalogueDecking.DeckingSteelGrade)).Cast<CatalogueDecking.DeckingSteelGrade>().Select(x => x.ToString()).ToList());
         SelectedItems.Add(SteelGrade.ToString());
 
         First = false;
@@ -104,7 +104,7 @@ namespace ComposGH.Components
 
       if(i ==2)
       {
-        SteelGrade = (CatalogueDeck.DeckingSteelGrade)Enum.Parse(typeof(CatalogueDeck.DeckingSteelGrade), SelectedItems[i]);
+        SteelGrade = (CatalogueDecking.DeckingSteelGrade)Enum.Parse(typeof(CatalogueDecking.DeckingSteelGrade), SelectedItems[i]);
       }
 
         (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -118,7 +118,7 @@ namespace ComposGH.Components
       SectionList = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), Catalogue);
       Catalogue = SelectedItems[0];
       Profile = SelectedItems[1];
-      SteelGrade = (CatalogueDeck.DeckingSteelGrade)Enum.Parse(typeof(CatalogueDeck.DeckingSteelGrade), SelectedItems[2]);
+      SteelGrade = (CatalogueDecking.DeckingSteelGrade)Enum.Parse(typeof(CatalogueDecking.DeckingSteelGrade), SelectedItems[2]);
 
       CreateAttributes();
       ExpireSolution(true);
@@ -146,10 +146,10 @@ namespace ComposGH.Components
       {
         DeckingConfigurationGoo dconf = (DeckingConfigurationGoo)GetInput.GenericGoo<DeckingConfigurationGoo>(this, DA, 0);
         if (dconf == null) { return; }
-        DA.SetData(0, new DeckingGoo(new ComposAPI.CatalogueDeck(Catalogue, Profile, SteelGrade, dconf.Value)));
+        DA.SetData(0, new DeckingGoo(new CatalogueDecking(Catalogue, Profile, SteelGrade, dconf.Value)));
       }
 
-      DA.SetData(0, new DeckingGoo(new ComposAPI.CatalogueDeck(Catalogue, Profile, SteelGrade, new DeckingConfiguration())));
+      DA.SetData(0, new DeckingGoo(new CatalogueDecking(Catalogue, Profile, SteelGrade, new DeckingConfiguration())));
     }
 
     #region (de)serialization
