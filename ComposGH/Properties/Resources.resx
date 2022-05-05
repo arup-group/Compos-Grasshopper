@@ -175,8 +175,14 @@
   <data name="CreateUnitNumber" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\CreateUnitNumber.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="CreepShrinkageParams" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\CreepShrinkageParams.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="CustomDecking" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\CustomDecking.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CustomRebarLayout" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\CustomRebarLayout.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CustomStudDims" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\CustomStudDims.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

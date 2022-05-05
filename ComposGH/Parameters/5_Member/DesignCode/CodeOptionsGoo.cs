@@ -27,7 +27,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new CodeOptions();
-      this.Value = item.Duplicate();
+      this.Value = item.Duplicate() as CodeOptions;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public CodeOptionsGoo DuplicateGoo()
     {
-      return new CodeOptionsGoo(Value == null ? new CodeOptions() : Value.Duplicate());
+      return new CodeOptionsGoo(Value == null ? new CodeOptions() : Value.Duplicate() as CodeOptions);
     }
     #endregion
 

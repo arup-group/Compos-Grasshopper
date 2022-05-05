@@ -45,7 +45,7 @@ namespace ComposGH.Components
         selecteditems = new List<string>();
 
         // type
-        dropdownitems.Add(Enum.GetValues(typeof(Supports.IntermediateRestraint)).Cast<Supports.IntermediateRestraint>()
+        dropdownitems.Add(Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
             .Select(x => x.ToString().Replace("__", "-").Replace("_", " ")).ToList());
         dropdownitems[0].RemoveAt(dropdownitems[0].Count - 1);
         selecteditems.Add(dropdownitems[0][0]);
@@ -66,7 +66,7 @@ namespace ComposGH.Components
       if (i == 0)
       {
         string typ = selecteditems[i].ToString().Replace("-", "__").Replace(" ", "_");
-        resType = (Supports.IntermediateRestraint)Enum.Parse(typeof(Supports.IntermediateRestraint), typ);
+        resType = (IntermediateRestraint)Enum.Parse(typeof(IntermediateRestraint), typ);
       }
       if (i == 1)
         lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[i]);
@@ -81,7 +81,7 @@ namespace ComposGH.Components
     private void UpdateUIFromSelectedItems()
     {
       string typ = selecteditems[0].ToString().Replace("-", "__").Replace(" ", "_");
-      resType = (Supports.IntermediateRestraint)Enum.Parse(typeof(Supports.IntermediateRestraint), typ);
+      resType = (IntermediateRestraint)Enum.Parse(typeof(IntermediateRestraint), typ);
       lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[1]);
 
       CreateAttributes();
@@ -102,7 +102,7 @@ namespace ComposGH.Components
     });
 
     private bool first = true;
-    private Supports.IntermediateRestraint resType = Supports.IntermediateRestraint.None;
+    private IntermediateRestraint resType = IntermediateRestraint.None;
     private LengthUnit lengthUnit = Units.LengthUnitGeometry;
     #endregion
 

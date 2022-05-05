@@ -36,7 +36,6 @@ namespace ComposAPI.Tests
       Assert.Throws<System.ArgumentException>(() => TestConstructorStudSpacing(150, 1, 0, 250));
     }
 
-
     [Fact]
     public void TestStudSpacingDuplicate()
     {
@@ -44,7 +43,7 @@ namespace ComposAPI.Tests
 
       // 1 create with constructor and duplicate
       StudGroupSpacing original = TestConstructorStudSpacing(25, 1, 2, 250);
-      StudGroupSpacing duplicate = original.Duplicate();
+      StudGroupSpacing duplicate = original.Duplicate() as StudGroupSpacing;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(25, duplicate.DistanceFromStart.Millimeters);

@@ -27,7 +27,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new SafetyFactors();
-      this.Value = item.Duplicate();
+      this.Value = item.Duplicate() as SafetyFactors;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public SafetyFactorsGoo DuplicateGoo()
     {
-      return new SafetyFactorsGoo(Value == null ? new SafetyFactors() : Value.Duplicate());
+      return new SafetyFactorsGoo(Value == null ? new SafetyFactors() : Value.Duplicate() as SafetyFactors);
     }
     #endregion
 

@@ -27,7 +27,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new StudSpecification();
-      this.Value = item.Duplicate();
+      this.Value = item.Duplicate() as StudSpecification;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public StudSpecificationGoo DuplicateGoo()
     {
-      return new StudSpecificationGoo(Value == null ? new StudSpecification() : Value.Duplicate());
+      return new StudSpecificationGoo(Value == null ? new StudSpecification() : Value.Duplicate() as StudSpecification);
     }
     #endregion
 

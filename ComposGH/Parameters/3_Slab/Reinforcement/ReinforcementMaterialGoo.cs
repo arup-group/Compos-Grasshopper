@@ -27,7 +27,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new ReinforcementMaterial();
-      this.Value = item.Duplicate();
+      this.Value = item.Duplicate() as ReinforcementMaterial;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public ReinforcementMaterialGoo DuplicateGoo()
     {
-      return new ReinforcementMaterialGoo(Value == null ? new ReinforcementMaterial() : Value.Duplicate());
+      return new ReinforcementMaterialGoo(Value == null ? new ReinforcementMaterial() : Value.Duplicate() as ReinforcementMaterial);
     }
     #endregion
 

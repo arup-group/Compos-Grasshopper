@@ -55,13 +55,13 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      ConcreteMaterial material = GetInput.ConcreteMaterial(this, DA, 0);
-      List<SlabDimension> dimensions = GetInput.SlabDimensions(this, DA, 1);
-      TransverseReinforcement transverseReinforcement = GetInput.TransverseReinforcement(this, DA, 2);
-      MeshReinforcement meshReinforcement = GetInput.MeshReinforcement(this, DA, 3, true);
-      Decking decking = GetInput.Decking(this, DA, 4, true);
+      IConcreteMaterial material = GetInput.ConcreteMaterial(this, DA, 0);
+      List<ISlabDimension> dimensions = GetInput.SlabDimensions(this, DA, 1);
+      ITransverseReinforcement transverseReinforcement = GetInput.TransverseReinforcement(this, DA, 2);
+      IMeshReinforcement meshReinforcement = GetInput.MeshReinforcement(this, DA, 3, true);
+      IDecking decking = GetInput.Decking(this, DA, 4, true);
 
-      Slab slab = new Slab(material, dimensions, transverseReinforcement, meshReinforcement, decking);
+      ISlab slab = new Slab(material, dimensions, transverseReinforcement, meshReinforcement, decking);
 
       DA.SetData(0, new SlabGoo(slab));
     }

@@ -5,27 +5,28 @@ using UnitsNet;
 
 namespace ComposAPI
 {
+  public enum LoadType
+  {
+    Point,
+    Uniform,
+    Linear,
+    TriLinear,
+    Patch,
+    MemberLoad,
+    Axial
+  }
+
+  public enum LoadDistribution
+  {
+    Line,
+    Area
+  }
+
   /// <summary>
   /// Custom class: this class defines the basic properties and methods for our custom class
   /// </summary>
-  public class Load
+  public class Load : ILoad
   {
-    public enum LoadType
-    {
-      Point,
-      Uniform,
-      Linear,
-      TriLinear,
-      Patch,
-      MemberLoad,
-      Axial
-    }
-    public enum LoadDistribution
-    {
-      Line,
-      Area
-    }
-
     public LoadType Type { get { return m_type; } }
     internal LoadType m_type;
 
@@ -60,17 +61,11 @@ namespace ComposAPI
     #endregion
 
     #region methods
-    public virtual Load Duplicate()
-    {
-      if (this == null) { return null; }
-      return (Load)this.MemberwiseClone();
-    }
     public override string ToString()
     {
       // update with better naming
       return this.Type.ToString() + " Load";
     }
-
     #endregion
   }
 }

@@ -10,13 +10,13 @@ namespace ComposAPI
   /// <summary>
   /// Custom class: this class defines the basic properties and methods for our custom class
   /// </summary>
-  public class Slab
+  public class Slab : ISlab
   {
-    public ConcreteMaterial Material { get; set; }
-    public List<SlabDimension> Dimensions { get; set; } = new List<SlabDimension>();
-    public TransverseReinforcement TransverseReinforcement { get; set; }
-    public MeshReinforcement MeshReinforcement { get; set; } = null;
-    public Decking Decking { get; set; } = null;
+    public IConcreteMaterial Material { get; set; }
+    public List<ISlabDimension> Dimensions { get; set; } = new List<ISlabDimension>();
+    public ITransverseReinforcement TransverseReinforcement { get; set; }
+    public IMeshReinforcement MeshReinforcement { get; set; } = null;
+    public IDecking Decking { get; set; } = null;
 
     #region constructors
     public Slab()
@@ -24,7 +24,7 @@ namespace ComposAPI
       // empty constructor
     }
 
-    public Slab(ConcreteMaterial material, List<SlabDimension> dimensions, TransverseReinforcement transverseReinforcement, MeshReinforcement meshReinforcement = null, Decking decking = null)
+    public Slab(IConcreteMaterial material, List<ISlabDimension> dimensions, ITransverseReinforcement transverseReinforcement, IMeshReinforcement meshReinforcement = null, IDecking decking = null)
     {
       this.Material = material;
       this.Dimensions = dimensions;
@@ -33,10 +33,10 @@ namespace ComposAPI
       this.Decking = decking;
     }
 
-    public Slab(ConcreteMaterial material, SlabDimension dimensions, TransverseReinforcement transverseReinforcement, MeshReinforcement meshReinforcement = null, Decking decking = null)
+    public Slab(ConcreteMaterial material, ISlabDimension dimensions, ITransverseReinforcement transverseReinforcement, IMeshReinforcement meshReinforcement = null, Decking decking = null)
     {
       this.Material = material;
-      this.Dimensions = new List<SlabDimension> { dimensions };
+      this.Dimensions = new List<ISlabDimension> { dimensions };
       this.TransverseReinforcement = transverseReinforcement;
       this.MeshReinforcement = meshReinforcement;
       this.Decking = decking;
@@ -57,21 +57,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-
-    public Slab Duplicate()
-    {
-      if (this == null) { return null; }
-      Slab dup = (Slab)this.MemberwiseClone();
-      dup.Material = this.Material.Duplicate();
-      dup.Dimensions = this.Dimensions.ToList();
-      dup.TransverseReinforcement = (TransverseReinforcement)this.TransverseReinforcement.Duplicate();
-      if (this.MeshReinforcement != null)
-        dup.MeshReinforcement = (MeshReinforcement)this.MeshReinforcement.Duplicate();
-      if (this.Decking != null)
-        dup.Decking = this.Decking.Duplicate();
-      return dup;
-    }
-
     public override string ToString()
     {
 

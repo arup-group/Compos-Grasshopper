@@ -70,20 +70,6 @@ namespace ComposGH.Parameters
             return clone;
         }
 
-        public ComposModel Duplicate() 
-        {
-            //duplicate the incoming model ### 
-            if (m_model != null)
-            {
-                ComposModel dup = new ComposModel();
-                dup.Model = m_model;
-                dup.FileName = m_filename.ToString();
-                dup.m_guid = new Guid(m_guid.ToString());
-                return dup;
-            }
-            return null;
-        }
-
         #region properties
         public bool IsValid
         {
@@ -94,8 +80,6 @@ namespace ComposGH.Parameters
                 return true;
             }
         }
-
-
         #endregion
 
         #region methods

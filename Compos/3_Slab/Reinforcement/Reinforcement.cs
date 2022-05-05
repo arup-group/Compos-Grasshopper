@@ -5,16 +5,17 @@ using UnitsNet;
 
 namespace ComposAPI
 {
+  public enum ReinforcementType
+  {
+    Mesh,
+    Transverse
+  }
+
   /// <summary>
   /// Reinforcement object of either a <see cref="MeshReinforcement"/> or a <see cref="TransverseReinforcement"/>
   /// </summary>
-  public class Reinforcement
+  public class Reinforcement : IReinforcement
   {
-    public enum ReinforcementType
-    {
-      Mesh,
-      Transverse
-    }
     public ReinforcementType Type { get { return m_type; } }
     internal ReinforcementType m_type;
 
@@ -34,12 +35,5 @@ namespace ComposAPI
       return string.Empty;
     }
 
-
-    public virtual Reinforcement Duplicate()
-    {
-      if (this == null) { return null; }
-      Reinforcement dup = (Reinforcement)this.MemberwiseClone();
-      return dup;
-    }
   }
 }

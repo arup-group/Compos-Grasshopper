@@ -27,7 +27,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new SteelMaterial();
-      this.Value = item.Duplicate();
+      this.Value = item.Duplicate() as SteelMaterial;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public SteelMaterialGoo DuplicateGoo()
     {
-      return new SteelMaterialGoo(Value == null ? new SteelMaterial() : Value.Duplicate());
+      return new SteelMaterialGoo(Value == null ? new SteelMaterial() : Value.Duplicate() as SteelMaterial);
     }
     #endregion
 

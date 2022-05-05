@@ -21,7 +21,7 @@ namespace ComposAPI.Tests
         new Length(positionCentroidFromStart, unit), new Length(positionCentroidFromTop, unit));
 
       // 3 check that inputs are set in object's members
-      Assert.Equal(WebOpening.OpeningType.Rectangular, webOpening.WebOpeningType);
+      Assert.Equal(OpeningType.Rectangular, webOpening.WebOpeningType);
       Assert.Equal(width, webOpening.Width.Millimeters);
       Assert.Equal(height, webOpening.Height.Millimeters);
       Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.Millimeters);
@@ -45,7 +45,7 @@ namespace ComposAPI.Tests
         new Length(positionCentroidFromStart, unit), new Length(positionCentroidFromTop, unit));
 
       // 3 check that inputs are set in object's members
-      Assert.Equal(WebOpening.OpeningType.Circular, webOpening.WebOpeningType);
+      Assert.Equal(OpeningType.Circular, webOpening.WebOpeningType);
       Assert.Equal(diameter, webOpening.Diameter.Millimeters);
       Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.Millimeters);
       Assert.Equal(positionCentroidFromTop, webOpening.CentroidPosFromTop.Millimeters);
@@ -56,10 +56,10 @@ namespace ComposAPI.Tests
 
     // 1 setup inputs
     [Theory]
-    [InlineData(200, 400, WebOpening.NotchPosition.Start)]
-    [InlineData(123.456, 0.0123, WebOpening.NotchPosition.End)]
+    [InlineData(200, 400, NotchPosition.Start)]
+    [InlineData(123.456, 0.0123, NotchPosition.End)]
     public void TestConstructorNotchWebOpening(double width,
-      double height, WebOpening.NotchPosition position)
+      double height, NotchPosition position)
     {
       LengthUnit unit = LengthUnit.Millimeter;
 
@@ -68,10 +68,10 @@ namespace ComposAPI.Tests
         new Length(width, unit), new Length(height, unit), position);
 
       // 3 check that inputs are set in object's members
-      if (position == WebOpening.NotchPosition.Start)
-        Assert.Equal(WebOpening.OpeningType.Start_notch, webOpening.WebOpeningType);
-      if (position == WebOpening.NotchPosition.End)
-        Assert.Equal(WebOpening.OpeningType.End_notch, webOpening.WebOpeningType);
+      if (position == NotchPosition.Start)
+        Assert.Equal(OpeningType.Start_notch, webOpening.WebOpeningType);
+      if (position == NotchPosition.End)
+        Assert.Equal(OpeningType.End_notch, webOpening.WebOpeningType);
       Assert.Equal(width, webOpening.Width.Millimeters);
       Assert.Equal(height, webOpening.Height.Millimeters);
       Assert.Equal(Length.Zero, webOpening.CentroidPosFromStart);
@@ -98,7 +98,7 @@ namespace ComposAPI.Tests
         new Length(positionCentroidFromStart, unit), new Length(positionCentroidFromTop, unit), stiffener);
 
       // 3 check that inputs are set in object's members
-      Assert.Equal(WebOpening.OpeningType.Rectangular, webOpening.WebOpeningType);
+      Assert.Equal(OpeningType.Rectangular, webOpening.WebOpeningType);
       Assert.Equal(width, webOpening.Width.Millimeters);
       Assert.Equal(height, webOpening.Height.Millimeters);
       Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.Millimeters);
@@ -128,7 +128,7 @@ namespace ComposAPI.Tests
         new Length(positionCentroidFromStart, unit), new Length(positionCentroidFromTop, unit), stiffener);
 
       // 3 check that inputs are set in object's members
-      Assert.Equal(WebOpening.OpeningType.Circular, webOpening.WebOpeningType);
+      Assert.Equal(OpeningType.Circular, webOpening.WebOpeningType);
       Assert.Equal(diameter, webOpening.Diameter.Millimeters);
       Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.Millimeters);
       Assert.Equal(positionCentroidFromTop, webOpening.CentroidPosFromTop.Millimeters);
@@ -142,10 +142,10 @@ namespace ComposAPI.Tests
 
     // 1 setup inputs
     [Theory]
-    [InlineData(600, 70, WebOpening.NotchPosition.Start)]
-    [InlineData(14.3, 78.123, WebOpening.NotchPosition.End)]
+    [InlineData(600, 70, NotchPosition.Start)]
+    [InlineData(14.3, 78.123, NotchPosition.End)]
     public WebOpening TestConstructorNotchWebOpeningWithStiffener(double width,
-      double height, WebOpening.NotchPosition position)
+      double height, NotchPosition position)
     {
       LengthUnit unit = LengthUnit.Millimeter;
 
@@ -158,10 +158,10 @@ namespace ComposAPI.Tests
         position, stiffener);
 
       // 3 check that inputs are set in object's members
-      if (position == WebOpening.NotchPosition.Start)
-        Assert.Equal(WebOpening.OpeningType.Start_notch, webOpening.WebOpeningType);
-      if (position == WebOpening.NotchPosition.End)
-        Assert.Equal(WebOpening.OpeningType.End_notch, webOpening.WebOpeningType);
+      if (position == NotchPosition.Start)
+        Assert.Equal(OpeningType.Start_notch, webOpening.WebOpeningType);
+      if (position == NotchPosition.End)
+        Assert.Equal(OpeningType.End_notch, webOpening.WebOpeningType);
       Assert.Equal(width, webOpening.Width.Millimeters);
       Assert.Equal(height, webOpening.Height.Millimeters);
       Assert.Equal(Length.Zero, webOpening.CentroidPosFromStart);
@@ -179,10 +179,10 @@ namespace ComposAPI.Tests
     {
       // 1 create with constructor and duplicate
       WebOpening original = TestConstructorRectangularWebOpeningWithStiffener(400, 300, 6000, 70);
-      WebOpening duplicate = original.Duplicate();
+      WebOpening duplicate = original.Duplicate() as WebOpening;
 
       // 2 check that duplicate has duplicated values
-      Assert.Equal(WebOpening.OpeningType.Rectangular, duplicate.WebOpeningType);
+      Assert.Equal(OpeningType.Rectangular, duplicate.WebOpeningType);
       Assert.Equal(400, duplicate.Width.Millimeters);
       Assert.Equal(300, duplicate.Height.Millimeters);
       Assert.Equal(6000, duplicate.CentroidPosFromStart.Millimeters);
@@ -198,14 +198,14 @@ namespace ComposAPI.Tests
       Assert.False(duplicate.OpeningStiffeners.isNotch);
 
       // 3 make some changes to duplicate
-      duplicate.WebOpeningType = WebOpening.OpeningType.Circular;
+      duplicate.WebOpeningType = OpeningType.Circular;
       duplicate.Diameter = new Length(150, LengthUnit.Millimeter);
       duplicate.CentroidPosFromStart = new Length(4500, LengthUnit.Millimeter);
       duplicate.CentroidPosFromTop = new Length(250, LengthUnit.Millimeter);
       duplicate.OpeningStiffeners = TestConstructorStiffenersWebOpening(15, 125, 10, 135, 7, true);
 
       // 4 check that duplicate has set changes
-      Assert.Equal(WebOpening.OpeningType.Circular, duplicate.WebOpeningType);
+      Assert.Equal(OpeningType.Circular, duplicate.WebOpeningType);
       Assert.Equal(150, duplicate.Diameter.Millimeters);
       Assert.Equal(4500, duplicate.CentroidPosFromStart.Millimeters);
       Assert.Equal(250, duplicate.CentroidPosFromTop.Millimeters);
@@ -221,7 +221,7 @@ namespace ComposAPI.Tests
       Assert.False(duplicate.OpeningStiffeners.isNotch);
 
       // 5 check that original has not been changed
-      Assert.Equal(WebOpening.OpeningType.Rectangular, original.WebOpeningType);
+      Assert.Equal(OpeningType.Rectangular, original.WebOpeningType);
       Assert.Equal(400, original.Width.Millimeters);
       Assert.Equal(300, original.Height.Millimeters);
       Assert.Equal(6000, original.CentroidPosFromStart.Millimeters);
@@ -238,10 +238,10 @@ namespace ComposAPI.Tests
 
       // 1 create with new constructor and duplicate
       original = TestConstructorCircularWebOpeningWithStiffener(300, 7000, 150);
-      duplicate = original.Duplicate();
+      duplicate = original.Duplicate() as WebOpening;
 
       // 2 check that duplicate has duplicated values
-      Assert.Equal(WebOpening.OpeningType.Circular, duplicate.WebOpeningType);
+      Assert.Equal(OpeningType.Circular, duplicate.WebOpeningType);
       Assert.Equal(300, duplicate.Diameter.Millimeters);
       Assert.Equal(Length.Zero, duplicate.Width);
       Assert.Equal(Length.Zero, duplicate.Height);
@@ -257,13 +257,13 @@ namespace ComposAPI.Tests
       Assert.False(duplicate.OpeningStiffeners.isNotch);
 
       // 3 make some changes to duplicate
-      duplicate.WebOpeningType = WebOpening.OpeningType.Start_notch;
+      duplicate.WebOpeningType = OpeningType.Start_notch;
       duplicate.Width = new Length(150, LengthUnit.Millimeter);
       duplicate.Height = new Length(250, LengthUnit.Millimeter);
       duplicate.OpeningStiffeners = TestConstructorStiffenersNotch(15, 125, 10, false);
 
       // 4 check that duplicate has set changes
-      Assert.Equal(WebOpening.OpeningType.Start_notch, duplicate.WebOpeningType);
+      Assert.Equal(OpeningType.Start_notch, duplicate.WebOpeningType);
       Assert.Equal(150, duplicate.Width.Millimeters);
       Assert.Equal(250, duplicate.Height.Millimeters);
       Assert.Equal(Length.Zero, duplicate.CentroidPosFromStart);
@@ -279,7 +279,7 @@ namespace ComposAPI.Tests
       Assert.True(duplicate.OpeningStiffeners.isNotch);
 
       // 5 check that original has not been changed
-      Assert.Equal(WebOpening.OpeningType.Circular, original.WebOpeningType);
+      Assert.Equal(OpeningType.Circular, original.WebOpeningType);
       Assert.Equal(300, original.Diameter.Millimeters);
       Assert.Equal(Length.Zero, original.Width);
       Assert.Equal(Length.Zero, original.Height);

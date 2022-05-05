@@ -7,7 +7,12 @@ using UnitsNet;
 
 namespace ComposAPI
 {
-  public class Decking
+  public enum DeckingType
+  {
+    Custom,
+    Catalogue
+  }
+  public class Decking : IDecking
   {
     public Length b1 { get; set; }
     public Length b2 { get; set; }
@@ -16,12 +21,7 @@ namespace ComposAPI
     public Length b5 { get; set; }
     public Length Depth { get; set; }
     public Length Thickness { get; set; }
-    public DeckingConfiguration DeckConfiguration { get; set; }
-    public enum DeckingType
-    {
-      Custom,
-      Catalogue
-    }
+    public IDeckingConfiguration DeckConfiguration { get; set; }
     public DeckingType Type { get { return m_type; } }
     internal DeckingType m_type;
 
@@ -39,14 +39,6 @@ namespace ComposAPI
     {
       // to do - implement to coa string method
       return string.Empty;
-    }
-
-    public virtual Decking Duplicate()
-    {
-      if (this == null) { return null; }
-      Decking dup = (Decking)this.MemberwiseClone();
-      dup.DeckConfiguration = this.DeckConfiguration.Duplicate();
-      return dup;
     }
   }
 }

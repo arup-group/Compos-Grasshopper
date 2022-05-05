@@ -9,17 +9,17 @@ namespace ComposAPI
   /// <summary>
   /// Stud class containing <see cref="ComposAPI.StudDimensions"/>, <see cref="ComposAPI.StudSpecification"/>, and spacing/layout settings (custom or automatic)
   /// </summary>
-  public class Stud
+  public class Stud : IStud
   {
-    public StudDimensions StudDimensions { get; set; }
-    public StudSpecification StudSpecification { get; set; }
-
+    public IStudDimensions StudDimensions { get; set; }
+    public IStudSpecification StudSpecification { get; set; }
     // Stud Spacing
-    public List<StudGroupSpacing> CustomSpacing { get; set; } = null;
+    public List<IStudGroupSpacing> CustomSpacing { get; set; } = null;
     public double Interaction { get; set; }
     public double MinSavingMultipleZones { get; set; }
     public bool CheckStudSpacing { get; set; }
-    public StudGroupSpacing.StudSpacingType StudSpacingType
+
+    public StudSpacingType StudSpacingType
     {
       get { return this.m_spacingType; }
       set
@@ -27,17 +27,17 @@ namespace ComposAPI
         this.m_spacingType = value;
         switch (value)
         {
-          case StudGroupSpacing.StudSpacingType.Custom:
+          case StudSpacingType.Custom:
             this.Interaction = double.NaN;
             this.MinSavingMultipleZones = double.NaN;
             break;
-          case StudGroupSpacing.StudSpacingType.Automatic:
-          case StudGroupSpacing.StudSpacingType.Min_Num_of_Studs:
+          case StudSpacingType.Automatic:
+          case StudSpacingType.Min_Num_of_Studs:
             this.Interaction = double.NaN;
             if (this.MinSavingMultipleZones == double.NaN)
               this.MinSavingMultipleZones = 0.20;
             break;
-          case StudGroupSpacing.StudSpacingType.Partial_Interaction:
+          case StudSpacingType.Partial_Interaction:
             if (this.Interaction == double.NaN)
               this.Interaction = 0.85;
             if (this.MinSavingMultipleZones == double.NaN)
@@ -46,13 +46,15 @@ namespace ComposAPI
         }
       }
     }
-    private StudGroupSpacing.StudSpacingType m_spacingType;
+
+    private StudSpacingType m_spacingType;
 
     #region constructors
     public Stud()
     {
       // empty constructor
     }
+
     /// <summary>
     /// Create Stud Dimensions with Custom spacing type
     /// </summary>
@@ -60,13 +62,13 @@ namespace ComposAPI
     /// <param name="spec"></param>
     /// <param name="spacings"></param>
     /// <param name="checkSpacing"></param>
-    public Stud(StudDimensions stud, StudSpecification spec, List<StudGroupSpacing> spacings, bool checkSpacing)
+    public Stud(IStudDimensions stud, IStudSpecification spec, List<IStudGroupSpacing> spacings, bool checkSpacing)
     {
       this.StudDimensions = stud;
       this.StudSpecification = spec;
       this.CustomSpacing = spacings;
       this.CheckStudSpacing = checkSpacing;
-      this.StudSpacingType = StudGroupSpacing.StudSpacingType.Custom;
+      this.StudSpacingType = StudSpacingType.Custom;
       this.Interaction = double.NaN;
       this.MinSavingMultipleZones = double.NaN;
     }
@@ -79,7 +81,7 @@ namespace ComposAPI
     /// <param name="minSaving"></param>
     /// <param name="type"></param>
     /// <exception cref="ArgumentException"></exception>
-    public Stud(StudDimensions stud, StudSpecification spec, double minSaving, StudGroupSpacing.StudSpacingType type)
+    public Stud(IStudDimensions stud, IStudSpecification spec, double minSaving, StudSpacingType type)
     {
       this.StudDimensions = stud;
       this.StudSpecification = spec;
@@ -87,8 +89,8 @@ namespace ComposAPI
       this.MinSavingMultipleZones = minSaving;
       switch (type)
       {
-        case StudGroupSpacing.StudSpacingType.Min_Num_of_Studs:
-        case StudGroupSpacing.StudSpacingType.Automatic:
+        case StudSpacingType.Min_Num_of_Studs:
+        case StudSpacingType.Automatic:
           break;
 
         default:
@@ -104,15 +106,14 @@ namespace ComposAPI
     /// <param name="spec"></param>
     /// <param name="minSaving"></param>
     /// <param name="interaction"></param>
-    public Stud(StudDimensions stud, StudSpecification spec, double minSaving, double interaction)
+    public Stud(IStudDimensions stud, IStudSpecification spec, double minSaving, double interaction)
     {
       this.StudDimensions = stud;
       this.StudSpecification = spec;
-      this.StudSpacingType = StudGroupSpacing.StudSpacingType.Partial_Interaction;
+      this.StudSpacingType = StudSpacingType.Partial_Interaction;
       this.MinSavingMultipleZones = minSaving;
       this.Interaction = interaction;
     }
-
     #endregion
 
     #region coa interop
@@ -129,18 +130,6 @@ namespace ComposAPI
     #endregion
 
     #region methods
-
-    public Stud Duplicate()
-    {
-      if (this == null) { return null; }
-      Stud dup = (Stud)this.MemberwiseClone();
-      dup.StudDimensions = this.StudDimensions.Duplicate();
-      dup.StudSpecification = this.StudSpecification.Duplicate();
-      if (this.CustomSpacing != null)
-        dup.CustomSpacing = this.CustomSpacing.ToList();
-      return dup;
-    }
-
     public override string ToString()
     {
       string size = this.StudDimensions.Diameter.As(Units.LengthUnitSection).ToString("f0") + "/" + this.StudDimensions.Height.ToUnit(Units.LengthUnitSection).ToString("f0");

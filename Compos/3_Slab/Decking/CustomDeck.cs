@@ -15,7 +15,7 @@ namespace ComposAPI
     {
       this.m_type = DeckingType.Custom;
     }
-    public CustomDeck(Length distanceB1, Length distanceB2, Length distanceB3, Length distanceB4, Length distanceB5, Length depth, Length thickness, Pressure stress, DeckingConfiguration dconf)
+    public CustomDeck(Length distanceB1, Length distanceB2, Length distanceB3, Length distanceB4, Length distanceB5, Length depth, Length thickness, Pressure stress, IDeckingConfiguration dconf)
     {
       this.b1 = distanceB1;
       this.b2 = distanceB2;
@@ -29,13 +29,6 @@ namespace ComposAPI
       this.m_type = DeckingType.Custom;
     }
 
-    public override Decking Duplicate()
-    {
-      if (this == null) { return null; }
-      CustomDeck dup = (CustomDeck)this.MemberwiseClone();
-      dup.DeckConfiguration = this.DeckConfiguration.Duplicate();
-      return dup;
-    }
     public override string ToString()
     {
       string distanceB1 = (this.b1.Value == 0) ? "" : "b1:" + this.b1.ToString().Replace(" ", string.Empty);

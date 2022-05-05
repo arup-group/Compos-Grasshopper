@@ -151,7 +151,7 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      DeckingConfiguration dconf = new DeckingConfiguration(); // default values
+      IDeckingConfiguration dconf = new DeckingConfiguration(); // default values
 
       if (this.Params.Input[0].Sources.Count > 0)
         dconf = GetInput.DeckConfiguration(this, DA, 0);

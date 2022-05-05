@@ -41,7 +41,7 @@ namespace ComposGH.Components
             "Strain Unit"
     });
     private bool First = true;
-    private ConcreteMaterial.ConcreteGrade Grade = ConcreteMaterial.ConcreteGrade.C20;
+    private ConcreteGrade Grade = ConcreteGrade.C20;
     private DensityUnit DensityUnit = Units.DensityUnit;
     private StrainUnit StrainUnit = StrainUnit.MilliStrain;
 
@@ -53,7 +53,7 @@ namespace ComposGH.Components
         this.SelectedItems = new List<string>();
 
         // grade
-        List<string> concreteGrades = Enum.GetValues(typeof(ConcreteMaterial.ConcreteGrade)).Cast<ConcreteMaterial.ConcreteGrade>().Select(x => x.ToString()).ToList();
+        List<string> concreteGrades = Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList();
         this.DropDownItems.Add(concreteGrades);
         this.SelectedItems.Add(this.Grade.ToString());
 
@@ -76,7 +76,7 @@ namespace ComposGH.Components
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
       if (i == 0) // change is made to grade
-        this.Grade = (ConcreteMaterial.ConcreteGrade)Enum.Parse(typeof(ConcreteMaterial.ConcreteGrade), this.SelectedItems[i]);
+        this.Grade = (ConcreteGrade)Enum.Parse(typeof(ConcreteGrade), this.SelectedItems[i]);
 
       else if (i == 1) // change is made to density unit
         this.DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), this.SelectedItems[i]);
@@ -93,7 +93,7 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      this.Grade = (ConcreteMaterial.ConcreteGrade)Enum.Parse(typeof(ConcreteMaterial.ConcreteGrade), this.SelectedItems[0]);
+      this.Grade = (ConcreteGrade)Enum.Parse(typeof(ConcreteGrade), this.SelectedItems[0]);
       this.DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), this.SelectedItems[2]);
       this.StrainUnit = (StrainUnit)Enum.Parse(typeof(StrainUnit), this.SelectedItems[3]);
 
