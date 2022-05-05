@@ -15,11 +15,13 @@ namespace ComposAPI
       Rectangular,
       Circular
     }
+
     public enum NotchPosition
     {
       Start,
       End
     }
+
     public enum OpeningType
     {
       Rectangular,
@@ -27,6 +29,7 @@ namespace ComposAPI
       Start_notch,
       End_notch
     }
+
     public OpeningType WebOpeningType
     {
       get { return m_webOpeningType; }

@@ -22,10 +22,10 @@ namespace ComposAPI
         // check whether property can be written to
         if (property.CanWrite)
         {
-          object value = property.GetValue(objSource, null);
+          object objPropertyValue = property.GetValue(objSource, null);
           Type propertyType;
-          if (value != null)
-            propertyType = value.GetType();
+          if (objPropertyValue != null)
+            propertyType = objPropertyValue.GetType();
           else
             propertyType = property.PropertyType;
 
@@ -37,7 +37,6 @@ namespace ComposAPI
           // else property type is object/complex types, so need to recursively call this method until the end of the tree is reached
           else
           {
-            object objPropertyValue = property.GetValue(objSource, null);
             if (objPropertyValue == null)
             {
               property.SetValue(objTarget, null, null);

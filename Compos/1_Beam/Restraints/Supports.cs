@@ -5,31 +5,32 @@ using UnitsNet;
 
 namespace ComposAPI
 {
+  public enum IntermediateRestraint
+  {
+    None,
+    Mid__Span,
+    Third_Points,
+    Quarter_Points,
+    Custom
+  }
+
   /// <summary>
   /// Object with information about support conditions. The Supports object is required for input(s) when creating a <see cref="Restraint"/> object.
   /// </summary>
-  public class Supports
+  public class Supports : ISupports
   {
     public bool SecondaryMemberIntermediateRestraint { get; set; }
     public bool BothFlangesFreeToRotateOnPlanAtEnds { get; set; }
-    public List<Length> CustomIntermediateRestraintPositions 
-    { 
+    public List<Length> CustomIntermediateRestraintPositions
+    {
       get { return this.m_custompositions; }
-      set 
+      set
       {
         this.IntermediateRestraintPositions = IntermediateRestraint.Custom;
         this.m_custompositions = value;
       }
     }
     private List<Length> m_custompositions = null;
-    public enum IntermediateRestraint
-    {
-      None,
-      Mid__Span,
-      Third_Points,
-      Quarter_Points,
-      Custom
-    }
     public IntermediateRestraint IntermediateRestraintPositions { get; set; }
 
     #region constructors

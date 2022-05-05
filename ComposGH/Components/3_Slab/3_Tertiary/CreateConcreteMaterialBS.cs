@@ -41,7 +41,7 @@ namespace ComposGH.Components
             "Density Unit"
     });
     private bool First = true;
-    private ConcreteMaterial.ConcreteGrade Grade = ConcreteMaterial.ConcreteGrade.C25;
+    private ConcreteGrade Grade = ConcreteGrade.C25;
     private ConcreteMaterial.WeightType Type = ConcreteMaterial.WeightType.Normal;
     private DensityUnit DensityUnit = Units.DensityUnit;
 
@@ -53,7 +53,7 @@ namespace ComposGH.Components
         this.SelectedItems = new List<string>();
 
         // grade
-        List<string> concreteGrades = Enum.GetValues(typeof(ConcreteMaterial.ConcreteGrade)).Cast<ConcreteMaterial.ConcreteGrade>().Select(x => x.ToString()).ToList();
+        List<string> concreteGrades = Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList();
         concreteGrades.RemoveAt(0); // C20
         concreteGrades.RemoveAt(2); // C32
         this.DropDownItems.Add(concreteGrades);
@@ -78,7 +78,7 @@ namespace ComposGH.Components
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
       if (i == 0) // change is made to grade
-        this.Grade = (ConcreteMaterial.ConcreteGrade)Enum.Parse(typeof(ConcreteMaterial.ConcreteGrade), this.SelectedItems[i]);
+        this.Grade = (ConcreteGrade)Enum.Parse(typeof(ConcreteGrade), this.SelectedItems[i]);
 
       else if (i == 1) // change is made to weight type
         this.Type = (ConcreteMaterial.WeightType)Enum.Parse(typeof(ConcreteMaterial.WeightType), this.SelectedItems[i]);
@@ -95,7 +95,7 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      this.Grade = (ConcreteMaterial.ConcreteGrade)Enum.Parse(typeof(ConcreteMaterial.ConcreteGrade), this.SelectedItems[0]);
+      this.Grade = (ConcreteGrade)Enum.Parse(typeof(ConcreteGrade), this.SelectedItems[0]);
       this.Type = (ConcreteMaterial.WeightType)Enum.Parse(typeof(ConcreteMaterial.WeightType), this.SelectedItems[1]);
       this.DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), this.SelectedItems[2]);
 
@@ -148,7 +148,7 @@ namespace ComposGH.Components
       ERatio eRatio = new ERatio();
       DA.GetData(1, ref eRatio);
 
-      ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, this.Type, dryDensity, userDensity, eRatio, imposedLoadPercentage);
+      IConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, this.Type, dryDensity, userDensity, eRatio, imposedLoadPercentage);
 
       DA.SetData(0, new ConcreteMaterialGoo(concreteMaterial));
     }

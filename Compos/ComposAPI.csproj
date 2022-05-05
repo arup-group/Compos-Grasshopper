@@ -56,6 +56,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="1_Beam\BeamSection\IBeamSection.cs" />
+    <Compile Include="1_Beam\Restraints\IRestraint.cs" />
+    <Compile Include="1_Beam\Restraints\ISupports.cs" />
+    <Compile Include="1_Beam\SteelMaterial\ISteelMaterial.cs" />
+    <Compile Include="3_Slab\ConcreteMaterial\IConcreteMaterial.cs" />
+    <Compile Include="3_Slab\ConcreteMaterial\IERatio.cs" />
+    <Compile Include="5_Member\DesignCode\IDesignOptions.cs" />
+    <Compile Include="5_Member\DesignCode\IDesignCode.cs" />
+    <Compile Include="5_Member\DesignCode\ICreepShrinkageEuroCodeParameters.cs" />
+    <Compile Include="5_Member\DesignCode\ICodeOptions.cs" />
+    <Compile Include="5_Member\DesignCode\ILoadCombinationFactors.cs" />
+    <Compile Include="5_Member\DesignCode\ILoadFactors.cs" />
+    <Compile Include="5_Member\DesignCode\IMaterialPartialFactors.cs" />
+    <Compile Include="5_Member\DesignCode\ISafetyFactors.cs" />
     <Compile Include="Helpers\ComposIO.cs" />
     <Compile Include="ObjectExtension.cs" />
     <Compile Include="Helpers\ReadSQLValues.cs" />

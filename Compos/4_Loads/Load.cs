@@ -20,6 +20,7 @@ namespace ComposAPI
       MemberLoad,
       Axial
     }
+
     public enum LoadDistribution
     {
       Line,

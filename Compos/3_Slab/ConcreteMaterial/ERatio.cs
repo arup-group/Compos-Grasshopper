@@ -7,7 +7,7 @@ namespace ComposAPI
   /// <summary>
   /// Define the Steel/Concrete Modular Ratio used for a <see cref="ConcreteMaterial"/> object.
   /// </summary>
-  public class ERatio
+  public class ERatio : IERatio
   {
     public double ShortTerm { get; set; }
     public double LongTerm { get; set; }

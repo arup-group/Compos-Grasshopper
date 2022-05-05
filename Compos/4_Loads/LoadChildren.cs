@@ -22,6 +22,7 @@ namespace ComposAPI
   {
     public LoadValues Load { get; set; }
     public LoadDistribution Distribution { get; set; }
+
     public UniformLoad() { this.m_type = LoadType.Uniform; }
 
     public UniformLoad(ForcePerLength consDead, ForcePerLength consLive, ForcePerLength finalDead, ForcePerLength finalLive)
@@ -44,6 +45,7 @@ namespace ComposAPI
     public LoadValues LoadW1 { get; set; }
     public LoadValues LoadW2 { get; set; }
     public LoadDistribution Distribution { get; set; }
+
     public LinearLoad() { this.m_type = LoadType.Linear; }
 
     public LinearLoad(

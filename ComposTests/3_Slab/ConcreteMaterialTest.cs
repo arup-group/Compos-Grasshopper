@@ -167,10 +167,15 @@ namespace ComposAPI.Tests
       Density duplicateDensity = new Density(1780, DensityUnit.KilogramPerCubicMeter);
       duplicate.DryDensity = duplicateDensity;
       duplicate.UserDensity = true;
-      duplicate.ERatio.ShortTerm = 1;
-      duplicate.ERatio.LongTerm = 2;
-      duplicate.ERatio.Vibration = 3;
-      duplicate.ERatio.Shrinkage = 4;
+
+      ERatio duplicateERatio = duplicate.ERatio as ERatio;
+
+      duplicateERatio.ShortTerm = 1;
+      duplicateERatio.LongTerm = 2;
+      duplicateERatio.Vibration = 3;
+      duplicateERatio.Shrinkage = 4;
+
+
       duplicate.ImposedLoadPercentage = 0.5;
       Strain duplicateStrain = new Strain(-0.0004, StrainUnit.MilliStrain);
       duplicate.ShrinkageStrain = duplicateStrain;

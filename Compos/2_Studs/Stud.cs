@@ -13,12 +13,12 @@ namespace ComposAPI
   {
     public StudDimensions StudDimensions { get; set; }
     public StudSpecification StudSpecification { get; set; }
-
     // Stud Spacing
     public List<StudGroupSpacing> CustomSpacing { get; set; } = null;
     public double Interaction { get; set; }
     public double MinSavingMultipleZones { get; set; }
     public bool CheckStudSpacing { get; set; }
+
     public StudGroupSpacing.StudSpacingType StudSpacingType
     {
       get { return this.m_spacingType; }
@@ -46,6 +46,7 @@ namespace ComposAPI
         }
       }
     }
+
     private StudGroupSpacing.StudSpacingType m_spacingType;
 
     #region constructors
@@ -53,6 +54,7 @@ namespace ComposAPI
     {
       // empty constructor
     }
+
     /// <summary>
     /// Create Stud Dimensions with Custom spacing type
     /// </summary>
@@ -112,7 +114,6 @@ namespace ComposAPI
       this.MinSavingMultipleZones = minSaving;
       this.Interaction = interaction;
     }
-
     #endregion
 
     #region coa interop

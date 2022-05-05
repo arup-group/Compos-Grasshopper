@@ -14,9 +14,9 @@ namespace ComposAPI.Tests
   {
 
 
-    internal static Child CreateChild2()
+    internal static TestObject CreateTestObject()
     {
-      Child child = new Child(2.0, 2, "b", TestEnum.Value2, new Force(2, ForceUnit.Kilonewton));
+      TestObject child = new TestObject(2.0, 2, "b", TestEnum.Value2, new Force(2, ForceUnit.Kilonewton), new List<TestObject>());
 
       return child;
     }
@@ -31,22 +31,22 @@ namespace ComposAPI.Tests
     void DuplicateTest1()
     {
       Force quantity = new Force(1, ForceUnit.Kilonewton);
-      Child child = new Child(1.0, 1, "a", TestEnum.Value1, quantity);
+      TestObject grandChild = new TestObject(1.0, 1, "a", TestEnum.Value1, quantity, new List<TestObject>());
+      TestObject original = new TestObject(new TestObject(grandChild));
 
-      GrandParent original = new GrandParent(new Parent(child));
-      GrandParent duplicate = original.Duplicate() as GrandParent;
+      TestObject duplicate = original.Duplicate() as TestObject;
 
       //original.Parent.Child.D = -1.0;
       //original.Parent.Child.I = -1;
       //original.Parent.Child.S = "z";
       //original.Parent.Child.TestEnum = TestEnum.None;
-      original.Parent.Child.Quantity = new Pressure(-1.0, PressureUnit.KilonewtonPerSquareMeter);
+      original.Children[0].Children[0].Quantity = new Pressure(-1.0, PressureUnit.KilonewtonPerSquareMeter);
 
       //Assert.Equal(1.0, duplicate.Parent.Child.D);
       //Assert.Equal(1, duplicate.Parent.Child.I);
       //Assert.Equal("a", duplicate.Parent.Child.S);
       //Assert.Equal(TestEnum.Value1, duplicate.Parent.Child.TestEnum);
-      Assert.Equal(quantity, duplicate.Parent.Child.Quantity);
+      Assert.Equal(quantity, duplicate.Children[0].Children[0].Quantity);
     }
 
   }
@@ -59,47 +59,35 @@ namespace ComposAPI.Tests
     None = -1
   }
 
-  public class Child
+  public class TestObject
   {
     //internal double D { get; set; }
     //internal int I { get; set; }
     //internal string S { get; set; }
     //internal TestEnum TestEnum { get; set; }
     internal IQuantity Quantity { get; set; }
+    internal List<TestObject> Children { get; set; } = new List<TestObject>();
 
-    public Child() { }
+    public TestObject() { }
 
-    internal Child(double d, int i, string s, TestEnum testEnum, IQuantity quantity)
+    public TestObject(TestObject child)
+    {
+      this.Children = new List<TestObject>() { child };
+    }
+
+    public TestObject(List<TestObject> children)
+    {
+      this.Children = children;
+    }
+
+    internal TestObject(double d, int i, string s, TestEnum testEnum, IQuantity quantity, List<TestObject> children)
     {
       //this.D = d;
       //this.I = i;
       //this.S = s;
       //this.TestEnum = testEnum;
       this.Quantity = quantity;
-    }
-  }
-
-  public class Parent : Child
-  {
-    internal Child Child { get; set; }
-
-    public Parent() { }
-
-    internal Parent(Child child)
-    {
-      this.Child = child;
-    }
-  }
-
-  public class GrandParent : Parent
-  {
-    internal Parent Parent { get; set; }
-
-    public GrandParent() { }  
-
-    internal GrandParent(Parent parent)
-    {
-      this.Parent = parent;
+      this.Children = children;
     }
   }
 }

@@ -5,10 +5,10 @@ using UnitsNet;
 
 namespace ComposAPI
 {
-  public class SafetyFactors
+  public class SafetyFactors : ISafetyFactors
   {
-    public MaterialPartialFactors MaterialFactors { get; set; } = null;
-    public LoadFactors LoadFactors { get; set; } = null;
+    public IMaterialPartialFactors MaterialFactors { get; set; } = null;
+    public ILoadFactors LoadFactors { get; set; } = null;
 
     public SafetyFactors()
     {
@@ -19,7 +19,7 @@ namespace ComposAPI
   /// <summary>
   /// Class for custom material factors. These data can be omitted, if they are omitted, code specified safety factor will be used
   /// </summary>
-  public class MaterialPartialFactors
+  public class MaterialPartialFactors : IMaterialPartialFactors
   {
     public double SteelBeam { get; set; } = 1.0;
     public double ConcreteCompression { get; set; } = 1.5;
@@ -33,7 +33,7 @@ namespace ComposAPI
   /// <summary>
   /// Custom Load factors. These data can be omitted, if they are omitted, code specified load factor will be used
   /// </summary>
-  public class LoadFactors
+  public class LoadFactors : ILoadFactors
   {
     public double ConstantDead { get; set; } = 1.4;
     public double ConstantLive { get; set; } = 1.4;
@@ -79,7 +79,7 @@ namespace ComposAPI
   /// <summary>
   /// Custom Load factors. These data can be omitted, if they are omitted, code specified load factor will be used
   /// </summary>
-  public class LoadCombinationFactors
+  public class LoadCombinationFactors : ILoadCombinationFactors
   {
     public double xi { get; set; } = 1.0;
     public double psi_0 { get; set; } = 1.0;

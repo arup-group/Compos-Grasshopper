@@ -9,10 +9,10 @@ namespace ComposAPI
   /// <summary>
   /// Restraint object that contains two <see cref="Supports"/> objects for 'Construction Stage Support' and 'Final Stage Support', and if top flange is laterally restrained in at construction stage.
   /// </summary>
-  public class Restraint
+  public class Restraint : IRestraint
   {
-    public Supports ConstructionStageSupports { get; set; }
-    public Supports FinalStageSupports { get; set; }
+    public ISupports ConstructionStageSupports { get; set; }
+    public ISupports FinalStageSupports { get; set; }
     public bool TopFlangeRestrained { get; set; }
     private bool finalSupportsSet;
 
@@ -21,7 +21,7 @@ namespace ComposAPI
     {
       // empty constructore
     }
-    public Restraint(bool topFlangeRestrained, Supports constructionStageSupports, Supports finalStageSupports)
+    public Restraint(bool topFlangeRestrained, ISupports constructionStageSupports, ISupports finalStageSupports)
     {
       this.TopFlangeRestrained = topFlangeRestrained;
       this.ConstructionStageSupports = constructionStageSupports;

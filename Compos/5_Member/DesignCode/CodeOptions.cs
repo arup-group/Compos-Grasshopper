@@ -5,12 +5,12 @@ using UnitsNet;
 
 namespace ComposAPI
 {
-  public class CodeOptions
+  public class CodeOptions : ICodeOptions
   {
     public bool ConsiderShrinkageDeflection { get; set; } = false;
-    public virtual CreepShrinkageParameters LongTerm { get; set; } = new CreepShrinkageParameters()
+    public virtual ICreepShrinkageParameters LongTerm { get; set; } = new CreepShrinkageParameters()
     { CreepCoefficient = 2.0 };
-    public virtual CreepShrinkageParameters ShortTerm { get; set; } = new CreepShrinkageParameters()
+    public virtual ICreepShrinkageParameters ShortTerm { get; set; } = new CreepShrinkageParameters()
     { CreepCoefficient = 2.0 };
     /// <summary>
     /// Deafult constructor with AS/NZ values and members
@@ -50,7 +50,7 @@ namespace ComposAPI
     }
   }
 
-  public class CreepShrinkageParameters
+  public class CreepShrinkageParameters : ICreepShrinkageParameters
   {
     /// <summary>
     /// Creep multiplier used for calculating E ratio for long term and shrinkage (see clause 5.4.2.2 of EN 1994-1-1:2004) 

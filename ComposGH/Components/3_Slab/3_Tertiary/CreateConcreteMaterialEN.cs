@@ -42,7 +42,7 @@ namespace ComposGH.Components
             "Strain Unit"
     });
     private bool First = true;
-    private ConcreteMaterial.ConcreteGradeEN Grade = ConcreteMaterial.ConcreteGradeEN.C20_25;
+    private ConcreteGradeEN Grade = ConcreteGradeEN.C20_25;
     private ConcreteMaterial.DensityClass DensityClass = ConcreteMaterial.DensityClass.DC1801_2000;
     private DensityUnit DensityUnit = Units.DensityUnit;
     private StrainUnit StrainUnit = StrainUnit.MilliStrain;
@@ -55,7 +55,7 @@ namespace ComposGH.Components
         this.SelectedItems = new List<string>();
 
         // grade
-        List<string> concreteGrades = Enum.GetValues(typeof(ConcreteMaterial.ConcreteGradeEN)).Cast<ConcreteMaterial.ConcreteGradeEN>().Select(x => x.ToString()).ToList();
+        List<string> concreteGrades = Enum.GetValues(typeof(ConcreteGradeEN)).Cast<ConcreteGradeEN>().Select(x => x.ToString()).ToList();
         //foreach (string concreteGrade in concreteGrades)
         //{
         //  concreteGrade.Replace("_", "/");
@@ -88,7 +88,7 @@ namespace ComposGH.Components
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
       if (i == 0) // change is made to grade
-        this.Grade = (ConcreteMaterial.ConcreteGradeEN)Enum.Parse(typeof(ConcreteMaterial.ConcreteGradeEN), this.SelectedItems[i]);
+        this.Grade = (ConcreteGradeEN)Enum.Parse(typeof(ConcreteGradeEN), this.SelectedItems[i]);
 
       else if (i == 1) // change is made to density class
         this.DensityClass = (ConcreteMaterial.DensityClass)Enum.Parse(typeof(ConcreteMaterial.DensityClass), this.SelectedItems[i]);
@@ -108,7 +108,7 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      this.Grade = (ConcreteMaterial.ConcreteGradeEN)Enum.Parse(typeof(ConcreteMaterial.ConcreteGradeEN), this.SelectedItems[0]);
+      this.Grade = (ConcreteGradeEN)Enum.Parse(typeof(ConcreteGradeEN), this.SelectedItems[0]);
       this.DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), this.SelectedItems[2]);
       this.StrainUnit = (StrainUnit)Enum.Parse(typeof(StrainUnit), this.SelectedItems[3]);
 

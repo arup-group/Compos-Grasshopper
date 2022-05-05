@@ -5,10 +5,26 @@ using UnitsNet;
 
 namespace ComposAPI
 {
+  public enum SteelMaterialGrade
+  {
+    S235,
+    S275,
+    S355,
+    S450,
+    S460
+  }
+  public enum WeldMaterialGrade
+  {
+    None,
+    Grade35,
+    Grade42,
+    Grade50
+  }
+
   /// <summary>
   /// Steel Material for a <see cref="Beam"/>. Contains information about strength, density and Young's Modulus, as well as grade.
   /// </summary>
-  public class SteelMaterial
+  public class SteelMaterial : ISteelMaterial
   {
     public Pressure fy { get; set; }
     public Pressure E { get; set; }
@@ -18,22 +34,7 @@ namespace ComposAPI
     public bool ReductionFactorMpl { get; set; }
 
     public SteelMaterialGrade Grade { get; set; }
-    public enum SteelMaterialGrade
-    {
-      S235,
-      S275,
-      S355,
-      S450,
-      S460
-    }
     public WeldMaterialGrade WeldGrade { get; set; }
-    public enum WeldMaterialGrade
-    {
-      None,
-      Grade35,
-      Grade42,
-      Grade50
-    }
 
     private void SetValuesFromStandard(SteelMaterialGrade grade)
     {

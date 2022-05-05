@@ -23,11 +23,11 @@ namespace ComposAPI
   /// <summary>
   /// Use this class to create a DesignCode. Use inheriting <see cref="EN1994"/> or <see cref="ASNZS2327"/> specifically for those codes respectively.
   /// </summary>
-  public class DesignCode
+  public class DesignCode : IDesignCode
   {
     public Code Code { get; set; }
-    public DesignOptions DesignOptions { get; set; } = new DesignOptions();
-    public SafetyFactors SafetyFactors { get; set; } = new SafetyFactors();
+    public IDesignOptions DesignOptions { get; set; } = new DesignOptions();
+    public ISafetyFactors SafetyFactors { get; set; } = new SafetyFactors();
     public DesignCode() { }
     public DesignCode(Code designcode)
     {

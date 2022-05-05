@@ -14,10 +14,12 @@ namespace ComposAPI
       S280,
       S350
     }
+
     public CatalogueDeck()
     {
       this.m_type = DeckingType.Catalogue;
     }
+
     public CatalogueDeck(string catalogue, string profile, DeckingSteelGrade deckSteelType, DeckingConfiguration deckConfiguration)
     {
       this.Catalogue = catalogue;

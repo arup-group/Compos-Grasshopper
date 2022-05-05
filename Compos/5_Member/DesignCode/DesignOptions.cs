@@ -5,7 +5,7 @@ using UnitsNet;
 
 namespace ComposAPI
 {
-  public class DesignOptions
+  public class DesignOptions : IDesignOptions
   {
     public bool ProppedDuringConstruction { get; set; } = true;
     public bool InclSteelBeamWeight { get; set; } = false;

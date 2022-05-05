@@ -25,7 +25,7 @@ namespace ComposGH.Parameters
     {
       this.Value = new ConcreteMaterial();
     }
-    public ConcreteMaterialGoo(ConcreteMaterial item)
+    public ConcreteMaterialGoo(IConcreteMaterial item)
     {
       if (item == null)
         item = new ConcreteMaterial();
