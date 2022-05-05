@@ -202,5 +202,13 @@ namespace ComposAPI.Tests
       Assert.Equal(shrinkageStrain, original.ShrinkageStrain);
       Assert.Equal(userStrain, original.UserStrain);
     }
+
+
+    public void ToCoaStringTest()
+    {
+     string expected_coaString = "SLAB_CONCRETE_MATERIAL	MEMBER-1	C30/37	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN";
+
+
+    }
   }
 }
