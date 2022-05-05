@@ -7,5 +7,7 @@ namespace ComposAPI
     Length Cover { get; }
     bool Rotated { get; }
     ReinforcementMeshType MeshType { get; }
+
+    string ToCoaString(string name);
   }
 }

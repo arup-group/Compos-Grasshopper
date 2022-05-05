@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
+using ComposAPI.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
-using System.Drawing;
+using Oasys.Units;
 
 namespace ComposAPI
 {
@@ -16,7 +18,7 @@ namespace ComposAPI
     public List<ISlabDimension> Dimensions { get; set; } = new List<ISlabDimension>();
     public ITransverseReinforcement TransverseReinforcement { get; set; }
     public IMeshReinforcement MeshReinforcement { get; set; } = null;
-    public IDecking Decking { get; set; } = null;
+    public IDecking Decking { get; set; } = null; // null, if option "No decking (solid slab)" is selected
 
     #region constructors
     public Slab()
@@ -44,15 +46,66 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal Slab(string coaString)
+    internal Slab(string coaString, AngleUnit angleUnit, DensityUnit densityUnit, LengthUnit lengthUnit, PressureUnit pressureUnit, StrainUnit strainUnit)
     {
-      // to do - implement from coa string method
+      List<string> lines = CoaHelper.SplitLines(coaString);
+      foreach (string line in lines)
+      {
+        List<string> parameters = CoaHelper.Split(line);
+        switch (parameters[0])
+        {
+          case (CoaIdentifier.SlabConcreteMaterial):
+            this.Material = new ConcreteMaterial(lines, densityUnit, strainUnit);
+            break;
+
+          case (CoaIdentifier.SlabDimension):
+            SlabDimension dimension = new SlabDimension(parameters, lengthUnit);
+            this.Dimensions.Add(dimension);
+            break;
+
+          case (CoaIdentifier.RebarTransverse):
+            this.TransverseReinforcement = new TransverseReinforcement(parameters);
+            break;
+
+          case (CoaIdentifier.RebarWesh):
+            this.MeshReinforcement = new MeshReinforcement(parameters);
+            break;
+
+          case (CoaIdentifier.DeckingCatalogue):
+            this.Decking = new CatalogueDecking(parameters, angleUnit);
+            break;
+
+          case (CoaIdentifier.DeckingUser):
+            if (parameters[2] == "USER_DEFINED")
+              this.Decking = new CustomDecking(parameters, angleUnit, lengthUnit, pressureUnit);
+            //else
+              // do nothing
+            break;
+
+          default:
+            throw new Exception("Unable to convert " + line + " to Compos Slab.");
+        }
+      }
     }
 
-    internal string ToCoaString()
+    internal string ToCoaString(string name, AngleUnit angleUnit, DensityUnit densityUnit, LengthUnit lengthUnit, PressureUnit pressureUnit, StrainUnit strainUnit)
     {
-      // to do - implement to coa string method
-      return string.Empty;
+      string str = this.Material.ToCoaString(name, densityUnit, strainUnit);
+      int num = 1;
+      int index = this.Dimensions.Count + 1;
+      foreach (SlabDimension dimension in this.Dimensions)
+      {
+        str += dimension.ToCoaString(name, num, index, lengthUnit);
+        num++;
+      }
+      str += this.TransverseReinforcement.ToCoaString();
+      if (this.MeshReinforcement != null)
+        str += this.MeshReinforcement.ToCoaString(name);
+      if (this.Decking != null)
+      {
+        str += this.Decking.ToCoaString(name);
+      }
+      return str;
     }
     #endregion
 

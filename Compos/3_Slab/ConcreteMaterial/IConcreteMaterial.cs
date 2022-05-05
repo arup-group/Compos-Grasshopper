@@ -1,5 +1,6 @@
 ﻿using UnitsNet;
 using Oasys.Units;
+using UnitsNet.Units;
 using static ComposAPI.ConcreteMaterial;
 
 namespace ComposAPI
@@ -19,5 +20,7 @@ namespace ComposAPI
     double ImposedLoadPercentage { get; }
     Strain ShrinkageStrain { get; }
     bool UserStrain { get; }
+
+    string ToCoaString(string name, DensityUnit densityUnit, StrainUnit strainUnit);
   }
 }

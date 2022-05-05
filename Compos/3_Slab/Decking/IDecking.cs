@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposAPI
 {
@@ -16,7 +17,9 @@ namespace ComposAPI
     Length b5 { get; }
     Length Depth { get; }
     Length Thickness { get; }
-    IDeckingConfiguration DeckConfiguration { get; }
+    IDeckingConfiguration DeckingConfiguration { get; }
     DeckingType Type { get; }
+
+    string ToCoaString(string name);
   }
 }

@@ -24,6 +24,7 @@ namespace ComposAPI
       C385,
       C283
     }
+
   /// <summary>
   /// Custom class: this class defines the basic properties and methods for our custom class
   /// </summary>
@@ -32,7 +33,6 @@ namespace ComposAPI
     public Length Cover { get; set; }
     public bool Rotated { get; set; }
     public ReinforcementMeshType MeshType { get; set; }
-
 
     #region constructors
     public MeshReinforcement()
@@ -48,6 +48,18 @@ namespace ComposAPI
       this.m_type = ReinforcementType.Mesh;
     }
 
+    #endregion
+
+    #region coa interop
+    internal MeshReinforcement(List<string> parameters)
+    {
+
+    }
+
+    public string ToCoaString(string name)
+    {
+      return String.Empty;
+    }
     #endregion
 
     #region methods

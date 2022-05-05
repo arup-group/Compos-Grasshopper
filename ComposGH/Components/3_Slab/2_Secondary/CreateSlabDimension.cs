@@ -99,12 +99,12 @@ namespace ComposGH.Components
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
       pManager.AddGenericParameter("Start [" + unitAbbreviation + "]", "Px", "(Optional) Start Position of this profile (beam local x-axis)", GH_ParamAccess.item);
-      pManager.AddNumberParameter("Overall depth [" + unitAbbreviation + "]", "OD", "Overall depth", GH_ParamAccess.item);
-      pManager.AddNumberParameter("Available width Left [" + unitAbbreviation + "]", "AWL", "Available width Left", GH_ParamAccess.item);
-      pManager.AddNumberParameter("Available width Right [" + unitAbbreviation + "]", "AWR", "Available width Right", GH_ParamAccess.item);
-      pManager.AddNumberParameter("Effective width Left [" + unitAbbreviation + "]", "EWL", "(Optional) Effective width Left", GH_ParamAccess.item);
-      pManager.AddNumberParameter("Effective width Right [" + unitAbbreviation + "]", "EWR", "(Optional) Effective width Right", GH_ParamAccess.item);
-      pManager.AddBooleanParameter("Taper Next", "Tp", "Taper to next (default = false)", GH_ParamAccess.item, false);
+      pManager.AddNumberParameter("Depth [" + unitAbbreviation + "]", "D", "Overall depth", GH_ParamAccess.item);
+      pManager.AddNumberParameter("Width Left [" + unitAbbreviation + "]", "WL", "Available width left", GH_ParamAccess.item);
+      pManager.AddNumberParameter("Width Right [" + unitAbbreviation + "]", "WR", "Available width right", GH_ParamAccess.item);
+      pManager.AddNumberParameter("Effective width Left [" + unitAbbreviation + "]", "EWL", "(Optional) Effective width left", GH_ParamAccess.item);
+      pManager.AddNumberParameter("Effective width Right [" + unitAbbreviation + "]", "EWR", "(Optional) Effective width right", GH_ParamAccess.item);
+      pManager.AddBooleanParameter("Tapered", "Tp", "Taper to next (default = false)", GH_ParamAccess.item, false);
       pManager[0].Optional = true;
       pManager[4].Optional = true;
       pManager[5].Optional = true;
