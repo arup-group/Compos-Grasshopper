@@ -18,13 +18,13 @@ using Grasshopper.Kernel.Parameters;
 
 namespace ComposGH.Components
 {
-  public class DeckConfig : GH_Component
+  public class CreateDeckingConfiguration : GH_Component
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("85E6A4A4-DD97-4780-A679-B733C4B4FE01");
-    public DeckConfig()
+    public CreateDeckingConfiguration()
       : base("Deck Config", "DeckConf", "Create Decking configuration for a Compos Slab",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
@@ -38,7 +38,6 @@ namespace ComposGH.Components
     private AngleUnit angleUnit = AngleUnit.Radian;
 
     #region Input and output
-
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       IQuantity angle = new Angle(0, angleUnit);
@@ -75,7 +74,7 @@ namespace ComposGH.Components
       DA.GetData(1, ref isDiscontinous);
       DA.GetData(2, ref isWelded);
 
-      DA.SetData(0, new DeckingConfigGoo(new DeckingConfiguration(new Angle(angle, angleUnit), isDiscontinous, isWelded)));
+      DA.SetData(0, new DeckingConfigurationGoo(new DeckingConfiguration(new Angle(angle, angleUnit), isDiscontinous, isWelded)));
     }
   }
 }

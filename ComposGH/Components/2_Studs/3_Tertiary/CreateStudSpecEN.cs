@@ -18,48 +18,62 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class StudSpec : GH_Component, IGH_VariableParameterComponent
+  public class CreateStudSpecEN : GH_Component, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
-    public override Guid ComponentGuid => new Guid("1ef0e7f8-bd0a-4a10-b6ed-009745062628");
-    public StudSpec()
-      : base("Stud Specification", "StudSpec", "Create Stud Specification for a Compos Stud",
+    public override Guid ComponentGuid => new Guid("467bb1c3-ea5e-4c63-a012-d088158fb173");
+    public CreateStudSpecEN()
+      : base("Stud EN Specification", "StudSpecEN", "Create Stud Specification to EN1994-1-1 for a Compos Stud",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
     { this.Hidden = false; } // sets the initial state of the component to hidden
 
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.StandardStudSpecs;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.StandardStudSpecsEN;
     #endregion
 
     #region Custom UI
     //This region overrides the typical component layout
+
+    // list of lists with all dropdown lists conctent
+    List<List<string>> DropdownItems;
+    // list of selected items
+    List<string> SelectedItems;
+    // list of descriptions 
+    List<string> SpacerDescriptions = new List<string>(new string[]
+    {
+      "Unit",
+    });
+
+    private bool First = true;
+    private LengthUnit LengthUnit = Units.LengthUnitSection;
+
     public override void CreateAttributes()
     {
-      if (first)
+      if (First)
       {
-        dropdownitems = new List<List<string>>();
-        selecteditems = new List<string>();
+        DropdownItems = new List<List<string>>();
+        SelectedItems = new List<string>();
 
         // length
-        dropdownitems.Add(Units.FilteredLengthUnits);
-        selecteditems.Add(lengthUnit.ToString());
+        DropdownItems.Add(Units.FilteredLengthUnits);
+        SelectedItems.Add(LengthUnit.ToString());
 
-        first = false;
+        First = false;
       }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, dropdownitems, selecteditems, spacerDescriptions);
+      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
     }
     public void SetSelected(int i, int j)
     {
       // change selected item
-      selecteditems[i] = dropdownitems[i][j];
-      if (lengthUnit.ToString() == selecteditems[i])
+      SelectedItems[i] = DropdownItems[i][j];
+      if (LengthUnit.ToString() == SelectedItems[i])
         return;
 
-      lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[i]);
+      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
 
       // update name of inputs (to display unit on sliders)
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -70,7 +84,7 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[0]);
+      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[0]);
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -78,31 +92,20 @@ namespace ComposGH.Components
       Params.OnParametersChanged();
       this.OnDisplayExpired(true);
     }
-    // list of lists with all dropdown lists conctent
-    List<List<string>> dropdownitems;
-    // list of selected items
-    List<string> selecteditems;
-    // list of descriptions 
-    List<string> spacerDescriptions = new List<string>(new string[]
-    {
-            "Unit",
-    });
-
-    private bool first = true;
-    private LengthUnit lengthUnit = Units.LengthUnitSection;
     #endregion
 
     #region Input and output
-
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity length = new Length(0, lengthUnit);
+      IQuantity length = new Length(0, LengthUnit);
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
       pManager.AddGenericParameter("No Stud Zone Start [" + unitAbbreviation + "]",
           "NSZS", "Length of zone without shear studs at the start of the beam (default = 0)", GH_ParamAccess.item);
       pManager.AddGenericParameter("No Stud Zone End [" + unitAbbreviation + "]",
           "NSZE", "Length of zone without shear studs at the end of the beam (default = 0)", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Rebar Pos [" + unitAbbreviation + "]",
+          "RbP", "Reinforcement position distance below underside of stud head (default = 30mm)", GH_ParamAccess.item);
       pManager.AddBooleanParameter("Welded", "Wld", "Welded through profiled steel sheeting", GH_ParamAccess.item, true);
       pManager.AddBooleanParameter("NCCI Limits", "NCCI", "Use NCCI limits on minimum percentage of interaction if applicable. " +
           "(Imposed load criteria will not be verified)", GH_ParamAccess.item, false);
@@ -110,6 +113,7 @@ namespace ComposGH.Components
       pManager[1].Optional = true;
       pManager[2].Optional = true;
       pManager[3].Optional = true;
+      pManager[4].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
@@ -122,32 +126,36 @@ namespace ComposGH.Components
       // get default length inputs used for all cases
       Length noStudZoneStart = Length.Zero;
       if (this.Params.Input[0].Sources.Count > 0)
-        noStudZoneStart = GetInput.Length(this, DA, 0, lengthUnit, true);
+        noStudZoneStart = GetInput.Length(this, DA, 0, LengthUnit, true);
       Length noStudZoneEnd = Length.Zero;
       if (this.Params.Input[1].Sources.Count > 0)
-        noStudZoneEnd = GetInput.Length(this, DA, 1, lengthUnit, true);
-
+        noStudZoneEnd = GetInput.Length(this, DA, 1, LengthUnit, true);
+      // get rebar position
+      Length rebarPos = new Length(30, LengthUnit.Millimeter);
+      if (this.Params.Input[2].Sources.Count > 0)
+        rebarPos = GetInput.Length(this, DA, 2, LengthUnit, true);
       bool welded = true;
-      DA.GetData(2, ref welded);
-
-      StudSpecification specOther = new StudSpecification(
-          noStudZoneStart, noStudZoneEnd, welded);
-      DA.SetData(0, new StudSpecificationGoo(specOther));
+      DA.GetData(3, ref welded);
+      bool ncci = false;
+      DA.GetData(4, ref ncci);
+      StudSpecification specEN = new StudSpecification(
+          noStudZoneStart, noStudZoneEnd, rebarPos, welded, ncci);
+      DA.SetData(0, new StudSpecificationGoo(specEN));
     }
 
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, dropdownitems, selecteditems, spacerDescriptions);
+      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
+      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
 
       UpdateUIFromSelectedItems();
 
-      first = false;
+      First = false;
 
       return base.Read(reader);
     }
@@ -172,10 +180,11 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity length = new Length(0, lengthUnit);
+      IQuantity length = new Length(0, LengthUnit);
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
       Params.Input[0].Name = "No Stud Zone Start [" + unitAbbreviation + "]";
       Params.Input[1].Name = "No Stud Zone End [" + unitAbbreviation + "]";
+      Params.Input[2].Name = "Rebar Pos [" + unitAbbreviation + "]";
     }
     #endregion
   }

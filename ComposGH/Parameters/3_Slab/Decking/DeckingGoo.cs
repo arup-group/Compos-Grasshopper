@@ -42,7 +42,7 @@ namespace ComposGH.Parameters
     #endregion
 
     #region properties
-     public override bool IsValid => (this.Value == null) ? false : true;
+    public override bool IsValid => (this.Value == null) ? false : true;
     public override string TypeName => "Decking";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot
