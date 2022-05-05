@@ -16,27 +16,29 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class CreepShrinkageEuroCodeParametersGoo : GH_Goo<CreepShrinkageEuroCodeParameters>
+  public class CreepShrinkageEuroCodeParametersGoo : GH_Goo<ICreepShrinkageParameters>
   {
     #region constructors
     public CreepShrinkageEuroCodeParametersGoo()
     {
       this.Value = new CreepShrinkageEuroCodeParameters();
     }
-    public CreepShrinkageEuroCodeParametersGoo(CreepShrinkageEuroCodeParameters item)
+
+    public CreepShrinkageEuroCodeParametersGoo(ICreepShrinkageParameters item)
     {
       if (item == null)
         item = new CreepShrinkageEuroCodeParameters();
-      this.Value = item.Duplicate();
+      this.Value = item.Duplicate() as ICreepShrinkageParameters;
     }
 
     public override IGH_Goo Duplicate()
     {
       return DuplicateGoo();
     }
+
     public CreepShrinkageEuroCodeParametersGoo DuplicateGoo()
     {
-      return new CreepShrinkageEuroCodeParametersGoo(Value == null ? new CreepShrinkageEuroCodeParameters() : Value.Duplicate());
+      return new CreepShrinkageEuroCodeParametersGoo(Value == null ? new CreepShrinkageEuroCodeParameters() : Value.Duplicate() as ICreepShrinkageParameters);
     }
     #endregion
 
@@ -67,7 +69,7 @@ namespace ComposGH.Parameters
       // This function is called when Grasshopper needs to convert this 
       // instance of our custom class into some other type Q.            
 
-      if (typeof(Q).IsAssignableFrom(typeof(CreepShrinkageEuroCodeParameters)))
+      if (typeof(Q).IsAssignableFrom(typeof(ICreepShrinkageParameters)))
       {
         if (Value == null)
           target = default;
@@ -87,9 +89,9 @@ namespace ComposGH.Parameters
       if (source == null) { return false; }
 
       //Cast from GsaMaterial
-      if (typeof(CreepShrinkageEuroCodeParameters).IsAssignableFrom(source.GetType()))
+      if (typeof(ICreepShrinkageParameters).IsAssignableFrom(source.GetType()))
       {
-        Value = (CreepShrinkageEuroCodeParameters)source;
+        Value = (ICreepShrinkageParameters)source;
         return true;
       }
 
