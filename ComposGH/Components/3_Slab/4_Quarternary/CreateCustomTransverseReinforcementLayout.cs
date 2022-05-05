@@ -31,7 +31,7 @@ namespace ComposGH.Components
     public override Guid ComponentGuid => new Guid("19322156-8b1a-4849-9772-813411af965c");
     public override GH_Exposure Exposure => GH_Exposure.quarternary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.TransverseReinforcement;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.CustomRebarLayout;
     #endregion
 
     #region Custom UI

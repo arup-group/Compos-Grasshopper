@@ -7,12 +7,12 @@ namespace ComposAPI
 {
   public enum Code
   {
-    BS5950_3_1_1990_Superseeded,
-    BS5950_3_1_1990_A1_2010,
-    EN1994_1_1_2004,
-    HKSUOS_2005,
-    HKSUOS_2011,
-    AS_NZS2327_2017
+    BS5950_3_1_1990_Superseded = 0,
+    BS5950_3_1_1990_A1_2010 = 1,
+    EN1994_1_1_2004 = 2,
+    HKSUOS_2005 = 3,
+    HKSUOS_2011 = 4,
+    AS_NZS2327_2017 = 5
   }
   public enum NationalAnnex
   {
@@ -49,7 +49,7 @@ namespace ComposAPI
       switch (coaString)
       {
         case "BS5950-3.1:1990 (superseded)":
-          return new DesignCode(Code.BS5950_3_1_1990_Superseeded);
+          return new DesignCode(Code.BS5950_3_1_1990_Superseded);
         case "BS5950-3.1:1990+A1:2010":
           return new DesignCode(Code.BS5950_3_1_1990_A1_2010);
         case "EN1994-1-1:2004":
@@ -69,7 +69,7 @@ namespace ComposAPI
     {
       switch (this.Code)
       {
-        case Code.BS5950_3_1_1990_Superseeded:
+        case Code.BS5950_3_1_1990_Superseded:
           return "BS5950-3.1:1990 (superseded)";
         case Code.BS5950_3_1_1990_A1_2010:
           return "BS5950-3.1:1990+A1:2010";
