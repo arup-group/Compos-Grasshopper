@@ -33,7 +33,6 @@ namespace ComposGH.Components
     #endregion
 
     #region Input and output
-
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       pManager.AddNumberParameter("Short Term", "ST", "Steel/concrete Young´s modulus ratio for short term", GH_ParamAccess.item, 6.24304);

@@ -36,6 +36,20 @@ namespace ComposGH.Components
 
     #region Custom UI
     // This region overrides the typical component layout
+
+    // list of lists with all dropdown lists conctent
+    List<List<string>> DropdownItems;
+    // list of selected items
+    List<string> SelectedItems;
+    // list of descriptions 
+    List<string> SpacerDescriptions = new List<string>(new string[]
+    {
+      "Unit"
+    });
+
+    private bool First = true;
+    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+
     public override void CreateAttributes()
     {
       if (First)
@@ -76,23 +90,9 @@ namespace ComposGH.Components
       Params.OnParametersChanged();
       this.OnDisplayExpired(true);
     }
-
-    // list of lists with all dropdown lists conctent
-    List<List<string>> DropdownItems;
-    // list of selected items
-    List<string> SelectedItems;
-    // list of descriptions 
-    List<string> SpacerDescriptions = new List<string>(new string[]
-    {
-      "Unit"
-    });
-
-    private bool First = true;
-    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
     #endregion
 
     #region Input and output
-
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       IQuantity length = new Length(0, LengthUnit);

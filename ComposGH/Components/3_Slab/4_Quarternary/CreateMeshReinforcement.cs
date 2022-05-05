@@ -32,50 +32,62 @@ namespace ComposGH.Components
 
     #region Custom UI
     //This region overrides the typical component layout
+
+    // list of lists with all dropdown lists content
+    List<List<string>> DropdownItems;
+    // list of selected items
+    List<string> SelectedItems;
+    // list of descriptions 
+    List<string> SpacerDescriptions = new List<string>(new string[]
+    {
+      "Standard Mesh",
+      "Unit"
+    });
+    private bool First = true;
+    private LengthUnit LengthUnit = Units.LengthUnitSection;
+    private ReinforcementMeshType mesh = ReinforcementMeshType.A393;
+
     public override void CreateAttributes()
     {
-      if (first)
+      if (First)
       {
-        dropdownitems = new List<List<string>>();
-        selecteditems = new List<string>();
+        DropdownItems = new List<List<string>>();
+        SelectedItems = new List<string>();
 
         // mesh
-        dropdownitems.Add(Enum.GetValues(typeof(ReinforcementMeshType)).Cast<ReinforcementMeshType>().Select(x => x.ToString()).ToList());
-        dropdownitems[0].RemoveAt(0); //
-        selecteditems.Add(mesh.ToString());
+        DropdownItems.Add(Enum.GetValues(typeof(ReinforcementMeshType)).Cast<ReinforcementMeshType>().Select(x => x.ToString()).ToList());
+        DropdownItems[0].RemoveAt(0); //
+        SelectedItems.Add(mesh.ToString());
 
         // length
-        dropdownitems.Add(Units.FilteredLengthUnits);
-        selecteditems.Add(lengthUnit.ToString());
+        DropdownItems.Add(Units.FilteredLengthUnits);
+        SelectedItems.Add(LengthUnit.ToString());
 
-
-        first = false;
+        First = false;
       }
 
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, dropdownitems, selecteditems, spacerDescriptions);
+      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
     }
 
     public void SetSelected(int i, int j)
     {
       // change selected item
-      selecteditems[i] = dropdownitems[i][j];
+      SelectedItems[i] = DropdownItems[i][j];
 
       if (i == 0)  // change is made to code 
       {
-        if (mesh.ToString() == selecteditems[i])
+        if (mesh.ToString() == SelectedItems[i])
           return; // return if selected value is same as before
 
-        mesh = (ReinforcementMeshType)Enum.Parse(typeof(ReinforcementMeshType), selecteditems[i]);
-
-        //ToggleInput();
+        mesh = (ReinforcementMeshType)Enum.Parse(typeof(ReinforcementMeshType), SelectedItems[i]);
       }
       else
       {
-        lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[i]);
+        LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
       }
 
-        // update name of inputs (to display unit on sliders)
-        (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
+      // update name of inputs (to display unit on sliders)
+      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
       ExpireSolution(true);
       Params.OnParametersChanged();
       this.OnDisplayExpired(true);
@@ -84,8 +96,8 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      mesh = (ReinforcementMeshType)Enum.Parse(typeof(ReinforcementMeshType), selecteditems[0]);
-      lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[1]);
+      mesh = (ReinforcementMeshType)Enum.Parse(typeof(ReinforcementMeshType), SelectedItems[0]);
+      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[1]);
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -96,25 +108,9 @@ namespace ComposGH.Components
     #endregion
 
     #region Input and output
-
-    // list of lists with all dropdown lists content
-    List<List<string>> dropdownitems;
-    // list of selected items
-    List<string> selecteditems;
-    // list of descriptions 
-    List<string> spacerDescriptions = new List<string>(new string[]
-    {
-            "Standard Mesh",
-            "Unit"
-    });
-    private bool first = true;
-    private LengthUnit lengthUnit = Units.LengthUnitSection;
-    private ReinforcementMeshType mesh = ReinforcementMeshType.A393;
-    #endregion
-
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity length = new Length(0, lengthUnit);
+      IQuantity length = new Length(0, LengthUnit);
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
       pManager.AddGenericParameter("Cover [" + unitAbbreviation + "]", "Cov", "Reinforcement cover", GH_ParamAccess.item);
@@ -125,31 +121,31 @@ namespace ComposGH.Components
     {
       pManager.AddGenericParameter("Mesh Reinforcement", "MRb", "Mesh Reinforcement for Compos Slab", GH_ParamAccess.item);
     }
+    #endregion
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       // get default length inputs used for all cases
       Length cov = Length.Zero;
       if (this.Params.Input[0].Sources.Count > 0)
-        cov = GetInput.Length(this, DA, 0, lengthUnit, true);
+        cov = GetInput.Length(this, DA, 0, LengthUnit, true);
 
       bool rotated = false;
       DA.GetData(1, ref rotated);
-      DA.SetData(0, new ReinforcementGoo(new MeshReinforcement(cov, mesh, rotated)));
+      DA.SetData(0, new MeshReinforcementGoo(new MeshReinforcement(cov, mesh, rotated)));
     }
-
 
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      DeSerialization.writeDropDownComponents(ref writer, dropdownitems, selecteditems, spacerDescriptions);
+      DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
+      DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
       UpdateUIFromSelectedItems();
-      first = false;
+      First = false;
       return base.Read(reader);
     }
 
@@ -175,7 +171,7 @@ namespace ComposGH.Components
 
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity length = new Length(0, lengthUnit);
+      IQuantity length = new Length(0, LengthUnit);
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
       Params.Input[0].Name = "Cover [" + unitAbbreviation + "]";

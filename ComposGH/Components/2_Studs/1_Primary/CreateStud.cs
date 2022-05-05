@@ -37,31 +37,45 @@ namespace ComposGH.Components
 
     #region Custom UI
     // This region overrides the typical component layout
+
+    // list of lists with all dropdown lists conctent
+    List<List<string>> DropdownItems;
+    // list of selected items
+    List<string> SelectedItems;
+    // list of descriptions 
+    List<string> SpacerDescriptions = new List<string>(new string[]
+    {
+      "Spacing Type",
+    });
+
+    private bool First = true;
+    private StudSpacingType SpacingType = StudSpacingType.Automatic;
+
     public override void CreateAttributes()
     {
-      if (first)
+      if (First)
       {
-        dropdownitems = new List<List<string>>();
-        selecteditems = new List<string>();
+        DropdownItems = new List<List<string>>();
+        SelectedItems = new List<string>();
 
         // spacing
-        dropdownitems.Add(Enum.GetValues(typeof(StudSpacingType)).Cast<StudSpacingType>()
+        DropdownItems.Add(Enum.GetValues(typeof(StudSpacingType)).Cast<StudSpacingType>()
             .Select(x => x.ToString().Replace("_", " ")).ToList());
-        selecteditems.Add(StudSpacingType.Automatic.ToString().Replace("_", " "));
+        SelectedItems.Add(StudSpacingType.Automatic.ToString().Replace("_", " "));
 
-        first = false;
+        First = false;
       }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, dropdownitems, selecteditems, spacerDescriptions);
+      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
     }
     public void SetSelected(int i, int j)
     {
       // change selected item
-      selecteditems[i] = dropdownitems[i][j];
+      SelectedItems[i] = DropdownItems[i][j];
 
-      if (spacingType.ToString().Replace("_", " ") == selecteditems[i])
+      if (SpacingType.ToString().Replace("_", " ") == SelectedItems[i])
         return;
 
-      spacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), selecteditems[i].Replace(" ", "_"));
+      SpacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), SelectedItems[i].Replace(" ", "_"));
 
       ModeChangeClicked();
 
@@ -74,7 +88,7 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      spacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), selecteditems[0].Replace(" ", "_"));
+      SpacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), SelectedItems[0].Replace(" ", "_"));
 
       ModeChangeClicked();
 
@@ -84,18 +98,7 @@ namespace ComposGH.Components
       Params.OnParametersChanged();
       this.OnDisplayExpired(true);
     }
-    // list of lists with all dropdown lists conctent
-    List<List<string>> dropdownitems;
-    // list of selected items
-    List<string> selecteditems;
-    // list of descriptions 
-    List<string> spacerDescriptions = new List<string>(new string[]
-    {
-            "Spacing Type",
-    });
-
-    private bool first = true;
-    private StudSpacingType spacingType = StudSpacingType.Automatic;
+    
     #endregion
 
     #region Input and output
@@ -116,16 +119,18 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      IStudDimensions studDimensions = GetInput.StudDim(this, DA, 0);
-      IStudSpecification studSpec = GetInput.StudSpec(this, DA, 1);
+      StudDimensionsGoo studDimensions = (StudDimensionsGoo)GetInput.GenericGoo<StudDimensionsGoo>(this, DA, 0);
+      if(studDimensions == null) { return; } // return here on non-optional inputs
+      StudSpecificationGoo studSpec = (StudSpecificationGoo)GetInput.GenericGoo<StudSpecificationGoo>(this, DA, 1);
+      if (studSpec == null) { return; } // return here on non-optional inputs
       double minSav = 0.2;
-      switch (spacingType)
+      switch (SpacingType)
       {
         case StudSpacingType.Automatic:
         case StudSpacingType.Min_Num_of_Studs:
           DA.GetData(2, ref minSav);
           DA.SetData(0, new StudGoo(
-              new Stud(studDimensions, studSpec, minSav, spacingType)));
+              new Stud(studDimensions.Value, studSpec.Value, minSav, SpacingType)));
           break;
 
         case StudSpacingType.Partial_Interaction:
@@ -133,15 +138,15 @@ namespace ComposGH.Components
           double interaction = 0.85;
           DA.GetData(3, ref interaction);
           DA.SetData(0, new StudGoo(
-              new Stud(studDimensions, studSpec, minSav, interaction)));
+              new Stud(studDimensions.Value, studSpec.Value, minSav, interaction)));
           break;
 
         case StudSpacingType.Custom:
-          List<IStudGroupSpacing> spacings = GetInput.StudSpacings(this, DA, 2);
+          List<StudGroupSpacingGoo> spacings = GetInput.GenericGooList<StudGroupSpacingGoo>(this, DA, 2);
           bool check = false;
           DA.GetData(3, ref check);
           DA.SetData(0, new StudGoo(
-              new Stud(studDimensions, studSpec, spacings, check)));
+              new Stud(studDimensions.Value, studSpec.Value, (spacings == null) ? null : spacings.Select(x => x.Value as IStudGroupSpacing).ToList(), check)));
           break;
       }
     }
@@ -150,7 +155,7 @@ namespace ComposGH.Components
     {
       RecordUndoEvent("Changed Parameters");
 
-      switch (spacingType)
+      switch (SpacingType)
       {
         case StudSpacingType.Automatic:
         case StudSpacingType.Min_Num_of_Studs:
@@ -188,16 +193,16 @@ namespace ComposGH.Components
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, dropdownitems, selecteditems, spacerDescriptions);
+      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
+      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
 
       UpdateUIFromSelectedItems();
 
-      first = false;
+      First = false;
 
       return base.Read(reader);
     }
@@ -222,7 +227,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      switch (spacingType)
+      switch (SpacingType)
       {
         case StudSpacingType.Automatic:
         case StudSpacingType.Min_Num_of_Studs:

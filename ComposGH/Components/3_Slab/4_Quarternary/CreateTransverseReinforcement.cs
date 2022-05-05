@@ -35,12 +35,10 @@ namespace ComposGH.Components
     #endregion
 
     #region Input and output
-
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       pManager.AddGenericParameter("Material", "RMt", "Reinforcement Material", GH_ParamAccess.item);
       pManager.AddGenericParameter("Custom Layout", "RbL", "(Optional) List of Custom Transverse Reinforcement Layouts - if left empty, Compos will create the layout automatically", GH_ParamAccess.list);
-
       pManager[1].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
@@ -51,16 +49,18 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      IReinforcementMaterial mat = GetInput.RebarMaterial(this, DA, 0);
+      ReinforcementMaterialGoo mat = (ReinforcementMaterialGoo)GetInput.GenericGoo<ReinforcementMaterialGoo>(this, DA, 0);
+      if (mat == null) { return; }
 
       if (this.Params.Input[1].Sources.Count > 0)
       {
-        List<ICustomTransverseReinforcementLayout> transverseReinforcmentLayouts = GetInput.TransverseReinforcementLayouts(this, DA, 1);
-        DA.SetData(0, new ReinforcementGoo(new CustomTransverseReinforcement(mat, transverseReinforcmentLayouts)));
+        List<CustomTransverseReinforcementLayoutGoo> transverseReinforcmentLayouts = GetInput.GenericGooList<CustomTransverseReinforcementLayoutGoo>(this, DA, 1);
+        DA.SetData(0, new TransverseReinforcementGoo(new CustomTransverseReinforcement(
+          mat.Value, transverseReinforcmentLayouts.Select(x => x.Value as ICustomTransverseReinforcementLayout).ToList())));
       }
       else
       {
-        DA.SetData(0, new ReinforcementGoo(new ComposAPI.TransverseReinforcement(mat)));
+        DA.SetData(0, new TransverseReinforcementGoo(new TransverseReinforcement(mat.Value)));
       }
     }
   }

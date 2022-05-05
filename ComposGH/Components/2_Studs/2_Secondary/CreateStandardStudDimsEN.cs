@@ -18,13 +18,13 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class StandardStudDimensionsEN : GH_Component, IGH_VariableParameterComponent
+  public class CreateStandardStudDimensionsEN : GH_Component, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("f012d853-af53-45b9-b080-723661b9c2ad");
-    public StandardStudDimensionsEN()
+    public CreateStandardStudDimensionsEN()
       : base("Standard Stud EN Dimensions", "StdStudDimEN", "Create Standard Stud Dimensions to EN1994-1-1 for a Compos Stud",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
@@ -37,112 +37,21 @@ namespace ComposGH.Components
 
     #region Custom UI
     //This region overrides the typical component layout
-    public override void CreateAttributes()
-    {
-      if (first)
-      {
-        dropdownitems = new List<List<string>>();
-        selecteditems = new List<string>();
 
-        // spacing
-        dropdownitems.Add(standardSize);
-        selecteditems.Add(stdSize.ToString().Replace("D", "Ø").Replace("mmH", "/"));
-
-        // grade
-        dropdownitems.Add(Enum.GetValues(typeof(StandardGrade)).Cast<StandardGrade>().Select(x => x.ToString()).ToList());
-        selecteditems.Add(stdGrd.ToString());
-
-        // strength
-        dropdownitems.Add(Units.FilteredStressUnits);
-        selecteditems.Add(stressUnit.ToString());
-
-        first = false;
-      }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, dropdownitems, selecteditems, spacerDescriptions);
-    }
-    public void SetSelected(int i, int j)
-    {
-      // change selected item
-      selecteditems[i] = dropdownitems[i][j];
-
-      if (i == 0) // change is made to size
-      {
-        if (selecteditems[0] != standardSize[0])
-        {
-          string sz = selecteditems[i].Replace("Ø", "D").Replace("/", "mmH");
-          stdSize = (StandardSize)Enum.Parse(typeof(StandardSize), sz);
-          if (dropdownitems.Count > 3)
-          {
-            // remove length dropdown
-            dropdownitems.RemoveAt(dropdownitems.Count - 1);
-            selecteditems.RemoveAt(selecteditems.Count - 1);
-            ModeChangeClicked();
-          }
-        }
-        else if (dropdownitems.Count < 4)
-        {
-          // add length dropdown
-          dropdownitems.Add(Units.FilteredLengthUnits);
-          selecteditems.Add(lengthUnit.ToString());
-          ModeChangeClicked();
-        }
-      }
-      if (i == 1) // change is made to grade
-      {
-        stdGrd = (StandardGrade)Enum.Parse(typeof(StandardGrade), selecteditems[i]);
-      }
-      if (i == 2) // change is made to grade
-      {
-        stressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), selecteditems[i]);
-      }
-      if (i == 3) // change is made to length
-      {
-        lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[i]);
-      }
-
-        // update name of inputs (to display unit on sliders)
-        (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-
-    private void UpdateUIFromSelectedItems()
-    {
-      if (selecteditems[0] != standardSize[0])
-      {
-        string sz = selecteditems[0].Replace("Ø", "D").Replace("/", "mmH");
-        stdSize = (StandardSize)Enum.Parse(typeof(StandardSize), sz);
-        stdGrd = (StandardGrade)Enum.Parse(typeof(StandardGrade), selecteditems[1]);
-      }
-      else
-      {
-        ModeChangeClicked();
-        lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[3]);
-      }
-
-      stressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), selecteditems[2]);
-
-      CreateAttributes();
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
     // list of lists with all dropdown lists conctent
-    List<List<string>> dropdownitems;
+    List<List<string>> DropdownItems;
     // list of selected items
-    List<string> selecteditems;
+    List<string> SelectedItems;
     // list of descriptions 
 
-    List<string> spacerDescriptions = new List<string>(new string[]
+    List<string> SpacerDescriptions = new List<string>(new string[]
     {
             "Standard Size",
             "Grade",
             "Force Unit",
             "Length Unit"
     });
-    List<string> standardSize = new List<string>(new string[]
+    List<string> StandardSize = new List<string>(new string[]
     {
             "Custom",
             "Ø13/65mm",
@@ -154,18 +63,110 @@ namespace ComposGH.Components
             "Ø25/100mm"
     });
 
-    private bool first = true;
-    private PressureUnit stressUnit = Units.StressUnit;
-    private LengthUnit lengthUnit = Units.LengthUnitSection;
-    private StandardGrade stdGrd = StandardGrade.SD1_EN13918;
-    private StandardSize stdSize = StandardSize.D19mmH100mm;
+    private bool First = true;
+    private PressureUnit StressUnit = Units.StressUnit;
+    private LengthUnit LengthUnit = Units.LengthUnitSection;
+    private StandardGrade StdGrd = StandardGrade.SD1_EN13918;
+    private StandardSize StdSize = ComposAPI.StandardSize.D19mmH100mm;
+
+    public override void CreateAttributes()
+    {
+      if (First)
+      {
+        DropdownItems = new List<List<string>>();
+        SelectedItems = new List<string>();
+
+        // spacing
+        DropdownItems.Add(StandardSize);
+        SelectedItems.Add(StdSize.ToString().Replace("D", "Ø").Replace("mmH", "/"));
+
+        // grade
+        DropdownItems.Add(Enum.GetValues(typeof(StandardGrade)).Cast<StandardGrade>().Select(x => x.ToString()).ToList());
+        SelectedItems.Add(StdGrd.ToString());
+
+        // strength
+        DropdownItems.Add(Units.FilteredStressUnits);
+        SelectedItems.Add(StressUnit.ToString());
+
+        First = false;
+      }
+      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
+    }
+    public void SetSelected(int i, int j)
+    {
+      // change selected item
+      SelectedItems[i] = DropdownItems[i][j];
+
+      if (i == 0) // change is made to size
+      {
+        if (SelectedItems[0] != StandardSize[0])
+        {
+          string sz = SelectedItems[i].Replace("Ø", "D").Replace("/", "mmH");
+          StdSize = (StandardSize)Enum.Parse(typeof(StandardSize), sz);
+          if (DropdownItems.Count > 3)
+          {
+            // remove length dropdown
+            DropdownItems.RemoveAt(DropdownItems.Count - 1);
+            SelectedItems.RemoveAt(SelectedItems.Count - 1);
+            ModeChangeClicked();
+          }
+        }
+        else if (DropdownItems.Count < 4)
+        {
+          // add length dropdown
+          DropdownItems.Add(Units.FilteredLengthUnits);
+          SelectedItems.Add(LengthUnit.ToString());
+          ModeChangeClicked();
+        }
+      }
+      if (i == 1) // change is made to grade
+      {
+        StdGrd = (StandardGrade)Enum.Parse(typeof(StandardGrade), SelectedItems[i]);
+      }
+      if (i == 2) // change is made to grade
+      {
+        StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), SelectedItems[i]);
+      }
+      if (i == 3) // change is made to length
+      {
+        LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
+      }
+
+        // update name of inputs (to display unit on sliders)
+        (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
+      ExpireSolution(true);
+      Params.OnParametersChanged();
+      this.OnDisplayExpired(true);
+    }
+
+    private void UpdateUIFromSelectedItems()
+    {
+      if (SelectedItems[0] != StandardSize[0])
+      {
+        string sz = SelectedItems[0].Replace("Ø", "D").Replace("/", "mmH");
+        StdSize = (StandardSize)Enum.Parse(typeof(StandardSize), sz);
+        StdGrd = (StandardGrade)Enum.Parse(typeof(StandardGrade), SelectedItems[1]);
+      }
+      else
+      {
+        ModeChangeClicked();
+        LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[3]);
+      }
+
+      StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), SelectedItems[2]);
+
+      CreateAttributes();
+      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
+      ExpireSolution(true);
+      Params.OnParametersChanged();
+      this.OnDisplayExpired(true);
+    }
     #endregion
 
     #region Input and output
-
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity stress = new Pressure(0, stressUnit);
+      IQuantity stress = new Pressure(0, StressUnit);
       string stressUnitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
 
       pManager.AddGenericParameter("Grade [" + stressUnitAbbreviation + "]", "fu", "(Optional) Custom Stud Steel Grade", GH_ParamAccess.item);
@@ -179,38 +180,39 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      if (selecteditems[0] == standardSize[0]) // custom size
+      if (SelectedItems[0] == StandardSize[0]) // custom size
       {
-        Length dia = GetInput.Length(this, DA, 0, lengthUnit);
-        Length h = GetInput.Length(this, DA, 1, lengthUnit);
+        Length dia = GetInput.Length(this, DA, 0, LengthUnit);
+        Length h = GetInput.Length(this, DA, 1, LengthUnit);
 
         if (this.Params.Input[2].Sources.Count > 0)
         {
-          selecteditems[1] = "Custom";
-          Pressure strengthS = GetInput.Stress(this, DA, 2, stressUnit);
+          SelectedItems[1] = "Custom";
+          Pressure strengthS = GetInput.Stress(this, DA, 2, StressUnit);
           DA.SetData(0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthS)));
         }
         else
-          DA.SetData(0, new StudDimensionsGoo(new StudDimensions(dia, h, stdGrd)));
+          DA.SetData(0, new StudDimensionsGoo(new StudDimensions(dia, h, StdGrd)));
       }
       else
       {
         if (this.Params.Input[0].Sources.Count > 0)
         {
-          selecteditems[1] = "Custom";
-          Pressure strengthS = GetInput.Stress(this, DA, 0, stressUnit);
-          DA.SetData(0, new StudDimensionsGoo(new StudDimensions(stdSize, strengthS)));
+          SelectedItems[1] = "Custom";
+          Pressure strengthS = GetInput.Stress(this, DA, 0, StressUnit);
+          DA.SetData(0, new StudDimensionsGoo(new StudDimensions(StdSize, strengthS)));
         }
         else
-          DA.SetData(0, new StudDimensionsGoo(new StudDimensions(stdSize, stdGrd)));
+          DA.SetData(0, new StudDimensionsGoo(new StudDimensions(StdSize, StdGrd)));
       }
     }
+
     #region update input params
     private void ModeChangeClicked()
     {
       RecordUndoEvent("Changed Parameters");
 
-      if (selecteditems[0] == standardSize[0]) // custom size
+      if (SelectedItems[0] == StandardSize[0]) // custom size
       {
         if (this.Params.Input.Count == 3)
           return;
@@ -227,7 +229,7 @@ namespace ComposGH.Components
         Params.RegisterInputParam(fu);
 
       }
-      if (selecteditems[0] != standardSize[0]) // standard size
+      if (SelectedItems[0] != StandardSize[0]) // standard size
       {
         if (this.Params.Input.Count == 1)
           return;
@@ -238,19 +240,20 @@ namespace ComposGH.Components
       }
     }
     #endregion
+
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, dropdownitems, selecteditems, spacerDescriptions);
+      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
+      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
 
       UpdateUIFromSelectedItems();
 
-      first = false;
+      First = false;
 
       return base.Read(reader);
     }
@@ -275,12 +278,12 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity stress = new Pressure(0, stressUnit);
+      IQuantity stress = new Pressure(0, StressUnit);
       string stressUnitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
 
-      if (selecteditems[0] == standardSize[0]) // custom size
+      if (SelectedItems[0] == StandardSize[0]) // custom size
       {
-        IQuantity length = new Length(0, lengthUnit);
+        IQuantity length = new Length(0, LengthUnit);
         string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
         Params.Input[0].Name = "Diameter [" + unitAbbreviation + "]";
@@ -298,7 +301,7 @@ namespace ComposGH.Components
         Params.Input[2].Description = "Stud Steel Grade";
         Params.Input[2].Optional = true;
       }
-      if (selecteditems[0] != standardSize[0]) // standard size
+      if (SelectedItems[0] != StandardSize[0]) // standard size
       {
         Params.Input[0].Name = "Grade [" + stressUnitAbbreviation + "]";
         Params.Input[0].NickName = "fu";

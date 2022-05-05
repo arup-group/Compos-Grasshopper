@@ -36,39 +36,55 @@ namespace ComposGH.Components
 
     #region Custom UI
     //This region overrides the typical component layout
+
+    // list of lists with all dropdown lists conctent
+    List<List<string>> DropdownItems;
+    // list of selected items
+    List<string> SelectedItems;
+    // list of descriptions 
+
+    List<string> SpacerDescriptions = new List<string>(new string[]
+    {
+      "Grade",
+      "Unit"
+    });
+
+    private bool First = true;
+    private PressureUnit StressUnit = Units.StressUnit;
+    private RebarGrade Grade = RebarGrade.EN_500B;
+
     public override void CreateAttributes()
     {
-      if (first)
+      if (First)
       {
-        dropdownitems = new List<List<string>>();
-        selecteditems = new List<string>();
+        DropdownItems = new List<List<string>>();
+        SelectedItems = new List<string>();
 
         // grade
-        dropdownitems.Add(Enum.GetValues(typeof(StandardGrade)).Cast<StandardGrade>().Select(x => x.ToString()).ToList());
-        selecteditems.Add(mat.ToString());
+        DropdownItems.Add(Enum.GetValues(typeof(StandardGrade)).Cast<StandardGrade>().Select(x => x.ToString()).ToList());
+        SelectedItems.Add(Grade.ToString());
 
         // strength
-        dropdownitems.Add(Units.FilteredStressUnits);
-        selecteditems.Add(stressUnit.ToString());
+        DropdownItems.Add(Units.FilteredStressUnits);
+        SelectedItems.Add(StressUnit.ToString());
 
-        first = false;
+        First = false;
       }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, dropdownitems, selecteditems, spacerDescriptions);
+      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
     }
     public void SetSelected(int i, int j)
     {
       // change selected item
-      selecteditems[i] = dropdownitems[i][j];
+      SelectedItems[i] = DropdownItems[i][j];
 
       if (i == 0) // change is made to grade
       {
-        mat = (RebarGrade)Enum.Parse(typeof(RebarGrade), selecteditems[i]);
+        Grade = (RebarGrade)Enum.Parse(typeof(RebarGrade), SelectedItems[i]);
       }
       if (i == 1) // change is made to unit
       {
-        stressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), selecteditems[i]);
+        StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), SelectedItems[i]);
       }
-
 
       // update name of inputs (to display unit on sliders)
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -79,10 +95,10 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      if (selecteditems[0] != "Custom")
-        mat = (RebarGrade)Enum.Parse(typeof(RebarGrade), selecteditems[0]);
+      if (SelectedItems[0] != "Custom")
+        Grade = (RebarGrade)Enum.Parse(typeof(RebarGrade), SelectedItems[0]);
 
-      stressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), selecteditems[1]);
+      StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), SelectedItems[1]);
 
 
       CreateAttributes();
@@ -91,33 +107,15 @@ namespace ComposGH.Components
       Params.OnParametersChanged();
       this.OnDisplayExpired(true);
     }
-    // list of lists with all dropdown lists conctent
-    List<List<string>> dropdownitems;
-    // list of selected items
-    List<string> selecteditems;
-    // list of descriptions 
-
-    List<string> spacerDescriptions = new List<string>(new string[]
-    {
-            "Grade",
-            "Unit"
-    });
-
-    private bool first = true;
-    private PressureUnit stressUnit = Units.StressUnit;
-    private RebarGrade mat = RebarGrade.EN_500B;
-
     #endregion
 
     #region Input and output
-
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity stress = new Pressure(0, stressUnit);
+      IQuantity stress = new Pressure(0, StressUnit);
       string stressUnitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
       pManager.AddGenericParameter("Strength [" + stressUnitAbbreviation + "]", "fu", "(Optional) Custom Characteristic Steel Strength", GH_ParamAccess.item);
       pManager[0].Optional = true;
-
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
@@ -129,27 +127,26 @@ namespace ComposGH.Components
     {
       if (this.Params.Input[0].Sources.Count > 0)
       {
-        selecteditems[0] = "Custom";
-        DA.SetData(0, new ReinforcementMaterialGoo(new ReinforcementMaterial(GetInput.Stress(this, DA, 0, stressUnit))));
+        SelectedItems[0] = "Custom";
+        DA.SetData(0, new ReinforcementMaterialGoo(new ReinforcementMaterial(GetInput.Stress(this, DA, 0, StressUnit))));
       }
       else
-        DA.SetData(0, new ReinforcementMaterialGoo(new ReinforcementMaterial(mat)));
+        DA.SetData(0, new ReinforcementMaterialGoo(new ReinforcementMaterial(Grade)));
     }
-
 
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, dropdownitems, selecteditems, spacerDescriptions);
+      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
+      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
 
       UpdateUIFromSelectedItems();
 
-      first = false;
+      First = false;
 
       return base.Read(reader);
     }
@@ -174,7 +171,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity stress = new Pressure(0, stressUnit);
+      IQuantity stress = new Pressure(0, StressUnit);
       string stressUnitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
       Params.Input[0].Name = "Strength [" + stressUnitAbbreviation + "]";
     }

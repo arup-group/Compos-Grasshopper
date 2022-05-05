@@ -17,13 +17,13 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class AxialLoad : GH_Component, IGH_VariableParameterComponent
+  public class CreateAxialLoad : GH_Component, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("9dfed0d2-3ad1-49e6-a8d8-d5a5fd851a64");
-    public AxialLoad()
+    public CreateAxialLoad()
       : base("Create Axial Load", "AxalLoad", "Create an axial Compos Load applied at both end positions",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat4())
@@ -36,34 +36,51 @@ namespace ComposGH.Components
 
     #region Custom UI
     //This region overrides the typical component layout
+
+    // list of lists with all dropdown lists conctent
+    List<List<string>> DropdownItems;
+    // list of selected items
+    List<string> SelectedItems;
+    // list of descriptions 
+
+    List<string> SpacerDescriptions = new List<string>(new string[]
+    {
+      "Force Unit",
+      "Length Unit"
+    });
+
+    private bool First = true;
+    private ForceUnit ForceUnit = Units.ForceUnit;
+    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+
     public override void CreateAttributes()
     {
-      if (first)
+      if (First)
       {
-        dropdownitems = new List<List<string>>();
-        selecteditems = new List<string>();
+        DropdownItems = new List<List<string>>();
+        SelectedItems = new List<string>();
 
         // force unit
-        dropdownitems.Add(Units.FilteredForceUnits);
-        selecteditems.Add(forceUnit.ToString());
+        DropdownItems.Add(Units.FilteredForceUnits);
+        SelectedItems.Add(ForceUnit.ToString());
 
         // length
-        dropdownitems.Add(Units.FilteredLengthUnits);
-        selecteditems.Add(lengthUnit.ToString());
+        DropdownItems.Add(Units.FilteredLengthUnits);
+        SelectedItems.Add(LengthUnit.ToString());
 
-        first = false;
+        First = false;
       }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, dropdownitems, selecteditems, spacerDescriptions);
+      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
     }
     public void SetSelected(int i, int j)
     {
       // change selected item
-      selecteditems[i] = dropdownitems[i][j];
+      SelectedItems[i] = DropdownItems[i][j];
 
       if (i == 0)
-        forceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), selecteditems[i]);
+        ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), SelectedItems[i]);
       if (i == 1)
-        lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[i]);
+        LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
 
       // update name of inputs (to display unit on sliders)
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -74,8 +91,8 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      forceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), selecteditems[0]);
-      lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[1]);
+      ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), SelectedItems[0]);
+      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[1]);
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -83,30 +100,15 @@ namespace ComposGH.Components
       Params.OnParametersChanged();
       this.OnDisplayExpired(true);
     }
-    // list of lists with all dropdown lists conctent
-    List<List<string>> dropdownitems;
-    // list of selected items
-    List<string> selecteditems;
-    // list of descriptions 
-
-    List<string> spacerDescriptions = new List<string>(new string[]
-    {
-      "Force Unit",
-      "Length Unit"
-    });
-
-    private bool first = true;
-    private ForceUnit forceUnit = Units.ForceUnit;
-    private LengthUnit lengthUnit = Units.LengthUnitGeometry;
     #endregion
 
     #region Input and output
 
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity force = new Force(0, forceUnit);
+      IQuantity force = new Force(0, ForceUnit);
       string unitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
-      IQuantity length = new Length(0, lengthUnit);
+      IQuantity length = new Length(0, LengthUnit);
       string lengthunitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
       pManager.AddGenericParameter("Const. Dead 1 [" + unitAbbreviation + "]", "dl1", "Start Constant dead load; construction stage dead load which are used for construction stage analysis."
         + Environment.NewLine + "Positive axial forces are considered as tensile and negative forces are considered as compressive", GH_ParamAccess.item);
@@ -135,18 +137,18 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Force constDead1 = GetInput.Force(this, DA, 0, forceUnit);
-      Force constLive1 = GetInput.Force(this, DA, 1, forceUnit);
-      Force finalDead1 = GetInput.Force(this, DA, 2, forceUnit);
-      Force finalLive1 = GetInput.Force(this, DA, 3, forceUnit);
-      Length pos1 = GetInput.Length(this, DA, 4, lengthUnit);
-      Force constDead2 = GetInput.Force(this, DA, 5, forceUnit);
-      Force constLive2 = GetInput.Force(this, DA, 6, forceUnit);
-      Force finalDead2 = GetInput.Force(this, DA, 7, forceUnit);
-      Force finalLive2 = GetInput.Force(this, DA, 8, forceUnit);
-      Length pos2 = GetInput.Length(this, DA, 9, lengthUnit);
+      Force constDead1 = GetInput.Force(this, DA, 0, ForceUnit);
+      Force constLive1 = GetInput.Force(this, DA, 1, ForceUnit);
+      Force finalDead1 = GetInput.Force(this, DA, 2, ForceUnit);
+      Force finalLive1 = GetInput.Force(this, DA, 3, ForceUnit);
+      Length pos1 = GetInput.Length(this, DA, 4, LengthUnit);
+      Force constDead2 = GetInput.Force(this, DA, 5, ForceUnit);
+      Force constLive2 = GetInput.Force(this, DA, 6, ForceUnit);
+      Force finalDead2 = GetInput.Force(this, DA, 7, ForceUnit);
+      Force finalLive2 = GetInput.Force(this, DA, 8, ForceUnit);
+      Length pos2 = GetInput.Length(this, DA, 9, LengthUnit);
 
-      Load load = new ComposAPI.AxialLoad(
+      Load load = new AxialLoad(
         constDead1, constLive1, finalDead1, finalLive1, pos1, constDead2, constLive2, finalDead2, finalLive2, pos2);
       DA.SetData(0, new LoadGoo(load));
     }
@@ -154,16 +156,16 @@ namespace ComposGH.Components
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, dropdownitems, selecteditems, spacerDescriptions);
+      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
+      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
 
       UpdateUIFromSelectedItems();
 
-      first = false;
+      First = false;
 
       return base.Read(reader);
     }
@@ -188,9 +190,9 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity force = new Force(0, forceUnit);
+      IQuantity force = new Force(0, ForceUnit);
       string unitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
-      IQuantity length = new Length(0, lengthUnit);
+      IQuantity length = new Length(0, LengthUnit);
       string lengthunitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
       int i = 0;
       Params.Input[i++].Name = "Const. Dead 1 [" + unitAbbreviation + "]";

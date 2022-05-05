@@ -35,7 +35,6 @@ namespace ComposGH.Components
     #endregion
 
     #region Input and output
-
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       pManager.AddGenericParameter("Material", "CMt", "Concrete material", GH_ParamAccess.item);
@@ -55,13 +54,25 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      IConcreteMaterial material = GetInput.ConcreteMaterial(this, DA, 0);
-      List<ISlabDimension> dimensions = GetInput.SlabDimensions(this, DA, 1);
-      ITransverseReinforcement transverseReinforcement = GetInput.TransverseReinforcement(this, DA, 2);
-      IMeshReinforcement meshReinforcement = GetInput.MeshReinforcement(this, DA, 3, true);
-      IDecking decking = GetInput.Decking(this, DA, 4, true);
+      ConcreteMaterialGoo material = (ConcreteMaterialGoo)GetInput.GenericGoo<ConcreteMaterialGoo>(this, DA, 0);
+      if (material == null) { return; } // return here on non-optional inputs
 
-      ISlab slab = new Slab(material, dimensions, transverseReinforcement, meshReinforcement, decking);
+      List<SlabDimensionGoo> dimensions = GetInput.GenericGooList<SlabDimensionGoo>(this, DA, 1);
+      if (dimensions == null) { return; } // return here on non-optional inputs
+
+      TransverseReinforcementGoo transverseReinforcement = (TransverseReinforcementGoo)GetInput.GenericGoo<TransverseReinforcementGoo>(this, DA, 2);
+      if (transverseReinforcement == null) { return; } // return here on non-optional inputs
+
+      MeshReinforcementGoo meshReinforcement = (MeshReinforcementGoo)GetInput.GenericGoo<MeshReinforcementGoo>(this, DA, 3);
+
+      DeckingGoo decking = (DeckingGoo)GetInput.GenericGoo<DeckingGoo>(this, DA, 4);
+
+      ISlab slab = new Slab(
+        material.Value, 
+        dimensions.Select(x => x.Value as ISlabDimension).ToList(), 
+        transverseReinforcement.Value, 
+        (meshReinforcement == null) ? null : meshReinforcement.Value,
+        (decking == null) ? null : decking.Value);
 
       DA.SetData(0, new SlabGoo(slab));
     }

@@ -36,63 +36,83 @@ namespace ComposGH.Components
     #endregion
 
     #region Custom UI
+
+    // list of lists with all dropdown lists content
+    List<List<string>> DropdownItems;
+    // list of selected items
+    List<string> SelectedItems;
+    // list of descriptions 
+    List<string> SpacerDescriptions = new List<string>(new string[]
+    {
+            "Steel Type",
+            "Weld Material",
+            "StressUnit",
+            "DensityUnit"
+    });
+
+    private bool First = true;
+    private PressureUnit StressUnit = Units.StressUnit;
+    private DensityUnit DensityUnit = Units.DensityUnit;
+    private SteelMaterialGrade SteelGrade = SteelMaterialGrade.S235;
+    private WeldMaterialGrade WeldingGrade = WeldMaterialGrade.Grade35;
+
     public override void CreateAttributes()
     {
-      if (first)
+      if (First)
       {
-        dropdownitems = new List<List<string>>();
-        selecteditems = new List<string>();
+        DropdownItems = new List<List<string>>();
+        SelectedItems = new List<string>();
 
         // SteelType
-        dropdownitems.Add(Enum.GetValues(typeof(SteelMaterialGrade)).Cast<SteelMaterialGrade>().Select(x => x.ToString()).ToList());
-        selecteditems.Add(ST.ToString());
+        DropdownItems.Add(Enum.GetValues(typeof(SteelMaterialGrade)).Cast<SteelMaterialGrade>().Select(x => x.ToString()).ToList());
+        SelectedItems.Add(SteelGrade.ToString());
 
         // WeldMaterial
-        dropdownitems.Add(Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList());
-        selecteditems.Add(WM.ToString());
+        DropdownItems.Add(Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList());
+        SelectedItems.Add(WeldingGrade.ToString());
 
         // Stress
-        dropdownitems.Add(Units.FilteredStressUnits);
-        selecteditems.Add(stressUnit.ToString());
+        DropdownItems.Add(Units.FilteredStressUnits);
+        SelectedItems.Add(StressUnit.ToString());
 
         // Density
-        dropdownitems.Add(Units.FilteredDensityUnits);
-        selecteditems.Add(densityUnit.ToString());
+        DropdownItems.Add(Units.FilteredDensityUnits);
+        SelectedItems.Add(DensityUnit.ToString());
 
-        first = false;
+        First = false;
       }
 
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, dropdownitems, selecteditems, spacerDescriptions);
+      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
     }
 
     public void SetSelected(int i, int j)
     {
       // change selected item
-      selecteditems[i] = dropdownitems[i][j];
+      SelectedItems[i] = DropdownItems[i][j];
 
       if (i == 0)  // change is made to code 
       {
-        if (ST.ToString() == selecteditems[i])
+        if (SteelGrade.ToString() == SelectedItems[i])
           return; // return if selected value is same as before
 
-        ST = (SteelMaterialGrade)Enum.Parse(typeof(SteelMaterialGrade), selecteditems[i]);
+        SteelGrade = (SteelMaterialGrade)Enum.Parse(typeof(SteelMaterialGrade), SelectedItems[i]);
 
       }
       if (i == 1)  // change is made to code 
       {
-        if (WM.ToString() == selecteditems[i])
+        if (WeldingGrade.ToString() == SelectedItems[i])
           return; // return if selected value is same as before
 
-        WM = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), selecteditems[i]);
+        WeldingGrade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), SelectedItems[i]);
 
       }
       if (i == 2)
       {
-        stressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), selecteditems[i]);
+        StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), SelectedItems[i]);
       }
       if (i == 3)
       {
-        densityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), selecteditems[i]);
+        DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), SelectedItems[i]);
       }
 
       // update name of inputs (to display unit on sliders)
@@ -102,13 +122,12 @@ namespace ComposGH.Components
       this.OnDisplayExpired(true);
     }
 
-
     private void UpdateUIFromSelectedItems()
     {
-      ST = (SteelMaterialGrade)Enum.Parse(typeof(SteelMaterialGrade), selecteditems[0]);
-      WM = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), selecteditems[1]);
-      stressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), selecteditems[2]);
-      densityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), selecteditems[3]);
+      SteelGrade = (SteelMaterialGrade)Enum.Parse(typeof(SteelMaterialGrade), SelectedItems[0]);
+      WeldingGrade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), SelectedItems[1]);
+      StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), SelectedItems[2]);
+      DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), SelectedItems[3]);
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -119,30 +138,10 @@ namespace ComposGH.Components
     #endregion
 
     #region Input and output
-
-    // list of lists with all dropdown lists content
-    List<List<string>> dropdownitems;
-    // list of selected items
-    List<string> selecteditems;
-    // list of descriptions 
-    List<string> spacerDescriptions = new List<string>(new string[]
-    {
-            "Steel Type",
-            "Weld Material",
-            "StressUnit",
-            "DensityUnit"
-    });
-
-    private bool first = true;
-    private PressureUnit stressUnit = Units.StressUnit;
-    private DensityUnit densityUnit = Units.DensityUnit;
-    private SteelMaterialGrade ST = SteelMaterialGrade.S235;
-    private WeldMaterialGrade WM = WeldMaterialGrade.Grade35;
-
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity stress = new Pressure(0, stressUnit);
-      IQuantity density = new Density(0, densityUnit);
+      IQuantity stress = new Pressure(0, StressUnit);
+      IQuantity density = new Density(0, DensityUnit);
 
       string stressunitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
       string densityunitAbbreviation = string.Concat(density.ToString().Where(char.IsLetter));
@@ -160,8 +159,6 @@ namespace ComposGH.Components
     {
       pManager.AddGenericParameter("StandardSteelMaterial", "SSM", "Standard Steel Material for a Compos Beam", GH_ParamAccess.item);
     }
-
-
     #endregion
 
     protected override void SolveInstance(IGH_DataAccess DA)
@@ -172,30 +169,30 @@ namespace ComposGH.Components
 
       if (this.Params.Input[0].Sources.Count > 0)
       {
-        selecteditems[0] = "Custom";
+        SelectedItems[0] = "Custom";
         DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(
-          GetInput.Stress(this, DA, 0, stressUnit), 
-          GetInput.Stress(this, DA, 1, stressUnit), 
-          GetInput.Density(this, DA, 2, densityUnit), 
-          WM, true, redFact)));
+          GetInput.Stress(this, DA, 0, StressUnit), 
+          GetInput.Stress(this, DA, 1, StressUnit), 
+          GetInput.Density(this, DA, 2, DensityUnit), 
+          WeldingGrade, true, redFact)));
       }
       else
-        DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(ST)));
+        DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(SteelGrade)));
     }
 
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, dropdownitems, selecteditems, spacerDescriptions);
+      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
+      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
 
       UpdateUIFromSelectedItems();
 
-      first = false;
+      First = false;
 
       return base.Read(reader);
     }
@@ -220,8 +217,8 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity stress = new Pressure(0, stressUnit);
-      IQuantity density = new Density(0, densityUnit);
+      IQuantity stress = new Pressure(0, StressUnit);
+      IQuantity density = new Density(0, DensityUnit);
 
       string stressunitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
       string densityunitAbbreviation = string.Concat(density.ToString().Where(char.IsLetter));

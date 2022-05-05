@@ -37,39 +37,55 @@ namespace ComposGH.Components
 
     #region Custom UI
     //This region overrides the typical component layout
+
+    // list of lists with all dropdown lists conctent
+    List<List<string>> DropdownItems;
+    // list of selected items
+    List<string> SelectedItems;
+    // list of descriptions 
+    List<string> SpacerDescriptions = new List<string>(new string[]
+    {
+      "Intermediate Sup.",
+      "Unit"
+    });
+
+    private bool First = true;
+    private IntermediateRestraint RestraintType = IntermediateRestraint.None;
+    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+
     public override void CreateAttributes()
     {
-      if (first)
+      if (First)
       {
-        dropdownitems = new List<List<string>>();
-        selecteditems = new List<string>();
+        DropdownItems = new List<List<string>>();
+        SelectedItems = new List<string>();
 
         // type
-        dropdownitems.Add(Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
+        DropdownItems.Add(Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
             .Select(x => x.ToString().Replace("__", "-").Replace("_", " ")).ToList());
-        dropdownitems[0].RemoveAt(dropdownitems[0].Count - 1);
-        selecteditems.Add(dropdownitems[0][0]);
+        DropdownItems[0].RemoveAt(DropdownItems[0].Count - 1);
+        SelectedItems.Add(DropdownItems[0][0]);
 
         // length
-        dropdownitems.Add(Units.FilteredLengthUnits);
-        selecteditems.Add(lengthUnit.ToString());
+        DropdownItems.Add(Units.FilteredLengthUnits);
+        SelectedItems.Add(LengthUnit.ToString());
 
-        first = false;
+        First = false;
       }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, dropdownitems, selecteditems, spacerDescriptions);
+      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
     }
     public void SetSelected(int i, int j)
     {
       // change selected item
-      selecteditems[i] = dropdownitems[i][j];
+      SelectedItems[i] = DropdownItems[i][j];
 
       if (i == 0)
       {
-        string typ = selecteditems[i].ToString().Replace("-", "__").Replace(" ", "_");
-        resType = (IntermediateRestraint)Enum.Parse(typeof(IntermediateRestraint), typ);
+        string typ = SelectedItems[i].ToString().Replace("-", "__").Replace(" ", "_");
+        RestraintType = (IntermediateRestraint)Enum.Parse(typeof(IntermediateRestraint), typ);
       }
       if (i == 1)
-        lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[i]);
+        LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
 
       // update name of inputs (to display unit on sliders)
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -80,9 +96,9 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      string typ = selecteditems[0].ToString().Replace("-", "__").Replace(" ", "_");
-      resType = (IntermediateRestraint)Enum.Parse(typeof(IntermediateRestraint), typ);
-      lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[1]);
+      string typ = SelectedItems[0].ToString().Replace("-", "__").Replace(" ", "_");
+      RestraintType = (IntermediateRestraint)Enum.Parse(typeof(IntermediateRestraint), typ);
+      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[1]);
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -90,27 +106,13 @@ namespace ComposGH.Components
       Params.OnParametersChanged();
       this.OnDisplayExpired(true);
     }
-    // list of lists with all dropdown lists conctent
-    List<List<string>> dropdownitems;
-    // list of selected items
-    List<string> selecteditems;
-    // list of descriptions 
-    List<string> spacerDescriptions = new List<string>(new string[]
-    {
-      "Intermediate Sup.",
-      "Unit"
-    });
-
-    private bool first = true;
-    private IntermediateRestraint resType = IntermediateRestraint.None;
-    private LengthUnit lengthUnit = Units.LengthUnitGeometry;
     #endregion
 
     #region Input and output
 
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity length = new Length(0, lengthUnit);
+      IQuantity length = new Length(0, LengthUnit);
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
       pManager.AddBooleanParameter("Sec. mem. interm. res.", "SMIR", "Take secondary member as intermediate restraint (default = true)", GH_ParamAccess.item, true);
@@ -135,14 +137,14 @@ namespace ComposGH.Components
 
       if (this.Params.Input[2].Sources.Count > 0)
       {
-        List<Length> restrs = GetInput.Lengths(this, DA, 2, lengthUnit);
-        selecteditems[0] = "Custom";
+        List<Length> restrs = GetInput.Lengths(this, DA, 2, LengthUnit);
+        SelectedItems[0] = "Custom";
         Supports sup = new Supports(restrs, smir, ffre);
         DA.SetData(0, new SupportsGoo(sup));
       }
       else
       {
-        Supports sup = new Supports(resType, smir, ffre);
+        Supports sup = new Supports(RestraintType, smir, ffre);
         DA.SetData(0, new SupportsGoo(sup));
       }
     }
@@ -150,16 +152,16 @@ namespace ComposGH.Components
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, dropdownitems, selecteditems, spacerDescriptions);
+      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
+      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
 
       UpdateUIFromSelectedItems();
 
-      first = false;
+      First = false;
 
       return base.Read(reader);
     }
@@ -184,7 +186,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity length = new Length(0, lengthUnit);
+      IQuantity length = new Length(0, LengthUnit);
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
       Params.Input[2].Name = "Restraint Pos [" + unitAbbreviation + "]";
     }

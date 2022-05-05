@@ -480,297 +480,297 @@ namespace ComposGH.Components
     }
     #endregion
 
-    #region Studs
-    internal static IStudDimensions StudDim(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-    {
-      StudDimensionsGoo goo = null;
-      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
-      if (DA.GetData(inputid, ref gh_typ))
-      {
-        // try cast directly to quantity type
-        if (gh_typ.Value is StudDimensionsGoo)
-        {
-          goo = (StudDimensionsGoo)gh_typ.Value;
-        }
-        else
-        {
-          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Stud Dimensions");
-          return null;
-        }
-      }
-      else if (!isOptional)
-        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-      else
-      {
-        if (goo == null)
-          return null;
-      }
+    //#region Studs
+    //internal static IStudDimensions StudDim(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    //{
+    //  StudDimensionsGoo goo = null;
+    //  GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+    //  if (DA.GetData(inputid, ref gh_typ))
+    //  {
+    //    // try cast directly to quantity type
+    //    if (gh_typ.Value is StudDimensionsGoo)
+    //    {
+    //      goo = (StudDimensionsGoo)gh_typ.Value;
+    //    }
+    //    else
+    //    {
+    //      owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Stud Dimensions");
+    //      return null;
+    //    }
+    //  }
+    //  else if (!isOptional)
+    //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+    //  else
+    //  {
+    //    if (goo == null)
+    //      return null;
+    //  }
 
-      return goo.Value;
-    }
-    internal static IStudSpecification StudSpec(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-    {
-      StudSpecificationGoo goo = null;
-      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
-      if (DA.GetData(inputid, ref gh_typ))
-      {
-        // try cast directly to quantity type
-        if (gh_typ.Value is StudSpecificationGoo)
-        {
-          goo = (StudSpecificationGoo)gh_typ.Value;
-        }
-        else
-        {
-          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Stud Specification");
-          return null;
-        }
-      }
-      else if (!isOptional)
-        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-      else
-      {
-        if (goo == null)
-          return null;
-      }
+    //  return goo.Value;
+    //}
+    //internal static IStudSpecification StudSpec(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    //{
+    //  StudSpecificationGoo goo = null;
+    //  GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+    //  if (DA.GetData(inputid, ref gh_typ))
+    //  {
+    //    // try cast directly to quantity type
+    //    if (gh_typ.Value is StudSpecificationGoo)
+    //    {
+    //      goo = (StudSpecificationGoo)gh_typ.Value;
+    //    }
+    //    else
+    //    {
+    //      owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Stud Specification");
+    //      return null;
+    //    }
+    //  }
+    //  else if (!isOptional)
+    //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+    //  else
+    //  {
+    //    if (goo == null)
+    //      return null;
+    //  }
 
-      return goo.Value;
-    }
-    internal static List<IStudGroupSpacing> StudSpacings(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-    {
-      List<IStudGroupSpacing> items = new List<IStudGroupSpacing>();
-      List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
-      if (DA.GetDataList(inputid, gh_typs))
-      {
-        for (int i = 0; i < gh_typs.Count; i++)
-        {
-          // try cast directly to quantity type
-          if (gh_typs[i].Value is StudGroupSpacingGoo)
-          {
-            StudGroupSpacingGoo goo = (StudGroupSpacingGoo)gh_typs[i].Value;
-            items.Add(goo.Value);
-          }
-          else
-          {
-            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Stud Spacing");
-            continue;
-          }
-        }
-        return items;
-      }
-      else if (!isOptional)
-      {
-        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-      }
-      return null;
-    }
-    #endregion
+    //  return goo.Value;
+    //}
+    //internal static List<IStudGroupSpacing> StudSpacings(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    //{
+    //  List<IStudGroupSpacing> items = new List<IStudGroupSpacing>();
+    //  List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
+    //  if (DA.GetDataList(inputid, gh_typs))
+    //  {
+    //    for (int i = 0; i < gh_typs.Count; i++)
+    //    {
+    //      // try cast directly to quantity type
+    //      if (gh_typs[i].Value is StudGroupSpacingGoo)
+    //      {
+    //        StudGroupSpacingGoo goo = (StudGroupSpacingGoo)gh_typs[i].Value;
+    //        items.Add(goo.Value);
+    //      }
+    //      else
+    //      {
+    //        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Stud Spacing");
+    //        continue;
+    //      }
+    //    }
+    //    return items;
+    //  }
+    //  else if (!isOptional)
+    //  {
+    //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+    //  }
+    //  return null;
+    //}
+    //#endregion
 
-    #region Reinforcement
-    internal static IReinforcement Reinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-    {
-      ReinforcementGoo goo = null;
-      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
-      if (DA.GetData(inputid, ref gh_typ))
-      {
-        if (gh_typ.Value is ReinforcementGoo)
-        {
-          goo = (ReinforcementGoo)gh_typ.Value;
-        }
-        else
-        {
-          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Reinforcement");
-          return null;
-        }
-      }
-      else if (!isOptional)
-        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-      else
-      {
-        if (goo == null)
-          return null;
-      }
-      return goo.Value;
-    }
+    //#region Reinforcement
+    //internal static IReinforcement Reinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    //{
+    //  ReinforcementGoo goo = null;
+    //  GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+    //  if (DA.GetData(inputid, ref gh_typ))
+    //  {
+    //    if (gh_typ.Value is ReinforcementGoo)
+    //    {
+    //      goo = (ReinforcementGoo)gh_typ.Value;
+    //    }
+    //    else
+    //    {
+    //      owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Reinforcement");
+    //      return null;
+    //    }
+    //  }
+    //  else if (!isOptional)
+    //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+    //  else
+    //  {
+    //    if (goo == null)
+    //      return null;
+    //  }
+    //  return goo.Value;
+    //}
 
-    internal static List<ICustomTransverseReinforcementLayout> TransverseReinforcementLayouts(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-    {
-      List<ICustomTransverseReinforcementLayout> items = new List<ICustomTransverseReinforcementLayout>();
-      List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
-      if (DA.GetDataList(inputid, gh_typs))
-      {
-        for (int i = 0; i < gh_typs.Count; i++)
-        {
-          // try cast directly to quantity type
-          if (gh_typs[i].Value is CustomTransverseReinforcmentLayoutGoo)
-          {
-            CustomTransverseReinforcmentLayoutGoo goo = (CustomTransverseReinforcmentLayoutGoo)gh_typs[i].Value;
-            items.Add(goo.Value);
-          }
-          else
-          {
-            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Compos Reinforcement");
-            continue;
-          }
-        }
-        return items;
-      }
-      else if (!isOptional)
-      {
-        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-      }
-      return null;
-    }
+    //internal static List<ICustomTransverseReinforcementLayout> TransverseReinforcementLayouts(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    //{
+    //  List<ICustomTransverseReinforcementLayout> items = new List<ICustomTransverseReinforcementLayout>();
+    //  List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
+    //  if (DA.GetDataList(inputid, gh_typs))
+    //  {
+    //    for (int i = 0; i < gh_typs.Count; i++)
+    //    {
+    //      // try cast directly to quantity type
+    //      if (gh_typs[i].Value is CustomTransverseReinforcmentLayoutGoo)
+    //      {
+    //        CustomTransverseReinforcmentLayoutGoo goo = (CustomTransverseReinforcmentLayoutGoo)gh_typs[i].Value;
+    //        items.Add(goo.Value);
+    //      }
+    //      else
+    //      {
+    //        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Compos Reinforcement");
+    //        continue;
+    //      }
+    //    }
+    //    return items;
+    //  }
+    //  else if (!isOptional)
+    //  {
+    //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+    //  }
+    //  return null;
+    //}
 
-    internal static IReinforcementMaterial RebarMaterial(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-    {
-      ReinforcementMaterialGoo goo = null;
-      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
-      if (DA.GetData(inputid, ref gh_typ))
-      {
-        if (gh_typ.Value is ReinforcementMaterialGoo)
-        {
-          goo = (ReinforcementMaterialGoo)gh_typ.Value;
-        }
-        else
-        {
-          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Rebar material");
-          return null;
-        }
-      }
-      else if (!isOptional)
-        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-      else
-      {
-        if (goo == null)
-          return null;
-      }
-      return goo.Value;
-    }
-    #endregion
+    //internal static IReinforcementMaterial RebarMaterial(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    //{
+    //  ReinforcementMaterialGoo goo = null;
+    //  GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+    //  if (DA.GetData(inputid, ref gh_typ))
+    //  {
+    //    if (gh_typ.Value is ReinforcementMaterialGoo)
+    //    {
+    //      goo = (ReinforcementMaterialGoo)gh_typ.Value;
+    //    }
+    //    else
+    //    {
+    //      owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Rebar material");
+    //      return null;
+    //    }
+    //  }
+    //  else if (!isOptional)
+    //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+    //  else
+    //  {
+    //    if (goo == null)
+    //      return null;
+    //  }
+    //  return goo.Value;
+    //}
+    //#endregion
 
-    #region Beam
-    internal static WebOpeningStiffeners WebOpeningStiffeners(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-    {
-      WebOpeningStiffenersGoo goo = null;
-      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
-      if (DA.GetData(inputid, ref gh_typ))
-      {
-        if (gh_typ.Value is WebOpeningStiffenersGoo)
-        {
-          goo = (WebOpeningStiffenersGoo)gh_typ.Value;
-        }
-        else
-        {
-          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Web Opening Stiffeners");
-          return null;
-        }
-      }
-      else if (!isOptional)
-        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-      else
-      {
-        if (goo == null)
-          return null;
-      }
-      return goo.Value;
-    }
+    //#region Beam
+    //internal static WebOpeningStiffeners WebOpeningStiffeners(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    //{
+    //  WebOpeningStiffenersGoo goo = null;
+    //  GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+    //  if (DA.GetData(inputid, ref gh_typ))
+    //  {
+    //    if (gh_typ.Value is WebOpeningStiffenersGoo)
+    //    {
+    //      goo = (WebOpeningStiffenersGoo)gh_typ.Value;
+    //    }
+    //    else
+    //    {
+    //      owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Web Opening Stiffeners");
+    //      return null;
+    //    }
+    //  }
+    //  else if (!isOptional)
+    //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+    //  else
+    //  {
+    //    if (goo == null)
+    //      return null;
+    //  }
+    //  return goo.Value;
+    //}
 
-    internal static List<WebOpening> WebOpenings(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-    {
-      List<WebOpening> items = new List<WebOpening>();
-      List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
-      if (DA.GetDataList(inputid, gh_typs))
-      {
-        for (int i = 0; i < gh_typs.Count; i++)
-        {
-          // try cast directly to quantity type
-          if (gh_typs[i].Value is WebOpeningGoo)
-          {
-            WebOpeningGoo goo = (WebOpeningGoo)gh_typs[i].Value;
-            items.Add(goo.Value);
-          }
-          else
-          {
-            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Compos Web Openings");
-            continue;
-          }
-        }
-        return items;
-      }
-      else if (!isOptional)
-      {
-        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-      }
-      return null;
-    }
+    //internal static List<WebOpening> WebOpenings(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    //{
+    //  List<WebOpening> items = new List<WebOpening>();
+    //  List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
+    //  if (DA.GetDataList(inputid, gh_typs))
+    //  {
+    //    for (int i = 0; i < gh_typs.Count; i++)
+    //    {
+    //      // try cast directly to quantity type
+    //      if (gh_typs[i].Value is WebOpeningGoo)
+    //      {
+    //        WebOpeningGoo goo = (WebOpeningGoo)gh_typs[i].Value;
+    //        items.Add(goo.Value);
+    //      }
+    //      else
+    //      {
+    //        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Compos Web Openings");
+    //        continue;
+    //      }
+    //    }
+    //    return items;
+    //  }
+    //  else if (!isOptional)
+    //  {
+    //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+    //  }
+    //  return null;
+    //}
 
-    internal static WebOpening WebOpening(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-    {
-      WebOpeningGoo goo = null;
-      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
-      if (DA.GetData(inputid, ref gh_typ))
-      {
-        if (gh_typ.Value is WebOpeningGoo)
-        {
-          goo = (WebOpeningGoo)gh_typ.Value;
-        }
-        else
-        {
-          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Web Opening");
-          return null;
-        }
-      }
-      else if (!isOptional)
-        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-      else
-      {
-        if (goo == null)
-          return null;
-      }
-      return goo.Value;
-    }
-    internal static List<BeamSection> BeamSections(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-    {
-      List<BeamSection> items = new List<BeamSection>();
-      List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
-      if (DA.GetDataList(inputid, gh_typs))
-      {
-        for (int i = 0; i < gh_typs.Count; i++)
-        {
-          string profile = "";
-          // try cast directly to quantity type
-          if (gh_typs[i].Value is BeamSectionGoo)
-          {
-            BeamSectionGoo goo = (BeamSectionGoo)gh_typs[i].Value;
-            items.Add(goo.Value);
-          }
-          else if (gh_typs[i].CastTo(ref profile))
-          {
-            try
-            {
-              items.Add(new BeamSection(profile));
-            }
-            catch (Exception e)
-            {
-              owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Compos Beam Section: "
-                + Environment.NewLine + e.Message);
-              continue;
-            }
-          }
-          else
-          {
-            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Compos Beam Section");
-            continue;
-          }
-        }
-        return items;
-      }
-      else if (!isOptional)
-      {
-        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-      }
-      return null;
-    }
+    //internal static WebOpening WebOpening(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    //{
+    //  WebOpeningGoo goo = null;
+    //  GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+    //  if (DA.GetData(inputid, ref gh_typ))
+    //  {
+    //    if (gh_typ.Value is WebOpeningGoo)
+    //    {
+    //      goo = (WebOpeningGoo)gh_typ.Value;
+    //    }
+    //    else
+    //    {
+    //      owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Web Opening");
+    //      return null;
+    //    }
+    //  }
+    //  else if (!isOptional)
+    //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+    //  else
+    //  {
+    //    if (goo == null)
+    //      return null;
+    //  }
+    //  return goo.Value;
+    //}
+    //internal static List<BeamSection> BeamSections(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    //{
+    //  List<BeamSection> items = new List<BeamSection>();
+    //  List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
+    //  if (DA.GetDataList(inputid, gh_typs))
+    //  {
+    //    for (int i = 0; i < gh_typs.Count; i++)
+    //    {
+    //      string profile = "";
+    //      // try cast directly to quantity type
+    //      if (gh_typs[i].Value is BeamSectionGoo)
+    //      {
+    //        BeamSectionGoo goo = (BeamSectionGoo)gh_typs[i].Value;
+    //        items.Add(goo.Value);
+    //      }
+    //      else if (gh_typs[i].CastTo(ref profile))
+    //      {
+    //        try
+    //        {
+    //          items.Add(new BeamSection(profile));
+    //        }
+    //        catch (Exception e)
+    //        {
+    //          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Compos Beam Section: "
+    //            + Environment.NewLine + e.Message);
+    //          continue;
+    //        }
+    //      }
+    //      else
+    //      {
+    //        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Compos Beam Section");
+    //        continue;
+    //      }
+    //    }
+    //    return items;
+    //  }
+    //  else if (!isOptional)
+    //  {
+    //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+    //  }
+    //  return null;
+    //}
     internal static string BeamSection(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
       BeamSectionGoo goo = null;
@@ -787,7 +787,7 @@ namespace ComposGH.Components
           return profile;
         else
         {
-          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Web Opening");
+          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " input (" + gh_typ.Value.GetType().Name + ") to " + typeof(BeamSectionGoo).Name.Replace("Goo", string.Empty) + " or text string"); 
           return null;
         }
       }
@@ -797,238 +797,238 @@ namespace ComposGH.Components
       return String.Empty;
     }
 
-    internal static Supports Supports(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-    {
-      SupportsGoo goo = null;
-      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
-      if (DA.GetData(inputid, ref gh_typ))
-      {
-        if (gh_typ.Value is SupportsGoo)
-        {
-          goo = (SupportsGoo)gh_typ.Value;
-        }
-        else
-        {
-          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Support");
-          return null;
-        }
-      }
-      else if (!isOptional)
-        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-      else
-      {
-        if (goo == null)
-          return null;
-      }
-      return goo.Value;
-    }
+    //internal static Supports Supports(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    //{
+    //  SupportsGoo goo = null;
+    //  GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+    //  if (DA.GetData(inputid, ref gh_typ))
+    //  {
+    //    if (gh_typ.Value is SupportsGoo)
+    //    {
+    //      goo = (SupportsGoo)gh_typ.Value;
+    //    }
+    //    else
+    //    {
+    //      owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Support");
+    //      return null;
+    //    }
+    //  }
+    //  else if (!isOptional)
+    //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+    //  else
+    //  {
+    //    if (goo == null)
+    //      return null;
+    //  }
+    //  return goo.Value;
+    //}
 
-    internal static Restraint Restraint(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-    {
-      RestraintGoo goo = null;
-      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
-      if (DA.GetData(inputid, ref gh_typ))
-      {
-        if (gh_typ.Value is RestraintGoo)
-        {
-          goo = (RestraintGoo)gh_typ.Value;
-        }
-        else
-        {
-          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Restraint");
-          return null;
-        }
-      }
-      else if (!isOptional)
-        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-      else
-      {
-        if (goo == null)
-          return null;
-      }
-      return goo.Value;
-    }
+    //internal static Restraint Restraint(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    //{
+    //  RestraintGoo goo = null;
+    //  GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+    //  if (DA.GetData(inputid, ref gh_typ))
+    //  {
+    //    if (gh_typ.Value is RestraintGoo)
+    //    {
+    //      goo = (RestraintGoo)gh_typ.Value;
+    //    }
+    //    else
+    //    {
+    //      owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Restraint");
+    //      return null;
+    //    }
+    //  }
+    //  else if (!isOptional)
+    //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+    //  else
+    //  {
+    //    if (goo == null)
+    //      return null;
+    //  }
+    //  return goo.Value;
+    //}
 
-    internal static SteelMaterial SteelMaterial(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-    {
-      SteelMaterialGoo goo = null;
-      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
-      if (DA.GetData(inputid, ref gh_typ))
-      {
-        if (gh_typ.Value is SteelMaterialGoo)
-        {
-          goo = (SteelMaterialGoo)gh_typ.Value;
-        }
-        else
-        {
-          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Steel Material");
-          return null;
-        }
-      }
-      else if (!isOptional)
-        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-      else
-      {
-        if (goo == null)
-          return null;
-      }
-      return goo.Value;
-    }
-    #endregion
+    //internal static SteelMaterial SteelMaterial(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    //{
+    //  SteelMaterialGoo goo = null;
+    //  GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+    //  if (DA.GetData(inputid, ref gh_typ))
+    //  {
+    //    if (gh_typ.Value is SteelMaterialGoo)
+    //    {
+    //      goo = (SteelMaterialGoo)gh_typ.Value;
+    //    }
+    //    else
+    //    {
+    //      owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Steel Material");
+    //      return null;
+    //    }
+    //  }
+    //  else if (!isOptional)
+    //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+    //  else
+    //  {
+    //    if (goo == null)
+    //      return null;
+    //  }
+    //  return goo.Value;
+    //}
+    //#endregion
 
-    #region Slab
-    internal static IConcreteMaterial ConcreteMaterial(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-    {
-      ConcreteMaterialGoo goo = null;
-      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
-      if (DA.GetData(inputid, ref gh_typ))
-      {
-        if (gh_typ.Value is ConcreteMaterialGoo)
-        {
-          goo = (ConcreteMaterialGoo)gh_typ.Value;
-        }
-        else
-        {
-          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Concrete Material");
-          return null;
-        }
-      }
-      else if (!isOptional)
-        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-      else
-      {
-        if (goo == null)
-          return null;
-      }
-      return goo.Value;
-    }
+    //#region Slab
+    //internal static IConcreteMaterial ConcreteMaterial(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    //{
+    //  ConcreteMaterialGoo goo = null;
+    //  GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+    //  if (DA.GetData(inputid, ref gh_typ))
+    //  {
+    //    if (gh_typ.Value is ConcreteMaterialGoo)
+    //    {
+    //      goo = (ConcreteMaterialGoo)gh_typ.Value;
+    //    }
+    //    else
+    //    {
+    //      owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Concrete Material");
+    //      return null;
+    //    }
+    //  }
+    //  else if (!isOptional)
+    //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+    //  else
+    //  {
+    //    if (goo == null)
+    //      return null;
+    //  }
+    //  return goo.Value;
+    //}
 
-    internal static List<ISlabDimension> SlabDimensions(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-    {
-      List<ISlabDimension> items = new List<ISlabDimension>();
-      List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
-      if (DA.GetDataList(inputid, gh_typs))
-      {
-        for (int i = 0; i < gh_typs.Count; i++)
-        {
-          // try cast directly
-          if (gh_typs[i].Value is SlabDimensionGoo goo)
-          {
-            items.Add(goo.Value);
-          }
-          else
-          {
-            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Compos Slab Dimension");
-            continue;
-          }
-        }
-        return items;
-      }
-      else if (!isOptional)
-      {
-        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-      }
-      return null;
-    }
+    //internal static List<ISlabDimension> SlabDimensions(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    //{
+    //  List<ISlabDimension> items = new List<ISlabDimension>();
+    //  List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
+    //  if (DA.GetDataList(inputid, gh_typs))
+    //  {
+    //    for (int i = 0; i < gh_typs.Count; i++)
+    //    {
+    //      // try cast directly
+    //      if (gh_typs[i].Value is SlabDimensionGoo goo)
+    //      {
+    //        items.Add(goo.Value);
+    //      }
+    //      else
+    //      {
+    //        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to Compos Slab Dimension");
+    //        continue;
+    //      }
+    //    }
+    //    return items;
+    //  }
+    //  else if (!isOptional)
+    //  {
+    //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+    //  }
+    //  return null;
+    //}
 
-    internal static ITransverseReinforcement TransverseReinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-    {
-      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
-      if (DA.GetData(inputid, ref gh_typ))
-      {
-        if (gh_typ.Value is ReinforcementGoo)
-        {
-          if (Reinforcement(owner, DA, inputid, isOptional) is ITransverseReinforcement reinforcement)
-          {
-            return reinforcement;
-          }
-        }
-        else
-        {
-          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Transverse Reinforcement");
-        }
-      }
-      else if (!isOptional)
-        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-      return null;
-    }
+    //internal static ITransverseReinforcement TransverseReinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    //{
+    //  GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+    //  if (DA.GetData(inputid, ref gh_typ))
+    //  {
+    //    if (gh_typ.Value is ReinforcementGoo)
+    //    {
+    //      if (Reinforcement(owner, DA, inputid, isOptional) is ITransverseReinforcement reinforcement)
+    //      {
+    //        return reinforcement;
+    //      }
+    //    }
+    //    else
+    //    {
+    //      owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Transverse Reinforcement");
+    //    }
+    //  }
+    //  else if (!isOptional)
+    //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+    //  return null;
+    //}
 
-    internal static IMeshReinforcement MeshReinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-    {
-      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
-      if (DA.GetData(inputid, ref gh_typ))
-      {
-        if (gh_typ.Value is ReinforcementGoo)
-        {
-          if (Reinforcement(owner, DA, inputid, isOptional) is MeshReinforcement reinforcement)
-          {
-            return reinforcement;
-          }
-        }
-        else
-        {
-          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Mesh Reinforcement");
-        }
-      }
-      else if (!isOptional)
-        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-      return null;
-    }
-    #endregion
+    //internal static IMeshReinforcement MeshReinforcement(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    //{
+    //  GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+    //  if (DA.GetData(inputid, ref gh_typ))
+    //  {
+    //    if (gh_typ.Value is ReinforcementGoo)
+    //    {
+    //      if (Reinforcement(owner, DA, inputid, isOptional) is MeshReinforcement reinforcement)
+    //      {
+    //        return reinforcement;
+    //      }
+    //    }
+    //    else
+    //    {
+    //      owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Mesh Reinforcement");
+    //    }
+    //  }
+    //  else if (!isOptional)
+    //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+    //  return null;
+    //}
+    //#endregion
 
-    #region Decking
-    internal static IDecking Decking(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-    {
-      DeckingGoo goo = null;
-      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
-      if (DA.GetData(inputid, ref gh_typ))
-      {
-        if (gh_typ.Value is DeckingGoo)
-        {
-          goo = (DeckingGoo)gh_typ.Value;
-        }
-        else
-        {
-          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Decking");
-          return null;
-        }
-      }
-      else if (!isOptional)
-        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-      else
-      {
-        if (goo == null)
-          return null;
-      }
-      return goo.Value;
-    }
+    //#region Decking
+    //internal static IDecking Decking(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    //{
+    //  DeckingGoo goo = null;
+    //  GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+    //  if (DA.GetData(inputid, ref gh_typ))
+    //  {
+    //    if (gh_typ.Value is DeckingGoo)
+    //    {
+    //      goo = (DeckingGoo)gh_typ.Value;
+    //    }
+    //    else
+    //    {
+    //      owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Decking");
+    //      return null;
+    //    }
+    //  }
+    //  else if (!isOptional)
+    //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+    //  else
+    //  {
+    //    if (goo == null)
+    //      return null;
+    //  }
+    //  return goo.Value;
+    //}
 
-    internal static IDeckingConfiguration DeckConfiguration(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
-    {
-      DeckingConfigGoo goo = null;
-      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
-      if (DA.GetData(inputid, ref gh_typ))
-      {
-        if (gh_typ.Value is DeckingConfigGoo)
-        {
-          goo = (DeckingConfigGoo)gh_typ.Value;
-        }
-        else
-        {
-          owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Deck Configuration");
-          return null;
-        }
-      }
-      else if (!isOptional)
-        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
-      else
-      {
-        if (goo == null)
-          return null;
-      }
-      return goo.Value;
-    }
-    #endregion
+    //internal static IDeckingConfiguration DeckConfiguration(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    //{
+    //  DeckingConfigGoo goo = null;
+    //  GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+    //  if (DA.GetData(inputid, ref gh_typ))
+    //  {
+    //    if (gh_typ.Value is DeckingConfigGoo)
+    //    {
+    //      goo = (DeckingConfigGoo)gh_typ.Value;
+    //    }
+    //    else
+    //    {
+    //      owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to Compos Deck Configuration");
+    //      return null;
+    //    }
+    //  }
+    //  else if (!isOptional)
+    //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+    //  else
+    //  {
+    //    if (goo == null)
+    //      return null;
+    //  }
+    //  return goo.Value;
+    //}
+    //#endregion
 
     internal static object GenericGoo<Type>(GH_Component owner, IGH_DataAccess DA, int inputid)
     {
@@ -1051,6 +1051,37 @@ namespace ComposGH.Components
       else if (!owner.Params.Input[inputid].Optional)
         owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
 
+      return null;
+    }
+
+    internal static List<Type> GenericGooList<Type>(GH_Component owner, IGH_DataAccess DA, int inputid)
+    {
+      List<Type> items = new List<Type>();
+      List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
+
+      if (owner.Params.Input[inputid].Sources.Count == 0 & owner.Params.Input[inputid].Optional)
+        return null;
+
+      if (DA.GetDataList(inputid, gh_typs))
+      {
+        for (int i = 0; i < gh_typs.Count; i++)
+        {
+          if (gh_typs[i].Value is Type)
+          {
+            items.Add((Type)gh_typs[i].Value);
+          }
+          else
+          {
+            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " input (index " + i + " (" + gh_typs[i].Value.GetType().Name + ")) to " + typeof(Type).Name.Replace("Goo", string.Empty));
+            continue;
+          }
+        }
+        return items;
+      }
+      else
+      {
+        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+      }
       return null;
     }
   }

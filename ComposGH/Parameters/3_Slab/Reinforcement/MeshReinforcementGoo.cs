@@ -16,33 +16,33 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class CustomTransverseReinforcementLayoutGoo : GH_Goo<ICustomTransverseReinforcementLayout>
+  public class MeshReinforcementGoo : GH_Goo<IMeshReinforcement>
   {
     #region constructors
-    public CustomTransverseReinforcementLayoutGoo()
+    public MeshReinforcementGoo()
     {
-      this.Value = new CustomTransverseReinforcementLayout();
+      this.Value = new MeshReinforcement();
     }
-    public CustomTransverseReinforcementLayoutGoo(ICustomTransverseReinforcementLayout item)
+    public MeshReinforcementGoo(IMeshReinforcement item)
     {
       if (item == null)
-        item = new CustomTransverseReinforcementLayout();
-      this.Value = item.Duplicate() as ICustomTransverseReinforcementLayout;
+        item = new MeshReinforcement();
+      this.Value = item.Duplicate() as IMeshReinforcement;
     }
 
     public override IGH_Goo Duplicate()
     {
       return DuplicateGoo();
     }
-    public CustomTransverseReinforcementLayoutGoo DuplicateGoo()
+    public MeshReinforcementGoo DuplicateGoo()
     {
-      return new CustomTransverseReinforcementLayoutGoo(Value == null ? new CustomTransverseReinforcementLayout() : Value.Duplicate() as ICustomTransverseReinforcementLayout);
+      return new MeshReinforcementGoo(Value == null ? new MeshReinforcement() : Value.Duplicate() as IMeshReinforcement);
     }
     #endregion
 
     #region properties
      public override bool IsValid => (this.Value == null) ? false : true;
-    public override string TypeName => "Transverse Reinforcement Layout";
+    public override string TypeName => "Mesh Reinforcement";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot
     {
@@ -67,7 +67,7 @@ namespace ComposGH.Parameters
       // This function is called when Grasshopper needs to convert this 
       // instance of our custom class into some other type Q.            
 
-      if (typeof(Q).IsAssignableFrom(typeof(CustomTransverseReinforcementLayout)))
+      if (typeof(Q).IsAssignableFrom(typeof(MeshReinforcement)))
       {
         if (Value == null)
           target = default;
@@ -87,9 +87,9 @@ namespace ComposGH.Parameters
       if (source == null) { return false; }
 
       //Cast from GsaMaterial
-      if (typeof(CustomTransverseReinforcementLayout).IsAssignableFrom(source.GetType()))
+      if (typeof(MeshReinforcement).IsAssignableFrom(source.GetType()))
       {
-        Value = (CustomTransverseReinforcementLayout)source;
+        Value = (MeshReinforcement)source;
         return true;
       }
 
