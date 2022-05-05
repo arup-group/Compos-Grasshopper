@@ -63,62 +63,64 @@ namespace ComposAPI.Tests
       Assert.True(duplicate.FinalStageSupports.SecondaryMemberIntermediateRestraint);
 
       // 3 make some changes to duplicate
-      //duplicate.TopFlangeRestrained = false;
-      //duplicate.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds = true;
-      //duplicate.ConstructionStageSupports.SecondaryMemberIntermediateRestraint = true;
-      //duplicate.ConstructionStageSupports.IntermediateRestraintPositions = Supports.IntermediateRestraint.None;
-      //duplicate.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds = false;
-      //duplicate.FinalStageSupports.SecondaryMemberIntermediateRestraint = false;
-      //duplicate.FinalStageSupports.IntermediateRestraintPositions = Supports.IntermediateRestraint.Mid__Span;
+      duplicate.TopFlangeRestrained = false;
+      Supports constructionStageSupports = duplicate.ConstructionStageSupports as Supports;
+      constructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds = true;
+      constructionStageSupports.SecondaryMemberIntermediateRestraint = true;
+      constructionStageSupports.IntermediateRestraintPositions = IntermediateRestraint.None;
+      constructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds = false;
+      constructionStageSupports.SecondaryMemberIntermediateRestraint = false;
+      constructionStageSupports.IntermediateRestraintPositions = IntermediateRestraint.Mid__Span;
 
-      //// 4 check that duplicate has set changes
-      //Assert.False(duplicate.TopFlangeRestrained);
-      //Assert.Equal(Supports.IntermediateRestraint.None, duplicate.ConstructionStageSupports.IntermediateRestraintPositions);
-      //Assert.True(duplicate.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
-      //Assert.True(duplicate.ConstructionStageSupports.SecondaryMemberIntermediateRestraint);
-      //Assert.Equal(Supports.IntermediateRestraint.Mid__Span, duplicate.FinalStageSupports.IntermediateRestraintPositions);
-      //Assert.False(duplicate.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
-      //Assert.False(duplicate.FinalStageSupports.SecondaryMemberIntermediateRestraint);
+      // 4 check that duplicate has set changes
+      Assert.False(duplicate.TopFlangeRestrained);
+      Assert.Equal(IntermediateRestraint.None, duplicate.ConstructionStageSupports.IntermediateRestraintPositions);
+      Assert.True(duplicate.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+      Assert.True(duplicate.ConstructionStageSupports.SecondaryMemberIntermediateRestraint);
+      Assert.Equal(IntermediateRestraint.Mid__Span, duplicate.FinalStageSupports.IntermediateRestraintPositions);
+      Assert.False(duplicate.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+      Assert.False(duplicate.FinalStageSupports.SecondaryMemberIntermediateRestraint);
 
-      //// 5 check that original has not been changed
-      //Assert.True(original.TopFlangeRestrained);
-      //Assert.Equal(Supports.IntermediateRestraint.Mid__Span, original.ConstructionStageSupports.IntermediateRestraintPositions);
-      //Assert.False(original.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
-      //Assert.False(original.ConstructionStageSupports.SecondaryMemberIntermediateRestraint);
-      //Assert.Equal(Supports.IntermediateRestraint.None, original.FinalStageSupports.IntermediateRestraintPositions);
-      //Assert.True(original.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
-      //Assert.True(original.FinalStageSupports.SecondaryMemberIntermediateRestraint);
+      // 5 check that original has not been changed
+      Assert.True(original.TopFlangeRestrained);
+      Assert.Equal(IntermediateRestraint.Mid__Span, original.ConstructionStageSupports.IntermediateRestraintPositions);
+      Assert.False(original.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+      Assert.False(original.ConstructionStageSupports.SecondaryMemberIntermediateRestraint);
+      Assert.Equal(IntermediateRestraint.None, original.FinalStageSupports.IntermediateRestraintPositions);
+      Assert.True(original.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+      Assert.True(original.FinalStageSupports.SecondaryMemberIntermediateRestraint);
 
-      //// 1 create with new constructor and duplicate
-      //original = TestConstructorNoFinalSupports();
-      //duplicate = original.Duplicate() as Restraint;
+      // 1 create with new constructor and duplicate
+      original = TestConstructorNoFinalSupports();
+      duplicate = original.Duplicate() as Restraint;
 
-      //// 2 check that duplicate has duplicated values
-      //Assert.False(duplicate.TopFlangeRestrained);
-      //Assert.Equal(Supports.IntermediateRestraint.Mid__Span, duplicate.ConstructionStageSupports.IntermediateRestraintPositions);
-      //Assert.False(duplicate.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
-      //Assert.True(duplicate.ConstructionStageSupports.SecondaryMemberIntermediateRestraint);
-      //Assert.Null(duplicate.FinalStageSupports);
+      // 2 check that duplicate has duplicated values
+      Assert.False(duplicate.TopFlangeRestrained);
+      Assert.Equal(IntermediateRestraint.Mid__Span, duplicate.ConstructionStageSupports.IntermediateRestraintPositions);
+      Assert.False(duplicate.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+      Assert.True(duplicate.ConstructionStageSupports.SecondaryMemberIntermediateRestraint);
+      Assert.Null(duplicate.FinalStageSupports);
 
-      //// 3 make some changes to duplicate
-      //duplicate.TopFlangeRestrained = true;
-      //duplicate.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds = false;
-      //duplicate.ConstructionStageSupports.SecondaryMemberIntermediateRestraint = true;
-      //duplicate.ConstructionStageSupports.IntermediateRestraintPositions = Supports.IntermediateRestraint.Third_Points;
+      // 3 make some changes to duplicate
+      duplicate.TopFlangeRestrained = true;
+      Supports constructionStageSupports2 = duplicate.ConstructionStageSupports as Supports;
+      constructionStageSupports2.BothFlangesFreeToRotateOnPlanAtEnds = false;
+      constructionStageSupports2.SecondaryMemberIntermediateRestraint = true;
+      constructionStageSupports2.IntermediateRestraintPositions = IntermediateRestraint.Third_Points;
 
-      //// 4 check that duplicate has set changes
-      //Assert.True(duplicate.TopFlangeRestrained);
-      //Assert.Equal(Supports.IntermediateRestraint.Third_Points, duplicate.ConstructionStageSupports.IntermediateRestraintPositions);
-      //Assert.False(duplicate.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
-      //Assert.True(duplicate.ConstructionStageSupports.SecondaryMemberIntermediateRestraint);
-      //Assert.Null(duplicate.FinalStageSupports);
+      // 4 check that duplicate has set changes
+      Assert.True(duplicate.TopFlangeRestrained);
+      Assert.Equal(IntermediateRestraint.Third_Points, duplicate.ConstructionStageSupports.IntermediateRestraintPositions);
+      Assert.False(duplicate.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+      Assert.True(duplicate.ConstructionStageSupports.SecondaryMemberIntermediateRestraint);
+      Assert.Null(duplicate.FinalStageSupports);
 
-      //// 5 check that original has not been changed
-      //Assert.False(original.TopFlangeRestrained);
-      //Assert.Equal(Supports.IntermediateRestraint.Mid__Span, original.ConstructionStageSupports.IntermediateRestraintPositions);
-      //Assert.False(original.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
-      //Assert.True(original.ConstructionStageSupports.SecondaryMemberIntermediateRestraint);
-      //Assert.Null(original.FinalStageSupports);
+      // 5 check that original has not been changed
+      Assert.False(original.TopFlangeRestrained);
+      Assert.Equal(IntermediateRestraint.Mid__Span, original.ConstructionStageSupports.IntermediateRestraintPositions);
+      Assert.False(original.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+      Assert.True(original.ConstructionStageSupports.SecondaryMemberIntermediateRestraint);
+      Assert.Null(original.FinalStageSupports);
     }
   }
 }

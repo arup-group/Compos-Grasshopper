@@ -34,6 +34,26 @@ namespace ComposAPI
   {
     public Length Diameter { get; set; }
     public Length Height { get; set; }
+    public Pressure Fu
+    {
+      get { return this.m_fu; }
+      set
+      {
+        this.m_fu = value;
+        this.m_strength = Force.Zero;
+      }
+    }
+    public Force CharacterStrength
+    {
+      get { return this.m_strength; }
+      set
+      {
+        this.m_strength = value;
+        this.m_fu = Pressure.Zero;
+      }
+    }
+    private Force m_strength { get; set; }
+    private Pressure m_fu { get; set; }
 
     private void SetSizeFromStandard(StandardSize size)
     {
@@ -85,28 +105,6 @@ namespace ComposAPI
           break;
       }
     }
-
-    public Force CharacterStrength
-    {
-      get { return this.m_strength; }
-      set
-      {
-        this.m_strength = value;
-        this.m_fu = Pressure.Zero;
-      }
-    }
-
-    private Force m_strength { get; set; }
-    public Pressure Fu
-    {
-      get { return this.m_fu; }
-      set
-      {
-        this.m_fu = value;
-        this.m_strength = Force.Zero;
-      }
-    }
-    private Pressure m_fu { get; set; }
 
     private void SetGradeFromStandard(StandardGrade standardGrade)
     {

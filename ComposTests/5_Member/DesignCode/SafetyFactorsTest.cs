@@ -89,40 +89,42 @@ namespace ComposAPI.Tests
       Assert.Equal(1.6, duplicate.LoadFactors.FinalLive);
 
       // 3 make some changes to duplicate
-      //duplicate.MaterialFactors.SteelBeam = 1.2;
-      //duplicate.MaterialFactors.ConcreteCompression = 1.25;
-      //duplicate.MaterialFactors.ConcreteShear = 1.3;
-      //duplicate.MaterialFactors.MetalDecking = 1.35;
-      //duplicate.MaterialFactors.ShearStud = 1.4;
-      //duplicate.MaterialFactors.Reinforcement = 1.05;
-      //duplicate.LoadFactors.ConstantDead = 1.15;
-      //duplicate.LoadFactors.ConstantLive = 1.45;
-      //duplicate.LoadFactors.FinalDead = 1.55;
-      //duplicate.LoadFactors.FinalLive = 0.95;
+      MaterialPartialFactors? materialPartialFactors = duplicate.MaterialFactors as MaterialPartialFactors;
+      materialPartialFactors.SteelBeam = 1.2;
+      materialPartialFactors.ConcreteCompression = 1.25;
+      materialPartialFactors.ConcreteShear = 1.3;
+      materialPartialFactors.MetalDecking = 1.35;
+      materialPartialFactors.ShearStud = 1.4;
+      materialPartialFactors.Reinforcement = 1.05;
+      LoadFactors loadFactors = duplicate.LoadFactors as LoadFactors;
+      loadFactors.ConstantDead = 1.15;
+      loadFactors.ConstantLive = 1.45;
+      loadFactors.FinalDead = 1.55;
+      loadFactors.FinalLive = 0.95;
 
-      // 4 check that duplicate has set changes
-      //Assert.Equal(1.2, duplicate.MaterialFactors.SteelBeam);
-      //Assert.Equal(1.25, duplicate.MaterialFactors.ConcreteCompression);
-      //Assert.Equal(1.3, duplicate.MaterialFactors.ConcreteShear);
-      //Assert.Equal(1.35, duplicate.MaterialFactors.MetalDecking);
-      //Assert.Equal(1.4, duplicate.MaterialFactors.ShearStud);
-      //Assert.Equal(1.05, duplicate.MaterialFactors.Reinforcement);
-      //Assert.Equal(1.15, duplicate.LoadFactors.ConstantDead);
-      //Assert.Equal(1.45, duplicate.LoadFactors.ConstantLive);
-      //Assert.Equal(1.55, duplicate.LoadFactors.FinalDead);
-      //Assert.Equal(0.95, duplicate.LoadFactors.FinalLive);
+      //4 check that duplicate has set changes
+      Assert.Equal(1.2, duplicate.MaterialFactors.SteelBeam);
+      Assert.Equal(1.25, duplicate.MaterialFactors.ConcreteCompression);
+      Assert.Equal(1.3, duplicate.MaterialFactors.ConcreteShear);
+      Assert.Equal(1.35, duplicate.MaterialFactors.MetalDecking);
+      Assert.Equal(1.4, duplicate.MaterialFactors.ShearStud);
+      Assert.Equal(1.05, duplicate.MaterialFactors.Reinforcement);
+      Assert.Equal(1.15, duplicate.LoadFactors.ConstantDead);
+      Assert.Equal(1.45, duplicate.LoadFactors.ConstantLive);
+      Assert.Equal(1.55, duplicate.LoadFactors.FinalDead);
+      Assert.Equal(0.95, duplicate.LoadFactors.FinalLive);
 
-      //// 5 check that original has not been changed
-      //Assert.Equal(1.0, original.MaterialFactors.SteelBeam);
-      //Assert.Equal(1.5, original.MaterialFactors.ConcreteCompression);
-      //Assert.Equal(1.25, original.MaterialFactors.ConcreteShear);
-      //Assert.Equal(1.0, original.MaterialFactors.MetalDecking);
-      //Assert.Equal(1.25, original.MaterialFactors.ShearStud);
-      //Assert.Equal(1.15, original.MaterialFactors.Reinforcement);
-      //Assert.Equal(1.4, original.LoadFactors.ConstantDead);
-      //Assert.Equal(1.4, original.LoadFactors.ConstantLive);
-      //Assert.Equal(1.6, original.LoadFactors.FinalDead);
-      //Assert.Equal(1.6, original.LoadFactors.FinalLive);
+      // 5 check that original has not been changed
+      Assert.Equal(1.0, original.MaterialFactors.SteelBeam);
+      Assert.Equal(1.5, original.MaterialFactors.ConcreteCompression);
+      Assert.Equal(1.25, original.MaterialFactors.ConcreteShear);
+      Assert.Equal(1.0, original.MaterialFactors.MetalDecking);
+      Assert.Equal(1.25, original.MaterialFactors.ShearStud);
+      Assert.Equal(1.15, original.MaterialFactors.Reinforcement);
+      Assert.Equal(1.4, original.LoadFactors.ConstantDead);
+      Assert.Equal(1.4, original.LoadFactors.ConstantLive);
+      Assert.Equal(1.6, original.LoadFactors.FinalDead);
+      Assert.Equal(1.6, original.LoadFactors.FinalLive);
     }
 
     [Fact]

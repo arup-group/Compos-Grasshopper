@@ -13,7 +13,7 @@ namespace ComposAPI
     public double LongTerm { get; set; } // user defined steel to concrete modulus ratio for long term londing
     public double Vibration { get; set; } // user defined steel to concrete modulus ratio for vibration calculation
     public double Shrinkage { get; set; } // user defined steel to concrete modulus ratio for shrinkage concrete
-    public bool UserDefined { get; } = false; // code or user defined steel to concrete Young's modulus ratio
+    public bool UserDefined { get; set; } = false; // code or user defined steel to concrete Young's modulus ratio
 
     #region constructors
     public ERatio() { }
