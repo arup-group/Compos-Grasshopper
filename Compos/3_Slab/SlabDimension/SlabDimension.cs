@@ -94,15 +94,26 @@ namespace ComposAPI
     /// <param name="num">number of total slab section to be defined</param>
     /// <param name="index">index of current slab section (1 based)</param>
     /// <returns></returns>
-    internal string ToCoaString(string name, int num, int index, LengthUnit lengthUnit)
+    public string ToCoaString(string name, int num, int index, LengthUnit lengthUnit)
     {
-      List<string> parameters = new List<string>() { CoaIdentifier.SlabDimension, name, Convert.ToString(num), Convert.ToString(index), this.StartPosition.ToUnit(lengthUnit).ToString(), this.OverallDepth.ToUnit(lengthUnit).ToString(), this.AvailableWidthLeft.ToUnit(lengthUnit).ToString(), this.AvailableWidthRight.ToUnit(lengthUnit).ToString() };
+      List<string> parameters = new List<string>();
+      parameters.Add(CoaIdentifier.SlabDimension);
+      parameters.Add(name);
+      parameters.Add(Convert.ToString(num));
+      parameters.Add(Convert.ToString(index));
+      if (this.StartPosition.ToUnit(LengthUnit.Meter).Value < 1.0)
+        parameters.Add(String.Format("{0:0.000000}", this.StartPosition.ToUnit(lengthUnit).Value));
+      else
+        parameters.Add(String.Format("{0:0.00000}", this.StartPosition.ToUnit(lengthUnit).Value));
+      parameters.Add(String.Format("{0:0.000000}", this.OverallDepth.ToUnit(lengthUnit).Value));
+      parameters.Add(String.Format("{0:0.00000}", this.AvailableWidthLeft.ToUnit(lengthUnit).Value));
+      parameters.Add(String.Format("{0:0.00000}", this.AvailableWidthRight.ToUnit(lengthUnit).Value));
       CoaHelper.AddParameter(parameters, "TAPERED", this.TaperedToNext);
       CoaHelper.AddParameter(parameters, "EFFECTIVE_WIDTH", this.UserEffectiveWidth);
       if (this.UserEffectiveWidth)
       {
-        parameters.Add(this.EffectiveWidthLeft.ToUnit(lengthUnit).ToString());
-        parameters.Add(this.EffectiveWidthRight.ToUnit(lengthUnit).ToString());
+        parameters.Add(String.Format("{0:0.00000}", this.EffectiveWidthLeft.ToUnit(lengthUnit).Value));
+        parameters.Add(String.Format("{0:0.00000}", this.EffectiveWidthRight.ToUnit(lengthUnit).Value));
       }
       return CoaHelper.CreateString(parameters);
     }

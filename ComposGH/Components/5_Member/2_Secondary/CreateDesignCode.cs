@@ -108,7 +108,7 @@ namespace ComposGH.Components
         Checkboxes.Add(DesignOptions.ProppedDuringConstruction);
         Checkboxes.Add(DesignOptions.InclSteelBeamWeight);
         Checkboxes.Add(DesignOptions.InclThinFlangeSections);
-        Checkboxes.Add(DesignOptions.InclConcereteSlabWeight);
+        Checkboxes.Add(DesignOptions.InclConcreteSlabWeight);
         Checkboxes.Add(DesignOptions.ConsiderShearDeflection);
         Checkboxes.Add(EC4codeOptions.ConsiderShrinkageDeflection);
         Checkboxes.Add(EC4codeOptions.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);

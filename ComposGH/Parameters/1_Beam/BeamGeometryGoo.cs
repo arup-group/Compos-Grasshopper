@@ -35,18 +35,19 @@ namespace ComposGH.Parameters
       this.Value = new Beam(length, restraint, material, beamSections, webOpenings);
       UpdatePreview();
     }
+
     public BeamGoo()
     {
       this.Value = new Beam();
     }
 
-    public BeamGoo(LineCurve line, LengthUnit lengthUnit, Beam item)
+    public BeamGoo(LineCurve line, LengthUnit lengthUnit, IBeam item)
     {
       if (item == null)
         item = new Beam();
       this.Line = (LineCurve)line.DuplicateShallow();
       this.LengthUnit = lengthUnit;
-      this.Value = item.Duplicate() as Beam;
+      this.Value = item.Duplicate() as IBeam;
       UpdatePreview();
     }
 
@@ -54,17 +55,19 @@ namespace ComposGH.Parameters
     {
       this.Line = (LineCurve)goo.Line.Duplicate();
       this.LengthUnit = goo.LengthUnit;
-      this.Value = goo.Value.Duplicate() as Beam;
+      this.Value = goo.Value.Duplicate() as IBeam;
     }
+
     public override IGH_Goo Duplicate()
     {
       BeamGoo dup = new BeamGoo();
       dup.Line = (LineCurve)this.Line.DuplicateShallow();
       dup.LengthUnit = this.LengthUnit;
-      dup.Value = this.Value.Duplicate() as Beam;
+      dup.Value = this.Value.Duplicate() as IBeam;
       dup.UpdatePreview();
       return dup;
     }
+
     public override IGH_GeometricGoo DuplicateGeometry()
     {
       if (Value == null)

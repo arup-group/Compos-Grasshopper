@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposAPI
 {
@@ -53,7 +54,7 @@ namespace ComposAPI
       // to do - implement from coa string method
     }
 
-    internal string ToCoaString()
+    public string ToCoaString(ForceUnit forceUnit, LengthUnit lengthUnit, PressureUnit pressureUnit)
     {
       // to do - implement to coa string method
       return string.Empty;
