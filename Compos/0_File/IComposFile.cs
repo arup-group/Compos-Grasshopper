@@ -2,7 +2,7 @@
 
 namespace ComposAPI
 {
-  public interface IFile
+  public interface IComposFile
   {
     List<IMember> Members { get; }
 

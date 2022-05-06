@@ -1,29 +1,31 @@
-﻿using System;
+﻿using Compos_8_6;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnitsNet;
 using UnitsNet.Units;
 
 namespace ComposAPI
 {
-  public class File : IFile
+  public class ComposFile : IComposFile
   {
     public List<IMember> Members { get; set; }
 
     #region constructors
-    public File()
+    public ComposFile()
     {
       // empty constructor
     }
 
-    public File(List<IMember> members)
+    public ComposFile(List<IMember> members)
     {
       this.Members = members;
     }
     #endregion
 
     #region coa interop
-    internal File(string coaString)
+    internal ComposFile(string coaString)
     {
       // to do - implement from coa string method
     }
@@ -39,6 +41,20 @@ namespace ComposAPI
     #endregion
 
     #region methods
+    public IAutomation Open(string pathName)
+    {
+      IAutomation automation = new Automation();
+      automation.Open(pathName);
+
+      return automation;
+    }
+
+    public IAutomation SaveAs(string pathName, string coaString)
+    {
+      File.WriteAllLines(pathName, new string[] { coaString });
+      return Open(pathName);
+    }
+
     public override string ToString()
     {
       string str = "";
