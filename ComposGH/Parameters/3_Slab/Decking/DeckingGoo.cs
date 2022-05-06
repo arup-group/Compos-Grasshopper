@@ -99,7 +99,7 @@ namespace ComposGH.Parameters
   public class ComposDeckingParameter : GH_PersistentParam<DeckingGoo>
   {
     public ComposDeckingParameter()
-      : base(new GH_InstanceDescription("Decking", "Dk", "Compos Decking", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+      : base(new GH_InstanceDescription("Decking", "Dk", "Maintains a collection of Compos Decking data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
 

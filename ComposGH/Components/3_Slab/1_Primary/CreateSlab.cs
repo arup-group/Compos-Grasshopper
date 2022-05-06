@@ -37,7 +37,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Slab", "Slb", "Compos Concrete slab", GH_ParamAccess.list);
+      pManager.AddGenericParameter("Slab", "Sla", "Compos Concrete slab", GH_ParamAccess.list);
     }
     #endregion
 

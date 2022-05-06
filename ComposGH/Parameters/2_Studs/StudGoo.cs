@@ -99,13 +99,13 @@ namespace ComposGH.Parameters
   public class ComposStudParameter : GH_PersistentParam<StudGoo>
   {
     public ComposStudParameter()
-      : base(new GH_InstanceDescription("Stud", "Std", "Compos Stud", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+      : base(new GH_InstanceDescription("Stud", "Stu", "Maintains a collection of Compos Stud data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
 
     public override Guid ComponentGuid => new Guid("e0b6cb52-99c8-4b2a-aec1-7f8a2d720daa");
 
-    public override GH_Exposure Exposure => GH_Exposure.secondary;
+    public override GH_Exposure Exposure => GH_Exposure.primary;
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.StudParam;
 

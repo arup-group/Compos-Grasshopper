@@ -99,7 +99,7 @@ namespace ComposGH.Parameters
   public class WebOpeningParameter : GH_PersistentParam<WebOpeningGoo>
   {
     public WebOpeningParameter()
-      : base(new GH_InstanceDescription("WebOpening", "WO", "Compos Web Opening", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+      : base(new GH_InstanceDescription("WebOpening", "WO", "Maintains a collection of Compos Web Opening data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
 

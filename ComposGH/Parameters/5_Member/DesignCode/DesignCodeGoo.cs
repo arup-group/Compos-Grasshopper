@@ -98,7 +98,7 @@ namespace ComposGH.Parameters
   public class DesignCodeParameter : GH_PersistentParam<DesignCodeGoo>
   {
     public DesignCodeParameter()
-      : base(new GH_InstanceDescription("DesignCode", "DC", "Compos Design Code", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+      : base(new GH_InstanceDescription("DesignCode", "DC", "Maintains a collection of Compos Design Code data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
     public override Guid ComponentGuid => new Guid("fb4d79ea-1c30-4e86-9654-a55ef42fd8e2");

@@ -11,7 +11,7 @@ namespace ComposGH.Components
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
-    public override Guid ComponentGuid => new Guid("cbc950b0-0a13-40a1-be96-0fb8fac21101");
+    public override Guid ComponentGuid => new Guid("e7eafcec-ede6-4d60-9fcb-5392cb878581");
     public CreateMember()
       : base("Create Member", "Member", "Create a Compos Member",
             Ribbon.CategoryName.Name(),
@@ -28,7 +28,7 @@ namespace ComposGH.Components
     {
       pManager.AddGenericParameter("Beam", "Bm", "Compos Steel Beam", GH_ParamAccess.item);
       pManager.AddGenericParameter("Stud", "Stu", "Compos Shear Stud", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Slab", "Slb", "Compos Concrete slab", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Slab", "Sla", "Compos Concrete slab", GH_ParamAccess.item);
       pManager.AddGenericParameter("Loads", "Ld", "Compos Loads", GH_ParamAccess.list);
       pManager.AddGenericParameter("Design Code", "DC", "Compos Design Code", GH_ParamAccess.item);
       pManager.AddTextParameter("Name", "Na", "Set Member Name", GH_ParamAccess.item);

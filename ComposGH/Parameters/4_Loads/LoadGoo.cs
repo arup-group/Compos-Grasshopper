@@ -99,7 +99,7 @@ namespace ComposGH.Parameters
   public class ComposLoadParameter : GH_PersistentParam<LoadGoo>
   {
     public ComposLoadParameter()
-      : base(new GH_InstanceDescription("Load", "Ld", "Compos Load", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+      : base(new GH_InstanceDescription("Load", "Ld", "Maintains a collection of Compos Load data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
 
