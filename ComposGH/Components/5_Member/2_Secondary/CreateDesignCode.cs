@@ -262,7 +262,7 @@ namespace ComposGH.Components
     {
       SafetyFactorsGoo safetyFactorsGoo = (SafetyFactorsGoo)GetInput.GenericGoo<SafetyFactorsGoo>(this, DA, 0);
 
-      ComposAPI.SafetyFactors safetyFactors = (safetyFactorsGoo == null) ? null : safetyFactorsGoo.Value;
+      ISafetyFactors safetyFactors = (safetyFactorsGoo == null) ? null : safetyFactorsGoo.Value;
       switch (Code)
       {
         case Code.BS5950_3_1_1990_Superseded:
@@ -292,7 +292,7 @@ namespace ComposGH.Components
           if (longt != null)
             ec4.CodeOptions.LongTerm = longt;
 
-          ComposAPI.EC4SafetyFactors safetyFactorsEC4 = (ComposAPI.EC4SafetyFactors)safetyFactors;
+          EC4SafetyFactors safetyFactorsEC4 = (EC4SafetyFactors)safetyFactors;
           if (safetyFactorsEC4 != null)
             ec4.SafetyFactors = safetyFactorsEC4;
 

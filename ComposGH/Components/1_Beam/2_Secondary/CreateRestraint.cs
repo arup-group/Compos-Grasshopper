@@ -62,12 +62,12 @@ namespace ComposGH.Components
       {
         SupportsGoo final = (SupportsGoo)GetInput.GenericGoo<SupportsGoo>(this, DA, 2);
         if (final == null) { return; }
-        Restraint res = new Restraint(tflr, construction.Value, final.Value);
+        IRestraint res = new Restraint(tflr, construction.Value, final.Value);
         DA.SetData(0, new RestraintGoo(res));
       }
       else
       {
-        Restraint res = new Restraint(tflr, construction.Value);
+        IRestraint res = new Restraint(tflr, construction.Value);
         DA.SetData(0, new RestraintGoo(res));
       }
     }
