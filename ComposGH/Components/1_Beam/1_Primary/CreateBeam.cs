@@ -131,11 +131,11 @@ namespace ComposGH.Components
             if (this.Params.Input[4].Sources.Count > 0)
             {
               List<WebOpeningGoo> webOpenings = GetInput.GenericGooList<WebOpeningGoo>(this, DA, 4);
-              DA.SetData(0, new BeamGoo(new LineCurve(ln), LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value).ToList(), webOpenings.Select(x => x.Value).ToList()));
+              DA.SetData(0, new BeamGoo(new LineCurve(ln), LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value as IBeamSection).ToList(), webOpenings.Select(x => x.Value as IWebOpening).ToList()));
             }
             else
             {
-              DA.SetData(0, new BeamGoo(new LineCurve(ln), LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value).ToList()));
+              DA.SetData(0, new BeamGoo(new LineCurve(ln), LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value as IBeamSection).ToList()));
             }
           }
           catch (Exception e)
