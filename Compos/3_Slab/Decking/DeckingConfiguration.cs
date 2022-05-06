@@ -30,7 +30,6 @@ namespace ComposAPI
       this.Angle = angle;
       this.IsDiscontinous = isDiscontinous;
       this.IsWelded = isWelded;
-
     }
 
     public override string ToString()
