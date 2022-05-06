@@ -31,6 +31,7 @@ namespace ComposAPI
     {
       // empty constructor
     }
+
     /// <summary>
     /// for EC4 code
     /// </summary>
@@ -48,6 +49,7 @@ namespace ComposAPI
       this.NCCI = ncci;
       this.SpecType = StudSpecType.EC4;
     }
+
     /// <summary>
     /// for BS5950 code
     /// </summary>
@@ -62,6 +64,7 @@ namespace ComposAPI
       this.EC4_Limit = useEC4Limit;
       this.SpecType = StudSpecType.BS5950;
     }
+
     /// <summary>
     /// for codes: AS/NZ, HK, 
     /// </summary>

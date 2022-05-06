@@ -1,4 +1,5 @@
 ﻿using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposAPI
 {
@@ -22,6 +23,6 @@ namespace ComposAPI
     bool isCatalogue { get; }
     string SectionDescription { get; }
 
-    string ToCoaString();
+    string ToCoaString(string name, int num, int index, LengthUnit lengthUnit);
   }
 }

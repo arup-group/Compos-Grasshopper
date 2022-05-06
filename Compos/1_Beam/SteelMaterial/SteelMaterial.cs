@@ -31,10 +31,10 @@ namespace ComposAPI
     public Pressure fy { get; set; } //	characteristic strength
     public Pressure E { get; set; } //	Young's modulus
     public Density Density { get; set; } //	material density
-    public bool isCustom { get; set; }
+    public bool isCustom { get; set; } 
     public bool ReductionFactorMpl { get; set; } //	Apply Reduction factor to the plastic moment capacity for S420 (EN) and S460 (EN) GRADES
-    public SteelMaterialGrade Grade { get; set; }
-    public WeldMaterialGrade WeldGrade { get; set; }
+    public SteelMaterialGrade Grade { get; set; } // standard material grade
+    public WeldMaterialGrade WeldGrade { get; set; } // welding material grade
 
     private void SetValuesFromStandard(SteelMaterialGrade grade)
     {
@@ -140,6 +140,7 @@ namespace ComposAPI
         steelParameters.Add(CoaHelper.FormatSignificantFigures(this.Density.ToUnit(densityUnit).Value, 6));
 
         // this seems not to be working!
+
         //if (this.ReductionFactorMpl)
         //  steelParameters.Add("TRUE");
         //else
