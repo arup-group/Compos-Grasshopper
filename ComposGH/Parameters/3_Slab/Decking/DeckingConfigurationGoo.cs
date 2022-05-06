@@ -15,18 +15,18 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class DeckingConfigurationGoo : GH_Goo<DeckingConfiguration>
+  public class DeckingConfigurationGoo : GH_Goo<IDeckingConfiguration>
   {
     #region constructors
     public DeckingConfigurationGoo()
     {
       this.Value = new DeckingConfiguration();
     }
-    public DeckingConfigurationGoo(DeckingConfiguration item)
+    public DeckingConfigurationGoo(IDeckingConfiguration item)
     {
       if (item == null)
         item = new DeckingConfiguration();
-      this.Value = item.Duplicate() as DeckingConfiguration;
+      this.Value = item; //.Duplicate() as DeckingConfiguration;
     }
 
     public override IGH_Goo Duplicate()
@@ -35,7 +35,7 @@ namespace ComposGH.Parameters
     }
     public DeckingConfigurationGoo DuplicateGoo()
     {
-      return new DeckingConfigurationGoo(Value == null ? new DeckingConfiguration() : Value.Duplicate() as DeckingConfiguration);
+      return new DeckingConfigurationGoo(Value == null ? new DeckingConfiguration() : Value);// .Duplicate() as DeckingConfiguration);
     }
     #endregion
 

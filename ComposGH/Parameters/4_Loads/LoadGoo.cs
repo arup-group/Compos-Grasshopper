@@ -17,14 +17,14 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class LoadGoo : GH_Goo<Load> // needs to be upgraded to GeometryGoo eventually....
+  public class LoadGoo : GH_Goo<ILoad> // needs to be upgraded to GeometryGoo eventually....
   {
     #region constructors
     public LoadGoo()
     {
       this.Value = new Load();
     }
-    public LoadGoo(Load item)
+    public LoadGoo(ILoad item)
     {
       if (item == null)
         item = new Load();

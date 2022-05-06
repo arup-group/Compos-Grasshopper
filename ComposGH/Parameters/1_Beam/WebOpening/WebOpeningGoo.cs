@@ -16,18 +16,18 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class WebOpeningGoo : GH_Goo<WebOpening>
+  public class WebOpeningGoo : GH_Goo<IWebOpening>
   {
     #region constructors
     public WebOpeningGoo()
     {
       this.Value = new WebOpening();
     }
-    public WebOpeningGoo(WebOpening item)
+    public WebOpeningGoo(IWebOpening item)
     {
       if (item == null)
         item = new WebOpening();
-      this.Value = item.Duplicate() as WebOpening;
+      this.Value = item; //.Duplicate() as WebOpening;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public WebOpeningGoo DuplicateGoo()
     {
-      return new WebOpeningGoo(Value == null ? new WebOpening() : Value.Duplicate() as WebOpening);
+      return new WebOpeningGoo(Value == null ? new WebOpening() : Value);// .Duplicate() as WebOpening);
     }
     #endregion
 

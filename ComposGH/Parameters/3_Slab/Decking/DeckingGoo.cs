@@ -27,7 +27,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new Decking();
-      this.Value = item.Duplicate() as IDecking;
+      this.Value = item; //.Duplicate() as IDecking;
     }
 
     public override IGH_Goo Duplicate()
@@ -37,7 +37,7 @@ namespace ComposGH.Parameters
 
     public DeckingGoo DuplicateGoo()
     {
-      return new DeckingGoo(Value == null ? new Decking() : Value.Duplicate() as IDecking);
+      return new DeckingGoo(Value == null ? new Decking() : Value);// .Duplicate() as IDecking);
     }
     #endregion
 

@@ -28,7 +28,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new CreepShrinkageEuroCodeParameters();
-      this.Value = item.Duplicate() as ICreepShrinkageParameters;
+      this.Value = item; //.Duplicate() as ICreepShrinkageParameters;
     }
 
     public override IGH_Goo Duplicate()
@@ -38,7 +38,7 @@ namespace ComposGH.Parameters
 
     public CreepShrinkageEuroCodeParametersGoo DuplicateGoo()
     {
-      return new CreepShrinkageEuroCodeParametersGoo(Value == null ? new CreepShrinkageEuroCodeParameters() : Value.Duplicate() as ICreepShrinkageParameters);
+      return new CreepShrinkageEuroCodeParametersGoo(Value == null ? new CreepShrinkageEuroCodeParameters() : Value);// .Duplicate() as ICreepShrinkageParameters);
     }
     #endregion
 

@@ -18,18 +18,18 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class BeamSectionGoo : GH_Goo<BeamSection>
+  public class BeamSectionGoo : GH_Goo<IBeamSection>
   {
     #region constructors
     public BeamSectionGoo()
     {
       this.Value = new BeamSection();
     }
-    public BeamSectionGoo(BeamSection item)
+    public BeamSectionGoo(IBeamSection item)
     {
       if (item == null)
         item = new BeamSection();
-      this.Value = item.Duplicate() as BeamSection;
+      this.Value = item; //.Duplicate() as BeamSection;
     }
 
     public override IGH_Goo Duplicate()
@@ -38,7 +38,7 @@ namespace ComposGH.Parameters
     }
     public BeamSectionGoo DuplicateGoo()
     {
-      return new BeamSectionGoo(Value == null ? new BeamSection() : Value.Duplicate() as BeamSection);
+      return new BeamSectionGoo(Value == null ? new BeamSection() : Value);// .Duplicate() as BeamSection);
     }
     #endregion
 

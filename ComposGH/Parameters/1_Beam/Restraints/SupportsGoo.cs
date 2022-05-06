@@ -16,18 +16,18 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class SupportsGoo : GH_Goo<Supports>
+  public class SupportsGoo : GH_Goo<ISupports>
   {
     #region constructors
     public SupportsGoo()
     {
       this.Value = new Supports();
     }
-    public SupportsGoo(Supports item)
+    public SupportsGoo(ISupports item)
     {
       if (item == null)
         item = new Supports();
-      this.Value = item.Duplicate() as Supports;
+      this.Value = item; //.Duplicate() as Supports;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public SupportsGoo DuplicateGoo()
     {
-      return new SupportsGoo(Value == null ? new Supports() : Value.Duplicate() as Supports);
+      return new SupportsGoo(Value == null ? new Supports() : Value);// .Duplicate() as Supports);
     }
     #endregion
 

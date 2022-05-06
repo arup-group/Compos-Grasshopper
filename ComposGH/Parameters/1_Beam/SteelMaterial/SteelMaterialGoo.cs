@@ -16,18 +16,18 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class SteelMaterialGoo : GH_Goo<SteelMaterial>
+  public class SteelMaterialGoo : GH_Goo<ISteelMaterial>
   {
     #region constructors
     public SteelMaterialGoo()
     {
       this.Value = new SteelMaterial();
     }
-    public SteelMaterialGoo(SteelMaterial item)
+    public SteelMaterialGoo(ISteelMaterial item)
     {
       if (item == null)
         item = new SteelMaterial();
-      this.Value = item.Duplicate() as SteelMaterial;
+      this.Value = item; //.Duplicate() as SteelMaterial;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public SteelMaterialGoo DuplicateGoo()
     {
-      return new SteelMaterialGoo(Value == null ? new SteelMaterial() : Value.Duplicate() as SteelMaterial);
+      return new SteelMaterialGoo(Value == null ? new SteelMaterial() : Value);// .Duplicate() as SteelMaterial);
     }
     #endregion
 

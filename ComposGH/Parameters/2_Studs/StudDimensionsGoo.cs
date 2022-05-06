@@ -16,18 +16,18 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapH class, makes sure our custom class can be used in GrasshopH.
   /// </summary>
-  public class StudDimensionsGoo : GH_Goo<StudDimensions>
+  public class StudDimensionsGoo : GH_Goo<IStudDimensions>
   {
     #region constructors
     public StudDimensionsGoo()
     {
       this.Value = new StudDimensions();
     }
-    public StudDimensionsGoo(StudDimensions item)
+    public StudDimensionsGoo(IStudDimensions item)
     {
       if (item == null)
         item = new StudDimensions();
-      this.Value = item.Duplicate() as StudDimensions;
+      this.Value = item; //.Duplicate() as StudDimensions;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public StudDimensionsGoo DuplicateGoo()
     {
-      return new StudDimensionsGoo(Value == null ? new StudDimensions() : Value.Duplicate() as StudDimensions);
+      return new StudDimensionsGoo(Value == null ? new StudDimensions() : Value);// .Duplicate() as StudDimensions);
     }
     #endregion
 

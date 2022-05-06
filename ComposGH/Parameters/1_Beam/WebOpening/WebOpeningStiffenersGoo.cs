@@ -15,18 +15,18 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class WebOpeningStiffenersGoo : GH_Goo<WebOpeningStiffeners>
+  public class WebOpeningStiffenersGoo : GH_Goo<IWebOpeningStiffeners>
   {
     #region constructors
     public WebOpeningStiffenersGoo()
     {
       this.Value = new WebOpeningStiffeners();
     }
-    public WebOpeningStiffenersGoo(WebOpeningStiffeners item)
+    public WebOpeningStiffenersGoo(IWebOpeningStiffeners item)
     {
       if (item == null)
         item = new WebOpeningStiffeners();
-      this.Value = item.Duplicate() as WebOpeningStiffeners;
+      this.Value = item; //.Duplicate() as WebOpeningStiffeners;
     }
 
     public override IGH_Goo Duplicate()
@@ -35,7 +35,7 @@ namespace ComposGH.Parameters
     }
     public WebOpeningStiffenersGoo DuplicateGoo()
     {
-      return new WebOpeningStiffenersGoo(Value == null ? new WebOpeningStiffeners() : Value.Duplicate() as WebOpeningStiffeners);
+      return new WebOpeningStiffenersGoo(Value == null ? new WebOpeningStiffeners() : Value);// .Duplicate() as WebOpeningStiffeners);
     }
     #endregion
 

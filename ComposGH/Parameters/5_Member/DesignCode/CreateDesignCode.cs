@@ -16,18 +16,18 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class DesignCodeGoo : GH_Goo<DesignCode>
+  public class DesignCodeGoo : GH_Goo<IDesignCode>
   {
     #region constructors
     public DesignCodeGoo()
     {
       this.Value = new DesignCode();
     }
-    public DesignCodeGoo(DesignCode item)
+    public DesignCodeGoo(IDesignCode item)
     {
       if (item == null)
         item = new DesignCode();
-      this.Value = item.Duplicate() as DesignCode;
+      this.Value = item; //.Duplicate() as DesignCode;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +36,7 @@ namespace ComposGH.Parameters
     }
     public DesignCodeGoo DuplicateGoo()
     {
-      return new DesignCodeGoo(Value == null ? new DesignCode() : Value.Duplicate() as DesignCode);
+      return new DesignCodeGoo(Value == null ? new DesignCode() : Value);// .Duplicate() as DesignCode);
     }
     #endregion
 
