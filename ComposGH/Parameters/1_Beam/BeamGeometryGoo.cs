@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
@@ -259,6 +258,7 @@ namespace ComposGH.Parameters
     List<Brep> stiffenerPlates;
     void UpdatePreview()
     {
+      return;
       profileOutlines = new List<PolyCurve>();
       profileExtrusions = new List<Brep>();
       List<IBeamSection> beamSectionsSorted = SortBeamSections(this.Value.BeamSections.ToList());
