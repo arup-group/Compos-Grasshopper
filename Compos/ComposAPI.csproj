@@ -56,6 +56,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="0_File\IFile.cs" />
+    <Compile Include="0_File\File.cs" />
     <Compile Include="1_Beam\IBeam.cs" />
     <Compile Include="5_Member\IMember.cs" />
     <Compile Include="Helpers\CoaHelper.cs" />
@@ -134,7 +136,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="0_File\" />
     <Folder Include="6_Analysis\" />
     <Folder Include="7_Results\" />
     <Folder Include="8_Design\" />

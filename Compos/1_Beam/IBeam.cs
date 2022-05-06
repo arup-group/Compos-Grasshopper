@@ -10,5 +10,7 @@ namespace ComposAPI
     ISteelMaterial Material { get; }
     List<IBeamSection> BeamSections { get; }
     List<IWebOpening> WebOpenings { get; }
+
+    string ToCoaString();
   }
 }

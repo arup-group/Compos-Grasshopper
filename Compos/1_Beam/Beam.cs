@@ -42,7 +42,7 @@ namespace ComposAPI
       // to do - implement from coa string method
     }
 
-    internal string ToCoaString()
+    public string ToCoaString()
     {
       // to do - implement to coa string method
       return string.Empty;

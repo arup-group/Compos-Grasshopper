@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Oasys.Units;
+using UnitsNet.Units;
 
 namespace ComposAPI
 {
@@ -12,5 +14,7 @@ namespace ComposAPI
     string Name { get; }
     string GridReference { get; }
     string Note { get; }
+
+    string ToCoaString(AngleUnit angleUnit, DensityUnit densityUnit, ForceUnit forceUnit, LengthUnit lengthUnit, PressureUnit pressureUnit, StrainUnit strainUnit);
   }
 }

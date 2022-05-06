@@ -40,7 +40,22 @@ namespace ComposAPI
 
     public override string ToString()
     {
-      return Coa();
+      switch (this.Code)
+      {
+        case Code.BS5950_3_1_1990_Superseded:
+          return "BS5950-3.1:1990 (superseded)";
+        case Code.BS5950_3_1_1990_A1_2010:
+          return "BS5950-3.1:1990+A1:2010";
+        case Code.EN1994_1_1_2004:
+          return "EN1994-1-1:2004";
+        case Code.HKSUOS_2005:
+          return "HKSUOS:2005";
+        case Code.HKSUOS_2011:
+          return "HKSUOS:2011";
+        case Code.AS_NZS2327_2017:
+          return "AS/NZS2327:2017";
+      }
+      return "";
     }
 
     #region coa interop
@@ -65,23 +80,8 @@ namespace ComposAPI
       }
     }
 
-    internal string Coa()
+    public string ToCoaString()
     {
-      switch (this.Code)
-      {
-        case Code.BS5950_3_1_1990_Superseded:
-          return "BS5950-3.1:1990 (superseded)";
-        case Code.BS5950_3_1_1990_A1_2010:
-          return "BS5950-3.1:1990+A1:2010";
-        case Code.EN1994_1_1_2004:
-          return "EN1994-1-1:2004";
-        case Code.HKSUOS_2005:
-          return "HKSUOS:2005";
-        case Code.HKSUOS_2011:
-          return "HKSUOS:2011";
-        case Code.AS_NZS2327_2017:
-          return "AS/NZS2327:2017";
-      }
       return "";
     }
     #endregion

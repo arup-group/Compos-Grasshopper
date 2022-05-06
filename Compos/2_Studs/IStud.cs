@@ -14,7 +14,8 @@ namespace ComposAPI
     double Interaction { get; }
     double MinSavingMultipleZones { get; }
     bool CheckStudSpacing { get; }
-
     StudSpacingType StudSpacingType { get; }
+    
+    string ToCoaString();
   }
 }

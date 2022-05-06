@@ -8,5 +8,7 @@
     Code Code { get; }
     IDesignOptions DesignOptions { get; }
     ISafetyFactors SafetyFactors { get; }
+
+    string ToCoaString();
   }
 }

@@ -17,7 +17,7 @@ namespace ComposAPI.Tests
       Assert.True(designOptions.ProppedDuringConstruction);
       Assert.False(designOptions.InclSteelBeamWeight);
       Assert.False(designOptions.InclThinFlangeSections);
-      Assert.False(designOptions.InclConcereteSlabWeight);
+      Assert.False(designOptions.InclConcreteSlabWeight);
       Assert.False(designOptions.ConsiderShearDeflection);
 
       // (optionally return object for other tests)
@@ -35,28 +35,28 @@ namespace ComposAPI.Tests
       Assert.True(duplicate.ProppedDuringConstruction);
       Assert.False(duplicate.InclSteelBeamWeight);
       Assert.False(duplicate.InclThinFlangeSections);
-      Assert.False(duplicate.InclConcereteSlabWeight);
+      Assert.False(duplicate.InclConcreteSlabWeight);
       Assert.False(duplicate.ConsiderShearDeflection);
 
       // 3 make some changes to duplicate
       duplicate.ProppedDuringConstruction = false;
       duplicate.InclSteelBeamWeight = true;
       duplicate.InclThinFlangeSections = true;
-      duplicate.InclConcereteSlabWeight = true;
+      duplicate.InclConcreteSlabWeight = true;
       duplicate.ConsiderShearDeflection = true;
 
       // 4 check that duplicate has set changes
       Assert.False(duplicate.ProppedDuringConstruction);
       Assert.True(duplicate.InclSteelBeamWeight);
       Assert.True(duplicate.InclThinFlangeSections);
-      Assert.True(duplicate.InclConcereteSlabWeight);
+      Assert.True(duplicate.InclConcreteSlabWeight);
       Assert.True(duplicate.ConsiderShearDeflection);
 
       // 5 check that original has not been changed
       Assert.True(original.ProppedDuringConstruction);
       Assert.False(original.InclSteelBeamWeight);
       Assert.False(original.InclThinFlangeSections);
-      Assert.False(original.InclConcereteSlabWeight);
+      Assert.False(original.InclConcreteSlabWeight);
       Assert.False(original.ConsiderShearDeflection);
     }
   }

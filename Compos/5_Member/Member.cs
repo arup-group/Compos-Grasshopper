@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using ComposAPI.Helpers;
+using Oasys.Units;
+using UnitsNet.Units;
 
 namespace ComposAPI
 {
@@ -18,6 +20,7 @@ namespace ComposAPI
     public string GridReference { get; set; } = "";
     public string Note { get; set; } = "";
 
+    #region constructors
     public Member() { }
 
     public Member(string name, IDesignCode designCode, IBeam beam, IStud stud, ISlab slab, List<ILoad> loads)
@@ -29,6 +32,7 @@ namespace ComposAPI
       this.Slab = slab;
       this.Loads = loads;
     }
+
     public Member(string name, string gridRef, string note, IDesignCode designCode, IBeam beam, IStud stud, ISlab slab, List<ILoad> loads)
     {
       this.Name = name;
@@ -40,5 +44,41 @@ namespace ComposAPI
       this.Slab = slab;
       this.Loads = loads;
     }
+    #endregion
+
+    #region coa interop
+    internal Member(string coaString, AngleUnit angleUnit, DensityUnit densityUnit, LengthUnit lengthUnit, PressureUnit pressureUnit, StrainUnit strainUnit)
+    {
+      // to do - implement from coa string method
+    }
+    public string ToCoaString(AngleUnit angleUnit, DensityUnit densityUnit, ForceUnit forceUnit, LengthUnit lengthUnit, PressureUnit pressureUnit, StrainUnit strainUnit)
+    {
+      List<string> parameters = new List<string>();
+      parameters.Add(CoaIdentifier.MemberTitle);
+      parameters.Add(this.Name);
+      parameters.Add(this.GridReference);
+      parameters.Add(this.Note);
+      string coaString = CoaHelper.CreateString(parameters);
+
+      // not sure how DesignCode is organized..
+      coaString += this.DesignCode.DesignOptions.ToCoaString(this.Name, this.DesignCode.Code);
+
+      // not yet sure what units are neccessary here
+      coaString += this.Beam.ToCoaString();
+
+      coaString += this.Slab.ToCoaString(this.Name, densityUnit, lengthUnit, strainUnit);
+
+      // not yet sure what units are neccessary here
+      coaString += this.Stud.ToCoaString();
+
+      foreach (ILoad load in this.Loads)
+        coaString += load.ToCoaString(forceUnit, lengthUnit, pressureUnit);
+
+      // EC4_DESIGN_OPTION seems to be part of DesignCode..
+
+      return coaString;
+    }
+    #endregion
   }
+
 }
