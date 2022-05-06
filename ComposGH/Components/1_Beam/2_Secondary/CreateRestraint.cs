@@ -36,7 +36,6 @@ namespace ComposGH.Components
     #endregion
 
     #region Input and output
-
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       pManager.AddBooleanParameter("Top flng. lat. res. constr.stg.", "TFLR", "Top flange laterally restrained continuously at construction stage (default = true)", GH_ParamAccess.item, true);
@@ -56,17 +55,19 @@ namespace ComposGH.Components
       bool tflr = true;
       DA.GetData(0, ref tflr);
 
-      Supports construction = GetInput.Supports(this, DA, 1);
+      SupportsGoo construction = (SupportsGoo)GetInput.GenericGoo<SupportsGoo>(this, DA, 1);
+      if (construction == null) { return; } // return here on non-optional inputs
 
       if (this.Params.Input[2].Sources.Count > 0)
       {
-        Supports final = GetInput.Supports(this, DA, 2);
-        Restraint res = new Restraint(tflr, construction, final);
+        SupportsGoo final = (SupportsGoo)GetInput.GenericGoo<SupportsGoo>(this, DA, 2);
+        if (final == null) { return; }
+        Restraint res = new Restraint(tflr, construction.Value, final.Value);
         DA.SetData(0, new RestraintGoo(res));
       }
       else
       {
-        Restraint res = new Restraint(tflr, construction);
+        Restraint res = new Restraint(tflr, construction.Value);
         DA.SetData(0, new RestraintGoo(res));
       }
     }

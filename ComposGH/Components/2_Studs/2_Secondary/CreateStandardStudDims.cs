@@ -17,13 +17,13 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class StandardStudDimensions : GH_Component, IGH_VariableParameterComponent
+  public class CreateStandardStudDimensions : GH_Component, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("c97c7e52-7aa3-438f-900a-33f6ca889b3c");
-    public StandardStudDimensions()
+    public CreateStandardStudDimensions()
       : base("Standard Stud Dimensions", "StdStudDim", "Create Standard Stud Dimensions for a Compos Stud",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
@@ -36,42 +36,57 @@ namespace ComposGH.Components
 
     #region Custom UI
     //This region overrides the typical component layout
+
+    // list of lists with all dropdown lists conctent
+    List<List<string>> DropdownItems;
+    // list of selected items
+    List<string> SelectedItems;
+    // list of descriptions 
+    List<string> SpacerDescriptions = new List<string>(new string[]
+    {
+            "Standard Size",
+            "Unit"
+    });
+    private bool First = true;
+    private ForceUnit ForceUnit = Units.ForceUnit;
+    private StandardSize StdSize = ComposAPI.StandardSize.D19mmH100mm;
+
     public override void CreateAttributes()
     {
-      if (first)
+      if (First)
       {
-        dropdownitems = new List<List<string>>();
-        selecteditems = new List<string>();
+        DropdownItems = new List<List<string>>();
+        SelectedItems = new List<string>();
 
         // spacing
-        dropdownitems.Add(Enum.GetValues(typeof(StandardSize)).Cast<StandardSize>()
+        DropdownItems.Add(Enum.GetValues(typeof(StandardSize)).Cast<StandardSize>()
             .Select(x => x.ToString()).ToList());
-        for (int i = 0; i < dropdownitems[0].Count; i++)
-          dropdownitems[0][i] = dropdownitems[0][i].Replace("D", "Ø").Replace("mmH", "/");
+        for (int i = 0; i < DropdownItems[0].Count; i++)
+          DropdownItems[0][i] = DropdownItems[0][i].Replace("D", "Ø").Replace("mmH", "/");
 
-        selecteditems.Add(stdSize.ToString().Replace("D", "Ø").Replace("mmH", "/"));
+        SelectedItems.Add(StdSize.ToString().Replace("D", "Ø").Replace("mmH", "/"));
 
         // strength
-        dropdownitems.Add(Units.FilteredForceUnits);
-        selecteditems.Add(forceUnit.ToString());
+        DropdownItems.Add(Units.FilteredForceUnits);
+        SelectedItems.Add(ForceUnit.ToString());
 
-        first = false;
+        First = false;
       }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, dropdownitems, selecteditems, spacerDescriptions);
+      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
     }
     public void SetSelected(int i, int j)
     {
       // change selected item
-      selecteditems[i] = dropdownitems[i][j];
+      SelectedItems[i] = DropdownItems[i][j];
 
       if (i == 0) // change is made to size
       {
-        string sz = selecteditems[i].Replace("Ø", "D").Replace("/", "mmH");
-        stdSize = (StandardSize)Enum.Parse(typeof(StandardSize), sz);
+        string sz = SelectedItems[i].Replace("Ø", "D").Replace("/", "mmH");
+        StdSize = (StandardSize)Enum.Parse(typeof(StandardSize), sz);
       }
       else if (i == 1) // change is made to grade
       {
-        forceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), selecteditems[i]);
+        ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), SelectedItems[i]);
       }
 
       // update name of inputs (to display unit on sliders)
@@ -83,9 +98,9 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      string sz = selecteditems[0].Replace("Ø", "D").Replace("/", "mmH");
-      stdSize = (StandardSize)Enum.Parse(typeof(StandardSize), sz);
-      forceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), selecteditems[1]);
+      string sz = SelectedItems[0].Replace("Ø", "D").Replace("/", "mmH");
+      StdSize = (StandardSize)Enum.Parse(typeof(StandardSize), sz);
+      ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), SelectedItems[1]);
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -93,40 +108,12 @@ namespace ComposGH.Components
       Params.OnParametersChanged();
       this.OnDisplayExpired(true);
     }
-    // list of lists with all dropdown lists conctent
-    List<List<string>> dropdownitems;
-    // list of selected items
-    List<string> selecteditems;
-    // list of descriptions 
-    List<string> spacerDescriptions = new List<string>(new string[]
-    {
-            "Standard Size",
-            "Unit"
-    });
-    List<string> standardSize = new List<string>(new string[]
-    {
-            "Ø13/H65mm",
-            "Ø16/H70mm",
-            "Ø16/H75mm",
-            "Ø19/H75mm",
-            "Ø19/H95mm",
-            "Ø19/H100mm",
-            "Ø19/H125mm",
-            "Ø22/H95mm",
-            "Ø22/H100mm",
-            "Ø25/H95mm",
-            "Ø25/H100mm"
-    });
-    private bool first = true;
-    private ForceUnit forceUnit = Units.ForceUnit;
-    private StandardSize stdSize = StandardSize.D19mmH100mm;
     #endregion
 
     #region Input and output
-
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity force = new Force(0, forceUnit);
+      IQuantity force = new Force(0, ForceUnit);
       string forceunitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
 
       pManager.AddGenericParameter("Grade [" + forceunitAbbreviation + "]", "fu", "Stud Character strength", GH_ParamAccess.item);
@@ -140,22 +127,22 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      DA.SetData(0, new StudDimensionsGoo(new StudDimensions(stdSize, GetInput.Force(this, DA, 0, forceUnit))));
+      DA.SetData(0, new StudDimensionsGoo(new StudDimensions(StdSize, GetInput.Force(this, DA, 0, ForceUnit))));
     }
 
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, dropdownitems, selecteditems, spacerDescriptions);
+      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
+      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
 
       UpdateUIFromSelectedItems();
 
-      first = false;
+      First = false;
 
       return base.Read(reader);
     }
@@ -180,7 +167,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity force = new Force(0, forceUnit);
+      IQuantity force = new Force(0, ForceUnit);
       string forceunitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
 
       Params.Input[0].Name = "Strength [" + forceunitAbbreviation + "]";

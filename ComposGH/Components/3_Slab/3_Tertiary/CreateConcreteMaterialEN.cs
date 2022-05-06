@@ -36,10 +36,10 @@ namespace ComposGH.Components
     // list of descriptions 
     List<string> SpacerDescriptions = new List<string>(new string[]
     {
-            "Grade",
-            "Density Class",
-            "Density Unit",
-            "Strain Unit"
+      "Grade",
+      "Density Class",
+      "Density Unit",
+      "Strain Unit"
     });
     private bool First = true;
     private ConcreteGradeEN Grade = ConcreteGradeEN.C20_25;
@@ -160,13 +160,7 @@ namespace ComposGH.Components
         if (this.Grade.ToString().StartsWith("L"))
         dryDensity = new Density((double)this.DensityClass, DensityUnit.KilogramPerCubicMeter);
 
-      ERatio eRatio = new ERatio();
-      if (!DA.GetData(1, ref eRatio))
-      {
-        eRatio.ShortTerm = 6;
-        eRatio.LongTerm = 18;
-        eRatio.Vibration = 5.39;
-      }
+      ERatioGoo eRatio = (ERatioGoo)GetInput.GenericGoo<ERatioGoo>(this, DA, 1);
 
       double imposedLoadPercentage = 33;
       DA.GetData(2, ref imposedLoadPercentage);
@@ -179,7 +173,7 @@ namespace ComposGH.Components
         userStrain = true;
       }
 
-      ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, this.DensityClass, dryDensity, userDensity, eRatio, imposedLoadPercentage, shrinkageStrain, userStrain);
+      ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, this.DensityClass, dryDensity, userDensity, (eRatio == null) ? new ERatio() { ShortTerm = 6, LongTerm = 18, Vibration = 5.39 } : eRatio.Value, imposedLoadPercentage, shrinkageStrain, userStrain);
 
       DA.SetData(0, new ConcreteMaterialGoo(concreteMaterial));
     }

@@ -37,66 +37,13 @@ namespace ComposGH.Components
 
     #region Custom UI
     //This region overrides the typical component layout
-    public override void CreateAttributes()
-    {
-      if (first)
-      {
-        dropdownitems = new List<List<string>>();
-        selecteditems = new List<string>();
 
-        // type
-        dropdownitems.Add(Enum.GetValues(typeof(notch_types)).Cast<notch_types>()
-            .Select(x => x.ToString().Replace('_', ' ')).ToList());
-        selecteditems.Add(notch_types.Both_ends.ToString().Replace('_', ' '));
-
-        // length
-        dropdownitems.Add(Units.FilteredLengthUnits);
-        selecteditems.Add(lengthUnit.ToString());
-
-        first = false;
-      }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, dropdownitems, selecteditems, spacerDescriptions);
-    }
-    public void SetSelected(int i, int j)
-    {
-      // change selected item
-      selecteditems[i] = dropdownitems[i][j];
-
-      if (i == 0)
-      {
-        if (selecteditems[i] == openingType.ToString().Replace('_', ' '))
-          return;
-        openingType = (notch_types)Enum.Parse(typeof(notch_types), selecteditems[i].Replace(' ', '_'));
-      }
-      else if (i == 1) // change is made to length unit
-      {
-        lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[i]);
-      }
-
-        // update name of inputs (to display unit on sliders)
-        (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-
-    private void UpdateUIFromSelectedItems()
-    {
-      openingType = (notch_types)Enum.Parse(typeof(notch_types), selecteditems[0].Replace(' ', '_'));
-      lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[1]);
-
-      CreateAttributes();
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
     // list of lists with all dropdown lists conctent
-    List<List<string>> dropdownitems;
+    List<List<string>> DropdownItems;
     // list of selected items
-    List<string> selecteditems;
+    List<string> SelectedItems;
     // list of descriptions 
-    List<string> spacerDescriptions = new List<string>(new string[]
+    List<string> SpacerDescriptions = new List<string>(new string[]
     {
             "Position",
             "Unit"
@@ -108,16 +55,70 @@ namespace ComposGH.Components
       End
     }
 
-    private bool first = true;
-    private notch_types openingType = notch_types.Both_ends;
-    private LengthUnit lengthUnit = Units.LengthUnitGeometry;
+    private bool First = true;
+    private notch_types OpeningType = notch_types.Both_ends;
+    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+
+    public override void CreateAttributes()
+    {
+      if (First)
+      {
+        DropdownItems = new List<List<string>>();
+        SelectedItems = new List<string>();
+
+        // type
+        DropdownItems.Add(Enum.GetValues(typeof(notch_types)).Cast<notch_types>()
+            .Select(x => x.ToString().Replace('_', ' ')).ToList());
+        SelectedItems.Add(notch_types.Both_ends.ToString().Replace('_', ' '));
+
+        // length
+        DropdownItems.Add(Units.FilteredLengthUnits);
+        SelectedItems.Add(LengthUnit.ToString());
+
+        First = false;
+      }
+      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
+    }
+    public void SetSelected(int i, int j)
+    {
+      // change selected item
+      SelectedItems[i] = DropdownItems[i][j];
+
+      if (i == 0)
+      {
+        if (SelectedItems[i] == OpeningType.ToString().Replace('_', ' '))
+          return;
+        OpeningType = (notch_types)Enum.Parse(typeof(notch_types), SelectedItems[i].Replace(' ', '_'));
+      }
+      else if (i == 1) // change is made to length unit
+      {
+        LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
+      }
+
+        // update name of inputs (to display unit on sliders)
+        (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
+      ExpireSolution(true);
+      Params.OnParametersChanged();
+      this.OnDisplayExpired(true);
+    }
+
+    private void UpdateUIFromSelectedItems()
+    {
+      OpeningType = (notch_types)Enum.Parse(typeof(notch_types), SelectedItems[0].Replace(' ', '_'));
+      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[1]);
+
+      CreateAttributes();
+      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
+      ExpireSolution(true);
+      Params.OnParametersChanged();
+      this.OnDisplayExpired(true);
+    }
     #endregion
 
     #region Input and output
-
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity length = new Length(0, lengthUnit);
+      IQuantity length = new Length(0, LengthUnit);
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
       pManager.AddGenericParameter("Width [" + unitAbbreviation + "]", "B", "Web Opening Width", GH_ParamAccess.item);
@@ -133,29 +134,29 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Length width = GetInput.Length(this, DA, 0, lengthUnit);
-      Length height = GetInput.Length(this, DA, 1, lengthUnit);
-      WebOpeningStiffeners stiff = GetInput.WebOpeningStiffeners(this, DA, 2, true);
+      Length width = GetInput.Length(this, DA, 0, LengthUnit);
+      Length height = GetInput.Length(this, DA, 1, LengthUnit);
+      WebOpeningStiffenersGoo stiff = (WebOpeningStiffenersGoo)GetInput.GenericGoo<WebOpeningStiffenersGoo>(this, DA, 2);
       if (stiff != null)
       {
-        if (stiff.BottomStiffenerWidth != Length.Zero)
+        if (stiff.Value.BottomStiffenerWidth != Length.Zero)
           AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "For Beam Notches only top stiffener(s) will be used.");
       }
 
-      switch (openingType)
+      switch (OpeningType)
       {
         case notch_types.Start:
-          DA.SetData(0, new WebOpeningGoo(new WebOpening(width, height, NotchPosition.Start, stiff)));
+          DA.SetData(0, new WebOpeningGoo(new WebOpening(width, height, NotchPosition.Start, (stiff == null) ? null : stiff.Value)));
           break;
 
         case notch_types.End:
-          DA.SetData(0, new WebOpeningGoo(new WebOpening(width, height, NotchPosition.End, stiff)));
+          DA.SetData(0, new WebOpeningGoo(new WebOpening(width, height, NotchPosition.End, (stiff == null) ? null : stiff.Value)));
           break;
 
         case notch_types.Both_ends:
           List<WebOpeningGoo> both = new List<WebOpeningGoo>();
-          both.Add(new WebOpeningGoo(new WebOpening(width, height, NotchPosition.Start, stiff)));
-          both.Add(new WebOpeningGoo(new WebOpening(width, height, NotchPosition.End, stiff)));
+          both.Add(new WebOpeningGoo(new WebOpening(width, height, NotchPosition.Start, (stiff == null) ? null : stiff.Value)));
+          both.Add(new WebOpeningGoo(new WebOpening(width, height, NotchPosition.End, (stiff == null) ? null : stiff.Value)));
           DA.SetDataList(0, both);
           break;
       }
@@ -164,16 +165,16 @@ namespace ComposGH.Components
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, dropdownitems, selecteditems, spacerDescriptions);
+      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
+      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
 
       UpdateUIFromSelectedItems();
 
-      first = false;
+      First = false;
 
       return base.Read(reader);
     }
@@ -198,12 +199,12 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      if (openingType == notch_types.Both_ends)
+      if (OpeningType == notch_types.Both_ends)
         Params.Output[0].Access = GH_ParamAccess.list;
       else
         Params.Output[0].Access = GH_ParamAccess.item;
 
-      IQuantity length = new Length(0, lengthUnit);
+      IQuantity length = new Length(0, LengthUnit);
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
       Params.Input[0].Name = "Width [" + unitAbbreviation + "]";
       Params.Input[1].Name = "Height [" + unitAbbreviation + "]";

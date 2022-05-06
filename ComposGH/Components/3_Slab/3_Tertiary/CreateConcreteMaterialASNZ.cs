@@ -36,9 +36,9 @@ namespace ComposGH.Components
     // list of descriptions 
     List<string> SpacerDescriptions = new List<string>(new string[]
     {
-            "Grade",
-            "Density Unit",
-            "Strain Unit"
+      "Grade",
+      "Density Unit",
+      "Strain Unit"
     });
     private bool First = true;
     private ConcreteGrade Grade = ConcreteGrade.C20;
@@ -144,8 +144,7 @@ namespace ComposGH.Components
       double imposedLoadPercentage = 33;
       DA.GetData(2, ref imposedLoadPercentage);
 
-      ERatio eRatio = new ERatio();
-      DA.GetData(1, ref eRatio);
+      ERatioGoo eRatio = (ERatioGoo)GetInput.GenericGoo<ERatioGoo>(this, DA, 1);
 
       Strain shrinkageStrain = new Strain(-0.0005, StrainUnit.MilliStrain);
       bool userStrain = false;
@@ -155,7 +154,7 @@ namespace ComposGH.Components
         userStrain = true;
       }
 
-      ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, dryDensity, userDensity, eRatio, imposedLoadPercentage, shrinkageStrain, userStrain);
+      ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, dryDensity, userDensity, (eRatio == null) ? new ERatio() : eRatio.Value, imposedLoadPercentage, shrinkageStrain, userStrain);
 
       DA.SetData(0, new ConcreteMaterialGoo(concreteMaterial));
     }

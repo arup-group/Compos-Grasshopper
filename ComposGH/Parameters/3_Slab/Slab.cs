@@ -44,7 +44,7 @@ namespace ComposGH.Parameters
 
     #region properties
      public override bool IsValid => (this.Value == null) ? false : true;
-    public override string TypeName => "Concrete Slab";
+    public override string TypeName => "Slab";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot
     {

@@ -18,13 +18,13 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class EC4SafetyFactors : GH_Component, IGH_VariableParameterComponent
+  public class CreateEC4SafetyFactors : GH_Component, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("842633ae-4a9c-4483-a606-02f1099fed0f");
-    public EC4SafetyFactors()
+    public CreateEC4SafetyFactors()
       : base("EC4 Safety Factors", "EC4SF", "Create Compos EC4 Safety Factors",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
@@ -37,32 +37,46 @@ namespace ComposGH.Components
 
     #region Custom UI
     // This region overrides the typical component layout
+
+    // list of lists with all dropdown lists conctent
+    List<List<string>> DropdownItems;
+    // list of selected items
+    List<string> SelectedItems;
+    // list of descriptions 
+    List<string> SpacerDescriptions = new List<string>(new string[]
+    {
+      "Load Combination",
+    });
+
+    private bool First = true;
+    private LoadCombination LoadCombinationType = LoadCombination.Equation6_10;
+
     public override void CreateAttributes()
     {
-      if (first)
+      if (First)
       {
-        dropdownitems = new List<List<string>>();
-        selecteditems = new List<string>();
+        DropdownItems = new List<List<string>>();
+        SelectedItems = new List<string>();
 
         // spacing
-        dropdownitems.Add(Enum.GetValues(typeof(LoadCombination)).Cast<LoadCombination>()
+        DropdownItems.Add(Enum.GetValues(typeof(LoadCombination)).Cast<LoadCombination>()
             .Select(x => x.ToString().Replace("__", " or ").Replace("_", ".")).ToList());
-        dropdownitems[0].RemoveAt(2); // remove 'Custom'
-        selecteditems.Add(LoadCombination.Equation6_10.ToString().Replace("__", " or ").Replace("_", "."));
+        DropdownItems[0].RemoveAt(2); // remove 'Custom'
+        SelectedItems.Add(LoadCombination.Equation6_10.ToString().Replace("__", " or ").Replace("_", "."));
 
-        first = false;
+        First = false;
       }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, dropdownitems, selecteditems, spacerDescriptions);
+      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
     }
     public void SetSelected(int i, int j)
     {
       // change selected item
-      selecteditems[i] = dropdownitems[i][j];
+      SelectedItems[i] = DropdownItems[i][j];
 
-      if (loadcombinationType.ToString().Replace("__", " or ").Replace("_", ".") == selecteditems[i])
+      if (LoadCombinationType.ToString().Replace("__", " or ").Replace("_", ".") == SelectedItems[i])
         return;
 
-      loadcombinationType = (LoadCombination)Enum.Parse(typeof(LoadCombination), selecteditems[i].Replace(" or ", "__").Replace(".", "_"));
+      LoadCombinationType = (LoadCombination)Enum.Parse(typeof(LoadCombination), SelectedItems[i].Replace(" or ", "__").Replace(".", "_"));
 
       // update name of inputs (to display unit on sliders)
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -73,7 +87,7 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      loadcombinationType = (LoadCombination)Enum.Parse(typeof(StudSpacingType), selecteditems[0].Replace(" or ", "__").Replace(".", "_"));
+      LoadCombinationType = (LoadCombination)Enum.Parse(typeof(StudSpacingType), SelectedItems[0].Replace(" or ", "__").Replace(".", "_"));
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -81,18 +95,6 @@ namespace ComposGH.Components
       Params.OnParametersChanged();
       this.OnDisplayExpired(true);
     }
-    // list of lists with all dropdown lists conctent
-    List<List<string>> dropdownitems;
-    // list of selected items
-    List<string> selecteditems;
-    // list of descriptions 
-    List<string> spacerDescriptions = new List<string>(new string[]
-    {
-            "Load Combination",
-    });
-
-    private bool first = true;
-    private LoadCombination loadcombinationType = LoadCombination.Equation6_10;
     #endregion
 
     #region Input and output
@@ -139,16 +141,16 @@ namespace ComposGH.Components
         & this.Params.Input[2].Sources.Count == 0
         & this.Params.Input[3].Sources.Count == 0)
       {
-        string remark = (loadcombinationType == LoadCombination.Equation6_10) ?
+        string remark = (LoadCombinationType == LoadCombination.Equation6_10) ?
           "Load combination factors following Equation 6.10 will be used" :
           "Load combination factors for the worse of Equation 6.10a and 6.10b will be used (not applicable for storage structures)";
         AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, remark);
         lf = null;
-        selecteditems[0] = loadcombinationType.ToString().Replace("__", " or ").Replace("_", ".");
+        SelectedItems[0] = LoadCombinationType.ToString().Replace("__", " or ").Replace("_", ".");
       }
       else
       {
-        selecteditems[0] = "Custom";
+        SelectedItems[0] = "Custom";
       }
 
       EC4MaterialPartialFactors mf = new EC4MaterialPartialFactors();
@@ -187,9 +189,9 @@ namespace ComposGH.Components
         mf = null;
       }
 
-      ComposAPI.EC4SafetyFactors sf = new ComposAPI.EC4SafetyFactors();
+      EC4SafetyFactors sf = new EC4SafetyFactors();
       if (lf == null)
-        sf.LoadCombination = this.loadcombinationType;
+        sf.LoadCombination = this.LoadCombinationType;
       else
         sf.LoadCombination = LoadCombination.Custom;
       
@@ -202,16 +204,16 @@ namespace ComposGH.Components
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, dropdownitems, selecteditems, spacerDescriptions);
+      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
+      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
 
       UpdateUIFromSelectedItems();
 
-      first = false;
+      First = false;
 
       return base.Read(reader);
     }

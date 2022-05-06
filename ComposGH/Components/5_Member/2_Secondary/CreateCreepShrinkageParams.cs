@@ -16,12 +16,12 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreepShrinkageParams : GH_Component
+  public class CreateCreepShrinkageParams : GH_Component
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("cbc950b0-0a13-40a1-be96-0fb8fac21101");
-    public CreepShrinkageParams()
+    public CreateCreepShrinkageParams()
       : base("Creep & Shrinkage Params", "CSP", "Create Compos Creep and Shrinkage parameters for EN1994-1-1 Design Code",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
@@ -33,7 +33,6 @@ namespace ComposGH.Components
     #endregion
 
     #region Input and output
-
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       pManager.AddNumberParameter("Creep Coefficient", "CC", "Creep multiplier used for calculating E ratio for long term and shrinkage (see clause 5.4.2.2 of EN 1994-1-1:2004)", GH_ParamAccess.item, 1.4);

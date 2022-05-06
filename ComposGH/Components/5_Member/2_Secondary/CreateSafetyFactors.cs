@@ -16,12 +16,12 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class SafetyFactors : GH_Component
+  public class CreateSafetyFactors : GH_Component
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("c0df8c23-4aa1-439b-83a1-9b59078284c2");
-    public SafetyFactors()
+    public CreateSafetyFactors()
       : base("Safety Factors", "SF", "Create Compos Safety Factors",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
@@ -111,7 +111,7 @@ namespace ComposGH.Components
         AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Default Material Partial Safety Factor values from BS5950-1.1:1990+A1:2010");
         mf = null;
       }
-      ComposAPI.SafetyFactors sf = new ComposAPI.SafetyFactors() { LoadFactors = lf, MaterialFactors = mf };
+      SafetyFactors sf = new SafetyFactors() { LoadFactors = lf, MaterialFactors = mf };
       DA.SetData(0, new SafetyFactorsGoo(sf));
     }
   }

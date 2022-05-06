@@ -17,13 +17,13 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CustomStudDimensions : GH_Component, IGH_VariableParameterComponent
+  public class CreateCustomStudDimensions : GH_Component, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("e70db6bb-b4bf-4033-a3d0-3ad131fe09b1");
-    public CustomStudDimensions()
+    public CreateCustomStudDimensions()
       : base("Custom Stud Dimensions", "CustStudDim", "Create Custom Stud Dimensions for a Compos Stud",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
@@ -36,37 +36,53 @@ namespace ComposGH.Components
 
     #region Custom UI
     //This region overrides the typical component layout
+
+    // list of lists with all dropdown lists conctent
+    List<List<string>> DropdownItems;
+    // list of selected items
+    List<string> SelectedItems;
+    // list of descriptions 
+    List<string> SpacerDescriptions = new List<string>(new string[]
+    {
+            "Length Unit",
+            "Strength Unit"
+    });
+
+    private bool First = true;
+    private LengthUnit LengthUnit = Units.LengthUnitSection;
+    private ForceUnit ForceUnit = Units.ForceUnit;
+
     public override void CreateAttributes()
     {
-      if (first)
+      if (First)
       {
-        dropdownitems = new List<List<string>>();
-        selecteditems = new List<string>();
+        DropdownItems = new List<List<string>>();
+        SelectedItems = new List<string>();
 
         // length
-        dropdownitems.Add(Units.FilteredLengthUnits);
-        selecteditems.Add(lengthUnit.ToString());
+        DropdownItems.Add(Units.FilteredLengthUnits);
+        SelectedItems.Add(LengthUnit.ToString());
 
         // strength
-        dropdownitems.Add(Units.FilteredForceUnits);
-        selecteditems.Add(forceUnit.ToString());
+        DropdownItems.Add(Units.FilteredForceUnits);
+        SelectedItems.Add(ForceUnit.ToString());
 
-        first = false;
+        First = false;
       }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, dropdownitems, selecteditems, spacerDescriptions);
+      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
     }
     public void SetSelected(int i, int j)
     {
       // change selected item
-      selecteditems[i] = dropdownitems[i][j];
+      SelectedItems[i] = DropdownItems[i][j];
 
       if (i == 0) // change is made to length unit
       {
-        lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[i]);
+        LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
       }
       if (i == 1)
       {
-        forceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), selecteditems[i]);
+        ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), SelectedItems[i]);
       }
 
         // update name of inputs (to display unit on sliders)
@@ -78,8 +94,8 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      lengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), selecteditems[0]);
-      forceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), selecteditems[1]);
+      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[0]);
+      ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), SelectedItems[1]);
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -87,29 +103,14 @@ namespace ComposGH.Components
       Params.OnParametersChanged();
       this.OnDisplayExpired(true);
     }
-    // list of lists with all dropdown lists conctent
-    List<List<string>> dropdownitems;
-    // list of selected items
-    List<string> selecteditems;
-    // list of descriptions 
-    List<string> spacerDescriptions = new List<string>(new string[]
-    {
-            "Length Unit",
-            "Strength Unit"
-    });
-
-    private bool first = true;
-    private LengthUnit lengthUnit = Units.LengthUnitSection;
-    private ForceUnit forceUnit = Units.ForceUnit;
     #endregion
 
     #region Input and output
-
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity force = new Force(0, forceUnit);
+      IQuantity force = new Force(0, ForceUnit);
       string forceunitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
-      IQuantity length = new Length(0, lengthUnit);
+      IQuantity length = new Length(0, LengthUnit);
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
       pManager.AddGenericParameter("Diameter [" + unitAbbreviation + "]", "Ø", "Diameter of stud head", GH_ParamAccess.item);
@@ -124,25 +125,25 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Length dia = GetInput.Length(this, DA, 0, lengthUnit, true);
-      Length h = GetInput.Length(this, DA, 1, lengthUnit, true);
-      Force strengthF = GetInput.Force(this, DA, 2, forceUnit);
+      Length dia = GetInput.Length(this, DA, 0, LengthUnit, true);
+      Length h = GetInput.Length(this, DA, 1, LengthUnit, true);
+      Force strengthF = GetInput.Force(this, DA, 2, ForceUnit);
       DA.SetData(0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthF)));
     }
 
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, dropdownitems, selecteditems, spacerDescriptions);
+      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref dropdownitems, ref selecteditems, ref spacerDescriptions);
+      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
 
       UpdateUIFromSelectedItems();
 
-      first = false;
+      First = false;
 
       return base.Read(reader);
     }
@@ -167,12 +168,12 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity length = new Length(0, lengthUnit);
+      IQuantity length = new Length(0, LengthUnit);
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
       Params.Input[0].Name = "Diameter [" + unitAbbreviation + "]";
       Params.Input[1].Name = "Height [" + unitAbbreviation + "]";
 
-      IQuantity force = new Force(0, forceUnit);
+      IQuantity force = new Force(0, ForceUnit);
       string forceunitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
       Params.Input[2].Name = "Strength [" + forceunitAbbreviation + "]";
     }
