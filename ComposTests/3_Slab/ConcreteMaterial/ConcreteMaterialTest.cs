@@ -23,6 +23,22 @@ namespace ComposAPI.Tests
 
   public class ConcreteMaterialTest
   {
+    [Theory]
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	C35	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN")] // BS Normal
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	C50	LIGHT	USER_DENSITY	2200.00	0.330000	CODE_E_RATIO	CODE_STRAIN")] // BS User Density
+    [InlineData("SLAB_CONCRETE_MATERIAL MEMBER-1 C45 NORMAL CODE_DENSITY 2400.00 NOT_APPLY 0.300000 USER_E_RATIO 1.00000 2.00000 3.00000 0.000000 CODE_STRAIN")] // BS User ERatio
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	C35/45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN")] // EN Normal
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	C35/45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	USER_STRAIN	-0.000300000")] // EN Normal User Strain
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	LC35/38	LIGHT	CODE_DENSITY	2000.00	1801_2000	0.330000	CODE_E_RATIO	CODE_STRAIN")] // EN Light
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	LC35/38	LIGHT	USER_DENSITY	1000.00	0.330000	CODE_E_RATIO	CODE_STRAIN")] // EN Light User Density
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	C35	NORMAL	CODE_DENSITY	2450.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN")] // HKSUOS Normal
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	C40	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN")] // ASNZ Normal
+    public void ToCoaStringTest(string expected_coaString)
+    {
+
+
+    }
+
     // 1 setup inputs
     [Theory]
     [InlineData(ConcreteGrade.C30, WeightType.Normal, DensityClass.NOT_APPLY, 2400, false, 0.33, -0.000325, false)]
@@ -206,14 +222,6 @@ namespace ComposAPI.Tests
       Assert.Equal(imposedLoadPercentage, original.ImposedLoadPercentage);
       Assert.Equal(shrinkageStrain, original.ShrinkageStrain);
       Assert.Equal(userStrain, original.UserStrain);
-    }
-
-
-    public void ToCoaStringTest()
-    {
-     string expected_coaString = "SLAB_CONCRETE_MATERIAL	MEMBER-1	C30/37	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN";
-
-
     }
   }
 }
