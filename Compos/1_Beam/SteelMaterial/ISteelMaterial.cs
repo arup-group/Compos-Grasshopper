@@ -1,4 +1,5 @@
 ﻿using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposAPI
 {
@@ -14,5 +15,7 @@ namespace ComposAPI
     bool ReductionFactorMpl { get; }
     SteelMaterialGrade Grade { get; }
     WeldMaterialGrade WeldGrade { get; }
+
+    string ToCoaString(string name, Code code, DensityUnit densityUnit, PressureUnit pressureUnit);
   }
 }

@@ -41,6 +41,27 @@ namespace ComposAPI.Helpers
       return parameters;
     }
 
+    public static int GetMagnitude(int num)
+    {
+      int magnitude = 0;
+      while (num > 0)
+      {
+        magnitude++;
+        num /= 10;
+      }
+      return magnitude;
+    }
+
+    public static string FormatSignificantFigures(double value, int significantFigures)
+    {
+      int decimalPlaces = Math.Max(0, significantFigures - GetMagnitude((int)value));
+      string format = "{0:0.";
+      for (int i = 0; i < decimalPlaces; i++)
+        format += "0";
+      format += "}";
+      return String.Format(format, value);
+    }
+
     internal static List<string> SplitLines(string coaString)
     {
       List<string> lines = coaString.Split('\n').ToList();

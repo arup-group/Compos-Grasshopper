@@ -21,5 +21,7 @@ namespace ComposAPI
     Length WebThickness { get; }
     bool isCatalogue { get; }
     string SectionDescription { get; }
+
+    string ToCoaString();
   }
 }

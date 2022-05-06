@@ -54,7 +54,7 @@ namespace ComposGH.Components
     private PressureUnit StressUnit = Units.StressUnit;
     private DensityUnit DensityUnit = Units.DensityUnit;
     private SteelMaterialGrade SteelGrade = SteelMaterialGrade.S235;
-    private WeldMaterialGrade WeldingGrade = WeldMaterialGrade.Grade35;
+    private WeldMaterialGrade WeldingGrade = WeldMaterialGrade.Grade_35;
 
     public override void CreateAttributes()
     {

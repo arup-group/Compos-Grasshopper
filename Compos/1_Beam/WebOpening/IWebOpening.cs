@@ -14,5 +14,7 @@ namespace ComposAPI
     Length CentroidPosFromStart { get; }
     Length CentroidPosFromTop { get; }
     IWebOpeningStiffeners OpeningStiffeners { get; }
+
+    string ToCoaString();
   }
 }
