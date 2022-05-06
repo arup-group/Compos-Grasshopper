@@ -90,9 +90,10 @@ namespace ComposAPI
     /// SLAB_DIMENSION | name | num | index | x | depth | width_l | width_r | tapered | override | eff_width_l | eff_width_r
     /// SLAB_DIMENSION | name | num | index | x | depth | width_l | width_r | tapered | override
     /// </summary>
-    /// <param name="name">member name</param>
-    /// <param name="num">number of total slab section to be defined</param>
-    /// <param name="index">index of current slab section (1 based)</param>
+    /// <param name="name"></param>
+    /// <param name="num"></param>
+    /// <param name="index"></param>
+    /// <param name="lengthUnit"></param>
     /// <returns></returns>
     public string ToCoaString(string name, int num, int index, LengthUnit lengthUnit)
     {
@@ -101,10 +102,7 @@ namespace ComposAPI
       parameters.Add(name);
       parameters.Add(Convert.ToString(num));
       parameters.Add(Convert.ToString(index));
-      if (this.StartPosition.ToUnit(LengthUnit.Meter).Value < 1.0)
-        parameters.Add(String.Format("{0:0.000000}", this.StartPosition.ToUnit(lengthUnit).Value));
-      else
-        parameters.Add(String.Format("{0:0.00000}", this.StartPosition.ToUnit(lengthUnit).Value));
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(lengthUnit).Value, 6));
       parameters.Add(String.Format("{0:0.000000}", this.OverallDepth.ToUnit(lengthUnit).Value));
       parameters.Add(String.Format("{0:0.00000}", this.AvailableWidthLeft.ToUnit(lengthUnit).Value));
       parameters.Add(String.Format("{0:0.00000}", this.AvailableWidthRight.ToUnit(lengthUnit).Value));

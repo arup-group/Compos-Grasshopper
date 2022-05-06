@@ -12,6 +12,6 @@ namespace ComposAPI
     List<IBeamSection> BeamSections { get; }
     List<IWebOpening> WebOpenings { get; }
 
-    string ToCoaString(string name, Code code, DensityUnit densityUnit, PressureUnit pressureUnit);
+    string ToCoaString(string name, Code code, DensityUnit densityUnit, LengthUnit lengthUnit, PressureUnit pressureUnit);
   }
 }

@@ -5,6 +5,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using System.Globalization;
 using System.IO;
+using ComposAPI.Helpers;
 
 namespace ComposAPI
 {
@@ -41,7 +42,7 @@ namespace ComposAPI
     public Length BottomFlangeThickness { get; set; }
     public Length RootRadius { get; set; } = Length.Zero;
     public Length WebThickness { get; set; }
-    public bool isCatalogue { get; }
+    public bool isCatalogue { get; set; }
 
     public string SectionDescription { get; set; }
 
@@ -287,9 +288,20 @@ namespace ComposAPI
     }
     #endregion
 
-    public string ToCoaString()
+    public string ToCoaString(string name, int num, int index, LengthUnit lengthUnit)
     {
-      return "";
+      List<string> parameters = new List<string>();
+      parameters.Add(CoaIdentifier.BeamSectionAtX);
+      parameters.Add(name);
+      parameters.Add(Convert.ToString(num));
+      parameters.Add(Convert.ToString(index));
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(lengthUnit).Value, 6));
+      parameters.Add(this.SectionDescription);
+      CoaHelper.AddParameter(parameters, "TAPERED", this.TaperedToNext);
+
+      string coaString = CoaHelper.CreateString(parameters);
+
+      return coaString;
     }
 
     #region methods

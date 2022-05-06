@@ -3,6 +3,7 @@
   public class CoaIdentifier
   {
     public const string BeamSectionAtX = "BEAM_SECTION_AT_X";
+    public const string BeamSpanLength = "BEAM_SPAN_LENGTH";
     public const string DeckingCatalogue = "DECKING_CATALOGUE";
     public const string DeckingUser = "DECKING_USER";
     public const string DesignOption = "DESIGN_OPTION";

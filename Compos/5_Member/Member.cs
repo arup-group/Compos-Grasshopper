@@ -16,7 +16,7 @@ namespace ComposAPI
     public List<ILoad> Loads { get; set; }
     public IDesignCode DesignCode { get; set; }
 
-    public string Name { get; set; }
+    public string Name { get; set; } 
     public string GridReference { get; set; } = "";
     public string Note { get; set; } = "";
 
@@ -65,7 +65,7 @@ namespace ComposAPI
       coaString += this.DesignCode.DesignOptions.ToCoaString(this.Name, this.DesignCode.Code);
 
       // not yet sure what units are neccessary here
-      coaString += this.Beam.ToCoaString(this.Name, this.DesignCode.Code, densityUnit, pressureUnit);
+      coaString += this.Beam.ToCoaString(this.Name, this.DesignCode.Code, densityUnit, lengthUnit, pressureUnit);
 
       coaString += this.Slab.ToCoaString(this.Name, densityUnit, lengthUnit, strainUnit);
 
