@@ -25,7 +25,7 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("1451E11C-69D0-47D3-8730-FCA80E838E25");
     public CreateStud()
-      : base("Create Stud", "Stud", "Create Compos Stud",
+      : base("Create Stud", "Stud", "Create a Compos Shear Stud",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
     { this.Hidden = true; } // sets the initial state of the component to hidden

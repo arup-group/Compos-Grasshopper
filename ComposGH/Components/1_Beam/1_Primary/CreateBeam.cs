@@ -24,7 +24,7 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("060641e49fc648eb8d7699f2d6697111");
     public CreateBeam()
-      : base("Create Beam", "Beam", "Create a Compos Beam",
+      : base("Create Beam", "Beam", "Create a Compos Steel Beam",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = false; } // sets the initial state of the component to display
@@ -106,7 +106,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Beam", "Bm", "Compos Beam", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Beam", "Bm", "Compos Steel Beam", GH_ParamAccess.item);
     }
     #endregion
 

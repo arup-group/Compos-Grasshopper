@@ -1,17 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
-using Grasshopper.Kernel.Attributes;
-using Grasshopper.Kernel.Types;
-using Grasshopper.GUI;
-using Grasshopper.GUI.Canvas;
-using Rhino.Geometry;
-using UnitsNet;
-using UnitsNet.Units;
 using ComposAPI;
 
 namespace ComposGH.Components
@@ -27,7 +18,7 @@ namespace ComposGH.Components
             Ribbon.SubCategoryName.Cat5())
     { this.Hidden = false; } // sets the initial state of the component to hidden
 
-    public override GH_Exposure Exposure => GH_Exposure.secondary;
+    public override GH_Exposure Exposure => GH_Exposure.primary;
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.CreepShrinkageParams;
     #endregion
@@ -35,38 +26,40 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter("Creep Coefficient", "CC", "Creep multiplier used for calculating E ratio for long term and shrinkage (see clause 5.4.2.2 of EN 1994-1-1:2004)", GH_ParamAccess.item, 1.4);
-      pManager.AddIntegerParameter("Concrete Age at Load [Days]", "CAL", "Age of concrete in days when load applied, used to calculate the creep coefficient ", GH_ParamAccess.item);
-      pManager.AddIntegerParameter("Final Concrete Age [Days]", "CAF", "(Optional) Final age of concrete in days, used to calculate the creep coefficient (default = 36500)", GH_ParamAccess.item, 36500);
-      pManager.AddTextParameter("Name", "Nm", "(Optional) Relative humidity as fraction (0.5 => 50%), used to calculate the creep coefficient (default = 0.5)", GH_ParamAccess.item, 0.5);
+      pManager.AddGenericParameter("Beam", "Bm", "Compos Steel Beam", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Stud", "Stu", "Compos Shear Stud", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Slab", "Slb", "Compos Concrete slab", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Loads", "Ld", "Compos Loads", GH_ParamAccess.list);
+      pManager.AddGenericParameter("Design Code", "DC", "Compos Design Code", GH_ParamAccess.item);
+      pManager.AddTextParameter("Name", "Na", "Set Member Name", GH_ParamAccess.item);
+      pManager.AddTextParameter("GridRef", "Grd", "(Optional) Set Member's Grid Reference", GH_ParamAccess.item);
+      pManager.AddTextParameter("Note", "Nt", "(Optional) Set Notes about the Member", GH_ParamAccess.item);
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Creep & Shrinkage Params", "CSP", "Create Compos Creep and Shrinkage parameters for EN1994-1-1 Design Code", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Member", "Mem", "Compos Member", GH_ParamAccess.item);
     }
     #endregion
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      IMember member = new Member()
-      csparams.ConcreteAgeAtLoad = 28;
+      BeamGoo beam = (BeamGoo)GetInput.GenericGoo<BeamGoo>(this, DA, 0);
+      StudGoo stud = (StudGoo)GetInput.GenericGoo<StudGoo>(this, DA, 1);
+      SlabGoo slab = (SlabGoo)GetInput.GenericGoo<SlabGoo>(this, DA, 2);
+      List<LoadGoo> loads = GetInput.GenericGooList<LoadGoo>(this, DA, 3);
+      DesignCodeGoo code = (DesignCodeGoo)GetInput.GenericGoo<DesignCodeGoo>(this, DA, 4);
 
+      string name = "";
+      DA.GetData(5, ref name);
+      string gridRef = "";
+      DA.GetData(6, ref gridRef);
+      string note = "";
+      DA.GetData(7, ref note);
+
+      IMember member = new Member(name, code.Value, beam.Value, stud.Value, slab.Value, loads.Select(x => x.Value).ToList());
       
-      double creepmultiplier = 0;
-      int ageLoad = 0;
-      int ageFinal = 0;
-      double relhum = 0;
-      if (DA.GetData(0, ref creepmultiplier))
-        csparams.CreepCoefficient = creepmultiplier;
-      if (DA.GetData(1, ref ageLoad))
-        csparams.ConcreteAgeAtLoad = ageLoad;
-      if (DA.GetData(2, ref ageFinal))
-        csparams.FinalConcreteAgeCreep = ageFinal;
-      if (DA.GetData(3, ref relhum))
-        csparams.RelativeHumidity = relhum;
-      
-      DA.SetData(0, new CreepShrinkageEuroCodeParametersGoo(csparams));
+      DA.SetData(0, new MemberGoo(member));
     }
   }
 }

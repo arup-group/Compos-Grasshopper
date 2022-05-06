@@ -260,7 +260,7 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      MemberGoo safetyFactorsGoo = (MemberGoo)GetInput.GenericGoo<MemberGoo>(this, DA, 0);
+      SafetyFactorsGoo safetyFactorsGoo = (SafetyFactorsGoo)GetInput.GenericGoo<SafetyFactorsGoo>(this, DA, 0);
 
       ISafetyFactors safetyFactors = (safetyFactorsGoo == null) ? null : safetyFactorsGoo.Value;
       switch (Code)

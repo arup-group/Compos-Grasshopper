@@ -24,7 +24,7 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("7af9eb3d-0868-4476-b31c-87d9eaae5e86");
     public CreateSlab()
-      : base("Slab", "Slab", "Create concrete slab",
+      : base("Slab", "Slab", "Create a Compos Concrete Slab",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -48,7 +48,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Slab", "S", "Concrete slab", GH_ParamAccess.list);
+      pManager.AddGenericParameter("Slab", "Slb", "Compos Concrete slab", GH_ParamAccess.list);
     }
     #endregion
 
