@@ -42,10 +42,23 @@ namespace ComposAPI
       // to do - implement from coa string method
     }
 
-    public string ToCoaString()
+    public string ToCoaString(string name, Code code, DensityUnit densityUnit, PressureUnit pressureUnit)
     {
-      // to do - implement to coa string method
-      return string.Empty;
+      string str = this.Restraint.ToCoaString();
+      str += this.Material.ToCoaString(name, code, densityUnit, pressureUnit);
+      foreach(IBeamSection section in this.BeamSections)
+      {
+        str += section.ToCoaString();
+      }
+
+      if (this.WebOpenings != null)
+      {
+        foreach(IWebOpening webOpening in this.WebOpenings)
+        {
+          str += webOpening.ToCoaString();
+        }
+      }
+      return str;
     }
     #endregion
 

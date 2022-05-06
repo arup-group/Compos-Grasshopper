@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposAPI
 {
@@ -11,6 +12,6 @@ namespace ComposAPI
     List<IBeamSection> BeamSections { get; }
     List<IWebOpening> WebOpenings { get; }
 
-    string ToCoaString();
+    string ToCoaString(string name, Code code, DensityUnit densityUnit, PressureUnit pressureUnit);
   }
 }

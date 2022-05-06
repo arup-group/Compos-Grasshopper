@@ -51,6 +51,7 @@ namespace ComposAPI
     {
       // to do - implement from coa string method
     }
+
     public string ToCoaString(AngleUnit angleUnit, DensityUnit densityUnit, ForceUnit forceUnit, LengthUnit lengthUnit, PressureUnit pressureUnit, StrainUnit strainUnit)
     {
       List<string> parameters = new List<string>();
@@ -64,7 +65,7 @@ namespace ComposAPI
       coaString += this.DesignCode.DesignOptions.ToCoaString(this.Name, this.DesignCode.Code);
 
       // not yet sure what units are neccessary here
-      coaString += this.Beam.ToCoaString();
+      coaString += this.Beam.ToCoaString(this.Name, this.DesignCode.Code, densityUnit, pressureUnit);
 
       coaString += this.Slab.ToCoaString(this.Name, densityUnit, lengthUnit, strainUnit);
 
@@ -80,5 +81,4 @@ namespace ComposAPI
     }
     #endregion
   }
-
 }

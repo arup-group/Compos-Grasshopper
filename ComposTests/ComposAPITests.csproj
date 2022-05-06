@@ -10,11 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="1_Beam\SteelMaterial\**" />
     <Compile Remove="Parameters\**" />
-    <EmbeddedResource Remove="1_Beam\SteelMaterial\**" />
     <EmbeddedResource Remove="Parameters\**" />
-    <None Remove="1_Beam\SteelMaterial\**" />
     <None Remove="Parameters\**" />
   </ItemGroup>
 

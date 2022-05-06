@@ -287,6 +287,11 @@ namespace ComposAPI
     }
     #endregion
 
+    public string ToCoaString()
+    {
+      return "";
+    }
+
     #region methods
     public override string ToString()
     {

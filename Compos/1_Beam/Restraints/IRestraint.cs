@@ -9,5 +9,7 @@
     ISupports ConstructionStageSupports { get; }
     ISupports FinalStageSupports { get; }
     bool TopFlangeRestrained { get; }
+
+    string ToCoaString();
   }
 }
