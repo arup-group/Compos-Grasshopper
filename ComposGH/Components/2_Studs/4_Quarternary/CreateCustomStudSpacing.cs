@@ -27,7 +27,7 @@ namespace ComposGH.Components
       : base("Custom Stud Spacing", "CustStudSpac", "Create Custom Stud Spacing for a Compos Stud",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
-    { this.Hidden = false; } // sets the initial state of the component to hidden
+    { this.Hidden = true; } // sets the initial state of the component to hidden
 
     public override GH_Exposure Exposure => GH_Exposure.quarternary | GH_Exposure.obscure;
 

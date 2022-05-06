@@ -28,7 +28,7 @@ namespace ComposGH.Components
       : base("EC4 Safety Factors", "EC4SF", "Create Compos EC4 Safety Factors",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
-    { this.Hidden = false; } // sets the initial state of the component to hidden
+    { this.Hidden = true; } // sets the initial state of the component to hidden
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 

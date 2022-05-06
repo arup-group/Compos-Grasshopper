@@ -29,7 +29,7 @@ namespace ComposGH.Components
       : base("Design Code", "DC", "Create Compos Design Code",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
-    { this.Hidden = false; } // sets the initial state of the component to hidden
+    { this.Hidden = true; } // sets the initial state of the component to hidden
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 
@@ -260,7 +260,7 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      SafetyFactorsGoo safetyFactorsGoo = (SafetyFactorsGoo)GetInput.GenericGoo<SafetyFactorsGoo>(this, DA, 0);
+      MemberGoo safetyFactorsGoo = (MemberGoo)GetInput.GenericGoo<MemberGoo>(this, DA, 0);
 
       ISafetyFactors safetyFactors = (safetyFactorsGoo == null) ? null : safetyFactorsGoo.Value;
       switch (Code)

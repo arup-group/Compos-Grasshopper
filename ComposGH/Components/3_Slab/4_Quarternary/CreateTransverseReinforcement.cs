@@ -26,7 +26,7 @@ namespace ComposGH.Components
       : base("Transeverse Reinforcement", "TransRb", "Create Transverse Reinforcement for Compos Slab",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
-    { this.Hidden = false; } // sets the initial state of the component to hidden
+    { this.Hidden = true; } // sets the initial state of the component to hidden
 
     public override Guid ComponentGuid => new Guid("E832E3E8-1EF9-4F31-BC2A-683881E4BAC3");
     public override GH_Exposure Exposure => GH_Exposure.quarternary;

@@ -18,7 +18,7 @@ namespace ComposGH.Components
       : base("HKSUOS Concrete Material", "ConcMatHKSUOS", "Create concrete material (HKSUOS) for concrete slab",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
-    { this.Hidden = false; } // sets the initial state of the component to hidden
+    { this.Hidden = true; } // sets the initial state of the component to hidden
 
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
 

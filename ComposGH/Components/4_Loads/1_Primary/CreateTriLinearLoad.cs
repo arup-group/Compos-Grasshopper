@@ -29,7 +29,7 @@ namespace ComposGH.Components
           Environment.NewLine + "The two peak load points can be defined at any positions along the span Compos Load",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat4())
-    { this.Hidden = false; } // sets the initial state of the component to hidden
+    { this.Hidden = true; } // sets the initial state of the component to hidden
 
     public override GH_Exposure Exposure => GH_Exposure.primary;
 
