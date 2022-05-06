@@ -186,7 +186,7 @@ namespace ComposAPI
           break;
         case OpeningType.Rectangular:
         case OpeningType.Circular:
-          typ = ", Pos:(x:" + this.CentroidPosFromStart.As(Units.LengthUnitGeometry).ToString("f0") + ", z:" + this.CentroidPosFromTop.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty) + ")";
+          typ = ", Pos:(x:" + this.CentroidPosFromStart.ToUnit(Units.LengthUnitGeometry).ToString("f2").Replace(" ", string.Empty) + ", z:" + this.CentroidPosFromTop.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty) + ")";
           break;
       }
       if (this.OpeningStiffeners != null)
