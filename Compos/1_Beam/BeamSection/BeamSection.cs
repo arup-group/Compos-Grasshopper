@@ -91,35 +91,6 @@ namespace ComposAPI
     }
 
     /// <summary>
-    /// Create a new Beam Section setting all internal properties with the input parameters
-    /// </summary>
-    /// <param name="startPosition"></param>
-    /// <param name="depth"></param>
-    /// <param name="topFlangeWidth"></param>
-    /// <param name="bottomFlangeWidth"></param>
-    /// <param name="webThickness"></param>
-    /// <param name="topFlangeThickness"></param>
-    /// <param name="bottomFlangeThickness"></param>
-    /// <param name="rootRadius"></param>
-    /// <param name="isCatalogue"></param>
-    /// <param name="sectionDescription"></param>
-    public BeamSection(Length startPosition, Length depth, Length topFlangeWidth, Length bottomFlangeWidth, Length webThickness, Length topFlangeThickness, Length bottomFlangeThickness, Length rootRadius, bool isCatalogue, string sectionDescription)
-    {
-      this.StartPosition = startPosition;
-      this.Depth = depth;
-      this.TopFlangeWidth = topFlangeWidth;
-      this.BottomFlangeWidth = bottomFlangeWidth;
-      this.WebThickness = webThickness;
-      this.TopFlangeThickness = topFlangeThickness;
-      this.BottomFlangeThickness = bottomFlangeThickness;
-      this.RootRadius = rootRadius;
-      this.isCatalogue = isCatalogue;
-      if (isCatalogue)
-        this.m_taper = false;
-      this.SectionDescription = sectionDescription;
-    }
-
-    /// <summary>
     /// Create a copy from another IBeamSection
     /// </summary>
     /// <param name="beamSection"></param>
