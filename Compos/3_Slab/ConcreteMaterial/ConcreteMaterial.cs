@@ -209,18 +209,19 @@ namespace ComposAPI
     /// <returns></returns>
     public string ToCoaString(string name, DensityUnit densityUnit, StrainUnit strainUnit)
     {
-      List<string> parameters = new List<string>() { CoaIdentifier.SlabConcreteMaterial, name, this.Grade.Replace("_", "/"), this.Type.ToString() };
+      List<string> parameters = new List<string>() { CoaIdentifier.SlabConcreteMaterial, name, this.Grade.Replace("_", "/"), this.Type.ToString().ToUpper() };
       if (this.UserDensity)
       {
         parameters.Add("USER_DENSITY");
-        parameters.Add(this.DryDensity.ToUnit(densityUnit).ToString());
+        parameters.Add(String.Format("{0:0.00}", this.DryDensity.ToUnit(densityUnit).Value));
       }
       else
       {
         parameters.Add("CODE_DENSITY");
-        parameters.Add(this.Class.ToString());
+        parameters.Add(String.Format("{0:0.00}", this.DryDensity.ToUnit(densityUnit).Value));
+        parameters.Add(this.Class.ToString().ToUpper());
       }
-      parameters.Add(this.ImposedLoadPercentage.ToString());
+      parameters.Add(String.Format("{0:0.000000}", this.ImposedLoadPercentage));
       if (this.ERatio.UserDefined)
       {
         parameters.Add("USER_E_RATIO");

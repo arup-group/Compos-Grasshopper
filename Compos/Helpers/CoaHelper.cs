@@ -22,8 +22,9 @@ namespace ComposAPI.Helpers
     {
       string str = "";
       foreach (string param in parameters)
-        str += param + "\\t";
-      str += "\\n";
+        str += param + '\t';
+      str = str.Remove(str.Length - 1, 1);
+      str += '\n';
       return str;
     }
 
@@ -35,7 +36,7 @@ namespace ComposAPI.Helpers
     internal static List<string> Split(string coaString)
     {
       List<string> parameters = coaString.Split('\t').ToList();
-      foreach(string param in parameters)
+      foreach (string param in parameters)
         RemoveWhitespace(param);
       return parameters;
     }
