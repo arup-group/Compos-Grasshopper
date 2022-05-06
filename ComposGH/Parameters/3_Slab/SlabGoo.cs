@@ -94,7 +94,7 @@ namespace ComposGH.Parameters
   public class ComposSlabParameter : GH_PersistentParam<SlabGoo>
   {
     public ComposSlabParameter()
-      : base(new GH_InstanceDescription("Slab", "Sla", "Maintains a collection of Compos Stud data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+      : base(new GH_InstanceDescription("Slab", "Sla", "Maintains a collection of Compos Slab data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
 

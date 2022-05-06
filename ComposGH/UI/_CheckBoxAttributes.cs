@@ -94,7 +94,7 @@ namespace ComposGH.UI
     }
 
 
-    protected override void Render(GH_Canvas canvas, System.Drawing.Graphics graphics, GH_CanvasChannel channel)
+    protected override void Render(GH_Canvas canvas, Graphics graphics, GH_CanvasChannel channel)
     {
       base.Render(canvas, graphics, channel);
 

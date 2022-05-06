@@ -316,7 +316,7 @@ namespace ComposGH.Parameters
 
     public override GH_Exposure Exposure => GH_Exposure.primary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.MemberParam;
+    protected override Bitmap Icon => Properties.Resources.MemberParam;
 
     //We do not allow users to pick parameter, 
     //therefore the following 4 methods disable all this ui.
