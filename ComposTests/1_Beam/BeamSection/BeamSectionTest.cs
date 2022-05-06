@@ -6,8 +6,38 @@ using Moq;
 
 namespace ComposAPI.Tests
 {
-  public partial class ComposBeamTest
+  public partial class ComposBeamSectionTest
   {
+    [Theory]
+    [InlineData(7, 1, 0, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600. 200. 15. 25.", true, "BEAM_SECTION_AT_X	MEMBER-1	7	1	0.000000	STD I 600. 200. 15. 25.	TAPERED_YES\n")]
+    [InlineData(7, 2, 0.5, 400, 200, 200, 25, 25, 0, false, 15, "STD I(m) 0.4 0.2 0.015 0.025", false, "BEAM_SECTION_AT_X	MEMBER-1	7	2	0.500000	STD I(m) 0.4 0.2 0.015 0.025	TAPERED_NO\n")]
+    [InlineData(7, 3, 1, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600 200 15 25", false, "BEAM_SECTION_AT_X	MEMBER-1	7	3	1.00000	STD I 600 200 15 25	TAPERED_NO\n")]
+    [InlineData(7, 4, 2, 260, 200, 200, 25, 25, 0, true, 15, "CAT HE HE260.B 19920101", false, "BEAM_SECTION_AT_X	MEMBER-1	7	4	2.00000	CAT HE HE260.B 19920101	TAPERED_NO\n")]
+    [InlineData(7, 5, 3, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600 200 15 25", true, "BEAM_SECTION_AT_X	MEMBER-1	7	5	3.00000	STD I 600 200 15 25	TAPERED_YES\n")]
+    [InlineData(7, 6, 4, 100000, 200000, 2000000, 100000, 100000, 0, false, 20000, "STD I(m) 100. 200. 20. 10.", true, "BEAM_SECTION_AT_X	MEMBER-1	7	6	4.00000	STD I(m) 100. 200. 20. 10.	TAPERED_YES\n")]
+    [InlineData(7, 7, 5, 100000, 200000, 2000000, 20000, 30000, 0, false, 10000, "STD GI(m) 100. 200. 300. 10. 20. 30.", false, "BEAM_SECTION_AT_X	MEMBER-1	7	7	5.00000	STD GI(m) 100. 200. 300. 10. 20. 30.	TAPERED_NO\n")]
+    public void ToCoaStringTest(int num, int index, double startPosition, double depth, double topFlangeWidth, double bottomFlangeWidth,
+      double topFlangeThickness, double bottomFlangeThickness, double rootRadius, bool isCatalogue, double webThickness, string sectionDescription, bool taperToNext, string expected_coaString)
+    {
+
+      BeamSection beamSection = new BeamSection();
+      beamSection.StartPosition = new Length(startPosition, LengthUnit.Millimeter);
+      beamSection.Depth = new Length(depth, LengthUnit.Millimeter);
+      beamSection.TopFlangeWidth = new Length(topFlangeWidth, LengthUnit.Millimeter);
+      beamSection.BottomFlangeWidth = new Length(bottomFlangeWidth, LengthUnit.Millimeter);
+      beamSection.TopFlangeThickness = new Length(topFlangeThickness, LengthUnit.Millimeter);
+      beamSection.BottomFlangeThickness = new Length(bottomFlangeThickness, LengthUnit.Millimeter);
+      beamSection.RootRadius = new Length(rootRadius, LengthUnit.Millimeter);
+      beamSection.WebThickness = new Length(webThickness, LengthUnit.Millimeter);
+      beamSection.isCatalogue = isCatalogue;
+      beamSection.SectionDescription = sectionDescription;
+      beamSection.TaperedToNext = taperToNext;
+
+      string coaString = beamSection.ToCoaString("MEMBER-1", num, index, LengthUnit.Millimeter);
+
+      Assert.Equal(expected_coaString, coaString);
+    }
+
     // 1 setup inputs
     [Theory]
     [InlineData("STD I 200 190.5 8.5 12.7", 200, 190.5, 190.5, 8.5, 12.7, 12.7)]
@@ -21,7 +51,7 @@ namespace ComposAPI.Tests
     {
       //var mock = new Mock<BeamSection>();
       //mock.Setup(x => x.)
-      
+
       // 2 create object instance with constructor
       BeamSection beam = new BeamSection(profile);
 

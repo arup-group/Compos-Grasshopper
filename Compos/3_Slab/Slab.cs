@@ -88,7 +88,7 @@ namespace ComposAPI
       }
     }
 
-    internal string ToCoaString(string name, AngleUnit angleUnit, DensityUnit densityUnit, LengthUnit lengthUnit, PressureUnit pressureUnit, StrainUnit strainUnit)
+    public string ToCoaString(string name, DensityUnit densityUnit, LengthUnit lengthUnit, StrainUnit strainUnit)
     {
       string str = this.Material.ToCoaString(name, densityUnit, strainUnit);
       int num = 1;

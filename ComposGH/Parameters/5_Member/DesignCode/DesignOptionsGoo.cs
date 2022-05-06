@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Types;
-using Rhino.Geometry;
-using Rhino;
-using Grasshopper.Documentation;
-using Rhino.Collections;
-using UnitsNet;
+﻿using Grasshopper.Kernel.Types;
 using ComposAPI;
 
 namespace ComposGH.Parameters
@@ -16,18 +6,18 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class DesignOptionsGoo : GH_Goo<DesignOptions>
+  public class DesignOptionsGoo : GH_Goo<IDesignOptions>
   {
     #region constructors
     public DesignOptionsGoo()
     {
       this.Value = new DesignOptions();
     }
-    public DesignOptionsGoo(DesignOptions item)
+    public DesignOptionsGoo(IDesignOptions item)
     {
       if (item == null)
         item = new DesignOptions();
-      this.Value = item.Duplicate() as DesignOptions;
+      this.Value = item; //.Duplicate() as DesignOptions;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +26,7 @@ namespace ComposGH.Parameters
     }
     public DesignOptionsGoo DuplicateGoo()
     {
-      return new DesignOptionsGoo(Value == null ? new DesignOptions() : Value.Duplicate() as DesignOptions);
+      return new DesignOptionsGoo(Value == null ? new DesignOptions() : Value);// .Duplicate() as DesignOptions);
     }
     #endregion
 

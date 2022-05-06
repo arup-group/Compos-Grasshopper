@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Linq;
-using System.Drawing;
-using System.Collections.ObjectModel;
 using System.Collections.Generic;
-using Rhino.Geometry;
-using Grasshopper;
-using Grasshopper.Kernel.Data;
-using Grasshopper.Kernel.Types;
 using System.Data.SQLite;
 using System.Data;
 

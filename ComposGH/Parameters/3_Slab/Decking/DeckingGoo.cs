@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
-using Rhino.Geometry;
-using Rhino;
-using Grasshopper.Documentation;
-using Rhino.Collections;
-using UnitsNet;
 using ComposAPI;
 
 namespace ComposGH.Parameters
@@ -27,7 +21,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new Decking();
-      this.Value = item.Duplicate() as IDecking;
+      this.Value = item; //.Duplicate() as IDecking;
     }
 
     public override IGH_Goo Duplicate()
@@ -37,7 +31,7 @@ namespace ComposGH.Parameters
 
     public DeckingGoo DuplicateGoo()
     {
-      return new DeckingGoo(Value == null ? new Decking() : Value.Duplicate() as IDecking);
+      return new DeckingGoo(Value == null ? new Decking() : Value);// .Duplicate() as IDecking);
     }
     #endregion
 
@@ -105,7 +99,7 @@ namespace ComposGH.Parameters
   public class ComposDeckingParameter : GH_PersistentParam<DeckingGoo>
   {
     public ComposDeckingParameter()
-      : base(new GH_InstanceDescription("Decking", "Dk", "Compos Decking", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+      : base(new GH_InstanceDescription("Decking", "Dk", "Maintains a collection of Compos Decking data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
 

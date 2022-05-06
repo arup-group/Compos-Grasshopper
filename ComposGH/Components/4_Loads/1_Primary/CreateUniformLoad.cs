@@ -1,20 +1,11 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Drawing;
-using Grasshopper.Kernel.Attributes;
-using Grasshopper.GUI.Canvas;
-using Grasshopper.GUI;
 using Grasshopper.Kernel;
-using Rhino.Geometry;
-using System.Windows.Forms;
-using Grasshopper.Kernel.Types;
 using ComposGH.Parameters;
 using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
 using ComposAPI;
-using static ComposAPI.Load;
 
 namespace ComposGH.Components
 {
@@ -28,7 +19,7 @@ namespace ComposGH.Components
       : base("Create Uniform Load", "UniformLoad", "Create a uniformly distributed Compos Load",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat4())
-    { this.Hidden = false; } // sets the initial state of the component to hidden
+    { this.Hidden = true; } // sets the initial state of the component to hidden
 
     public override GH_Exposure Exposure => GH_Exposure.primary;
 

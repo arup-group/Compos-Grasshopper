@@ -6,8 +6,6 @@ using Grasshopper;
 using System;
 using System.Drawing;
 using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel;
 
 namespace ComposGH.UI
 {
@@ -96,7 +94,7 @@ namespace ComposGH.UI
     }
 
 
-    protected override void Render(GH_Canvas canvas, System.Drawing.Graphics graphics, GH_CanvasChannel channel)
+    protected override void Render(GH_Canvas canvas, Graphics graphics, GH_CanvasChannel channel)
     {
       base.Render(canvas, graphics, channel);
 

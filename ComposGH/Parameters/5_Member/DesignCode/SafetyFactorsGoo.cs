@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Types;
-using Rhino.Geometry;
-using Rhino;
-using Grasshopper.Documentation;
-using Rhino.Collections;
-using UnitsNet;
+﻿using Grasshopper.Kernel.Types;
 using ComposAPI;
 
 namespace ComposGH.Parameters
@@ -16,18 +6,18 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class SafetyFactorsGoo : GH_Goo<SafetyFactors>
+  public class SafetyFactorsGoo : GH_Goo<ISafetyFactors>
   {
     #region constructors
     public SafetyFactorsGoo()
     {
       this.Value = new SafetyFactors();
     }
-    public SafetyFactorsGoo(SafetyFactors item)
+    public SafetyFactorsGoo(ISafetyFactors item)
     {
       if (item == null)
         item = new SafetyFactors();
-      this.Value = item.Duplicate() as SafetyFactors;
+      this.Value = item; //.Duplicate() as SafetyFactors;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +26,7 @@ namespace ComposGH.Parameters
     }
     public SafetyFactorsGoo DuplicateGoo()
     {
-      return new SafetyFactorsGoo(Value == null ? new SafetyFactors() : Value.Duplicate() as SafetyFactors);
+      return new SafetyFactorsGoo(Value == null ? new SafetyFactors() : Value);// .Duplicate() as SafetyFactors);
     }
     #endregion
 

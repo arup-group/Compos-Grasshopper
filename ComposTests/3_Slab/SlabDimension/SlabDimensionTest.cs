@@ -21,6 +21,23 @@ namespace ComposAPI.Tests
 
   public class SlabDimensionTest
   {
+    [Theory]
+    [InlineData(1, 0, 0.15, 1, 1.5, false, 0, 0, false, "SLAB_DIMENSION	MEMBER-1	4	1	0.000000	0.150000	1.00000	1.50000	TAPERED_NO	EFFECTIVE_WIDTH_NO\n")]
+    [InlineData(2, 1, 0.25, 1, 1.5, false, 0, 0, false, "SLAB_DIMENSION	MEMBER-1	4	2	1.00000	0.250000	1.00000	1.50000	TAPERED_NO	EFFECTIVE_WIDTH_NO\n")]
+    [InlineData(3, 2, 0.2, 1, 1, true, 2, 3, false, "SLAB_DIMENSION	MEMBER-1	4	3	2.00000	0.200000	1.00000	1.00000	TAPERED_NO	EFFECTIVE_WIDTH_YES	2.00000	3.00000\n")]
+    [InlineData(4, 3, 0.1, 1, 1, true, 2, 3, true, "SLAB_DIMENSION	MEMBER-1	4	4	3.00000	0.100000	1.00000	1.00000	TAPERED_YES	EFFECTIVE_WIDTH_YES	2.00000	3.00000\n")]
+    public void ToCoaStringTest(int index, double startPosition, double overallDepth, double availableWidthLeft, double availableWidthRight, bool userEffectiveWidth, double effectiveWidthLeft, double effectiveWidthRight, bool taperedToNext, string expected_coaString)
+    {
+      SlabDimension slabDimension;
+      if (userEffectiveWidth)
+        slabDimension = new SlabDimension(new Length(startPosition, LengthUnit.Meter), new Length(overallDepth, LengthUnit.Meter), new Length(availableWidthLeft, LengthUnit.Meter), new Length(availableWidthRight, LengthUnit.Meter), new Length(effectiveWidthLeft, LengthUnit.Meter), new Length(effectiveWidthRight, LengthUnit.Meter), taperedToNext);
+      else
+        slabDimension = new SlabDimension(new Length(startPosition, LengthUnit.Meter), new Length(overallDepth, LengthUnit.Meter), new Length(availableWidthLeft, LengthUnit.Meter), new Length(availableWidthRight, LengthUnit.Meter), taperedToNext);
+      string coaString = slabDimension.ToCoaString("MEMBER-1", 4, index, LengthUnit.Meter);
+
+      Assert.Equal(expected_coaString, coaString);
+    }
+
     // 1 setup inputs
     [Theory]
     [InlineData(800, 250, 310, 300, true)]

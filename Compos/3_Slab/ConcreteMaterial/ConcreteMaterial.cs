@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-
 using ComposAPI.Helpers;
 using Oasys.Units;
 using UnitsNet;
@@ -209,32 +207,37 @@ namespace ComposAPI
     /// <returns></returns>
     public string ToCoaString(string name, DensityUnit densityUnit, StrainUnit strainUnit)
     {
-      List<string> parameters = new List<string>() { CoaIdentifier.SlabConcreteMaterial, name, this.Grade.Replace("_", "/"), this.Type.ToString() };
+      List<string> parameters = new List<string>();
+      parameters.Add(CoaIdentifier.SlabConcreteMaterial);
+      parameters.Add(name);
+      parameters.Add(this.Grade.Replace("_", "/"));
+      parameters.Add(this.Type.ToString().ToUpper());
       if (this.UserDensity)
       {
         parameters.Add("USER_DENSITY");
-        parameters.Add(this.DryDensity.ToUnit(densityUnit).ToString());
+        parameters.Add(String.Format("{0:0.00}", this.DryDensity.ToUnit(densityUnit).Value));
       }
       else
       {
         parameters.Add("CODE_DENSITY");
-        parameters.Add(this.Class.ToString());
+        parameters.Add(String.Format("{0:0.00}", this.DryDensity.ToUnit(densityUnit).Value));
+        parameters.Add(this.Class.ToString().Replace("DC", ""));
       }
-      parameters.Add(this.ImposedLoadPercentage.ToString());
+      parameters.Add(String.Format("{0:0.000000}", this.ImposedLoadPercentage));
       if (this.ERatio.UserDefined)
       {
         parameters.Add("USER_E_RATIO");
-        parameters.Add(this.ERatio.ShortTerm.ToString());
-        parameters.Add(this.ERatio.LongTerm.ToString());
-        parameters.Add(this.ERatio.Vibration.ToString());
-        parameters.Add(this.ERatio.Shrinkage.ToString());
+        parameters.Add(String.Format("{0:0.00000}", this.ERatio.ShortTerm));
+        parameters.Add(String.Format("{0:0.00000}", this.ERatio.LongTerm));
+        parameters.Add(String.Format("{0:0.00000}", this.ERatio.Vibration));
+        parameters.Add(String.Format("{0:0.000000}", this.ERatio.Shrinkage));
       }
       else
         parameters.Add("CODE_E_RATIO");
       if (this.UserStrain)
       {
         parameters.Add("USER_STRAIN");
-        parameters.Add(this.ShrinkageStrain.ToUnit(strainUnit).ToString());
+        parameters.Add(String.Format("{0:0.000000000}", this.ShrinkageStrain.ToUnit(strainUnit).Value));
       }
       else
         parameters.Add("CODE_STRAIN");

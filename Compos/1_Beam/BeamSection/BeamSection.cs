@@ -5,6 +5,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using System.Globalization;
 using System.IO;
+using ComposAPI.Helpers;
 
 namespace ComposAPI
 {
@@ -41,7 +42,7 @@ namespace ComposAPI
     public Length BottomFlangeThickness { get; set; }
     public Length RootRadius { get; set; } = Length.Zero;
     public Length WebThickness { get; set; }
-    public bool isCatalogue;
+    public bool isCatalogue { get; set; }
 
     public string SectionDescription { get; set; }
 
@@ -49,6 +50,65 @@ namespace ComposAPI
     public BeamSection()
     {
       // empty constructor
+    }
+
+    /// <summary>
+    /// Create a copy from another IBeamSection and set a new Start Position
+    /// </summary>
+    /// <param name="beamSection"></param>
+    public BeamSection(IBeamSection beamSection, Length newStartPosition)
+    {
+      this.StartPosition = newStartPosition;
+      this.Depth = beamSection.Depth;
+      this.TopFlangeWidth = beamSection.TopFlangeWidth;
+      this.BottomFlangeWidth = beamSection.BottomFlangeWidth;
+      this.TopFlangeThickness = beamSection.TopFlangeThickness;
+      this.BottomFlangeThickness = beamSection.BottomFlangeThickness;
+      this.RootRadius = beamSection.RootRadius;
+      this.WebThickness = beamSection.WebThickness;
+      this.isCatalogue = beamSection.isCatalogue;
+      if (isCatalogue)
+        this.m_taper = false;
+      this.SectionDescription = beamSection.SectionDescription;
+    }
+
+    /// <summary>
+    /// Create a copy from another IBeamSection and set a new Start Position and Taper to Next
+    /// </summary>
+    /// <param name="beamSection"></param>
+    public BeamSection(IBeamSection beamSection, Length newStartPosition, bool taperToNext)
+    {
+      this.StartPosition = newStartPosition;
+      this.Depth = beamSection.Depth;
+      this.TopFlangeWidth = beamSection.TopFlangeWidth;
+      this.BottomFlangeWidth = beamSection.BottomFlangeWidth;
+      this.TopFlangeThickness = beamSection.TopFlangeThickness;
+      this.BottomFlangeThickness = beamSection.BottomFlangeThickness;
+      this.RootRadius = beamSection.RootRadius;
+      this.WebThickness = beamSection.WebThickness;
+      this.isCatalogue = beamSection.isCatalogue;
+      this.TaperedToNext = taperToNext;
+      this.SectionDescription = beamSection.SectionDescription;
+    }
+
+    /// <summary>
+    /// Create a copy from another IBeamSection
+    /// </summary>
+    /// <param name="beamSection"></param>
+    public BeamSection(IBeamSection beamSection)
+    {
+      this.StartPosition = beamSection.StartPosition;
+      this.Depth = beamSection.Depth;
+      this.TopFlangeWidth = beamSection.TopFlangeWidth;
+      this.BottomFlangeWidth = beamSection.BottomFlangeWidth;
+      this.TopFlangeThickness = beamSection.TopFlangeThickness;
+      this.BottomFlangeThickness = beamSection.BottomFlangeThickness;
+      this.RootRadius = beamSection.RootRadius;
+      this.WebThickness = beamSection.WebThickness;
+      this.isCatalogue = beamSection.isCatalogue;
+      if (isCatalogue)
+        this.m_taper = false;
+      this.SectionDescription = beamSection.SectionDescription;
     }
 
     /// <summary>
@@ -227,6 +287,22 @@ namespace ComposAPI
       }
     }
     #endregion
+
+    public string ToCoaString(string name, int num, int index, LengthUnit lengthUnit)
+    {
+      List<string> parameters = new List<string>();
+      parameters.Add(CoaIdentifier.BeamSectionAtX);
+      parameters.Add(name);
+      parameters.Add(Convert.ToString(num));
+      parameters.Add(Convert.ToString(index));
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(lengthUnit).Value, 6));
+      parameters.Add(this.SectionDescription);
+      CoaHelper.AddParameter(parameters, "TAPERED", this.TaperedToNext);
+
+      string coaString = CoaHelper.CreateString(parameters);
+
+      return coaString;
+    }
 
     #region methods
     public override string ToString()

@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Grasshopper.Documentation;
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Types;
-using Rhino;
-using Rhino.Geometry;
-using Rhino.Collections;
-using UnitsNet;
-using UnitsNet.Units;
+﻿using Grasshopper.Kernel.Types;
 using ComposAPI;
 
 namespace ComposGH.Parameters
@@ -17,7 +6,7 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class SlabDimensionGoo : GH_Goo<SlabDimension>
+  public class SlabDimensionGoo : GH_Goo<ISlabDimension>
   {
     #region constructors
     public SlabDimensionGoo()
@@ -25,11 +14,11 @@ namespace ComposGH.Parameters
       this.Value = new SlabDimension();
     }
 
-    public SlabDimensionGoo(SlabDimension item)
+    public SlabDimensionGoo(ISlabDimension item)
     {
       if (item == null)
         item = new SlabDimension();
-      this.Value = item.Duplicate() as SlabDimension;
+      this.Value = item; //.Duplicate() as SlabDimension;
     }
 
     public override IGH_Goo Duplicate()
@@ -38,7 +27,7 @@ namespace ComposGH.Parameters
     }
     public SlabDimensionGoo DuplicateGoo()
     {
-      return new SlabDimensionGoo(this.Value == null ? new SlabDimension() : this.Value.Duplicate() as SlabDimension);
+      return new SlabDimensionGoo(this.Value == null ? new SlabDimension() : this.Value);// .Duplicate() as SlabDimension);
     }
     #endregion
 

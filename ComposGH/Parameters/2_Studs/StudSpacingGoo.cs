@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Types;
-using Rhino.Geometry;
-using Rhino;
-using Grasshopper.Documentation;
-using Rhino.Collections;
-using UnitsNet;
+﻿using Grasshopper.Kernel.Types;
 using ComposAPI;
 
 namespace ComposGH.Parameters
@@ -16,18 +6,18 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class StudGroupSpacingGoo : GH_Goo<StudGroupSpacing>
+  public class StudGroupSpacingGoo : GH_Goo<IStudGroupSpacing>
   {
     #region constructors
     public StudGroupSpacingGoo()
     {
       this.Value = new StudGroupSpacing();
     }
-    public StudGroupSpacingGoo(StudGroupSpacing item)
+    public StudGroupSpacingGoo(IStudGroupSpacing item)
     {
       if (item == null)
         item = new StudGroupSpacing();
-      this.Value = item.Duplicate() as StudGroupSpacing;
+      this.Value = item; //.Duplicate() as StudGroupSpacing;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +26,7 @@ namespace ComposGH.Parameters
     }
     public StudGroupSpacingGoo DuplicateGoo()
     {
-      return new StudGroupSpacingGoo(Value == null ? new StudGroupSpacing() : Value.Duplicate() as StudGroupSpacing);
+      return new StudGroupSpacingGoo(Value == null ? new StudGroupSpacing() : Value);// .Duplicate() as StudGroupSpacing);
     }
     #endregion
 

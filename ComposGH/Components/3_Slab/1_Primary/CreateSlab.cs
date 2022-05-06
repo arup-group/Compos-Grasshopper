@@ -1,19 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Drawing;
-using Grasshopper.Kernel.Attributes;
-using Grasshopper.GUI.Canvas;
-using Grasshopper.GUI;
 using Grasshopper.Kernel;
-using Rhino.Geometry;
-using System.Windows.Forms;
-using Grasshopper.Kernel.Types;
 using ComposGH.Parameters;
-using UnitsNet;
-using UnitsNet.Units;
 using System.Linq;
-using Grasshopper.Kernel.Parameters;
 using ComposAPI;
 
 namespace ComposGH.Components
@@ -24,10 +13,10 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("7af9eb3d-0868-4476-b31c-87d9eaae5e86");
     public CreateSlab()
-      : base("Slab", "Slab", "Create concrete slab",
+      : base("Slab", "Slab", "Create a Compos Concrete Slab",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
-    { this.Hidden = false; } // sets the initial state of the component to hidden
+    { this.Hidden = true; } // sets the initial state of the component to hidden
 
     public override GH_Exposure Exposure => GH_Exposure.primary;
 
@@ -48,7 +37,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Slab", "S", "Concrete slab", GH_ParamAccess.list);
+      pManager.AddGenericParameter("Slab", "Sla", "Compos Concrete slab", GH_ParamAccess.list);
     }
     #endregion
 

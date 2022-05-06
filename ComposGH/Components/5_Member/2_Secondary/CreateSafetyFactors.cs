@@ -1,17 +1,7 @@
 ﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
 
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
-using Grasshopper.Kernel.Attributes;
-using Grasshopper.Kernel.Types;
-using Grasshopper.GUI;
-using Grasshopper.GUI.Canvas;
-using Rhino.Geometry;
-using UnitsNet;
-using UnitsNet.Units;
 using ComposAPI;
 
 namespace ComposGH.Components
@@ -25,7 +15,7 @@ namespace ComposGH.Components
       : base("Safety Factors", "SF", "Create Compos Safety Factors",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
-    { this.Hidden = false; } // sets the initial state of the component to hidden
+    { this.Hidden = true; } // sets the initial state of the component to hidden
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 

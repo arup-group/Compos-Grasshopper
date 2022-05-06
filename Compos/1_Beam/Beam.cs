@@ -4,19 +4,20 @@ using System.Linq;
 using UnitsNet;
 using UnitsNet.Units;
 using System.Drawing;
+using ComposAPI.Helpers;
 
 namespace ComposAPI
 {
   /// <summary>
   /// Custom class: this class defines the basic properties and methods for our custom class
   /// </summary>
-  public class Beam
+  public class Beam : IBeam
   {
-    public Length Length { get; set; }
-    public Restraint Restraint { get; set; }
-    public SteelMaterial Material { get; set; }
-    public List<BeamSection> BeamSections { get; internal set; } = new List<BeamSection>();
-    public List<WebOpening> WebOpenings { get; internal set; } = null;
+    public Length Length { get; set; } // span length
+    public IRestraint Restraint { get; set; }
+    public ISteelMaterial Material { get; set; }
+    public List<IBeamSection> BeamSections { get; internal set; } = new List<IBeamSection>();
+    public List<IWebOpening> WebOpenings { get; internal set; } = null;
 
     #region constructors
     public Beam()
@@ -24,7 +25,7 @@ namespace ComposAPI
       // empty constructor
     }
 
-    public Beam(Length length, Restraint restraint, SteelMaterial material, List<BeamSection> beamSections, List<WebOpening> webOpenings = null)
+    public Beam(Length length, IRestraint restraint, ISteelMaterial material, List<IBeamSection> beamSections, List<IWebOpening> webOpenings = null)
     {
       this.Length = length;
       this.Restraint = restraint;
@@ -42,10 +43,35 @@ namespace ComposAPI
       // to do - implement from coa string method
     }
 
-    internal string ToCoaString()
+    public string ToCoaString(string name, Code code, DensityUnit densityUnit, LengthUnit lengthUnit, PressureUnit pressureUnit)
     {
-      // to do - implement to coa string method
-      return string.Empty;
+      List<string> parameters = new List<string>();
+      parameters.Add(CoaIdentifier.BeamSpanLength);
+      parameters.Add(name);
+      // span number always 1?
+      parameters.Add(Convert.ToString(1));
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.Length.ToUnit(lengthUnit).Value, 5));
+
+      string str = CoaHelper.CreateString(parameters);
+      str += this.Restraint.ToCoaString();
+      str += this.Material.ToCoaString(name, code, densityUnit, pressureUnit);
+
+      int num = 1;
+      int index = this.BeamSections.Count + 1;
+      foreach (IBeamSection section in this.BeamSections)
+      {
+        str += section.ToCoaString(name, num, index, lengthUnit);
+        num++;
+      }
+
+      if (this.WebOpenings != null)
+      {
+        foreach (IWebOpening webOpening in this.WebOpenings)
+        {
+          str += webOpening.ToCoaString();
+        }
+      }
+      return str;
     }
     #endregion
 

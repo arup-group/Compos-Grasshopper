@@ -1,19 +1,10 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Drawing;
-using Grasshopper.Kernel.Attributes;
-using Grasshopper.GUI.Canvas;
-using Grasshopper.GUI;
 using Grasshopper.Kernel;
-using Rhino.Geometry;
-using System.Windows.Forms;
-using Grasshopper.Kernel.Types;
 using ComposGH.Parameters;
 using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
-using ComposAPI;
 
 namespace ComposGH.Components
 {
@@ -26,7 +17,7 @@ namespace ComposGH.Components
       : base("Custom Rebar Layout", "CustTransRbL", "Create Custom Transverse Reinforcement Layout for Compos Transverse Reinforcement",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
-    { this.Hidden = false; } // sets the initial state of the component to hidden
+    { this.Hidden = true; } // sets the initial state of the component to hidden
 
     public override Guid ComponentGuid => new Guid("19322156-8b1a-4849-9772-813411af965c");
     public override GH_Exposure Exposure => GH_Exposure.quarternary;

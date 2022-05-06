@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Types;
-using Rhino.Geometry;
-using Rhino;
-using Grasshopper.Documentation;
-using Rhino.Collections;
-using UnitsNet;
+﻿using Grasshopper.Kernel.Types;
 using ComposAPI;
 
 namespace ComposGH.Parameters
@@ -16,18 +6,18 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class RestraintGoo : GH_Goo<Restraint>
+  public class RestraintGoo : GH_Goo<IRestraint>
   {
     #region constructors
     public RestraintGoo()
     {
       this.Value = new Restraint();
     }
-    public RestraintGoo(Restraint item)
+    public RestraintGoo(IRestraint item)
     {
       if (item == null)
         item = new Restraint();
-      this.Value = item.Duplicate() as Restraint;
+      this.Value = item; //.Duplicate() as Restraint;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +26,7 @@ namespace ComposGH.Parameters
     }
     public RestraintGoo DuplicateGoo()
     {
-      return new RestraintGoo(Value == null ? new Restraint() : Value.Duplicate() as Restraint);
+      return new RestraintGoo(Value == null ? new Restraint() : Value);// .Duplicate() as Restraint);
     }
     #endregion
 

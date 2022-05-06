@@ -28,7 +28,7 @@ namespace ComposAPI
       this.FinalStageSupports = finalStageSupports;
       this.finalSupportsSet = true;
     }
-    public Restraint(bool topFlangeRestrained, Supports constructionStageSupports)
+    public Restraint(bool topFlangeRestrained, ISupports constructionStageSupports)
     {
       this.TopFlangeRestrained = topFlangeRestrained;
       this.ConstructionStageSupports = constructionStageSupports;
@@ -42,7 +42,7 @@ namespace ComposAPI
       // to be done
     }
 
-    internal string Coa()
+    public string ToCoaString()
     {
       // to be done
       return "";

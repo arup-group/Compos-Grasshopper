@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Types;
-using Rhino.Geometry;
-using Rhino;
-using Grasshopper.Documentation;
-using Rhino.Collections;
-using UnitsNet;
+﻿using Grasshopper.Kernel.Types;
 using ComposAPI;
 
 namespace ComposGH.Parameters
@@ -27,7 +17,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new CustomTransverseReinforcementLayout();
-      this.Value = item.Duplicate() as ICustomTransverseReinforcementLayout;
+      this.Value = item; //.Duplicate() as ICustomTransverseReinforcementLayout;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +26,7 @@ namespace ComposGH.Parameters
     }
     public CustomTransverseReinforcementLayoutGoo DuplicateGoo()
     {
-      return new CustomTransverseReinforcementLayoutGoo(Value == null ? new CustomTransverseReinforcementLayout() : Value.Duplicate() as ICustomTransverseReinforcementLayout);
+      return new CustomTransverseReinforcementLayoutGoo(Value == null ? new CustomTransverseReinforcementLayout() : Value);// .Duplicate() as ICustomTransverseReinforcementLayout);
     }
     #endregion
 

@@ -9,24 +9,28 @@ using Xunit;
 
 namespace ComposAPI.Tests
 {
-  public class ComposIOTest
+  public class ComposFileTest
   {
     [Fact]
-    public void TestOpenCov()
+    public void OpenCobTest()
     {
       string pathName = Path.GetFullPath("..\\..\\..\\TestFiles\\Compos1.cob");
 
-      IAutomation automation = ComposIO.Open(pathName);
+      ComposFile file = new ComposFile();
+
+      IAutomation automation = file.Open(pathName);
 
       Assert.NotNull(automation); 
     }
 
     [Fact]
-    public void TestOpenCoa()
+    public void OpenCoaTest()
     {
       string pathName = Path.GetFullPath("..\\..\\..\\TestFiles\\Compos1.coa");
 
-      IAutomation automation = ComposIO.Open(pathName);
+      ComposFile file = new ComposFile();
+
+      IAutomation automation = file.Open(pathName);
 
       Assert.NotNull(automation);
     }

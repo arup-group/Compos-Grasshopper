@@ -27,7 +27,7 @@
 //    {
 //      if (item == null)
 //        item = new Reinforcement();
-//      this.Value = item.Duplicate() as Reinforcement;
+//      this.Value = item; //.Duplicate() as Reinforcement;
 //    }
 
 //    public override IGH_Goo Duplicate()

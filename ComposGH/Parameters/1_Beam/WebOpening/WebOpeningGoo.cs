@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
-using Rhino.Geometry;
-using Rhino;
-using Grasshopper.Documentation;
-using Rhino.Collections;
-using UnitsNet;
 using ComposAPI;
 
 namespace ComposGH.Parameters
@@ -16,18 +10,18 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class WebOpeningGoo : GH_Goo<WebOpening>
+  public class WebOpeningGoo : GH_Goo<IWebOpening>
   {
     #region constructors
     public WebOpeningGoo()
     {
       this.Value = new WebOpening();
     }
-    public WebOpeningGoo(WebOpening item)
+    public WebOpeningGoo(IWebOpening item)
     {
       if (item == null)
         item = new WebOpening();
-      this.Value = item.Duplicate() as WebOpening;
+      this.Value = item; //.Duplicate() as WebOpening;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +30,7 @@ namespace ComposGH.Parameters
     }
     public WebOpeningGoo DuplicateGoo()
     {
-      return new WebOpeningGoo(Value == null ? new WebOpening() : Value.Duplicate() as WebOpening);
+      return new WebOpeningGoo(Value == null ? new WebOpening() : Value);// .Duplicate() as WebOpening);
     }
     #endregion
 
@@ -105,7 +99,7 @@ namespace ComposGH.Parameters
   public class WebOpeningParameter : GH_PersistentParam<WebOpeningGoo>
   {
     public WebOpeningParameter()
-      : base(new GH_InstanceDescription("WebOpening", "WO", "Compos Web Opening", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+      : base(new GH_InstanceDescription("WebOpening", "WO", "Maintains a collection of Compos Web Opening data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
 

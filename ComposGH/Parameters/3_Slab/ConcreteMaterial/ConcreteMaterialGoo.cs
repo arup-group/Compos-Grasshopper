@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Grasshopper.Documentation;
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Types;
-using Rhino;
-using Rhino.Collections;
-using Rhino.Geometry;
-using UnitsNet;
-using UnitsNet.Units;
-using Oasys.Units;
+﻿using Grasshopper.Kernel.Types;
 using ComposAPI;
 
 namespace ComposGH.Parameters
@@ -18,7 +6,7 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class ConcreteMaterialGoo : GH_Goo<ConcreteMaterial>
+  public class ConcreteMaterialGoo : GH_Goo<IConcreteMaterial>
   {
     #region constructors
     public ConcreteMaterialGoo()
@@ -29,7 +17,7 @@ namespace ComposGH.Parameters
     {
       if (item == null)
         item = new ConcreteMaterial();
-      this.Value = item.Duplicate() as ConcreteMaterial;
+      this.Value = item; //.Duplicate() as ConcreteMaterial;
     }
 
     public override IGH_Goo Duplicate()
@@ -38,7 +26,7 @@ namespace ComposGH.Parameters
     }
     public ConcreteMaterialGoo DuplicateGoo()
     {
-      return new ConcreteMaterialGoo(this.Value == null ? new ConcreteMaterial() : this.Value.Duplicate() as ConcreteMaterial);
+      return new ConcreteMaterialGoo(this.Value == null ? new ConcreteMaterial() : this.Value);// .Duplicate() as ConcreteMaterial);
     }
     #endregion
 

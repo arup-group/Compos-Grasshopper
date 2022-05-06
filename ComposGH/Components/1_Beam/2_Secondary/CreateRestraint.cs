@@ -1,19 +1,6 @@
 ﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Drawing;
-using Grasshopper.Kernel.Attributes;
-using Grasshopper.GUI.Canvas;
-using Grasshopper.GUI;
 using Grasshopper.Kernel;
-using Rhino.Geometry;
-using System.Windows.Forms;
-using Grasshopper.Kernel.Types;
 using ComposGH.Parameters;
-using UnitsNet;
-using UnitsNet.Units;
-using System.Linq;
-using Grasshopper.Kernel.Parameters;
 using ComposAPI;
 
 namespace ComposGH.Components
@@ -28,7 +15,7 @@ namespace ComposGH.Components
       : base("Restraints", "Restraints", "Create Restraints for a Compos Beam",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
-    { this.Hidden = false; } // sets the initial state of the component to hidden
+    { this.Hidden = true; } // sets the initial state of the component to hidden
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 
@@ -62,12 +49,12 @@ namespace ComposGH.Components
       {
         SupportsGoo final = (SupportsGoo)GetInput.GenericGoo<SupportsGoo>(this, DA, 2);
         if (final == null) { return; }
-        Restraint res = new Restraint(tflr, construction.Value, final.Value);
+        IRestraint res = new Restraint(tflr, construction.Value, final.Value);
         DA.SetData(0, new RestraintGoo(res));
       }
       else
       {
-        Restraint res = new Restraint(tflr, construction.Value);
+        IRestraint res = new Restraint(tflr, construction.Value);
         DA.SetData(0, new RestraintGoo(res));
       }
     }

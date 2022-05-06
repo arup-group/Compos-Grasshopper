@@ -76,7 +76,7 @@ namespace ComposAPI
     /// <param name="positionCentroidFromStart"></param>
     /// <param name="positionCentroidFromTop"></param>
     /// <param name="stiffeners"></param>
-    public WebOpening(Length width, Length height, Length positionCentroidFromStart, Length positionCentroidFromTop, WebOpeningStiffeners stiffeners = null)
+    public WebOpening(Length width, Length height, Length positionCentroidFromStart, Length positionCentroidFromTop, IWebOpeningStiffeners stiffeners = null)
     {
       // static type for this constructor
       this.WebOpeningType = OpeningType.Rectangular;
@@ -101,7 +101,7 @@ namespace ComposAPI
     /// <param name="positionCentroidFromStart"></param>
     /// <param name="positionCentroidFromTop"></param>
     /// <param name="stiffeners"></param>
-    public WebOpening(Length diameter, Length positionCentroidFromStart, Length positionCentroidFromTop, WebOpeningStiffeners stiffeners = null)
+    public WebOpening(Length diameter, Length positionCentroidFromStart, Length positionCentroidFromTop, IWebOpeningStiffeners stiffeners = null)
     {
       // static type for this constructor
       this.WebOpeningType = OpeningType.Circular;
@@ -124,7 +124,7 @@ namespace ComposAPI
     /// <param name="width"></param>
     /// <param name="height"></param>
     /// <param name="stiffeners"></param> 
-    public WebOpening(Length width, Length height, NotchPosition position, WebOpeningStiffeners stiffeners = null)
+    public WebOpening(Length width, Length height, NotchPosition position, IWebOpeningStiffeners stiffeners = null)
     {
       // static type for this constructor
       if (position == NotchPosition.Start)
@@ -152,7 +152,7 @@ namespace ComposAPI
       // to do - implement from coa string method
     }
 
-    internal string ToCoaString()
+    public string ToCoaString()
     {
       // to do - implement to coa string method
       return string.Empty;
@@ -186,7 +186,7 @@ namespace ComposAPI
           break;
         case OpeningType.Rectangular:
         case OpeningType.Circular:
-          typ = ", Pos:(x:" + this.CentroidPosFromStart.As(Units.LengthUnitGeometry).ToString("f0") + ", z:" + this.CentroidPosFromTop.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty) + ")";
+          typ = ", Pos:(x:" + this.CentroidPosFromStart.ToUnit(Units.LengthUnitGeometry).ToString("f2").Replace(" ", string.Empty) + ", z:" + this.CentroidPosFromTop.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty) + ")";
           break;
       }
       if (this.OpeningStiffeners != null)

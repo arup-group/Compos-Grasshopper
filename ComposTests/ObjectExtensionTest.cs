@@ -16,12 +16,13 @@ namespace ComposAPI.Tests
     public void DuplicateTest1()
     {
       Force quantity = new Force(1, ForceUnit.Kilonewton);
-      TestObject grandChild = new TestObject(1.0, 1, "a", TestEnum.Value1, quantity, new List<TestObject>());
+      TestObject grandChild = new TestObject(true, 1.0, 1, "a", TestEnum.Value1, quantity, new List<TestObject>());
       TestObject original = new TestObject(new TestObject(grandChild));
 
       object o = original.Duplicate();
       TestObject duplicate = original.Duplicate() as TestObject;
 
+      original.Children[0].Children[0].B = false;
       original.Children[0].Children[0].D = -1.0;
       original.Children[0].Children[0].I = -1;
       original.Children[0].Children[0].S = "z";
@@ -47,6 +48,7 @@ namespace ComposAPI.Tests
 
   public class TestObject
   {
+    internal bool B { get; set; }
     internal double D { get; set; }
     internal int I { get; set; }
     internal string S { get; set; }
@@ -66,8 +68,9 @@ namespace ComposAPI.Tests
       this.Children = children;
     }
 
-    internal TestObject(double d, int i, string s, TestEnum testEnum, IQuantity quantity, List<TestObject> children)
+    internal TestObject(bool b, double d, int i, string s, TestEnum testEnum, IQuantity quantity, List<TestObject> children)
     {
+      this.B = b;
       this.D = d;
       this.I = i;
       this.S = s;

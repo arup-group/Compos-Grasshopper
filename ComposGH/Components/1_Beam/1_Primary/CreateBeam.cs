@@ -1,13 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Drawing;
-using Grasshopper.Kernel.Attributes;
-using Grasshopper.GUI.Canvas;
-using Grasshopper.GUI;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
-using System.Windows.Forms;
 using Grasshopper.Kernel.Types;
 using ComposGH.Parameters;
 using UnitsNet;
@@ -24,10 +18,10 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("060641e49fc648eb8d7699f2d6697111");
     public CreateBeam()
-      : base("Create Beam", "Beam", "Create a Compos Beam",
+      : base("Create Beam", "Beam", "Create a Compos Steel Beam",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
-    { this.Hidden = false; } // sets the initial state of the component to hidden
+    { this.Hidden = false; } // sets the initial state of the component to display
 
     public override GH_Exposure Exposure => GH_Exposure.primary;
 
@@ -106,7 +100,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Beam", "Bm", "Compos Beam", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Beam", "Bm", "Compos Steel Beam", GH_ParamAccess.item);
     }
     #endregion
 
@@ -131,11 +125,11 @@ namespace ComposGH.Components
             if (this.Params.Input[4].Sources.Count > 0)
             {
               List<WebOpeningGoo> webOpenings = GetInput.GenericGooList<WebOpeningGoo>(this, DA, 4);
-              DA.SetData(0, new BeamGoo(new LineCurve(ln), LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value).ToList(), webOpenings.Select(x => x.Value).ToList()));
+              DA.SetData(0, new BeamGoo(new LineCurve(ln), LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value as IBeamSection).ToList(), webOpenings.Select(x => x.Value as IWebOpening).ToList()));
             }
             else
             {
-              DA.SetData(0, new BeamGoo(new LineCurve(ln), LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value).ToList()));
+              DA.SetData(0, new BeamGoo(new LineCurve(ln), LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value as IBeamSection).ToList()));
             }
           }
           catch (Exception e)

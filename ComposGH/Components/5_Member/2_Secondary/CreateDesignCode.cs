@@ -1,17 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Drawing;
-using Grasshopper.Kernel.Attributes;
-using Grasshopper.GUI.Canvas;
-using Grasshopper.GUI;
 using Grasshopper.Kernel;
-using Rhino.Geometry;
-using System.Windows.Forms;
-using Grasshopper.Kernel.Types;
 using ComposGH.Parameters;
-using UnitsNet;
-using UnitsNet.Units;
 using System.Linq;
 using Grasshopper.Kernel.Parameters;
 using ComposAPI;
@@ -29,7 +19,7 @@ namespace ComposGH.Components
       : base("Design Code", "DC", "Create Compos Design Code",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
-    { this.Hidden = false; } // sets the initial state of the component to hidden
+    { this.Hidden = true; } // sets the initial state of the component to hidden
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 
@@ -108,7 +98,7 @@ namespace ComposGH.Components
         Checkboxes.Add(DesignOptions.ProppedDuringConstruction);
         Checkboxes.Add(DesignOptions.InclSteelBeamWeight);
         Checkboxes.Add(DesignOptions.InclThinFlangeSections);
-        Checkboxes.Add(DesignOptions.InclConcereteSlabWeight);
+        Checkboxes.Add(DesignOptions.InclConcreteSlabWeight);
         Checkboxes.Add(DesignOptions.ConsiderShearDeflection);
         Checkboxes.Add(EC4codeOptions.ConsiderShrinkageDeflection);
         Checkboxes.Add(EC4codeOptions.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
@@ -262,7 +252,7 @@ namespace ComposGH.Components
     {
       SafetyFactorsGoo safetyFactorsGoo = (SafetyFactorsGoo)GetInput.GenericGoo<SafetyFactorsGoo>(this, DA, 0);
 
-      ComposAPI.SafetyFactors safetyFactors = (safetyFactorsGoo == null) ? null : safetyFactorsGoo.Value;
+      ISafetyFactors safetyFactors = (safetyFactorsGoo == null) ? null : safetyFactorsGoo.Value;
       switch (Code)
       {
         case Code.BS5950_3_1_1990_Superseded:
@@ -292,7 +282,7 @@ namespace ComposGH.Components
           if (longt != null)
             ec4.CodeOptions.LongTerm = longt;
 
-          ComposAPI.EC4SafetyFactors safetyFactorsEC4 = (ComposAPI.EC4SafetyFactors)safetyFactors;
+          EC4SafetyFactors safetyFactorsEC4 = (EC4SafetyFactors)safetyFactors;
           if (safetyFactorsEC4 != null)
             ec4.SafetyFactors = safetyFactorsEC4;
 

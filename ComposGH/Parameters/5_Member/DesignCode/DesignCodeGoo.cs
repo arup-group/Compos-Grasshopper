@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
-using Rhino.Geometry;
-using Rhino;
-using Grasshopper.Documentation;
-using Rhino.Collections;
-using UnitsNet;
 using ComposAPI;
 
 namespace ComposGH.Parameters
@@ -16,18 +10,18 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class DesignCodeGoo : GH_Goo<DesignCode>
+  public class DesignCodeGoo : GH_Goo<IDesignCode>
   {
     #region constructors
     public DesignCodeGoo()
     {
       this.Value = new DesignCode();
     }
-    public DesignCodeGoo(DesignCode item)
+    public DesignCodeGoo(IDesignCode item)
     {
       if (item == null)
         item = new DesignCode();
-      this.Value = item.Duplicate() as DesignCode;
+      this.Value = item; //.Duplicate() as DesignCode;
     }
 
     public override IGH_Goo Duplicate()
@@ -36,7 +30,7 @@ namespace ComposGH.Parameters
     }
     public DesignCodeGoo DuplicateGoo()
     {
-      return new DesignCodeGoo(Value == null ? new DesignCode() : Value.Duplicate() as DesignCode);
+      return new DesignCodeGoo(Value == null ? new DesignCode() : Value);// .Duplicate() as DesignCode);
     }
     #endregion
 
@@ -104,7 +98,7 @@ namespace ComposGH.Parameters
   public class DesignCodeParameter : GH_PersistentParam<DesignCodeGoo>
   {
     public DesignCodeParameter()
-      : base(new GH_InstanceDescription("DesignCode", "DC", "Compos Design Code", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+      : base(new GH_InstanceDescription("DesignCode", "DC", "Maintains a collection of Compos Design Code data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
     public override Guid ComponentGuid => new Guid("fb4d79ea-1c30-4e86-9654-a55ef42fd8e2");

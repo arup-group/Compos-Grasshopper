@@ -183,6 +183,16 @@ namespace ComposGH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CreateMember {
+            get {
+                object obj = ResourceManager.GetObject("CreateMember", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap CreateProfile {
             get {
                 object obj = ResourceManager.GetObject("CreateProfile", resourceCulture);
@@ -366,6 +376,16 @@ namespace ComposGH.Properties {
         internal static System.Drawing.Bitmap LoadParam {
             get {
                 object obj = ResourceManager.GetObject("LoadParam", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap MemberParam {
+            get {
+                object obj = ResourceManager.GetObject("MemberParam", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

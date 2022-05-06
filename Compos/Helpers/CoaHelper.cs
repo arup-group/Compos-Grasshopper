@@ -22,8 +22,9 @@ namespace ComposAPI.Helpers
     {
       string str = "";
       foreach (string param in parameters)
-        str += param + "\\t";
-      str += "\\n";
+        str += param + '\t';
+      str = str.Remove(str.Length - 1, 1);
+      str += '\n';
       return str;
     }
 
@@ -35,9 +36,30 @@ namespace ComposAPI.Helpers
     internal static List<string> Split(string coaString)
     {
       List<string> parameters = coaString.Split('\t').ToList();
-      foreach(string param in parameters)
+      foreach (string param in parameters)
         RemoveWhitespace(param);
       return parameters;
+    }
+
+    public static int GetMagnitude(int num)
+    {
+      int magnitude = 0;
+      while (num > 0)
+      {
+        magnitude++;
+        num /= 10;
+      }
+      return magnitude;
+    }
+
+    public static string FormatSignificantFigures(double value, int significantFigures)
+    {
+      int decimalPlaces = Math.Max(0, significantFigures - GetMagnitude((int)value));
+      string format = "{0:0.";
+      for (int i = 0; i < decimalPlaces; i++)
+        format += "0";
+      format += "}";
+      return String.Format(format, value);
     }
 
     internal static List<string> SplitLines(string coaString)

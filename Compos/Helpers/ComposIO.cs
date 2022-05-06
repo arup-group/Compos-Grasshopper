@@ -14,12 +14,5 @@ namespace ComposAPI
   {
     public static string InstallPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Oasys", "Compos 8.6");
 
-    public static IAutomation Open(string pathName)
-    {
-      IAutomation automation = new Automation();
-      automation.Open(pathName);
-      return automation;
-    }
-
   }
 }

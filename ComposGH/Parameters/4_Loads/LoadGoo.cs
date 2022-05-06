@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
-using Rhino.Geometry;
-using Rhino;
-using Grasshopper.Documentation;
-using Rhino.Collections;
-using UnitsNet;
 using ComposAPI;
 
 namespace ComposGH.Parameters
@@ -17,14 +11,14 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class LoadGoo : GH_Goo<Load> // needs to be upgraded to GeometryGoo eventually....
+  public class LoadGoo : GH_Goo<ILoad> // needs to be upgraded to GeometryGoo eventually....
   {
     #region constructors
     public LoadGoo()
     {
       this.Value = new Load();
     }
-    public LoadGoo(Load item)
+    public LoadGoo(ILoad item)
     {
       if (item == null)
         item = new Load();
@@ -105,7 +99,7 @@ namespace ComposGH.Parameters
   public class ComposLoadParameter : GH_PersistentParam<LoadGoo>
   {
     public ComposLoadParameter()
-      : base(new GH_InstanceDescription("Load", "Ld", "Compos Load", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+      : base(new GH_InstanceDescription("Load", "Ld", "Maintains a collection of Compos Load data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
 

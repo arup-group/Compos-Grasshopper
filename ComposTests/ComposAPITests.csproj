@@ -10,11 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="1_Beam\SteelMaterial\**" />
     <Compile Remove="Parameters\**" />
-    <EmbeddedResource Remove="1_Beam\SteelMaterial\**" />
     <EmbeddedResource Remove="Parameters\**" />
-    <None Remove="1_Beam\SteelMaterial\**" />
     <None Remove="Parameters\**" />
   </ItemGroup>
 
@@ -54,6 +51,10 @@
     <Reference Include="OasysUnits">
       <HintPath>..\Compos\lib\OasysUnits.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Helpers\" />
   </ItemGroup>
 
 </Project>

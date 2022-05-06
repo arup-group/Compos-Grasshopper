@@ -1,6 +1,5 @@
 ﻿using Grasshopper.GUI;
 using Grasshopper.Kernel;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 
