@@ -146,7 +146,7 @@
     <Compile Include="Parameters\3_Slab\ConcreteMaterial\ERatioGoo.cs" />
     <Compile Include="Parameters\3_Slab\Reinforcement\MeshReinforcementGoo.cs" />
     <Compile Include="Parameters\3_Slab\Reinforcement\TransverseReinforcementGoo.cs" />
-    <Compile Include="Parameters\3_Slab\Slab.cs" />
+    <Compile Include="Parameters\3_Slab\SlabGoo.cs" />
     <Compile Include="Parameters\3_Slab\SlabDimension\SlabDimensionGoo.cs" />
     <Compile Include="Parameters\1_Beam\Restraints\RestraintGoo.cs" />
     <Compile Include="Parameters\3_Slab\Reinforcement\CustomTransverseReinforcementLayoutGoo.cs" />
