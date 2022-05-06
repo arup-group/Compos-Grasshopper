@@ -21,13 +21,13 @@ namespace ComposGH.Parameters
   /// <summary>
   /// GeometryGoo wrapper class, makes sure our custom class can be used and displayed in Grasshopper.
   /// </summary>
-  public class BeamGoo : GH_GeometricGoo<Beam>, IGH_PreviewData
+  public class BeamGoo : GH_GeometricGoo<IBeam>, IGH_PreviewData
   {
     public LineCurve Line { get; set; }
     LengthUnit LengthUnit { get; set; }
 
     #region constructors
-    public BeamGoo(LineCurve line, LengthUnit lengthUnit, Restraint restraint, SteelMaterial material, List<BeamSection> beamSections, List<WebOpening> webOpenings = null)
+    public BeamGoo(LineCurve line, LengthUnit lengthUnit, IRestraint restraint, ISteelMaterial material, List<IBeamSection> beamSections, List<IWebOpening> webOpenings = null)
     {
       this.Line = line;
       this.LengthUnit = lengthUnit;
@@ -39,6 +39,7 @@ namespace ComposGH.Parameters
     {
       this.Value = new Beam();
     }
+
     public BeamGoo(LineCurve line, LengthUnit lengthUnit, Beam item)
     {
       if (item == null)
@@ -48,6 +49,7 @@ namespace ComposGH.Parameters
       this.Value = item.Duplicate() as Beam;
       UpdatePreview();
     }
+
     private BeamGoo(BeamGoo goo)
     {
       this.Line = (LineCurve)goo.Line.Duplicate();
@@ -260,11 +262,11 @@ namespace ComposGH.Parameters
     {
       profileOutlines = new List<PolyCurve>();
       profileExtrusions = new List<Brep>();
-      List<BeamSection> beamSectionsSorted = SortBeamSections(this.Value.BeamSections.ToList());
+      List<IBeamSection> beamSectionsSorted = SortBeamSections(this.Value.BeamSections.ToList());
 
       for (int i = 0; i < beamSectionsSorted.Count; i++)
       {
-        BeamSection beamSection = beamSectionsSorted[i];
+        IBeamSection beamSection = beamSectionsSorted[i];
         PolyCurve outline = CreateLocalPlaneOutline(beamSection);
         profileOutlines.Add(outline);
         if (i == 0 | i == beamSectionsSorted.Count - 1)
@@ -273,36 +275,36 @@ namespace ComposGH.Parameters
 
         if (i != beamSectionsSorted.Count - 1) // don't extrude last
         {
-          if (beamSection.TaperedToNext)
-          {
-            BeamSection beamSectionNext = new BeamSection();
-            if (beamSectionsSorted[i + 1].isCatalogue)
-            {
-              beamSectionNext =
-                new BeamSection(
-                  beamSectionsSorted[i + 1].Depth,
-                  beamSectionsSorted[i + 1].TopFlangeWidth,
-                  beamSectionsSorted[i + 1].WebThickness,
-                  beamSectionsSorted[i + 1].TopFlangeThickness);
-              beamSectionNext.StartPosition = beamSectionsSorted[i + 1].StartPosition;
-            }
-            else
-              beamSectionNext = beamSectionsSorted[i + 1];
-            PolyCurve nextOutline = CreateLocalPlaneOutline(beamSectionNext);
-            ExtrudeBetweenOutlines(outline, nextOutline);
-          }
-          else
-          {
-            BeamSection beamSectionNext = beamSection.Duplicate() as BeamSection;
-            beamSectionNext.StartPosition = beamSectionsSorted[i + 1].StartPosition;
-            PolyCurve nextOutline = CreateLocalPlaneOutline(beamSectionNext);
-            profileOutlines.Add(nextOutline);
-            ExtrudeBetweenOutlines(outline, nextOutline);
-            profileExtrusions.Add(Brep.CreatePlanarBreps(nextOutline, 0.0001)[0]);
-            beamSectionNext = beamSectionsSorted[i + 1];
-            PolyCurve nextBeamOutline = CreateLocalPlaneOutline(beamSectionNext);
-            profileExtrusions.Add(Brep.CreatePlanarBreps(nextBeamOutline, 0.0001)[0]);
-          }
+          //  if (beamSection.TaperedToNext)
+          //  {
+          //    IBeamSection beamSectionNext = new BeamSection();
+          //    if (beamSectionsSorted[i + 1].isCatalogue)
+          //    {
+          //      beamSectionNext =
+          //        new BeamSection(
+          //          beamSectionsSorted[i + 1].Depth,
+          //          beamSectionsSorted[i + 1].TopFlangeWidth,
+          //          beamSectionsSorted[i + 1].WebThickness,
+          //          beamSectionsSorted[i + 1].TopFlangeThickness);
+          //      beamSectionNext.StartPosition = beamSectionsSorted[i + 1].StartPosition;
+          //    }
+          //    else
+          //      beamSectionNext = beamSectionsSorted[i + 1];
+          //    PolyCurve nextOutline = CreateLocalPlaneOutline(beamSectionNext);
+          //    ExtrudeBetweenOutlines(outline, nextOutline);
+          //  }
+          //  else
+          //  {
+          //    IBeamSection beamSectionNext = beamSection.Duplicate() as BeamSection;
+          //    beamSectionNext.StartPosition = beamSectionsSorted[i + 1].StartPosition;
+          //    PolyCurve nextOutline = CreateLocalPlaneOutline(beamSectionNext);
+          //    profileOutlines.Add(nextOutline);
+          //    ExtrudeBetweenOutlines(outline, nextOutline);
+          //    profileExtrusions.Add(Brep.CreatePlanarBreps(nextOutline, 0.0001)[0]);
+          //    beamSectionNext = beamSectionsSorted[i + 1];
+          //    PolyCurve nextBeamOutline = CreateLocalPlaneOutline(beamSectionNext);
+          //    profileExtrusions.Add(Brep.CreatePlanarBreps(nextBeamOutline, 0.0001)[0]);
+          //  }
         }
       }
 
@@ -361,7 +363,7 @@ namespace ComposGH.Parameters
       profileExtrusions = Brep.CreateBooleanUnion(profileExtrusions, Units.Tolerance.As(LengthUnit)).ToList();
 
     }
-    private Brep OpeningCutter(WebOpening webOpening, Length webThickness, List<BeamSection> beamSectionsSorted)
+    private Brep OpeningCutter(IWebOpening webOpening, Length webThickness, List<IBeamSection> beamSectionsSorted)
     {
       List<Brep> parts = new List<Brep>();
 
@@ -416,7 +418,7 @@ namespace ComposGH.Parameters
           break;
 
         case OpeningType.Start_notch:
-          BeamSection beamstart = beamSectionsSorted.First();
+          IBeamSection beamstart = beamSectionsSorted.First();
           PolyCurve start = StartNotch(webOpening, beamstart.Depth);
           start.Transform(maptToLocal);
           // move curve away from web
@@ -434,7 +436,7 @@ namespace ComposGH.Parameters
           break;
 
         case OpeningType.End_notch:
-          BeamSection beamend = beamSectionsSorted.Last();
+          IBeamSection beamend = beamSectionsSorted.Last();
           PolyCurve end = EndNotch(webOpening, beamend.Depth);
           end.Transform(maptToLocal);
           // move curve away from web
@@ -453,7 +455,7 @@ namespace ComposGH.Parameters
       }
       return Brep.JoinBreps(parts, Units.Tolerance.As(LengthUnit)).ToList()[0];
     }
-    private PolyCurve RectangularOpening(WebOpening webOpening)
+    private PolyCurve RectangularOpening(IWebOpening webOpening)
     {
       // ## adding segments clockwise, assume xy plane with centre at profile top flange
       //
@@ -507,7 +509,7 @@ namespace ComposGH.Parameters
       }
       return null;
     }
-    private PolyCurve EndNotch(WebOpening webOpening, Length beamDepth)
+    private PolyCurve EndNotch(IWebOpening webOpening, Length beamDepth)
     {
       // ## adding segments clockwise, assume xy plane with centre at profile top flange 
       // Rhino maps x-axis inverse, so this is end even though logically it should be start
@@ -562,7 +564,7 @@ namespace ComposGH.Parameters
       }
       return null;
     }
-    private PolyCurve StartNotch(WebOpening webOpening, Length beamDepth)
+    private PolyCurve StartNotch(IWebOpening webOpening, Length beamDepth)
     {
       // ## adding segments clockwise, assume xy plane with centre at profile top flange
       // Rhino maps x-axis inverse, so this is start even though logically it should be end
@@ -616,7 +618,7 @@ namespace ComposGH.Parameters
       }
       return null;
     }
-    private ArcCurve CircularOpening(WebOpening webOpening)
+    private ArcCurve CircularOpening(IWebOpening webOpening)
     {
       Circle m_crv = new Circle();
       if (webOpening != null)
@@ -634,23 +636,23 @@ namespace ComposGH.Parameters
       }
       return new ArcCurve(m_crv);
     }
-    private List<BeamSection> SortBeamSections(List<BeamSection> beamSectionsSorted)
+    private List<IBeamSection> SortBeamSections(List<IBeamSection> beamSectionsSorted)
     {
       beamSectionsSorted = beamSectionsSorted.OrderByDescending(x => x.StartPosition.As(LengthUnit)).Reverse().ToList();
-      if (beamSectionsSorted.First().StartPosition != Length.Zero)
-      {
-        BeamSection newStart = beamSectionsSorted.First().Duplicate() as BeamSection;
-        newStart.StartPosition = Length.Zero;
-        newStart.TaperedToNext = true;
-        beamSectionsSorted.Insert(0, newStart);
-      }
-      if (beamSectionsSorted.Last().StartPosition != this.Value.Length)
-      {
-        beamSectionsSorted.Last().TaperedToNext = true;
-        BeamSection newEnd = beamSectionsSorted.Last().Duplicate() as BeamSection;
-        newEnd.StartPosition = this.Value.Length;
-        beamSectionsSorted.Add(newEnd);
-      }
+      //if (beamSectionsSorted.First().StartPosition != Length.Zero)
+      //{
+      //  IBeamSection newStart = beamSectionsSorted.First().Duplicate() as IBeamSection;
+      //  newStart.StartPosition = Length.Zero;
+      //  newStart.TaperedToNext = true;
+      //  beamSectionsSorted.Insert(0, newStart);
+      //}
+      //if (beamSectionsSorted.Last().StartPosition != this.Value.Length)
+      //{
+      //  beamSectionsSorted.Last().TaperedToNext = true;
+      //  IBeamSection newEnd = beamSectionsSorted.Last().Duplicate() as IBeamSection;
+      //  newEnd.StartPosition = this.Value.Length;
+      //  beamSectionsSorted.Add(newEnd);
+      //}
       return beamSectionsSorted;
     }
 
@@ -663,7 +665,7 @@ namespace ComposGH.Parameters
         profileExtrusions.Add(Brep.CreateEdgeSurface(new List<Curve>() { startSegment, endSegment }));
       }
     }
-    private PolyCurve CreateLocalPlaneOutline(BeamSection beamSection)
+    private PolyCurve CreateLocalPlaneOutline(IBeamSection beamSection)
     {
       // construct outline
       PolyCurve outline = CreateProfileOutline(beamSection);
@@ -686,7 +688,7 @@ namespace ComposGH.Parameters
       return outline;
     }
 
-    private PolyCurve CreateProfileOutline(BeamSection beamSection)
+    private PolyCurve CreateProfileOutline(IBeamSection beamSection)
     {
       // ## adding segments clockwise, assume xy plane with centre at middle of profile top flange
       //

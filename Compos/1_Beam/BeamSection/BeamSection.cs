@@ -41,7 +41,7 @@ namespace ComposAPI
     public Length BottomFlangeThickness { get; set; }
     public Length RootRadius { get; set; } = Length.Zero;
     public Length WebThickness { get; set; }
-    public bool isCatalogue;
+    public bool isCatalogue { get; }
 
     public string SectionDescription { get; set; }
 

@@ -121,16 +121,16 @@ namespace ComposGH.Components
         Line ln = new Line();
         if (GH_Convert.ToLine(ghln, ref ln, GH_Conversion.Both))
         {
-          Restraint res = GetInput.Restraint(this, DA, 1);
+          IRestraint res = GetInput.Restraint(this, DA, 1);
 
-          SteelMaterial mat = GetInput.SteelMaterial(this, DA, 2);
+          ISteelMaterial mat = GetInput.SteelMaterial(this, DA, 2);
 
-          List<BeamSection> beamSections = GetInput.BeamSections(this, DA, 3);
+          List<IBeamSection> beamSections = GetInput.BeamSections(this, DA, 3);
           try
           {
             if (this.Params.Input[4].Sources.Count > 0)
             {
-              List<WebOpening> webOpenings = GetInput.WebOpenings(this, DA, 4);
+              List<IWebOpening> webOpenings = GetInput.WebOpenings(this, DA, 4);
               DA.SetData(0, new BeamGoo(new LineCurve(ln), lengthUnit, res, mat, beamSections, webOpenings));
             }
             else

@@ -10,13 +10,13 @@ namespace ComposAPI
   /// <summary>
   /// Custom class: this class defines the basic properties and methods for our custom class
   /// </summary>
-  public class Beam
+  public class Beam : IBeam
   {
     public Length Length { get; set; }
-    public Restraint Restraint { get; set; }
-    public SteelMaterial Material { get; set; }
-    public List<BeamSection> BeamSections { get; internal set; } = new List<BeamSection>();
-    public List<WebOpening> WebOpenings { get; internal set; } = null;
+    public IRestraint Restraint { get; set; }
+    public ISteelMaterial Material { get; set; }
+    public List<IBeamSection> BeamSections { get; internal set; } = new List<IBeamSection>();
+    public List<IWebOpening> WebOpenings { get; internal set; } = null;
 
     #region constructors
     public Beam()
@@ -24,7 +24,7 @@ namespace ComposAPI
       // empty constructor
     }
 
-    public Beam(Length length, Restraint restraint, SteelMaterial material, List<BeamSection> beamSections, List<WebOpening> webOpenings = null)
+    public Beam(Length length, IRestraint restraint, ISteelMaterial material, List<IBeamSection> beamSections, List<IWebOpening> webOpenings = null)
     {
       this.Length = length;
       this.Restraint = restraint;

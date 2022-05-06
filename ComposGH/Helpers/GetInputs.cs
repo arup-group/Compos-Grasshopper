@@ -675,9 +675,9 @@ namespace ComposGH.Components
       return goo.Value;
     }
 
-    internal static List<WebOpening> WebOpenings(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static List<IWebOpening> WebOpenings(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
-      List<WebOpening> items = new List<WebOpening>();
+      List<IWebOpening> items = new List<IWebOpening>();
       List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
       if (DA.GetDataList(inputid, gh_typs))
       {
@@ -729,9 +729,9 @@ namespace ComposGH.Components
       }
       return goo.Value;
     }
-    internal static List<BeamSection> BeamSections(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
+    internal static List<IBeamSection> BeamSections(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {
-      List<BeamSection> items = new List<BeamSection>();
+      List<IBeamSection> items = new List<IBeamSection>();
       List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
       if (DA.GetDataList(inputid, gh_typs))
       {
