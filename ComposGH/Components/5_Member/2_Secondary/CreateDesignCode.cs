@@ -1,17 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Drawing;
-using Grasshopper.Kernel.Attributes;
-using Grasshopper.GUI.Canvas;
-using Grasshopper.GUI;
 using Grasshopper.Kernel;
-using Rhino.Geometry;
-using System.Windows.Forms;
-using Grasshopper.Kernel.Types;
 using ComposGH.Parameters;
-using UnitsNet;
-using UnitsNet.Units;
 using System.Linq;
 using Grasshopper.Kernel.Parameters;
 using ComposAPI;

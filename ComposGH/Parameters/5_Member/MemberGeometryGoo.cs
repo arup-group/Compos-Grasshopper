@@ -1,17 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
-using Rhino;
-using Grasshopper.Documentation;
-using Rhino.Collections;
-using UnitsNet;
-using ComposGH.Converters;
-using ComposGH.Helpers;
-using UnitsNet.Units;
 using System.Drawing;
 using Grasshopper;
 using ComposAPI;

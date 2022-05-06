@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Grasshopper.Documentation;
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Types;
-using Rhino;
-using Rhino.Geometry;
-using Rhino.Collections;
-using UnitsNet;
-using UnitsNet.Units;
+﻿using Grasshopper.Kernel.Types;
 using ComposAPI;
 
 namespace ComposGH.Parameters

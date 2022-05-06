@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Grasshopper;
 using Grasshopper.Kernel;
-using Grasshopper.Kernel.Data;
-using Grasshopper.Kernel.Types;
-using Grasshopper.Kernel.Parameters;
 using ComposGH.Parameters;
-using Rhino.Geometry;
 using UnitsNet;
 using UnitsNet.Units;
-using ComposGH.Components;
 using ComposGH.Helpers;
 using ComposAPI;
 

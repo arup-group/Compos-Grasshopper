@@ -4,7 +4,6 @@ using System.Linq;
 using UnitsNet;
 using UnitsNet.Units;
 using Grasshopper.Kernel;
-using Oasys.Units;
 using ComposAPI;
 using ComposGH.Parameters;
 
