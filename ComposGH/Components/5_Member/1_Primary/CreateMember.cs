@@ -34,6 +34,8 @@ namespace ComposGH.Components
       pManager.AddTextParameter("Name", "Na", "Set Member Name", GH_ParamAccess.item);
       pManager.AddTextParameter("GridRef", "Grd", "(Optional) Set Member's Grid Reference", GH_ParamAccess.item);
       pManager.AddTextParameter("Note", "Nt", "(Optional) Set Notes about the Member", GH_ParamAccess.item);
+      pManager[6].Optional = true;
+      pManager[7].Optional = true;
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
@@ -57,7 +59,7 @@ namespace ComposGH.Components
       string note = "";
       DA.GetData(7, ref note);
 
-      IMember member = new Member(name, code.Value, beam.Value, stud.Value, slab.Value, loads.Select(x => x.Value).ToList());
+      IMember member = new Member(name, gridRef, note, code.Value, beam.Value, stud.Value, slab.Value, loads.Select(x => x.Value).ToList());
       
       DA.SetData(0, new MemberGoo(member));
     }
