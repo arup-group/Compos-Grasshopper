@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="1_Beam\IBeam.cs" />
+    <Compile Include="5_Member\IMember.cs" />
     <Compile Include="Helpers\CoaHelper.cs" />
     <Compile Include="1_Beam\BeamSection\IBeamSection.cs" />
     <Compile Include="1_Beam\Restraints\IRestraint.cs" />

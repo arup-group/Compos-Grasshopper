@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace ComposAPI
 {
-  public class Member
+  public class Member : IMember
   {
-    public Beam Beam { get; set; }
-    public Stud Stud { get; set; }
-    public Slab Slab { get; set; }
-    public List<Load> Loads { get; set; }
-    public DesignCode DesignCode { get; set; }
+    public IBeam Beam { get; set; }
+    public IStud Stud { get; set; }
+    public ISlab Slab { get; set; }
+    public List<ILoad> Loads { get; set; }
+    public IDesignCode DesignCode { get; set; }
 
     public string Name { get; set; }
     public string GridReference { get; set; } = "";
@@ -20,7 +20,7 @@ namespace ComposAPI
 
     public Member() { }
 
-    public Member(string name, DesignCode designCode, Beam beam, Stud stud, Slab slab, List<Load> loads)
+    public Member(string name, IDesignCode designCode, IBeam beam, IStud stud, ISlab slab, List<ILoad> loads)
     {
       this.Name = name;
       this.DesignCode = designCode;
@@ -29,7 +29,7 @@ namespace ComposAPI
       this.Slab = slab;
       this.Loads = loads;
     }
-    public Member(string name, string gridRef, string note, DesignCode designCode, Beam beam, Stud stud, Slab slab, List<Load> loads)
+    public Member(string name, string gridRef, string note, IDesignCode designCode, IBeam beam, IStud stud, ISlab slab, List<ILoad> loads)
     {
       this.Name = name;
       this.GridReference = gridRef;
