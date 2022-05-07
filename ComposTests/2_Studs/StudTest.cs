@@ -238,10 +238,14 @@ namespace ComposAPI.Tests
       Assert.True(original.CheckStudSpacing);
       Assert.Equal(double.NaN, original.Interaction);
       Assert.Equal(double.NaN, original.MinSavingMultipleZones);
+    }
 
-      // 1 create with new constructor and duplicate
-      original = TestConstructorStudAutomaticOrMinSpacing(StudSpacingType.Automatic, 0.2);
-      duplicate = original.Duplicate() as Stud;
+    [Fact]
+    public void TestStudDuplicate2()
+    {
+      // 1 create with constructor and duplicate
+      Stud original = TestConstructorStudAutomaticOrMinSpacing(StudSpacingType.Automatic, 0.2);
+      Stud duplicate = original.Duplicate() as Stud;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(StudSpacingType.Automatic, duplicate.StudSpacingType);

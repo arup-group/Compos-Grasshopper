@@ -58,7 +58,6 @@ namespace ComposAPI.Tests
     public void TestUniformLoadDuplicate()
     {
       ForcePerLengthUnit length = ForcePerLengthUnit.KilonewtonPerMeter;
-      PressureUnit area = PressureUnit.KilonewtonPerSquareMeter;
 
       // 1 create with constructor and duplicate
       Load originalParent = TestUniformLineLoadConstructor(0, 0, 1, 1);
@@ -97,11 +96,16 @@ namespace ComposAPI.Tests
       Assert.Equal(1, originalChildLine.Load.FinalLive.As(length));
       Assert.Equal(LoadType.Uniform, originalChildLine.Type);
       Assert.Equal(LoadDistribution.Line, originalChildLine.Distribution);
+    }
 
+    [Fact]
+    public void TestUniformLoadDuplicate2()
+    {
+      PressureUnit area = PressureUnit.KilonewtonPerSquareMeter;
 
       // 1 create with constructor and duplicate
-      originalParent = TestUniformAreaLoadConstructor(0, 0, 1, 1);
-      duplicateParent = originalParent.Duplicate() as Load;
+      Load originalParent = TestUniformAreaLoadConstructor(0, 0, 1, 1);
+      Load duplicateParent = originalParent.Duplicate() as Load;
 
       // 1b create child
       UniformLoad duplicateChildArea = (UniformLoad)duplicateParent;
@@ -142,7 +146,6 @@ namespace ComposAPI.Tests
     public void TestLinearLoadDuplicate()
     {
       ForcePerLengthUnit length = ForcePerLengthUnit.KilonewtonPerMeter;
-      PressureUnit area = PressureUnit.KilonewtonPerSquareMeter;
 
       // 1 create with constructor and duplicate
       Load originalParent = TestLinearLineLoadConstructor(0, 0, 1, 1, 2, 2, 3, 3);
@@ -197,13 +200,17 @@ namespace ComposAPI.Tests
       Assert.Equal(3, originalChildLine.LoadW2.FinalLive.As(length));
       Assert.Equal(LoadType.Linear, originalChildLine.Type);
       Assert.Equal(LoadDistribution.Line, originalChildLine.Distribution);
+    }
 
+    [Fact]
+    public void TestLinearLoadDuplicate2()
+    {
+      PressureUnit area = PressureUnit.KilonewtonPerSquareMeter;
 
       // 1 create with constructor and duplicate
-      originalParent = TestLinearAreaLoadConstructor(0, 0, 1, 1, 2, 2, 3, 3);
-      duplicateParent = originalParent.Duplicate() as Load;
+      Load originalParent = TestLinearAreaLoadConstructor(0, 0, 1, 1, 2, 2, 3, 3);
+      Load duplicateParent = originalParent.Duplicate() as Load;
 
-      // 1b create child
       LinearLoad duplicateChildArea = (LinearLoad)duplicateParent;
       LinearLoad originalChildArea = (LinearLoad)originalParent;
 
@@ -259,7 +266,6 @@ namespace ComposAPI.Tests
     {
       LengthUnit length = LengthUnit.Millimeter;
       ForcePerLengthUnit flength = ForcePerLengthUnit.KilonewtonPerMeter;
-      PressureUnit farea = PressureUnit.KilonewtonPerSquareMeter;
 
       // 1 create with constructor and duplicate
       Load originalParent = TestTriLinearLineLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
@@ -322,11 +328,17 @@ namespace ComposAPI.Tests
       Assert.Equal(1.5, originalChildLine.LoadW2.Position.As(length));
       Assert.Equal(LoadType.TriLinear, originalChildLine.Type);
       Assert.Equal(LoadDistribution.Line, originalChildLine.Distribution);
+    }
 
+    [Fact]
+    public void TestTriLinearLoadDuplicate2()
+    {
+      LengthUnit length = LengthUnit.Millimeter;
+      PressureUnit farea = PressureUnit.KilonewtonPerSquareMeter;
 
       // 1 create with constructor and duplicate
-      originalParent = TestTriLinearAreaLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
-      duplicateParent = originalParent.Duplicate() as Load;
+      Load originalParent = TestTriLinearAreaLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
+      Load duplicateParent = originalParent.Duplicate() as Load;
 
       // 1b create child
       TriLinearLoad duplicateChildArea = (TriLinearLoad)duplicateParent;
@@ -391,7 +403,6 @@ namespace ComposAPI.Tests
     {
       LengthUnit length = LengthUnit.Millimeter;
       ForcePerLengthUnit flength = ForcePerLengthUnit.KilonewtonPerMeter;
-      PressureUnit farea = PressureUnit.KilonewtonPerSquareMeter;
 
       // 1 create with constructor and duplicate
       Load originalParent = TestPatchLineLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
@@ -454,11 +465,17 @@ namespace ComposAPI.Tests
       Assert.Equal(1.5, originalChildLine.LoadW2.Position.As(length));
       Assert.Equal(LoadType.Patch, originalChildLine.Type);
       Assert.Equal(LoadDistribution.Line, originalChildLine.Distribution);
+    }
 
+    [Fact]
+    public void TestPatchLoadDuplicate2()
+    {
+      LengthUnit length = LengthUnit.Millimeter;
+      PressureUnit farea = PressureUnit.KilonewtonPerSquareMeter;
 
       // 1 create with constructor and duplicate
-      originalParent = TestPatchAreaLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
-      duplicateParent = originalParent.Duplicate() as Load;
+      Load originalParent = TestPatchAreaLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
+      Load duplicateParent = originalParent.Duplicate() as Load;
 
       // 1b create child
       PatchLoad duplicateChildArea = (PatchLoad)duplicateParent;
