@@ -1,6 +1,7 @@
 ﻿using ComposAPI.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using UnitsNet;
 using UnitsNet.Units;
@@ -50,9 +51,147 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal Load(string coaString)
+    internal Load FromCoaString(List<string> parameters, ForceUnit forceUnit, LengthUnit lengthUnit)
     {
-      // to do - implement from coa string method
+      ForcePerLengthUnit forcePerLengthUnit = Units.GetForcePerLengthUnit(forceUnit, lengthUnit);
+      PressureUnit forcePerAreaUnit = Units.GetForcePerAreaUnit(forceUnit, lengthUnit);
+
+      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+      int i = 2;
+
+      switch (parameters[i++])
+      {
+        case (CoaIdentifier.Loads.PointLoad):
+          return new PointLoad(
+            new Force(Convert.ToDouble(parameters[i++], noComma), forceUnit),
+            new Force(Convert.ToDouble(parameters[i++], noComma), forceUnit),
+            new Force(Convert.ToDouble(parameters[i++], noComma), forceUnit),
+            new Force(Convert.ToDouble(parameters[i++], noComma), forceUnit),
+            new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit)
+            );
+
+        case (CoaIdentifier.Loads.UniformLoad):
+          if (parameters[i++] == CoaIdentifier.Loads.DistributionLinear)
+            return new UniformLoad(
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit)
+            );
+          else
+            return new UniformLoad(
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit)
+            );
+
+        case (CoaIdentifier.Loads.LinearLoad):
+          if (parameters[i++] == CoaIdentifier.Loads.DistributionLinear)
+            return new LinearLoad(
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit)
+            );
+          else
+            return new LinearLoad(
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit)
+            );
+
+        case (CoaIdentifier.Loads.TriLinearLoad):
+          if (parameters[i++] == CoaIdentifier.Loads.DistributionLinear)
+            return new TriLinearLoad(
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit)
+            );
+          else
+            return new TriLinearLoad(
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit)
+            );
+
+        case (CoaIdentifier.Loads.PatchLoad):
+          if (parameters[i++] == CoaIdentifier.Loads.DistributionLinear)
+            return new PatchLoad(
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
+              new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit)
+            );
+          else
+            return new PatchLoad(
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
+              new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit)
+            );
+
+        case (CoaIdentifier.Loads.AxialLoad):
+          return new AxialLoad(
+              new Force(Convert.ToDouble(parameters[i++], noComma), forceUnit),
+              new Force(Convert.ToDouble(parameters[i++], noComma), forceUnit),
+              new Force(Convert.ToDouble(parameters[i++], noComma), forceUnit),
+              new Force(Convert.ToDouble(parameters[i++], noComma), forceUnit),
+              new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit),
+              new Force(Convert.ToDouble(parameters[i++], noComma), forceUnit),
+              new Force(Convert.ToDouble(parameters[i++], noComma), forceUnit),
+              new Force(Convert.ToDouble(parameters[i++], noComma), forceUnit),
+              new Force(Convert.ToDouble(parameters[i++], noComma), forceUnit),
+              new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit)
+              );
+
+        case (CoaIdentifier.Loads.MemberLoad):
+          return new MemberLoad(
+            parameters[i++],
+            (MemberLoad.SupportSide)Enum.Parse(typeof(MemberLoad.SupportSide), parameters[i++]),
+            new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit)
+            );
+
+        default:
+          return null;
+          //throw new Exception("Unable to convert " + line + " to Compos Slab.");
+      }
+
     }
 
     public string ToCoaString(string name, ForceUnit forceUnit, LengthUnit lengthUnit)

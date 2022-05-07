@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using ComposAPI.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
@@ -45,11 +46,12 @@ namespace ComposAPI
     #region coa interop
     internal CatalogueDecking(List<string> parameters, AngleUnit angleUnit)
     {
+      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       this.Catalogue = parameters[2];
       this.Profile = parameters[3];
       this.Grade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), parameters[4]);
       DeckingConfiguration deckingConfiguration = new DeckingConfiguration();
-      deckingConfiguration.Angle = new Angle(Convert.ToDouble(parameters[5]), angleUnit);
+      deckingConfiguration.Angle = new Angle(Convert.ToDouble(parameters[5], noComma), angleUnit);
 
       if (parameters[6] == "DECKING_JOINTED")
         deckingConfiguration.IsDiscontinous = true;

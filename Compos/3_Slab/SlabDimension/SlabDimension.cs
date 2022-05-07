@@ -61,14 +61,15 @@ namespace ComposAPI
     #region coa interop
     internal SlabDimension(List<string> parameters, LengthUnit unit)
     {
+      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       if (parameters.Count < 10)
       {
         throw new Exception("Unable to convert " + parameters + " to Compos Slab Dimension.");
       }
-      this.StartPosition = new Length(Convert.ToDouble(parameters[4]), unit);
-      this.OverallDepth = new Length(Convert.ToDouble(parameters[5]), unit);
-      this.AvailableWidthLeft = new Length(Convert.ToDouble(parameters[6]), unit);
-      this.AvailableWidthRight = new Length(Convert.ToDouble(parameters[7]), unit);
+      this.StartPosition = new Length(Convert.ToDouble(parameters[4], noComma), unit);
+      this.OverallDepth = new Length(Convert.ToDouble(parameters[5], noComma), unit);
+      this.AvailableWidthLeft = new Length(Convert.ToDouble(parameters[6], noComma), unit);
+      this.AvailableWidthRight = new Length(Convert.ToDouble(parameters[7], noComma), unit);
 
       if (parameters[8] == "TAPERED_YES")
         this.TaperedToNext = true;
@@ -82,8 +83,8 @@ namespace ComposAPI
         {
           throw new Exception("Unable to convert " + parameters + " to Compos Slab Dimension.");
         }
-        this.EffectiveWidthLeft = new Length(Convert.ToDouble(parameters[9]), unit);
-        this.EffectiveWidthRight = new Length(Convert.ToDouble(parameters[9]), unit);
+        this.EffectiveWidthLeft = new Length(Convert.ToDouble(parameters[9], noComma), unit);
+        this.EffectiveWidthRight = new Length(Convert.ToDouble(parameters[10], noComma), unit);
       }
     }
 

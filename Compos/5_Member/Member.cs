@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ComposAPI.Helpers;
 using Oasys.Units;
+using UnitsNet;
 using UnitsNet.Units;
 
 namespace ComposAPI
@@ -16,7 +17,7 @@ namespace ComposAPI
     public List<ILoad> Loads { get; set; }
     public IDesignCode DesignCode { get; set; }
 
-    public string Name { get; set; } 
+    public string Name { get; set; }
     public string GridReference { get; set; } = "";
     public string Note { get; set; } = "";
 
@@ -47,9 +48,11 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal Member(string coaString, AngleUnit angleUnit, DensityUnit densityUnit, LengthUnit lengthUnit, PressureUnit pressureUnit, StrainUnit strainUnit)
+    internal Member(string coaString)
     {
       // to do - implement from coa string method
+
+      
     }
 
     public string ToCoaString(AngleUnit angleUnit, DensityUnit densityUnit, ForceUnit forceUnit, LengthUnit lengthUnit, PressureUnit pressureUnit, StrainUnit strainUnit)

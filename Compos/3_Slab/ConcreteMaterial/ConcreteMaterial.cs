@@ -178,6 +178,7 @@ namespace ComposAPI
     #region coa interop
     internal ConcreteMaterial(List<string> parameters, DensityUnit densityUnit, StrainUnit strainUnit)
     {
+      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       if (parameters[1].Length < 4)
       {
         // BS5950 GRADES
@@ -194,7 +195,7 @@ namespace ComposAPI
       int i = 4;
       if (this.UserDensity)
       {
-        this.DryDensity = new Density(Convert.ToDouble(parameters[i]), densityUnit);
+        this.DryDensity = new Density(Convert.ToDouble(parameters[i], noComma), densityUnit);
         i++;
       }
 

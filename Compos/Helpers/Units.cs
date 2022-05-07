@@ -571,6 +571,70 @@ namespace ComposAPI
         return density.Unit;
       }
     }
+    public static DensityUnit GetDensityUnit(MassUnit massUnit, LengthUnit lengthUnit)
+    {
+      switch (lengthUnit)
+      {
+        case LengthUnit.Millimeter:
+          switch (massUnit)
+          {
+            case MassUnit.Gram:
+              return DensityUnit.GramPerCubicMillimeter;
+            case MassUnit.Kilogram:
+              return DensityUnit.KilogramPerCubicMillimeter;
+            case MassUnit.Tonne:
+              return DensityUnit.TonnePerCubicMillimeter;
+            default:
+              return DensityUnit.Undefined;
+          }
+        case LengthUnit.Centimeter:
+          switch (massUnit)
+          {
+            case MassUnit.Gram:
+              return DensityUnit.GramPerCubicCentimeter;
+            case MassUnit.Kilogram:
+              return DensityUnit.KilogramPerCubicCentimeter;
+            case MassUnit.Tonne:
+              return DensityUnit.TonnePerCubicCentimeter;
+            default:
+              return DensityUnit.Undefined;
+          }
+        case LengthUnit.Meter:
+          switch (massUnit)
+          {
+            case MassUnit.Gram:
+              return DensityUnit.GramPerCubicMeter;
+            case MassUnit.Kilogram:
+              return DensityUnit.KilogramPerCubicMeter;
+            case MassUnit.Tonne:
+              return DensityUnit.TonnePerCubicMeter;
+            default:
+              return DensityUnit.Undefined;
+          }
+        case LengthUnit.Foot:
+          switch (massUnit)
+          {
+            case MassUnit.Pound:
+              return DensityUnit.PoundPerCubicFoot;
+            case MassUnit.Kilopound:
+              return DensityUnit.KilopoundPerCubicFoot;
+            default:
+              return DensityUnit.Undefined;
+          }
+        case LengthUnit.Inch:
+          switch (massUnit)
+          {
+            case MassUnit.Pound:
+              return DensityUnit.PoundPerCubicInch;
+            case MassUnit.Kilopound:
+              return DensityUnit.KilopoundPerCubicInch;
+            default:
+              return DensityUnit.Undefined;
+          }
+        default:
+          return DensityUnit.Undefined;
+      }
+    }
     public static List<string> FilteredDensityUnits = new List<string>()
         {
             DensityUnit.GramPerCubicMillimeter.ToString(),
