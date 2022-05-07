@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,12 +55,14 @@ namespace ComposAPI.Helpers
 
     public static string FormatSignificantFigures(double value, int significantFigures)
     {
+      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+
       int decimalPlaces = Math.Max(0, significantFigures - GetMagnitude((int)value));
       string format = "{0:0.";
       for (int i = 0; i < decimalPlaces; i++)
         format += "0";
       format += "}";
-      return String.Format(format, value);
+      return String.Format(noComma, format, value);
     }
 
     internal static List<string> SplitLines(string coaString)

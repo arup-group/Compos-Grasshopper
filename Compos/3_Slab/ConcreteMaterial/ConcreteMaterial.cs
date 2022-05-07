@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using ComposAPI.Helpers;
 using Oasys.Units;
 using UnitsNet;
@@ -207,6 +208,8 @@ namespace ComposAPI
     /// <returns></returns>
     public string ToCoaString(string name, DensityUnit densityUnit, StrainUnit strainUnit)
     {
+      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+
       List<string> parameters = new List<string>();
       parameters.Add(CoaIdentifier.SlabConcreteMaterial);
       parameters.Add(name);
@@ -215,29 +218,29 @@ namespace ComposAPI
       if (this.UserDensity)
       {
         parameters.Add("USER_DENSITY");
-        parameters.Add(String.Format("{0:0.00}", this.DryDensity.ToUnit(densityUnit).Value));
+        parameters.Add(String.Format(noComma, "{0:0.00}", this.DryDensity.ToUnit(densityUnit).Value));
       }
       else
       {
         parameters.Add("CODE_DENSITY");
-        parameters.Add(String.Format("{0:0.00}", this.DryDensity.ToUnit(densityUnit).Value));
+        parameters.Add(String.Format(noComma, "{0:0.00}", this.DryDensity.ToUnit(densityUnit).Value));
         parameters.Add(this.Class.ToString().Replace("DC", ""));
       }
-      parameters.Add(String.Format("{0:0.000000}", this.ImposedLoadPercentage));
+      parameters.Add(String.Format(noComma, "{0:0.000000}", this.ImposedLoadPercentage));
       if (this.ERatio.UserDefined)
       {
         parameters.Add("USER_E_RATIO");
-        parameters.Add(String.Format("{0:0.00000}", this.ERatio.ShortTerm));
-        parameters.Add(String.Format("{0:0.00000}", this.ERatio.LongTerm));
-        parameters.Add(String.Format("{0:0.00000}", this.ERatio.Vibration));
-        parameters.Add(String.Format("{0:0.000000}", this.ERatio.Shrinkage));
+        parameters.Add(String.Format(noComma, "{0:0.00000}", this.ERatio.ShortTerm));
+        parameters.Add(String.Format(noComma, "{0:0.00000}", this.ERatio.LongTerm));
+        parameters.Add(String.Format(noComma, "{0:0.00000}", this.ERatio.Vibration));
+        parameters.Add(String.Format(noComma, "{0:0.000000}", this.ERatio.Shrinkage));
       }
       else
         parameters.Add("CODE_E_RATIO");
       if (this.UserStrain)
       {
         parameters.Add("USER_STRAIN");
-        parameters.Add(String.Format("{0:0.000000000}", this.ShrinkageStrain.ToUnit(strainUnit).Value));
+        parameters.Add(String.Format(noComma, "{0:0.000000000}", this.ShrinkageStrain.ToUnit(strainUnit).Value));
       }
       else
         parameters.Add("CODE_STRAIN");

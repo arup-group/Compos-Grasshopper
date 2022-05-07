@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 using ComposAPI.Helpers;
@@ -97,21 +98,23 @@ namespace ComposAPI
     /// <returns></returns>
     public string ToCoaString(string name, int num, int index, LengthUnit lengthUnit)
     {
+      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+
       List<string> parameters = new List<string>();
       parameters.Add(CoaIdentifier.SlabDimension);
       parameters.Add(name);
       parameters.Add(Convert.ToString(num));
       parameters.Add(Convert.ToString(index));
       parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(lengthUnit).Value, 6));
-      parameters.Add(String.Format("{0:0.000000}", this.OverallDepth.ToUnit(lengthUnit).Value));
-      parameters.Add(String.Format("{0:0.00000}", this.AvailableWidthLeft.ToUnit(lengthUnit).Value));
-      parameters.Add(String.Format("{0:0.00000}", this.AvailableWidthRight.ToUnit(lengthUnit).Value));
+      parameters.Add(String.Format(noComma, "{0:0.000000}", this.OverallDepth.ToUnit(lengthUnit).Value));
+      parameters.Add(String.Format(noComma, "{0:0.00000}", this.AvailableWidthLeft.ToUnit(lengthUnit).Value));
+      parameters.Add(String.Format(noComma, "{0:0.00000}", this.AvailableWidthRight.ToUnit(lengthUnit).Value));
       CoaHelper.AddParameter(parameters, "TAPERED", this.TaperedToNext);
       CoaHelper.AddParameter(parameters, "EFFECTIVE_WIDTH", this.UserEffectiveWidth);
       if (this.UserEffectiveWidth)
       {
-        parameters.Add(String.Format("{0:0.00000}", this.EffectiveWidthLeft.ToUnit(lengthUnit).Value));
-        parameters.Add(String.Format("{0:0.00000}", this.EffectiveWidthRight.ToUnit(lengthUnit).Value));
+        parameters.Add(String.Format(noComma, "{0:0.00000}", this.EffectiveWidthLeft.ToUnit(lengthUnit).Value));
+        parameters.Add(String.Format(noComma, "{0:0.00000}", this.EffectiveWidthRight.ToUnit(lengthUnit).Value));
       }
       return CoaHelper.CreateString(parameters);
     }

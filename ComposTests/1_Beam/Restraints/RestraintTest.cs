@@ -68,9 +68,10 @@ namespace ComposAPI.Tests
       constructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds = true;
       constructionStageSupports.SecondaryMemberIntermediateRestraint = true;
       constructionStageSupports.IntermediateRestraintPositions = IntermediateRestraint.None;
-      constructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds = false;
-      constructionStageSupports.SecondaryMemberIntermediateRestraint = false;
-      constructionStageSupports.IntermediateRestraintPositions = IntermediateRestraint.Mid__Span;
+      Supports finalStageSupports = duplicate.FinalStageSupports as Supports;
+      finalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds = false;
+      finalStageSupports.SecondaryMemberIntermediateRestraint = false;
+      finalStageSupports.IntermediateRestraintPositions = IntermediateRestraint.Mid__Span;
 
       // 4 check that duplicate has set changes
       Assert.False(duplicate.TopFlangeRestrained);
