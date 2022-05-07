@@ -6,6 +6,6 @@ namespace ComposAPI
   {
     LoadType Type { get; }
 
-    string ToCoaString(ForceUnit forceUnit, LengthUnit lengthUnit, PressureUnit pressureUnit);
+    string ToCoaString(string name, ForceUnit forceUnit, LengthUnit lengthUnit);
   }
 }

@@ -73,7 +73,7 @@ namespace ComposAPI
       coaString += this.Stud.ToCoaString();
 
       foreach (ILoad load in this.Loads)
-        coaString += load.ToCoaString(forceUnit, lengthUnit, pressureUnit);
+        coaString += load.ToCoaString(this.Name, forceUnit, lengthUnit);
 
       // EC4_DESIGN_OPTION seems to be part of DesignCode..
 

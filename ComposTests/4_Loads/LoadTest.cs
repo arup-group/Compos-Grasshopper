@@ -31,6 +31,20 @@ namespace ComposAPI.Tests
 
       return load;
     }
+    [Fact]
+    public void PointLoadToCoaStringTest()
+    {
+      ForceUnit forceUnit = ForceUnit.Kilonewton;
+      LengthUnit lengthUnit = LengthUnit.Centimeter;
+
+      // Arrange
+      string expected_coaString = "LOAD	MEMBER-1	Point	1.00000	2.00000	3.00000	4.50000	6.00000\n";
+      Load load = TestPointLoadConstructor(1, 2, 3, 4.5, 60); // position length unit in mm
+      // Act
+      string coaString = load.ToCoaString("MEMBER-1", forceUnit, lengthUnit);
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
 
     // 1 setup inputs
     [Theory]
@@ -54,6 +68,20 @@ namespace ComposAPI.Tests
 
       return load;
     }
+    [Fact]
+    public void UniformLineLoadToCoaStringTest()
+    {
+      ForceUnit forceUnit = ForceUnit.Kilonewton;
+      LengthUnit lengthUnit = LengthUnit.Centimeter;
+
+      // Arrange
+      string expected_coaString = "LOAD	MEMBER-1	Uniform	Line	2.00000	3.00000	4.50000	6.00000\n";
+      Load load = TestUniformLineLoadConstructor(200, 300, 450, 600); // unit in kN/m
+      // Act
+      string coaString = load.ToCoaString("MEMBER-1", forceUnit, lengthUnit);
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
 
     // 1 setup inputs
     [Theory]
@@ -76,6 +104,20 @@ namespace ComposAPI.Tests
       Assert.Equal(LoadDistribution.Area, load.Distribution);
 
       return load;
+    }
+    [Fact]
+    public void UniformAreaLoadToCoaStringTest()
+    {
+      ForceUnit forceUnit = ForceUnit.Kilonewton;
+      LengthUnit lengthUnit = LengthUnit.Meter;
+
+      // Arrange
+      string expected_coaString = "LOAD	MEMBER-1	Uniform	Area	3.00000	4.50000	6.00000	7.00000\n";
+      Load load = TestUniformAreaLoadConstructor(3, 4.5, 6, 7); // unit in kN/m
+      // Act
+      string coaString = load.ToCoaString("MEMBER-1", forceUnit, lengthUnit);
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
     }
 
     // 1 setup inputs
@@ -105,6 +147,20 @@ namespace ComposAPI.Tests
 
       return load;
     }
+    [Fact]
+    public void LinearLineLoadToCoaStringTest()
+    {
+      ForceUnit forceUnit = ForceUnit.Kilonewton;
+      LengthUnit lengthUnit = LengthUnit.Meter;
+
+      // Arrange
+      string expected_coaString = "LOAD	MEMBER-1	Linear	Line	4.50000	6.00000	7.00000	8.00000	8.90000	10.0000	11.0000	12.0000\n";
+      Load load = TestLinearLineLoadConstructor(4.5, 6, 7, 8, 8.9, 10, 11, 12); // unit in kN/m
+      // Act
+      string coaString = load.ToCoaString("MEMBER-1", forceUnit, lengthUnit);
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
 
     // 1 setup inputs
     [Theory]
@@ -132,6 +188,20 @@ namespace ComposAPI.Tests
       Assert.Equal(LoadDistribution.Area, load.Distribution);
 
       return load;
+    }
+    [Fact]
+    public void LinearAreaLoadToCoaStringTest()
+    {
+      ForceUnit forceUnit = ForceUnit.Kilonewton;
+      LengthUnit lengthUnit = LengthUnit.Meter;
+
+      // Arrange
+      string expected_coaString = "LOAD	MEMBER-1	Linear	Area	1.00000	2.00000	3.00000	4.50000	6.00000	7.00000	8.00000	9.00000\n";
+      Load load = TestLinearAreaLoadConstructor(1, 2, 3, 4.5, 6, 7, 8, 9); // unit in kN/m
+      // Act
+      string coaString = load.ToCoaString("MEMBER-1", forceUnit, lengthUnit);
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
     }
 
     // 1 setup inputs
@@ -164,6 +234,20 @@ namespace ComposAPI.Tests
 
       return load;
     }
+    [Fact]
+    public void TriLinearLineLoadToCoaStringTest()
+    {
+      ForceUnit forceUnit = ForceUnit.Kilonewton;
+      LengthUnit lengthUnit = LengthUnit.Meter;
+
+      // Arrange
+      string expected_coaString = "LOAD	MEMBER-1	Tri-Linear	Line	2.00000	3.00000	4.50000	6.00000	7.00000	3.00000	4.50000	6.00000	7.00000	8.90000\n";
+      Load load = TestTriLinearLineLoadConstructor(2, 3, 4.5, 6, 7000, 3, 4.5, 6, 7, 8900); // pos units in mm
+      // Act
+      string coaString = load.ToCoaString("MEMBER-1", forceUnit, lengthUnit);
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
 
     // 1 setup inputs
     [Theory]
@@ -194,6 +278,20 @@ namespace ComposAPI.Tests
       Assert.Equal(LoadDistribution.Area, load.Distribution);
 
       return load;
+    }
+    [Fact]
+    public void TriLinearAreaLoadToCoaStringTest()
+    {
+      ForceUnit forceUnit = ForceUnit.Kilonewton;
+      LengthUnit lengthUnit = LengthUnit.Meter;
+
+      // Arrange
+      string expected_coaString = "LOAD	MEMBER-1	Tri-Linear	Area	3.00000	4.50000	6.00000	7.00000	8.00000	4.50000	6.00000	7.00000	8.90000	10.0000\n";
+      Load load = TestTriLinearAreaLoadConstructor(3, 4.5, 6, 7, 8000, 4.5, 6, 7, 8.9, 10000); // pos units in mm
+      // Act
+      string coaString = load.ToCoaString("MEMBER-1", forceUnit, lengthUnit);
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
     }
 
     // 1 setup inputs
@@ -226,6 +324,20 @@ namespace ComposAPI.Tests
 
       return load;
     }
+    [Fact]
+    public void PatchLineLoadToCoaStringTest()
+    {
+      ForceUnit forceUnit = ForceUnit.Kilonewton;
+      LengthUnit lengthUnit = LengthUnit.Meter;
+
+      // Arrange
+      string expected_coaString = "LOAD	MEMBER-1	Patch	Line	2.00000	3.00000	4.50000	6.00000	7.00000	3.00000	4.50000	6.00000	7.00000	8.90000\n";
+      Load load = TestPatchLineLoadConstructor(2, 3, 4.5, 6, 7000, 3, 4.5, 6, 7, 8900); // pos units in mm
+      // Act
+      string coaString = load.ToCoaString("MEMBER-1", forceUnit, lengthUnit);
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
 
     // 1 setup inputs
     [Theory]
@@ -257,6 +369,20 @@ namespace ComposAPI.Tests
 
       return load;
     }
+    [Fact]
+    public void PatchAreaLoadToCoaStringTest()
+    {
+      ForceUnit forceUnit = ForceUnit.Kilonewton;
+      LengthUnit lengthUnit = LengthUnit.Meter;
+
+      // Arrange
+      string expected_coaString = "LOAD	MEMBER-1	Patch	Area	1.00000	2.00000	3.00000	4.50000	6.00000	7.00000	8.90000	10.0000	11.0000	12.0000\n";
+      Load load = TestPatchAreaLoadConstructor(1, 2, 3, 4.5, 6000, 7, 8.9, 10, 11, 12000); // pos units in mm
+      // Act
+      string coaString = load.ToCoaString("MEMBER-1", forceUnit, lengthUnit);
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
 
     // 1 setup inputs
     [Theory]
@@ -287,6 +413,20 @@ namespace ComposAPI.Tests
 
       return load;
     }
+    [Fact]
+    public void AxialLoadToCoaStringTest()
+    {
+      ForceUnit forceUnit = ForceUnit.Kilonewton;
+      LengthUnit lengthUnit = LengthUnit.Millimeter;
+
+      // Arrange
+      string expected_coaString = "LOAD	MEMBER-1	Axial	1.00000	2.00000	3.00000	4.50000	6.00000	7.00000	8.90000	10.0000	11.0000	12.0000\n";
+      Load load = TestAxialLoadConstructor(1, 2, 3, 4.5, 6, 7, 8.9, 10, 11, 12); // pos units in mm
+      // Act
+      string coaString = load.ToCoaString("MEMBER-1", forceUnit, lengthUnit);
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
 
     // 1 setup inputs
     [Theory]
@@ -306,6 +446,34 @@ namespace ComposAPI.Tests
       Assert.Equal(LoadType.MemberLoad, load.Type);
 
       return load;
+    }
+    [Fact]
+    public void MemberLoadLeftToCoaStringTest()
+    {
+      ForceUnit forceUnit = ForceUnit.Kilonewton;
+      LengthUnit lengthUnit = LengthUnit.Millimeter;
+
+      // Arrange
+      string expected_coaString = "LOAD	MEMBER-1	Member load	MEMBER-2	Left	150.000\n";
+      Load load = TestMemberLoadConstructor(150, "Member-2", MemberLoad.SupportSide.Left); // pos units in mm
+      // Act
+      string coaString = load.ToCoaString("MEMBER-1", forceUnit, lengthUnit);
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
+    [Fact]
+    public void MemberLoadRightToCoaStringTest()
+    {
+      ForceUnit forceUnit = ForceUnit.Kilonewton;
+      LengthUnit lengthUnit = LengthUnit.Millimeter;
+
+      // Arrange
+      string expected_coaString = "LOAD	MEMBER-1	Member load	MEMBER-2	Right	2.50000\n";
+      Load load = TestMemberLoadConstructor(2.5, "Member-2", MemberLoad.SupportSide.Right); // pos units in mm
+      // Act
+      string coaString = load.ToCoaString("MEMBER-1", forceUnit, lengthUnit);
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
     }
   }
 }
