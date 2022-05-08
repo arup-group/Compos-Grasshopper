@@ -1,6 +1,7 @@
 ﻿using ComposAPI.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using UnitsNet;
 using UnitsNet.Units;
@@ -126,7 +127,6 @@ namespace ComposAPI
       }
     }
 
-    
 
     #region constructors
       public StudDimensions()
@@ -200,6 +200,40 @@ namespace ComposAPI
       this.Diameter = diameter;
       this.Height = height;
       SetGradeFromStandard(standardGrade);
+    }
+
+
+    internal StudDimensions FromCoaString(List<string> parameters, LengthUnit lengthSectionUnit, ForceUnit forceUnit, Code code)
+    {
+      if(parameters[2] == CoaIdentifier.StudDimensions.StudDimensionStandard)
+      {
+        string size = "D" + parameters[3].Replace("/", "H");
+        StandardSize standardSize = (StandardSize)Enum.Parse(typeof(StandardSize), size);
+        SetSizeFromStandard(standardSize);
+        switch (code)
+        {
+          case Code.BS5950_3_1_1990_Superseded:
+          case Code.BS5950_3_1_1990_A1_2010:
+            this.CharacterStrength = new Force(90, ForceUnit.Kilonewton);
+            break;
+          case Code.HKSUOS_2005:
+          case Code.HKSUOS_2011:
+            this.CharacterStrength = new Force(76.3497, ForceUnit.Kilonewton);
+            break;
+          case Code.AS_NZS2327_2017:
+            this.CharacterStrength = new Force(97.9845, ForceUnit.Kilonewton);
+            break;
+        }
+      }
+
+      if (parameters[2] == CoaIdentifier.StudDimensions.StudDimensionCustom)
+      {
+        NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+        this.Diameter = new Length(Convert.ToDouble(parameters[3], noComma), lengthSectionUnit);
+        this.Height = new Length(Convert.ToDouble(parameters[4], noComma), lengthSectionUnit);
+        this.CharacterStrength = new Force(Convert.ToDouble(parameters[5], noComma), forceUnit);
+      }
+      return this;
     }
 
     #endregion
