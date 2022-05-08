@@ -95,6 +95,7 @@ namespace ComposGH.Components
       pManager.AddIntegerParameter("Rows", "R", "Number of rows (across the top flange)", GH_ParamAccess.item);
       pManager.AddIntegerParameter("Lines", "L", "Number of lines (along the length of the beam", GH_ParamAccess.item);
       pManager.AddGenericParameter("Spacing [" + unitAbbreviation + "]", "S", "Spacing of studs in this group (distance between each line)", GH_ParamAccess.item);
+      pManager.AddBooleanParameter("Check Spacing", "Chk", "(Optional) Set to true to check custom spacing against code requirements", GH_ParamAccess.item, false);
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
@@ -110,8 +111,10 @@ namespace ComposGH.Components
       int lines = 1;
       DA.GetData(2, ref lines);
       Length spacing = GetInput.Length(this, DA, 3, LengthUnit);
+      bool check = false;
+      DA.GetData(4, ref check);
 
-      DA.SetData(0, new StudGroupSpacingGoo(new StudGroupSpacing(start, rows, lines, spacing)));
+      DA.SetData(0, new StudGroupSpacingGoo(new StudGroupSpacing(start, rows, lines, spacing, check)));
     }
 
     #region (de)serialization

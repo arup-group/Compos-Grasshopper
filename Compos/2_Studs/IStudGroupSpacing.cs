@@ -11,5 +11,6 @@ namespace ComposAPI
     int NumberOfRows { get; }
     int NumberOfLines { get; }
     Length Spacing { get; }
+    bool CheckSpacing { get; }
   }
 }

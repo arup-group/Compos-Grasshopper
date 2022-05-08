@@ -40,6 +40,34 @@
       public const string DistributionLinear = "Line";
       public const string DistributionArea = "Area";
     }
-    
+
+    internal class StudGroupSpacings
+    {
+      public const string StudLayout = "STUD_LAYOUT";
+
+      public const string StudLayoutAutomatic = "AUTO_100";
+      public const string StudLayoutPartial_Interaction = "AUTO_PERCENT";
+      public const string StudLayoutMin_Num_of_Studs = "AUTO_MINIMUM_STUD";
+      public const string StudLayoutCustom = "USER_DEFINED";
+    }
+    internal class StudDimensions
+    {
+      public const string StudDefinition = "STUD_DEFINITION";
+
+      public const string StudDimensionStandard = "STANDARD";
+      public const string StudDimensionCustom = "USER_DEFINED";
+
+      public const string StudGradeEC4 = "EC4_STUD_GRADE";
+      public const string StudGradeEC4Standard = "CODE_GRADE_YES";
+      public const string StudGradeEC4Custom = "CODE_GRADE_NO";
+    }
+
+    internal class StudSpecifications
+    {
+      public const string StudNoZone = "STUD_NO_STUD_ZONE";
+      public const string StudEC4 = "STUD_EC4_APPLY";
+      public const string StudNCCI = "STUD_NCCI_LIMIT_APPLY";
+      public const string StudReinfPos = "STUD_EC4_RFT_POS";
+    }
   }
 }

@@ -22,6 +22,7 @@ namespace ComposAPI
     public int NumberOfRows { get; set; } = 2;
     public int NumberOfLines { get; set; } = 1;
     public Length Spacing { get; set; }
+    public bool CheckSpacing { get; set; } = false;
 
     #region constructors
     public StudGroupSpacing()
@@ -29,7 +30,7 @@ namespace ComposAPI
       // empty constructor
     }
 
-    public StudGroupSpacing(Length distanceFromStart, int numberOfRows, int numberOfLines, Length spacing)
+    public StudGroupSpacing(Length distanceFromStart, int numberOfRows, int numberOfLines, Length spacing, bool checkSpacing = false)
     {
       this.DistanceFromStart = distanceFromStart;
       if (numberOfRows < 1)
@@ -39,6 +40,7 @@ namespace ComposAPI
         throw new ArgumentException("Number of lines must be bigger or equal to 1");
       this.NumberOfLines = numberOfLines;
       this.Spacing = spacing;
+      this.CheckSpacing = checkSpacing;
     }
 
     #endregion
