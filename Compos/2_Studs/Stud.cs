@@ -120,10 +120,38 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    //internal Stud FromCoaString(List<string> parameters, ForceUnit forceUnit, LengthUnit lengthUnit)
-    //{
+    internal Stud FromCoaString(List<string> parameters)
+    {
+      //STUD_LAYOUT	MEMBER-1	AUTO_100	0.200000
+      //STUD_LAYOUT	MEMBER-1	AUTO_PERCENT	0.200000	0.850000
+      //STUD_LAYOUT	MEMBER-1	AUTO_MINIMUM_STUD	0.200000
+      //STUD_LAYOUT	MEMBER-1	USER_DEFINED	3	1	0.000000	2	1	0.0760000	0.0950000	0.150000	CHECK_SPACE_NO
+      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+      switch (parameters[2])
+      {
+        case CoaIdentifier.StudGroupSpacings.StudLayoutAutomatic:
+          this.StudSpacingType = StudSpacingType.Automatic;
+          this.MinSavingMultipleZones = Convert.ToDouble(parameters[3], noComma);
+          break;
 
-    //}
+        case CoaIdentifier.StudGroupSpacings.StudLayoutPartial_Interaction:
+          this.StudSpacingType = StudSpacingType.Partial_Interaction;
+          this.MinSavingMultipleZones = Convert.ToDouble(parameters[3], noComma);
+          this.Interaction = Convert.ToDouble(parameters[4], noComma);
+          break;
+
+        case CoaIdentifier.StudGroupSpacings.StudLayoutMin_Num_of_Studs:
+          this.StudSpacingType = StudSpacingType.Min_Num_of_Studs;
+          this.MinSavingMultipleZones = Convert.ToDouble(parameters[3], noComma);
+          break;
+
+        case CoaIdentifier.StudGroupSpacings.StudLayoutCustom:
+          this.StudSpacingType = StudSpacingType.Custom;
+          this.CheckStudSpacing = parameters.Last() != "CHECK_SPACE_NO";
+          break;
+      }
+      return this;
+    }
 
     public string ToCoaString(string name, ForceUnit forceUnit, PressureUnit stressUnit, LengthUnit lengthGeometryUnit, LengthUnit lengthSectionUnit, Code designCode)
     {

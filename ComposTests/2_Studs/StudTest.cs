@@ -449,5 +449,172 @@ namespace ComposAPI.Tests
       // Assert
       Assert.Equal(expected_coaString, coaString);
     }
+
+    [Fact]
+    public void TestFileCoaStringForStudParts()
+    {
+      // Arrange 
+      string coaString =
+"UNIT_DATA\tFORCE\tN\t1.00000" + '\n' +
+"UNIT_DATA\tLENGTH\tm\t1.00000" + '\n' +
+"UNIT_DATA\tDISP\tm\t1.00000" + '\n' +
+"UNIT_DATA\tSECTION\tmm\t1000.00" + '\n' +
+"UNIT_DATA\tSTRESS\tN/m²\t1.00000" + '\n' +
+"UNIT_DATA\tMASS\tkg\t1.00000" + '\n' +
+"MEMBER_TITLE\tMEMBER-1\t\tB/tf=15\t\tChange in direction > 11 degrees" + '\n' +
+"DESIGN_OPTION\tMEMBER-1\tBS5950-3.1:1990 (superseded)\tUNPROPPED\tBEAM_WEIGHT_NO\tSLAB_WEIGHT_NO\tSHEAR_DEFORM_NO\tTHIN_SECTION_NO\t2.00000\t2.00000" + '\n' +
+"STUD_DEFINITION\tMEMBER-1\tSTANDARD\t19mm/100mm\tWELDED_YES" + '\n' +
+"STUD_LAYOUT\tMEMBER-1\tAUTO_100\t0.200000" + '\n' +
+"STUD_NO_STUD_ZONE\tMEMBER-1\t0.000000\t0.000000" + '\n' +
+"STUD_EC4_APPLY\tMEMBER-1\tYES" + '\n' +
+
+"MEMBER_TITLE\tMEMBER-2\t\tB/tf=17.5\t\tChange in direction < 10 degrees" + '\n' +
+"DESIGN_OPTION\tMEMBER-2\tBS5950-3.1:1990+A1:2010\tUNPROPPED\tBEAM_WEIGHT_NO\tSLAB_WEIGHT_NO\tSHEAR_DEFORM_NO\tTHIN_SECTION_NO\t2.00000\t2.00000" + '\n' +
+"STUD_DEFINITION\tMEMBER-2\tUSER_DEFINED\t21.0000\t131.000\t99000.0\tREDUCED_YES\tWELDED_NO" + '\n' +
+"STUD_LAYOUT\tMEMBER-2\tAUTO_PERCENT\t0.200000\t0.850000" + '\n' +
+"STUD_NO_STUD_ZONE\tMEMBER-2\t0.000000\t0.000000" + '\n' +
+"STUD_EC4_APPLY\tMEMBER-2\tNO" + '\n' +
+
+"MEMBER_TITLE\tMEMBER-3\t\tB/tf=17.5\t\tChange in direction > 10 degrees" + '\n' +
+"DESIGN_OPTION\tMEMBER-3\tEN1994-1-1:2004\tUNPROPPED\tBEAM_WEIGHT_NO\tSLAB_WEIGHT_NO\tSHEAR_DEFORM_NO\tTHIN_SECTION_NO\t2.00000\t2.00000" + '\n' +
+"STUD_DEFINITION\tMEMBER-3\tSTANDARD\t19mm/100mm\tWELDED_YES" + '\n' +
+"STUD_LAYOUT\tMEMBER-3\tAUTO_100\t0.200000" + '\n' +
+"STUD_NO_STUD_ZONE\tMEMBER-3\t0.000000\t0.000000" + '\n' +
+"STUD_EC4_APPLY\tMEMBER-3\tYES" + '\n' +
+"STUD_NCCI_LIMIT_APPLY\tMEMBER-3\tYES" + '\n' +
+"STUD_EC4_RFT_POS\tMEMBER-3\t0.0300000" + '\n' +
+"EC4_STUD_GRADE\tMEMBER-3\tCODE_GRADE_YES\tSD2_EN13918" + '\n' +
+
+"MEMBER_TITLE\tMEMBER-4\t\tB/tf=20\t\tChange in direction < 9 degrees" + '\n' +
+"DESIGN_OPTION\tMEMBER-4\tEN1994-1-1:2004\tUNPROPPED\tBEAM_WEIGHT_NO\tSLAB_WEIGHT_NO\tSHEAR_DEFORM_NO\tTHIN_SECTION_NO\t2.00000\t2.00000" + '\n' +
+"STUD_DEFINITION\tMEMBER-4\tSTANDARD\t19mm/100mm\tWELDED_YES" + '\n' +
+"STUD_LAYOUT\tMEMBER-4\tAUTO_MINIMUM_STUD\t0.200000" + '\n' +
+"STUD_NO_STUD_ZONE\tMEMBER-4\t0.000000\t0.000000" + '\n' +
+"STUD_EC4_APPLY\tMEMBER-4\tYES" + '\n' +
+"STUD_NCCI_LIMIT_APPLY\tMEMBER-4\tNO" + '\n' +
+"STUD_EC4_RFT_POS\tMEMBER-4\t0.0300000" + '\n' +
+"EC4_STUD_GRADE\tMEMBER-4\tCODE_GRADE_NO\t4.79000e+008" + '\n' +
+
+"MEMBER_TITLE\tMEMBER-5\t\tB/tf=20\t\tChange in direction > 9 degrees" + '\n' +
+"DESIGN_OPTION\tMEMBER-5\tHKSUOS:2005\tUNPROPPED\tBEAM_WEIGHT_NO\tSLAB_WEIGHT_NO\tSHEAR_DEFORM_NO\tTHIN_SECTION_NO\t2.00000\t2.00000" + '\n' +
+"STUD_DEFINITION\tMEMBER-5\tSTANDARD\t19mm/100mm\tWELDED_YES" + '\n' +
+"STUD_LAYOUT\tMEMBER-5\tUSER_DEFINED\t3\t1\t0.000000\t2\t1\t0.0760000\t0.0950000\t0.150000\tCHECK_SPACE_NO" + '\n' +
+"STUD_LAYOUT\tMEMBER-5\tUSER_DEFINED\t3\t2\t0.000000\t3\t2\t0.0760000\t0.0950000\t0.250000\tCHECK_SPACE_YES" + '\n' +
+"STUD_LAYOUT\tMEMBER-5\tUSER_DEFINED\t3\t3\t0.000000\t4\t3\t0.0760000\t0.0950000\t0.350000\tCHECK_SPACE_NO" + '\n' +
+"STUD_NO_STUD_ZONE\tMEMBER-5\t0.000000\t0.000000" + '\n' +
+"STUD_EC4_APPLY\tMEMBER-5\tYES" + '\n' +
+
+"MEMBER_TITLE\tMEMBER-6\t\tB/tf=22.5\t\tChange in direction < 8 degrees" + '\n' +
+"DESIGN_OPTION\tMEMBER-6\tHKSUOS:2011\tUNPROPPED\tBEAM_WEIGHT_NO\tSLAB_WEIGHT_NO\tSHEAR_DEFORM_NO\tTHIN_SECTION_NO\t2.00000\t2.00000" + '\n' +
+"STUD_DEFINITION\tMEMBER-6\tSTANDARD\t19mm/95mm\tWELDED_YES" + '\n' +
+"STUD_LAYOUT\tMEMBER-6\tAUTO_100\t0.200000" + '\n' +
+"STUD_NO_STUD_ZONE\tMEMBER-6\t0.000000\t0.000000" + '\n' +
+"STUD_EC4_APPLY\tMEMBER-6\tYES" + '\n' +
+
+"MEMBER_TITLE\tMEMBER-7\t\tB/tf=22.5\t\tChange in direction > 8 degrees" + '\n' +
+"DESIGN_OPTION\tMEMBER-7\tAS/NZS2327:2017\tUNPROPPED\tBEAM_WEIGHT_NO\tSLAB_WEIGHT_NO\tSHEAR_DEFORM_NO\tTHIN_SECTION_NO\t2.00000\t2.00000" + '\n' +
+"STUD_DEFINITION\tMEMBER-7\tSTANDARD\t19mm/100mm\tWELDED_YES" + '\n' +
+"STUD_LAYOUT\tMEMBER-7\tUSER_DEFINED\t2\t1\t0.000000\t2\t1\t0.0570000\t0.0950000\t0.150000\tCHECK_SPACE_NO" + '\n' +
+"STUD_LAYOUT\tMEMBER-7\tUSER_DEFINED\t2\t2\t8.000000\t3\t2\t0.0570000\t0.0950000\t0.250000\tCHECK_SPACE_NO" + '\n' +
+"STUD_NO_STUD_ZONE\tMEMBER-7\t0.000000\t0.000000" + '\n' +
+"STUD_EC4_APPLY\tMEMBER-7\tYES" + '\n';
+
+      // Act
+      ComposFile composFile = new ComposFile(coaString);
+
+      // Assert
+      Assert.Equal(7, composFile.Members.Count);
+      int i = 0;
+      Assert.Equal(19, composFile.Members[i].Stud.StudDimensions.Diameter.Millimeters);
+      Assert.Equal(100, composFile.Members[i].Stud.StudDimensions.Height.Millimeters);
+      Assert.True(composFile.Members[i].Stud.StudSpecification.Welding);
+      Assert.Equal(StudSpacingType.Automatic, composFile.Members[i].Stud.StudSpacingType);
+      Assert.Equal(0.2, composFile.Members[i].Stud.MinSavingMultipleZones);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneEnd);
+      Assert.True(composFile.Members[i].Stud.StudSpecification.EC4_Limit);
+      i++;
+      Assert.Equal(21, composFile.Members[i].Stud.StudDimensions.Diameter.Millimeters);
+      Assert.Equal(131, composFile.Members[i].Stud.StudDimensions.Height.Millimeters);
+      Assert.False(composFile.Members[i].Stud.StudSpecification.Welding);
+      Assert.Equal(99, composFile.Members[i].Stud.StudDimensions.CharacterStrength.Kilonewtons);
+      Assert.Equal(StudSpacingType.Partial_Interaction, composFile.Members[i].Stud.StudSpacingType);
+      Assert.Equal(0.85, composFile.Members[i].Stud.Interaction);
+      Assert.Equal(0.2, composFile.Members[i].Stud.MinSavingMultipleZones);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneEnd);
+      Assert.False(composFile.Members[i].Stud.StudSpecification.EC4_Limit);
+      i++;
+      Assert.Equal(19, composFile.Members[i].Stud.StudDimensions.Diameter.Millimeters);
+      Assert.Equal(100, composFile.Members[i].Stud.StudDimensions.Height.Millimeters);
+      Assert.Equal(450, composFile.Members[i].Stud.StudDimensions.Fu.Megapascals);
+      Assert.Equal(StudSpacingType.Automatic, composFile.Members[i].Stud.StudSpacingType);
+      Assert.Equal(0.2, composFile.Members[i].Stud.MinSavingMultipleZones);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneEnd);
+      Assert.Equal(30, composFile.Members[i].Stud.StudSpecification.ReinforcementPosition.Millimeters);
+      Assert.True(composFile.Members[i].Stud.StudSpecification.EC4_Limit);
+      Assert.True(composFile.Members[i].Stud.StudSpecification.NCCI);
+      i++;
+      Assert.Equal(19, composFile.Members[i].Stud.StudDimensions.Diameter.Millimeters);
+      Assert.Equal(100, composFile.Members[i].Stud.StudDimensions.Height.Millimeters);
+      Assert.Equal(479, composFile.Members[i].Stud.StudDimensions.Fu.Megapascals);
+      Assert.Equal(StudSpacingType.Min_Num_of_Studs, composFile.Members[i].Stud.StudSpacingType);
+      Assert.Equal(0.2, composFile.Members[i].Stud.MinSavingMultipleZones);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneEnd);
+      Assert.Equal(30, composFile.Members[i].Stud.StudSpecification.ReinforcementPosition.Millimeters);
+      Assert.True(composFile.Members[i].Stud.StudSpecification.EC4_Limit);
+      Assert.False(composFile.Members[i].Stud.StudSpecification.NCCI);
+      i++;
+      Assert.Equal(19, composFile.Members[i].Stud.StudDimensions.Diameter.Millimeters);
+      Assert.Equal(100, composFile.Members[i].Stud.StudDimensions.Height.Millimeters);
+      Assert.True(composFile.Members[i].Stud.StudSpecification.Welding);
+      Assert.Equal(StudSpacingType.Custom, composFile.Members[i].Stud.StudSpacingType);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneEnd);
+      Assert.Equal(3, composFile.Members[i].Stud.CustomSpacing.Count);
+      Assert.Equal(0, composFile.Members[i].Stud.CustomSpacing[0].DistanceFromStart.Meters);
+      Assert.Equal(2, composFile.Members[i].Stud.CustomSpacing[0].NumberOfRows);
+      Assert.Equal(1, composFile.Members[i].Stud.CustomSpacing[0].NumberOfLines);
+      Assert.Equal(150, composFile.Members[i].Stud.CustomSpacing[0].Spacing.Millimeters);
+      Assert.Equal(0, composFile.Members[i].Stud.CustomSpacing[1].DistanceFromStart.Meters);
+      Assert.Equal(3, composFile.Members[i].Stud.CustomSpacing[1].NumberOfRows);
+      Assert.Equal(2, composFile.Members[i].Stud.CustomSpacing[1].NumberOfLines);
+      Assert.Equal(250, composFile.Members[i].Stud.CustomSpacing[1].Spacing.Millimeters);
+      Assert.Equal(0, composFile.Members[i].Stud.CustomSpacing[2].DistanceFromStart.Meters);
+      Assert.Equal(4, composFile.Members[i].Stud.CustomSpacing[2].NumberOfRows);
+      Assert.Equal(3, composFile.Members[i].Stud.CustomSpacing[2].NumberOfLines);
+      Assert.Equal(350, composFile.Members[i].Stud.CustomSpacing[2].Spacing.Millimeters, 6);
+      Assert.True(composFile.Members[i].Stud.StudSpecification.EC4_Limit);
+      i++;
+      Assert.Equal(19, composFile.Members[i].Stud.StudDimensions.Diameter.Millimeters);
+      Assert.Equal(95, composFile.Members[i].Stud.StudDimensions.Height.Millimeters);
+      Assert.True(composFile.Members[i].Stud.StudSpecification.Welding);
+      Assert.Equal(StudSpacingType.Automatic, composFile.Members[i].Stud.StudSpacingType);
+      Assert.Equal(0.2, composFile.Members[i].Stud.MinSavingMultipleZones);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneEnd);
+      Assert.True(composFile.Members[i].Stud.StudSpecification.EC4_Limit);
+      i++;
+      Assert.Equal(19, composFile.Members[i].Stud.StudDimensions.Diameter.Millimeters);
+      Assert.Equal(100, composFile.Members[i].Stud.StudDimensions.Height.Millimeters);
+      Assert.True(composFile.Members[i].Stud.StudSpecification.Welding);
+      Assert.Equal(StudSpacingType.Custom, composFile.Members[i].Stud.StudSpacingType);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneEnd);
+      Assert.Equal(2, composFile.Members[i].Stud.CustomSpacing.Count);
+      Assert.Equal(0, composFile.Members[i].Stud.CustomSpacing[0].DistanceFromStart.Meters);
+      Assert.Equal(2, composFile.Members[i].Stud.CustomSpacing[0].NumberOfRows);
+      Assert.Equal(1, composFile.Members[i].Stud.CustomSpacing[0].NumberOfLines);
+      Assert.Equal(150, composFile.Members[i].Stud.CustomSpacing[0].Spacing.Millimeters);
+      Assert.Equal(8, composFile.Members[i].Stud.CustomSpacing[1].DistanceFromStart.Meters);
+      Assert.Equal(3, composFile.Members[i].Stud.CustomSpacing[1].NumberOfRows);
+      Assert.Equal(2, composFile.Members[i].Stud.CustomSpacing[1].NumberOfLines);
+      Assert.Equal(250, composFile.Members[i].Stud.CustomSpacing[1].Spacing.Millimeters);
+      Assert.True(composFile.Members[i].Stud.StudSpecification.EC4_Limit);
+    }
   }
 }
+
+

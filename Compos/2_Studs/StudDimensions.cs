@@ -109,7 +109,7 @@ namespace ComposAPI
       }
     }
 
-    
+
 
     private void SetGradeFromStandard(StandardGrade standardGrade)
     {
@@ -129,7 +129,7 @@ namespace ComposAPI
 
 
     #region constructors
-      public StudDimensions()
+    public StudDimensions()
     {
       // empty constructor
     }
@@ -202,10 +202,25 @@ namespace ComposAPI
       SetGradeFromStandard(standardGrade);
     }
 
-
+    internal StudDimensions FromCoaString(List<string> parameters, PressureUnit stressUnit)
+    {
+      //EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_NO	4.50000e+008
+      //EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_YES	SD2_EN13918
+      if (parameters[2] == CoaIdentifier.StudDimensions.StudGradeEC4Standard)
+      {
+        StandardGrade standardGrade = (StandardGrade)Enum.Parse(typeof(StandardGrade), parameters[3]);
+        SetGradeFromStandard(standardGrade);
+      }
+      if (parameters[2] == CoaIdentifier.StudDimensions.StudGradeEC4Custom)
+      {
+        NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+        this.Fu = new Pressure(Convert.ToDouble(parameters[3], noComma), stressUnit);
+      }
+      return this;
+    }
     internal StudDimensions FromCoaString(List<string> parameters, LengthUnit lengthSectionUnit, ForceUnit forceUnit, Code code)
     {
-      if(parameters[2] == CoaIdentifier.StudDimensions.StudDimensionStandard)
+      if (parameters[2] == CoaIdentifier.StudDimensions.StudDimensionStandard)
       {
         string size = "D" + parameters[3].Replace("/", "H");
         StandardSize standardSize = (StandardSize)Enum.Parse(typeof(StandardSize), size);

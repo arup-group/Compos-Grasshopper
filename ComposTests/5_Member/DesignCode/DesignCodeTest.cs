@@ -264,7 +264,7 @@ namespace ComposAPI.Tests
       Assert.False(object.ReferenceEquals(duplicate.CodeOptions, original.CodeOptions));
     }
 
-    public void TestFileCoaStringForLoadingParts()
+    public void TestFileCoaStringForDesignCode()
     {
       // Arrange 
       string coaString =
