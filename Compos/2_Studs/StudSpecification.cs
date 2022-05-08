@@ -63,6 +63,7 @@ namespace ComposAPI
       this.NoStudZoneEnd = noStudZoneEnd;
       this.EC4_Limit = useEC4Limit;
       this.SpecType = StudSpecType.BS5950;
+      this.Welding = true;
     }
 
     /// <summary>

@@ -126,28 +126,7 @@ namespace ComposAPI
       }
     }
 
-    internal string GetStandardGrade()
-    {
-      double fu = this.Fu.As(PressureUnit.NewtonPerSquareMillimeter);
-      if (!(Math.Abs(fu % 1) <= (Double.Epsilon * 100)))
-        return "Custom";
-      int f = (int)fu;
-
-      switch (f)
-      {
-        case 400:
-          return "SD1_EN13918";
-
-        case 450:
-          return "SD2_EN13918";
-
-        case 500:
-          return "SD3_EN13918";
-
-        default:
-          return "Custom";
-      }
-    }
+    
 
     #region constructors
       public StudDimensions()

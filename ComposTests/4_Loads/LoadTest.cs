@@ -283,10 +283,9 @@ namespace ComposAPI.Tests
     [Fact]
     public void TriLinearAreaLoadToCoaStringTest()
     {
+      // Arrange
       ForceUnit forceUnit = ForceUnit.Kilonewton;
       LengthUnit lengthUnit = LengthUnit.Meter;
-
-      // Arrange
       string expected_coaString = "LOAD	MEMBER-1	Tri-Linear	Area	3.00000	4.50000	6.00000	7.00000	8.00000	4.50000	6.00000	7.00000	8.90000	10.0000\n";
       Load load = TestTriLinearAreaLoadConstructor(3, 4.5, 6, 7, 8000, 4.5, 6, 7, 8.9, 10000); // pos units in mm
       // Act

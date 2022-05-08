@@ -284,5 +284,170 @@ namespace ComposAPI.Tests
       Assert.Equal(0.15, original.MinSavingMultipleZones);
       Assert.Equal(0.90, original.Interaction);
     }
+
+    [Fact]
+    public void TestBS5950ssToCoa()
+    {
+      // Arrange
+      string expected_coaString =
+        "STUD_DEFINITION	MEMBER-1	STANDARD	19mm/100mm	WELDED_YES" + '\n' +
+        "STUD_LAYOUT	MEMBER-1	AUTO_100	0.200000" + '\n' +
+        "STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000" + '\n' +
+        "STUD_EC4_APPLY	MEMBER-1	YES" + '\n';
+
+      IStudDimensions dimensions = new StudDimensions(StandardSize.D19mmH100mm, new Force(1, ForceUnit.Newton));
+      IStudSpecification specs = new StudSpecification(true, Length.Zero, Length.Zero);
+      Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
+
+      // Act
+      string coaString = stud.ToCoaString("MEMBER-1", ForceUnit.Newton, PressureUnit.NewtonPerSquareMeter, LengthUnit.Meter, LengthUnit.Millimeter, Code.BS5950_3_1_1990_Superseded);
+
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
+
+    [Fact]
+    public void TestBS5950ToCoa()
+    {
+      // Arrange
+      string expected_coaString =
+        "STUD_DEFINITION	MEMBER-1	USER_DEFINED	21.0000	105.000	95000.0	REDUCED_NO	WELDED_YES" + '\n' +
+        "STUD_LAYOUT	MEMBER-1	AUTO_PERCENT	0.200000	0.850000" + '\n' +
+        "STUD_NO_STUD_ZONE	MEMBER-1	1.00000	5.00000" + '\n' +
+        "STUD_EC4_APPLY	MEMBER-1	NO" + '\n';
+
+      IStudDimensions dimensions = new StudDimensions(new Length(21, LengthUnit.Millimeter), new Length(105, LengthUnit.Millimeter), new Force(95000, ForceUnit.Newton));
+      IStudSpecification specs = new StudSpecification(false, new Length(1, LengthUnit.Meter), new Length(5, LengthUnit.Meter));
+      Stud stud = new Stud(dimensions, specs, 0.2, 0.85);
+
+      // Act
+      string coaString = stud.ToCoaString("MEMBER-1", ForceUnit.Newton, PressureUnit.NewtonPerSquareMeter, LengthUnit.Meter, LengthUnit.Millimeter, Code.BS5950_3_1_1990_A1_2010);
+
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
+
+    [Fact]
+    public void TestEC4StdGrdToCoa()
+    {
+      // Arrange
+      string expected_coaString =
+        "STUD_DEFINITION	MEMBER-1	STANDARD	19mm/100mm	WELDED_NO" + '\n' +
+        "STUD_LAYOUT	MEMBER-1	AUTO_100	0.200000" + '\n' +
+        "STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000" + '\n' +
+        "STUD_EC4_APPLY	MEMBER-1	YES" + '\n' +
+        "STUD_NCCI_LIMIT_APPLY	MEMBER-1	NO" + '\n' +
+        "STUD_EC4_RFT_POS	MEMBER-1	0.030000" + '\n' +
+        "EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_YES	SD2_EN13918" + '\n';
+
+      IStudDimensions dimensions = new StudDimensions(StandardSize.D19mmH100mm, StandardGrade.SD2_EN13918);
+      IStudSpecification specs = new StudSpecification(new Length(0, LengthUnit.Meter), new Length(0, LengthUnit.Meter), new Length(30, LengthUnit.Millimeter), false, false);
+      Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
+
+      // Act
+      string coaString = stud.ToCoaString("MEMBER-1", ForceUnit.Newton, PressureUnit.NewtonPerSquareMeter, LengthUnit.Meter, LengthUnit.Millimeter, Code.EN1994_1_1_2004);
+
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
+
+    [Fact]
+    public void TestEC4CustomGrdToCoa()
+    {
+      // Arrange
+      string expected_coaString =
+        "STUD_DEFINITION	MEMBER-1	STANDARD	25mm/100mm	WELDED_YES" + '\n' +
+        "STUD_LAYOUT	MEMBER-1	AUTO_MINIMUM_STUD	0.200000" + '\n' +
+        "STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000" + '\n' +
+        "STUD_EC4_APPLY	MEMBER-1	YES" + '\n' +
+        "STUD_NCCI_LIMIT_APPLY	MEMBER-1	YES" + '\n' +
+        "STUD_EC4_RFT_POS	MEMBER-1	0.030000" + '\n' +
+        "EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_NO	4.40000e+008" + '\n';
+
+      IStudDimensions dimensions = new StudDimensions(StandardSize.D25mmH100mm, new Pressure(440, PressureUnit.Megapascal));
+      IStudSpecification specs = new StudSpecification(new Length(0, LengthUnit.Meter), new Length(0, LengthUnit.Meter), new Length(30, LengthUnit.Millimeter), true, true);
+      Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Min_Num_of_Studs);
+
+      // Act
+      string coaString = stud.ToCoaString("MEMBER-1", ForceUnit.Newton, PressureUnit.NewtonPerSquareMeter, LengthUnit.Meter, LengthUnit.Millimeter, Code.EN1994_1_1_2004);
+
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
+
+    [Fact]
+    public void TestHK05CustomSpacingToCoa()
+    {
+      // Arrange
+      string expected_coaString =
+        "STUD_DEFINITION	MEMBER-1	STANDARD	13mm/65mm	WELDED_YES" + '\n' +
+        "STUD_LAYOUT	MEMBER-1	USER_DEFINED	3	1	0.000000	2	1	0.076000	0.095000	0.150000	CHECK_SPACE_YES" + '\n' +
+        "STUD_LAYOUT	MEMBER-1	USER_DEFINED	3	2	4.50000	3	2	0.076000	0.095000	0.250000	CHECK_SPACE_YES" + '\n' +
+        "STUD_LAYOUT	MEMBER-1	USER_DEFINED	3	3	9.00000	4	3	0.076000	0.095000	0.350000	CHECK_SPACE_YES" + '\n' +
+        "STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000" + '\n' +
+        "STUD_EC4_APPLY	MEMBER-1	YES" + '\n';
+
+      IStudDimensions dimensions = new StudDimensions(StandardSize.D13mmH65mm, new Force(1, ForceUnit.Newton));
+      IStudSpecification specs = new StudSpecification(new Length(0, LengthUnit.Meter), new Length(0, LengthUnit.Meter), true);
+      IStudGroupSpacing spacing1 = new StudGroupSpacing(Length.Zero, 2, 1, new Length(150, LengthUnit.Millimeter));
+      IStudGroupSpacing spacing2 = new StudGroupSpacing(new Length(4.5, LengthUnit.Meter), 3, 2, new Length(250, LengthUnit.Millimeter));
+      IStudGroupSpacing spacing3 = new StudGroupSpacing(new Length(9, LengthUnit.Meter), 4, 3, new Length(350, LengthUnit.Millimeter));
+
+      List<IStudGroupSpacing> spacing = new List<IStudGroupSpacing>() { spacing1, spacing2, spacing3 };
+      Stud stud = new Stud(dimensions, specs, spacing, true);
+
+      // Act
+      string coaString = stud.ToCoaString("MEMBER-1", ForceUnit.Newton, PressureUnit.NewtonPerSquareMeter, LengthUnit.Meter, LengthUnit.Millimeter, Code.HKSUOS_2005);
+
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
+
+    [Fact]
+    public void TestHK11ToCoa()
+    {
+      // Arrange
+      string expected_coaString =
+        "STUD_DEFINITION	MEMBER-1	STANDARD	19mm/95mm	WELDED_YES" + '\n' +
+        "STUD_LAYOUT	MEMBER-1	AUTO_100	0.200000" + '\n' +
+        "STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000" + '\n' +
+        "STUD_EC4_APPLY	MEMBER-1	YES" + '\n';
+
+      IStudDimensions dimensions = new StudDimensions(StandardSize.D19mmH95mm, new Force(1, ForceUnit.Newton));
+      IStudSpecification specs = new StudSpecification(Length.Zero, Length.Zero, true);
+      Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
+
+      // Act
+      string coaString = stud.ToCoaString("MEMBER-1", ForceUnit.Newton, PressureUnit.NewtonPerSquareMeter, LengthUnit.Meter, LengthUnit.Millimeter, Code.HKSUOS_2011);
+
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
+
+    [Fact]
+    public void TestASNZCustomSpacingToCoa()
+    {
+      // Arrange
+      string expected_coaString =
+        "STUD_DEFINITION	MEMBER-1	STANDARD	19mm/100mm	WELDED_YES" + '\n' +
+        "STUD_LAYOUT	MEMBER-1	USER_DEFINED	2	1	0.000000	2	1	0.057000	0.095000	0.150000	CHECK_SPACE_NO" + '\n' +
+        "STUD_LAYOUT	MEMBER-1	USER_DEFINED	2	2	8.00000	3	2	0.057000	0.095000	0.250000	CHECK_SPACE_NO" + '\n' +
+        "STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000" + '\n' +
+        "STUD_EC4_APPLY	MEMBER-1	YES" + '\n';
+
+      IStudDimensions dimensions = new StudDimensions(StandardSize.D19mmH100mm, new Force(1, ForceUnit.Newton));
+      IStudSpecification specs = new StudSpecification(new Length(0, LengthUnit.Meter), new Length(0, LengthUnit.Meter), true);
+      IStudGroupSpacing spacing1 = new StudGroupSpacing(Length.Zero, 2, 1, new Length(150, LengthUnit.Millimeter));
+      IStudGroupSpacing spacing2 = new StudGroupSpacing(new Length(8, LengthUnit.Meter), 3, 2, new Length(250, LengthUnit.Millimeter));
+
+      List<IStudGroupSpacing> spacing = new List<IStudGroupSpacing>() { spacing1, spacing2 };
+      Stud stud = new Stud(dimensions, specs, spacing, false);
+
+      // Act
+      string coaString = stud.ToCoaString("MEMBER-1", ForceUnit.Newton, PressureUnit.NewtonPerSquareMeter, LengthUnit.Meter, LengthUnit.Millimeter, Code.AS_NZS2327_2017);
+
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
   }
 }

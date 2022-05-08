@@ -49,6 +49,7 @@
       public const string StudLayoutPartial_Interaction = "AUTO_PERCENT";
       public const string StudLayoutMin_Num_of_Studs = "AUTO_MINIMUM_STUD";
       public const string StudLayoutCustom = "USER_DEFINED";
+      public const string StudLayoutCheckCustom = "CHECK_SPACE_YES";
     }
     internal class StudDimensions
     {

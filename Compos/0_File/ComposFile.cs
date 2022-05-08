@@ -106,7 +106,7 @@ namespace ComposAPI
     {
       string coaString = "";
       foreach (IMember member in Members)
-        coaString += member.ToCoaString(AngleUnit.Radian, Units.DensityUnit, Units.ForceUnit, Units.LengthUnitGeometry, Units.StressUnit, Units.StrainUnit);
+        coaString += member.ToCoaString(AngleUnit.Radian, Units.DensityUnit, Units.ForceUnit, Units.LengthUnitGeometry, Units.LengthUnitSection, Units.StressUnit, Units.StrainUnit);
       
       return coaString;
     }
