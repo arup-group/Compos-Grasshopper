@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposAPI
 {
@@ -42,6 +44,20 @@ namespace ComposAPI
     }
 
     #endregion
+
+    internal StudGroupSpacing FromCoaString(List<string> parameters, LengthUnit lengtGeometryUnit)
+    {
+      //STUD_LAYOUT	MEMBER-1	USER_DEFINED	3	1	0.000000	2	1	0.0760000	0.0950000	0.150000	CHECK_SPACE_NO
+      //STUD_LAYOUT	MEMBER-1	USER_DEFINED	2	1	0.000000	2	1	0.0570000	0.0950000	0.150000	CHECK_SPACE_NO
+      //STUD_LAYOUT MEMBER-1 USER_DEFINED 2 2 8.000000 3 2 0.0570000 0.0950000 0.250000 CHECK_SPACE_NO
+      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+
+      this.DistanceFromStart = new Length(Convert.ToDouble(parameters[5], noComma), lengtGeometryUnit);
+      this.NumberOfRows = Convert.ToInt32(parameters[6], noComma);
+      this.NumberOfLines = Convert.ToInt32(parameters[7], noComma);
+      this.Spacing = new Length(Convert.ToDouble(parameters[10], noComma), lengtGeometryUnit);
+      return this;
+    }
 
     #region methods
     public override string ToString()

@@ -14,7 +14,16 @@ namespace ComposAPI
     {
       // get the type of source object and create a new instance of that type
       Type typeSource = objSource.GetType();
+
       object objTarget = Activator.CreateInstance(typeSource);
+
+      // return here if source is struct
+      if (typeSource.IsValueType)
+      {
+        objTarget = objSource;
+        return objTarget;
+      }
+
       // get all the properties of source object type
       PropertyInfo[] propertyInfo = typeSource.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
       // assign all source property to taget object's properties

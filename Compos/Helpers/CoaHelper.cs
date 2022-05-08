@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,12 +55,19 @@ namespace ComposAPI.Helpers
 
     public static string FormatSignificantFigures(double value, int significantFigures)
     {
+      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+
+      // if for instance 6 significant figures and value is above 1,000,000
+      // compos coa is shown as 4.50000e+008 which is value.ToString("e6")
+      if (value > Math.Pow(10, significantFigures))
+        return value.ToString("e" + (significantFigures-1), noComma);
+
       int decimalPlaces = Math.Max(0, significantFigures - GetMagnitude((int)value));
       string format = "{0:0.";
       for (int i = 0; i < decimalPlaces; i++)
         format += "0";
       format += "}";
-      return String.Format(format, value);
+      return String.Format(noComma, format, value);
     }
 
     internal static List<string> SplitLines(string coaString)

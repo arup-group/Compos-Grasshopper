@@ -1,7 +1,10 @@
-﻿using System;
+﻿using ComposAPI.Helpers;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposAPI
 {
@@ -60,67 +63,70 @@ namespace ComposAPI
       switch (size)
       {
         case StandardSize.D13mmH65mm:
-          this.Diameter = new Length(13, UnitsNet.Units.LengthUnit.Millimeter);
-          this.Height = new Length(65, UnitsNet.Units.LengthUnit.Millimeter);
+          this.Diameter = new Length(13, LengthUnit.Millimeter);
+          this.Height = new Length(65, LengthUnit.Millimeter);
           break;
         case StandardSize.D16mmH75mm:
-          this.Diameter = new Length(16, UnitsNet.Units.LengthUnit.Millimeter);
-          this.Height = new Length(75, UnitsNet.Units.LengthUnit.Millimeter);
+          this.Diameter = new Length(16, LengthUnit.Millimeter);
+          this.Height = new Length(75, LengthUnit.Millimeter);
           break;
         case StandardSize.D19mmH75mm:
-          this.Diameter = new Length(19, UnitsNet.Units.LengthUnit.Millimeter);
-          this.Height = new Length(75, UnitsNet.Units.LengthUnit.Millimeter);
+          this.Diameter = new Length(19, LengthUnit.Millimeter);
+          this.Height = new Length(75, LengthUnit.Millimeter);
           break;
         case StandardSize.D19mmH100mm:
-          this.Diameter = new Length(19, UnitsNet.Units.LengthUnit.Millimeter);
-          this.Height = new Length(100, UnitsNet.Units.LengthUnit.Millimeter);
+          this.Diameter = new Length(19, LengthUnit.Millimeter);
+          this.Height = new Length(100, LengthUnit.Millimeter);
           break;
         case StandardSize.D19mmH125mm:
-          this.Diameter = new Length(19, UnitsNet.Units.LengthUnit.Millimeter);
-          this.Height = new Length(125, UnitsNet.Units.LengthUnit.Millimeter);
+          this.Diameter = new Length(19, LengthUnit.Millimeter);
+          this.Height = new Length(125, LengthUnit.Millimeter);
           break;
         case StandardSize.D22mmH100mm:
-          this.Diameter = new Length(22, UnitsNet.Units.LengthUnit.Millimeter);
-          this.Height = new Length(100, UnitsNet.Units.LengthUnit.Millimeter);
+          this.Diameter = new Length(22, LengthUnit.Millimeter);
+          this.Height = new Length(100, LengthUnit.Millimeter);
           break;
         case StandardSize.D25mmH100mm:
-          this.Diameter = new Length(25, UnitsNet.Units.LengthUnit.Millimeter);
-          this.Height = new Length(100, UnitsNet.Units.LengthUnit.Millimeter);
+          this.Diameter = new Length(25, LengthUnit.Millimeter);
+          this.Height = new Length(100, LengthUnit.Millimeter);
           break;
         case StandardSize.D16mmH70mm:
-          this.Diameter = new Length(16, UnitsNet.Units.LengthUnit.Millimeter);
-          this.Height = new Length(70, UnitsNet.Units.LengthUnit.Millimeter);
+          this.Diameter = new Length(16, LengthUnit.Millimeter);
+          this.Height = new Length(70, LengthUnit.Millimeter);
           break;
         case StandardSize.D19mmH95mm:
-          this.Diameter = new Length(19, UnitsNet.Units.LengthUnit.Millimeter);
-          this.Height = new Length(95, UnitsNet.Units.LengthUnit.Millimeter);
+          this.Diameter = new Length(19, LengthUnit.Millimeter);
+          this.Height = new Length(95, LengthUnit.Millimeter);
           break;
         case StandardSize.D22mmH95mm:
-          this.Diameter = new Length(22, UnitsNet.Units.LengthUnit.Millimeter);
-          this.Height = new Length(95, UnitsNet.Units.LengthUnit.Millimeter);
+          this.Diameter = new Length(22, LengthUnit.Millimeter);
+          this.Height = new Length(95, LengthUnit.Millimeter);
           break;
         case StandardSize.D25mmH95mm:
-          this.Diameter = new Length(25, UnitsNet.Units.LengthUnit.Millimeter);
-          this.Height = new Length(95, UnitsNet.Units.LengthUnit.Millimeter);
+          this.Diameter = new Length(25, LengthUnit.Millimeter);
+          this.Height = new Length(95, LengthUnit.Millimeter);
           break;
       }
     }
+
+
 
     private void SetGradeFromStandard(StandardGrade standardGrade)
     {
       switch (standardGrade)
       {
         case StandardGrade.SD1_EN13918:
-          this.Fu = new Pressure(400, UnitsNet.Units.PressureUnit.NewtonPerSquareMillimeter);
+          this.Fu = new Pressure(400, PressureUnit.NewtonPerSquareMillimeter);
           break;
         case StandardGrade.SD2_EN13918:
-          this.Fu = new Pressure(450, UnitsNet.Units.PressureUnit.NewtonPerSquareMillimeter);
+          this.Fu = new Pressure(450, PressureUnit.NewtonPerSquareMillimeter);
           break;
         case StandardGrade.SD3_EN13918:
-          this.Fu = new Pressure(500, UnitsNet.Units.PressureUnit.NewtonPerSquareMillimeter);
+          this.Fu = new Pressure(500, PressureUnit.NewtonPerSquareMillimeter);
           break;
       }
     }
+
 
     #region constructors
     public StudDimensions()
@@ -194,6 +200,55 @@ namespace ComposAPI
       this.Diameter = diameter;
       this.Height = height;
       SetGradeFromStandard(standardGrade);
+    }
+
+    internal StudDimensions FromCoaString(List<string> parameters, PressureUnit stressUnit)
+    {
+      //EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_NO	4.50000e+008
+      //EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_YES	SD2_EN13918
+      if (parameters[2] == CoaIdentifier.StudDimensions.StudGradeEC4Standard)
+      {
+        StandardGrade standardGrade = (StandardGrade)Enum.Parse(typeof(StandardGrade), parameters[3]);
+        SetGradeFromStandard(standardGrade);
+      }
+      if (parameters[2] == CoaIdentifier.StudDimensions.StudGradeEC4Custom)
+      {
+        NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+        this.Fu = new Pressure(Convert.ToDouble(parameters[3], noComma), stressUnit);
+      }
+      return this;
+    }
+    internal StudDimensions FromCoaString(List<string> parameters, LengthUnit lengthSectionUnit, ForceUnit forceUnit, Code code)
+    {
+      if (parameters[2] == CoaIdentifier.StudDimensions.StudDimensionStandard)
+      {
+        string size = "D" + parameters[3].Replace("/", "H");
+        StandardSize standardSize = (StandardSize)Enum.Parse(typeof(StandardSize), size);
+        SetSizeFromStandard(standardSize);
+        switch (code)
+        {
+          case Code.BS5950_3_1_1990_Superseded:
+          case Code.BS5950_3_1_1990_A1_2010:
+            this.CharacterStrength = new Force(90, ForceUnit.Kilonewton);
+            break;
+          case Code.HKSUOS_2005:
+          case Code.HKSUOS_2011:
+            this.CharacterStrength = new Force(76.3497, ForceUnit.Kilonewton);
+            break;
+          case Code.AS_NZS2327_2017:
+            this.CharacterStrength = new Force(97.9845, ForceUnit.Kilonewton);
+            break;
+        }
+      }
+
+      if (parameters[2] == CoaIdentifier.StudDimensions.StudDimensionCustom)
+      {
+        NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+        this.Diameter = new Length(Convert.ToDouble(parameters[3], noComma), lengthSectionUnit);
+        this.Height = new Length(Convert.ToDouble(parameters[4], noComma), lengthSectionUnit);
+        this.CharacterStrength = new Force(Convert.ToDouble(parameters[5], noComma), forceUnit);
+      }
+      return this;
     }
 
     #endregion

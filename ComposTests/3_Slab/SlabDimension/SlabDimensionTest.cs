@@ -76,40 +76,49 @@ namespace ComposAPI.Tests
       Assert.Equal(taperedToNext, slabDimension.TaperedToNext);
     }
 
-    [Theory]
-    [InlineData(800, 250, 310, 300, true, 250, 240)]
-    public void TestDuplicate(double startPosition, double overallDepth, double availableWidthLeft, double availableWidthRight, bool taperedToNext, double effectiveWidthLeft, double effectiveWidthRight)
+    [Fact]
+    public void TestDuplicate()
     {
       // 1 create with constructor and duplicate
       LengthUnit lengthUnit = LengthUnit.Millimeter;
-      ISlabDimension original = new SlabDimension(new Length(startPosition, lengthUnit), new Length(overallDepth, lengthUnit), new Length(availableWidthLeft, lengthUnit), new Length(availableWidthRight, lengthUnit), new Length(effectiveWidthLeft, lengthUnit), new Length(effectiveWidthRight, lengthUnit), taperedToNext);
-      ISlabDimension duplicate = original.Duplicate() as ISlabDimension;
+      ISlabDimension original = new SlabDimension(new Length(800, lengthUnit), new Length(250, lengthUnit), new Length(310, lengthUnit), new Length(300, lengthUnit), new Length(250, lengthUnit), new Length(240, lengthUnit), true);
+      SlabDimension duplicate = original.Duplicate() as SlabDimension;
 
       // 2 check that duplicate has duplicated values
-      //Assert.Equal(shortTerm, duplicate.ShortTerm);
-      //Assert.Equal(longTerm, duplicate.LongTerm);
-      //Assert.Equal(vibration, duplicate.Vibration);
-      //Assert.Equal(shrinkage, duplicate.Shrinkage);
-      //Assert.True(duplicate.UserDefined);
+      Assert.Equal(800, duplicate.StartPosition.As(lengthUnit));
+      Assert.Equal(250, duplicate.OverallDepth.As(lengthUnit));
+      Assert.Equal(310, duplicate.AvailableWidthLeft.As(lengthUnit));
+      Assert.Equal(300, duplicate.AvailableWidthRight.As(lengthUnit));
+      Assert.Equal(250, duplicate.EffectiveWidthLeft.As(lengthUnit));
+      Assert.Equal(240, duplicate.EffectiveWidthRight.As(lengthUnit));
+      Assert.True(duplicate.TaperedToNext);
 
       //// 3 make some changes to duplicate
-      //duplicate.ShortTerm = 6;
-      //duplicate.LongTerm = 18;
-      //duplicate.Vibration = 5.39;
-      //duplicate.Shrinkage = 0;
+      duplicate.StartPosition = new Length(6, lengthUnit);
+      duplicate.OverallDepth = new Length(18, lengthUnit);
+      duplicate.AvailableWidthLeft = new Length(5.39, lengthUnit);
+      duplicate.AvailableWidthRight = new Length(0, lengthUnit);
+      duplicate.TaperedToNext = false;
+      duplicate.EffectiveWidthLeft = new Length(2, lengthUnit);
+      duplicate.EffectiveWidthRight = new Length(4, lengthUnit);
 
       //// 4 check that duplicate has set changes
-      //Assert.Equal(6, duplicate.ShortTerm);
-      //Assert.Equal(18, duplicate.LongTerm);
-      //Assert.Equal(5.39, duplicate.Vibration);
-      //Assert.Equal(0, duplicate.Shrinkage);
+      Assert.Equal(6, duplicate.StartPosition.As(lengthUnit));
+      Assert.Equal(18, duplicate.OverallDepth.As(lengthUnit));
+      Assert.Equal(5.39, duplicate.AvailableWidthLeft.As(lengthUnit));
+      Assert.Equal(0, duplicate.AvailableWidthRight.As(lengthUnit));
+      Assert.Equal(2, duplicate.EffectiveWidthLeft.As(lengthUnit));
+      Assert.Equal(4, duplicate.EffectiveWidthRight.As(lengthUnit));
+      Assert.False(duplicate.TaperedToNext);
 
       //// 5 check that original has not been changed
-      //Assert.Equal(shortTerm, original.ShortTerm);
-      //Assert.Equal(longTerm, original.LongTerm);
-      //Assert.Equal(vibration, original.Vibration);
-      //Assert.Equal(shrinkage, original.Shrinkage);
-      //Assert.True(original.UserDefined);
+      Assert.Equal(800, original.StartPosition.As(lengthUnit));
+      Assert.Equal(250, original.OverallDepth.As(lengthUnit));
+      Assert.Equal(310, original.AvailableWidthLeft.As(lengthUnit));
+      Assert.Equal(300, original.AvailableWidthRight.As(lengthUnit));
+      Assert.Equal(250, original.EffectiveWidthLeft.As(lengthUnit));
+      Assert.Equal(240, original.EffectiveWidthRight.As(lengthUnit));
+      Assert.True(original.TaperedToNext);
     }
   }
 }

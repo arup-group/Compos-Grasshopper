@@ -9,6 +9,6 @@
     IDesignOptions DesignOptions { get; }
     ISafetyFactors SafetyFactors { get; }
 
-    string ToCoaString();
+    string ToCoaString(string name);
   }
 }

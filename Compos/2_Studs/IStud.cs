@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnitsNet.Units;
 
 namespace ComposAPI
 {
@@ -15,7 +16,7 @@ namespace ComposAPI
     double MinSavingMultipleZones { get; }
     bool CheckStudSpacing { get; }
     StudSpacingType StudSpacingType { get; }
-    
-    string ToCoaString();
+
+    string ToCoaString(string name, ForceUnit forceUnit, PressureUnit stressUnit, LengthUnit lengthGeometryUnit, LengthUnit lengthSectionUnit, Code designCode);
   }
 }

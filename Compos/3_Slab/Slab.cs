@@ -83,7 +83,8 @@ namespace ComposAPI
             break;
 
           default:
-            throw new Exception("Unable to convert " + line + " to Compos Slab.");
+            // do we not want to just continue here? or is the incoming coaString pre-filtered for only slab parts?
+            throw new Exception("Unable to convert " + line + " to Compos Slab."); 
         }
       }
     }

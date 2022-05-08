@@ -14,7 +14,7 @@ namespace ComposAPI
     public ISupports ConstructionStageSupports { get; set; }
     public ISupports FinalStageSupports { get; set; }
     public bool TopFlangeRestrained { get; set; }
-    private bool finalSupportsSet;
+    internal bool finalSupportsSet;
 
     #region constructors
     public Restraint()

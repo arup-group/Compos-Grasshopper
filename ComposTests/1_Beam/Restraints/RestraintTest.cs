@@ -68,9 +68,10 @@ namespace ComposAPI.Tests
       constructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds = true;
       constructionStageSupports.SecondaryMemberIntermediateRestraint = true;
       constructionStageSupports.IntermediateRestraintPositions = IntermediateRestraint.None;
-      constructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds = false;
-      constructionStageSupports.SecondaryMemberIntermediateRestraint = false;
-      constructionStageSupports.IntermediateRestraintPositions = IntermediateRestraint.Mid__Span;
+      Supports finalStageSupports = duplicate.FinalStageSupports as Supports;
+      finalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds = false;
+      finalStageSupports.SecondaryMemberIntermediateRestraint = false;
+      finalStageSupports.IntermediateRestraintPositions = IntermediateRestraint.Mid__Span;
 
       // 4 check that duplicate has set changes
       Assert.False(duplicate.TopFlangeRestrained);
@@ -89,10 +90,14 @@ namespace ComposAPI.Tests
       Assert.Equal(IntermediateRestraint.None, original.FinalStageSupports.IntermediateRestraintPositions);
       Assert.True(original.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.True(original.FinalStageSupports.SecondaryMemberIntermediateRestraint);
+    }
 
-      // 1 create with new constructor and duplicate
-      original = TestConstructorNoFinalSupports();
-      duplicate = original.Duplicate() as Restraint;
+    [Fact]
+    public void TestDuplicate2()
+    {
+      // 1 create with constructor and duplicate
+      Restraint original = TestConstructorNoFinalSupports();
+      Restraint duplicate = original.Duplicate() as Restraint;
 
       // 2 check that duplicate has duplicated values
       Assert.False(duplicate.TopFlangeRestrained);

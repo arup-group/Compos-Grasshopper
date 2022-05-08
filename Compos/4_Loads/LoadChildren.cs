@@ -132,7 +132,7 @@ namespace ComposAPI
     public enum SupportSide { Left, Right };
     public SupportSide Support { get; set; }
     public MemberLoad() { this.m_type = LoadType.MemberLoad; }
-    public MemberLoad(Length position, string memberName, SupportSide supportSide)
+    public MemberLoad(string memberName, SupportSide supportSide, Length position)
     {
       this.Position = position;
       this.MemberName = memberName;

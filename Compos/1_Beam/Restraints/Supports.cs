@@ -21,17 +21,22 @@ namespace ComposAPI
   {
     public bool SecondaryMemberIntermediateRestraint { get; set; }
     public bool BothFlangesFreeToRotateOnPlanAtEnds { get; set; }
-    public List<Length> CustomIntermediateRestraintPositions
+    public List<Length> CustomIntermediateRestraintPositions { get; set; }
+    public IntermediateRestraint IntermediateRestraintPositions
     {
-      get { return this.m_custompositions; }
+      get 
+      {
+        if (CustomIntermediateRestraintPositions != null)
+          return IntermediateRestraint.Custom;
+        else
+          return m_intermediateRestraints; 
+      }
       set
       {
-        this.IntermediateRestraintPositions = IntermediateRestraint.Custom;
-        this.m_custompositions = value;
+        this.m_intermediateRestraints = value;
       }
     }
-    private List<Length> m_custompositions = null;
-    public IntermediateRestraint IntermediateRestraintPositions { get; set; }
+    private IntermediateRestraint m_intermediateRestraints;
 
     #region constructors
     public Supports()

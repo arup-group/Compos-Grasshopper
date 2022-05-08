@@ -83,10 +83,16 @@ namespace ComposAPI.Tests
       Assert.True(original.SecondaryMemberIntermediateRestraint);
       Assert.False(original.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.Null(original.CustomIntermediateRestraintPositions);
+    }
 
-      // 1 create with new constructor and duplicate
-      original = TestSupportConstructorCustom(1, 2, 3, false, true);
-      duplicate = original.Duplicate() as Supports;
+    [Fact]
+    public void TestSupportDuplicate2()
+    {
+      LengthUnit unit = LengthUnit.Millimeter;
+
+      // 1 create with constructor and duplicate
+      Supports original = TestSupportConstructorCustom(1, 2, 3, false, true);
+      Supports duplicate = original.Duplicate() as Supports;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(IntermediateRestraint.Custom, duplicate.IntermediateRestraintPositions);

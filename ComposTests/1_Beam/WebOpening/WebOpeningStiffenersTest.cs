@@ -104,10 +104,16 @@ namespace ComposAPI.Tests
       Assert.Equal(15, original.BottomStiffenerThickness.Millimeters);
       Assert.False(original.isBothSides);
       Assert.False(original.isNotch);
+    }
 
-      // 1 create with new constructor and duplicate
-      original = TestConstructorStiffenersNotch(27, 77, 14, true);
-      duplicate = original.Duplicate() as WebOpeningStiffeners;
+    [Fact]
+    public void TestStiffenerDuplicate2()
+    {
+      LengthUnit unit = LengthUnit.Millimeter;
+
+      // 1 create with constructor and duplicate
+      WebOpeningStiffeners original = TestConstructorStiffenersNotch(27, 77, 14, true);
+      WebOpeningStiffeners duplicate = original.Duplicate() as WebOpeningStiffeners;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(27, duplicate.DistanceFrom.Millimeters);

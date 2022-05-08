@@ -173,7 +173,6 @@ namespace ComposAPI.Tests
       return webOpening;
     }
 
-    // 1 setup inputs
     [Fact]
     public void TestDuplicate()
     {
@@ -235,10 +234,14 @@ namespace ComposAPI.Tests
       Assert.Equal(15, original.OpeningStiffeners.BottomStiffenerThickness.Millimeters);
       Assert.False(original.OpeningStiffeners.isBothSides);
       Assert.False(original.OpeningStiffeners.isNotch);
+    }
 
-      // 1 create with new constructor and duplicate
-      original = TestConstructorCircularWebOpeningWithStiffener(300, 7000, 150);
-      duplicate = original.Duplicate() as WebOpening;
+    [Fact]
+    public void TestDuplicate2()
+    {
+      // 1 create with constructor and duplicate
+      WebOpening original = TestConstructorCircularWebOpeningWithStiffener(300, 7000, 150);
+      WebOpening duplicate = original.Duplicate() as WebOpening;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(OpeningType.Circular, duplicate.WebOpeningType);

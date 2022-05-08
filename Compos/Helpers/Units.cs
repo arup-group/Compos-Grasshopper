@@ -193,6 +193,76 @@ namespace ComposAPI
         }
       }
     }
+    public static ForcePerLengthUnit GetForcePerLengthUnit(ForceUnit forceUnit, LengthUnit lengthUnit)
+    {
+      switch (lengthUnit)
+      {
+        case LengthUnit.Millimeter:
+          switch (forceUnit)
+          {
+            case ForceUnit.Newton:
+              return ForcePerLengthUnit.NewtonPerMillimeter;
+            case ForceUnit.Kilonewton:
+              return ForcePerLengthUnit.KilonewtonPerMillimeter;
+            case ForceUnit.Meganewton:
+              return ForcePerLengthUnit.MeganewtonPerMillimeter;
+            case ForceUnit.TonneForce:
+              return ForcePerLengthUnit.TonneForcePerMillimeter;
+            default:
+              return ForcePerLengthUnit.Undefined;
+          }
+        case LengthUnit.Centimeter:
+          switch (forceUnit)
+          {
+            case ForceUnit.Newton:
+              return ForcePerLengthUnit.NewtonPerCentimeter;
+            case ForceUnit.Kilonewton:
+              return ForcePerLengthUnit.KilonewtonPerCentimeter;
+            case ForceUnit.Meganewton:
+              return ForcePerLengthUnit.MeganewtonPerCentimeter;
+            case ForceUnit.TonneForce:
+              return ForcePerLengthUnit.TonneForcePerCentimeter;
+            default:
+              return ForcePerLengthUnit.Undefined;
+          }
+        case LengthUnit.Meter:
+          switch (forceUnit)
+          {
+            case ForceUnit.Newton:
+              return ForcePerLengthUnit.NewtonPerMeter;
+            case ForceUnit.Kilonewton:
+              return ForcePerLengthUnit.KilonewtonPerMeter;
+            case ForceUnit.Meganewton:
+              return ForcePerLengthUnit.MeganewtonPerMeter;
+            case ForceUnit.TonneForce:
+              return ForcePerLengthUnit.TonneForcePerMeter;
+            default:
+              return ForcePerLengthUnit.Undefined;
+          }
+        case LengthUnit.Foot:
+          switch (forceUnit)
+          {
+            case ForceUnit.PoundForce:
+              return ForcePerLengthUnit.PoundForcePerFoot;
+            case ForceUnit.KilopoundForce:
+              return ForcePerLengthUnit.KilopoundForcePerFoot;
+            default:
+              return ForcePerLengthUnit.Undefined;
+          }
+        case LengthUnit.Inch:
+          switch (forceUnit)
+          {
+            case ForceUnit.PoundForce:
+              return ForcePerLengthUnit.PoundForcePerInch;
+            case ForceUnit.KilopoundForce:
+              return ForcePerLengthUnit.KilopoundForcePerInch;
+            default:
+              return ForcePerLengthUnit.Undefined;
+          }
+        default:
+          return ForcePerLengthUnit.Undefined;
+      }
+    }
 
     public static List<string> FilteredForcePerLengthUnits = new List<string>()
       {
@@ -223,6 +293,77 @@ namespace ComposAPI
     public static MomentUnit MomentUnit { get; set; } = MomentUnit.KilonewtonMeter;
 
     public static List<string> FilteredMomentUnits = Enum.GetNames(typeof(MomentUnit)).ToList();
+
+    public static MomentUnit GetMomentUnit(ForceUnit forceUnit, LengthUnit lengthUnit)
+    {
+      switch (lengthUnit)
+      {
+        case LengthUnit.Millimeter:
+          switch (forceUnit)
+          {
+            case ForceUnit.Newton:
+              return MomentUnit.NewtonMillimeter;
+            case ForceUnit.Kilonewton:
+              return MomentUnit.KilonewtonMillimeter;
+            case ForceUnit.Meganewton:
+              return MomentUnit.MeganewtonMillimeter;
+            case ForceUnit.TonneForce:
+              return MomentUnit.TonneForceMillimeter;
+            default:
+              return MomentUnit.Undefined;
+          }
+        case LengthUnit.Centimeter:
+          switch (forceUnit)
+          {
+            case ForceUnit.Newton:
+              return MomentUnit.NewtonCentimeter;
+            case ForceUnit.Kilonewton:
+              return MomentUnit.KilonewtonCentimeter;
+            case ForceUnit.Meganewton:
+              return MomentUnit.MeganewtonCentimeter;
+            case ForceUnit.TonneForce:
+              return MomentUnit.TonneForceCentimeter;
+            default:
+              return MomentUnit.Undefined;
+          }
+        case LengthUnit.Meter:
+          switch (forceUnit)
+          {
+            case ForceUnit.Newton:
+              return MomentUnit.NewtonMeter;
+            case ForceUnit.Kilonewton:
+              return MomentUnit.KilonewtonMeter;
+            case ForceUnit.Meganewton:
+              return MomentUnit.MeganewtonMeter;
+            case ForceUnit.TonneForce:
+              return MomentUnit.TonneForceMeter;
+            default:
+              return MomentUnit.Undefined;
+          }
+        case LengthUnit.Foot:
+          switch (forceUnit)
+          {
+            case ForceUnit.PoundForce:
+              return MomentUnit.PoundForceFoot;
+            case ForceUnit.KilopoundForce:
+              return MomentUnit.KilopoundForceFoot;
+            default:
+              return MomentUnit.Undefined;
+          }
+        case LengthUnit.Inch:
+          switch (forceUnit)
+          {
+            case ForceUnit.PoundForce:
+              return MomentUnit.PoundForceInch;
+            case ForceUnit.KilopoundForce:
+              return MomentUnit.KilopoundForceInch;
+            default:
+              return MomentUnit.Undefined;
+          }
+        default:
+          return MomentUnit.Undefined;
+      }
+    }
     #endregion
 
     #region stress
@@ -328,6 +469,73 @@ namespace ComposAPI
         }
       }
     }
+
+    public static PressureUnit GetForcePerAreaUnit(ForceUnit forceUnit, LengthUnit lengthUnit)
+    {
+      switch (lengthUnit)
+      {
+        case LengthUnit.Millimeter:
+          switch (forceUnit)
+          {
+            case ForceUnit.Newton:
+              return PressureUnit.NewtonPerSquareMillimeter;
+            case ForceUnit.Kilonewton:
+              return PressureUnit.KilonewtonPerSquareMillimeter;
+            case ForceUnit.TonneForce:
+              return PressureUnit.TonneForcePerSquareMillimeter;
+            default:
+              return PressureUnit.Undefined;
+          }
+        case LengthUnit.Centimeter:
+          switch (forceUnit)
+          {
+            case ForceUnit.Newton:
+              return PressureUnit.NewtonPerSquareCentimeter;
+            case ForceUnit.Kilonewton:
+              return PressureUnit.KilonewtonPerSquareCentimeter;
+            case ForceUnit.TonneForce:
+              return PressureUnit.TonneForcePerSquareCentimeter;
+            default:
+              return PressureUnit.Undefined;
+          }
+        case LengthUnit.Meter:
+          switch (forceUnit)
+          {
+            case ForceUnit.Newton:
+              return PressureUnit.NewtonPerSquareMeter;
+            case ForceUnit.Kilonewton:
+              return PressureUnit.KilonewtonPerSquareMeter;
+            case ForceUnit.Meganewton:
+              return PressureUnit.MeganewtonPerSquareMeter;
+            case ForceUnit.TonneForce:
+              return PressureUnit.TonneForcePerSquareMeter;
+            default:
+              return PressureUnit.Undefined;
+          }
+        case LengthUnit.Foot:
+          switch (forceUnit)
+          {
+            case ForceUnit.PoundForce:
+              return PressureUnit.PoundForcePerSquareFoot;
+            case ForceUnit.KilopoundForce:
+              return PressureUnit.KilopoundForcePerSquareFoot;
+            default:
+              return PressureUnit.Undefined;
+          }
+        case LengthUnit.Inch:
+          switch (forceUnit)
+          {
+            case ForceUnit.PoundForce:
+              return PressureUnit.PoundForcePerSquareInch;
+            case ForceUnit.KilopoundForce:
+              return PressureUnit.KilopoundForcePerSquareInch;
+            default:
+              return PressureUnit.Undefined;
+          }
+        default:
+          return PressureUnit.Undefined;
+      }
+    }
     #endregion
 
     #region mass
@@ -361,6 +569,70 @@ namespace ComposAPI
 
         Density density = mass / vol;
         return density.Unit;
+      }
+    }
+    public static DensityUnit GetDensityUnit(MassUnit massUnit, LengthUnit lengthUnit)
+    {
+      switch (lengthUnit)
+      {
+        case LengthUnit.Millimeter:
+          switch (massUnit)
+          {
+            case MassUnit.Gram:
+              return DensityUnit.GramPerCubicMillimeter;
+            case MassUnit.Kilogram:
+              return DensityUnit.KilogramPerCubicMillimeter;
+            case MassUnit.Tonne:
+              return DensityUnit.TonnePerCubicMillimeter;
+            default:
+              return DensityUnit.Undefined;
+          }
+        case LengthUnit.Centimeter:
+          switch (massUnit)
+          {
+            case MassUnit.Gram:
+              return DensityUnit.GramPerCubicCentimeter;
+            case MassUnit.Kilogram:
+              return DensityUnit.KilogramPerCubicCentimeter;
+            case MassUnit.Tonne:
+              return DensityUnit.TonnePerCubicCentimeter;
+            default:
+              return DensityUnit.Undefined;
+          }
+        case LengthUnit.Meter:
+          switch (massUnit)
+          {
+            case MassUnit.Gram:
+              return DensityUnit.GramPerCubicMeter;
+            case MassUnit.Kilogram:
+              return DensityUnit.KilogramPerCubicMeter;
+            case MassUnit.Tonne:
+              return DensityUnit.TonnePerCubicMeter;
+            default:
+              return DensityUnit.Undefined;
+          }
+        case LengthUnit.Foot:
+          switch (massUnit)
+          {
+            case MassUnit.Pound:
+              return DensityUnit.PoundPerCubicFoot;
+            case MassUnit.Kilopound:
+              return DensityUnit.KilopoundPerCubicFoot;
+            default:
+              return DensityUnit.Undefined;
+          }
+        case LengthUnit.Inch:
+          switch (massUnit)
+          {
+            case MassUnit.Pound:
+              return DensityUnit.PoundPerCubicInch;
+            case MassUnit.Kilopound:
+              return DensityUnit.KilopoundPerCubicInch;
+            default:
+              return DensityUnit.Undefined;
+          }
+        default:
+          return DensityUnit.Undefined;
       }
     }
     public static List<string> FilteredDensityUnits = new List<string>()
