@@ -24,7 +24,7 @@ namespace ComposAPI
     {
       ComposUnits units = new ComposUnits
       {
-        Angle = AngleUnit.Radian,
+        Angle = AngleUnit.Degree,
         Density = Units.DensityUnit,
         Force = Units.ForceUnit,
         Length = Units.LengthUnitGeometry,

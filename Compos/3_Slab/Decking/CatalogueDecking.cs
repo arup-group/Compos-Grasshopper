@@ -52,7 +52,7 @@ namespace ComposAPI
       this.Profile = parameters[3];
       this.Grade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), parameters[4]);
       DeckingConfiguration deckingConfiguration = new DeckingConfiguration();
-      deckingConfiguration.Angle = new Angle(Convert.ToDouble(parameters[5], noComma), units.Angle);
+      deckingConfiguration.Angle = new Angle(Convert.ToDouble(parameters[5], noComma), AngleUnit.Degree); // COA string always in degrees
 
       if (parameters[6] == "DECKING_JOINTED")
         deckingConfiguration.IsDiscontinous = true;
@@ -74,7 +74,10 @@ namespace ComposAPI
       parameters.Add(this.Catalogue);
       parameters.Add(this.Profile);
       parameters.Add(this.Grade.ToString());
-      parameters.Add(this.DeckingConfiguration.Angle.ToUnit(units.Angle).ToString());
+      parameters.Add(
+        CoaHelper.FormatSignificantFigures(
+          this.DeckingConfiguration.Angle.ToUnit(AngleUnit.Degree).Value, 6).ToString()); 
+      // COA string always in degrees
 
       if (this.DeckingConfiguration.IsDiscontinous)
         parameters.Add("DECKING_JOINTED");
