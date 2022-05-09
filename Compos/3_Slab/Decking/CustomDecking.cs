@@ -12,6 +12,7 @@ namespace ComposAPI
   public class CustomDecking : Decking
   {
     public Pressure Strength { get; set; } // decking material characteristic strength
+    
     public CustomDecking()
     {
       this.m_type = DeckingType.Custom;
@@ -31,19 +32,18 @@ namespace ComposAPI
       this.m_type = DeckingType.Custom;
     }
 
-    #region coa interop
-    internal CustomDecking(List<string> parameters, AngleUnit angleUnit, LengthUnit lengthUnit, PressureUnit pressureUnit)
+    internal CustomDecking(List<string> parameters, ComposUnits units)
     {
-      this.Strength = new Pressure(Convert.ToDouble(parameters[3]), pressureUnit);
+      this.Strength = new Pressure(Convert.ToDouble(parameters[3]), units.Stress);
       DeckingConfiguration deckingConfiguration = new DeckingConfiguration();
-      deckingConfiguration.Angle = new Angle(Convert.ToDouble(parameters[4]), angleUnit);
-      this.b1 = new Length(Convert.ToDouble(parameters[5]), lengthUnit);
-      this.b2 = new Length(Convert.ToDouble(parameters[6]), lengthUnit);
-      this.b3 = new Length(Convert.ToDouble(parameters[7]), lengthUnit);
-      this.Depth =  new Length(Convert.ToDouble(parameters[8]), lengthUnit);
-      this.Thickness  = new Length(Convert.ToDouble(parameters[9]), lengthUnit);
-      this.b4 = new Length(Convert.ToDouble(parameters[10]), lengthUnit);
-      this.b5 = new Length(Convert.ToDouble(parameters[11]), lengthUnit);
+      deckingConfiguration.Angle = new Angle(Convert.ToDouble(parameters[4]), units.Angle);
+      this.b1 = new Length(Convert.ToDouble(parameters[5]), units.Length);
+      this.b2 = new Length(Convert.ToDouble(parameters[6]), units.Length);
+      this.b3 = new Length(Convert.ToDouble(parameters[7]), units.Length);
+      this.Depth = new Length(Convert.ToDouble(parameters[8]), units.Length);
+      this.Thickness = new Length(Convert.ToDouble(parameters[9]), units.Length);
+      this.b4 = new Length(Convert.ToDouble(parameters[10]), units.Length);
+      this.b5 = new Length(Convert.ToDouble(parameters[11]), units.Length);
 
       if (parameters[12] == "DECKING_JOINTED")
         deckingConfiguration.IsDiscontinous = true;
@@ -57,7 +57,8 @@ namespace ComposAPI
       this.DeckingConfiguration = deckingConfiguration;
     }
 
-    internal override string ToCoaString(string name, AngleUnit angleUnit, LengthUnit lengthUnit, PressureUnit pressureUnit)
+    #region coa interop
+    public override string ToCoaString(string name, ComposUnits units)
     {
       List<string> parameters = new List<string>();
       parameters.Add("DECKING_USER");
@@ -65,15 +66,15 @@ namespace ComposAPI
 
       // NO_DECKING ??
       parameters.Add("USER_DEFINED");
-      parameters.Add(this.Strength.ToUnit(pressureUnit).ToString());
-      parameters.Add(this.DeckingConfiguration.Angle.ToUnit(angleUnit).ToString());
-      parameters.Add(this.b1.ToUnit(lengthUnit).ToString());
-      parameters.Add(this.b2.ToUnit(lengthUnit).ToString());
-      parameters.Add(this.b3.ToUnit(lengthUnit).ToString());
-      parameters.Add(this.Depth.ToUnit(lengthUnit).ToString());
-      parameters.Add(this.Thickness.ToUnit(lengthUnit).ToString());
-      parameters.Add(this.b4.ToUnit(lengthUnit).ToString());
-      parameters.Add(this.b5.ToUnit(lengthUnit).ToString());
+      parameters.Add(this.Strength.ToUnit(units.Stress).ToString());
+      parameters.Add(this.DeckingConfiguration.Angle.ToUnit(units.Angle).ToString());
+      parameters.Add(this.b1.ToUnit(units.Section).ToString());
+      parameters.Add(this.b2.ToUnit(units.Section).ToString());
+      parameters.Add(this.b3.ToUnit(units.Section).ToString());
+      parameters.Add(this.Depth.ToUnit(units.Section).ToString());
+      parameters.Add(this.Thickness.ToUnit(units.Section).ToString());
+      parameters.Add(this.b4.ToUnit(units.Section).ToString());
+      parameters.Add(this.b5.ToUnit(units.Section).ToString());
 
       if (this.DeckingConfiguration.IsDiscontinous)
         parameters.Add("DECKING_JOINTED");
@@ -89,6 +90,7 @@ namespace ComposAPI
     }
     #endregion
 
+    #region
     public override string ToString()
     {
       string distanceB1 = (this.b1.Value == 0) ? "" : "b1:" + this.b1.ToString().Replace(" ", string.Empty);
@@ -103,5 +105,6 @@ namespace ComposAPI
       string joined = string.Join(" ", new List<string>() { distanceB1, distanceB2, distanceB3, distanceB4, distanceB5, depth, thickness, stress });
       return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');
     }
+    #endregion
   }
 }

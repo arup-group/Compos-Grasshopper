@@ -59,17 +59,17 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal SlabDimension(List<string> parameters, LengthUnit unit)
+    internal SlabDimension(List<string> parameters, ComposUnits units)
     {
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       if (parameters.Count < 10)
       {
         throw new Exception("Unable to convert " + parameters + " to Compos Slab Dimension.");
       }
-      this.StartPosition = new Length(Convert.ToDouble(parameters[4], noComma), unit);
-      this.OverallDepth = new Length(Convert.ToDouble(parameters[5], noComma), unit);
-      this.AvailableWidthLeft = new Length(Convert.ToDouble(parameters[6], noComma), unit);
-      this.AvailableWidthRight = new Length(Convert.ToDouble(parameters[7], noComma), unit);
+      this.StartPosition = new Length(Convert.ToDouble(parameters[4], noComma), units.Length);
+      this.OverallDepth = new Length(Convert.ToDouble(parameters[5], noComma), units.Length);
+      this.AvailableWidthLeft = new Length(Convert.ToDouble(parameters[6], noComma), units.Length);
+      this.AvailableWidthRight = new Length(Convert.ToDouble(parameters[7], noComma), units.Length);
 
       if (parameters[8] == "TAPERED_YES")
         this.TaperedToNext = true;
@@ -83,8 +83,8 @@ namespace ComposAPI
         {
           throw new Exception("Unable to convert " + parameters + " to Compos Slab Dimension.");
         }
-        this.EffectiveWidthLeft = new Length(Convert.ToDouble(parameters[9], noComma), unit);
-        this.EffectiveWidthRight = new Length(Convert.ToDouble(parameters[10], noComma), unit);
+        this.EffectiveWidthLeft = new Length(Convert.ToDouble(parameters[9], noComma), units.Length);
+        this.EffectiveWidthRight = new Length(Convert.ToDouble(parameters[10], noComma), units.Length);
       }
     }
 
@@ -97,7 +97,7 @@ namespace ComposAPI
     /// <param name="index"></param>
     /// <param name="lengthUnit"></param>
     /// <returns></returns>
-    public string ToCoaString(string name, int num, int index, LengthUnit lengthUnit)
+    public string ToCoaString(string name, int num, int index, ComposUnits units)
     {
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
 
@@ -106,16 +106,16 @@ namespace ComposAPI
       parameters.Add(name);
       parameters.Add(Convert.ToString(num));
       parameters.Add(Convert.ToString(index));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(lengthUnit).Value, 6));
-      parameters.Add(String.Format(noComma, "{0:0.000000}", this.OverallDepth.ToUnit(lengthUnit).Value));
-      parameters.Add(String.Format(noComma, "{0:0.00000}", this.AvailableWidthLeft.ToUnit(lengthUnit).Value));
-      parameters.Add(String.Format(noComma, "{0:0.00000}", this.AvailableWidthRight.ToUnit(lengthUnit).Value));
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(units.Length).Value, 6));
+      parameters.Add(String.Format(noComma, "{0:0.000000}", this.OverallDepth.ToUnit(units.Length).Value));
+      parameters.Add(String.Format(noComma, "{0:0.00000}", this.AvailableWidthLeft.ToUnit(units.Length).Value));
+      parameters.Add(String.Format(noComma, "{0:0.00000}", this.AvailableWidthRight.ToUnit(units.Length).Value));
       CoaHelper.AddParameter(parameters, "TAPERED", this.TaperedToNext);
       CoaHelper.AddParameter(parameters, "EFFECTIVE_WIDTH", this.UserEffectiveWidth);
       if (this.UserEffectiveWidth)
       {
-        parameters.Add(String.Format(noComma, "{0:0.00000}", this.EffectiveWidthLeft.ToUnit(lengthUnit).Value));
-        parameters.Add(String.Format(noComma, "{0:0.00000}", this.EffectiveWidthRight.ToUnit(lengthUnit).Value));
+        parameters.Add(String.Format(noComma, "{0:0.00000}", this.EffectiveWidthLeft.ToUnit(units.Length).Value));
+        parameters.Add(String.Format(noComma, "{0:0.00000}", this.EffectiveWidthRight.ToUnit(units.Length).Value));
       }
       return CoaHelper.CreateString(parameters);
     }

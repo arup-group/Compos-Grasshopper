@@ -23,6 +23,6 @@ namespace ComposAPI
     bool isCatalogue { get; }
     string SectionDescription { get; }
 
-    string ToCoaString(string name, int num, int index, LengthUnit lengthUnit);
+    string ToCoaString(string name, int num, int index, ComposUnits units);
   }
 }

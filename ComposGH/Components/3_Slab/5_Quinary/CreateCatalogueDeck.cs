@@ -40,7 +40,7 @@ namespace ComposGH.Components
     private bool First = true;
     string Catalogue = null;
     string Profile = null;
-    private CatalogueDecking.DeckingSteelGrade SteelGrade = CatalogueDecking.DeckingSteelGrade.S350;
+    private DeckingSteelGrade SteelGrade = DeckingSteelGrade.S350;
     // Catalogues
     List<string> CatalogueNames = SqlReader.GetDeckCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"));
 
@@ -66,7 +66,7 @@ namespace ComposGH.Components
         Profile = SelectedItems[1];
 
         // steel
-        DropdownItems.Add(Enum.GetValues(typeof(CatalogueDecking.DeckingSteelGrade)).Cast<CatalogueDecking.DeckingSteelGrade>().Select(x => x.ToString()).ToList());
+        DropdownItems.Add(Enum.GetValues(typeof(DeckingSteelGrade)).Cast<DeckingSteelGrade>().Select(x => x.ToString()).ToList());
         SelectedItems.Add(SteelGrade.ToString());
 
         First = false;
@@ -95,7 +95,7 @@ namespace ComposGH.Components
 
       if(i ==2)
       {
-        SteelGrade = (CatalogueDecking.DeckingSteelGrade)Enum.Parse(typeof(CatalogueDecking.DeckingSteelGrade), SelectedItems[i]);
+        SteelGrade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), SelectedItems[i]);
       }
 
         (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -109,7 +109,7 @@ namespace ComposGH.Components
       SectionList = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), Catalogue);
       Catalogue = SelectedItems[0];
       Profile = SelectedItems[1];
-      SteelGrade = (CatalogueDecking.DeckingSteelGrade)Enum.Parse(typeof(CatalogueDecking.DeckingSteelGrade), SelectedItems[2]);
+      SteelGrade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), SelectedItems[2]);
 
       CreateAttributes();
       ExpireSolution(true);

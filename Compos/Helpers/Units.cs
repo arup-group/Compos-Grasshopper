@@ -108,7 +108,7 @@ namespace ComposAPI
     #endregion
 
     #region force
-    public static ForceUnit ForceUnit { get; set; } = ForceUnit.Kilonewton;
+    public static ForceUnit ForceUnit { get; set; } = ForceUnit.Newton;
 
     public static List<string> FilteredForceUnits = new List<string>()
         {
@@ -372,7 +372,7 @@ namespace ComposAPI
       get { return m_stress; }
       set { m_stress = value; }
     }
-    private static PressureUnit m_stress = PressureUnit.Megapascal;
+    private static PressureUnit m_stress = PressureUnit.NewtonPerSquareMeter;
     public static List<string> FilteredStressUnits = new List<string>()
       {
         PressureUnit.Pascal.ToString(),

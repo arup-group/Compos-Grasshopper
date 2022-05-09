@@ -43,24 +43,24 @@ namespace ComposAPI
       // to do - implement from coa string method
     }
 
-    public string ToCoaString(string name, Code code, DensityUnit densityUnit, LengthUnit lengthUnit, PressureUnit pressureUnit)
+    public string ToCoaString(string name, Code code, ComposUnits units)
     {
       List<string> parameters = new List<string>();
       parameters.Add(CoaIdentifier.BeamSpanLength);
       parameters.Add(name);
       // span number always 1?
       parameters.Add(Convert.ToString(1));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.Length.ToUnit(lengthUnit).Value, 5));
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.Length.ToUnit(units.Length).Value, 5));
 
       string str = CoaHelper.CreateString(parameters);
       str += this.Restraint.ToCoaString();
-      str += this.Material.ToCoaString(name, code, densityUnit, pressureUnit);
+      str += this.Material.ToCoaString(name, code, units);
 
       int num = 1;
       int index = this.BeamSections.Count + 1;
       foreach (IBeamSection section in this.BeamSections)
       {
-        str += section.ToCoaString(name, num, index, lengthUnit);
+        str += section.ToCoaString(name, num, index, units);
         num++;
       }
 

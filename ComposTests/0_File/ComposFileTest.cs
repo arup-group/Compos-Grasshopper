@@ -21,6 +21,8 @@ namespace ComposAPI.Tests
       IAutomation automation = file.Open(pathName);
 
       Assert.NotNull(automation); 
+
+      automation.Close(); 
     }
 
     [Fact]
@@ -33,6 +35,8 @@ namespace ComposAPI.Tests
       IAutomation automation = file.Open(pathName);
 
       Assert.NotNull(automation);
+      
+      automation.Close();
     }
 
   }

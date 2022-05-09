@@ -194,7 +194,7 @@ namespace ComposAPI
 
     }
 
-    public string ToCoaString(string name, ForceUnit forceUnit, LengthUnit lengthUnit)
+    public string ToCoaString(string name, ComposUnits units)
     {
       // | LOAD | name |
       string str = "LOAD" + '\t' + name + '\t';
@@ -208,7 +208,7 @@ namespace ComposAPI
           PointLoad pointLoad = (PointLoad)this;
           // | type |
           str += "Point" + '\t';
-          unit = forceUnit;
+          unit = units.Force;
           // | ConsDead1 |
           str += CoaHelper.FormatSignificantFigures(pointLoad.Load.ConstantDead.ToUnit(unit).Value, 6) + '\t';
           // | ConsLive1 |
@@ -218,7 +218,7 @@ namespace ComposAPI
           // | FinalLive1 |
           str += CoaHelper.FormatSignificantFigures(pointLoad.Load.FinalLive.ToUnit(unit).Value, 6) + '\t';
           // | Dist1 |
-          str += CoaHelper.FormatSignificantFigures(pointLoad.Load.Position.ToUnit(lengthUnit).Value, 6) + '\t';
+          str += CoaHelper.FormatSignificantFigures(pointLoad.Load.Position.ToUnit(units.Length).Value, 6) + '\t';
 
           break;
 
@@ -230,9 +230,9 @@ namespace ComposAPI
           // | Distribution |
           str += (uniformLoad.Distribution == LoadDistribution.Line) ? "Line" + '\t' : "Area" + '\t';
           if (uniformLoad.Distribution == LoadDistribution.Line)
-            unit = Units.GetForcePerLengthUnit(forceUnit, lengthUnit);
+            unit = Units.GetForcePerLengthUnit(units.Force, units.Length);
           else
-            unit = Units.GetForcePerAreaUnit(forceUnit, lengthUnit);
+            unit = Units.GetForcePerAreaUnit(units.Force, units.Length);
           // | ConsDead1 |
           str += CoaHelper.FormatSignificantFigures(uniformLoad.Load.ConstantDead.ToUnit(unit).Value, 6) + '\t';
           // | ConsLive1 |
@@ -252,9 +252,9 @@ namespace ComposAPI
           // | Distribution |
           str += (linearLoad.Distribution == LoadDistribution.Line) ? "Line" + '\t' : "Area" + '\t';
           if (linearLoad.Distribution == LoadDistribution.Line)
-            unit = Units.GetForcePerLengthUnit(forceUnit, lengthUnit);
+            unit = Units.GetForcePerLengthUnit(units.Force, units.Length);
           else
-            unit = Units.GetForcePerAreaUnit(forceUnit, lengthUnit);
+            unit = Units.GetForcePerAreaUnit(units.Force, units.Length);
           // | ConsDead1 |
           str += CoaHelper.FormatSignificantFigures(linearLoad.LoadW1.ConstantDead.ToUnit(unit).Value, 6) + '\t';
           // | ConsLive1 |
@@ -281,9 +281,9 @@ namespace ComposAPI
           // | Distribution |
           str += (triLinearLoad.Distribution == LoadDistribution.Line) ? "Line" + '\t' : "Area" + '\t';
           if (triLinearLoad.Distribution == LoadDistribution.Line)
-            unit = Units.GetForcePerLengthUnit(forceUnit, lengthUnit);
+            unit = Units.GetForcePerLengthUnit(units.Force, units.Length);
           else
-            unit = Units.GetForcePerAreaUnit(forceUnit, lengthUnit);
+            unit = Units.GetForcePerAreaUnit(units.Force, units.Length);
           // | ConsDead1 |
           str += CoaHelper.FormatSignificantFigures(triLinearLoad.LoadW1.ConstantDead.ToUnit(unit).Value, 6) + '\t';
           // | ConsLive1 |
@@ -293,7 +293,7 @@ namespace ComposAPI
           // | FinalLive1 |
           str += CoaHelper.FormatSignificantFigures(triLinearLoad.LoadW1.FinalLive.ToUnit(unit).Value, 6) + '\t';
           // | Dist1 |
-          str += CoaHelper.FormatSignificantFigures(triLinearLoad.LoadW1.Position.ToUnit(lengthUnit).Value, 6) + '\t';
+          str += CoaHelper.FormatSignificantFigures(triLinearLoad.LoadW1.Position.ToUnit(units.Length).Value, 6) + '\t';
           // | ConsDead2 |
           str += CoaHelper.FormatSignificantFigures(triLinearLoad.LoadW2.ConstantDead.ToUnit(unit).Value, 6) + '\t';
           // | ConsLive2 |
@@ -303,7 +303,7 @@ namespace ComposAPI
           // | FinalLive@ |
           str += CoaHelper.FormatSignificantFigures(triLinearLoad.LoadW2.FinalLive.ToUnit(unit).Value, 6) + '\t';
           // | Dist2 |
-          str += CoaHelper.FormatSignificantFigures(triLinearLoad.LoadW2.Position.ToUnit(lengthUnit).Value, 6) + '\t';
+          str += CoaHelper.FormatSignificantFigures(triLinearLoad.LoadW2.Position.ToUnit(units.Length).Value, 6) + '\t';
           break;
 
         case LoadType.Patch:
@@ -314,9 +314,9 @@ namespace ComposAPI
           // | Distribution |
           str += (patchLoad.Distribution == LoadDistribution.Line) ? "Line" + '\t' : "Area" + '\t';
           if (patchLoad.Distribution == LoadDistribution.Line)
-            unit = Units.GetForcePerLengthUnit(forceUnit, lengthUnit);
+            unit = Units.GetForcePerLengthUnit(units.Force, units.Length);
           else
-            unit = Units.GetForcePerAreaUnit(forceUnit, lengthUnit);
+            unit = Units.GetForcePerAreaUnit(units.Force, units.Length);
           // | ConsDead1 |
           str += CoaHelper.FormatSignificantFigures(patchLoad.LoadW1.ConstantDead.ToUnit(unit).Value, 6) + '\t';
           // | ConsLive1 |
@@ -326,7 +326,7 @@ namespace ComposAPI
           // | FinalLive1 |
           str += CoaHelper.FormatSignificantFigures(patchLoad.LoadW1.FinalLive.ToUnit(unit).Value, 6) + '\t';
           // | Dist1 |
-          str += CoaHelper.FormatSignificantFigures(patchLoad.LoadW1.Position.ToUnit(lengthUnit).Value, 6) + '\t';
+          str += CoaHelper.FormatSignificantFigures(patchLoad.LoadW1.Position.ToUnit(units.Length).Value, 6) + '\t';
           // | ConsDead2 |
           str += CoaHelper.FormatSignificantFigures(patchLoad.LoadW2.ConstantDead.ToUnit(unit).Value, 6) + '\t';
           // | ConsLive2 |
@@ -336,7 +336,7 @@ namespace ComposAPI
           // | FinalLive@ |
           str += CoaHelper.FormatSignificantFigures(patchLoad.LoadW2.FinalLive.ToUnit(unit).Value, 6) + '\t';
           // | Dist2 |
-          str += CoaHelper.FormatSignificantFigures(patchLoad.LoadW2.Position.ToUnit(lengthUnit).Value, 6) + '\t';
+          str += CoaHelper.FormatSignificantFigures(patchLoad.LoadW2.Position.ToUnit(units.Length).Value, 6) + '\t';
           break;
 
         case LoadType.MemberLoad:
@@ -349,7 +349,7 @@ namespace ComposAPI
           // | support |
           str += memberLoad.Support.ToString() + '\t';
           // | pos |
-          str += CoaHelper.FormatSignificantFigures(memberLoad.Position.ToUnit(lengthUnit).Value, 6) + '\t';
+          str += CoaHelper.FormatSignificantFigures(memberLoad.Position.ToUnit(units.Length).Value, 6) + '\t';
           break;
 
         case LoadType.Axial:
@@ -357,7 +357,7 @@ namespace ComposAPI
           AxialLoad axialLoad = (AxialLoad)this;
           // | type |
           str += "Axial" + '\t';
-          unit = forceUnit;
+          unit = units.Force;
           // | ConsDead1 |
           str += CoaHelper.FormatSignificantFigures(axialLoad.LoadW1.ConstantDead.ToUnit(unit).Value, 6) + '\t';
           // | ConsLive1 |
@@ -367,7 +367,7 @@ namespace ComposAPI
           // | FinalLive1 |
           str += CoaHelper.FormatSignificantFigures(axialLoad.LoadW1.FinalLive.ToUnit(unit).Value, 6) + '\t';
           // | Dist1 |
-          str += CoaHelper.FormatSignificantFigures(axialLoad.Depth1.ToUnit(lengthUnit).Value, 6) + '\t';
+          str += CoaHelper.FormatSignificantFigures(axialLoad.Depth1.ToUnit(units.Length).Value, 6) + '\t';
           // | ConsDead2 |
           str += CoaHelper.FormatSignificantFigures(axialLoad.LoadW2.ConstantDead.ToUnit(unit).Value, 6) + '\t';
           // | ConsLive2 |
@@ -377,7 +377,7 @@ namespace ComposAPI
           // | FinalLive@ |
           str += CoaHelper.FormatSignificantFigures(axialLoad.LoadW2.FinalLive.ToUnit(unit).Value, 6) + '\t';
           // | Dist2 |
-          str += CoaHelper.FormatSignificantFigures(axialLoad.Depth2.ToUnit(lengthUnit).Value, 6) + '\t';
+          str += CoaHelper.FormatSignificantFigures(axialLoad.Depth2.ToUnit(units.Length).Value, 6) + '\t';
           break;
 
         default:

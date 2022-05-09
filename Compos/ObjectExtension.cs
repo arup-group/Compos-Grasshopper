@@ -58,12 +58,13 @@ namespace ComposAPI
                 Type enumrableType = enumerable.GetType().GetGenericArguments()[0];
 
                 // if type is a struct, we have to check the actual list items
+                // this will fail if list is actually of type "System.Object"..
                 if (enumrableType.ToString() is "System.Object")
                 {
                   if (enumerable.Any())
-                  {
                     enumrableType = enumerable.First().GetType();
-                  }
+                  else
+                    continue; // can´t get type of struct in empty list? 
                 }
 
                 Type genericListType = typeof(List<>).MakeGenericType(enumrableType);
