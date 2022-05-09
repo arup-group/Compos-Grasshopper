@@ -33,7 +33,7 @@ namespace ComposAPI.Tests
         slabDimension = new SlabDimension(new Length(startPosition, LengthUnit.Meter), new Length(overallDepth, LengthUnit.Meter), new Length(availableWidthLeft, LengthUnit.Meter), new Length(availableWidthRight, LengthUnit.Meter), new Length(effectiveWidthLeft, LengthUnit.Meter), new Length(effectiveWidthRight, LengthUnit.Meter), taperedToNext);
       else
         slabDimension = new SlabDimension(new Length(startPosition, LengthUnit.Meter), new Length(overallDepth, LengthUnit.Meter), new Length(availableWidthLeft, LengthUnit.Meter), new Length(availableWidthRight, LengthUnit.Meter), taperedToNext);
-      string coaString = slabDimension.ToCoaString("MEMBER-1", 4, index, LengthUnit.Meter);
+      string coaString = slabDimension.ToCoaString("MEMBER-1", 4, index, ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_coaString, coaString);
     }

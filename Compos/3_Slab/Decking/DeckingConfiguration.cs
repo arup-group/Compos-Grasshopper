@@ -7,9 +7,6 @@ using UnitsNet;
 
 namespace ComposAPI
 {
-  /// <summary>
-  /// Custom class: this class defines the basic properties and methods for our custom class
-  /// </summary>
   public class DeckingConfiguration : IDeckingConfiguration
   {
     public Angle Angle { get; set; } // decking angle relative to steel beam in degrees

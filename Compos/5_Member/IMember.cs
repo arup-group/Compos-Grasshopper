@@ -15,6 +15,6 @@ namespace ComposAPI
     string GridReference { get; }
     string Note { get; }
 
-    string ToCoaString(AngleUnit angleUnit, DensityUnit densityUnit, ForceUnit forceUnit, LengthUnit lengthGeometryUnit, LengthUnit lengthSectionUnit, PressureUnit pressureUnit, StrainUnit strainUnit);
+    string ToCoaString(ComposUnits units);
   }
 }

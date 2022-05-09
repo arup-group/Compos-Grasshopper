@@ -128,16 +128,16 @@ namespace ComposAPI
       }
     }
 
-    public string ToCoaString(string name, Code code, DensityUnit densityUnit, PressureUnit pressureUnit)
+    public string ToCoaString(string name, Code code, ComposUnits units)
     {
       List<string> steelParameters = new List<string>();
       if (this.isCustom)
       {
         steelParameters.Add("BEAM_STEEL_MATERIAL_USER");
         steelParameters.Add(name);
-        steelParameters.Add(CoaHelper.FormatSignificantFigures(this.fy.ToUnit(pressureUnit).Value, 6));
-        steelParameters.Add(CoaHelper.FormatSignificantFigures(this.E.ToUnit(pressureUnit).Value, 6));
-        steelParameters.Add(CoaHelper.FormatSignificantFigures(this.Density.ToUnit(densityUnit).Value, 6));
+        steelParameters.Add(CoaHelper.FormatSignificantFigures(this.fy.ToUnit(units.Stress).Value, 6));
+        steelParameters.Add(CoaHelper.FormatSignificantFigures(this.E.ToUnit(units.Stress).Value, 6));
+        steelParameters.Add(CoaHelper.FormatSignificantFigures(this.Density.ToUnit(units.Density).Value, 6));
 
         // this seems not to be working!
 

@@ -288,14 +288,14 @@ namespace ComposAPI
     }
     #endregion
 
-    public string ToCoaString(string name, int num, int index, LengthUnit lengthUnit)
+    public string ToCoaString(string name, int num, int index, ComposUnits units)
     {
       List<string> parameters = new List<string>();
       parameters.Add(CoaIdentifier.BeamSectionAtX);
       parameters.Add(name);
       parameters.Add(Convert.ToString(num));
       parameters.Add(Convert.ToString(index));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(lengthUnit).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(units.Length).Value, 6));
       parameters.Add(this.SectionDescription);
       CoaHelper.AddParameter(parameters, "TAPERED", this.TaperedToNext);
 

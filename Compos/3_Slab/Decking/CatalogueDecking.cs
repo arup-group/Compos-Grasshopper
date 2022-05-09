@@ -7,22 +7,23 @@ using UnitsNet.Units;
 
 namespace ComposAPI
 {
+  public enum DeckingSteelGrade
+  {
+    S280,
+    S350
+  }
+
   public class CatalogueDecking : Decking
   {
-    public enum DeckingSteelGrade
-    {
-      S280,
-      S350
-    }
-
     public string Catalogue { get; set; } //	catalogue name of the decking
     public string Profile { get; set; } // decking name
     public DeckingSteelGrade Grade { get; set; } //	decking material grade
+    public const string CoaIdentifier = "DECKING_CATALOGUE";
+
     public CatalogueDecking()
     {
       this.m_type = DeckingType.Catalogue;
     }
-    public const string CoaIdentifier = "DECKING_CATALOGUE";
 
     public CatalogueDecking(string catalogue, string profile, DeckingSteelGrade deckingSteelGrade, IDeckingConfiguration deckingConfiguration)
     {
@@ -44,14 +45,14 @@ namespace ComposAPI
     }
 
     #region coa interop
-    internal CatalogueDecking(List<string> parameters, AngleUnit angleUnit)
+    internal CatalogueDecking(List<string> parameters, ComposUnits units)
     {
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       this.Catalogue = parameters[2];
       this.Profile = parameters[3];
       this.Grade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), parameters[4]);
       DeckingConfiguration deckingConfiguration = new DeckingConfiguration();
-      deckingConfiguration.Angle = new Angle(Convert.ToDouble(parameters[5], noComma), angleUnit);
+      deckingConfiguration.Angle = new Angle(Convert.ToDouble(parameters[5], noComma), units.Angle);
 
       if (parameters[6] == "DECKING_JOINTED")
         deckingConfiguration.IsDiscontinous = true;
@@ -65,7 +66,7 @@ namespace ComposAPI
       this.DeckingConfiguration = deckingConfiguration;
     }
 
-    internal override string ToCoaString(string name, AngleUnit angleUnit, LengthUnit lengthUnit, PressureUnit pressureUnit)
+    public override string ToCoaString(string name, ComposUnits units)
     {
       List<string> parameters = new List<string>();
       parameters.Add("DECKING_CATALOGUE");
@@ -73,7 +74,7 @@ namespace ComposAPI
       parameters.Add(this.Catalogue);
       parameters.Add(this.Profile);
       parameters.Add(this.Grade.ToString());
-      parameters.Add(this.DeckingConfiguration.Angle.ToUnit(angleUnit).ToString());
+      parameters.Add(this.DeckingConfiguration.Angle.ToUnit(units.Angle).ToString());
 
       if (this.DeckingConfiguration.IsDiscontinous)
         parameters.Add("DECKING_JOINTED");
@@ -89,6 +90,7 @@ namespace ComposAPI
     }
     #endregion
 
+    #region methods
     public override string ToString()
     {
       string catalogue = this.Catalogue.ToString();
@@ -98,5 +100,6 @@ namespace ComposAPI
       string joined = string.Join(" ", new List<string>() { catalogue, profile, deckSteelType, deckConfiguration });
       return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');
     }
+    #endregion
   }
 }

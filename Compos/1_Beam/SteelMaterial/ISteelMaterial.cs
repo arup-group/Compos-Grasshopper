@@ -16,6 +16,6 @@ namespace ComposAPI
     SteelMaterialGrade Grade { get; }
     WeldMaterialGrade WeldGrade { get; }
 
-    string ToCoaString(string name, Code code, DensityUnit densityUnit, PressureUnit pressureUnit);
+    string ToCoaString(string name, Code code, ComposUnits units);
   }
 }

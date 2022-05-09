@@ -9,9 +9,6 @@ using Oasys.Units;
 
 namespace ComposAPI
 {
-  /// <summary>
-  /// Custom class: this class defines the basic properties and methods for our custom class
-  /// </summary>
   public class Slab : ISlab
   {
     public IConcreteMaterial Material { get; set; }
@@ -46,7 +43,7 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal Slab(string coaString, AngleUnit angleUnit, DensityUnit densityUnit, LengthUnit lengthUnit, PressureUnit pressureUnit, StrainUnit strainUnit)
+    internal Slab(string coaString, ComposUnits units)
     {
       List<string> lines = CoaHelper.SplitLines(coaString);
       foreach (string line in lines)
@@ -55,11 +52,11 @@ namespace ComposAPI
         switch (parameters[0])
         {
           case (CoaIdentifier.SlabConcreteMaterial):
-            this.Material = new ConcreteMaterial(lines, densityUnit, strainUnit);
+            this.Material = new ConcreteMaterial(lines, units);
             break;
 
           case (CoaIdentifier.SlabDimension):
-            SlabDimension dimension = new SlabDimension(parameters, lengthUnit);
+            SlabDimension dimension = new SlabDimension(parameters, units);
             this.Dimensions.Add(dimension);
             break;
 
@@ -72,12 +69,12 @@ namespace ComposAPI
             break;
 
           case (CoaIdentifier.DeckingCatalogue):
-            this.Decking = new CatalogueDecking(parameters, angleUnit);
+            this.Decking = new CatalogueDecking(parameters, units);
             break;
 
           case (CoaIdentifier.DeckingUser):
             if (parameters[2] == "USER_DEFINED")
-              this.Decking = new CustomDecking(parameters, angleUnit, lengthUnit, pressureUnit);
+              this.Decking = new CustomDecking(parameters, units);
             //else
               // do nothing
             break;
@@ -89,14 +86,14 @@ namespace ComposAPI
       }
     }
 
-    public string ToCoaString(string name, DensityUnit densityUnit, LengthUnit lengthUnit, StrainUnit strainUnit)
+    public string ToCoaString(string name, ComposUnits units)
     {
-      string str = this.Material.ToCoaString(name, densityUnit, strainUnit);
+      string str = this.Material.ToCoaString(name, units);
       int num = 1;
       int index = this.Dimensions.Count + 1;
       foreach (SlabDimension dimension in this.Dimensions)
       {
-        str += dimension.ToCoaString(name, num, index, lengthUnit);
+        str += dimension.ToCoaString(name, num, index, units);
         num++;
       }
       str += this.TransverseReinforcement.ToCoaString();
@@ -104,7 +101,7 @@ namespace ComposAPI
         str += this.MeshReinforcement.ToCoaString(name);
       if (this.Decking != null)
       {
-        str += this.Decking.ToCoaString(name);
+        str += this.Decking.ToCoaString(name, units);
       }
       return str;
     }
