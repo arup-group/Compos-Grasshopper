@@ -21,6 +21,6 @@ namespace ComposAPI
     Strain ShrinkageStrain { get; }
     bool UserStrain { get; }
 
-    string ToCoaString(string name, DensityUnit densityUnit, StrainUnit strainUnit);
+    string ToCoaString(string name, ComposUnits units);
   }
 }

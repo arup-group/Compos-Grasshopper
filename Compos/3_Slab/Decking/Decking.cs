@@ -13,6 +13,7 @@ namespace ComposAPI
     Custom,
     Catalogue
   }
+
   public class Decking : IDecking
   {
     public Length b1 { get; set; } // dimensions of decking see decking page of property wizard of the program
@@ -31,23 +32,17 @@ namespace ComposAPI
       // empty constructor
     }
 
-    #region coa interop
-
-    internal virtual string ToCoaString(string name, AngleUnit angleUnit, LengthUnit lengthUnit, PressureUnit pressureUnit)
-    {
-      return String.Empty;
-    }
-
-    #endregion
     public Decking(string coaString)
     {
       // to do - implement from coa string method
     }
 
-    public string ToCoaString(string name)
+    #region coa interop
+    public virtual string ToCoaString(string name, ComposUnits units)
     {
-      // to do - implement to coa string method
-      return string.Empty;
+      return String.Empty;
     }
+    #endregion
+
   }
 }

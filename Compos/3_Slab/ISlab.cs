@@ -12,6 +12,6 @@ namespace ComposAPI
     IMeshReinforcement MeshReinforcement { get; }
     IDecking Decking { get; }
 
-    string ToCoaString(string name, DensityUnit densityUnit, LengthUnit lengthUnit, StrainUnit strainUnit);
+    string ToCoaString(string name, ComposUnits units);
   }
 }

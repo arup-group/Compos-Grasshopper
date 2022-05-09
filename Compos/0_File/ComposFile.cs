@@ -147,7 +147,7 @@ namespace ComposAPI
             studGroupSpacings[parameters[1]].Add(custom);
           }
         }
-        
+
         if (parameters[0] == CoaIdentifier.StudSpecifications.StudNoZone |
           parameters[0] == CoaIdentifier.StudSpecifications.StudEC4 |
           parameters[0] == CoaIdentifier.StudSpecifications.StudNCCI |
@@ -172,7 +172,7 @@ namespace ComposAPI
       // add loads to members
       foreach (string name in loads.Keys)
         members[name].Loads = loads[name];
-      
+
       // add designcode to members
       foreach (string name in codes.Keys)
         members[name].DesignCode = codes[name];
@@ -203,9 +203,20 @@ namespace ComposAPI
 
     public string ToCoaString()
     {
+      ComposUnits units = new ComposUnits
+      {
+        Angle = AngleUnit.Degree,
+        Density = Units.DensityUnit,
+        Force = Units.ForceUnit,
+        Length = Units.LengthUnitGeometry,
+        Section = Units.LengthUnitSection,
+        Stress = Units.StressUnit,
+        Strain = Units.StrainUnit
+      };
+
       string coaString = "";
       foreach (IMember member in Members)
-        coaString += member.ToCoaString(AngleUnit.Radian, Units.DensityUnit, Units.ForceUnit, Units.LengthUnitGeometry, Units.LengthUnitSection, Units.StressUnit, Units.StrainUnit);
+        coaString += member.ToCoaString(units);
 
       return coaString;
     }

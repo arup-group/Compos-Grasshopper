@@ -300,7 +300,7 @@ namespace ComposAPI.Tests
       Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
 
       // Act
-      string coaString = stud.ToCoaString("MEMBER-1", ForceUnit.Newton, PressureUnit.NewtonPerSquareMeter, LengthUnit.Meter, LengthUnit.Millimeter, Code.BS5950_3_1_1990_Superseded);
+      string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.BS5950_3_1_1990_Superseded);
 
       // Assert
       Assert.Equal(expected_coaString, coaString);
@@ -321,7 +321,7 @@ namespace ComposAPI.Tests
       Stud stud = new Stud(dimensions, specs, 0.2, 0.85);
 
       // Act
-      string coaString = stud.ToCoaString("MEMBER-1", ForceUnit.Newton, PressureUnit.NewtonPerSquareMeter, LengthUnit.Meter, LengthUnit.Millimeter, Code.BS5950_3_1_1990_A1_2010);
+      string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.BS5950_3_1_1990_A1_2010);
 
       // Assert
       Assert.Equal(expected_coaString, coaString);
@@ -345,7 +345,7 @@ namespace ComposAPI.Tests
       Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
 
       // Act
-      string coaString = stud.ToCoaString("MEMBER-1", ForceUnit.Newton, PressureUnit.NewtonPerSquareMeter, LengthUnit.Meter, LengthUnit.Millimeter, Code.EN1994_1_1_2004);
+      string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.EN1994_1_1_2004);
 
       // Assert
       Assert.Equal(expected_coaString, coaString);
@@ -369,7 +369,7 @@ namespace ComposAPI.Tests
       Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Min_Num_of_Studs);
 
       // Act
-      string coaString = stud.ToCoaString("MEMBER-1", ForceUnit.Newton, PressureUnit.NewtonPerSquareMeter, LengthUnit.Meter, LengthUnit.Millimeter, Code.EN1994_1_1_2004);
+      string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.EN1994_1_1_2004);
 
       // Assert
       Assert.Equal(expected_coaString, coaString);
@@ -397,7 +397,7 @@ namespace ComposAPI.Tests
       Stud stud = new Stud(dimensions, specs, spacing, true);
 
       // Act
-      string coaString = stud.ToCoaString("MEMBER-1", ForceUnit.Newton, PressureUnit.NewtonPerSquareMeter, LengthUnit.Meter, LengthUnit.Millimeter, Code.HKSUOS_2005);
+      string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.HKSUOS_2005);
 
       // Assert
       Assert.Equal(expected_coaString, coaString);
@@ -418,7 +418,7 @@ namespace ComposAPI.Tests
       Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
 
       // Act
-      string coaString = stud.ToCoaString("MEMBER-1", ForceUnit.Newton, PressureUnit.NewtonPerSquareMeter, LengthUnit.Meter, LengthUnit.Millimeter, Code.HKSUOS_2011);
+      string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.HKSUOS_2011);
 
       // Assert
       Assert.Equal(expected_coaString, coaString);
@@ -444,7 +444,7 @@ namespace ComposAPI.Tests
       Stud stud = new Stud(dimensions, specs, spacing, false);
 
       // Act
-      string coaString = stud.ToCoaString("MEMBER-1", ForceUnit.Newton, PressureUnit.NewtonPerSquareMeter, LengthUnit.Meter, LengthUnit.Millimeter, Code.AS_NZS2327_2017);
+      string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.AS_NZS2327_2017);
 
       // Assert
       Assert.Equal(expected_coaString, coaString);

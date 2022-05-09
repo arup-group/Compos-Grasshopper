@@ -13,7 +13,7 @@ namespace ComposAPI.Tests
     public void ToCoaStringTest1(double fy, double E, double density, bool isCustom, WeldMaterialGrade weldGrade, bool reductionFacorMpl, Code code, string expected_coaString)
     {
       SteelMaterial steelMaterial = new SteelMaterial(new Pressure(fy, PressureUnit.NewtonPerSquareMeter), new Pressure(E, PressureUnit.NewtonPerSquareMeter), new Density(density, DensityUnit.KilogramPerCubicMeter), weldGrade, isCustom, reductionFacorMpl);
-      string coaString = steelMaterial.ToCoaString("MEMBER-1", code, DensityUnit.KilogramPerCubicMeter, PressureUnit.NewtonPerSquareMeter);
+      string coaString = steelMaterial.ToCoaString("MEMBER-1", code, ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_coaString, coaString);
     }
@@ -24,7 +24,7 @@ namespace ComposAPI.Tests
     public void ToCoaStringTest2(SteelMaterialGrade steelMaterialGrade, Code code, string expected_coaString)
     {
       SteelMaterial steelMaterial = new SteelMaterial(steelMaterialGrade);
-      string coaString = steelMaterial.ToCoaString("MEMBER-1", code, DensityUnit.KilogramPerCubicMeter, PressureUnit.NewtonPerSquareMeter);
+      string coaString = steelMaterial.ToCoaString("MEMBER-1", code, ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_coaString, coaString);
     }

@@ -55,7 +55,7 @@ namespace ComposAPI
       
     }
 
-    public string ToCoaString(AngleUnit angleUnit, DensityUnit densityUnit, ForceUnit forceUnit, LengthUnit lengthGeometryUnit, LengthUnit lengthSectionUnit, PressureUnit stressUnit, StrainUnit strainUnit)
+    public string ToCoaString(ComposUnits units)
     {
       List<string> parameters = new List<string>();
       parameters.Add(CoaIdentifier.MemberTitle);
@@ -68,15 +68,15 @@ namespace ComposAPI
       coaString += this.DesignCode.DesignOptions.ToCoaString(this.Name, this.DesignCode.Code);
 
       // not yet sure what units are neccessary here
-      coaString += this.Beam.ToCoaString(this.Name, this.DesignCode.Code, densityUnit, lengthGeometryUnit, stressUnit);
+      coaString += this.Beam.ToCoaString(this.Name, this.DesignCode.Code, units);
 
-      coaString += this.Slab.ToCoaString(this.Name, densityUnit, lengthGeometryUnit, strainUnit);
+      coaString += this.Slab.ToCoaString(this.Name, units);
 
       // 
-      coaString += this.Stud.ToCoaString(this.Name, forceUnit, stressUnit, lengthGeometryUnit, lengthSectionUnit, this.DesignCode.Code);
+      coaString += this.Stud.ToCoaString(this.Name, units, this.DesignCode.Code);
 
       foreach (ILoad load in this.Loads)
-        coaString += load.ToCoaString(this.Name, forceUnit, lengthGeometryUnit);
+        coaString += load.ToCoaString(this.Name, units);
 
       // EC4_DESIGN_OPTION seems to be part of DesignCode..
 

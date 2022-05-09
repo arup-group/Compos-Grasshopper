@@ -38,7 +38,7 @@ namespace ComposAPI.Tests
       eRatio.Shrinkage = shrinkage;
       eRatio.UserDefined = userDefined;
       ConcreteMaterial concreteMaterial = new ConcreteMaterial(grade, type, new Density(dryDensity, DensityUnit.KilogramPerCubicMeter), userDensity, eRatio, imposedLoadPercentage);
-      string coaString = concreteMaterial.ToCoaString("MEMBER-1", DensityUnit.KilogramPerCubicMeter, StrainUnit.MilliStrain);
+      string coaString = concreteMaterial.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_coaString, coaString);
     }
@@ -57,7 +57,7 @@ namespace ComposAPI.Tests
       eRatio.Shrinkage = shrinkage;
       eRatio.UserDefined = userDefined;
       ConcreteMaterial concreteMaterial = new ConcreteMaterial(grade, densityClass, new Density(dryDensity, DensityUnit.KilogramPerCubicMeter), userDensity, eRatio, imposedLoadPercentage, new Strain(shrinkageStrain, StrainUnit.MilliStrain), userStrain);
-      string coaString = concreteMaterial.ToCoaString("MEMBER-1", DensityUnit.KilogramPerCubicMeter, StrainUnit.MilliStrain);
+      string coaString = concreteMaterial.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_coaString, coaString);
     }

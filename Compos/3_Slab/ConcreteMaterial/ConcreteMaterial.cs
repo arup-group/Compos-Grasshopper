@@ -176,7 +176,7 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal ConcreteMaterial(List<string> parameters, DensityUnit densityUnit, StrainUnit strainUnit)
+    internal ConcreteMaterial(List<string> parameters, ComposUnits units) 
     {
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       if (parameters[1].Length < 4)
@@ -195,7 +195,7 @@ namespace ComposAPI
       int i = 4;
       if (this.UserDensity)
       {
-        this.DryDensity = new Density(Convert.ToDouble(parameters[i], noComma), densityUnit);
+        this.DryDensity = new Density(Convert.ToDouble(parameters[i], noComma), units.Density);
         i++;
       }
 
@@ -207,7 +207,7 @@ namespace ComposAPI
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
-    public string ToCoaString(string name, DensityUnit densityUnit, StrainUnit strainUnit)
+    public string ToCoaString(string name, ComposUnits units)
     {
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
 
@@ -219,12 +219,12 @@ namespace ComposAPI
       if (this.UserDensity)
       {
         parameters.Add("USER_DENSITY");
-        parameters.Add(String.Format(noComma, "{0:0.00}", this.DryDensity.ToUnit(densityUnit).Value));
+        parameters.Add(String.Format(noComma, "{0:0.00}", this.DryDensity.ToUnit(units.Density).Value));
       }
       else
       {
         parameters.Add("CODE_DENSITY");
-        parameters.Add(String.Format(noComma, "{0:0.00}", this.DryDensity.ToUnit(densityUnit).Value));
+        parameters.Add(String.Format(noComma, "{0:0.00}", this.DryDensity.ToUnit(units.Density).Value));
         parameters.Add(this.Class.ToString().Replace("DC", ""));
       }
       parameters.Add(String.Format(noComma, "{0:0.000000}", this.ImposedLoadPercentage));
@@ -241,7 +241,7 @@ namespace ComposAPI
       if (this.UserStrain)
       {
         parameters.Add("USER_STRAIN");
-        parameters.Add(String.Format(noComma, "{0:0.000000000}", this.ShrinkageStrain.ToUnit(strainUnit).Value));
+        parameters.Add(String.Format(noComma, "{0:0.000000000}", this.ShrinkageStrain.ToUnit(units.Strain).Value));
       }
       else
         parameters.Add("CODE_STRAIN");

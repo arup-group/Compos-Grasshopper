@@ -21,7 +21,7 @@ namespace ComposAPI.Tests
     {
 
       BeamSection beamSection = new BeamSection();
-      beamSection.StartPosition = new Length(startPosition, LengthUnit.Millimeter);
+      beamSection.StartPosition = new Length(startPosition, LengthUnit.Meter);
       beamSection.Depth = new Length(depth, LengthUnit.Millimeter);
       beamSection.TopFlangeWidth = new Length(topFlangeWidth, LengthUnit.Millimeter);
       beamSection.BottomFlangeWidth = new Length(bottomFlangeWidth, LengthUnit.Millimeter);
@@ -33,7 +33,7 @@ namespace ComposAPI.Tests
       beamSection.SectionDescription = sectionDescription;
       beamSection.TaperedToNext = taperToNext;
 
-      string coaString = beamSection.ToCoaString("MEMBER-1", num, index, LengthUnit.Millimeter);
+      string coaString = beamSection.ToCoaString("MEMBER-1", num, index, ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_coaString, coaString);
     }
