@@ -16,7 +16,8 @@ namespace ComposAPI.Tests
     public void DuplicateTest1()
     {
       Force quantity = new Force(1, ForceUnit.Kilonewton);
-      TestObject grandChild = new TestObject(true, 1.0, 1, "a", TestEnum.Value1, quantity, new List<TestObject>());
+      List<IQuantity> quantityList = new List<IQuantity>() { Force.Zero, new Length(100, LengthUnit.Millimeter) };
+      TestObject grandChild = new TestObject(true, 1.0, 1, "a", TestEnum.Value1, quantity, new List<TestObject>(), quantityList);
       TestObject original = new TestObject(new TestObject(grandChild));
 
       object o = original.Duplicate();
@@ -28,14 +29,15 @@ namespace ComposAPI.Tests
       original.Children[0].Children[0].S = "z";
       original.Children[0].Children[0].TestEnum = TestEnum.None;
       original.Children[0].Children[0].Quantity = new Pressure(-1.0, PressureUnit.KilonewtonPerSquareMeter);
+      original.Children[0].Children[0].Structs.AddRange(new List<IQuantity>() { Force.Zero, new Length(100, LengthUnit.Millimeter) });
 
       Assert.Equal(1.0, duplicate.Children[0].Children[0].D);
       Assert.Equal(1, duplicate.Children[0].Children[0].I);
       Assert.Equal("a", duplicate.Children[0].Children[0].S);
       Assert.Equal(TestEnum.Value1, duplicate.Children[0].Children[0].TestEnum);
       Assert.Equal(quantity, duplicate.Children[0].Children[0].Quantity);
+      Assert.Equal(quantityList, duplicate.Children[0].Children[0].Structs);
     }
-
   }
 
   enum TestEnum
@@ -55,6 +57,7 @@ namespace ComposAPI.Tests
     internal TestEnum TestEnum { get; set; }
     internal IQuantity Quantity { get; set; }
     internal List<TestObject> Children { get; set; } = new List<TestObject>();
+    internal List<IQuantity> Structs { get; set; } = new List<IQuantity>();
 
     public TestObject() { }
 
@@ -68,7 +71,7 @@ namespace ComposAPI.Tests
       this.Children = children;
     }
 
-    internal TestObject(bool b, double d, int i, string s, TestEnum testEnum, IQuantity quantity, List<TestObject> children)
+    internal TestObject(bool b, double d, int i, string s, TestEnum testEnum, IQuantity quantity, List<TestObject> children, List<IQuantity> structs)
     {
       this.B = b;
       this.D = d;
@@ -77,6 +80,7 @@ namespace ComposAPI.Tests
       this.TestEnum = testEnum;
       this.Quantity = quantity;
       this.Children = children;
+      this.Structs = structs;
     }
   }
 }
