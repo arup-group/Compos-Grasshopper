@@ -34,7 +34,7 @@ namespace ComposAPI
       Dictionary<string, Member> members = new Dictionary<string, Member>();
       Dictionary<string, DesignCode> codes = new Dictionary<string, DesignCode>();
 
-      Dictionary<string, List<ILoad>> loads = new Dictionary<string, List<ILoad>>();
+      Dictionary<string, List<IBeamSection>> beamSections = new Dictionary<string, List<IBeamSection>>();
 
       Dictionary<string, Stud> studs = new Dictionary<string, Stud>();
       Dictionary<string, StudDimensions> studDimensions = new Dictionary<string, StudDimensions>();
@@ -42,15 +42,10 @@ namespace ComposAPI
       Dictionary<string, bool> studWelded = new Dictionary<string, bool>();
       Dictionary<string, StudSpecification> studSpecifications = new Dictionary<string, StudSpecification>();
       Dictionary<string, List<IStudGroupSpacing>> studGroupSpacings = new Dictionary<string, List<IStudGroupSpacing>>();
+      
+      Dictionary<string, List<ILoad>> loads = new Dictionary<string, List<ILoad>>();
 
-      AngleUnit angleUnit = AngleUnit.Degree;
-      MassUnit massUnit = MassUnit.Kilogram;
-      LengthUnit lengtGeometryUnit = LengthUnit.Meter;
-      LengthUnit lengtSectionUnit = LengthUnit.Millimeter;
-      LengthUnit lengtResultUnit = LengthUnit.Millimeter;
-      PressureUnit stressUnit = PressureUnit.NewtonPerSquareMeter;
-      StrainUnit strainUnit = StrainUnit.Ratio;
-      ForceUnit forceUnit = ForceUnit.Kilonewton;
+      ComposUnits units = ComposUnits.GetStandardUnits();
 
       List<string> lines = CoaHelper.SplitLines(coaString);
 
@@ -77,22 +72,22 @@ namespace ComposAPI
           switch (parameters[1])
           {
             case CoaIdentifier.Units.Force:
-              forceUnit = (ForceUnit)UnitParser.Default.Parse(parameters[2], typeof(ForceUnit));
+              units.Force = (ForceUnit)UnitParser.Default.Parse(parameters[2], typeof(ForceUnit));
               break;
             case CoaIdentifier.Units.Length_Geometry:
-              lengtGeometryUnit = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
+              units.Length = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
               break;
             case CoaIdentifier.Units.Length_Section:
-              lengtSectionUnit = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
+              units.Section = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
               break;
-            case CoaIdentifier.Units.Length_Results:
-              lengtResultUnit = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
-              break;
+            //case CoaIdentifier.Units.Length_Results:
+            //  lengtResultUnit = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
+              //break;
             case CoaIdentifier.Units.Stress:
-              stressUnit = (PressureUnit)UnitParser.Default.Parse(parameters[2], typeof(PressureUnit));
+              units.Stress = (PressureUnit)UnitParser.Default.Parse(parameters[2], typeof(PressureUnit));
               break;
             case CoaIdentifier.Units.Mass:
-              massUnit = (MassUnit)UnitParser.Default.Parse(parameters[2], typeof(MassUnit));
+              units.Mass = (MassUnit)UnitParser.Default.Parse(parameters[2], typeof(MassUnit));
               break;
           }
         }
@@ -104,21 +99,21 @@ namespace ComposAPI
           codes.Add(parameters[1], dc);
         }
 
-        // ### create loads ###
-        if (parameters[0] == CoaIdentifier.Load)
+        // ### beam sections ###
+        if (parameters[0] == CoaIdentifier.BeamSectionAtX)
         {
-          Load load = new Load().FromCoaString(parameters, forceUnit, lengtGeometryUnit);
-          List<ILoad> memLoads = new List<ILoad>();
-          if (!loads.ContainsKey(parameters[1]))
-            loads.Add(parameters[1], memLoads);
-          loads[parameters[1]].Add(load);
+          //BeamSection beamSection = new BeamSection(parameters, lengtGeometryUnit);
+          //List<IStudGroupSpacing> spacings = new List<IStudGroupSpacing>();
+          //if (!studGroupSpacings.ContainsKey(parameters[1]))
+          //  studGroupSpacings.Add(parameters[1], spacings);
+          //studGroupSpacings[parameters[1]].Add(custom);
         }
 
         // ### stud related lines ###
         if (parameters[0] == CoaIdentifier.StudDimensions.StudDefinition)
         {
           Code code = codes[parameters[1]].Code;
-          StudDimensions dimensions = new StudDimensions().FromCoaString(parameters, lengtSectionUnit, forceUnit, code);
+          StudDimensions dimensions = new StudDimensions().FromCoaString(parameters, units, code);
           studDimensions.Add(parameters[1], dimensions);
 
           bool isWelded = parameters.Last() == "WELDED_YES";
@@ -140,7 +135,7 @@ namespace ComposAPI
               studs.Add(parameters[1], stud);
             }
 
-            StudGroupSpacing custom = new StudGroupSpacing().FromCoaString(parameters, lengtGeometryUnit);
+            StudGroupSpacing custom = new StudGroupSpacing().FromCoaString(parameters, units);
             List<IStudGroupSpacing> spacings = new List<IStudGroupSpacing>();
             if (!studGroupSpacings.ContainsKey(parameters[1]))
               studGroupSpacings.Add(parameters[1], spacings);
@@ -156,14 +151,24 @@ namespace ComposAPI
           StudSpecification spec = new StudSpecification();
           if (studSpecifications.ContainsKey(parameters[1]))
             spec = studSpecifications[parameters[1]];
-          spec.FromCoaString(parameters, lengtGeometryUnit);
+          spec.FromCoaString(parameters, units);
           if (!studSpecifications.ContainsKey(parameters[1]))
             studSpecifications.Add(parameters[1], spec);
         }
         if (parameters[0] == CoaIdentifier.StudDimensions.StudGradeEC4)
         {
-          StudDimensions ecDims = new StudDimensions().FromCoaString(parameters, stressUnit);
+          StudDimensions ecDims = new StudDimensions().FromCoaString(parameters, units, Code.EN1994_1_1_2004);
           studECDimensions.Add(parameters[1], ecDims);
+        }
+
+        // ### loads ###
+        if (parameters[0] == CoaIdentifier.Load)
+        {
+          Load load = new Load().FromCoaString(parameters, units);
+          List<ILoad> memLoads = new List<ILoad>();
+          if (!loads.ContainsKey(parameters[1]))
+            loads.Add(parameters[1], memLoads);
+          loads[parameters[1]].Add(load);
         }
       }
 

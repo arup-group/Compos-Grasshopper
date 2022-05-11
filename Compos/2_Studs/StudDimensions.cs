@@ -202,7 +202,7 @@ namespace ComposAPI
       SetGradeFromStandard(standardGrade);
     }
 
-    internal StudDimensions FromCoaString(List<string> parameters, PressureUnit stressUnit)
+    internal StudDimensions FromCoaString(List<string> parameters, ComposUnits units, Code code)
     {
       //EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_NO	4.50000e+008
       //EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_YES	SD2_EN13918
@@ -211,16 +211,12 @@ namespace ComposAPI
         StandardGrade standardGrade = (StandardGrade)Enum.Parse(typeof(StandardGrade), parameters[3]);
         SetGradeFromStandard(standardGrade);
       }
-      if (parameters[2] == CoaIdentifier.StudDimensions.StudGradeEC4Custom)
+      else if (parameters[2] == CoaIdentifier.StudDimensions.StudGradeEC4Custom)
       {
         NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-        this.Fu = new Pressure(Convert.ToDouble(parameters[3], noComma), stressUnit);
+        this.Fu = new Pressure(Convert.ToDouble(parameters[3], noComma), units.Stress);
       }
-      return this;
-    }
-    internal StudDimensions FromCoaString(List<string> parameters, LengthUnit lengthSectionUnit, ForceUnit forceUnit, Code code)
-    {
-      if (parameters[2] == CoaIdentifier.StudDimensions.StudDimensionStandard)
+      else if (parameters[2] == CoaIdentifier.StudDimensions.StudDimensionStandard)
       {
         string size = "D" + parameters[3].Replace("/", "H");
         StandardSize standardSize = (StandardSize)Enum.Parse(typeof(StandardSize), size);
@@ -240,17 +236,15 @@ namespace ComposAPI
             break;
         }
       }
-
-      if (parameters[2] == CoaIdentifier.StudDimensions.StudDimensionCustom)
+      else if (parameters[2] == CoaIdentifier.StudDimensions.StudDimensionCustom)
       {
         NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-        this.Diameter = new Length(Convert.ToDouble(parameters[3], noComma), lengthSectionUnit);
-        this.Height = new Length(Convert.ToDouble(parameters[4], noComma), lengthSectionUnit);
-        this.CharacterStrength = new Force(Convert.ToDouble(parameters[5], noComma), forceUnit);
+        this.Diameter = new Length(Convert.ToDouble(parameters[3], noComma), units.Section);
+        this.Height = new Length(Convert.ToDouble(parameters[4], noComma), units.Section);
+        this.CharacterStrength = new Force(Convert.ToDouble(parameters[5], noComma), units.Force);
       }
       return this;
     }
-
     #endregion
 
     #region methods

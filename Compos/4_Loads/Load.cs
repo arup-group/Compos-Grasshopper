@@ -51,8 +51,10 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal Load FromCoaString(List<string> parameters, ForceUnit forceUnit, LengthUnit lengthUnit)
+    internal Load FromCoaString(List<string> parameters, ComposUnits units)
     {
+      ForceUnit forceUnit = units.Force;
+      LengthUnit lengthUnit = units.Length;
       ForcePerLengthUnit forcePerLengthUnit = Units.GetForcePerLengthUnit(forceUnit, lengthUnit);
       PressureUnit forcePerAreaUnit = Units.GetForcePerAreaUnit(forceUnit, lengthUnit);
 
