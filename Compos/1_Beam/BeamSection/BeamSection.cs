@@ -182,6 +182,10 @@ namespace ComposAPI
 
     public BeamSection(string profile)
     {
+      SetFromProfileString(profile);
+    }
+    private void SetFromProfileString(string profile)
+    {
       profile = profile.Replace(',', '.');
 
       if (profile.StartsWith("STD I"))
@@ -209,7 +213,6 @@ namespace ComposAPI
           this.BottomFlangeThickness = TopFlangeThickness;
           this.SectionDescription = profile;
           this.isCatalogue = false;
-
         }
         catch (Exception)
         {
@@ -267,7 +270,6 @@ namespace ComposAPI
       else
         throw new ArgumentException("Unrecognisable profile type. String must start with 'STD I', 'STD GI' or 'CAT'.");
     }
-
     private string unitString(LengthUnit unit)
     {
       switch (unit)
@@ -288,6 +290,25 @@ namespace ComposAPI
     }
     #endregion
 
+    #region coa interop
+    internal BeamSection(List<string> parameters, ComposUnits units)
+    {
+      //BEAM_SECTION_AT_X	MEMBER-1	3	1	0.000000	STD GI 200 189.2 222.25 8.5 12.7 12.7	TAPERED_YES
+      //BEAM_SECTION_AT_X MEMBER-1 3 2 6.00000 STD GI 730 189.2 222.25 8.5 12.7 12.7 TAPERED_YES
+      //BEAM_SECTION_AT_X MEMBER-1 3 3 12.0000 STD GI 200 189.2 222.25 8.5 12.7 12.7 TAPERED_YES
+      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+      
+      this.StartPosition = new Length(Convert.ToDouble(parameters[4], noComma), units.Length);
+      
+      SetFromProfileString(parameters[5]);
+      
+      // using StartsWith as string is the last parameter and can contain new line character: "TAPERED_YES\n"
+      if (parameters[6].StartsWith("TAPERED_YES")) 
+        TaperedToNext = true;
+      else
+        TaperedToNext = false;
+    }
+    
     public string ToCoaString(string name, int num, int index, ComposUnits units)
     {
       List<string> parameters = new List<string>();
@@ -303,6 +324,7 @@ namespace ComposAPI
 
       return coaString;
     }
+    #endregion
 
     #region methods
     public override string ToString()

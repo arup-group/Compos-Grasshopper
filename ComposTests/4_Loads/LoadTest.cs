@@ -468,7 +468,7 @@ namespace ComposAPI.Tests
       LengthUnit lengthUnit = LengthUnit.Millimeter;
 
       // Arrange
-      string expected_coaString = "LOAD	MEMBER-1	Member load	MEMBER-2	Right	0.002500\n";
+      string expected_coaString = "LOAD	MEMBER-1	Member load	MEMBER-2	Right	0.00250000\n";
       Load load = TestMemberLoadConstructor(2.5, "Member-2", MemberLoad.SupportSide.Right); // pos units in mm
       // Act
       string coaString = load.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());

@@ -2,13 +2,14 @@
 using UnitsNet;
 using UnitsNet.Units;
 using System.Collections.Generic;
+using ComposAPI.Helpers;
 
 namespace ComposAPI.Tests
 {
   public partial class RestraintTest
   {
     // 1 setup inputs
-    public static Supports construction = TestSupportConstructor(IntermediateRestraint.Mid__Span, false, false);
+    Supports construction = TestSupportConstructor(IntermediateRestraint.Mid__Span, false, false);
     Supports final = TestSupportConstructor(IntermediateRestraint.None, true, true);
     [Fact]
     public Restraint TestConstructor()
@@ -126,6 +127,94 @@ namespace ComposAPI.Tests
       Assert.False(original.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.True(original.ConstructionStageSupports.SecondaryMemberIntermediateRestraint);
       Assert.Null(original.FinalStageSupports);
+    }
+
+    [Theory]
+    [InlineData(true, IntermediateRestraint.None, true, true, false, IntermediateRestraint.None, true, true,
+"RESTRAINT_POINT	MEMBER-1	STANDARD	0\n" +
+"RESTRAINT_TOP_FALNGE	MEMBER-1	TOP_FLANGE_FIXED\n" +
+"RESTRAINT_2ND_BEAM	MEMBER-1	SEC_BEAM_AS_REST\n" +
+"END_FLANGE_FREE_ROTATE	MEMBER-1	FREE_TO_ROTATE\n" +
+"FINAL_RESTRAINT_POINT	MEMBER-1	STANDARD	0\n" +
+"FINAL_RESTRAINT_NOSTUD	MEMBER-1	NOSTUD_ZONE_LATERAL_FIXED\n" +
+"FINAL_RESTRAINT_2ND_BEAM	MEMBER-1	SEC_BEAM_AS_REST\n" +
+"FINAL_END_FLANGE_FREE_ROTATE	MEMBER-1	FREE_TO_ROTATE\n")]
+    [InlineData(false, IntermediateRestraint.Third_Points, false, false, true, IntermediateRestraint.None, true, true,
+"RESTRAINT_POINT	MEMBER-1	STANDARD	2\n" +
+"RESTRAINT_TOP_FALNGE	MEMBER-1	TOP_FLANGE_FREE\n" +
+"RESTRAINT_2ND_BEAM	MEMBER-1	2ND_BEAM_NOT_AS_REST\n" +
+"END_FLANGE_FREE_ROTATE	MEMBER-1	NOT_FREE_TO_ROTATE\n" +
+"FINAL_RESTRAINT_POINT	MEMBER-1	STANDARD	0\n" +
+"FINAL_RESTRAINT_NOSTUD	MEMBER-1	NOSTUD_ZONE_LATERAL_FREE\n" +
+"FINAL_RESTRAINT_2ND_BEAM	MEMBER-1	SEC_BEAM_AS_REST\n" +
+"FINAL_END_FLANGE_FREE_ROTATE	MEMBER-1	FREE_TO_ROTATE\n")]
+    [InlineData(true, IntermediateRestraint.None, true, true, true, IntermediateRestraint.Mid__Span, false, false,
+"RESTRAINT_POINT	MEMBER-1	STANDARD	0\n" +
+"RESTRAINT_TOP_FALNGE	MEMBER-1	TOP_FLANGE_FIXED\n" +
+"RESTRAINT_2ND_BEAM	MEMBER-1	SEC_BEAM_AS_REST\n" +
+"END_FLANGE_FREE_ROTATE	MEMBER-1	FREE_TO_ROTATE\n" +
+"FINAL_RESTRAINT_POINT	MEMBER-1	STANDARD	1\n" +
+"FINAL_RESTRAINT_NOSTUD	MEMBER-1	NOSTUD_ZONE_LATERAL_FREE\n" +
+"FINAL_RESTRAINT_2ND_BEAM	MEMBER-1	2ND_BEAM_NOT_AS_REST\n" +
+"FINAL_END_FLANGE_FREE_ROTATE	MEMBER-1	NOT_FREE_TO_ROTATE\n")]
+
+    public void StandardToCoaStringTest(bool topFlangeRestrained, IntermediateRestraint CSintermediateRestraintPositions, bool CSsecondaryMemberIntermediateRestraint, bool CSbothFlangesFreeToRotateOnPlanAtEnds, bool setFinal, IntermediateRestraint FSintermediateRestraintPositions, bool FSsecondaryMemberIntermediateRestraint, bool FSbothFlangesFreeToRotateOnPlanAtEnds, string expected_coaString)
+    {
+      Supports construction = TestSupportConstructor(CSintermediateRestraintPositions, CSsecondaryMemberIntermediateRestraint, CSbothFlangesFreeToRotateOnPlanAtEnds);
+      Supports final = TestSupportConstructor(FSintermediateRestraintPositions, FSsecondaryMemberIntermediateRestraint, FSbothFlangesFreeToRotateOnPlanAtEnds);
+      IRestraint restraint = (setFinal) ? new Restraint(topFlangeRestrained, construction, final) : new Restraint(topFlangeRestrained, construction);
+      string coaString = restraint.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
+
+      Assert.Equal(expected_coaString, coaString);
+    }
+
+    [Theory]
+    [InlineData(true, IntermediateRestraint.None, true, true, false, IntermediateRestraint.None, true, true,
+"RESTRAINT_POINT	MEMBER-1	STANDARD	0\n" +
+"RESTRAINT_TOP_FALNGE	MEMBER-1	TOP_FLANGE_FIXED\n" +
+"RESTRAINT_2ND_BEAM	MEMBER-1	SEC_BEAM_AS_REST\n" +
+"END_FLANGE_FREE_ROTATE	MEMBER-1	FREE_TO_ROTATE\n" +
+"FINAL_RESTRAINT_POINT	MEMBER-1	STANDARD	0\n" +
+"FINAL_RESTRAINT_NOSTUD	MEMBER-1	NOSTUD_ZONE_LATERAL_FIXED\n" +
+"FINAL_RESTRAINT_2ND_BEAM	MEMBER-1	SEC_BEAM_AS_REST\n" +
+"FINAL_END_FLANGE_FREE_ROTATE	MEMBER-1	FREE_TO_ROTATE\n")]
+    [InlineData(false, IntermediateRestraint.Third_Points, false, false, true, IntermediateRestraint.None, true, true,
+"RESTRAINT_POINT	MEMBER-1	STANDARD	2\n" +
+"RESTRAINT_TOP_FALNGE	MEMBER-1	TOP_FLANGE_FREE\n" +
+"RESTRAINT_2ND_BEAM	MEMBER-1	2ND_BEAM_NOT_AS_REST\n" +
+"END_FLANGE_FREE_ROTATE	MEMBER-1	NOT_FREE_TO_ROTATE\n" +
+"FINAL_RESTRAINT_POINT	MEMBER-1	STANDARD	0\n" +
+"FINAL_RESTRAINT_NOSTUD	MEMBER-1	NOSTUD_ZONE_LATERAL_FREE\n" +
+"FINAL_RESTRAINT_2ND_BEAM	MEMBER-1	SEC_BEAM_AS_REST\n" +
+"FINAL_END_FLANGE_FREE_ROTATE	MEMBER-1	FREE_TO_ROTATE\n")]
+    [InlineData(true, IntermediateRestraint.None, true, true, true, IntermediateRestraint.Mid__Span, false, false,
+"RESTRAINT_POINT	MEMBER-1	STANDARD	0\n" +
+"RESTRAINT_TOP_FALNGE	MEMBER-1	TOP_FLANGE_FIXED\n" +
+"RESTRAINT_2ND_BEAM	MEMBER-1	SEC_BEAM_AS_REST\n" +
+"END_FLANGE_FREE_ROTATE	MEMBER-1	FREE_TO_ROTATE\n" +
+"FINAL_RESTRAINT_POINT	MEMBER-1	STANDARD	1\n" +
+"FINAL_RESTRAINT_NOSTUD	MEMBER-1	NOSTUD_ZONE_LATERAL_FREE\n" +
+"FINAL_RESTRAINT_2ND_BEAM	MEMBER-1	2ND_BEAM_NOT_AS_REST\n" +
+"FINAL_END_FLANGE_FREE_ROTATE	MEMBER-1	NOT_FREE_TO_ROTATE\n")]
+
+    public void StandardFromCoaStringTest(bool expected_topFlangeRestrained, IntermediateRestraint expected_CSintermediateRestraintPositions, bool expected_CSsecondaryMemberIntermediateRestraint, bool expected_CSbothFlangesFreeToRotateOnPlanAtEnds, bool expected_setFinal, IntermediateRestraint expected_FSintermediateRestraintPositions, bool expected_FSsecondaryMemberIntermediateRestraint, bool expected_FSbothFlangesFreeToRotateOnPlanAtEnds, string coaString)
+    {
+      List<string> lines = CoaHelper.SplitLines(coaString);
+      Restraint restraint = new Restraint();
+      foreach (string line in lines)
+      {
+        List<string> parameters = CoaHelper.Split(line);
+        restraint.FromCoaString(parameters, ComposUnits.GetStandardUnits());
+      }
+
+      Assert.Equal(expected_topFlangeRestrained, restraint.TopFlangeRestrained);
+      Assert.Equal(expected_CSintermediateRestraintPositions, restraint.ConstructionStageSupports.IntermediateRestraintPositions);
+      Assert.Equal(expected_CSsecondaryMemberIntermediateRestraint, restraint.ConstructionStageSupports.SecondaryMemberIntermediateRestraint);
+      Assert.Equal(expected_CSbothFlangesFreeToRotateOnPlanAtEnds, restraint.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+      Assert.Equal(expected_setFinal, restraint.finalSupportsSet);
+      Assert.Equal(expected_FSintermediateRestraintPositions, restraint.FinalStageSupports.IntermediateRestraintPositions);
+      Assert.Equal(expected_FSsecondaryMemberIntermediateRestraint, restraint.FinalStageSupports.SecondaryMemberIntermediateRestraint);
+      Assert.Equal(expected_FSbothFlangesFreeToRotateOnPlanAtEnds, restraint.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
     }
   }
 }

@@ -53,16 +53,38 @@ namespace ComposAPI.Helpers
       return magnitude;
     }
 
-    public static string FormatSignificantFigures(double value, int significantFigures)
+    public static int GetInverseMagnitude(double num)
+    {
+      if (num == 0)
+        return 0;
+      int magnitude = 1;
+      while (num < 1)
+      {
+        magnitude--;
+        num *= 10;
+      }
+      return magnitude;
+    }
+
+    public static string FormatSignificantFigures(double value, int significantFigures, bool isExponential = false)
     {
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
 
       // if for instance 6 significant figures and value is above 1,000,000
       // compos coa is shown as 4.50000e+008 which is value.ToString("e6")
       if (value > Math.Pow(10, significantFigures))
-        return value.ToString("e" + (significantFigures-1), noComma);
+        return value.ToString("e" + (significantFigures - 1), noComma);
 
-      int decimalPlaces = Math.Max(0, significantFigures - GetMagnitude((int)value));
+      int magnitude;
+      if (value < 1 && value > -1)
+      {
+        magnitude = GetInverseMagnitude(value);
+      }
+      else
+      {
+        magnitude = GetMagnitude((int)value);
+      }
+      int decimalPlaces = Math.Max(0, significantFigures - magnitude);
       string format = "{0:0.";
       for (int i = 0; i < decimalPlaces; i++)
         format += "0";

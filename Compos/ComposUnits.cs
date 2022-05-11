@@ -12,9 +12,11 @@ namespace ComposAPI
   {
     public AngleUnit Angle { get; set; }
     public DensityUnit Density { get; set; }
+    public MassUnit Mass { get; set; }
     public ForceUnit Force { get; set; }
     public LengthUnit Length { get; set; }
     public LengthUnit Section { get; set; }
+    public LengthUnit Displacement { get; set; }
     public PressureUnit Stress { get; set; }
     public StrainUnit Strain { get; set; }
 
@@ -29,8 +31,10 @@ namespace ComposAPI
         Force = Units.ForceUnit,
         Length = Units.LengthUnitGeometry,
         Section = Units.LengthUnitSection,
+        Displacement = Units.LengthUnitResult,
         Stress = Units.StressUnit,
-        Strain = Units.StrainUnit
+        Strain = Units.StrainUnit,
+        Mass = Units.MassUnit
       };
       return units;
     }

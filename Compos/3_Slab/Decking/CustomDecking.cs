@@ -12,7 +12,7 @@ namespace ComposAPI
   public class CustomDecking : Decking
   {
     public Pressure Strength { get; set; } // decking material characteristic strength
-    
+
     public CustomDecking()
     {
       this.m_type = DeckingType.Custom;
@@ -66,15 +66,15 @@ namespace ComposAPI
 
       // NO_DECKING ??
       parameters.Add("USER_DEFINED");
-      parameters.Add(this.Strength.ToUnit(units.Stress).ToString());
-      parameters.Add(this.DeckingConfiguration.Angle.ToUnit(units.Angle).ToString());
-      parameters.Add(this.b1.ToUnit(units.Section).ToString());
-      parameters.Add(this.b2.ToUnit(units.Section).ToString());
-      parameters.Add(this.b3.ToUnit(units.Section).ToString());
-      parameters.Add(this.Depth.ToUnit(units.Section).ToString());
-      parameters.Add(this.Thickness.ToUnit(units.Section).ToString());
-      parameters.Add(this.b4.ToUnit(units.Section).ToString());
-      parameters.Add(this.b5.ToUnit(units.Section).ToString());
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.Strength.ToUnit(units.Stress).Value, 6, true));
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.DeckingConfiguration.Angle.ToUnit(AngleUnit.Degree).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.b1.ToUnit(units.Section).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.b2.ToUnit(units.Section).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.b3.ToUnit(units.Section).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.Depth.ToUnit(units.Section).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.Thickness.ToUnit(units.Section).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.b4.ToUnit(units.Section).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.b5.ToUnit(units.Section).Value, 6));
 
       if (this.DeckingConfiguration.IsDiscontinous)
         parameters.Add("DECKING_JOINTED");

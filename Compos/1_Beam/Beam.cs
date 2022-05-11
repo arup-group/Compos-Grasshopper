@@ -53,7 +53,8 @@ namespace ComposAPI
       parameters.Add(CoaHelper.FormatSignificantFigures(this.Length.ToUnit(units.Length).Value, 5));
 
       string str = CoaHelper.CreateString(parameters);
-      str += this.Restraint.ToCoaString();
+
+      str += this.Restraint.ToCoaString(name, units);
       str += this.Material.ToCoaString(name, code, units);
 
       int num = 1;

@@ -85,7 +85,7 @@ namespace ComposAPI
 
     #endregion
 
-    internal void FromCoaString(List<string> parameters, LengthUnit lengtGeometryUnit)
+    internal void FromCoaString(List<string> parameters, ComposUnits units)
     {
       //STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000
       //STUD_EC4_APPLY	MEMBER-1	YES
@@ -95,8 +95,8 @@ namespace ComposAPI
 
       if (parameters[0] == CoaIdentifier.StudSpecifications.StudNoZone)
       {
-        this.NoStudZoneStart = new Length(Convert.ToDouble(parameters[2], noComma), lengtGeometryUnit);
-        this.NoStudZoneEnd = new Length(Convert.ToDouble(parameters[3], noComma), lengtGeometryUnit);
+        this.NoStudZoneStart = new Length(Convert.ToDouble(parameters[2], noComma), units.Length);
+        this.NoStudZoneEnd = new Length(Convert.ToDouble(parameters[3], noComma), units.Length);
       }
 
       if (parameters[0] == CoaIdentifier.StudSpecifications.StudEC4)
@@ -114,7 +114,7 @@ namespace ComposAPI
       if (parameters[0] == CoaIdentifier.StudSpecifications.StudReinfPos)
       {
         this.SpecType = StudSpecType.EC4;
-        this.ReinforcementPosition = new Length(Convert.ToDouble(parameters[2], noComma), lengtGeometryUnit);
+        this.ReinforcementPosition = new Length(Convert.ToDouble(parameters[2], noComma), units.Length);
       }
     }
 
