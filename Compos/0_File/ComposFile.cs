@@ -102,11 +102,11 @@ namespace ComposAPI
         // ### beam sections ###
         if (parameters[0] == CoaIdentifier.BeamSectionAtX)
         {
-          //BeamSection beamSection = new BeamSection(parameters, lengtGeometryUnit);
-          //List<IStudGroupSpacing> spacings = new List<IStudGroupSpacing>();
-          //if (!studGroupSpacings.ContainsKey(parameters[1]))
-          //  studGroupSpacings.Add(parameters[1], spacings);
-          //studGroupSpacings[parameters[1]].Add(custom);
+          BeamSection beamSection = new BeamSection(parameters, units);
+          List<IBeamSection> sections = new List<IBeamSection>();
+          if (!beamSections.ContainsKey(parameters[1]))
+            beamSections.Add(parameters[1], sections);
+          beamSections[parameters[1]].Add(beamSection);
         }
 
         // ### stud related lines ###
@@ -174,13 +174,14 @@ namespace ComposAPI
 
       // ### Set data to members ###
 
-      // add loads to members
-      foreach (string name in loads.Keys)
-        members[name].Loads = loads[name];
-
+      
       // add designcode to members
       foreach (string name in codes.Keys)
         members[name].DesignCode = codes[name];
+
+      // add beam sections to members
+      //foreach (string name in beamSections.Keys)
+      //  members[name].Beam.BeamSections = beamSections[name];
 
       // add special ec4 stud grade to stud dimensions
       foreach (string name in studECDimensions.Keys)
@@ -200,6 +201,11 @@ namespace ComposAPI
       // add studs to members
       foreach (string name in studs.Keys)
         members[name].Stud = studs[name];
+
+      // add loads to members
+      foreach (string name in loads.Keys)
+        members[name].Loads = loads[name];
+
 
       this.Members = members.Values.Select(x => (IMember)x).ToList();
     }

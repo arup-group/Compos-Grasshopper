@@ -10,6 +10,6 @@
     ISupports FinalStageSupports { get; }
     bool TopFlangeRestrained { get; }
 
-    string ToCoaString();
+    string ToCoaString(string name, ComposUnits units);
   }
 }
