@@ -1,13 +1,13 @@
 ﻿using ComposAPI.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using UnitsNet;
 using UnitsNet.Units;
 
 namespace ComposAPI
 {
-  public enum SteelMaterialGrade
+  public enum StandardSteelGrade
   {
     S235,
     S275,
@@ -15,6 +15,7 @@ namespace ComposAPI
     S450,
     S460
   }
+
   public enum WeldMaterialGrade
   {
     None,
@@ -22,6 +23,7 @@ namespace ComposAPI
     Grade_42,
     Grade_50
   }
+  
 
   /// <summary>
   /// Steel Material for a <see cref="Beam"/>. Contains information about strength, density and Young's Modulus, as well as grade.
@@ -33,10 +35,10 @@ namespace ComposAPI
     public Density Density { get; set; } //	material density
     public bool isCustom { get; set; } 
     public bool ReductionFactorMpl { get; set; } //	Apply Reduction factor to the plastic moment capacity for S420 (EN) and S460 (EN) GRADES
-    public SteelMaterialGrade Grade { get; set; } // standard material grade
+    public StandardSteelGrade Grade { get; set; } // standard material grade
     public WeldMaterialGrade WeldGrade { get; set; } // welding material grade
 
-    private void SetValuesFromStandard(SteelMaterialGrade grade)
+    private void SetValuesFromStandard(StandardSteelGrade grade)
     {
       this.E = new Pressure(205, UnitsNet.Units.PressureUnit.Gigapascal);
       this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
@@ -45,27 +47,27 @@ namespace ComposAPI
 
       switch (grade)
       {
-        case SteelMaterialGrade.S235:
+        case StandardSteelGrade.S235:
           this.fy = new Pressure(235, UnitsNet.Units.PressureUnit.Megapascal);
           this.WeldGrade = WeldMaterialGrade.Grade_35;
           break;
 
-        case SteelMaterialGrade.S275:
+        case StandardSteelGrade.S275:
           this.fy = new Pressure(275, UnitsNet.Units.PressureUnit.Megapascal);
           this.WeldGrade = WeldMaterialGrade.Grade_35;
           break;
 
-        case SteelMaterialGrade.S355:
+        case StandardSteelGrade.S355:
           this.fy = new Pressure(355, UnitsNet.Units.PressureUnit.Megapascal);
           this.WeldGrade = WeldMaterialGrade.Grade_42;
           break;
 
-        case SteelMaterialGrade.S450:
+        case StandardSteelGrade.S450:
           this.fy = new Pressure(450, UnitsNet.Units.PressureUnit.Megapascal);
           this.WeldGrade = WeldMaterialGrade.Grade_50;
           break;
 
-        case SteelMaterialGrade.S460:
+        case StandardSteelGrade.S460:
           this.fy = new Pressure(460, UnitsNet.Units.PressureUnit.Megapascal);
           this.WeldGrade = WeldMaterialGrade.Grade_50;
           break;
@@ -92,7 +94,7 @@ namespace ComposAPI
       this.ReductionFactorMpl = reductionFacorMpl;
     }
 
-    public SteelMaterial(SteelMaterialGrade steelType)
+    public SteelMaterial(StandardSteelGrade steelType)
     {
       SetValuesFromStandard(steelType);
     }
@@ -105,7 +107,7 @@ namespace ComposAPI
       {
         case ("BEAM_STEEL_MATERIAL_STD"):
           this.isCustom = false;
-          this.Grade = (SteelMaterialGrade)Enum.Parse(typeof(SteelMaterialGrade), parameters[2]);
+          this.Grade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), parameters[2]);
           break;
 
         case ("BEAM_STEEL_MATERIAL_USER"):

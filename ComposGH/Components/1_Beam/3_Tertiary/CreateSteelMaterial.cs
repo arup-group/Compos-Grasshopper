@@ -44,7 +44,7 @@ namespace ComposGH.Components
     private bool First = true;
     private PressureUnit StressUnit = Units.StressUnit;
     private DensityUnit DensityUnit = Units.DensityUnit;
-    private SteelMaterialGrade SteelGrade = SteelMaterialGrade.S235;
+    private StandardSteelGrade SteelGrade = StandardSteelGrade.S235;
     private WeldMaterialGrade WeldingGrade = WeldMaterialGrade.Grade_35;
 
     public override void CreateAttributes()
@@ -55,7 +55,7 @@ namespace ComposGH.Components
         SelectedItems = new List<string>();
 
         // SteelType
-        DropdownItems.Add(Enum.GetValues(typeof(SteelMaterialGrade)).Cast<SteelMaterialGrade>().Select(x => x.ToString()).ToList());
+        DropdownItems.Add(Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList());
         SelectedItems.Add(SteelGrade.ToString());
 
         // WeldMaterial
@@ -86,7 +86,7 @@ namespace ComposGH.Components
         if (SteelGrade.ToString() == SelectedItems[i])
           return; // return if selected value is same as before
 
-        SteelGrade = (SteelMaterialGrade)Enum.Parse(typeof(SteelMaterialGrade), SelectedItems[i]);
+        SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), SelectedItems[i]);
 
       }
       if (i == 1)  // change is made to code 
@@ -115,7 +115,7 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      SteelGrade = (SteelMaterialGrade)Enum.Parse(typeof(SteelMaterialGrade), SelectedItems[0]);
+      SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), SelectedItems[0]);
       WeldingGrade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), SelectedItems[1]);
       StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), SelectedItems[2]);
       DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), SelectedItems[3]);

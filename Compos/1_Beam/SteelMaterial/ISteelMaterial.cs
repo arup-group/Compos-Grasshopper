@@ -13,7 +13,7 @@ namespace ComposAPI
     Density Density { get; }
     bool isCustom { get; }
     bool ReductionFactorMpl { get; }
-    SteelMaterialGrade Grade { get; }
+    StandardSteelGrade Grade { get; }
     WeldMaterialGrade WeldGrade { get; }
 
     string ToCoaString(string name, Code code, ComposUnits units);

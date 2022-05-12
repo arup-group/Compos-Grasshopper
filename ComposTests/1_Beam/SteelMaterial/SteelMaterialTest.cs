@@ -19,9 +19,9 @@ namespace ComposAPI.Tests
     }
 
     [Theory]
-    [InlineData(SteelMaterialGrade.S235, Code.BS5950_3_1_1990_A1_2010, "BEAM_STEEL_MATERIAL_STD	MEMBER-1	S235\nBEAM_WELDING_MATERIAL	MEMBER-1	Grade 35\n")]
-    [InlineData(SteelMaterialGrade.S355, Code.EN1994_1_1_2004, "BEAM_STEEL_MATERIAL_STD	MEMBER-1	S355 (EN)\nBEAM_WELDING_MATERIAL	MEMBER-1	Grade 42\n")]
-    public void ToCoaStringTest2(SteelMaterialGrade steelMaterialGrade, Code code, string expected_coaString)
+    [InlineData(StandardSteelGrade.S235, Code.BS5950_3_1_1990_A1_2010, "BEAM_STEEL_MATERIAL_STD	MEMBER-1	S235\nBEAM_WELDING_MATERIAL	MEMBER-1	Grade 35\n")]
+    [InlineData(StandardSteelGrade.S355, Code.EN1994_1_1_2004, "BEAM_STEEL_MATERIAL_STD	MEMBER-1	S355 (EN)\nBEAM_WELDING_MATERIAL	MEMBER-1	Grade 42\n")]
+    public void ToCoaStringTest2(StandardSteelGrade steelMaterialGrade, Code code, string expected_coaString)
     {
       SteelMaterial steelMaterial = new SteelMaterial(steelMaterialGrade);
       string coaString = steelMaterial.ToCoaString("MEMBER-1", code, ComposUnits.GetStandardUnits());

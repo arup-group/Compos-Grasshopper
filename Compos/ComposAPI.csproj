@@ -59,6 +59,7 @@
     <Compile Include="0_File\IComposFile.cs" />
     <Compile Include="0_File\ComposFile.cs" />
     <Compile Include="1_Beam\IBeam.cs" />
+    <Compile Include="1_Beam\SteelMaterial\ASNZSteelMaterial.cs" />
     <Compile Include="5_Member\IMember.cs" />
     <Compile Include="ComposUnits.cs" />
     <Compile Include="Helpers\CoaHelper.cs" />
