@@ -2,7 +2,7 @@ using Xunit;
 
 namespace ConverterTests
 {
-  public class UnitTest1
+  public class AdSecGHConverterTest
   {
     [Fact]
     public void Test1()
