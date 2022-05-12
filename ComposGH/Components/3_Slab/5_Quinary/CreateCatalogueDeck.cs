@@ -16,7 +16,7 @@ namespace ComposGH.Components
         : base("Standard Decking", "StdDeck", "Create Standard Decking for Compos Slab",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
-    { this.Hidden = false; }
+    { this.Hidden = true; }
     public override Guid ComponentGuid => new Guid("6796D3E6-CF84-4AC6-ABB7-012C20E6DB9A");
     public override GH_Exposure Exposure => GH_Exposure.quinary;
 
