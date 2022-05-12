@@ -257,7 +257,7 @@ namespace ComposAPI
         case "250(AS3679.1 Hollow)":
           return ASNZSteelMaterialGrade.Gr250_AS3679_1_Hollow;
         default:
-          return "unknown grade";
+          throw new Exception("unknown grade");
       }
     }
     public new string ToCoaString(string name, Code code, ComposUnits units)

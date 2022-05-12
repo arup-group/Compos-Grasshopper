@@ -92,7 +92,9 @@
   <ItemGroup>
     <Compile Include="Components\1_Beam\1_Primary\CreateBeam.cs" />
     <Compile Include="Components\1_Beam\2_Secondary\CreateRestraint.cs" />
-    <Compile Include="Components\1_Beam\3_Tertiary\CreateSteelMaterial.cs" />
+    <Compile Include="Components\1_Beam\3_Tertiary\CreateStandardASNZSteelMaterial.cs" />
+    <Compile Include="Components\1_Beam\3_Tertiary\CreateStandardSteelMaterial.cs" />
+    <Compile Include="Components\1_Beam\3_Tertiary\CreateCustomSteelMaterial.cs" />
     <Compile Include="Components\1_Beam\2_Secondary\CreateSupport.cs" />
     <Compile Include="Components\1_Beam\4_Quarternary\CreateBeamSection.cs" />
     <Compile Include="Components\3_Slab\1_Primary\CreateSlab.cs" />
