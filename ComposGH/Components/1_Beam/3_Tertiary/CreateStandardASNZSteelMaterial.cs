@@ -39,7 +39,7 @@ namespace ComposGH.Components
     });
 
     private bool First = true;
-    private ASNZSteelMaterialGrade SteelGrade = ASNZSteelMaterialGrade.C450_AS1163;
+    private StandardASNZSteelMaterialGrade SteelGrade = StandardASNZSteelMaterialGrade.C450_AS1163;
 
     public override void CreateAttributes()
     {
@@ -49,9 +49,9 @@ namespace ComposGH.Components
         SelectedItems = new List<string>();
 
         // SteelType
-        List<ASNZSteelMaterialGrade> grades = Enum.GetValues(typeof(ASNZSteelMaterialGrade)).Cast<ASNZSteelMaterialGrade>().ToList();
+        List<StandardASNZSteelMaterialGrade> grades = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().ToList();
         List<string> gradeStrings = new List<string>();
-        foreach (ASNZSteelMaterialGrade grade in grades)
+        foreach (StandardASNZSteelMaterialGrade grade in grades)
         {
           ASNZSteelMaterial mat = new ASNZSteelMaterial(grade);
           gradeStrings.Add(mat.ToString());

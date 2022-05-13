@@ -41,7 +41,7 @@ namespace ComposGH.Components
     });
     private bool First = true;
     private ForceUnit ForceUnit = Units.ForceUnit;
-    private StandardSize StdSize = ComposAPI.StandardSize.D19mmH100mm;
+    private StandardStudSize StdSize = ComposAPI.StandardStudSize.D19mmH100mm;
 
     public override void CreateAttributes()
     {
@@ -51,7 +51,7 @@ namespace ComposGH.Components
         SelectedItems = new List<string>();
 
         // spacing
-        DropdownItems.Add(Enum.GetValues(typeof(StandardSize)).Cast<StandardSize>()
+        DropdownItems.Add(Enum.GetValues(typeof(StandardStudSize)).Cast<StandardStudSize>()
             .Select(x => x.ToString()).ToList());
         for (int i = 0; i < DropdownItems[0].Count; i++)
           DropdownItems[0][i] = DropdownItems[0][i].Replace("D", "Ø").Replace("mmH", "/");
@@ -74,7 +74,7 @@ namespace ComposGH.Components
       if (i == 0) // change is made to size
       {
         string sz = SelectedItems[i].Replace("Ø", "D").Replace("/", "mmH");
-        StdSize = (StandardSize)Enum.Parse(typeof(StandardSize), sz);
+        StdSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), sz);
       }
       else if (i == 1) // change is made to grade
       {
@@ -91,7 +91,7 @@ namespace ComposGH.Components
     private void UpdateUIFromSelectedItems()
     {
       string sz = SelectedItems[0].Replace("Ø", "D").Replace("/", "mmH");
-      StdSize = (StandardSize)Enum.Parse(typeof(StandardSize), sz);
+      StdSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), sz);
       ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), SelectedItems[1]);
 
       CreateAttributes();
@@ -105,11 +105,11 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity force = new Force(0, ForceUnit);
-      string forceunitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
+      //IQuantity force = new Force(0, ForceUnit);
+      //string forceunitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
 
-      pManager.AddGenericParameter("Grade [" + forceunitAbbreviation + "]", "fu", "Stud Character strength", GH_ParamAccess.item);
-      pManager[0].Optional = true;
+      //pManager.AddGenericParameter("Grade [" + forceunitAbbreviation + "]", "fu", "Stud Character strength", GH_ParamAccess.item);
+      //pManager[0].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {

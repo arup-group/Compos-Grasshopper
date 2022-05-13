@@ -11,5 +11,6 @@ namespace ComposAPI
     Length Height { get; }
     Force CharacterStrength { get; }
     Pressure Fu { get; }
+    bool isStandard { get; }
   }
 }
