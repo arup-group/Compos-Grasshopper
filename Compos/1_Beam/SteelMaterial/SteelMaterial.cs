@@ -40,35 +40,35 @@ namespace ComposAPI
 
     private void SetValuesFromStandard(StandardSteelGrade grade)
     {
-      this.E = new Pressure(205, UnitsNet.Units.PressureUnit.Gigapascal);
-      this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
+      this.E = new Pressure(205, PressureUnit.Gigapascal);
+      this.Density = new Density(7850, DensityUnit.KilogramPerCubicMeter);
       this.Grade = grade;
       this.isCustom = false;
 
       switch (grade)
       {
         case StandardSteelGrade.S235:
-          this.fy = new Pressure(235, UnitsNet.Units.PressureUnit.Megapascal);
+          this.fy = new Pressure(235, PressureUnit.Megapascal);
           this.WeldGrade = WeldMaterialGrade.Grade_35;
           break;
 
         case StandardSteelGrade.S275:
-          this.fy = new Pressure(275, UnitsNet.Units.PressureUnit.Megapascal);
+          this.fy = new Pressure(275, PressureUnit.Megapascal);
           this.WeldGrade = WeldMaterialGrade.Grade_35;
           break;
 
         case StandardSteelGrade.S355:
-          this.fy = new Pressure(355, UnitsNet.Units.PressureUnit.Megapascal);
+          this.fy = new Pressure(355, PressureUnit.Megapascal);
           this.WeldGrade = WeldMaterialGrade.Grade_42;
           break;
 
         case StandardSteelGrade.S450:
-          this.fy = new Pressure(450, UnitsNet.Units.PressureUnit.Megapascal);
+          this.fy = new Pressure(450, PressureUnit.Megapascal);
           this.WeldGrade = WeldMaterialGrade.Grade_50;
           break;
 
         case StandardSteelGrade.S460:
-          this.fy = new Pressure(460, UnitsNet.Units.PressureUnit.Megapascal);
+          this.fy = new Pressure(460, PressureUnit.Megapascal);
           this.WeldGrade = WeldMaterialGrade.Grade_50;
           break;
 
@@ -101,7 +101,7 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal SteelMaterial(List<string> parameters, DensityUnit densityUnit, PressureUnit pressureUnit)
+    internal SteelMaterial(List<string> parameters, ComposUnits units)
     {
       switch (parameters[0])
       {
@@ -112,9 +112,9 @@ namespace ComposAPI
 
         case ("BEAM_STEEL_MATERIAL_USER"):
           this.isCustom = true;
-          this.fy = new Pressure(Convert.ToDouble(parameters[2]), pressureUnit);
-          this.E = new Pressure(Convert.ToDouble(parameters[3]), pressureUnit);
-          this.Density = new Density(Convert.ToDouble(parameters[4]), densityUnit);
+          this.fy = new Pressure(Convert.ToDouble(parameters[2]), units.Stress);
+          this.E = new Pressure(Convert.ToDouble(parameters[3]), units.Stress);
+          this.Density = new Density(Convert.ToDouble(parameters[4]), units.Density);
           if (parameters[5] == "TRUE")
             this.ReductionFactorMpl = true;
           else
