@@ -58,8 +58,8 @@ namespace ComposGH.Components
     private bool First = true;
     private PressureUnit StressUnit = Units.StressUnit;
     private LengthUnit LengthUnit = Units.LengthUnitSection;
-    private StandardGrade StdGrd = StandardGrade.SD1_EN13918;
-    private StandardSize StdSize = ComposAPI.StandardSize.D19mmH100mm;
+    private StandardStudGrade StdGrd = StandardStudGrade.SD1_EN13918;
+    private StandardStudSize StdSize = ComposAPI.StandardStudSize.D19mmH100mm;
 
     public override void CreateAttributes()
     {
@@ -73,7 +73,7 @@ namespace ComposGH.Components
         SelectedItems.Add(StdSize.ToString().Replace("D", "Ø").Replace("mmH", "/"));
 
         // grade
-        DropdownItems.Add(Enum.GetValues(typeof(StandardGrade)).Cast<StandardGrade>().Select(x => x.ToString()).ToList());
+        DropdownItems.Add(Enum.GetValues(typeof(StandardStudGrade)).Cast<StandardStudGrade>().Select(x => x.ToString()).ToList());
         SelectedItems.Add(StdGrd.ToString());
 
         // strength
@@ -94,7 +94,7 @@ namespace ComposGH.Components
         if (SelectedItems[0] != StandardSize[0])
         {
           string sz = SelectedItems[i].Replace("Ø", "D").Replace("/", "mmH");
-          StdSize = (StandardSize)Enum.Parse(typeof(StandardSize), sz);
+          StdSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), sz);
           if (DropdownItems.Count > 3)
           {
             // remove length dropdown
@@ -113,7 +113,7 @@ namespace ComposGH.Components
       }
       if (i == 1) // change is made to grade
       {
-        StdGrd = (StandardGrade)Enum.Parse(typeof(StandardGrade), SelectedItems[i]);
+        StdGrd = (StandardStudGrade)Enum.Parse(typeof(StandardStudGrade), SelectedItems[i]);
       }
       if (i == 2) // change is made to grade
       {
@@ -136,8 +136,8 @@ namespace ComposGH.Components
       if (SelectedItems[0] != StandardSize[0])
       {
         string sz = SelectedItems[0].Replace("Ø", "D").Replace("/", "mmH");
-        StdSize = (StandardSize)Enum.Parse(typeof(StandardSize), sz);
-        StdGrd = (StandardGrade)Enum.Parse(typeof(StandardGrade), SelectedItems[1]);
+        StdSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), sz);
+        StdGrd = (StandardStudGrade)Enum.Parse(typeof(StandardStudGrade), SelectedItems[1]);
       }
       else
       {

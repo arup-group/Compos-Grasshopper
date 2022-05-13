@@ -43,7 +43,7 @@ namespace ComposGH.Components
 
     private bool First = true;
     private PressureUnit StressUnit = Units.StressUnit;
-    private RebarGrade Grade = RebarGrade.EN_500B;
+    private StandardRebarGrade Grade = StandardRebarGrade.EN_500B;
 
     public override void CreateAttributes()
     {
@@ -53,7 +53,7 @@ namespace ComposGH.Components
         SelectedItems = new List<string>();
 
         // grade
-        DropdownItems.Add(Enum.GetValues(typeof(StandardGrade)).Cast<StandardGrade>().Select(x => x.ToString()).ToList());
+        DropdownItems.Add(Enum.GetValues(typeof(StandardRebarGrade)).Cast<StandardRebarGrade>().Select(x => x.ToString()).ToList());
         SelectedItems.Add(Grade.ToString());
 
         // strength
@@ -71,7 +71,7 @@ namespace ComposGH.Components
 
       if (i == 0) // change is made to grade
       {
-        Grade = (RebarGrade)Enum.Parse(typeof(RebarGrade), SelectedItems[i]);
+        Grade = (StandardRebarGrade)Enum.Parse(typeof(StandardRebarGrade), SelectedItems[i]);
       }
       if (i == 1) // change is made to unit
       {
@@ -88,7 +88,7 @@ namespace ComposGH.Components
     private void UpdateUIFromSelectedItems()
     {
       if (SelectedItems[0] != "Custom")
-        Grade = (RebarGrade)Enum.Parse(typeof(RebarGrade), SelectedItems[0]);
+        Grade = (StandardRebarGrade)Enum.Parse(typeof(StandardRebarGrade), SelectedItems[0]);
 
       StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), SelectedItems[1]);
 

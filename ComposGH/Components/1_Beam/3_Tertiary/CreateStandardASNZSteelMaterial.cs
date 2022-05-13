@@ -9,40 +9,37 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateCustomStudDimensions : GH_Component, IGH_VariableParameterComponent
+  public class CreateStandardASNZSteelMaterial : GH_Component, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
-    public override Guid ComponentGuid => new Guid("e70db6bb-b4bf-4033-a3d0-3ad131fe09b1");
-    public CreateCustomStudDimensions()
-      : base("Custom Stud Dimensions", "CustStudDim", "Create Custom Stud Dimensions for a Compos Stud",
+    public override Guid ComponentGuid => new Guid("8656c967-817c-49fe-9297-d863664b714a");
+    public CreateStandardASNZSteelMaterial()
+      : base("Standard ASNZ Steel Material", "StdASNZSteelMat", "Create Standard AS/NZS2327:2017 Steel Material for a Compos Beam",
             Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat2())
+            Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
 
-    public override GH_Exposure Exposure => GH_Exposure.secondary | GH_Exposure.obscure;
+    public override GH_Exposure Exposure => GH_Exposure.tertiary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.CustomStudDims;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.StandardASNZSteelMaterial;
     #endregion
 
     #region Custom UI
-    //This region overrides the typical component layout
 
-    // list of lists with all dropdown lists conctent
+    // list of lists with all dropdown lists content
     List<List<string>> DropdownItems;
     // list of selected items
     List<string> SelectedItems;
     // list of descriptions 
     List<string> SpacerDescriptions = new List<string>(new string[]
     {
-            "Length Unit",
-            "Strength Unit"
+            "Grade",
     });
 
     private bool First = true;
-    private LengthUnit LengthUnit = Units.LengthUnitSection;
-    private ForceUnit ForceUnit = Units.ForceUnit;
+    private StandardASNZSteelMaterialGrade SteelGrade = StandardASNZSteelMaterialGrade.C450_AS1163;
 
     public override void CreateAttributes()
     {
@@ -51,34 +48,38 @@ namespace ComposGH.Components
         DropdownItems = new List<List<string>>();
         SelectedItems = new List<string>();
 
-        // length
-        DropdownItems.Add(Units.FilteredLengthUnits);
-        SelectedItems.Add(LengthUnit.ToString());
-
-        // strength
-        DropdownItems.Add(Units.FilteredForceUnits);
-        SelectedItems.Add(ForceUnit.ToString());
+        // SteelType
+        List<StandardASNZSteelMaterialGrade> grades = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().ToList();
+        List<string> gradeStrings = new List<string>();
+        foreach (StandardASNZSteelMaterialGrade grade in grades)
+        {
+          ASNZSteelMaterial mat = new ASNZSteelMaterial(grade);
+          gradeStrings.Add(mat.ToString());
+        }
+        DropdownItems.Add(gradeStrings);
+        SelectedItems.Add(gradeStrings[0]);
 
         First = false;
       }
+
       m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
     }
+
     public void SetSelected(int i, int j)
     {
       // change selected item
       SelectedItems[i] = DropdownItems[i][j];
 
-      if (i == 0) // change is made to length unit
+      if (i == 0)  // change is made to code 
       {
-        LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
-      }
-      if (i == 1)
-      {
-        ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), SelectedItems[i]);
+        if (SteelGrade.ToString() == SelectedItems[i])
+          return; // return if selected value is same as before
+        ASNZSteelMaterial mat = new ASNZSteelMaterial(SelectedItems[i]);
+        SteelGrade = mat.Grade;
       }
 
-        // update name of inputs (to display unit on sliders)
-        (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
+      // update name of inputs (to display unit on sliders)
+      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
       ExpireSolution(true);
       Params.OnParametersChanged();
       this.OnDisplayExpired(true);
@@ -86,8 +87,8 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[0]);
-      ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), SelectedItems[1]);
+      ASNZSteelMaterial mat = new ASNZSteelMaterial(SelectedItems[0]);
+      SteelGrade = mat.Grade;
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -100,27 +101,17 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity force = new Force(0, ForceUnit);
-      string forceunitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
-      pManager.AddGenericParameter("Diameter [" + unitAbbreviation + "]", "Ø", "Diameter of stud head", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Height [" + unitAbbreviation + "]", "H", "Height of stud", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Strength [" + forceunitAbbreviation + "]", "fu", "Stud Character strength", GH_ParamAccess.item);
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Stud Dims", "Sdm", "Compos Shear Stud Dimensions", GH_ParamAccess.item);
+      pManager.AddGenericParameter("StandardSteelMaterial", "SSM", "Standard Steel Material for a Compos Beam", GH_ParamAccess.item);
     }
     #endregion
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Length dia = GetInput.Length(this, DA, 0, LengthUnit, true);
-      Length h = GetInput.Length(this, DA, 1, LengthUnit, true);
-      Force strengthF = GetInput.Force(this, DA, 2, ForceUnit);
-      DA.SetData(0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthF)));
+      DA.SetData(0, new SteelMaterialGoo(new ASNZSteelMaterial(SteelGrade)));
     }
 
     #region (de)serialization
@@ -160,15 +151,8 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
-      Params.Input[0].Name = "Diameter [" + unitAbbreviation + "]";
-      Params.Input[1].Name = "Height [" + unitAbbreviation + "]";
-
-      IQuantity force = new Force(0, ForceUnit);
-      string forceunitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
-      Params.Input[2].Name = "Strength [" + forceunitAbbreviation + "]";
     }
     #endregion
+
   }
 }

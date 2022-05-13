@@ -11,7 +11,7 @@ namespace ComposAPI.Tests
     public Stud TestConstructorStudCustomSpacing()
     {
       // 1 setup inputs
-      IStudDimensions dimensions = new StudDimensions(StandardSize.D13mmH65mm, StandardGrade.SD1_EN13918);
+      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D13mmH65mm, StandardStudGrade.SD1_EN13918);
       IStudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
       List<IStudGroupSpacing> studSpacings = new List<IStudGroupSpacing>();
       studSpacings.Add(new StudGroupSpacing(Length.Zero, 2, 1, new Length(25, LengthUnit.Centimeter)));
@@ -61,7 +61,7 @@ namespace ComposAPI.Tests
     public Stud TestConstructorStudAutomaticOrMinSpacing(StudSpacingType type, double minSaving)
     {
       // 1b setup inputs
-      IStudDimensions dimensions = new StudDimensions(StandardSize.D13mmH65mm, StandardGrade.SD1_EN13918);
+      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D13mmH65mm, StandardStudGrade.SD1_EN13918);
       IStudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
 
       // 2 create object instance with constructor
@@ -105,7 +105,7 @@ namespace ComposAPI.Tests
     public Stud TestConstructorStudPartialSpacing(double minSaving, double interaction)
     {
       // 1b setup inputs
-      IStudDimensions dimensions = new StudDimensions(StandardSize.D13mmH65mm, StandardGrade.SD1_EN13918);
+      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D13mmH65mm, StandardStudGrade.SD1_EN13918);
       IStudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
 
       // 2 create object instance with constructor
@@ -172,7 +172,7 @@ namespace ComposAPI.Tests
       Assert.Equal(double.NaN, duplicate.MinSavingMultipleZones);
 
       // 3 make some changes to duplicate
-      IStudDimensions dimensions = new StudDimensions(StandardSize.D25mmH100mm, StandardGrade.SD3_EN13918);
+      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D25mmH100mm, StandardStudGrade.SD3_EN13918);
       IStudSpecification specification = new StudSpecification(new Length(25, LengthUnit.Centimeter), new Length(35, LengthUnit.Centimeter), false);
       List<IStudGroupSpacing> studSpacings = new List<IStudGroupSpacing>();
       studSpacings.Add(new StudGroupSpacing(Length.Zero, 3, 2, new Length(10, LengthUnit.Centimeter)));
@@ -295,7 +295,7 @@ namespace ComposAPI.Tests
         "STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000" + '\n' +
         "STUD_EC4_APPLY	MEMBER-1	YES" + '\n';
 
-      IStudDimensions dimensions = new StudDimensions(StandardSize.D19mmH100mm, new Force(1, ForceUnit.Newton));
+      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D19mmH100mm);
       IStudSpecification specs = new StudSpecification(true, Length.Zero, Length.Zero);
       Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
 
@@ -340,7 +340,7 @@ namespace ComposAPI.Tests
         "STUD_EC4_RFT_POS	MEMBER-1	0.0300000" + '\n' +
         "EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_YES	SD2_EN13918" + '\n';
 
-      IStudDimensions dimensions = new StudDimensions(StandardSize.D19mmH100mm, StandardGrade.SD2_EN13918);
+      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D19mmH100mm, StandardStudGrade.SD2_EN13918);
       IStudSpecification specs = new StudSpecification(new Length(0, LengthUnit.Meter), new Length(0, LengthUnit.Meter), new Length(30, LengthUnit.Millimeter), false, false);
       Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
 
@@ -364,7 +364,7 @@ namespace ComposAPI.Tests
         "STUD_EC4_RFT_POS	MEMBER-1	0.0300000" + '\n' +
         "EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_NO	4.40000e+008" + '\n';
 
-      IStudDimensions dimensions = new StudDimensions(StandardSize.D25mmH100mm, new Pressure(440, PressureUnit.Megapascal));
+      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D25mmH100mm, new Pressure(440, PressureUnit.Megapascal));
       IStudSpecification specs = new StudSpecification(new Length(0, LengthUnit.Meter), new Length(0, LengthUnit.Meter), new Length(30, LengthUnit.Millimeter), true, true);
       Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Min_Num_of_Studs);
 
@@ -387,7 +387,7 @@ namespace ComposAPI.Tests
         "STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000" + '\n' +
         "STUD_EC4_APPLY	MEMBER-1	YES" + '\n';
 
-      IStudDimensions dimensions = new StudDimensions(StandardSize.D13mmH65mm, new Force(1, ForceUnit.Newton));
+      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D13mmH65mm);
       IStudSpecification specs = new StudSpecification(new Length(0, LengthUnit.Meter), new Length(0, LengthUnit.Meter), true);
       IStudGroupSpacing spacing1 = new StudGroupSpacing(Length.Zero, 2, 1, new Length(150, LengthUnit.Millimeter));
       IStudGroupSpacing spacing2 = new StudGroupSpacing(new Length(4.5, LengthUnit.Meter), 3, 2, new Length(250, LengthUnit.Millimeter));
@@ -413,7 +413,7 @@ namespace ComposAPI.Tests
         "STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000" + '\n' +
         "STUD_EC4_APPLY	MEMBER-1	YES" + '\n';
 
-      IStudDimensions dimensions = new StudDimensions(StandardSize.D19mmH95mm, new Force(1, ForceUnit.Newton));
+      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D19mmH95mm);
       IStudSpecification specs = new StudSpecification(Length.Zero, Length.Zero, true);
       Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
 
@@ -435,7 +435,7 @@ namespace ComposAPI.Tests
         "STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000" + '\n' +
         "STUD_EC4_APPLY	MEMBER-1	YES" + '\n';
 
-      IStudDimensions dimensions = new StudDimensions(StandardSize.D19mmH100mm, new Force(1, ForceUnit.Newton));
+      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D19mmH100mm);
       IStudSpecification specs = new StudSpecification(new Length(0, LengthUnit.Meter), new Length(0, LengthUnit.Meter), true);
       IStudGroupSpacing spacing1 = new StudGroupSpacing(Length.Zero, 2, 1, new Length(150, LengthUnit.Millimeter));
       IStudGroupSpacing spacing2 = new StudGroupSpacing(new Length(8, LengthUnit.Meter), 3, 2, new Length(250, LengthUnit.Millimeter));

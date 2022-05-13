@@ -8,7 +8,7 @@ using UnitsNet.Units;
 
 namespace ComposAPI
 {
-  public enum StandardSize
+  public enum StandardStudSize
   {
     D13mmH65mm,
     D16mmH70mm,
@@ -23,7 +23,7 @@ namespace ComposAPI
     D25mmH100mm,
   }
 
-  public enum StandardGrade
+  public enum StandardStudGrade
   {
     SD1_EN13918,
     SD2_EN13918,
@@ -53,78 +53,79 @@ namespace ComposAPI
       {
         this.m_strength = value;
         this.m_fu = Pressure.Zero;
+        this.isStandard = false;
       }
     }
+    public bool isStandard { get; set; }
     private Force m_strength { get; set; }
     private Pressure m_fu { get; set; }
 
-    private void SetSizeFromStandard(StandardSize size)
+    private void SetSizeFromStandard(StandardStudSize size)
     {
+      this.isStandard = true;
       switch (size)
       {
-        case StandardSize.D13mmH65mm:
+        case StandardStudSize.D13mmH65mm:
           this.Diameter = new Length(13, LengthUnit.Millimeter);
           this.Height = new Length(65, LengthUnit.Millimeter);
           break;
-        case StandardSize.D16mmH75mm:
+        case StandardStudSize.D16mmH75mm:
           this.Diameter = new Length(16, LengthUnit.Millimeter);
           this.Height = new Length(75, LengthUnit.Millimeter);
           break;
-        case StandardSize.D19mmH75mm:
+        case StandardStudSize.D19mmH75mm:
           this.Diameter = new Length(19, LengthUnit.Millimeter);
           this.Height = new Length(75, LengthUnit.Millimeter);
           break;
-        case StandardSize.D19mmH100mm:
+        case StandardStudSize.D19mmH100mm:
           this.Diameter = new Length(19, LengthUnit.Millimeter);
           this.Height = new Length(100, LengthUnit.Millimeter);
           break;
-        case StandardSize.D19mmH125mm:
+        case StandardStudSize.D19mmH125mm:
           this.Diameter = new Length(19, LengthUnit.Millimeter);
           this.Height = new Length(125, LengthUnit.Millimeter);
           break;
-        case StandardSize.D22mmH100mm:
+        case StandardStudSize.D22mmH100mm:
           this.Diameter = new Length(22, LengthUnit.Millimeter);
           this.Height = new Length(100, LengthUnit.Millimeter);
           break;
-        case StandardSize.D25mmH100mm:
+        case StandardStudSize.D25mmH100mm:
           this.Diameter = new Length(25, LengthUnit.Millimeter);
           this.Height = new Length(100, LengthUnit.Millimeter);
           break;
-        case StandardSize.D16mmH70mm:
+        case StandardStudSize.D16mmH70mm:
           this.Diameter = new Length(16, LengthUnit.Millimeter);
           this.Height = new Length(70, LengthUnit.Millimeter);
           break;
-        case StandardSize.D19mmH95mm:
+        case StandardStudSize.D19mmH95mm:
           this.Diameter = new Length(19, LengthUnit.Millimeter);
           this.Height = new Length(95, LengthUnit.Millimeter);
           break;
-        case StandardSize.D22mmH95mm:
+        case StandardStudSize.D22mmH95mm:
           this.Diameter = new Length(22, LengthUnit.Millimeter);
           this.Height = new Length(95, LengthUnit.Millimeter);
           break;
-        case StandardSize.D25mmH95mm:
+        case StandardStudSize.D25mmH95mm:
           this.Diameter = new Length(25, LengthUnit.Millimeter);
           this.Height = new Length(95, LengthUnit.Millimeter);
           break;
       }
     }
-
-
-
-    private void SetGradeFromStandard(StandardGrade standardGrade)
+    private void SetGradeFromStandard(StandardStudGrade standardGrade)
     {
       switch (standardGrade)
       {
-        case StandardGrade.SD1_EN13918:
+        case StandardStudGrade.SD1_EN13918:
           this.Fu = new Pressure(400, PressureUnit.NewtonPerSquareMillimeter);
           break;
-        case StandardGrade.SD2_EN13918:
+        case StandardStudGrade.SD2_EN13918:
           this.Fu = new Pressure(450, PressureUnit.NewtonPerSquareMillimeter);
           break;
-        case StandardGrade.SD3_EN13918:
+        case StandardStudGrade.SD3_EN13918:
           this.Fu = new Pressure(500, PressureUnit.NewtonPerSquareMillimeter);
           break;
       }
+      this.isStandard = true;
     }
 
 
@@ -158,22 +159,31 @@ namespace ComposAPI
       this.CharacterStrength = strength;
     }
     /// <summary>
-    /// Create Standard size with strength from Stress
+    /// Create Standard size with standard strength depending on code applied
     /// </summary>
     /// <param name="size"></param>
     /// <param name="strength"></param>
-    public StudDimensions(StandardSize size, Force strength)
+    public StudDimensions(StandardStudSize size)
+    {
+      SetSizeFromStandard(size);
+    }
+    /// <summary>
+    /// Create Standard size with custom strength from Stress
+    /// </summary>
+    /// <param name="size"></param>
+    /// <param name="strength"></param>
+    public StudDimensions(StandardStudSize size, Force strength)
     {
       SetSizeFromStandard(size);
       this.CharacterStrength = strength;
     }
 
     /// <summary>
-    /// Create Standard size with strength from Stress
+    /// Create Standard size with a custom strength from Stress
     /// </summary>
     /// <param name="size"></param>
     /// <param name="fu"></param>
-    public StudDimensions(StandardSize size, Pressure fu)
+    public StudDimensions(StandardStudSize size, Pressure fu)
     {
       SetSizeFromStandard(size);
       this.Fu = fu;
@@ -183,10 +193,11 @@ namespace ComposAPI
     /// </summary>
     /// <param name="size"></param>
     /// <param name="standardGrade"></param>
-    public StudDimensions(StandardSize size, StandardGrade standardGrade)
+    public StudDimensions(StandardStudSize size, StandardStudGrade standardGrade)
     {
       SetSizeFromStandard(size);
       SetGradeFromStandard(standardGrade);
+      this.isStandard = true;
     }
 
     /// <summary>
@@ -195,7 +206,7 @@ namespace ComposAPI
     /// <param name="diameter"></param>
     /// <param name="height"></param>
     /// <param name="standardGrade"></param>
-    public StudDimensions(Length diameter, Length height, StandardGrade standardGrade)
+    public StudDimensions(Length diameter, Length height, StandardStudGrade standardGrade)
     {
       this.Diameter = diameter;
       this.Height = height;
@@ -208,8 +219,9 @@ namespace ComposAPI
       //EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_YES	SD2_EN13918
       if (parameters[2] == CoaIdentifier.StudDimensions.StudGradeEC4Standard)
       {
-        StandardGrade standardGrade = (StandardGrade)Enum.Parse(typeof(StandardGrade), parameters[3]);
+        StandardStudGrade standardGrade = (StandardStudGrade)Enum.Parse(typeof(StandardStudGrade), parameters[3]);
         SetGradeFromStandard(standardGrade);
+        this.isStandard = true;
       }
       else if (parameters[2] == CoaIdentifier.StudDimensions.StudGradeEC4Custom)
       {
@@ -219,7 +231,7 @@ namespace ComposAPI
       else if (parameters[2] == CoaIdentifier.StudDimensions.StudDimensionStandard)
       {
         string size = "D" + parameters[3].Replace("/", "H");
-        StandardSize standardSize = (StandardSize)Enum.Parse(typeof(StandardSize), size);
+        StandardStudSize standardSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), size);
         SetSizeFromStandard(standardSize);
         switch (code)
         {
@@ -235,6 +247,7 @@ namespace ComposAPI
             this.CharacterStrength = new Force(97.9845, ForceUnit.Kilonewton);
             break;
         }
+        this.isStandard = true;
       }
       else if (parameters[2] == CoaIdentifier.StudDimensions.StudDimensionCustom)
       {
@@ -253,8 +266,8 @@ namespace ComposAPI
       string dia = Diameter.As(Units.LengthUnitSection).ToString("f0");
       string h = Height.ToUnit(Units.LengthUnitSection).ToString("f0");
       string f = (Fu.Value == 0) ? CharacterStrength.ToUnit(Units.ForceUnit).ToString("f0") : Fu.ToUnit(Units.StressUnit).ToString("f0");
-
-      return "Ø" + dia.Replace(" ", string.Empty) + "/" + h.Replace(" ", string.Empty) + ", f:" + f.Replace(" ", string.Empty);
+      
+      return "Ø" + dia.Replace(" ", string.Empty) + "/" + h.Replace(" ", string.Empty) + ((this.isStandard) ? "" : ", f:" + f.Replace(" ", string.Empty));
     }
     #endregion
   }
