@@ -160,8 +160,9 @@ namespace ComposAPI
       //STUD_DEFINITION	MEMBER-2	USER_DEFINED	19.0000	100.000	95000.0	REDUCED_YES	WELDED_YES
       //STUD_DEFINITION	MEMBER-3	USER_DEFINED	12.0000	345.000	75982.5	REDUCED_NO	WELDED_YES
       string str = CoaIdentifier.StudDimensions.StudDefinition + '\t' + name + '\t';
+      
       string studSize = GetStandardSize(this.StudDimensions);
-      if (studSize == "Custom")
+      if (!this.StudDimensions.isStandard)
       {
         studSize = CoaIdentifier.StudDimensions.StudDimensionCustom + '\t';
         studSize += CoaHelper.FormatSignificantFigures(this.StudDimensions.Diameter.ToUnit(units.Section).Value, 6) + '\t';

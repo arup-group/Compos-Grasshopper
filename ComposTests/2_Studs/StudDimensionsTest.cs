@@ -50,18 +50,18 @@ namespace ComposAPI.Tests
 
     // 1 setup inputs
     [Theory]
-    [InlineData(StandardSize.D13mmH65mm, 90, 13, 65)]
-    [InlineData(StandardSize.D16mmH70mm, 95, 16, 70)]
-    [InlineData(StandardSize.D16mmH75mm, 100, 16, 75)]
-    [InlineData(StandardSize.D19mmH75mm, 80, 19, 75)]
-    [InlineData(StandardSize.D19mmH95mm, 85, 19, 95)]
-    [InlineData(StandardSize.D19mmH100mm, 90, 19, 100)]
-    [InlineData(StandardSize.D19mmH125mm, 95, 19, 125)]
-    [InlineData(StandardSize.D22mmH95mm, 100, 22, 95)]
-    [InlineData(StandardSize.D22mmH100mm, 110, 22, 100)]
-    [InlineData(StandardSize.D25mmH95mm, 80, 25, 95)]
-    [InlineData(StandardSize.D25mmH100mm, 90, 25, 100)]
-    public StudDimensions TestConstructorStudDimensionsStandardSizeForce(StandardSize size, double strength,
+    [InlineData(StandardStudSize.D13mmH65mm, 90, 13, 65)]
+    [InlineData(StandardStudSize.D16mmH70mm, 95, 16, 70)]
+    [InlineData(StandardStudSize.D16mmH75mm, 100, 16, 75)]
+    [InlineData(StandardStudSize.D19mmH75mm, 80, 19, 75)]
+    [InlineData(StandardStudSize.D19mmH95mm, 85, 19, 95)]
+    [InlineData(StandardStudSize.D19mmH100mm, 90, 19, 100)]
+    [InlineData(StandardStudSize.D19mmH125mm, 95, 19, 125)]
+    [InlineData(StandardStudSize.D22mmH95mm, 100, 22, 95)]
+    [InlineData(StandardStudSize.D22mmH100mm, 110, 22, 100)]
+    [InlineData(StandardStudSize.D25mmH95mm, 80, 25, 95)]
+    [InlineData(StandardStudSize.D25mmH100mm, 90, 25, 100)]
+    public StudDimensions TestConstructorStudDimensionsStandardSizeForce(StandardStudSize size, double strength,
       double expectedDiameter, double expectedHeight)
     {
       ForceUnit force = ForceUnit.Kilonewton;
@@ -80,18 +80,18 @@ namespace ComposAPI.Tests
 
     // 1 setup inputs
     [Theory]
-    [InlineData(StandardSize.D13mmH65mm, 400, 13, 65)]
-    [InlineData(StandardSize.D16mmH70mm, 450, 16, 70)]
-    [InlineData(StandardSize.D16mmH75mm, 500, 16, 75)]
-    [InlineData(StandardSize.D19mmH75mm, 400, 19, 75)]
-    [InlineData(StandardSize.D19mmH95mm, 450, 19, 95)]
-    [InlineData(StandardSize.D19mmH100mm, 500, 19, 100)]
-    [InlineData(StandardSize.D19mmH125mm, 400, 19, 125)]
-    [InlineData(StandardSize.D22mmH95mm, 450, 22, 95)]
-    [InlineData(StandardSize.D22mmH100mm, 500, 22, 100)]
-    [InlineData(StandardSize.D25mmH95mm, 400, 25, 95)]
-    [InlineData(StandardSize.D25mmH100mm, 450, 25, 100)]
-    public StudDimensions TestConstructorStudDimensionsStandardSizeStress(StandardSize size, double fu,
+    [InlineData(StandardStudSize.D13mmH65mm, 400, 13, 65)]
+    [InlineData(StandardStudSize.D16mmH70mm, 450, 16, 70)]
+    [InlineData(StandardStudSize.D16mmH75mm, 500, 16, 75)]
+    [InlineData(StandardStudSize.D19mmH75mm, 400, 19, 75)]
+    [InlineData(StandardStudSize.D19mmH95mm, 450, 19, 95)]
+    [InlineData(StandardStudSize.D19mmH100mm, 500, 19, 100)]
+    [InlineData(StandardStudSize.D19mmH125mm, 400, 19, 125)]
+    [InlineData(StandardStudSize.D22mmH95mm, 450, 22, 95)]
+    [InlineData(StandardStudSize.D22mmH100mm, 500, 22, 100)]
+    [InlineData(StandardStudSize.D25mmH95mm, 400, 25, 95)]
+    [InlineData(StandardStudSize.D25mmH100mm, 450, 25, 100)]
+    public StudDimensions TestConstructorStudDimensionsStandardSizeStress(StandardStudSize size, double fu,
       double expectedDiameter, double expectedHeight)
     {
       PressureUnit stress = PressureUnit.Megapascal;
@@ -110,19 +110,19 @@ namespace ComposAPI.Tests
 
     // 1 setup inputs
     [Theory]
-    [InlineData(StandardSize.D13mmH65mm, StandardGrade.SD1_EN13918, 400, 13, 65)]
-    [InlineData(StandardSize.D16mmH70mm, StandardGrade.SD2_EN13918, 450, 16, 70)]
-    [InlineData(StandardSize.D16mmH75mm, StandardGrade.SD3_EN13918, 500, 16, 75)]
-    [InlineData(StandardSize.D19mmH75mm, StandardGrade.SD1_EN13918, 400, 19, 75)]
-    [InlineData(StandardSize.D19mmH95mm, StandardGrade.SD2_EN13918, 450, 19, 95)]
-    [InlineData(StandardSize.D19mmH100mm, StandardGrade.SD3_EN13918, 500, 19, 100)]
-    [InlineData(StandardSize.D19mmH125mm, StandardGrade.SD1_EN13918, 400, 19, 125)]
-    [InlineData(StandardSize.D22mmH95mm, StandardGrade.SD2_EN13918, 450, 22, 95)]
-    [InlineData(StandardSize.D22mmH100mm, StandardGrade.SD3_EN13918, 500, 22, 100)]
-    [InlineData(StandardSize.D25mmH95mm, StandardGrade.SD1_EN13918, 400, 25, 95)]
-    [InlineData(StandardSize.D25mmH100mm, StandardGrade.SD2_EN13918, 450, 25, 100)]
+    [InlineData(StandardStudSize.D13mmH65mm, StandardStudGrade.SD1_EN13918, 400, 13, 65)]
+    [InlineData(StandardStudSize.D16mmH70mm, StandardStudGrade.SD2_EN13918, 450, 16, 70)]
+    [InlineData(StandardStudSize.D16mmH75mm, StandardStudGrade.SD3_EN13918, 500, 16, 75)]
+    [InlineData(StandardStudSize.D19mmH75mm, StandardStudGrade.SD1_EN13918, 400, 19, 75)]
+    [InlineData(StandardStudSize.D19mmH95mm, StandardStudGrade.SD2_EN13918, 450, 19, 95)]
+    [InlineData(StandardStudSize.D19mmH100mm, StandardStudGrade.SD3_EN13918, 500, 19, 100)]
+    [InlineData(StandardStudSize.D19mmH125mm, StandardStudGrade.SD1_EN13918, 400, 19, 125)]
+    [InlineData(StandardStudSize.D22mmH95mm, StandardStudGrade.SD2_EN13918, 450, 22, 95)]
+    [InlineData(StandardStudSize.D22mmH100mm, StandardStudGrade.SD3_EN13918, 500, 22, 100)]
+    [InlineData(StandardStudSize.D25mmH95mm, StandardStudGrade.SD1_EN13918, 400, 25, 95)]
+    [InlineData(StandardStudSize.D25mmH100mm, StandardStudGrade.SD2_EN13918, 450, 25, 100)]
     public StudDimensions TestConstructorStudDimensionsStandardSizeStandardGrade(
-      StandardSize size, StandardGrade grade,
+      StandardStudSize size, StandardStudGrade grade,
       double expectedFu, double expectedDiameter, double expectedHeight)
     {
       // 2 create object instance with constructor
@@ -139,11 +139,11 @@ namespace ComposAPI.Tests
 
     // 1 setup inputs
     [Theory]
-    [InlineData(13, 65, StandardGrade.SD1_EN13918, 400)]
-    [InlineData(16, 70, StandardGrade.SD2_EN13918, 450)]
-    [InlineData(16, 75, StandardGrade.SD3_EN13918, 500)]
+    [InlineData(13, 65, StandardStudGrade.SD1_EN13918, 400)]
+    [InlineData(16, 70, StandardStudGrade.SD2_EN13918, 450)]
+    [InlineData(16, 75, StandardStudGrade.SD3_EN13918, 500)]
     public StudDimensions TestConstructorStudDimensionsCustomSizeStandardGrade(double diameter, double height,
-      StandardGrade grade, double expectedFu)
+      StandardStudGrade grade, double expectedFu)
     {
       LengthUnit length = LengthUnit.Millimeter;
 

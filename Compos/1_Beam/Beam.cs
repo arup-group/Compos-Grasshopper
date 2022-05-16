@@ -69,7 +69,7 @@ namespace ComposAPI
       {
         foreach (IWebOpening webOpening in this.WebOpenings)
         {
-          str += webOpening.ToCoaString();
+          str += webOpening.ToCoaString(name, units);
         }
       }
       return str;

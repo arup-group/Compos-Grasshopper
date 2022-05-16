@@ -9,13 +9,13 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateSteelMaterial : GH_Component, IGH_VariableParameterComponent
+  public class CreateCustomSteelMaterial : GH_Component, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("2C3C07F4-C395-4747-A111-D5A67B250104");
-    public CreateSteelMaterial()
+    public CreateCustomSteelMaterial()
       : base("Steel Material", "SteelMat", "Create Standard Steel Material for a Compos Beam",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
@@ -23,7 +23,7 @@ namespace ComposGH.Components
 
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateSteelMaterial;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateCustomSteelMaterial;
     #endregion
 
     #region Custom UI
@@ -44,7 +44,7 @@ namespace ComposGH.Components
     private bool First = true;
     private PressureUnit StressUnit = Units.StressUnit;
     private DensityUnit DensityUnit = Units.DensityUnit;
-    private SteelMaterialGrade SteelGrade = SteelMaterialGrade.S235;
+    private StandardSteelGrade SteelGrade = StandardSteelGrade.S235;
     private WeldMaterialGrade WeldingGrade = WeldMaterialGrade.Grade_35;
 
     public override void CreateAttributes()
@@ -53,10 +53,6 @@ namespace ComposGH.Components
       {
         DropdownItems = new List<List<string>>();
         SelectedItems = new List<string>();
-
-        // SteelType
-        DropdownItems.Add(Enum.GetValues(typeof(SteelMaterialGrade)).Cast<SteelMaterialGrade>().Select(x => x.ToString()).ToList());
-        SelectedItems.Add(SteelGrade.ToString());
 
         // WeldMaterial
         DropdownItems.Add(Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList());
@@ -83,25 +79,17 @@ namespace ComposGH.Components
 
       if (i == 0)  // change is made to code 
       {
-        if (SteelGrade.ToString() == SelectedItems[i])
-          return; // return if selected value is same as before
-
-        SteelGrade = (SteelMaterialGrade)Enum.Parse(typeof(SteelMaterialGrade), SelectedItems[i]);
-
-      }
-      if (i == 1)  // change is made to code 
-      {
         if (WeldingGrade.ToString() == SelectedItems[i])
           return; // return if selected value is same as before
 
         WeldingGrade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), SelectedItems[i]);
 
       }
-      if (i == 2)
+      if (i == 1)
       {
         StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), SelectedItems[i]);
       }
-      if (i == 3)
+      if (i == 2)
       {
         DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), SelectedItems[i]);
       }
@@ -115,10 +103,9 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      SteelGrade = (SteelMaterialGrade)Enum.Parse(typeof(SteelMaterialGrade), SelectedItems[0]);
-      WeldingGrade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), SelectedItems[1]);
-      StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), SelectedItems[2]);
-      DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), SelectedItems[3]);
+      WeldingGrade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), SelectedItems[0]);
+      StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), SelectedItems[1]);
+      DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), SelectedItems[2]);
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -140,11 +127,7 @@ namespace ComposGH.Components
       pManager.AddGenericParameter("Strength [" + stressunitAbbreviation + "]", "fy", "Steel Yield Strength", GH_ParamAccess.item);
       pManager.AddGenericParameter("Young's Modulus [" + stressunitAbbreviation + "]", "E", "Steel Young's Modulus", GH_ParamAccess.item);
       pManager.AddGenericParameter("Density [" + densityunitAbbreviation + "]", "ρ", "Steel Density", GH_ParamAccess.item);
-      pManager.AddBooleanParameter("Reduction Factor", "RF", "Apply reduction factor for plastic moment capacity", GH_ParamAccess.item, false);
-      pManager[0].Optional = true;
-      pManager[1].Optional = true;
-      pManager[2].Optional = true;
-      
+      pManager.AddBooleanParameter("Reduction Factor", "RF", "Apply reduction factor for plastic moment capacity, EC4 (6.2.1.2 (2))", GH_ParamAccess.item, false);
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
@@ -156,19 +139,14 @@ namespace ComposGH.Components
     {
       bool redFact = new bool();
 
-      DA.GetData(3, ref redFact);
+      if (DA.GetData(3, ref redFact))
+        AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Note that reduction factor only applies for EC4 DesignCode");
 
-      if (this.Params.Input[0].Sources.Count > 0)
-      {
-        SelectedItems[0] = "Custom";
-        DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(
-          GetInput.Stress(this, DA, 0, StressUnit), 
-          GetInput.Stress(this, DA, 1, StressUnit), 
-          GetInput.Density(this, DA, 2, DensityUnit), 
+      DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(
+          GetInput.Stress(this, DA, 0, StressUnit),
+          GetInput.Stress(this, DA, 1, StressUnit),
+          GetInput.Density(this, DA, 2, DensityUnit),
           WeldingGrade, true, redFact)));
-      }
-      else
-        DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(SteelGrade)));
     }
 
     #region (de)serialization

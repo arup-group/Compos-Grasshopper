@@ -5,7 +5,7 @@ using UnitsNet;
 
 namespace ComposAPI
 {
-  public enum RebarGrade
+  public enum StandardRebarGrade
   {
     BS_250R,
     BS_460T,
@@ -29,29 +29,29 @@ namespace ComposAPI
   {
     public Pressure Fu { get; set; }
 
-    private void SetGradeFromStandard(RebarGrade StandardGrade2)
+    private void SetGradeFromStandard(StandardRebarGrade StandardGrade2)
     {
       switch (StandardGrade2)
       {
-        case RebarGrade.BS_250R:
-        case RebarGrade.HK_250:
-        case RebarGrade.AS_R250N:
+        case StandardRebarGrade.BS_250R:
+        case StandardRebarGrade.HK_250:
+        case StandardRebarGrade.AS_R250N:
           this.Fu = new Pressure(250, UnitsNet.Units.PressureUnit.Megapascal);
           break;
-        case RebarGrade.BS_460T:
-        case RebarGrade.HK_460:
+        case StandardRebarGrade.BS_460T:
+        case StandardRebarGrade.HK_460:
           this.Fu = new Pressure(460, UnitsNet.Units.PressureUnit.Megapascal);
           break;
-        case RebarGrade.BS_500X:
-        case RebarGrade.AS_D500L:
-        case RebarGrade.AS_D500N:
-        case RebarGrade.AS_D500E:
-        case RebarGrade.EN_500A:
-        case RebarGrade.EN_500B:
-        case RebarGrade.EN_500C:
+        case StandardRebarGrade.BS_500X:
+        case StandardRebarGrade.AS_D500L:
+        case StandardRebarGrade.AS_D500N:
+        case StandardRebarGrade.AS_D500E:
+        case StandardRebarGrade.EN_500A:
+        case StandardRebarGrade.EN_500B:
+        case StandardRebarGrade.EN_500C:
           this.Fu = new Pressure(500, UnitsNet.Units.PressureUnit.Megapascal);
           break;
-        case RebarGrade.BS_1770:
+        case StandardRebarGrade.BS_1770:
           this.Fu = new Pressure(1770, UnitsNet.Units.PressureUnit.Megapascal);
           break;
       }
@@ -67,7 +67,7 @@ namespace ComposAPI
       this.Fu = fu;
     }
 
-    public ReinforcementMaterial(RebarGrade StandardGrade2)
+    public ReinforcementMaterial(StandardRebarGrade StandardGrade2)
     {
       SetGradeFromStandard(StandardGrade2);
     }

@@ -37,11 +37,9 @@ namespace ComposGH.Components
     List<string> SpacerDescriptions = new List<string>(new string[]
     {
             "Standard Size",
-            "Unit"
     });
     private bool First = true;
-    private ForceUnit ForceUnit = Units.ForceUnit;
-    private StandardSize StdSize = ComposAPI.StandardSize.D19mmH100mm;
+    private StandardStudSize StdSize = ComposAPI.StandardStudSize.D19mmH100mm;
 
     public override void CreateAttributes()
     {
@@ -51,16 +49,12 @@ namespace ComposGH.Components
         SelectedItems = new List<string>();
 
         // spacing
-        DropdownItems.Add(Enum.GetValues(typeof(StandardSize)).Cast<StandardSize>()
+        DropdownItems.Add(Enum.GetValues(typeof(StandardStudSize)).Cast<StandardStudSize>()
             .Select(x => x.ToString()).ToList());
         for (int i = 0; i < DropdownItems[0].Count; i++)
           DropdownItems[0][i] = DropdownItems[0][i].Replace("D", "Ø").Replace("mmH", "/");
 
         SelectedItems.Add(StdSize.ToString().Replace("D", "Ø").Replace("mmH", "/"));
-
-        // strength
-        DropdownItems.Add(Units.FilteredForceUnits);
-        SelectedItems.Add(ForceUnit.ToString());
 
         First = false;
       }
@@ -74,11 +68,7 @@ namespace ComposGH.Components
       if (i == 0) // change is made to size
       {
         string sz = SelectedItems[i].Replace("Ø", "D").Replace("/", "mmH");
-        StdSize = (StandardSize)Enum.Parse(typeof(StandardSize), sz);
-      }
-      else if (i == 1) // change is made to grade
-      {
-        ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), SelectedItems[i]);
+        StdSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), sz);
       }
 
       // update name of inputs (to display unit on sliders)
@@ -91,8 +81,7 @@ namespace ComposGH.Components
     private void UpdateUIFromSelectedItems()
     {
       string sz = SelectedItems[0].Replace("Ø", "D").Replace("/", "mmH");
-      StdSize = (StandardSize)Enum.Parse(typeof(StandardSize), sz);
-      ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), SelectedItems[1]);
+      StdSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), sz);
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -105,11 +94,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity force = new Force(0, ForceUnit);
-      string forceunitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
-
-      pManager.AddGenericParameter("Grade [" + forceunitAbbreviation + "]", "fu", "Stud Character strength", GH_ParamAccess.item);
-      pManager[0].Optional = true;
+      
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
@@ -119,7 +104,7 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      DA.SetData(0, new StudDimensionsGoo(new StudDimensions(StdSize, GetInput.Force(this, DA, 0, ForceUnit))));
+      DA.SetData(0, new StudDimensionsGoo(new StudDimensions(StdSize)));
     }
 
     #region (de)serialization
@@ -159,10 +144,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity force = new Force(0, ForceUnit);
-      string forceunitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
-
-      Params.Input[0].Name = "Strength [" + forceunitAbbreviation + "]";
+      
     }
     #endregion
   }

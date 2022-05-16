@@ -173,6 +173,16 @@ namespace ComposGH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CreateCustomSteelMaterial {
+            get {
+                object obj = ResourceManager.GetObject("CreateCustomSteelMaterial", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap CreateDesignCode {
             get {
                 object obj = ResourceManager.GetObject("CreateDesignCode", resourceCulture);
@@ -216,16 +226,6 @@ namespace ComposGH.Properties {
         internal static System.Drawing.Bitmap CreateSlab {
             get {
                 object obj = ResourceManager.GetObject("CreateSlab", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap CreateSteelMaterial {
-            get {
-                object obj = ResourceManager.GetObject("CreateSteelMaterial", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -523,9 +523,29 @@ namespace ComposGH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap StandardASNZSteelMaterial {
+            get {
+                object obj = ResourceManager.GetObject("StandardASNZSteelMaterial", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap StandardDecking {
             get {
                 object obj = ResourceManager.GetObject("StandardDecking", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StandardSteelMaterial {
+            get {
+                object obj = ResourceManager.GetObject("StandardSteelMaterial", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

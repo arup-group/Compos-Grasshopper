@@ -896,29 +896,29 @@ namespace ComposGH.Parameters
       //Draw lines
       if (Line != null)
       {
-        if (args.Color.R == defaultCol.R && args.Color.G == defaultCol.G && args.Color.B == defaultCol.B) // not selected
-        {
-          // line
-          args.Pipeline.DrawCurve(Line, UI.Colour.OasysBlue, 3);
+        //if (args.Color.R == defaultCol.R && args.Color.G == defaultCol.G && args.Color.B == defaultCol.B) // not selected
+        //{
+        //  // line
+        //  args.Pipeline.DrawCurve(Line, UI.Colour.OasysBlue, 3);
 
-          // profiles
-          foreach (PolyCurve crv in profileOutlines)
-            args.Pipeline.DrawCurve(crv, UI.Colour.OasysBlue, 2);
+        //  // profiles
+        //  foreach (PolyCurve crv in profileOutlines)
+        //    args.Pipeline.DrawCurve(crv, UI.Colour.OasysBlue, 2);
 
 
-        }
-        else // selected
-        {
-          // line
-          args.Pipeline.DrawCurve(Line, UI.Colour.ArupRed, 4);
+        //}
+        //else // selected
+        //{
+        //  // line
+        //  args.Pipeline.DrawCurve(Line, UI.Colour.ArupRed, 4);
 
-          // profiles
-          foreach (PolyCurve crv in profileOutlines)
-            args.Pipeline.DrawCurve(crv, UI.Colour.ArupRed, 3);
-        }
-        // extrusion wirefram
-        foreach (Brep brep in profileExtrusions)
-          args.Pipeline.DrawBrepWires(brep, UI.Colour.OasysDarkGrey, -1);
+        //  // profiles
+        //  foreach (PolyCurve crv in profileOutlines)
+        //    args.Pipeline.DrawCurve(crv, UI.Colour.ArupRed, 3);
+        //}
+        //// extrusion wirefram
+        //foreach (Brep brep in profileExtrusions)
+        //  args.Pipeline.DrawBrepWires(brep, UI.Colour.OasysDarkGrey, -1);
       }
       #endregion
     }

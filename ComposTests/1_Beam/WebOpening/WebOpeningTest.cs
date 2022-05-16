@@ -1,6 +1,8 @@
 using Xunit;
 using UnitsNet;
 using UnitsNet.Units;
+using System.Collections.Generic;
+using ComposAPI.Helpers;
 
 namespace ComposAPI.Tests
 {
@@ -296,6 +298,150 @@ namespace ComposAPI.Tests
       Assert.Equal(12, original.OpeningStiffeners.BottomStiffenerThickness.Millimeters);
       Assert.True(original.OpeningStiffeners.isBothSides);
       Assert.False(original.OpeningStiffeners.isNotch);
+    }
+
+    [Theory]
+    [InlineData(400, 300, 7.5, 350, OpeningType.Rectangular, "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	400.000	300.000	7.50000	350.000	STIFFENER_NO\n")]
+    [InlineData(400, 400, 3.5, 190, OpeningType.Circular, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	400.000	400.000	3.50000	190.000	STIFFENER_NO\n")]
+    [InlineData(400, 300, 0, 0, OpeningType.Start_notch, "WEB_OPEN_DIMENSION	MEMBER-1	LEFT_NOTCH	400.000	300.000	50.0000%	50.0000%	STIFFENER_NO\n")]
+    public void ToCoaStringNoStiffener(double width, double height, double startPos, double posFromTop, OpeningType openingType, string expected_CoaString)
+    {
+      ComposUnits units = ComposUnits.GetStandardUnits();
+      WebOpening webOpening = new WebOpening();
+      switch (openingType)
+      {
+        case OpeningType.Rectangular:
+          webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), new Length(startPos, units.Length), new Length(posFromTop, units.Section));
+          break;
+        case OpeningType.Circular:
+          webOpening = new WebOpening(new Length(width, units.Section), new Length(startPos, units.Length), new Length(posFromTop, units.Section));
+          break;
+        case OpeningType.Start_notch:
+          webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), NotchPosition.Start);
+          break;
+        case OpeningType.End_notch:
+          webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), NotchPosition.End);
+          break;
+      }
+
+      string coaString = webOpening.ToCoaString("MEMBER-1", units);
+      Assert.Equal(expected_CoaString, coaString);
+    }
+    [Theory]
+    [InlineData(400, 300, 7.5, 350, OpeningType.Rectangular, "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	400.000	300.000	7.50000	350.000	STIFFENER_NO\n")]
+    [InlineData(400, 400, 3.5, 190, OpeningType.Circular, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	400.000	400.000	3.50000	190.000	STIFFENER_NO\n")]
+    [InlineData(400, 300, 0, 0, OpeningType.Start_notch, "WEB_OPEN_DIMENSION	MEMBER-1	LEFT_NOTCH	400.000	300.000	50.0000%	50.0000%	STIFFENER_NO\n")]
+    public void FromCoaStringNoStiffener(double expected_width, double expected_height, double expected_startPos, double expected_posFromTop, OpeningType expected_OpeningType, string coaString)
+    {
+      ComposUnits units = ComposUnits.GetStandardUnits();
+      List<string> parameters = CoaHelper.Split(coaString);
+      WebOpening webOpening = new WebOpening().FromCoaString(parameters, units);
+
+      Assert.Equal(expected_OpeningType, webOpening.WebOpeningType);
+
+      switch (webOpening.WebOpeningType)
+      {
+        case OpeningType.Rectangular:
+          Assert.Equal(expected_width, webOpening.Width.As(units.Section));
+          Assert.Equal(expected_height, webOpening.Height.As(units.Section));
+          Assert.Equal(expected_startPos, webOpening.CentroidPosFromStart.As(units.Length));
+          Assert.Equal(expected_posFromTop, webOpening.CentroidPosFromTop.As(units.Section));
+          break;
+
+        case OpeningType.End_notch:
+        case OpeningType.Start_notch:
+          Assert.Equal(expected_width, webOpening.Width.As(units.Section));
+          Assert.Equal(expected_height, webOpening.Height.As(units.Section));
+          break;
+
+        case OpeningType.Circular:
+          Assert.Equal(expected_width, webOpening.Diameter.As(units.Section));
+          Assert.Equal(expected_startPos, webOpening.CentroidPosFromStart.As(units.Length));
+          Assert.Equal(expected_posFromTop, webOpening.CentroidPosFromTop.As(units.Section));
+          break;
+      }
+    }
+
+    [Theory]
+    [InlineData(400, 300, 0, 0, OpeningType.End_notch, false, 50, 100, 10, 0, 0, "WEB_OPEN_DIMENSION	MEMBER-1	RIGHT_NOTCH	400.000	300.000	50.0000%	50.0000%	STIFFENER_YES	ONE_SIDE_STIFFENER	50.0000	100.000	10.0000	100.000	10.0000\n")]
+    [InlineData(400, 300, 1.5, 250, OpeningType.Rectangular, true, 60, 100, 10, 50, 5, "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	400.000	300.000	1.50000	250.000	STIFFENER_YES	BOTH_SIDE_STIFFENER	60.0000	100.000	10.0000	50.0000	5.00000\n")]
+    [InlineData(400, 400, 9.5, 150, OpeningType.Circular, true, 10, 120, 12, 70, 7, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	400.000	400.000	9.50000	150.000	STIFFENER_YES	BOTH_SIDE_STIFFENER	10.0000	120.000	12.0000	70.0000	7.00000\n")]
+    public void ToCoaStringWithStiffener(double width, double height, double startPos, double posFromTop, OpeningType openingType, bool bothSides, double distFrom, double topWidth, double topThk, double bottomWidth, double bottomThk, string expected_CoaString)
+    {
+      ComposUnits units = ComposUnits.GetStandardUnits();
+      WebOpening webOpening = new WebOpening();
+      WebOpeningStiffeners stiffeners = new WebOpeningStiffeners();
+      switch (openingType)
+      {
+        case OpeningType.Rectangular:
+          webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), new Length(startPos, units.Length), new Length(posFromTop, units.Section));
+          stiffeners = new WebOpeningStiffeners(new Length(distFrom, units.Section), new Length(topWidth, units.Section), new Length(topThk, units.Section), new Length(bottomWidth, units.Section), new Length(bottomThk, units.Section), bothSides);
+          break;
+        case OpeningType.Circular:
+          webOpening = new WebOpening(new Length(width, units.Section), new Length(startPos, units.Length), new Length(posFromTop, units.Section));
+          stiffeners = new WebOpeningStiffeners(new Length(distFrom, units.Section), new Length(topWidth, units.Section), new Length(topThk, units.Section), new Length(bottomWidth, units.Section), new Length(bottomThk, units.Section), bothSides);
+          break;
+        case OpeningType.Start_notch:
+          webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), NotchPosition.Start);
+          stiffeners = new WebOpeningStiffeners(new Length(distFrom, units.Section), new Length(topWidth, units.Section), new Length(topThk, units.Section), bothSides);
+          break;
+        case OpeningType.End_notch:
+          webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), NotchPosition.End);
+          stiffeners = new WebOpeningStiffeners(new Length(distFrom, units.Section), new Length(topWidth, units.Section), new Length(topThk, units.Section), bothSides);
+          break;
+      }
+      webOpening.OpeningStiffeners = stiffeners;
+
+      string coaString = webOpening.ToCoaString("MEMBER-1", units);
+      Assert.Equal(expected_CoaString, coaString);
+    }
+
+    [Theory]
+    [InlineData(400, 300, 0, 0, OpeningType.End_notch, false, 50, 100, 10, 0, 0, "WEB_OPEN_DIMENSION	MEMBER-1	RIGHT_NOTCH	400.000	300.000	50.0000%	50.0000%	STIFFENER_YES	ONE_SIDE_STIFFENER	50.0000	100.000	10.0000	100.000	10.0000\n")]
+    [InlineData(400, 300, 1.5, 250, OpeningType.Rectangular, true, 60, 100, 10, 50, 5, "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	400.000	300.000	1.50000	250.000	STIFFENER_YES	BOTH_SIDE_STIFFENER	60.0000	100.000	10.0000	50.0000	5.00000\n")]
+    [InlineData(400, 400, 9.5, 150, OpeningType.Circular, true, 10, 120, 12, 70, 7, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	400.000	400.000	9.50000	150.000	STIFFENER_YES	BOTH_SIDE_STIFFENER	10.0000	120.000	12.0000	70.0000	7.00000\n")]
+    public void FromCoaStringWithStiffener(double expected_width, double expected_height, double expected_startPos, double expected_posFromTop, OpeningType expected_OpeningType, bool expected_bothSides, double expected_distFrom, double expected_topWidth, double expected_topThk, double expected_bottomWidth, double expected_bottomThk, string coaString)
+    {
+      ComposUnits units = ComposUnits.GetStandardUnits();
+      List<string> parameters = CoaHelper.Split(coaString);
+      WebOpening webOpening = new WebOpening().FromCoaString(parameters, units);
+
+      Assert.Equal(expected_OpeningType, webOpening.WebOpeningType);
+
+      switch (webOpening.WebOpeningType)
+      {
+        case OpeningType.Rectangular:
+          Assert.Equal(expected_width, webOpening.Width.As(units.Section));
+          Assert.Equal(expected_height, webOpening.Height.As(units.Section));
+          Assert.Equal(expected_startPos, webOpening.CentroidPosFromStart.As(units.Length));
+          Assert.Equal(expected_posFromTop, webOpening.CentroidPosFromTop.As(units.Section));
+          break;
+
+        case OpeningType.End_notch:
+        case OpeningType.Start_notch:
+          Assert.Equal(expected_width, webOpening.Width.As(units.Section));
+          Assert.Equal(expected_height, webOpening.Height.As(units.Section));
+          break;
+
+        case OpeningType.Circular:
+          Assert.Equal(expected_width, webOpening.Diameter.As(units.Section));
+          Assert.Equal(expected_startPos, webOpening.CentroidPosFromStart.As(units.Length));
+          Assert.Equal(expected_posFromTop, webOpening.CentroidPosFromTop.As(units.Section));
+          break;
+      }
+
+      Assert.NotNull(webOpening.OpeningStiffeners);
+
+      Assert.Equal(expected_bothSides, webOpening.OpeningStiffeners.isBothSides);
+      Assert.Equal(expected_distFrom, webOpening.OpeningStiffeners.DistanceFrom.As(units.Section));
+      Assert.Equal(expected_topWidth, webOpening.OpeningStiffeners.TopStiffenerWidth.As(units.Section));
+      Assert.Equal(expected_topThk, webOpening.OpeningStiffeners.TopStiffenerThickness.As(units.Section));
+
+      if (!webOpening.OpeningStiffeners.isNotch)
+      {
+        Assert.Equal(expected_bottomWidth, webOpening.OpeningStiffeners.BottomStiffenerWidth.As(units.Section));
+        Assert.Equal(expected_bottomThk, webOpening.OpeningStiffeners.BottomStiffenerThickness.As(units.Section));
+      }
     }
   }
 }
