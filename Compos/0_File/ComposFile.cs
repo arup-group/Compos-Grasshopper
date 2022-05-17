@@ -13,16 +13,67 @@ namespace ComposAPI
   public class ComposFile : IComposFile
   {
     public List<IMember> Members { get; set; }
+    internal IAutomation ComposCOM { get; set; }
+    public string FileName { get; internal set; }
 
     #region constructors
     public ComposFile()
     {
       // empty constructor
     }
-
     public ComposFile(List<IMember> members)
     {
       this.Members = members;
+    }
+    public ComposFile Open(string fileName)
+    {
+      IAutomation automation = new Automation();
+      automation.Open(fileName);
+      this.ComposCOM = automation;
+
+      this.FileName = fileName;
+
+      // save COM object to a temp coa file
+      string tempCoa = Path.GetTempPath() + Guid.NewGuid().ToString() + ".coa";
+      automation.SaveAs(tempCoa);
+      
+      // open temp coa file as ASCII string
+      string coaString = File.ReadAllText(tempCoa);
+
+      // to-do:
+      // convert coa string to members
+
+      return this;
+    }
+    #endregion
+
+    #region methods
+    public void SaveAs(string fileName)
+    {
+      // create coastring from members
+      string coaString = ToCoaString();
+
+      // save coa string to a temp to coa file (ASCII format)
+      string tempCoa = Path.GetTempPath() + Guid.NewGuid().ToString() + ".coa";
+      File.WriteAllLines(tempCoa, new string[] { coaString });
+
+      IAutomation automation = new Automation();
+      automation.Open(tempCoa);
+
+      // save to .cob with COM object
+      if (!fileName.EndsWith(".cob"))
+        fileName = fileName + ".cob";
+      automation.SaveAs(fileName);
+
+      this.FileName = fileName;
+    }
+
+    public override string ToString()
+    {
+      string str = "";
+      foreach (IMember member in Members)
+        str += member.ToString();
+      return str;
     }
     #endregion
 
@@ -230,30 +281,6 @@ namespace ComposAPI
         coaString += member.ToCoaString(units);
 
       return coaString;
-    }
-    #endregion
-
-    #region methods
-    public IAutomation Open(string pathName)
-    {
-      IAutomation automation = new Automation();
-      automation.Open(pathName);
-
-      return automation;
-    }
-
-    public IAutomation SaveAs(string pathName, string coaString)
-    {
-      File.WriteAllLines(pathName, new string[] { coaString });
-      return Open(pathName);
-    }
-
-    public override string ToString()
-    {
-      string str = "";
-      foreach (IMember member in Members)
-        str += member.ToString();
-      return str;
     }
     #endregion
   }

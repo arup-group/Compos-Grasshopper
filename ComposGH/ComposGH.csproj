@@ -90,6 +90,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\0_File\OpenFile.cs" />
+    <Compile Include="Components\0_File\SaveFile.cs" />
     <Compile Include="Components\1_Beam\1_Primary\CreateBeam.cs" />
     <Compile Include="Components\1_Beam\2_Secondary\CreateRestraint.cs" />
     <Compile Include="Components\1_Beam\3_Tertiary\CreateStandardASNZSteelMaterial.cs" />
@@ -142,6 +144,7 @@
     <Compile Include="Helpers\GetInputs.cs" />
     <Compile Include="Helpers\_SqlReaderValues.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
+    <Compile Include="Parameters\0_File\ComposFileGoo.cs" />
     <Compile Include="Parameters\1_Beam\BeamGeometryGoo.cs" />
     <Compile Include="Parameters\2_Studs\StudGoo.cs" />
     <Compile Include="Parameters\3_Slab\ConcreteMaterial\ConcreteMaterialGoo.cs" />
@@ -237,7 +240,6 @@
     <None Include="Properties\Icons\ComposLogo128.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\0_File\" />
     <Folder Include="Components\5_Member\3_Tertiary\" />
     <Folder Include="Components\5_Member\4_Quarternary\" />
     <Folder Include="Components\5_Member\5_Quinary\" />
