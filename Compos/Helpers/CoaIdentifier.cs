@@ -33,6 +33,7 @@
     internal const string MemberTitle = "MEMBER_TITLE";
     internal const string RebarTransverse = "REBAR_TRANSVERSE";
     internal const string RebarWesh = "REBAR_WESH";
+    internal const string RebarMaterial = "REBAR_MATERIAL";
     internal const string SlabConcreteMaterial = "SLAB_CONCRETE_MATERIAL";
     internal const string SlabDimension = "SLAB_DIMENSION";
 

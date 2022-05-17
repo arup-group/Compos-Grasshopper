@@ -96,7 +96,7 @@ namespace ComposAPI
         str += dimension.ToCoaString(name, num, index, units);
         num++;
       }
-      str += this.TransverseReinforcement.ToCoaString();
+      str += this.TransverseReinforcement.ToCoaString(name, units);
       if (this.MeshReinforcement != null)
         str += this.MeshReinforcement.ToCoaString(name);
       if (this.Decking != null)

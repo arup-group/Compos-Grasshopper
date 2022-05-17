@@ -25,24 +25,20 @@ namespace ComposAPI
       C283
     }
 
-  public class MeshReinforcement : Reinforcement, IMeshReinforcement
+  public class MeshReinforcement : IMeshReinforcement
   {
     public Length Cover { get; set; }
     public bool Rotated { get; set; }
     public ReinforcementMeshType MeshType { get; set; }
 
     #region constructors
-    public MeshReinforcement()
-    {
-      this.m_type = ReinforcementType.Mesh;
-    }
+    public MeshReinforcement()   {    }
 
     public MeshReinforcement(Length cover, ReinforcementMeshType meshType = ReinforcementMeshType.A393, bool rotated = false)
     {
       this.Cover = cover;
       this.MeshType = meshType;
       this.Rotated = rotated;
-      this.m_type = ReinforcementType.Mesh;
     }
 
     #endregion

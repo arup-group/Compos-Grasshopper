@@ -28,8 +28,8 @@ namespace ComposGH.Components
     {
       pManager.AddGenericParameter("Material", "CMt", "Concrete material", GH_ParamAccess.item);
       pManager.AddGenericParameter("Dimensions", "SD", "Slab dimensions", GH_ParamAccess.list);
-      pManager.AddGenericParameter("TransverseReinforcement", "TRb", "Transverse reinforcement", GH_ParamAccess.item);
-      pManager.AddGenericParameter("MeshReinforcement", "MRb", "(Optional) Mesh reinforcement", GH_ParamAccess.item);
+      pManager.AddGenericParameter("TransverseReinforcement", "TR", "Transverse reinforcement", GH_ParamAccess.item);
+      pManager.AddGenericParameter("MeshReinforcement", "MR", "(Optional) Mesh reinforcement", GH_ParamAccess.item);
       pManager.AddGenericParameter("Decking", "Dk", "(Optional) Steel Decking", GH_ParamAccess.item);
 
       pManager[3].Optional = true;

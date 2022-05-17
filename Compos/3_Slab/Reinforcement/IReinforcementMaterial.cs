@@ -4,6 +4,10 @@ namespace ComposAPI
 {
   public interface IReinforcementMaterial
   {
-    Pressure Fu { get; }
+    RebarGrade Grade { get; }
+    bool UserDefined { get; }
+    Pressure Fy { get; }
+
+    string ToCoaString(string name);
   }
 }

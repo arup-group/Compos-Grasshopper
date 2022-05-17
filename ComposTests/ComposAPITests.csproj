@@ -57,8 +57,4 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="3_Slab\Reinforcement\" />
-  </ItemGroup>
-
 </Project>

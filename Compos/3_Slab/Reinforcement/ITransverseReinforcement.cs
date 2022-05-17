@@ -5,6 +5,6 @@
     IReinforcementMaterial Material { get; }
     LayoutMethod LayoutMethod { get; }
 
-    string ToCoaString();
+    string ToCoaString(string name, ComposUnits units);
   }
 }

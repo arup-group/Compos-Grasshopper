@@ -13,7 +13,7 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public CreateTransverseReinforcement()
-      : base("Transeverse Reinforcement", "TransRb", "Create Transverse Reinforcement for Compos Slab",
+      : base("Transverse Reinforcement", "TransRb", "Create Transverse Reinforcement for Compos Slab",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -28,13 +28,13 @@ namespace ComposGH.Components
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       pManager.AddGenericParameter("Material", "RMt", "Reinforcement Material", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Custom Layout", "RbL", "(Optional) List of Custom Transverse Reinforcement Layouts - if left empty, Compos will create the layout automatically", GH_ParamAccess.list);
+      pManager.AddGenericParameter("Custom Layout", "RL", "(Optional) List of Custom Transverse Reinforcement Layouts - if left empty, Compos will create the layout automatically", GH_ParamAccess.list);
       pManager[1].Optional = true;
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Transverse Reinforcement", "TRb", "Transverse Reinforcement for Compos Slab", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Transverse Reinforcement", "TR", "Transverse Reinforcement for Compos Slab", GH_ParamAccess.item);
     }
     #endregion
 

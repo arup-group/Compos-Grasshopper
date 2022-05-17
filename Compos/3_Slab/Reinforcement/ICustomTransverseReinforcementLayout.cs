@@ -9,5 +9,7 @@ namespace ComposAPI
     Length Diameter { get; }
     Length Spacing { get; }
     Length Cover { get; }
+
+    string ToCoaString(string name, ComposUnits units);
   }
 }

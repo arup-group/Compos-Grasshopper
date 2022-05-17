@@ -27,7 +27,6 @@ namespace ComposAPI
     // Settings
     public bool TaperedToNext { get; set; } // Tapered to next section flag
 
-
     #region constructors
     public SlabDimension()
     {

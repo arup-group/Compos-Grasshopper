@@ -14,7 +14,7 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public CreateCustomTransverseReinforcementLayout()
-      : base("Custom Rebar Layout", "CustTransRbL", "Create Custom Transverse Reinforcement Layout for Compos Transverse Reinforcement",
+      : base("Custom Transverse Reinforcement Layout", "CustTransRL", "Create Custom Transverse Reinforcement Layout for Compos Transverse Reinforcement",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -153,11 +153,11 @@ namespace ComposGH.Components
       IQuantity length = new Length(0, LengthUnit);
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
-      Params.Input[0].Name = "Start Pos x [" + unitAbbreviation + "]";
-      Params.Input[1].Name = "End Pos x [" + unitAbbreviation + "]";
-      Params.Input[2].Name = "Diameter [" + unitAbbreviation + "]";
-      Params.Input[3].Name = "Spacing [" + unitAbbreviation + "]";
-      Params.Input[4].Name = "Cover [" + unitAbbreviation + "]";
+      Params.Input[1].Name = "Start Pos x [" + unitAbbreviation + "]";
+      Params.Input[2].Name = "End Pos x [" + unitAbbreviation + "]";
+      Params.Input[3].Name = "Diameter [" + unitAbbreviation + "]";
+      Params.Input[4].Name = "Spacing [" + unitAbbreviation + "]";
+      Params.Input[5].Name = "Cover [" + unitAbbreviation + "]";
     }
     #endregion
   }
