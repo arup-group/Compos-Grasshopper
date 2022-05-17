@@ -12,7 +12,7 @@ namespace ComposAPI
 {
   public class ComposFile : IComposFile
   {
-    public List<IMember> Members { get; set; }
+    public IList<IMember> Members { get; set; }
 
     #region constructors
     public ComposFile()

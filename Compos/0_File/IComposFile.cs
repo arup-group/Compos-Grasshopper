@@ -4,7 +4,7 @@ namespace ComposAPI
 {
   public interface IComposFile
   {
-    List<IMember> Members { get; }
+    IList<IMember> Members { get; }
 
     string ToCoaString();
   }

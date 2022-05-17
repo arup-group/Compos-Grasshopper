@@ -14,7 +14,7 @@ namespace ComposAPI
     public IBeam Beam { get; set; }
     public IStud Stud { get; set; }
     public ISlab Slab { get; set; }
-    public List<ILoad> Loads { get; set; }
+    public IList<ILoad> Loads { get; set; }
     public IDesignCode DesignCode { get; set; }
 
     public string Name { get; set; }

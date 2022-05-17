@@ -17,8 +17,8 @@ namespace ComposAPI.Tests
     {
       Force quantity = new Force(1, ForceUnit.Kilonewton);
       Force force = new Force(2, ForceUnit.Decanewton);
-      List<IQuantity> iQuantities = new List<IQuantity>() { Force.Zero, new Length(100, LengthUnit.Millimeter) };
-      List<Length> structs = new List<Length>() { Length.Zero, new Length(100, LengthUnit.Millimeter) };
+      IList<IQuantity> iQuantities = new List<IQuantity>() { Force.Zero, new Length(100, LengthUnit.Millimeter) };
+      IList<Length> structs = new List<Length>() { Length.Zero, new Length(100, LengthUnit.Millimeter) };
 
       TestObject grandChild = new TestObject(true, 1.0, 1, "a", TestEnum.Value1, quantity, force, new List<TestObject>(), iQuantities, structs);
       TestObject original = new TestObject(new TestObject(grandChild));
@@ -32,7 +32,7 @@ namespace ComposAPI.Tests
       duplicate.Children[0].Children[0].TestEnum = TestEnum.None;
       duplicate.Children[0].Children[0].IQuantity = new Pressure(-1.0, PressureUnit.KilonewtonPerSquareMeter);
       duplicate.Children[0].Children[0].Force = new Force(-1.0, ForceUnit.Dyn);
-      duplicate.Children[0].Children[0].IQuantities.AddRange(new List<IQuantity>() { Force.Zero, new Length(100, LengthUnit.Millimeter) });
+      duplicate.Children[0].Children[0].IQuantities = new List<IQuantity>() { Force.Zero, new Length(100, LengthUnit.Millimeter) };
       duplicate.Children[0].Children[0].IQuantities.RemoveAt(0);
 
       Assert.Equal(true, original.Children[0].Children[0].B);
@@ -64,9 +64,9 @@ namespace ComposAPI.Tests
     internal TestEnum TestEnum { get; set; }
     internal IQuantity IQuantity { get; set; }
     internal Force Force { get; set; }
-    internal List<TestObject> Children { get; set; } = new List<TestObject>();
-    internal List<IQuantity> IQuantities { get; set; } = new List<IQuantity>();
-    internal List<Length> Structs { get; set; } = new List<Length>();
+    internal IList<TestObject> Children { get; set; } = new List<TestObject>();
+    internal IList<IQuantity> IQuantities { get; set; } = new List<IQuantity>();
+    internal IList<Length> Structs { get; set; } = new List<Length>();
 
     public TestObject() { }
 
@@ -75,12 +75,12 @@ namespace ComposAPI.Tests
       this.Children = new List<TestObject>() { child };
     }
 
-    public TestObject(List<TestObject> children)
+    public TestObject(IList<TestObject> children)
     {
       this.Children = children;
     }
 
-    internal TestObject(bool b, double d, int i, string s, TestEnum testEnum, IQuantity quantity, Force force, List<TestObject> children, List<IQuantity> iQuantities, List<Length> structs)
+    internal TestObject(bool b, double d, int i, string s, TestEnum testEnum, IQuantity quantity, Force force, IList<TestObject> children, IList<IQuantity> iQuantities, IList<Length> structs)
     {
       this.B = b;
       this.D = d;

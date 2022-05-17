@@ -16,8 +16,8 @@ namespace ComposAPI
     public Length Length { get; set; } // span length
     public IRestraint Restraint { get; set; }
     public ISteelMaterial Material { get; set; }
-    public List<IBeamSection> BeamSections { get; internal set; } = new List<IBeamSection>();
-    public List<IWebOpening> WebOpenings { get; internal set; } = null;
+    public IList<IBeamSection> BeamSections { get; internal set; } = new List<IBeamSection>();
+    public IList<IWebOpening> WebOpenings { get; internal set; } = null;
 
     #region constructors
     public Beam()

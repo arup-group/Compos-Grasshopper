@@ -7,7 +7,7 @@ namespace ComposAPI
   public interface ISlab
   {
     IConcreteMaterial Material { get; }
-    List<ISlabDimension> Dimensions { get; }
+    IList<ISlabDimension> Dimensions { get; }
     ITransverseReinforcement TransverseReinforcement { get; }
     IMeshReinforcement MeshReinforcement { get; }
     IDecking Decking { get; }

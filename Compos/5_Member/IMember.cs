@@ -9,7 +9,7 @@ namespace ComposAPI
     IBeam Beam { get; }
     IStud Stud { get; }
     ISlab Slab { get; }
-    List<ILoad> Loads { get; }
+    IList<ILoad> Loads { get; }
     IDesignCode DesignCode { get; }
     string Name { get; }
     string GridReference { get; }

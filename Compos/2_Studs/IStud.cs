@@ -11,7 +11,7 @@ namespace ComposAPI
     IStudDimensions StudDimensions { get; }
     IStudSpecification StudSpecification { get; }
     // Stud Spacing
-    List<IStudGroupSpacing> CustomSpacing { get; }
+    IList<IStudGroupSpacing> CustomSpacing { get; }
     double Interaction { get; }
     double MinSavingMultipleZones { get; }
     bool CheckStudSpacing { get; }

@@ -17,7 +17,7 @@ namespace ComposAPI
     public IStudDimensions StudDimensions { get; set; }
     public IStudSpecification StudSpecification { get; set; }
     // Stud Spacing
-    public List<IStudGroupSpacing> CustomSpacing { get; set; } = null;
+    public IList<IStudGroupSpacing> CustomSpacing { get; set; } = null;
     public double Interaction { get; set; }
     public double MinSavingMultipleZones { get; set; }
     public bool CheckStudSpacing { get; set; }

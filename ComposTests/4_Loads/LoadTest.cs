@@ -510,7 +510,7 @@ namespace ComposAPI.Tests
       // Act
       ComposFile composFile = new ComposFile(coaString);
       IMember member1 = composFile.Members[0];
-      List<ILoad> loads = member1.Loads;
+      IList<ILoad> loads = member1.Loads;
 
       // Assert
       Assert.Equal(13, loads.Count);

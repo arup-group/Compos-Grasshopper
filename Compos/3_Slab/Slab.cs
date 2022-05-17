@@ -12,7 +12,7 @@ namespace ComposAPI
   public class Slab : ISlab
   {
     public IConcreteMaterial Material { get; set; }
-    public List<ISlabDimension> Dimensions { get; set; } = new List<ISlabDimension>();
+    public IList<ISlabDimension> Dimensions { get; set; } = new List<ISlabDimension>();
     public ITransverseReinforcement TransverseReinforcement { get; set; }
     public IMeshReinforcement MeshReinforcement { get; set; } = null;
     public IDecking Decking { get; set; } = null; // null, if option "No decking (solid slab)" is selected
