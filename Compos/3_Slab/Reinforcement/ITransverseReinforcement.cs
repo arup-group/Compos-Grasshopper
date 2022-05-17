@@ -3,7 +3,7 @@
   public interface ITransverseReinforcement
   {
     IReinforcementMaterial Material { get; }
-    LayoutMethod Layout { get; }
+    LayoutMethod LayoutMethod { get; }
 
     string ToCoaString();
   }

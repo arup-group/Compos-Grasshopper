@@ -14,22 +14,28 @@ namespace ComposAPI
   public class TransverseReinforcement : Reinforcement, ITransverseReinforcement, ICoaObject
   {
     public IReinforcementMaterial Material { get; set; }
-
-    public LayoutMethod Layout { get { return m_layout; } }
-
-    internal LayoutMethod m_layout;
+    public LayoutMethod LayoutMethod { get; set; }
+    List<ICustomTransverseReinforcementLayout> CustomReinforcementLayouts { get; set; }
 
     public TransverseReinforcement()
     {
       this.m_type = ReinforcementType.Transverse;
-      this.m_layout = LayoutMethod.Automatic;
+      this.LayoutMethod = LayoutMethod.Automatic;
     }
 
     public TransverseReinforcement(IReinforcementMaterial material)
     {
       this.Material = material;
       this.m_type = ReinforcementType.Transverse;
-      this.m_layout = LayoutMethod.Automatic;
+      this.LayoutMethod = LayoutMethod.Automatic;
+    }
+
+    public TransverseReinforcement(IReinforcementMaterial material, List<ICustomTransverseReinforcementLayout> transverseReinforcmentLayout)
+    {
+      this.Material = material;
+      this.CustomReinforcementLayouts = transverseReinforcmentLayout;
+      this.m_type = ReinforcementType.Transverse;
+      this.LayoutMethod = LayoutMethod.Custom;
     }
 
     #region coa interop
@@ -48,7 +54,15 @@ namespace ComposAPI
     public override string ToString()
     {
       string mat = this.Material.ToString();
-      return mat + ", Automatic layout";
+      if (this.LayoutMethod == LayoutMethod.Automatic)
+      {
+        return mat + ", Automatic layout";
+      }
+      else
+      {
+        string rebar = string.Join(":", this.CustomReinforcementLayouts.Select(x => x.ToString()).ToList());
+        return mat + ", " + rebar;
+      }
     }
     #endregion
   }

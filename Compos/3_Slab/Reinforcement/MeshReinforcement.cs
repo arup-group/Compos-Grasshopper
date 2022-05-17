@@ -25,9 +25,6 @@ namespace ComposAPI
       C283
     }
 
-  /// <summary>
-  /// Custom class: this class defines the basic properties and methods for our custom class
-  /// </summary>
   public class MeshReinforcement : Reinforcement, IMeshReinforcement
   {
     public Length Cover { get; set; }

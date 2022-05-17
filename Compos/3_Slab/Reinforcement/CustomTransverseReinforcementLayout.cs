@@ -38,30 +38,4 @@ namespace ComposAPI
       return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');
     }
   }
-
-  public class CustomTransverseReinforcement : TransverseReinforcement
-  {
-    List<ICustomTransverseReinforcementLayout> CustomReinforcementLayouts { get; set; }
-    
-    public CustomTransverseReinforcement()
-    {
-      this.m_type = ReinforcementType.Transverse;
-      this.m_layout = LayoutMethod.Custom;
-    }
-
-    public CustomTransverseReinforcement(IReinforcementMaterial material, List<ICustomTransverseReinforcementLayout> transverseReinforcmentLayout)
-    {
-      this.Material = material;
-      this.CustomReinforcementLayouts = transverseReinforcmentLayout;
-      this.m_type = ReinforcementType.Transverse;
-      this.m_layout = LayoutMethod.Custom;
-    }
-
-    public override string ToString()
-    {
-      string rebar = string.Join(":", this.CustomReinforcementLayouts.Select(x => x.ToString()).ToList());
-      string mat = this.Material.ToString();
-      return mat + ", " + rebar;
-    }
-  }
 }

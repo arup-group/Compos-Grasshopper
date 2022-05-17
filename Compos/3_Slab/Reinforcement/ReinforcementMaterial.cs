@@ -22,9 +22,6 @@ namespace ComposAPI
     AS_D500E
   }
 
-  /// <summary>
-  /// Custom class: this class defines the basic properties and methods for our custom class
-  /// </summary>
   public class ReinforcementMaterial : IReinforcementMaterial
   {
     public Pressure Fu { get; set; }

@@ -77,7 +77,7 @@
     <Compile Include="3_Slab\ConcreteMaterial\IERatio.cs" />
     <Compile Include="3_Slab\Decking\IDecking.cs" />
     <Compile Include="3_Slab\Decking\IDeckingConfiguration.cs" />
-    <Compile Include="3_Slab\Reinforcement\ICustomTransverseReinforcement.cs" />
+    <Compile Include="3_Slab\Reinforcement\ICustomTransverseReinforcementLayout.cs" />
     <Compile Include="3_Slab\Reinforcement\IReinforcement.cs" />
     <Compile Include="3_Slab\Reinforcement\IReinforcementMaterial.cs" />
     <Compile Include="3_Slab\ISlab.cs" />
@@ -120,7 +120,7 @@
     <Compile Include="3_Slab\Decking\DeckingConfiguration.cs" />
     <Compile Include="3_Slab\Reinforcement\MeshReinforcement.cs" />
     <Compile Include="3_Slab\Reinforcement\ReinforcementMaterial.cs" />
-    <Compile Include="3_Slab\Reinforcement\CustomTransverseReinforcement.cs" />
+    <Compile Include="3_Slab\Reinforcement\CustomTransverseReinforcementLayout.cs" />
     <Compile Include="3_Slab\Reinforcement\TransverseReinforcement.cs" />
     <Compile Include="3_Slab\Reinforcement\Reinforcement.cs" />
     <Compile Include="4_Loads\Load.cs" />

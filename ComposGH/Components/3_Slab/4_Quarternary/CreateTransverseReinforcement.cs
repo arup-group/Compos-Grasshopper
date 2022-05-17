@@ -31,6 +31,7 @@ namespace ComposGH.Components
       pManager.AddGenericParameter("Custom Layout", "RbL", "(Optional) List of Custom Transverse Reinforcement Layouts - if left empty, Compos will create the layout automatically", GH_ParamAccess.list);
       pManager[1].Optional = true;
     }
+
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
       pManager.AddGenericParameter("Transverse Reinforcement", "TRb", "Transverse Reinforcement for Compos Slab", GH_ParamAccess.item);
@@ -45,8 +46,7 @@ namespace ComposGH.Components
       if (this.Params.Input[1].Sources.Count > 0)
       {
         List<CustomTransverseReinforcementLayoutGoo> transverseReinforcmentLayouts = GetInput.GenericGooList<CustomTransverseReinforcementLayoutGoo>(this, DA, 1);
-        DA.SetData(0, new TransverseReinforcementGoo(new CustomTransverseReinforcement(
-          mat.Value, transverseReinforcmentLayouts.Select(x => x.Value as ICustomTransverseReinforcementLayout).ToList())));
+        DA.SetData(0, new TransverseReinforcementGoo(new TransverseReinforcement(mat.Value, transverseReinforcmentLayouts.Select(x => x.Value as ICustomTransverseReinforcementLayout).ToList())));
       }
       else
       {
