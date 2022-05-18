@@ -44,8 +44,7 @@ namespace ComposGH
       Grasshopper.Instances.ComponentServer.AddCategoryIcon("Compos", Properties.Resources.ComposLogo128);
 
       // ### Queue up Main menu loader ###
-      Helpers.Loader menuLoad = new Helpers.Loader();
-      menuLoad.CreateMainMenuItem();
+      Helpers.Loader.CreateMainMenuItem();
 
       // ### Setup units ###
       Units.SetupUnits();
@@ -55,6 +54,7 @@ namespace ComposGH
     public static string PluginPath;
     public static string InstallPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Oasys", "Compos 8.6");
   }
+
   public class ComposGHInfo : GH_AssemblyInfo
   {
     internal static Guid GUID = new Guid("c3884cdc-ac5b-4151-afc2-93590cef4f8f");
@@ -65,6 +65,7 @@ namespace ComposGH
     internal static bool isBeta = true;
     internal const string ProductName = "Compos";
     internal const string PluginName = "ComposGH";
+
     public override string Name
     {
       get
@@ -72,6 +73,7 @@ namespace ComposGH
         return ProductName;
       }
     }
+
     public override Bitmap Icon
     {
       get
@@ -80,6 +82,7 @@ namespace ComposGH
         return null;
       }
     }
+
     public override Bitmap AssemblyIcon
     {
       get
