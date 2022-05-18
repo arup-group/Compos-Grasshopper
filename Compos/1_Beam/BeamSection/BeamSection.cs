@@ -291,22 +291,25 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal BeamSection(List<string> parameters, ComposUnits units)
+    internal static IBeamSection FromCoaString(List<string> parameters, ComposUnits units)
     {
+      BeamSection section = new BeamSection();
       //BEAM_SECTION_AT_X	MEMBER-1	3	1	0.000000	STD GI 200 189.2 222.25 8.5 12.7 12.7	TAPERED_YES
       //BEAM_SECTION_AT_X MEMBER-1 3 2 6.00000 STD GI 730 189.2 222.25 8.5 12.7 12.7 TAPERED_YES
       //BEAM_SECTION_AT_X MEMBER-1 3 3 12.0000 STD GI 200 189.2 222.25 8.5 12.7 12.7 TAPERED_YES
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-      
-      this.StartPosition = new Length(Convert.ToDouble(parameters[4], noComma), units.Length);
-      
-      SetFromProfileString(parameters[5]);
+
+      section.StartPosition = new Length(Convert.ToDouble(parameters[4], noComma), units.Length);
+
+      section.SetFromProfileString(parameters[5]);
       
       // using StartsWith as string is the last parameter and can contain new line character: "TAPERED_YES\n"
-      if (parameters[6].StartsWith("TAPERED_YES")) 
-        TaperedToNext = true;
+      if (parameters[6].StartsWith("TAPERED_YES"))
+        section.TaperedToNext = true;
       else
-        TaperedToNext = false;
+        section.TaperedToNext = false;
+
+      return section;
     }
     
     public string ToCoaString(string name, int num, int index, ComposUnits units)

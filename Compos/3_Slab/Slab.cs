@@ -32,7 +32,7 @@ namespace ComposAPI
       this.Decking = decking;
     }
 
-    public Slab(ConcreteMaterial material, ISlabDimension dimensions, ITransverseReinforcement transverseReinforcement, IMeshReinforcement meshReinforcement = null, Decking decking = null)
+    public Slab(ConcreteMaterial material, ISlabDimension dimensions, ITransverseReinforcement transverseReinforcement, IMeshReinforcement meshReinforcement = null, IDecking decking = null)
     {
       this.Material = material;
       this.Dimensions = new List<ISlabDimension> { dimensions };
@@ -43,8 +43,10 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal Slab(string coaString, Code code, ComposUnits units)
+    internal static ISlab FromCoaString(string coaString, Code code, ComposUnits units)
     {
+      Slab slab = new Slab();
+
       List<string> lines = CoaHelper.SplitLines(coaString);
       ReinforcementMaterial material;
       foreach (string line in lines)
@@ -53,38 +55,39 @@ namespace ComposAPI
         switch (parameters[0])
         {
           case (CoaIdentifier.SlabConcreteMaterial):
-            this.Material = new ConcreteMaterial(lines, units);
+            slab.Material = ConcreteMaterial.FromCoaString(lines, units);
             break;
 
           case (CoaIdentifier.SlabDimension):
-            SlabDimension dimension = new SlabDimension(parameters, units);
-            this.Dimensions.Add(dimension);
+            ISlabDimension dimension = SlabDimension.FromCoaString(parameters, units);
+            slab.Dimensions.Add(dimension);
             break;
 
           case (CoaIdentifier.RebarTransverse):
-            this.TransverseReinforcement = new TransverseReinforcement(parameters, code, units);
+            slab.TransverseReinforcement = TransverseReinforcement.FromCoaString(parameters, code, units);
             break;
 
           case (CoaIdentifier.RebarWesh):
-            this.MeshReinforcement = new MeshReinforcement(parameters);
+            slab.MeshReinforcement = MeshReinforcement.FromCoaString(parameters);
             break;
 
           case (CoaIdentifier.DeckingCatalogue):
-            this.Decking = new CatalogueDecking(parameters, units);
+            slab.Decking = CatalogueDecking.FromCoaString(parameters, units);
             break;
 
           case (CoaIdentifier.DeckingUser):
             if (parameters[2] == "USER_DEFINED")
-              this.Decking = new CustomDecking(parameters, units);
+              slab.Decking = CustomDecking.FromCoaString(parameters, units);
             //else
-              // do nothing
+            // do nothing
             break;
 
           default:
             // do we not want to just continue here? or is the incoming coaString pre-filtered for only slab parts?
-            throw new Exception("Unable to convert " + line + " to Compos Slab."); 
+            throw new Exception("Unable to convert " + line + " to Compos Slab.");
         }
       }
+      return slab;
     }
 
     public string ToCoaString(string name, ComposUnits units)

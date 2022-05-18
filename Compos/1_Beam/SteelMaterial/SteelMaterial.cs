@@ -101,33 +101,36 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal SteelMaterial(List<string> parameters, ComposUnits units)
+    internal static ISteelMaterial FromCoaList(List<string> parameters, ComposUnits units)
     {
+      SteelMaterial material = new SteelMaterial();
+
       switch (parameters[0])
       {
         case ("BEAM_STEEL_MATERIAL_STD"):
-          this.isCustom = false;
-          this.Grade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), parameters[2]);
+          material.isCustom = false;
+          material.Grade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), parameters[2]);
           break;
 
         case ("BEAM_STEEL_MATERIAL_USER"):
-          this.isCustom = true;
-          this.fy = new Pressure(Convert.ToDouble(parameters[2]), units.Stress);
-          this.E = new Pressure(Convert.ToDouble(parameters[3]), units.Stress);
-          this.Density = new Density(Convert.ToDouble(parameters[4]), units.Density);
+          material.isCustom = true;
+          material.fy = new Pressure(Convert.ToDouble(parameters[2]), units.Stress);
+          material.E = new Pressure(Convert.ToDouble(parameters[3]), units.Stress);
+          material.Density = new Density(Convert.ToDouble(parameters[4]), units.Density);
           if (parameters[5] == "TRUE")
-            this.ReductionFactorMpl = true;
+            material.ReductionFactorMpl = true;
           else
-            this.ReductionFactorMpl = false;
+            material.ReductionFactorMpl = false;
           break;
 
         case ("BEAM_WELDING_MATERIAL"):
-          this.WeldGrade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), parameters[2].Replace(' ', '_'));
+          material.WeldGrade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), parameters[2].Replace(' ', '_'));
           break;
 
         default:
           throw new Exception("Unable to convert " + parameters + " to Compos Steel Material.");
       }
+      return material;
     }
 
     public string ToCoaString(string name, Code code, ComposUnits units)

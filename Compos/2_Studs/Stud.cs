@@ -120,8 +120,9 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal Stud FromCoaString(List<string> parameters)
+    internal static Stud FromCoaString(List<string> parameters)
     {
+      Stud stud = new Stud();
       //STUD_LAYOUT	MEMBER-1	AUTO_100	0.200000
       //STUD_LAYOUT	MEMBER-1	AUTO_PERCENT	0.200000	0.850000
       //STUD_LAYOUT	MEMBER-1	AUTO_MINIMUM_STUD	0.200000
@@ -130,27 +131,27 @@ namespace ComposAPI
       switch (parameters[2])
       {
         case CoaIdentifier.StudGroupSpacings.StudLayoutAutomatic:
-          this.StudSpacingType = StudSpacingType.Automatic;
-          this.MinSavingMultipleZones = Convert.ToDouble(parameters[3], noComma);
+          stud.StudSpacingType = StudSpacingType.Automatic;
+          stud.MinSavingMultipleZones = Convert.ToDouble(parameters[3], noComma);
           break;
 
         case CoaIdentifier.StudGroupSpacings.StudLayoutPartial_Interaction:
-          this.StudSpacingType = StudSpacingType.Partial_Interaction;
-          this.MinSavingMultipleZones = Convert.ToDouble(parameters[3], noComma);
-          this.Interaction = Convert.ToDouble(parameters[4], noComma);
+          stud.StudSpacingType = StudSpacingType.Partial_Interaction;
+          stud.MinSavingMultipleZones = Convert.ToDouble(parameters[3], noComma);
+          stud.Interaction = Convert.ToDouble(parameters[4], noComma);
           break;
 
         case CoaIdentifier.StudGroupSpacings.StudLayoutMin_Num_of_Studs:
-          this.StudSpacingType = StudSpacingType.Min_Num_of_Studs;
-          this.MinSavingMultipleZones = Convert.ToDouble(parameters[3], noComma);
+          stud.StudSpacingType = StudSpacingType.Min_Num_of_Studs;
+          stud.MinSavingMultipleZones = Convert.ToDouble(parameters[3], noComma);
           break;
 
         case CoaIdentifier.StudGroupSpacings.StudLayoutCustom:
-          this.StudSpacingType = StudSpacingType.Custom;
-          this.CheckStudSpacing = parameters.Last() != "CHECK_SPACE_NO";
+          stud.StudSpacingType = StudSpacingType.Custom;
+          stud.CheckStudSpacing = parameters.Last() != "CHECK_SPACE_NO";
           break;
       }
-      return this;
+      return stud;
     }
 
     public string ToCoaString(string name, ComposUnits units, Code designCode)

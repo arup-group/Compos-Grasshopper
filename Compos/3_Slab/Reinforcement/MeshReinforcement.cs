@@ -44,9 +44,11 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal MeshReinforcement(List<string> parameters)
+    internal static IMeshReinforcement FromCoaString(List<string> parameters)
     {
+      MeshReinforcement reinforcement = new MeshReinforcement();
 
+      return reinforcement;
     }
 
     public string ToCoaString(string name)

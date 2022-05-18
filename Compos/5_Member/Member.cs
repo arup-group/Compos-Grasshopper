@@ -48,11 +48,13 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal Member(string coaString)
+    internal static IMember FromCoaString(List<string> parameters)
     {
-      // to do - implement from coa string method
-
-      
+      Member member = new Member();
+      member.Name = parameters[1];
+      member.GridReference = (parameters.Count > 1) ? parameters[2] : "";
+      member.Note = (parameters.Count > 2) ? parameters[3] : "";
+      return member;
     }
 
     public string ToCoaString(ComposUnits units)

@@ -52,17 +52,19 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal ReinforcementMaterial(List<string> parameters, Code code)
+    internal static IReinforcementMaterial FromCoaString(List<string> parameters, Code code)
     {
+      ReinforcementMaterial material = new ReinforcementMaterial();
+
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       if (parameters[2] == "USER_DEFINED")
       {
-        this.UserDefined = true;
-        this.Fy = new Pressure(Convert.ToDouble(parameters[3], noComma), PressureUnit.NewtonPerSquareMeter);
+        material.UserDefined = true;
+        material.Fy = new Pressure(Convert.ToDouble(parameters[3], noComma), PressureUnit.NewtonPerSquareMeter);
       }
       else
       {
-        this.UserDefined = false;
+        material.UserDefined = false;
         string gradePrefix;
         switch (code)
         {
@@ -87,12 +89,13 @@ namespace ComposAPI
           default:
             throw new Exception("Reinforcement material not implemented for Code " + code.ToString());
         }
-        this.Grade = (RebarGrade)Enum.Parse(typeof(RebarGrade), gradePrefix + parameters[3]);
-        this.SetFy();
+        material.Grade = (RebarGrade)Enum.Parse(typeof(RebarGrade), gradePrefix + parameters[3]);
+        material.SetFy();
       }
+      return material;
     }
 
-    public new string ToCoaString(string name)
+    public string ToCoaString(string name)
     {
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
 

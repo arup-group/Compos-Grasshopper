@@ -58,33 +58,36 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal SlabDimension(List<string> parameters, ComposUnits units)
+    internal static ISlabDimension FromCoaString(List<string> parameters, ComposUnits units)
     {
+      SlabDimension dimension = new SlabDimension();
+
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       if (parameters.Count < 10)
       {
         throw new Exception("Unable to convert " + parameters + " to Compos Slab Dimension.");
       }
-      this.StartPosition = new Length(Convert.ToDouble(parameters[4], noComma), units.Length);
-      this.OverallDepth = new Length(Convert.ToDouble(parameters[5], noComma), units.Length);
-      this.AvailableWidthLeft = new Length(Convert.ToDouble(parameters[6], noComma), units.Length);
-      this.AvailableWidthRight = new Length(Convert.ToDouble(parameters[7], noComma), units.Length);
+      dimension.StartPosition = new Length(Convert.ToDouble(parameters[4], noComma), units.Length);
+      dimension.OverallDepth = new Length(Convert.ToDouble(parameters[5], noComma), units.Length);
+      dimension.AvailableWidthLeft = new Length(Convert.ToDouble(parameters[6], noComma), units.Length);
+      dimension.AvailableWidthRight = new Length(Convert.ToDouble(parameters[7], noComma), units.Length);
 
       if (parameters[8] == "TAPERED_YES")
-        this.TaperedToNext = true;
+        dimension.TaperedToNext = true;
       else
-        this.TaperedToNext = false;
+        dimension.TaperedToNext = false;
 
       if (parameters[8] == "EFFECTIVE_WIDTH_YES")
       {
-        this.UserEffectiveWidth = true;
+        dimension.UserEffectiveWidth = true;
         if (parameters.Count != 12)
         {
           throw new Exception("Unable to convert " + parameters + " to Compos Slab Dimension.");
         }
-        this.EffectiveWidthLeft = new Length(Convert.ToDouble(parameters[9], noComma), units.Length);
-        this.EffectiveWidthRight = new Length(Convert.ToDouble(parameters[10], noComma), units.Length);
+        dimension.EffectiveWidthLeft = new Length(Convert.ToDouble(parameters[9], noComma), units.Length);
+        dimension.EffectiveWidthRight = new Length(Convert.ToDouble(parameters[10], noComma), units.Length);
       }
+      return dimension;
     }
 
     /// <summary>

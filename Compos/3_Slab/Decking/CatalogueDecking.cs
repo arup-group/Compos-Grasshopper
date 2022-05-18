@@ -45,12 +45,14 @@ namespace ComposAPI
     }
 
     #region coa interop
-    internal CatalogueDecking(List<string> parameters, ComposUnits units)
+    internal static IDecking FromCoaString(List<string> parameters, ComposUnits units)
     {
+      CatalogueDecking decking = new CatalogueDecking();
+
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-      this.Catalogue = parameters[2];
-      this.Profile = parameters[3];
-      this.Grade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), parameters[4]);
+      decking.Catalogue = parameters[2];
+      decking.Profile = parameters[3];
+      decking.Grade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), parameters[4]);
       DeckingConfiguration deckingConfiguration = new DeckingConfiguration();
       deckingConfiguration.Angle = new Angle(Convert.ToDouble(parameters[5], noComma), AngleUnit.Degree); // COA string always in degrees
 
@@ -63,10 +65,12 @@ namespace ComposAPI
         deckingConfiguration.IsWelded = true;
       else
         deckingConfiguration.IsWelded = false;
-      this.DeckingConfiguration = deckingConfiguration;
+      decking.DeckingConfiguration = deckingConfiguration;
+
+      return decking;
     }
 
-    public override string ToCoaString(string name, ComposUnits units)
+    public string ToCoaString(string name, ComposUnits units)
     {
       List<string> parameters = new List<string>();
       parameters.Add("DECKING_CATALOGUE");

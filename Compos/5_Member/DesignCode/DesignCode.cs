@@ -61,7 +61,7 @@ namespace ComposAPI
     }
 
     #region coa interop
-    internal DesignCode FromCoaString(List<string> parameters)
+    internal static DesignCode FromCoaString(List<string> parameters)
     {
       DesignCode dc = new DesignCode();
       switch (parameters[2])

@@ -176,30 +176,33 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal ConcreteMaterial(List<string> parameters, ComposUnits units) 
+    internal static IConcreteMaterial FromCoaString(List<string> parameters, ComposUnits units) 
     {
+      ConcreteMaterial material = new ConcreteMaterial();
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       if (parameters[1].Length < 4)
       {
         // BS5950 GRADES
-        this.Grade = Enum.Parse(typeof(ConcreteGrade), parameters[1]).ToString();
+        material.Grade = Enum.Parse(typeof(ConcreteGrade), parameters[1]).ToString();
       }
       else
       {
         // EC4 GRADES
-        this.Grade = Enum.Parse(typeof(ConcreteGradeEN), parameters[1]).ToString();
+        material.Grade = Enum.Parse(typeof(ConcreteGradeEN), parameters[1]).ToString();
       }
-      this.Type = (WeightType)Enum.Parse(typeof(WeightType), parameters[2]);
+      material.Type = (WeightType)Enum.Parse(typeof(WeightType), parameters[2]);
       if (parameters[3] == "USER_DENSITY")
-        this.UserDensity = true;
+        material.UserDensity = true;
       int i = 4;
-      if (this.UserDensity)
+      if (material.UserDensity)
       {
-        this.DryDensity = new Density(Convert.ToDouble(parameters[i], noComma), units.Density);
+        material.DryDensity = new Density(Convert.ToDouble(parameters[i], noComma), units.Density);
         i++;
       }
 
       // todo: implement!
+
+      return material;
     }
 
     /// <summary>

@@ -25,9 +25,6 @@ namespace ComposAPI
     Area
   }
 
-  /// <summary>
-  /// Custom class: this class defines the basic properties and methods for our custom class
-  /// </summary>
   public class Load : ILoad
   {
     public LoadType Type { get { return m_type; } }
@@ -51,7 +48,7 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal Load FromCoaString(List<string> parameters, ComposUnits units)
+    internal static Load FromCoaString(List<string> parameters, ComposUnits units)
     {
       ForceUnit forceUnit = units.Force;
       LengthUnit lengthUnit = units.Length;

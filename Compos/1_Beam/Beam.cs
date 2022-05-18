@@ -38,9 +38,12 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal Beam(string coaString)
+    internal static IBeam FromCoaString(string coaString)
     {
+      Beam beam = new Beam();
       // to do - implement from coa string method
+
+      return beam;
     }
 
     public string ToCoaString(string name, Code code, ComposUnits units)

@@ -128,12 +128,12 @@ namespace ComposAPI
       this.isStandard = true;
     }
 
-
     #region constructors
     public StudDimensions()
     {
       // empty constructor
     }
+
     /// <summary>
     /// Create Custom size with strength from Stress
     /// </summary>
@@ -146,6 +146,7 @@ namespace ComposAPI
       this.Height = height;
       this.Fu = fu;
     }
+
     /// <summary>
     /// Create Custom size with strength from Force
     /// </summary>
@@ -158,6 +159,7 @@ namespace ComposAPI
       this.Height = height;
       this.CharacterStrength = strength;
     }
+
     /// <summary>
     /// Create Standard size with standard strength depending on code applied
     /// </summary>
@@ -167,6 +169,7 @@ namespace ComposAPI
     {
       SetSizeFromStandard(size);
     }
+
     /// <summary>
     /// Create Standard size with custom strength from Stress
     /// </summary>
@@ -188,6 +191,7 @@ namespace ComposAPI
       SetSizeFromStandard(size);
       this.Fu = fu;
     }
+
     /// <summary>
     /// Create Standard size with Standard Grade
     /// </summary>
@@ -212,51 +216,54 @@ namespace ComposAPI
       this.Height = height;
       SetGradeFromStandard(standardGrade);
     }
+    #endregion
 
-    internal StudDimensions FromCoaString(List<string> parameters, ComposUnits units, Code code)
+    #region coaInterop
+    internal static StudDimensions FromCoaString(List<string> parameters, ComposUnits units, Code code)
     {
+      StudDimensions studDimensions = new StudDimensions();
       //EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_NO	4.50000e+008
       //EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_YES	SD2_EN13918
       if (parameters[2] == CoaIdentifier.StudDimensions.StudGradeEC4Standard)
       {
         StandardStudGrade standardGrade = (StandardStudGrade)Enum.Parse(typeof(StandardStudGrade), parameters[3]);
-        SetGradeFromStandard(standardGrade);
-        this.isStandard = true;
+        studDimensions.SetGradeFromStandard(standardGrade);
+        studDimensions.isStandard = true;
       }
       else if (parameters[2] == CoaIdentifier.StudDimensions.StudGradeEC4Custom)
       {
         NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-        this.Fu = new Pressure(Convert.ToDouble(parameters[3], noComma), units.Stress);
+        studDimensions.Fu = new Pressure(Convert.ToDouble(parameters[3], noComma), units.Stress);
       }
       else if (parameters[2] == CoaIdentifier.StudDimensions.StudDimensionStandard)
       {
         string size = "D" + parameters[3].Replace("/", "H");
         StandardStudSize standardSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), size);
-        SetSizeFromStandard(standardSize);
+        studDimensions.SetSizeFromStandard(standardSize);
         switch (code)
         {
           case Code.BS5950_3_1_1990_Superseded:
           case Code.BS5950_3_1_1990_A1_2010:
-            this.CharacterStrength = new Force(90, ForceUnit.Kilonewton);
+            studDimensions.CharacterStrength = new Force(90, ForceUnit.Kilonewton);
             break;
           case Code.HKSUOS_2005:
           case Code.HKSUOS_2011:
-            this.CharacterStrength = new Force(76.3497, ForceUnit.Kilonewton);
+            studDimensions.CharacterStrength = new Force(76.3497, ForceUnit.Kilonewton);
             break;
           case Code.AS_NZS2327_2017:
-            this.CharacterStrength = new Force(97.9845, ForceUnit.Kilonewton);
+            studDimensions.CharacterStrength = new Force(97.9845, ForceUnit.Kilonewton);
             break;
         }
-        this.isStandard = true;
+        studDimensions.isStandard = true;
       }
       else if (parameters[2] == CoaIdentifier.StudDimensions.StudDimensionCustom)
       {
         NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-        this.Diameter = new Length(Convert.ToDouble(parameters[3], noComma), units.Section);
-        this.Height = new Length(Convert.ToDouble(parameters[4], noComma), units.Section);
-        this.CharacterStrength = new Force(Convert.ToDouble(parameters[5], noComma), units.Force);
+        studDimensions.Diameter = new Length(Convert.ToDouble(parameters[3], noComma), units.Section);
+        studDimensions.Height = new Length(Convert.ToDouble(parameters[4], noComma), units.Section);
+        studDimensions.CharacterStrength = new Force(Convert.ToDouble(parameters[5], noComma), units.Force);
       }
-      return this;
+      return studDimensions;
     }
     #endregion
 

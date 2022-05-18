@@ -32,18 +32,21 @@ namespace ComposAPI
       this.m_type = DeckingType.Custom;
     }
 
-    internal CustomDecking(List<string> parameters, ComposUnits units)
+    #region coa interop
+    internal static IDecking FromCoaString(List<string> parameters, ComposUnits units)
     {
-      this.Strength = new Pressure(Convert.ToDouble(parameters[3]), units.Stress);
+      CustomDecking decking = new CustomDecking();
+
+      decking.Strength = new Pressure(Convert.ToDouble(parameters[3]), units.Stress);
       DeckingConfiguration deckingConfiguration = new DeckingConfiguration();
       deckingConfiguration.Angle = new Angle(Convert.ToDouble(parameters[4]), units.Angle);
-      this.b1 = new Length(Convert.ToDouble(parameters[5]), units.Length);
-      this.b2 = new Length(Convert.ToDouble(parameters[6]), units.Length);
-      this.b3 = new Length(Convert.ToDouble(parameters[7]), units.Length);
-      this.Depth = new Length(Convert.ToDouble(parameters[8]), units.Length);
-      this.Thickness = new Length(Convert.ToDouble(parameters[9]), units.Length);
-      this.b4 = new Length(Convert.ToDouble(parameters[10]), units.Length);
-      this.b5 = new Length(Convert.ToDouble(parameters[11]), units.Length);
+      decking.b1 = new Length(Convert.ToDouble(parameters[5]), units.Length);
+      decking.b2 = new Length(Convert.ToDouble(parameters[6]), units.Length);
+      decking.b3 = new Length(Convert.ToDouble(parameters[7]), units.Length);
+      decking.Depth = new Length(Convert.ToDouble(parameters[8]), units.Length);
+      decking.Thickness = new Length(Convert.ToDouble(parameters[9]), units.Length);
+      decking.b4 = new Length(Convert.ToDouble(parameters[10]), units.Length);
+      decking.b5 = new Length(Convert.ToDouble(parameters[11]), units.Length);
 
       if (parameters[12] == "DECKING_JOINTED")
         deckingConfiguration.IsDiscontinous = true;
@@ -54,11 +57,12 @@ namespace ComposAPI
         deckingConfiguration.IsWelded = true;
       else
         deckingConfiguration.IsWelded = false;
-      this.DeckingConfiguration = deckingConfiguration;
+      decking.DeckingConfiguration = deckingConfiguration;
+
+      return decking;
     }
 
-    #region coa interop
-    public override string ToCoaString(string name, ComposUnits units)
+    public string ToCoaString(string name, ComposUnits units)
     {
       List<string> parameters = new List<string>();
       parameters.Add("DECKING_USER");
