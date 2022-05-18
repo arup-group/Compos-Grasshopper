@@ -16,7 +16,7 @@ namespace ComposAPI
     public Length Length { get; set; } // span length
     public IRestraint Restraint { get; set; }
     public ISteelMaterial Material { get; set; }
-    public IList<IBeamSection> BeamSections { get; internal set; } = new List<IBeamSection>();
+    public IList<IBeamSection> Sections { get; internal set; } = new List<IBeamSection>();
     public IList<IWebOpening> WebOpenings { get; internal set; } = null;
 
     #region constructors
@@ -25,14 +25,14 @@ namespace ComposAPI
       // empty constructor
     }
 
-    public Beam(Length length, IRestraint restraint, ISteelMaterial material, List<IBeamSection> beamSections, List<IWebOpening> webOpenings = null)
+    public Beam(Length length, IRestraint restraint, ISteelMaterial material, List<IBeamSection> sections, List<IWebOpening> webOpenings = null)
     {
       this.Length = length;
       this.Restraint = restraint;
       this.Material = material;
-      this.BeamSections = beamSections.ToList();
+      this.Sections = sections;
       if (webOpenings != null)
-        this.WebOpenings = webOpenings.ToList();
+        this.WebOpenings = webOpenings;
     }
 
     #endregion
@@ -60,13 +60,36 @@ namespace ComposAPI
             beam.Length = CoaHelper.ConvertToLength(parameters[2], units.Length);
             break;
 
+          case (CoaIdentifier.RetraintPoint):
+          case (CoaIdentifier.RestraintTopFlange):
+          case (CoaIdentifier.Restraint2ndBeam):
+          case (CoaIdentifier.EndFlangeFreeRotate):
+          case (CoaIdentifier.FinalRestraintPoint):
+          case (CoaIdentifier.FinalRestraintNoStud):
+          case (CoaIdentifier.FinalRestraint2ndBeam):
+          case (CoaIdentifier.FinalEndFlangeFreeRotate):
+
+            break;
+
+          case (CoaIdentifier.BeamSteelMaterialStandard):
+          case (CoaIdentifier.BeamSteelMaterialUser):
+          case (CoaIdentifier.BeamWeldingMaterial):
+            beam.Material = SteelMaterial.FromCoaString(parameters, units);
+            break;
+
+          case (CoaIdentifier.BeamSectionAtX):
+            beam.Sections.Add(BeamSection.FromCoaString(parameters, units));
+            break;
+
+          case (CoaIdentifier.WebOpeningDimension):
+            beam.WebOpenings.Add(WebOpening.FromCoaString(parameters, units));
+            break;
 
           default:
             // continue;
             break;
         }
       }
-
       return beam;
     }
 
@@ -85,8 +108,8 @@ namespace ComposAPI
       str += this.Material.ToCoaString(name, code, units);
 
       int num = 1;
-      int index = this.BeamSections.Count + 1;
-      foreach (IBeamSection section in this.BeamSections)
+      int index = this.Sections.Count + 1;
+      foreach (IBeamSection section in this.Sections)
       {
         str += section.ToCoaString(name, num, index, units);
         num++;
@@ -106,7 +129,7 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      string profile = (this.BeamSections.Count > 1) ? string.Join(" : ", this.BeamSections.Select(x => x.SectionDescription).ToArray()) : this.BeamSections[0].SectionDescription;
+      string profile = (this.Sections.Count > 1) ? string.Join(" : ", this.Sections.Select(x => x.SectionDescription).ToArray()) : this.Sections[0].SectionDescription;
       string mat = this.Material.ToString();
       string line = "L:" + this.Length.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
       return line + ", " + profile + ", " + mat;

@@ -223,7 +223,7 @@ namespace ComposAPI
       //WEB_OPEN_DIMENSION MEMBER-1 RECTANGULAR 400.000 300.000 1.50000 250.000 STIFFENER_YES BOTH_SIDE_STIFFENER 60.0000 100.000 10.0000 50.0000 5.00000
       //WEB_OPEN_DIMENSION MEMBER-1 CIRCULAR 400.000 400.000 9.50000 150.000 STIFFENER_YES BOTH_SIDE_STIFFENER 10.0000 120.000 12.0000 70.0000 7.00000
       List<string> parameters = new List<string>();
-      parameters.Add("WEB_OPEN_DIMENSION");
+      parameters.Add(CoaIdentifier.WebOpeningDimension);
       parameters.Add(name);
       switch (this.WebOpeningType)
       {

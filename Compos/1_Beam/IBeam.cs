@@ -9,7 +9,7 @@ namespace ComposAPI
     Length Length { get; }
     IRestraint Restraint { get; }
     ISteelMaterial Material { get; }
-    IList<IBeamSection> BeamSections { get; }
+    IList<IBeamSection> Sections { get; }
     IList<IWebOpening> WebOpenings { get; }
 
     string ToCoaString(string name, Code code, ComposUnits units);

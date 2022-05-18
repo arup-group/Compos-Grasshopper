@@ -44,7 +44,7 @@ namespace ComposAPI
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       switch (parameters[0])
       {
-        case "RESTRAINT_POINT":
+        case CoaIdentifier.RetraintPoint:
           //RESTRAINT_POINT	MEMBER-1	STANDARD	3
           if (parameters[2] == "STANDARD")
           {
@@ -88,14 +88,14 @@ namespace ComposAPI
           }
           break;
 
-        case "RESTRAINT_TOP_FALNGE":
+        case CoaIdentifier.RestraintTopFlange:
           if (parameters[2] == "TOP_FLANGE_FIXED")
             this.TopFlangeRestrained = true;
           else if (parameters[2] == "TOP_FLANGE_FREE")
             this.TopFlangeRestrained = false;
           break;
 
-        case "RESTRAINT_2ND_BEAM":
+        case CoaIdentifier.Restraint2ndBeam:
           if (this.ConstructionStageSupports == null)
             this.ConstructionStageSupports = new Supports();
           Supports construction1 = this.ConstructionStageSupports as Supports;
@@ -106,7 +106,7 @@ namespace ComposAPI
           this.ConstructionStageSupports = construction1;
           break;
 
-        case "END_FLANGE_FREE_ROTATE":
+        case CoaIdentifier.EndFlangeFreeRotate:
           if (this.ConstructionStageSupports == null)
             this.ConstructionStageSupports = new Supports();
           Supports construction2 = this.ConstructionStageSupports as Supports;
@@ -117,7 +117,7 @@ namespace ComposAPI
           this.ConstructionStageSupports = construction2;
           break;
 
-        case "FINAL_RESTRAINT_POINT":
+        case CoaIdentifier.FinalRestraintPoint:
           //FINAL_RESTRAINT_POINT	MEMBER-1	STANDARD	0
           if (parameters[2] == "STANDARD")
           {
@@ -161,14 +161,14 @@ namespace ComposAPI
           }
           break;
 
-        case "FINAL_RESTRAINT_NOSTUD":
+        case CoaIdentifier.FinalRestraintNoStud:
           if (parameters[2] == "NOSTUD_ZONE_LATERAL_FIXED")
             this.finalSupportsSet = false;
           else if (parameters[2] == "NOSTUD_ZONE_LATERAL_FREE")
             this.finalSupportsSet = true;
           break;
 
-        case "FINAL_RESTRAINT_2ND_BEAM":
+        case CoaIdentifier.FinalRestraint2ndBeam:
           if (this.FinalStageSupports == null)
             this.FinalStageSupports = new Supports();
           Supports final1 = this.FinalStageSupports as Supports;
@@ -179,7 +179,7 @@ namespace ComposAPI
           this.FinalStageSupports = final1;
           break;
 
-        case "FINAL_END_FLANGE_FREE_ROTATE":
+        case CoaIdentifier.FinalEndFlangeFreeRotate:
           if (this.FinalStageSupports == null)
             this.FinalStageSupports = new Supports();
           Supports final2 = this.FinalStageSupports as Supports;

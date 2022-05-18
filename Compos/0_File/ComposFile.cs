@@ -82,8 +82,6 @@ namespace ComposAPI
     {
       ComposFile file = new ComposFile();
 
-      //Dictionary<string, List<IBeamSection>> beamSections = new Dictionary<string, List<IBeamSection>>();
-
       Dictionary<string, DesignCode> codes = new Dictionary<string, DesignCode>();
       Dictionary<string, Stud> studs = new Dictionary<string, Stud>();
       Dictionary<string, StudDimensions> studDimensions = new Dictionary<string, StudDimensions>();
@@ -92,7 +90,6 @@ namespace ComposAPI
       Dictionary<string, StudSpecification> studSpecifications = new Dictionary<string, StudSpecification>();
       Dictionary<string, List<IStudGroupSpacing>> studGroupSpacings = new Dictionary<string, List<IStudGroupSpacing>>();
       Dictionary<string, List<ILoad>> loads = new Dictionary<string, List<ILoad>>();
-
 
       ComposUnits units = ComposUnits.GetStandardUnits();
       List<string> lines = CoaHelper.SplitLines(coaString);
@@ -124,16 +121,6 @@ namespace ComposAPI
           DesignCode dc = DesignCode.FromCoaString(parameters);
           codes.Add(parameters[1], dc);
         }
-
-        //// ### beam sections ###
-        //else if (coaIdentifier == CoaIdentifier.BeamSectionAtX)
-        //{
-        //  IBeamSection beamSection = BeamSection.FromCoaString(parameters, units);
-        //  List<IBeamSection> sections = new List<IBeamSection>();
-        //  if (!beamSections.ContainsKey(parameters[1]))
-        //    beamSections.Add(parameters[1], sections);
-        //  beamSections[parameters[1]].Add(beamSection);
-        //}
 
         // ### stud related lines ###
         else if (coaIdentifier == CoaIdentifier.StudDimensions.StudDefinition)
@@ -225,11 +212,6 @@ namespace ComposAPI
 
         Code code = member.DesignCode.Code;
         string name = member.Name;
-
-        // add beam sections to member
-        //foreach (string name in beamSections.Keys)
-        //  members[name].Beam.BeamSections = beamSections[name];
-
 
         member.Beam = Beam.FromCoaString(coaString, name, units);
         member.Stud = studs[name];

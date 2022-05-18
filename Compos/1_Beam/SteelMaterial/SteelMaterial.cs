@@ -101,18 +101,18 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal static ISteelMaterial FromCoaList(List<string> parameters, ComposUnits units)
+    internal static ISteelMaterial FromCoaString(List<string> parameters, ComposUnits units)
     {
       SteelMaterial material = new SteelMaterial();
 
       switch (parameters[0])
       {
-        case ("BEAM_STEEL_MATERIAL_STD"):
+        case (CoaIdentifier.BeamSteelMaterialStandard):
           material.isCustom = false;
           material.Grade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), parameters[2]);
           break;
 
-        case ("BEAM_STEEL_MATERIAL_USER"):
+        case (CoaIdentifier.BeamSteelMaterialUser):
           material.isCustom = true;
           material.fy = new Pressure(Convert.ToDouble(parameters[2]), units.Stress);
           material.E = new Pressure(Convert.ToDouble(parameters[3]), units.Stress);
@@ -123,7 +123,7 @@ namespace ComposAPI
             material.ReductionFactorMpl = false;
           break;
 
-        case ("BEAM_WELDING_MATERIAL"):
+        case (CoaIdentifier.BeamWeldingMaterial):
           material.WeldGrade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), parameters[2].Replace(' ', '_'));
           break;
 

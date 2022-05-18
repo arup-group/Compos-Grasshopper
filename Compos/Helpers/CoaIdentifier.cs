@@ -27,6 +27,11 @@
 
     internal const string BeamSectionAtX = "BEAM_SECTION_AT_X";
     internal const string BeamSpanLength = "BEAM_SPAN_LENGTH";
+
+    internal const string BeamSteelMaterialStandard = "BEAM_STEEL_MATERIAL_STD";
+    internal const string BeamSteelMaterialUser = "BEAM_STEEL_MATERIAL_USER";
+    internal const string BeamWeldingMaterial = "BEAM_WELDING_MATERIAL";
+
     internal const string DeckingCatalogue = "DECKING_CATALOGUE";
     internal const string DeckingUser = "DECKING_USER";
     internal const string DesignOption = "DESIGN_OPTION";
@@ -34,8 +39,21 @@
     internal const string RebarTransverse = "REBAR_TRANSVERSE";
     internal const string RebarWesh = "REBAR_WESH";
     internal const string RebarMaterial = "REBAR_MATERIAL";
+
+    internal const string RetraintPoint = "RESTRAINT_POINT";
+    internal const string RestraintTopFlange = "RESTRAINT_TOP_FALNGE";
+    internal const string Restraint2ndBeam = "RESTRAINT_2ND_BEAM";
+    internal const string EndFlangeFreeRotate = "END_FLANGE_FREE_ROTATE";
+    internal const string FinalRestraintPoint = "FINAL_RESTRAINT_POINT";
+    internal const string FinalRestraintNoStud = "FINAL_RESTRAINT_NOSTUD";
+    internal const string FinalRestraint2ndBeam = "FINAL_RESTRAINT_2ND_BEAM";
+    internal const string FinalEndFlangeFreeRotate = "FINAL_END_FLANGE_FREE_ROTATE";
+
+
     internal const string SlabConcreteMaterial = "SLAB_CONCRETE_MATERIAL";
     internal const string SlabDimension = "SLAB_DIMENSION";
+
+    internal const string WebOpeningDimension = "WEB_OPEN_DIMENSION";
 
     internal const string Load = "LOAD";
     internal class Loads
