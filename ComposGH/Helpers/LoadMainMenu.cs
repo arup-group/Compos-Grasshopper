@@ -8,16 +8,14 @@ namespace ComposGH.Helpers
 {
   public class Loader
   {
-    static System.Timers.Timer menuLoadTimer;
-    static System.Timers.Timer menuTrimTimer;
+    System.Timers.Timer menuLoadTimer;
+    System.Timers.Timer menuTrimTimer;
     static bool MenuHasBeenAdded = false;
-    static bool AppendToExistingMenu = false;
-    static int n_existingMenus = 0;
-    private static readonly object MenuLock = new object();
-
+    bool AppendToExistingMenu = false;
+    int n_existingMenus = 0;
     public Loader() { }
 
-    internal static void CreateMainMenuItem()
+    internal void CreateMainMenuItem()
     {
       menuLoadTimer = new System.Timers.Timer(500);
       menuLoadTimer.Elapsed += TryAddMenuItem;
@@ -49,44 +47,43 @@ namespace ComposGH.Helpers
         menuTrimTimer.Start();
     }
 
-    private static void TryAddMenuItem(object sender, ElapsedEventArgs e)
+    private void TryAddMenuItem(object sender, ElapsedEventArgs e)
     {
-      lock (MenuLock)
+      if (Grasshopper.Instances.DocumentEditor == null) return; // return if document editor hasn't yet loaded
+      if (Grasshopper.Instances.ActiveCanvas == null) return; // return if canvas has not yet been created
+      if (Grasshopper.Instances.ComponentServer.
+          FindAssembly(ComposGHInfo.GUID) == null) return; // return if this plugin has not yet been loaded
+
+      if (MenuHasBeenAdded)
       {
-        if (Grasshopper.Instances.DocumentEditor == null) return; // return if document editor hasn't yet loaded
-        if (Grasshopper.Instances.ActiveCanvas == null) return; // return if canvas has not yet been created
-        if (Grasshopper.Instances.ComponentServer.
-            FindAssembly(ComposGHInfo.GUID) == null) return; // return if this plugin has not yet been loaded
-
-        if (MenuHasBeenAdded)
-        {
-          menuLoadTimer.Stop();
-          menuTrimTimer.Start();
-          return;
-        }
-
-        if (!AppendToExistingMenu)
-        {
-          ToolStripMenuItem oasysMenu = AddMenuItem(new ToolStripMenuItem("Oasys"), sender, e);
-
-          // get main menu
-          var mainMenu = Grasshopper.Instances.DocumentEditor.MainMenuStrip;
-
-          try
-          {
-            mainMenu.Items.Insert(mainMenu.Items.Count - 2, oasysMenu);
-            MenuHasBeenAdded = true;
-          }
-          catch (Exception)
-          {
-          }
-        }
         menuLoadTimer.Stop();
         menuTrimTimer.Start();
+        return;
       }
+
+      if (!AppendToExistingMenu)
+      {
+        ToolStripMenuItem oasysMenu = AddMenuItem(new ToolStripMenuItem("Oasys"), sender, e);
+
+        // get main menu
+        var mainMenu = Grasshopper.Instances.DocumentEditor.MainMenuStrip;
+
+        try
+        {
+          mainMenu.Items.Insert(mainMenu.Items.Count - 2, oasysMenu);
+          MenuHasBeenAdded = true;
+
+        }
+        catch (Exception)
+        {
+        }
+      }
+
+      menuLoadTimer.Stop();
+      menuTrimTimer.Start();
     }
 
-    private static ToolStripMenuItem AddMenuItem(ToolStripMenuItem oasysMenu, object sender, ElapsedEventArgs e)
+    private ToolStripMenuItem AddMenuItem(ToolStripMenuItem oasysMenu, object sender, ElapsedEventArgs e)
     {
       // add units
       oasysMenu.DropDown.Items.Add("Compos Units", Properties.Resources.ComposLogo128, (s, a) =>
@@ -104,7 +101,7 @@ namespace ComposGH.Helpers
       return oasysMenu;
     }
 
-    private static void TrimMenuItem(object sender, ElapsedEventArgs e)
+    private void TrimMenuItem(object sender, ElapsedEventArgs e)
     {
       if (Grasshopper.Instances.DocumentEditor == null) return;
       if (Grasshopper.Instances.ActiveCanvas == null) return;

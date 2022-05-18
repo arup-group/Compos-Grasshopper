@@ -44,7 +44,8 @@ namespace ComposGH
       Grasshopper.Instances.ComponentServer.AddCategoryIcon("Compos", Properties.Resources.ComposLogo128);
 
       // ### Queue up Main menu loader ###
-      Helpers.Loader.CreateMainMenuItem();
+      Helpers.Loader menuLoad = new Helpers.Loader();
+      menuLoad.CreateMainMenuItem();
 
       // ### Setup units ###
       Units.SetupUnits();
