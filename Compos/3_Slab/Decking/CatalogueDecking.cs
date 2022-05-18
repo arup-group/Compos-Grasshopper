@@ -13,7 +13,7 @@ namespace ComposAPI
     S350
   }
 
-  public class CatalogueDecking : Decking
+  public class CatalogueDecking : Decking, IDecking
   {
     public string Catalogue { get; set; } //	catalogue name of the decking
     public string Profile { get; set; } // decking name

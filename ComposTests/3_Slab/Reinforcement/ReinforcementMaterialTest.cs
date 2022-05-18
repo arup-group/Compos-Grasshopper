@@ -59,7 +59,7 @@ namespace ComposAPI.Tests
     {
       List<string> parameters = CoaHelper.Split(coaString);
 
-      ReinforcementMaterial reinforcementMaterial = new ReinforcementMaterial(parameters, code);
+      IReinforcementMaterial reinforcementMaterial = ReinforcementMaterial.FromCoaString(parameters, code);
 
       if (!expected_userDefined)
         Assert.Equal(expected_grade, reinforcementMaterial.Grade);

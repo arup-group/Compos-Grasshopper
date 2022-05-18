@@ -9,7 +9,7 @@ using UnitsNet.Units;
 
 namespace ComposAPI
 {
-  public class CustomDecking : Decking
+  public class CustomDecking : Decking, IDecking
   {
     public Pressure Strength { get; set; } // decking material characteristic strength
 

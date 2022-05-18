@@ -508,7 +508,7 @@ namespace ComposAPI.Tests
       PressureUnit forcePerAreaUnit = Units.GetForcePerAreaUnit(forceUnit, lengthUnit);
 
       // Act
-      ComposFile composFile = new ComposFile(coaString);
+      ComposFile composFile = ComposFile.FromCoaString(coaString);
       IMember member1 = composFile.Members[0];
       IList<ILoad> loads = member1.Loads;
 

@@ -43,7 +43,7 @@ namespace ComposAPI.Tests
     {
       List<string> parameters = CoaHelper.Split(coaString);
 
-      TransverseReinforcement transverseReinforcement = new TransverseReinforcement(parameters, ComposUnits.GetStandardUnits());
+      ITransverseReinforcement transverseReinforcement = TransverseReinforcement.FromCoaString(parameters, Code.BS5950_3_1_1990_A1_2010, ComposUnits.GetStandardUnits());
 
 
       Assert.Equal(expected_grade, transverseReinforcement.Material.Grade);
@@ -56,7 +56,7 @@ namespace ComposAPI.Tests
     {
       List<string> parameters = CoaHelper.Split(coaString);
 
-      TransverseReinforcement transverseReinforcement = new TransverseReinforcement(parameters, ComposUnits.GetStandardUnits());
+      ITransverseReinforcement transverseReinforcement = TransverseReinforcement.FromCoaString(parameters, Code.BS5950_3_1_1990_A1_2010, ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_grade, transverseReinforcement.Material.Grade);
       Assert.Equal(LayoutMethod.Custom, transverseReinforcement.LayoutMethod);

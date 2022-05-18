@@ -4,6 +4,8 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposAPI.Helpers
 {
@@ -97,6 +99,5 @@ namespace ComposAPI.Helpers
       List<string> lines = coaString.Split('\n').ToList();
       return lines;
     }
-
   }
 }

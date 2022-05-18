@@ -117,27 +117,7 @@ namespace ComposAPI
         else if (coaIdentifier == CoaIdentifier.UnitData)
         {
           // change the currently used unit
-          switch (parameters[1])
-          {
-            case CoaIdentifier.Units.Force:
-              units.Force = (ForceUnit)UnitParser.Default.Parse(parameters[2], typeof(ForceUnit));
-              break;
-            case CoaIdentifier.Units.Length_Geometry:
-              units.Length = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
-              break;
-            case CoaIdentifier.Units.Length_Section:
-              units.Section = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
-              break;
-            //case CoaIdentifier.Units.Length_Results:
-            //  lengtResultUnit = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
-            //break;
-            case CoaIdentifier.Units.Stress:
-              units.Stress = (PressureUnit)UnitParser.Default.Parse(parameters[2], typeof(PressureUnit));
-              break;
-            case CoaIdentifier.Units.Mass:
-              units.Mass = (MassUnit)UnitParser.Default.Parse(parameters[2], typeof(MassUnit));
-              break;
-          }
+          units.Change(parameters);
         }
 
         // ### Design Code ###
@@ -226,38 +206,42 @@ namespace ComposAPI
         // add designcode to member
         member.DesignCode = codes[member.Name];
 
+        Code code = member.DesignCode.Code;
+        string name = member.Name;
+
         // add beam sections to member
         //foreach (string name in beamSections.Keys)
         //  members[name].Beam.BeamSections = beamSections[name];
 
         // add special ec4 stud grade to stud dimensions
-        foreach (string name in studECDimensions.Keys)
-          studDimensions[name].Fu = studECDimensions[name].Fu;
-        // add stud dimensions to studs
-        foreach (string name in studDimensions.Keys)
-          studs[name].StudDimensions = studDimensions[name];
-        // add custom group spacings to studs
-        foreach (string name in studGroupSpacings.Keys)
-          studs[name].CustomSpacing = studGroupSpacings[name];
-        // add if Welded to stud specifications
-        foreach (string name in studWelded.Keys)
-          studSpecifications[name].Welding = studWelded[name];
-        // add stud specifications to studs
-        foreach (string name in studSpecifications.Keys)
-          studs[name].StudSpecification = studSpecifications[name];
-        // add studs to members
-        foreach (string name in studs.Keys)
-          member.Stud = studs[name];
+        //foreach (string name in studECDimensions.Keys)
+        //  studDimensions[name].Fu = studECDimensions[name].Fu;
+        //// add stud dimensions to studs
+        //foreach (string name in studDimensions.Keys)
+        //  studs[name].StudDimensions = studDimensions[name];
+        //// add custom group spacings to studs
+        //foreach (string name in studGroupSpacings.Keys)
+        //  studs[name].CustomSpacing = studGroupSpacings[name];
+        //// add if Welded to stud specifications
+        //foreach (string name in studWelded.Keys)
+        //  studSpecifications[name].Welding = studWelded[name];
+        //// add stud specifications to studs
+        //foreach (string name in studSpecifications.Keys)
+        //  studs[name].StudSpecification = studSpecifications[name];
+        //// add studs to members
+        //foreach (string name in studs.Keys)
+        //  member.Stud = studs[name];
+
+
+        member.Slab = Slab.FromCoaString(coaString, name, code, units);
 
         // add loads to members
-        member.Loads = loads[member.Name];
+        member.Loads = loads[name];
       }
 
 
       return file;
     }
-
-
 
     public string ToCoaString()
     {
@@ -284,28 +268,6 @@ namespace ComposAPI
     public IMember GetMember(string name)
     {
       return this.Members.First(x => x.Name == name);
-    }
-
-    public IAutomation Open(string pathName)
-    {
-      IAutomation automation = new Automation();
-      automation.Open(pathName);
-
-      return automation;
-    }
-
-    public IAutomation SaveAs(string pathName, string coaString)
-    {
-      File.WriteAllLines(pathName, new string[] { coaString });
-      return Open(pathName);
-    }
-
-    public override string ToString()
-    {
-      string str = "";
-      foreach (IMember member in Members)
-        str += member.ToString();
-      return str;
     }
     #endregion
   }

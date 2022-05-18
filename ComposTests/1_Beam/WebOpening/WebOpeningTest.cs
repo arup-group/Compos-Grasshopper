@@ -335,7 +335,7 @@ namespace ComposAPI.Tests
     {
       ComposUnits units = ComposUnits.GetStandardUnits();
       List<string> parameters = CoaHelper.Split(coaString);
-      WebOpening webOpening = new WebOpening().FromCoaString(parameters, units);
+      IWebOpening webOpening = WebOpening.FromCoaString(parameters, units);
 
       Assert.Equal(expected_OpeningType, webOpening.WebOpeningType);
 
@@ -404,7 +404,7 @@ namespace ComposAPI.Tests
     {
       ComposUnits units = ComposUnits.GetStandardUnits();
       List<string> parameters = CoaHelper.Split(coaString);
-      WebOpening webOpening = new WebOpening().FromCoaString(parameters, units);
+      IWebOpening webOpening = WebOpening.FromCoaString(parameters, units);
 
       Assert.Equal(expected_OpeningType, webOpening.WebOpeningType);
 

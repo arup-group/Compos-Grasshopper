@@ -8,8 +8,8 @@ namespace ComposAPI
   {
     IConcreteMaterial Material { get; }
     IList<ISlabDimension> Dimensions { get; }
-    ITransverseReinforcement TransverseReinforcement { get; }
-    IMeshReinforcement MeshReinforcement { get; }
+    ITransverseReinforcement Transverse { get; }
+    IMeshReinforcement Mesh { get; }
     IDecking Decking { get; }
 
     string ToCoaString(string name, ComposUnits units);

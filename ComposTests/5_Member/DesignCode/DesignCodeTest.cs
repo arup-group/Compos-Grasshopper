@@ -284,7 +284,7 @@ namespace ComposAPI.Tests
         "DESIGN_OPTION	MEMBER-7	AS/NZS2327:2017	UNPROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_NO	1.00000	3.00000" + '\n';
 
       // Act
-      ComposFile composFile = new ComposFile(coaString);
+      IComposFile composFile = ComposFile.FromCoaString(coaString);
 
       // Assert
       Assert.Equal(7, composFile.Members.Count);

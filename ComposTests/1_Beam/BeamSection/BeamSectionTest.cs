@@ -51,7 +51,7 @@ namespace ComposAPI.Tests
       double expected_topFlangeThickness, double expected_bottomFlangeThickness, double expected_rootRadius, bool expected_isCatalogue, double expected_webThickness, string expected_sectionDescription, bool expected_taperToNext)
     {
       List<string> parameters = CoaHelper.Split(coaString);
-      BeamSection beam = new BeamSection(parameters, ComposUnits.GetStandardUnits());
+      IBeamSection beam = BeamSection.FromCoaString(parameters, ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_startPosition, beam.StartPosition.Meters);
       Assert.Equal(expected_depth, beam.Depth.Millimeters);

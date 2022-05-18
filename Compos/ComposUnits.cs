@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ComposAPI.Helpers;
 using Oasys.Units;
+using UnitsNet;
 using UnitsNet.Units;
 
 namespace ComposAPI
@@ -37,6 +39,31 @@ namespace ComposAPI
         Mass = Units.MassUnit
       };
       return units;
+    }
+
+    internal void Change(List<string> parameters)
+    {
+      switch (parameters[1])
+      {
+        case CoaIdentifier.Units.Force:
+          this.Force = (ForceUnit)UnitParser.Default.Parse(parameters[2], typeof(ForceUnit));
+          break;
+        case CoaIdentifier.Units.Length_Geometry:
+          this.Length = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
+          break;
+        case CoaIdentifier.Units.Length_Section:
+          this.Section = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
+          break;
+        //case CoaIdentifier.Units.Length_Results:
+        //  lengtResultUnit = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
+        //break;
+        case CoaIdentifier.Units.Stress:
+          this.Stress = (PressureUnit)UnitParser.Default.Parse(parameters[2], typeof(PressureUnit));
+          break;
+        case CoaIdentifier.Units.Mass:
+          this.Mass = (MassUnit)UnitParser.Default.Parse(parameters[2], typeof(MassUnit));
+          break;
+      }
     }
   }
 }

@@ -520,7 +520,7 @@ namespace ComposAPI.Tests
 "STUD_EC4_APPLY\tMEMBER-7\tYES" + '\n';
 
       // Act
-      ComposFile composFile = new ComposFile(coaString);
+      ComposFile composFile = ComposFile.FromCoaString(coaString);
 
       // Assert
       Assert.Equal(7, composFile.Members.Count);
