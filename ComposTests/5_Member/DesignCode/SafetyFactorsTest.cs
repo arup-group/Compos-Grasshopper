@@ -22,6 +22,38 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
+    public void DefaultToCoaStringTest()
+    {
+      // Arrange
+      string expected_coaString = "";
+      SafetyFactors safetyFactors = new SafetyFactors();
+      // Act
+      string coaString = safetyFactors.ToCoaString("MEMBER-5");
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
+
+    [Fact]
+    public void CustomMaterialFactorsToCoaStringTest()
+    {
+      // Arrange
+      string expected_coaString = "SAFETY_FACTOR_MATERIAL	BS-USER	1.10000	1.00000	1.00000	1.20000	1.30000	1.40000	1.50000	1.60000\n";
+      SafetyFactors safetyFactors = new SafetyFactors();
+      MaterialPartialFactors materialPartialFactors = new MaterialPartialFactors();
+      materialPartialFactors.SteelBeam = 1.1;
+      materialPartialFactors.ConcreteCompression = 1.2;
+      materialPartialFactors.ConcreteShear = 1.3;
+      materialPartialFactors.MetalDecking = 1.4;
+      materialPartialFactors.ShearStud = 1.5;
+      materialPartialFactors.Reinforcement = 1.6;
+      safetyFactors.MaterialFactors = materialPartialFactors;
+      // Act
+      string coaString = safetyFactors.ToCoaString("BS-USER");
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
+
+    [Fact]
     public IMaterialPartialFactors TestMaterialPartialFactorsConstructor()
     {
       // 1 setup input
@@ -89,7 +121,7 @@ namespace ComposAPI.Tests
       Assert.Equal(1.6, duplicate.LoadFactors.FinalLive);
 
       // 3 make some changes to duplicate
-      MaterialPartialFactors? materialPartialFactors = duplicate.MaterialFactors as MaterialPartialFactors;
+      MaterialPartialFactors materialPartialFactors = duplicate.MaterialFactors as MaterialPartialFactors;
       materialPartialFactors.SteelBeam = 1.2;
       materialPartialFactors.ConcreteCompression = 1.25;
       materialPartialFactors.ConcreteShear = 1.3;
@@ -190,7 +222,7 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void TestECSafetyFactorDuplicate()
+    public void TestEC4SafetyFactorDuplicate()
     {
       // 1 create with constructor and duplicate
       EC4SafetyFactors original = new EC4SafetyFactors();
@@ -278,5 +310,7 @@ namespace ComposAPI.Tests
       Assert.Equal(1.35, original.LoadCombinationFactors.Finalgamma_G);
       Assert.Equal(1.5, original.LoadCombinationFactors.Finalgamma_Q);
     }
+
+    
   }
 }
