@@ -42,8 +42,6 @@ namespace ComposAPI
     {
       TransverseReinforcement reinforcement = new TransverseReinforcement();
 
-      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-
 
       switch (parameters[0])
       {

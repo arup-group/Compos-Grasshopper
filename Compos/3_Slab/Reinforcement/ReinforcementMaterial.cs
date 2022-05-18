@@ -56,11 +56,10 @@ namespace ComposAPI
     {
       ReinforcementMaterial material = new ReinforcementMaterial();
 
-      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       if (parameters[2] == "USER_DEFINED")
       {
         material.UserDefined = true;
-        material.Fy = new Pressure(Convert.ToDouble(parameters[3], noComma), PressureUnit.NewtonPerSquareMeter);
+        material.Fy = CoaHelper.ConvertToStress(parameters[3], PressureUnit.NewtonPerSquareMeter);
       }
       else
       {

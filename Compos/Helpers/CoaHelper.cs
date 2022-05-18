@@ -11,6 +11,8 @@ namespace ComposAPI.Helpers
 {
   public class CoaHelper
   {
+    internal static NumberFormatInfo NoComma = CultureInfo.InvariantCulture.NumberFormat;
+
     internal static void AddParameter(List<string> parameters, string parameter, bool flag)
     {
       string str = parameter + "_";
@@ -70,12 +72,11 @@ namespace ComposAPI.Helpers
 
     public static string FormatSignificantFigures(double value, int significantFigures, bool isExponential = false)
     {
-      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
 
       // if for instance 6 significant figures and value is above 1,000,000
       // compos coa is shown as 4.50000e+008 which is value.ToString("e6")
       if (value > Math.Pow(10, significantFigures))
-        return value.ToString("e" + (significantFigures - 1), noComma);
+        return value.ToString("e" + (significantFigures - 1), NoComma);
 
       int magnitude;
       if (value < 1 && value > -1)
@@ -91,7 +92,27 @@ namespace ComposAPI.Helpers
       for (int i = 0; i < decimalPlaces; i++)
         format += "0";
       format += "}";
-      return String.Format(noComma, format, value);
+      return String.Format(NoComma, format, value);
+    }
+
+    internal static Angle ConvertToAngle(string value, AngleUnit unit)
+    {
+      return new Angle(Convert.ToDouble(value, NoComma), unit);
+    }
+
+    internal static Density ConvertToDensity(string value, DensityUnit unit)
+    {
+      return new Density(Convert.ToDouble(value, NoComma), unit);
+    }
+
+    internal static Length ConvertToLength(string value, LengthUnit unit)
+    {
+     return new Length(Convert.ToDouble(value, NoComma), unit);
+    }
+
+    internal static Pressure ConvertToStress(string value, PressureUnit unit)
+    {
+      return new Pressure(Convert.ToDouble(value, NoComma), unit);
     }
 
     internal static List<string> SplitLines(string coaString)

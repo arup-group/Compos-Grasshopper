@@ -62,7 +62,7 @@ namespace ComposAPI
       return decking;
     }
 
-    public string ToCoaString(string name, ComposUnits units)
+    public override string ToCoaString(string name, ComposUnits units)
     {
       List<string> parameters = new List<string>();
       parameters.Add("DECKING_USER");

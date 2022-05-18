@@ -297,9 +297,8 @@ namespace ComposAPI
       //BEAM_SECTION_AT_X	MEMBER-1	3	1	0.000000	STD GI 200 189.2 222.25 8.5 12.7 12.7	TAPERED_YES
       //BEAM_SECTION_AT_X MEMBER-1 3 2 6.00000 STD GI 730 189.2 222.25 8.5 12.7 12.7 TAPERED_YES
       //BEAM_SECTION_AT_X MEMBER-1 3 3 12.0000 STD GI 200 189.2 222.25 8.5 12.7 12.7 TAPERED_YES
-      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
 
-      section.StartPosition = new Length(Convert.ToDouble(parameters[4], noComma), units.Length);
+      section.StartPosition = CoaHelper.ConvertToLength(parameters[4], units.Length);
 
       section.SetFromProfileString(parameters[5]);
       

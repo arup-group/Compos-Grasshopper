@@ -29,12 +29,11 @@ namespace ComposAPI
     #region coa interop
     internal CustomTransverseReinforcementLayout(List<string> parameters, ComposUnits units)
     {
-      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-      this.DistanceFromStart = new Length(Convert.ToDouble(parameters[3], noComma), units.Length);
-      this.DistanceFromEnd = new Length(Convert.ToDouble(parameters[4], noComma), units.Length);
-      this.Diameter = new Length(Convert.ToDouble(parameters[5], noComma), units.Length);
-      this.Spacing = new Length(Convert.ToDouble(parameters[6], noComma), units.Length);
-      this.Cover = new Length(Convert.ToDouble(parameters[7], noComma), units.Length);
+      this.DistanceFromStart = CoaHelper.ConvertToLength(parameters[3], units.Length);
+      this.DistanceFromEnd = CoaHelper.ConvertToLength(parameters[4], units.Length);
+      this.Diameter = CoaHelper.ConvertToLength(parameters[5], units.Length);
+      this.Spacing = CoaHelper.ConvertToLength(parameters[6], units.Length);
+      this.Cover = CoaHelper.ConvertToLength(parameters[7], units.Length);
     }
 
     public string ToCoaString(string name, ComposUnits units)

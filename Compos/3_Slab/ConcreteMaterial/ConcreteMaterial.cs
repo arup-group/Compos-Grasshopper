@@ -179,7 +179,6 @@ namespace ComposAPI
     internal static IConcreteMaterial FromCoaString(List<string> parameters, ComposUnits units) 
     {
       ConcreteMaterial material = new ConcreteMaterial();
-      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       if (parameters[1].Length < 4)
       {
         // BS5950 GRADES
@@ -196,7 +195,7 @@ namespace ComposAPI
       int i = 4;
       if (material.UserDensity)
       {
-        material.DryDensity = new Density(Convert.ToDouble(parameters[i], noComma), units.Density);
+        material.DryDensity = CoaHelper.ConvertToDensity(parameters[i], units.Density);
         i++;
       }
 
@@ -212,8 +211,6 @@ namespace ComposAPI
     /// <returns></returns>
     public string ToCoaString(string name, ComposUnits units)
     {
-      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-
       List<string> parameters = new List<string>();
       parameters.Add(CoaIdentifier.SlabConcreteMaterial);
       parameters.Add(name);
@@ -222,29 +219,29 @@ namespace ComposAPI
       if (this.UserDensity)
       {
         parameters.Add("USER_DENSITY");
-        parameters.Add(String.Format(noComma, "{0:0.00}", this.DryDensity.ToUnit(units.Density).Value));
+        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00}", this.DryDensity.ToUnit(units.Density).Value));
       }
       else
       {
         parameters.Add("CODE_DENSITY");
-        parameters.Add(String.Format(noComma, "{0:0.00}", this.DryDensity.ToUnit(units.Density).Value));
+        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00}", this.DryDensity.ToUnit(units.Density).Value));
         parameters.Add(this.Class.ToString().Replace("DC", ""));
       }
-      parameters.Add(String.Format(noComma, "{0:0.000000}", this.ImposedLoadPercentage));
+      parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.000000}", this.ImposedLoadPercentage));
       if (this.ERatio.UserDefined)
       {
         parameters.Add("USER_E_RATIO");
-        parameters.Add(String.Format(noComma, "{0:0.00000}", this.ERatio.ShortTerm));
-        parameters.Add(String.Format(noComma, "{0:0.00000}", this.ERatio.LongTerm));
-        parameters.Add(String.Format(noComma, "{0:0.00000}", this.ERatio.Vibration));
-        parameters.Add(String.Format(noComma, "{0:0.000000}", this.ERatio.Shrinkage));
+        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00000}", this.ERatio.ShortTerm));
+        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00000}", this.ERatio.LongTerm));
+        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00000}", this.ERatio.Vibration));
+        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.000000}", this.ERatio.Shrinkage));
       }
       else
         parameters.Add("CODE_E_RATIO");
       if (this.UserStrain)
       {
         parameters.Add("USER_STRAIN");
-        parameters.Add(String.Format(noComma, "{0:0.000000000}", this.ShrinkageStrain.ToUnit(units.Strain).Value));
+        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.000000000}", this.ShrinkageStrain.ToUnit(units.Strain).Value));
       }
       else
         parameters.Add("CODE_STRAIN");

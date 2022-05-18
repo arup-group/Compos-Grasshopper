@@ -38,10 +38,34 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal static IBeam FromCoaString(string coaString)
+    internal static IBeam FromCoaString(string coaString, string name, ComposUnits units)
     {
       Beam beam = new Beam();
-      // to do - implement from coa string method
+
+      List<string> lines = CoaHelper.SplitLines(coaString);
+      foreach (string line in lines)
+      {
+        List<string> parameters = CoaHelper.Split(line);
+
+        if (parameters[1] != name)
+          continue;
+
+        switch (parameters[0])
+        {
+          case (CoaIdentifier.UnitData):
+            units.Change(parameters);
+            break;
+
+          case (CoaIdentifier.BeamSpanLength):
+            beam.Length = CoaHelper.ConvertToLength(parameters[2], units.Length);
+            break;
+
+
+          default:
+            // continue;
+            break;
+        }
+      }
 
       return beam;
     }

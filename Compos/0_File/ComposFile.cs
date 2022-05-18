@@ -36,7 +36,7 @@ namespace ComposAPI
       // save COM object to a temp coa file
       string tempCoa = Path.GetTempPath() + Guid.NewGuid().ToString() + ".coa";
       automation.SaveAs(tempCoa);
-      
+
       // open temp coa file as ASCII string
       string coaString = File.ReadAllText(tempCoa);
 
@@ -82,21 +82,19 @@ namespace ComposAPI
     {
       ComposFile file = new ComposFile();
 
+      //Dictionary<string, List<IBeamSection>> beamSections = new Dictionary<string, List<IBeamSection>>();
+
       Dictionary<string, DesignCode> codes = new Dictionary<string, DesignCode>();
-
-      Dictionary<string, List<IBeamSection>> beamSections = new Dictionary<string, List<IBeamSection>>();
-
       Dictionary<string, Stud> studs = new Dictionary<string, Stud>();
       Dictionary<string, StudDimensions> studDimensions = new Dictionary<string, StudDimensions>();
       Dictionary<string, StudDimensions> studECDimensions = new Dictionary<string, StudDimensions>();
       Dictionary<string, bool> studWelded = new Dictionary<string, bool>();
       Dictionary<string, StudSpecification> studSpecifications = new Dictionary<string, StudSpecification>();
       Dictionary<string, List<IStudGroupSpacing>> studGroupSpacings = new Dictionary<string, List<IStudGroupSpacing>>();
-
       Dictionary<string, List<ILoad>> loads = new Dictionary<string, List<ILoad>>();
 
-      ComposUnits units = ComposUnits.GetStandardUnits();
 
+      ComposUnits units = ComposUnits.GetStandardUnits();
       List<string> lines = CoaHelper.SplitLines(coaString);
 
       // ### collect data from each line ###
@@ -127,15 +125,15 @@ namespace ComposAPI
           codes.Add(parameters[1], dc);
         }
 
-        // ### beam sections ###
-        else if (coaIdentifier == CoaIdentifier.BeamSectionAtX)
-        {
-          IBeamSection beamSection = BeamSection.FromCoaString(parameters, units);
-          List<IBeamSection> sections = new List<IBeamSection>();
-          if (!beamSections.ContainsKey(parameters[1]))
-            beamSections.Add(parameters[1], sections);
-          beamSections[parameters[1]].Add(beamSection);
-        }
+        //// ### beam sections ###
+        //else if (coaIdentifier == CoaIdentifier.BeamSectionAtX)
+        //{
+        //  IBeamSection beamSection = BeamSection.FromCoaString(parameters, units);
+        //  List<IBeamSection> sections = new List<IBeamSection>();
+        //  if (!beamSections.ContainsKey(parameters[1]))
+        //    beamSections.Add(parameters[1], sections);
+        //  beamSections[parameters[1]].Add(beamSection);
+        //}
 
         // ### stud related lines ###
         else if (coaIdentifier == CoaIdentifier.StudDimensions.StudDefinition)
@@ -200,6 +198,25 @@ namespace ComposAPI
         }
       }
 
+
+      // add special ec4 stud grade to stud dimensions
+      foreach (string name in studECDimensions.Keys)
+        studDimensions[name].Fu = studECDimensions[name].Fu;
+      // add stud dimensions to studs
+      foreach (string name in studDimensions.Keys)
+        studs[name].StudDimensions = studDimensions[name];
+      // add custom group spacings to studs
+      foreach (string name in studGroupSpacings.Keys)
+        studs[name].CustomSpacing = studGroupSpacings[name];
+      // add if Welded to stud specifications
+      foreach (string name in studWelded.Keys)
+        studSpecifications[name].Welding = studWelded[name];
+      // add stud specifications to studs
+      foreach (string name in studSpecifications.Keys)
+        studs[name].StudSpecification = studSpecifications[name];
+
+
+
       // ### Set data to members ###
       foreach (Member member in file.Members)
       {
@@ -213,26 +230,9 @@ namespace ComposAPI
         //foreach (string name in beamSections.Keys)
         //  members[name].Beam.BeamSections = beamSections[name];
 
-        // add special ec4 stud grade to stud dimensions
-        //foreach (string name in studECDimensions.Keys)
-        //  studDimensions[name].Fu = studECDimensions[name].Fu;
-        //// add stud dimensions to studs
-        //foreach (string name in studDimensions.Keys)
-        //  studs[name].StudDimensions = studDimensions[name];
-        //// add custom group spacings to studs
-        //foreach (string name in studGroupSpacings.Keys)
-        //  studs[name].CustomSpacing = studGroupSpacings[name];
-        //// add if Welded to stud specifications
-        //foreach (string name in studWelded.Keys)
-        //  studSpecifications[name].Welding = studWelded[name];
-        //// add stud specifications to studs
-        //foreach (string name in studSpecifications.Keys)
-        //  studs[name].StudSpecification = studSpecifications[name];
-        //// add studs to members
-        //foreach (string name in studs.Keys)
-        //  member.Stud = studs[name];
 
-
+        member.Beam = Beam.FromCoaString(coaString, name, units);
+        member.Stud = studs[name];
         member.Slab = Slab.FromCoaString(coaString, name, code, units);
 
         // add loads to members

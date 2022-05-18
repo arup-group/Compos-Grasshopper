@@ -62,15 +62,14 @@ namespace ComposAPI
     {
       SlabDimension dimension = new SlabDimension();
 
-      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       if (parameters.Count < 10)
       {
         throw new Exception("Unable to convert " + parameters + " to Compos Slab Dimension.");
       }
-      dimension.StartPosition = new Length(Convert.ToDouble(parameters[4], noComma), units.Length);
-      dimension.OverallDepth = new Length(Convert.ToDouble(parameters[5], noComma), units.Length);
-      dimension.AvailableWidthLeft = new Length(Convert.ToDouble(parameters[6], noComma), units.Length);
-      dimension.AvailableWidthRight = new Length(Convert.ToDouble(parameters[7], noComma), units.Length);
+      dimension.StartPosition = CoaHelper.ConvertToLength(parameters[4], units.Length);
+      dimension.OverallDepth = CoaHelper.ConvertToLength(parameters[5], units.Length);
+      dimension.AvailableWidthLeft = CoaHelper.ConvertToLength(parameters[6], units.Length);
+      dimension.AvailableWidthRight = CoaHelper.ConvertToLength(parameters[7], units.Length);
 
       if (parameters[8] == "TAPERED_YES")
         dimension.TaperedToNext = true;
@@ -84,8 +83,8 @@ namespace ComposAPI
         {
           throw new Exception("Unable to convert " + parameters + " to Compos Slab Dimension.");
         }
-        dimension.EffectiveWidthLeft = new Length(Convert.ToDouble(parameters[9], noComma), units.Length);
-        dimension.EffectiveWidthRight = new Length(Convert.ToDouble(parameters[10], noComma), units.Length);
+        dimension.EffectiveWidthLeft = CoaHelper.ConvertToLength(parameters[9], units.Length);
+        dimension.EffectiveWidthRight = CoaHelper.ConvertToLength(parameters[10], units.Length);
       }
       return dimension;
     }

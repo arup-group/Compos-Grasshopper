@@ -32,9 +32,9 @@ namespace ComposAPI
       // empty constructor
     }
 
-    public string ToCoaString(string name, ComposUnits units)
+    public virtual string ToCoaString(string name, ComposUnits units)
     {
-      return "";
+      return String.Empty;
     }
   }
 }

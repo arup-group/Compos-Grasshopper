@@ -49,12 +49,11 @@ namespace ComposAPI
     {
       CatalogueDecking decking = new CatalogueDecking();
 
-      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       decking.Catalogue = parameters[2];
       decking.Profile = parameters[3];
       decking.Grade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), parameters[4]);
       DeckingConfiguration deckingConfiguration = new DeckingConfiguration();
-      deckingConfiguration.Angle = new Angle(Convert.ToDouble(parameters[5], noComma), AngleUnit.Degree); // COA string always in degrees
+      deckingConfiguration.Angle = CoaHelper.ConvertToAngle(parameters[5], AngleUnit.Degree); // COA string always in degrees
 
       if (parameters[6] == "DECKING_JOINTED")
         deckingConfiguration.IsDiscontinous = true;
@@ -70,7 +69,7 @@ namespace ComposAPI
       return decking;
     }
 
-    public string ToCoaString(string name, ComposUnits units)
+    public override string ToCoaString(string name, ComposUnits units)
     {
       List<string> parameters = new List<string>();
       parameters.Add("DECKING_CATALOGUE");
