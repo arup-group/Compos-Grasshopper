@@ -58,10 +58,11 @@ namespace ComposAPI
           return "AS/NZS2327:2017";
       }
       return "";
+
     }
 
     #region coa interop
-    internal DesignCode FromCoaString(List<string> parameters)
+    internal static DesignCode FromCoaString(List<string> parameters)
     {
       DesignCode dc = new DesignCode();
       switch (parameters[2])
@@ -162,6 +163,8 @@ namespace ComposAPI
         str += CoaHelper.FormatSignificantFigures(2.0, 6) + '\n';
       }
 
+      str += this.SafetyFactors.ToCoaString(name);
+
       return str;
     }
     #endregion
@@ -174,7 +177,7 @@ namespace ComposAPI
   {
     public NationalAnnex NationalAnnex { get; set; } = NationalAnnex.Generic;
     public EC4Options CodeOptions { get; set; } = new EC4Options();
-    public new EC4SafetyFactors SafetyFactors { get; set; } = new EC4SafetyFactors();
+    public new IEC4SafetyFactors SafetyFactors { get; set; } = new EC4SafetyFactors();
     public EN1994()
     {
       this.Code = Code.EN1994_1_1_2004;

@@ -146,7 +146,7 @@ namespace ComposAPI
         // ### Design Code ###
         if (parameters[0] == CoaIdentifier.DesignCode)
         {
-          DesignCode dc = new DesignCode().FromCoaString(parameters);
+          DesignCode dc = DesignCode.FromCoaString(parameters);
           codes.Add(parameters[1], dc);
         }
 

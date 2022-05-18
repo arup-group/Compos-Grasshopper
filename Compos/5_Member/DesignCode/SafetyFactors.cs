@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ComposAPI.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnitsNet;
@@ -14,6 +15,16 @@ namespace ComposAPI
     {
       // default initialiser
     }
+
+    public string ToCoaString(string name)
+    {
+      string str = "";
+      if (this.LoadFactors != null)
+        str = this.LoadFactors.ToCoaString(name);
+      if (this.MaterialFactors != null)
+        str += this.MaterialFactors.ToCoaString(name);
+      return str;
+    }
   }
 
   /// <summary>
@@ -28,6 +39,20 @@ namespace ComposAPI
     public double ShearStud { get; set; } = 1.25;
     public double Reinforcement { get; set; } = 1.15;
     public MaterialPartialFactors() { }
+
+    public string ToCoaString(string name)
+    {
+      string str = "SAFETY_FACTOR_MATERIAL" + '\t' + name + '\t';
+      str += CoaHelper.FormatSignificantFigures(this.SteelBeam, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(1.0, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(1.0, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(this.ConcreteCompression, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(this.ConcreteShear, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(this.MetalDecking, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(this.ShearStud, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(this.Reinforcement, 6) + '\n';
+      return str;
+    }
   }
 
   /// <summary>
@@ -40,51 +65,15 @@ namespace ComposAPI
     public double FinalDead { get; set; } = 1.6;
     public double FinalLive { get; set; } = 1.6;
     public LoadFactors() { }
-  }
 
-  public class EC4SafetyFactors : SafetyFactors
-  {
-    public new EC4MaterialPartialFactors MaterialFactors { get; set; } = null;
-    public new LoadCombinationFactors LoadFactors { get; set; } = null;
-    public LoadCombination LoadCombination { get; set; } = LoadCombination.Equation6_10;
-
-    public EC4SafetyFactors()
+    public string ToCoaString(string name)
     {
-      // default initialiser
+      string str = "SAFETY_FACTOR_LOAD" + '\t' + name + '\t';
+      str += CoaHelper.FormatSignificantFigures(this.ConstantDead, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(this.FinalDead, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(this.ConstantLive, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(this.FinalLive, 6) + '\n';
+      return str;
     }
-  }
-
-  /// <summary>
-  /// Class for custom material factors. These data can be omitted, if they are omitted, code specified safety factor will be used
-  /// </summary>
-  public class EC4MaterialPartialFactors
-  {
-    public double gamma_M0 { get; set; } = 1.0;
-    public double gamma_M1 { get; set; } = 1.0;
-    public double gamma_M2 { get; set; } = 1.25;
-    public double gamma_C { get; set; } = 1.5;
-    public double gamma_Deck { get; set; } = 1.0;
-    public double gamma_vs { get; set; } = 1.25;
-    public double gamma_S { get; set; } = 1.15;
-    public EC4MaterialPartialFactors() { }
-  }
-
-  public enum LoadCombination
-  {
-    Equation6_10,
-    Equation6_10a__6_10b,
-    Custom
-  }
-
-  /// <summary>
-  /// Custom Load factors. These data can be omitted, if they are omitted, code specified load factor will be used
-  /// </summary>
-  public class LoadCombinationFactors : ILoadCombinationFactors
-  {
-    public double xi { get; set; } = 1.0;
-    public double psi_0 { get; set; } = 1.0;
-    public double gamma_G { get; set; } = 1.35;
-    public double gamma_Q { get; set; } = 1.5;
-    public LoadCombinationFactors() { }
   }
 }

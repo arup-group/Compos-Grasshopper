@@ -250,9 +250,21 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      SafetyFactorsGoo safetyFactorsGoo = (SafetyFactorsGoo)GetInput.GenericGoo<SafetyFactorsGoo>(this, DA, 0);
+      SafetyFactorsGoo safetyFactorsGoo = null;
+      ISafetyFactors safetyFactors = null;
+      EC4SafetyFactorsGoo ec4safetyFactorsGoo = null;
+      IEC4SafetyFactors ec4safetyFactors = null;
+      if (Code == Code.EN1994_1_1_2004)
+      {
+        ec4safetyFactorsGoo = (EC4SafetyFactorsGoo)GetInput.GenericGoo<EC4SafetyFactorsGoo>(this, DA, 0);
+        ec4safetyFactors = (ec4safetyFactorsGoo == null) ? null : ec4safetyFactorsGoo.Value;
+      }
+      else
+      {
+        safetyFactorsGoo = (SafetyFactorsGoo)GetInput.GenericGoo<SafetyFactorsGoo>(this, DA, 0);
+        safetyFactors = (safetyFactorsGoo == null) ? null : safetyFactorsGoo.Value;
+      }
 
-      ISafetyFactors safetyFactors = (safetyFactorsGoo == null) ? null : safetyFactorsGoo.Value;
       switch (Code)
       {
         case Code.BS5950_3_1_1990_Superseded:
@@ -282,9 +294,8 @@ namespace ComposGH.Components
           if (longt != null)
             ec4.CodeOptions.LongTerm = longt;
 
-          EC4SafetyFactors safetyFactorsEC4 = (EC4SafetyFactors)safetyFactors;
-          if (safetyFactorsEC4 != null)
-            ec4.SafetyFactors = safetyFactorsEC4;
+          if (ec4safetyFactors != null)
+            ec4.SafetyFactors = ec4safetyFactors;
 
           DA.SetData(0, new DesignCodeGoo(ec4));
           break;

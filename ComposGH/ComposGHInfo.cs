@@ -20,7 +20,7 @@ namespace ComposGH
         // look in all the other Grasshopper assembly (plugin) folders
         foreach (GH_AssemblyFolderInfo pluginFolder in Grasshopper.Folders.AssemblyFolders)
         {
-          if (File.Exists(Path.Combine(pluginFolder.Folder, "AdSec.gha"))) // if the folder contains the plugin
+          if (File.Exists(Path.Combine(pluginFolder.Folder, "Compos.gha"))) // if the folder contains the plugin
           {
             path = pluginFolder.Folder;
             break;
