@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ComposAPI.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,6 +35,36 @@ namespace ComposAPI.Tests
       string coaString = transverseReinforcement.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_coaString, coaString);
+    }
+
+    [Theory]
+    [InlineData("REBAR_MATERIAL	MEMBER-1	STANDARD	500B\nREBAR_TRANSVERSE	MEMBER-1	PROGRAM_DESIGNED\n", RebarGrade.EN_500B)]
+    public void CoaConstructorTest(string coaString, RebarGrade expected_grade)
+    {
+      List<string> parameters = CoaHelper.Split(coaString);
+
+      TransverseReinforcement transverseReinforcement = new TransverseReinforcement(parameters, ComposUnits.GetStandardUnits());
+
+
+      Assert.Equal(expected_grade, transverseReinforcement.Material.Grade);
+      Assert.Equal(LayoutMethod.Automatic, transverseReinforcement.LayoutMethod);
+    }
+
+    [Theory]
+    [InlineData("REBAR_MATERIAL	MEMBER-1	STANDARD	250R\nREBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\n", RebarGrade.BS_250R)]
+    public void CoaConstructorCustomLayoutTest(string coaString, RebarGrade expected_grade)
+    {
+      List<string> parameters = CoaHelper.Split(coaString);
+
+      TransverseReinforcement transverseReinforcement = new TransverseReinforcement(parameters, ComposUnits.GetStandardUnits());
+
+      Assert.Equal(expected_grade, transverseReinforcement.Material.Grade);
+      Assert.Equal(LayoutMethod.Custom, transverseReinforcement.LayoutMethod);
+      Assert.Equal(0, transverseReinforcement.CustomReinforcementLayouts[0].DistanceFromStart.Value);
+      Assert.Equal(1, transverseReinforcement.CustomReinforcementLayouts[0].DistanceFromEnd.Value);
+      Assert.Equal(8, transverseReinforcement.CustomReinforcementLayouts[0].Diameter.Value);
+      Assert.Equal(100, transverseReinforcement.CustomReinforcementLayouts[0].Spacing.Value);
+      Assert.Equal(35, transverseReinforcement.CustomReinforcementLayouts[0].Cover.Value);
     }
   }
 }

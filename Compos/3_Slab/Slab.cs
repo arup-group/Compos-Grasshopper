@@ -43,9 +43,10 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal Slab(string coaString, ComposUnits units)
+    internal Slab(string coaString, Code code, ComposUnits units)
     {
       List<string> lines = CoaHelper.SplitLines(coaString);
+      ReinforcementMaterial material;
       foreach (string line in lines)
       {
         List<string> parameters = CoaHelper.Split(line);
@@ -61,7 +62,7 @@ namespace ComposAPI
             break;
 
           case (CoaIdentifier.RebarTransverse):
-            this.TransverseReinforcement = new TransverseReinforcement(parameters);
+            this.TransverseReinforcement = new TransverseReinforcement(parameters, code, units);
             break;
 
           case (CoaIdentifier.RebarWesh):

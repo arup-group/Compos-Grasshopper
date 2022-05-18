@@ -17,7 +17,7 @@ namespace ComposAPI
   {
     public IReinforcementMaterial Material { get; set; } // reinforcement material grade
     public LayoutMethod LayoutMethod { get; set; }
-    List<ICustomTransverseReinforcementLayout> CustomReinforcementLayouts { get; set; }
+    public List<ICustomTransverseReinforcementLayout> CustomReinforcementLayouts { get; set; }
 
     public TransverseReinforcement()
     {
@@ -38,9 +38,34 @@ namespace ComposAPI
     }
 
     #region coa interop
-    internal TransverseReinforcement(List<string> parameters)
+    internal TransverseReinforcement(List<string> parameters, Code code, ComposUnits units)
     {
+      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
 
+
+      switch (parameters[0])
+      {
+        case (CoaIdentifier.RebarMaterial):
+          this.Material = new ReinforcementMaterial(line, code);
+          break;
+
+        case (CoaIdentifier.RebarTransverse):
+          this.CustomReinforcementLayouts.Add(new CustomReinforcementLayout(line, units));
+          break;
+
+      }
+
+
+      if (parameters[1] == "PROGRAM_DESIGNED")
+      {
+        this.LayoutMethod = LayoutMethod.Automatic;
+
+
+      }
+      else
+      {
+
+      }
     }
 
     public string ToCoaString(string name, ComposUnits units)
