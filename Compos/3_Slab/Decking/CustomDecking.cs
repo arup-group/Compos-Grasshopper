@@ -18,7 +18,7 @@ namespace ComposAPI
       this.m_type = DeckingType.Custom;
     }
 
-    public CustomDecking(Length distanceB1, Length distanceB2, Length distanceB3, Length distanceB4, Length distanceB5, Length depth, Length thickness, Pressure stress, IDeckingConfiguration dconf)
+    public CustomDecking(Length distanceB1, Length distanceB2, Length distanceB3, Length distanceB4, Length distanceB5, Length depth, Length thickness, Pressure strength, IDeckingConfiguration configuration)
     {
       this.b1 = distanceB1;
       this.b2 = distanceB2;
@@ -27,8 +27,8 @@ namespace ComposAPI
       this.b5 = distanceB5;
       this.Depth = depth;
       this.Thickness = thickness;
-      this.Strength = stress;
-      this.DeckingConfiguration = dconf;
+      this.Strength = strength;
+      this.DeckingConfiguration = configuration;
       this.m_type = DeckingType.Custom;
     }
 

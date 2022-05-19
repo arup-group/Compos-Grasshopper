@@ -40,9 +40,45 @@ namespace ComposAPI.Tests
       Assert.Equal(expected_coaString, coaString);
     }
 
-    public void TestConstructor()
+    // 1 setup inputs
+    [Theory]
+    [InlineData("Catalogue", "Profile", DeckingSteelGrade.S280)]
+    [InlineData("Catalogue", "Profile", DeckingSteelGrade.S350)]
+    public void TestCatalogeDeckingConstructor(string catalogue, string profile, DeckingSteelGrade deckingSteelGrade)
     {
-      // todo
+      // 2 create object instance with constructor
+      DeckingConfiguration configuration = new DeckingConfiguration();
+      CatalogueDecking decking = new CatalogueDecking(catalogue, profile, deckingSteelGrade, configuration);
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(catalogue, decking.Catalogue);
+      Assert.Equal(profile, decking.Profile);
+      Assert.Equal(deckingSteelGrade, decking.Grade);
+      Assert.Equal(configuration, decking.DeckingConfiguration);
+      Assert.Equal(DeckingType.Catalogue, decking.Type);
+    }
+
+    // 1 setup inputs
+    [Theory]
+    [InlineData(1, 2, 3, 4, 5, 6, 7, 8)]
+    public void TestCustomDeckingConstructor(double b1, double b2, double b3, double b4, double b5, double depth, double thickness, double strength)
+    {
+      // 2 create object instance with constructor
+      DeckingConfiguration configuration = new DeckingConfiguration();
+      ComposUnits units = ComposUnits.GetStandardUnits();
+      CustomDecking decking = new CustomDecking(new Length(b1, units.Length), new Length(b2, units.Length), new Length(b3, units.Length), new Length(b4, units.Length), new Length(b5, units.Length), new Length(depth, units.Length), new Length(thickness, units.Length), new Pressure(strength, units.Stress), configuration);
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(b1, decking.b1.Value);
+      Assert.Equal(b2, decking.b2.Value);
+      Assert.Equal(b3, decking.b3.Value);
+      Assert.Equal(b4, decking.b4.Value);
+      Assert.Equal(b5, decking.b5.Value);
+      Assert.Equal(depth, decking.Depth.Value);
+      Assert.Equal(thickness, decking.Thickness.Value);
+      Assert.Equal(strength, decking.Strength.Value);
+      Assert.Equal(configuration, decking.DeckingConfiguration);
+      Assert.Equal(DeckingType.Custom, decking.Type);
     }
   }
 }
