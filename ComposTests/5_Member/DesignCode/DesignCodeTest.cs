@@ -108,7 +108,7 @@ namespace ComposAPI.Tests
       Assert.False(designCode.DesignOptions.ConsiderShearDeflection);
       // safety factors
       Assert.Null(designCode.SafetyFactors.MaterialFactors);
-      Assert.Null(designCode.SafetyFactors.LoadFactors);
+      Assert.Null(designCode.SafetyFactors.LoadCombinationFactors);
       Assert.Equal(LoadCombination.Equation6_10, designCode.SafetyFactors.LoadCombination);
       // code options
       Assert.False(designCode.CodeOptions.ApproxModularRatios);
@@ -237,7 +237,7 @@ namespace ComposAPI.Tests
       Assert.False(duplicate.DesignOptions.ConsiderShearDeflection);
       // safety factors
       Assert.Null(duplicate.SafetyFactors.MaterialFactors);
-      Assert.Null(duplicate.SafetyFactors.LoadFactors);
+      Assert.Null(duplicate.SafetyFactors.LoadCombinationFactors);
       Assert.Equal(LoadCombination.Equation6_10, duplicate.SafetyFactors.LoadCombination);
       // code options
       Assert.False(duplicate.CodeOptions.ApproxModularRatios);
