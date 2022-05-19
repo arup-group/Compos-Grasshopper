@@ -68,12 +68,13 @@ namespace ComposAPI
           case (CoaIdentifier.FinalRestraintNoStud):
           case (CoaIdentifier.FinalRestraint2ndBeam):
           case (CoaIdentifier.FinalEndFlangeFreeRotate):
-
+            // todo
             break;
 
           case (CoaIdentifier.BeamSteelMaterialStandard):
           case (CoaIdentifier.BeamSteelMaterialUser):
           case (CoaIdentifier.BeamWeldingMaterial):
+            // this doesn´t work like this
             beam.Material = SteelMaterial.FromCoaString(parameters, units);
             break;
 
