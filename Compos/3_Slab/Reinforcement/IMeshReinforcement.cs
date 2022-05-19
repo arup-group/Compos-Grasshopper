@@ -8,6 +8,6 @@ namespace ComposAPI
     bool Rotated { get; }
     ReinforcementMeshType MeshType { get; }
 
-    string ToCoaString(string name);
+    string ToCoaString(string name, ComposUnits units);
   }
 }

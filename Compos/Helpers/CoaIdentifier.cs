@@ -37,7 +37,7 @@
     internal const string DesignOption = "DESIGN_OPTION";
     internal const string MemberTitle = "MEMBER_TITLE";
     internal const string RebarTransverse = "REBAR_TRANSVERSE";
-    internal const string RebarWesh = "REBAR_WESH";
+    internal const string RebarMesh = "REBAR_WESH";
     internal const string RebarMaterial = "REBAR_MATERIAL";
 
     internal const string RetraintPoint = "RESTRAINT_POINT";

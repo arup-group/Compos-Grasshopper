@@ -70,8 +70,8 @@ namespace ComposAPI
             slab.Dimensions.Add(dimension);
             break;
 
-          case (CoaIdentifier.RebarWesh):
-            slab.Mesh = MeshReinforcement.FromCoaString(parameters);
+          case (CoaIdentifier.RebarMesh):
+            slab.Mesh = MeshReinforcement.FromCoaString(parameters, units);
             break;
 
           case (CoaIdentifier.DeckingCatalogue):
@@ -108,7 +108,7 @@ namespace ComposAPI
       }
       str += this.Transverse.ToCoaString(name, units);
       if (this.Mesh != null)
-        str += this.Mesh.ToCoaString(name);
+        str += this.Mesh.ToCoaString(name, units);
       if (this.Decking != null)
       {
         str += this.Decking.ToCoaString(name, units);

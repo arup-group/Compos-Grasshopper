@@ -41,8 +41,7 @@ namespace ComposAPI.Helpers
     internal static List<string> Split(string coaString)
     {
       List<string> parameters = coaString.Split('\t').ToList();
-      foreach (string param in parameters)
-        RemoveWhitespace(param);
+      parameters = parameters.Select(parameter => parameter.Trim()).ToList();
 
       return parameters;
     }
