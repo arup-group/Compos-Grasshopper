@@ -32,6 +32,7 @@ namespace ComposAPI.Tests
 
       return load;
     }
+
     [Fact]
     public void PointLoadToCoaStringTest()
     {
@@ -69,6 +70,7 @@ namespace ComposAPI.Tests
 
       return load;
     }
+
     [Fact]
     public void UniformLineLoadToCoaStringTest()
     {

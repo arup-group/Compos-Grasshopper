@@ -81,6 +81,18 @@ namespace ComposAPI.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(RebarGrade.AS_D500E)]
+    [InlineData(RebarGrade.AS_D500L)]
+    [InlineData(RebarGrade.AS_D500N)]
+    [InlineData(RebarGrade.AS_R250N)]
+    [InlineData(RebarGrade.BS_1770)]
+    [InlineData(RebarGrade.BS_250R)]
+    [InlineData(RebarGrade.BS_460T)]
+    [InlineData(RebarGrade.BS_500X)]
+    [InlineData(RebarGrade.EN_500A)]
+    [InlineData(RebarGrade.EN_500B)]
+    [InlineData(RebarGrade.EN_500C)]
+    [InlineData(RebarGrade.HK_250)]
+    [InlineData(RebarGrade.HK_460)]
     public void ConstructorTest2(RebarGrade grade)
     {
       // 2 create object instance with constructor

@@ -75,7 +75,7 @@ namespace ComposAPI.Tests
     [InlineData("STD GI 400. 300. 250. 12. 25. 20.", 400, 300, 250, 12, 25, 20)]
     [InlineData("STD GI(cm) 15. 15. 12. 3. 1. 2.", 150, 150, 120, 30, 10, 20)]
     //[InlineData("CAT IPE IPE100", 100, 55, 55, 4.1, 5.7, 5.7)] //issue with loading GH referencing in testing environment
-    public BeamSection TestBeamSectionConstructorProfile(string profile, double expDepth, double expTopFlangeWidth, double expBottomFlangeWidth, double expWebThickness, double expTopFlangeThickness, double expBottomFlangeThickness)
+    public BeamSection BeamSectionConstructorProfileTest(string profile, double expDepth, double expTopFlangeWidth, double expBottomFlangeWidth, double expWebThickness, double expTopFlangeThickness, double expBottomFlangeThickness)
     {
       //var mock = new Mock<BeamSection>();
       //mock.Setup(x => x.)
@@ -98,16 +98,16 @@ namespace ComposAPI.Tests
     [InlineData("STD R 200 190.5")]
     [InlineData("STD O 200")]
     [InlineData("STD RHS 500 400 40 20")]
-    public void TestBeamSectionConstructorProfileExceptions(string profile)
+    public void BeamSectionConstructorProfileExceptionsTest(string profile)
     {
       // check that exceptions are thrown if inputs does not comply with allowed
-      Assert.Throws<System.ArgumentException>(() => TestBeamSectionConstructorProfile(profile, 0, 0, 0, 0, 0, 0));
+      Assert.Throws<System.ArgumentException>(() => BeamSectionConstructorProfileTest(profile, 0, 0, 0, 0, 0, 0));
     }
 
     // 1 setup inputs
     [Theory]
     [InlineData(200, 190.5, 8.5, 12.7, false, 200, 190.5, 190.5, 8.5, 12.7, 12.7, "STD I 200 190.5 8.5 12.7")]
-    public BeamSection TestBeamSectionConstructorSymmetric(
+    public BeamSection BeamSectionConstructorSymmetricTest(
       double depth, double flangeWidth, double webThickness, double flangeThickness, bool taperToNext,
       double expDepth, double expTopFlangeWidth, double expBottomFlangeWidth, double expWebThickness,
       double expTopFlangeThickness, double expBottomFlangeThickness, string expProfile)
@@ -133,7 +133,7 @@ namespace ComposAPI.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(400, 300, 250, 12, 25, 20, true, 400, 300, 250, 12, 25, 20, "STD GI 400 300 250 12 25 20")]
-    public BeamSection TestBeamSectionConstructorAsymmetric(double depth, double topFlangeWidth, double bottomFlangeWidth,
+    public BeamSection BeamSectionConstructorAsymmetricTest(double depth, double topFlangeWidth, double bottomFlangeWidth,
       double webThickness, double topFlangeThickness, double bottomFlangeThickness, bool taperToNext,
       double expDepth, double expTopFlangeWidth, double expBottomFlangeWidth, double expWebThickness,
       double expTopFlangeThickness, double expBottomFlangeThickness, string expProfile)
@@ -161,7 +161,7 @@ namespace ComposAPI.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(20, 19.05, 0.85, 1.27, false, "STD I(cm) 20 19.05 0.85 1.27")]
-    public BeamSection TestBeamSectionConstructorSymmetricCM(
+    public BeamSection BeamSectionConstructorSymmetricCMTest(
       double depth, double flangeWidth, double webThickness, double flangeThickness, bool taperToNext,
       string expProfile)
     {
@@ -179,7 +179,7 @@ namespace ComposAPI.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(40, 30, 25, 1.2, 2.5, 2, true, "STD GI(cm) 40 30 25 1.2 2.5 2")]
-    public BeamSection TestBeamSectionConstructorAsymmetricCM(double depth, double topFlangeWidth, double bottomFlangeWidth,
+    public BeamSection BeamSectionConstructorAsymmetricCMTest(double depth, double topFlangeWidth, double bottomFlangeWidth,
       double webThickness, double topFlangeThickness, double bottomFlangeThickness, bool taperToNext,
       string expProfile)
     {
@@ -197,7 +197,7 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void TestBeamSectionDuplicate1()
+    public void BeamSectionDuplicateTest1()
     {
       LengthUnit unit = LengthUnit.Millimeter;
       // 1 create with constructor and duplicate
@@ -243,7 +243,7 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void TestBeamSectionDuplicate2()
+    public void BeamSectionDuplicateTest2()
     {
       LengthUnit unit = LengthUnit.Millimeter;
       // 1 create with new constructor and duplicate

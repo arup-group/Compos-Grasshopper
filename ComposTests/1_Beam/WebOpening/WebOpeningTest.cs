@@ -327,6 +327,7 @@ namespace ComposAPI.Tests
       string coaString = webOpening.ToCoaString("MEMBER-1", units);
       Assert.Equal(expected_CoaString, coaString);
     }
+
     [Theory]
     [InlineData(400, 300, 7.5, 350, OpeningType.Rectangular, "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	400.000	300.000	7.50000	350.000	STIFFENER_NO\n")]
     [InlineData(400, 400, 3.5, 190, OpeningType.Circular, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	400.000	400.000	3.50000	190.000	STIFFENER_NO\n")]

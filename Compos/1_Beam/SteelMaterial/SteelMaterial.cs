@@ -1,7 +1,6 @@
 ﻿using ComposAPI.Helpers;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -37,6 +36,27 @@ namespace ComposAPI
     public bool ReductionFactorMpl { get; set; } //	Apply Reduction factor to the plastic moment capacity for S420 (EN) and S460 (EN) GRADES
     public StandardSteelGrade Grade { get; set; } // standard material grade
     public WeldMaterialGrade WeldGrade { get; set; } // welding material grade
+
+    #region constructors
+    public SteelMaterial()
+    {
+      // empty constructor
+    }
+
+    public SteelMaterial(Pressure fy, Pressure E, Density density, WeldMaterialGrade weldGrade, bool isCustom, bool reductionFacorMpl)
+    {
+      this.fy = fy;
+      this.E = E;
+      this.Density = density;
+      this.isCustom = isCustom;
+      this.WeldGrade = weldGrade;
+      this.ReductionFactorMpl = reductionFacorMpl;
+    }
+
+    public SteelMaterial(StandardSteelGrade grade)
+    {
+      SetValuesFromStandard(grade);
+    }
 
     private void SetValuesFromStandard(StandardSteelGrade grade)
     {
@@ -76,27 +96,6 @@ namespace ComposAPI
           this.isCustom = true;
           break;
       }
-    }
-
-    #region constructors
-    public SteelMaterial()
-    {
-      // empty constructor
-    }
-
-    public SteelMaterial(Pressure fy, Pressure E, Density Density, WeldMaterialGrade weldGrade, bool isCustom, bool reductionFacorMpl)
-    {
-      this.fy = fy;
-      this.E = E;
-      this.Density = Density;
-      this.isCustom = isCustom;
-      this.WeldGrade = weldGrade;
-      this.ReductionFactorMpl = reductionFacorMpl;
-    }
-
-    public SteelMaterial(StandardSteelGrade steelType)
-    {
-      SetValuesFromStandard(steelType);
     }
     #endregion
 

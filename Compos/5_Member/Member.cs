@@ -24,7 +24,7 @@ namespace ComposAPI
     #region constructors
     public Member() { }
 
-    public Member(string name, IDesignCode designCode, IBeam beam, IStud stud, ISlab slab, List<ILoad> loads)
+    public Member(string name, IDesignCode designCode, IBeam beam, IStud stud, ISlab slab, IList<ILoad> loads)
     {
       this.Name = name;
       this.DesignCode = designCode;
@@ -34,7 +34,7 @@ namespace ComposAPI
       this.Loads = loads;
     }
 
-    public Member(string name, string gridRef, string note, IDesignCode designCode, IBeam beam, IStud stud, ISlab slab, List<ILoad> loads)
+    public Member(string name, string gridRef, string note, IDesignCode designCode, IBeam beam, IStud stud, ISlab slab, IList<ILoad> loads)
     {
       this.Name = name;
       this.GridReference = gridRef;
