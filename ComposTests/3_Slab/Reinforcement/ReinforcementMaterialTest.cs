@@ -1,9 +1,5 @@
-﻿using System;
+﻿using ComposAPI.Helpers;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ComposAPI.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
@@ -55,7 +51,7 @@ namespace ComposAPI.Tests
     [InlineData("REBAR_MATERIAL	MEMBER-1	STANDARD	250\n", Code.HKSUOS_2011, RebarGrade.HK_250, false, 2.5E+8)]
     [InlineData("REBAR_MATERIAL	MEMBER-1	STANDARD	460\n", Code.HKSUOS_2011, RebarGrade.HK_460, false, 4.6E+8)]
     [InlineData("REBAR_MATERIAL	MEMBER-1	USER_DEFINED	4.00000e+008\n", null, RebarGrade.AS_D500E, true, 4E+8)]
-    public void CoaConstructorTest(string coaString, Code code, RebarGrade expected_grade, bool expected_userDefined, double expected_fy)
+    public void FromCoaString(string coaString, Code code, RebarGrade expected_grade, bool expected_userDefined, double expected_fy)
     {
       List<string> parameters = CoaHelper.Split(coaString);
 
