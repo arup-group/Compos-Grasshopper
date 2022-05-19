@@ -31,15 +31,6 @@ namespace ComposAPI
       this.Mesh = meshReinforcement;
       this.Decking = decking;
     }
-
-    public Slab(ConcreteMaterial material, ISlabDimension dimensions, ITransverseReinforcement transverseReinforcement, IMeshReinforcement meshReinforcement = null, IDecking decking = null)
-    {
-      this.Material = material;
-      this.Dimensions = new List<ISlabDimension> { dimensions };
-      this.Transverse = transverseReinforcement;
-      this.Mesh = meshReinforcement;
-      this.Decking = decking;
-    }
     #endregion
 
     #region coa interop
@@ -90,7 +81,6 @@ namespace ComposAPI
             break;
         }
       }
-
       slab.Transverse = TransverseReinforcement.FromCoaString(coaString, name, code, units);
 
       return slab;
@@ -130,6 +120,5 @@ namespace ComposAPI
       return dim + ", " + mat + ", " + reinf;
     }
     #endregion
-
   }
 }

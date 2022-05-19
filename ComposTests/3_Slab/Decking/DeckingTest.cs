@@ -42,9 +42,9 @@ namespace ComposAPI.Tests
 
     // 1 setup inputs
     [Theory]
-    [InlineData("Catalogue", "Profile", DeckingSteelGrade.S280)]
-    [InlineData("Catalogue", "Profile", DeckingSteelGrade.S350)]
-    public void TestCatalogeDeckingConstructor(string catalogue, string profile, DeckingSteelGrade deckingSteelGrade)
+    [InlineData("RLD", "Ribdeck AL (1.2)", DeckingSteelGrade.S280)]
+    [InlineData("Kingspan", "Multideck 50 (0.85)", DeckingSteelGrade.S350)]
+    public void CatalogeDeckingConstructorTest(string catalogue, string profile, DeckingSteelGrade deckingSteelGrade)
     {
       // 2 create object instance with constructor
       DeckingConfiguration configuration = new DeckingConfiguration();
@@ -61,7 +61,7 @@ namespace ComposAPI.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(1, 2, 3, 4, 5, 6, 7, 8)]
-    public void TestCustomDeckingConstructor(double b1, double b2, double b3, double b4, double b5, double depth, double thickness, double strength)
+    public void CustomDeckingConstructorTest(double b1, double b2, double b3, double b4, double b5, double depth, double thickness, double strength)
     {
       // 2 create object instance with constructor
       DeckingConfiguration configuration = new DeckingConfiguration();

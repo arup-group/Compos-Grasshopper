@@ -51,7 +51,7 @@ namespace ComposAPI.Tests
     [InlineData("REBAR_MATERIAL	MEMBER-1	STANDARD	250\n", Code.HKSUOS_2011, RebarGrade.HK_250, false, 2.5E+8)]
     [InlineData("REBAR_MATERIAL	MEMBER-1	STANDARD	460\n", Code.HKSUOS_2011, RebarGrade.HK_460, false, 4.6E+8)]
     [InlineData("REBAR_MATERIAL	MEMBER-1	USER_DEFINED	4.00000e+008\n", null, RebarGrade.AS_D500E, true, 4E+8)]
-    public void FromCoaString(string coaString, Code code, RebarGrade expected_grade, bool expected_userDefined, double expected_fy)
+    public void FromCoaStringTest(string coaString, Code code, RebarGrade expected_grade, bool expected_userDefined, double expected_fy)
     {
       List<string> parameters = CoaHelper.Split(coaString);
 
@@ -61,6 +61,58 @@ namespace ComposAPI.Tests
         Assert.Equal(expected_grade, reinforcementMaterial.Grade);
       Assert.Equal(expected_userDefined, reinforcementMaterial.UserDefined);
       Assert.Equal(new Pressure(expected_fy, PressureUnit.NewtonPerSquareMeter), reinforcementMaterial.Fy);
+    }
+
+    // 1 setup inputs
+    [Theory]
+    [InlineData(500)]
+    public void ConstructorTest1(double fy)
+    {
+      ComposUnits units = ComposUnits.GetStandardUnits();
+
+      // 2 create object instance with constructor
+      ReinforcementMaterial material = new ReinforcementMaterial(new Pressure(fy, units.Stress));
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(fy, material.Fy.Value);
+      Assert.True(material.UserDefined);
+    }
+
+    // 1 setup inputs
+    [Theory]
+    [InlineData(RebarGrade.AS_D500E)]
+    public void ConstructorTest2(RebarGrade grade)
+    {
+      // 2 create object instance with constructor
+      ReinforcementMaterial material = new ReinforcementMaterial(grade);
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(grade, material.Grade);
+      switch (grade)
+      {
+        case RebarGrade.BS_250R:
+        case RebarGrade.HK_250:
+        case RebarGrade.AS_R250N:
+          Assert.Equal(250, material.Fy.Value);
+          break;
+        case RebarGrade.BS_460T:
+        case RebarGrade.HK_460:
+          Assert.Equal(460, material.Fy.Value);
+          break;
+        case RebarGrade.BS_500X:
+        case RebarGrade.AS_D500L:
+        case RebarGrade.AS_D500N:
+        case RebarGrade.AS_D500E:
+        case RebarGrade.EN_500A:
+        case RebarGrade.EN_500B:
+        case RebarGrade.EN_500C:
+          Assert.Equal(500, material.Fy.Value);
+          break;
+        case RebarGrade.BS_1770:
+          Assert.Equal(1770, material.Fy.Value);
+          break;
+      }
+      Assert.False(material.UserDefined);
     }
   }
 }

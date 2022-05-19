@@ -22,7 +22,7 @@ namespace ComposAPI.Tests
   {
     // 1 setup inputs
     [Fact]
-    public void TestEmptyConstructor()
+    public void EmptyConstructorTest()
     {
       // 2 create object instance with constructor
       DeckingConfiguration configuration = new DeckingConfiguration();
@@ -39,7 +39,7 @@ namespace ComposAPI.Tests
     [InlineData(45, false, true)]
     [InlineData(60, true, false)]
     [InlineData(90, true, true)]
-    public void TestConstructor(double angle, bool isDiscontinous, bool isWelded)
+    public void ConstructorTest(double angle, bool isDiscontinous, bool isWelded)
     {
       // 2 create object instance with constructor
       DeckingConfiguration configuration = new DeckingConfiguration(new Angle(angle, ComposUnits.GetStandardUnits().Angle), isDiscontinous, isWelded);

@@ -18,16 +18,16 @@ namespace ComposAPI.Tests
     {
       ComposUnits units = ComposUnits.GetStandardUnits();
 
-      CustomTransverseReinforcementLayout customTransverseReinforcementLayout = new CustomTransverseReinforcementLayout(new Length(distanceFromStart, units.Length), new Length(distanceFromEnd, units.Length), new Length(diameter, units.Length), new Length(spacing, units.Length), new Length(cover, units.Length));
+      CustomTransverseReinforcementLayout layout = new CustomTransverseReinforcementLayout(new Length(distanceFromStart, units.Length), new Length(distanceFromEnd, units.Length), new Length(diameter, units.Length), new Length(spacing, units.Length), new Length(cover, units.Length));
 
-      string coaString = customTransverseReinforcementLayout.ToCoaString("MEMBER-1", units);
+      string coaString = layout.ToCoaString("MEMBER-1", units);
 
       Assert.Equal(expected_coaString, coaString);
     }
 
     [Theory]
     [InlineData("REBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\n", 0, 1, 8, 100, 35)]
-    public void CoaConstructorTest(string coaString, double expected_distanceFromStart, double expected_distanceFromEnd, double expected_diameter, double expected_spacing, double expected_cover)
+    public void FromCoaStringTest(string coaString, double expected_distanceFromStart, double expected_distanceFromEnd, double expected_diameter, double expected_spacing, double expected_cover)
     {
       List<string> parameters = CoaHelper.Split(coaString);
 
@@ -38,6 +38,24 @@ namespace ComposAPI.Tests
       Assert.Equal(expected_diameter, customTransverseReinforcementLayout.Diameter.Value);
       Assert.Equal(expected_spacing, customTransverseReinforcementLayout.Spacing.Value);
       Assert.Equal(expected_cover, customTransverseReinforcementLayout.Cover.Value);
+    }
+
+    // 1 setup inputs
+    [Theory]
+    [InlineData(0, 1, 8, 100, 35)]
+    public void ConstructorTes(double distanceFromStart, double distanceFromEnd, double diameter, double spacing, double cover)
+    {
+      ComposUnits units = ComposUnits.GetStandardUnits();
+   
+      // 2 create object instance with constructor
+      CustomTransverseReinforcementLayout layout = new CustomTransverseReinforcementLayout(new Length(distanceFromStart, units.Length), new Length(distanceFromEnd, units.Length), new Length(diameter, units.Length), new Length(spacing, units.Length), new Length(cover, units.Length));
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(distanceFromStart, layout.DistanceFromStart.Value);
+      Assert.Equal(distanceFromEnd, layout.DistanceFromEnd.Value);
+      Assert.Equal(diameter, layout.Diameter.Value);
+      Assert.Equal(spacing, layout.Spacing.Value);
+      Assert.Equal(cover, layout.Cover.Value);
     }
   }
 }

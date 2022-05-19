@@ -176,7 +176,7 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void TestDuplicate()
+    public void DuplicateTest()
     {
       // 1 create with constructor and duplicate
       WebOpening original = TestConstructorRectangularWebOpeningWithStiffener(400, 300, 6000, 70);
@@ -239,7 +239,7 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void TestDuplicate2()
+    public void DuplicateTest2()
     {
       // 1 create with constructor and duplicate
       WebOpening original = TestConstructorCircularWebOpeningWithStiffener(300, 7000, 150);

@@ -75,5 +75,41 @@ namespace ComposAPI.Tests
       Assert.Equal(expected_meshType, reinforcement.MeshType);
       Assert.Equal(expected_rotated, reinforcement.Rotated);
     }
+
+    // 1 setup inputs
+    [Theory]
+    [InlineData(35)]
+    public void ConstructorTest1(double cover)
+    {
+      ComposUnits units = ComposUnits.GetStandardUnits();
+
+      // 2 create object instance with constructor
+      MeshReinforcement mesh = new MeshReinforcement(new Length(cover, units.Length));
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(cover, mesh.Cover.Value);
+      Assert.Equal(ReinforcementMeshType.A393, mesh.MeshType);
+      Assert.False(mesh.Rotated);
+    }
+
+    // 1 setup inputs
+    [Theory]
+    [InlineData(0, ReinforcementMeshType.A142, false)]
+    [InlineData(10, ReinforcementMeshType.A193, true)]
+    [InlineData(20, ReinforcementMeshType.A252, false)]
+    [InlineData(30, ReinforcementMeshType.A393, true)]
+    [InlineData(35, ReinforcementMeshType.A98, false)]
+    public void ConstructorTest2(double cover, ReinforcementMeshType meshType, bool rotated)
+    {
+      ComposUnits units = ComposUnits.GetStandardUnits();
+  
+      // 2 create object instance with constructor
+      MeshReinforcement mesh = new MeshReinforcement(new Length(cover, units.Length), meshType, rotated);
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(cover, mesh.Cover.Value);
+      Assert.Equal(meshType, mesh.MeshType);
+      Assert.Equal(rotated, mesh.Rotated);
+    }
   }
 }

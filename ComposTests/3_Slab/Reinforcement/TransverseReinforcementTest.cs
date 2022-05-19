@@ -39,7 +39,7 @@ namespace ComposAPI.Tests
 
     [Theory]
     [InlineData("REBAR_MATERIAL	MEMBER-1	STANDARD	460T\nREBAR_TRANSVERSE	MEMBER-1	PROGRAM_DESIGNED\n", RebarGrade.BS_460T)]
-    public void FromCoaString(string coaString, RebarGrade expected_grade)
+    public void FromCoaStringTest(string coaString, RebarGrade expected_grade)
     {
       ITransverseReinforcement transverseReinforcement = TransverseReinforcement.FromCoaString(coaString, "MEMBER-1", Code.BS5950_3_1_1990_A1_2010, ComposUnits.GetStandardUnits());
 
@@ -75,6 +75,41 @@ namespace ComposAPI.Tests
       Assert.Equal(8, transverseReinforcement.CustomReinforcementLayouts[2].Diameter.Value);
       Assert.Equal(100, transverseReinforcement.CustomReinforcementLayouts[2].Spacing.Value);
       Assert.Equal(35, transverseReinforcement.CustomReinforcementLayouts[2].Cover.Value);
+    }
+
+    // 1 setup inputs
+    [Theory]
+    [InlineData(500)]
+    public void ConstructorTest1(double fy)
+    {
+      ComposUnits units = ComposUnits.GetStandardUnits();
+
+      // 2 create object instance with constructor
+      ReinforcementMaterial material = new ReinforcementMaterial(new Pressure(fy, units.Stress));
+      TransverseReinforcement reinforcement = new TransverseReinforcement(material);
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(material, reinforcement.Material);
+      Assert.Equal(LayoutMethod.Automatic, reinforcement.LayoutMethod);
+    }
+
+    // 1 setup inputs
+    [Theory]
+    [InlineData(500)]
+    public void ConstructorTest2(double fy)
+    {
+      ComposUnits units = ComposUnits.GetStandardUnits();
+
+      // 2 create object instance with constructor
+      IReinforcementMaterial material = new ReinforcementMaterial(new Pressure(fy, units.Stress));
+      List<ICustomTransverseReinforcementLayout> layouts = new List<ICustomTransverseReinforcementLayout>() { new CustomTransverseReinforcementLayout() };
+
+      TransverseReinforcement reinforcement = new TransverseReinforcement(material, layouts);
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(material, reinforcement.Material);
+      Assert.Equal(layouts, reinforcement.CustomReinforcementLayouts);
+      Assert.Equal(LayoutMethod.Custom, reinforcement.LayoutMethod);
     }
   }
 }

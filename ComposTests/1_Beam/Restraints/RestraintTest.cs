@@ -48,7 +48,7 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void TestDuplicate()
+    public void DuplicateTest()
     {
       // 1 create with constructor and duplicate
       Restraint original = TestConstructor();
@@ -94,7 +94,7 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void TestDuplicate2()
+    public void DuplicateTest2()
     {
       // 1 create with constructor and duplicate
       Restraint original = TestConstructorNoFinalSupports();

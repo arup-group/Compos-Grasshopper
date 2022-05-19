@@ -161,7 +161,7 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void TestDuplicate()
+    public void DuplicateTest()
     {
       Code code = Code.HKSUOS_2005;
 

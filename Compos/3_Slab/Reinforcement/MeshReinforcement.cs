@@ -29,8 +29,8 @@ namespace ComposAPI
   public class MeshReinforcement : IMeshReinforcement
   {
     public Length Cover { get; set; } // cover of mesh reinforcement
-    public bool Rotated { get; set; } // direction of mesh reinforcement
     public ReinforcementMeshType MeshType { get; set; } // name of mesh reinforcement
+    public bool Rotated { get; set; } // direction of mesh reinforcement
 
     #region constructors
     public MeshReinforcement() { }
