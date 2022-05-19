@@ -43,6 +43,7 @@ namespace ComposAPI.Helpers
       List<string> parameters = coaString.Split('\t').ToList();
       foreach (string param in parameters)
         RemoveWhitespace(param);
+
       return parameters;
     }
 
@@ -72,7 +73,6 @@ namespace ComposAPI.Helpers
 
     public static string FormatSignificantFigures(double value, int significantFigures, bool isExponential = false)
     {
-
       // if for instance 6 significant figures and value is above 1,000,000
       // compos coa is shown as 4.50000e+008 which is value.ToString("e6")
       if (value > Math.Pow(10, significantFigures))
@@ -118,6 +118,11 @@ namespace ComposAPI.Helpers
     internal static List<string> SplitLines(string coaString)
     {
       List<string> lines = coaString.Split('\n').ToList();
+
+      // remove last line if empty
+      if (lines[lines.Count - 1] == "")
+        lines.RemoveAt(lines.Count - 1);
+
       return lines;
     }
   }

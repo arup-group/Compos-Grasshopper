@@ -38,12 +38,10 @@ namespace ComposAPI.Tests
     }
 
     [Theory]
-    [InlineData("REBAR_MATERIAL	MEMBER-1	STANDARD	500B\nREBAR_TRANSVERSE	MEMBER-1	PROGRAM_DESIGNED\n", RebarGrade.EN_500B)]
-    public void CoaConstructorTest(string coaString, RebarGrade expected_grade)
+    [InlineData("REBAR_MATERIAL	MEMBER-1	STANDARD	460T\nREBAR_TRANSVERSE	MEMBER-1	PROGRAM_DESIGNED\n", RebarGrade.BS_460T)]
+    public void FromCoaString(string coaString, RebarGrade expected_grade)
     {
-      List<string> parameters = CoaHelper.Split(coaString);
-
-      ITransverseReinforcement transverseReinforcement = TransverseReinforcement.FromCoaString(parameters, Code.BS5950_3_1_1990_A1_2010, ComposUnits.GetStandardUnits());
+      ITransverseReinforcement transverseReinforcement = TransverseReinforcement.FromCoaString(coaString, "MEMBER-1", Code.BS5950_3_1_1990_A1_2010, ComposUnits.GetStandardUnits());
 
 
       Assert.Equal(expected_grade, transverseReinforcement.Material.Grade);
@@ -51,12 +49,12 @@ namespace ComposAPI.Tests
     }
 
     [Theory]
-    [InlineData("REBAR_MATERIAL	MEMBER-1	STANDARD	250R\nREBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\n", RebarGrade.BS_250R)]
-    public void CoaConstructorCustomLayoutTest(string coaString, RebarGrade expected_grade)
+    [InlineData("REBAR_MATERIAL	MEMBER-1	STANDARD	500X\nREBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\nREBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\nREBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\n", RebarGrade.BS_500X)]
+    public void FromCoaStringCustomLayoutTest(string coaString, RebarGrade expected_grade)
     {
       List<string> parameters = CoaHelper.Split(coaString);
 
-      ITransverseReinforcement transverseReinforcement = TransverseReinforcement.FromCoaString(parameters, Code.BS5950_3_1_1990_A1_2010, ComposUnits.GetStandardUnits());
+      ITransverseReinforcement transverseReinforcement = TransverseReinforcement.FromCoaString(coaString, "MEMBER-1", Code.BS5950_3_1_1990_A1_2010, ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_grade, transverseReinforcement.Material.Grade);
       Assert.Equal(LayoutMethod.Custom, transverseReinforcement.LayoutMethod);
@@ -65,6 +63,18 @@ namespace ComposAPI.Tests
       Assert.Equal(8, transverseReinforcement.CustomReinforcementLayouts[0].Diameter.Value);
       Assert.Equal(100, transverseReinforcement.CustomReinforcementLayouts[0].Spacing.Value);
       Assert.Equal(35, transverseReinforcement.CustomReinforcementLayouts[0].Cover.Value);
+
+      Assert.Equal(0, transverseReinforcement.CustomReinforcementLayouts[1].DistanceFromStart.Value);
+      Assert.Equal(1, transverseReinforcement.CustomReinforcementLayouts[1].DistanceFromEnd.Value);
+      Assert.Equal(8, transverseReinforcement.CustomReinforcementLayouts[1].Diameter.Value);
+      Assert.Equal(100, transverseReinforcement.CustomReinforcementLayouts[1].Spacing.Value);
+      Assert.Equal(35, transverseReinforcement.CustomReinforcementLayouts[1].Cover.Value);
+
+      Assert.Equal(0, transverseReinforcement.CustomReinforcementLayouts[2].DistanceFromStart.Value);
+      Assert.Equal(1, transverseReinforcement.CustomReinforcementLayouts[2].DistanceFromEnd.Value);
+      Assert.Equal(8, transverseReinforcement.CustomReinforcementLayouts[2].Diameter.Value);
+      Assert.Equal(100, transverseReinforcement.CustomReinforcementLayouts[2].Spacing.Value);
+      Assert.Equal(35, transverseReinforcement.CustomReinforcementLayouts[2].Cover.Value);
     }
   }
 }

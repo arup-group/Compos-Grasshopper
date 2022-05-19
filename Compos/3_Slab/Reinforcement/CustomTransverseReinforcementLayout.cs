@@ -27,13 +27,17 @@ namespace ComposAPI
     }
 
     #region coa interop
-    internal CustomTransverseReinforcementLayout(List<string> parameters, ComposUnits units)
+    internal static ICustomTransverseReinforcementLayout FromCoaString(List<string> parameters, ComposUnits units)
     {
-      this.DistanceFromStart = CoaHelper.ConvertToLength(parameters[3], units.Length);
-      this.DistanceFromEnd = CoaHelper.ConvertToLength(parameters[4], units.Length);
-      this.Diameter = CoaHelper.ConvertToLength(parameters[5], units.Length);
-      this.Spacing = CoaHelper.ConvertToLength(parameters[6], units.Length);
-      this.Cover = CoaHelper.ConvertToLength(parameters[7], units.Length);
+      CustomTransverseReinforcementLayout layout = new CustomTransverseReinforcementLayout();
+
+      layout.DistanceFromStart = CoaHelper.ConvertToLength(parameters[3], units.Length);
+      layout.DistanceFromEnd = CoaHelper.ConvertToLength(parameters[4], units.Length);
+      layout.Diameter = CoaHelper.ConvertToLength(parameters[5], units.Length);
+      layout.Spacing = CoaHelper.ConvertToLength(parameters[6], units.Length);
+      layout.Cover = CoaHelper.ConvertToLength(parameters[7], units.Length);
+
+      return layout;
     }
 
     public string ToCoaString(string name, ComposUnits units)

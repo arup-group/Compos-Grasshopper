@@ -31,7 +31,7 @@ namespace ComposAPI.Tests
     {
       List<string> parameters = CoaHelper.Split(coaString);
 
-      CustomTransverseReinforcementLayout customTransverseReinforcementLayout = new CustomTransverseReinforcementLayout(parameters, ComposUnits.GetStandardUnits());
+      ICustomTransverseReinforcementLayout customTransverseReinforcementLayout = CustomTransverseReinforcementLayout.FromCoaString(parameters, ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_distanceFromStart, customTransverseReinforcementLayout.DistanceFromStart.Value);
       Assert.Equal(expected_distanceFromEnd, customTransverseReinforcementLayout.DistanceFromEnd.Value);

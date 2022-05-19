@@ -48,7 +48,6 @@ namespace ComposAPI
       Slab slab = new Slab();
 
       List<string> lines = CoaHelper.SplitLines(coaString);
-      ReinforcementMaterial material;
       foreach (string line in lines)
       {
         List<string> parameters = CoaHelper.Split(line);
@@ -71,10 +70,6 @@ namespace ComposAPI
             slab.Dimensions.Add(dimension);
             break;
 
-          case (CoaIdentifier.RebarTransverse):
-            slab.Transverse = TransverseReinforcement.FromCoaString(parameters, code, units);
-            break;
-
           case (CoaIdentifier.RebarWesh):
             slab.Mesh = MeshReinforcement.FromCoaString(parameters);
             break;
@@ -95,6 +90,9 @@ namespace ComposAPI
             break;
         }
       }
+
+      slab.Transverse = TransverseReinforcement.FromCoaString(coaString, name, code, units);
+
       return slab;
     }
 

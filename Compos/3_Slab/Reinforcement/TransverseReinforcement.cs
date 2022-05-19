@@ -38,33 +38,45 @@ namespace ComposAPI
     }
 
     #region coa interop
-    internal static ITransverseReinforcement FromCoaString(List<string> parameters, Code code, ComposUnits units)
+    internal static ITransverseReinforcement FromCoaString(string coaString, string name, Code code, ComposUnits units)
     {
       TransverseReinforcement reinforcement = new TransverseReinforcement();
+      reinforcement.CustomReinforcementLayouts = new List<ICustomTransverseReinforcementLayout>();
 
-
-      switch (parameters[0])
+      List<string> lines = CoaHelper.SplitLines(coaString);
+      foreach (string line in lines)
       {
-        //case (CoaIdentifier.RebarMaterial):
-        //  reinforcement.Material = ReinforcementMaterial.FromCoaString(line, code);
-        //  break;
+        List<string> parameters = CoaHelper.Split(line);
 
-        //case (CoaIdentifier.RebarTransverse):
-        //  reinforcement.CustomReinforcementLayouts.Add(CustomReinforcementLayout.FromCoaString(line, units));
-        //  break;
+        if (parameters[1] != name)
+          continue;
 
-      }
+        switch (parameters[0])
+        {
+          case (CoaIdentifier.UnitData):
+            units.Change(parameters);
+            break;
 
+          case (CoaIdentifier.RebarMaterial):
+            reinforcement.Material = ReinforcementMaterial.FromCoaString(parameters, code);
+            break;
 
-      if (parameters[1] == "PROGRAM_DESIGNED")
-      {
-        reinforcement.LayoutMethod = LayoutMethod.Automatic;
+          case (CoaIdentifier.RebarTransverse):
+            if (parameters[2] == "PROGRAM_DESIGNED")
+            {
+              reinforcement.LayoutMethod = LayoutMethod.Automatic;
+            }
+            else
+            {
+              reinforcement.LayoutMethod = LayoutMethod.Custom;
+              reinforcement.CustomReinforcementLayouts.Add(CustomTransverseReinforcementLayout.FromCoaString(parameters, units));
+            }
+            break;
 
-
-      }
-      else
-      {
-
+          default:
+            // continue;
+            break;
+        }
       }
       return reinforcement;
     }

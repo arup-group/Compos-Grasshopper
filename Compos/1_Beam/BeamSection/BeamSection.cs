@@ -11,7 +11,7 @@ namespace ComposAPI
 {
   /// <summary>
   /// A Beam Section object contains information about the profile dimensions, 
-  /// start position and if the section is tapered to next section.
+  /// start position and if the section is tapered to the next section.
   /// </summary>
   public class BeamSection : IBeamSection
   {
