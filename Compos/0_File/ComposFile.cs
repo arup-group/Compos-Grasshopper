@@ -81,6 +81,7 @@ namespace ComposAPI
     internal static ComposFile FromCoaString(string coaString)
     {
       ComposFile file = new ComposFile();
+      file.Members = new List<IMember> ();
 
       Dictionary<string, DesignCode> codes = new Dictionary<string, DesignCode>();
       Dictionary<string, Stud> studs = new Dictionary<string, Stud>();

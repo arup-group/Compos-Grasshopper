@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ComposAPI.Helpers;
 using Oasys.Units;
 using UnitsNet;
 using UnitsNet.Units;
@@ -60,6 +61,66 @@ namespace ComposAPI.Tests
       string coaString = concreteMaterial.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_coaString, coaString);
+    }
+
+    [Theory]
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	C35/45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN\n", "C35_45", DensityClass.NOT_APPLY, 2400, false, 0, 0, 0, 0, false, 0.33, -0.000325, false)] // EN Normal
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	C35/45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	USER_STRAIN	-0.000300000\n", "C35_45", DensityClass.NOT_APPLY, 2400, false, 0, 0, 0, 0, false, 0.33, -0.0003, true)] // EN Normal User Strain
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	LC35/38	LIGHT	CODE_DENSITY	2000.00	1801_2000	0.330000	CODE_E_RATIO	CODE_STRAIN\n", "LC35_38", DensityClass.DC1801_2000, 2000, false, 0, 0, 0, 0, false, 0.33, -0.0005, false)] // EN Light
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	LC35/38	LIGHT	USER_DENSITY	1000.00	0.330000	CODE_E_RATIO	CODE_STRAIN\n", "LC35_38", DensityClass.NOT_APPLY, 1000, true, 0, 0, 0, 0, false, 0.33, -0.0005, false)] // EN Light User Density
+    public void FromCoaStringTest(string coaString, string expected_grade, DensityClass expected_densityClass, double expected_dryDensity, bool expected_userDensity, double expected_shortTerm, double expected_longTerm, double expected_vibration, double expected_shrinkage, bool expected_userDefined, double expected_imposedLoadPercentage, double expected_shrinkageStrain, bool expected_userStrain)
+    {
+      ComposUnits units = ComposUnits.GetStandardUnits();
+
+      List<string> parameters = CoaHelper.Split(coaString);
+      IConcreteMaterial material = ConcreteMaterial.FromCoaString(parameters, units);
+
+      Assert.Equal(expected_grade, material.Grade);
+      Assert.Equal(expected_densityClass, material.Class);
+      Assert.Equal(expected_dryDensity, material.DryDensity.Value);
+      Assert.Equal(expected_userDensity, material.UserDensity);
+      Assert.Equal(expected_userDefined, material.ERatio.UserDefined);
+      if (!expected_userDefined)
+      {
+        Assert.Equal(expected_shortTerm, material.ERatio.ShortTerm);
+        Assert.Equal(expected_longTerm, material.ERatio.LongTerm);
+        Assert.Equal(expected_vibration, material.ERatio.Vibration);
+        Assert.Equal(expected_shrinkage, material.ERatio.Shrinkage);
+      }
+      Assert.Equal(expected_imposedLoadPercentage, material.ImposedLoadPercentage);
+      Assert.Equal(expected_userStrain, material.UserStrain);
+      if (expected_userStrain)
+        Assert.Equal(expected_shrinkageStrain, material.ShrinkageStrain.Value);
+    }
+
+    [Theory]
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	C35/45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN\n", "C35_45", DensityClass.NOT_APPLY, 2400, false, 0, 0, 0, 0, false, 0.33, -0.000325, false)] // EN Normal
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	C35/45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	USER_STRAIN	-0.000300000\n", "C35_45", DensityClass.NOT_APPLY, 2400, false, 0, 0, 0, 0, false, 0.33, -0.0003, true)] // EN Normal User Strain
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	LC35/38	LIGHT	CODE_DENSITY	2000.00	1801_2000	0.330000	CODE_E_RATIO	CODE_STRAIN\n", "LC35_38", DensityClass.DC1801_2000, 2000, false, 0, 0, 0, 0, false, 0.33, -0.0005, false)] // EN Light
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	LC35/38	LIGHT	USER_DENSITY	1000.00	0.330000	CODE_E_RATIO	CODE_STRAIN\n", "LC35_38", DensityClass.NOT_APPLY, 1000, true, 0, 0, 0, 0, false, 0.33, -0.0005, false)] // EN Light User Density
+    public void FromCoaStringTestEN(string coaString, string expected_grade, DensityClass expected_densityClass, double expected_dryDensity, bool expected_userDensity, double expected_shortTerm, double expected_longTerm, double expected_vibration, double expected_shrinkage, bool expected_userDefined, double expected_imposedLoadPercentage, double expected_shrinkageStrain, bool expected_userStrain)
+    {
+      ComposUnits units = ComposUnits.GetStandardUnits();
+
+      List<string> parameters = CoaHelper.Split(coaString);
+      IConcreteMaterial material = ConcreteMaterial.FromCoaString(parameters, units);
+
+      Assert.Equal(expected_grade, material.Grade);
+      Assert.Equal(expected_densityClass, material.Class);
+      Assert.Equal(expected_dryDensity, material.DryDensity.Value);
+      Assert.Equal(expected_userDensity, material.UserDensity);
+      Assert.Equal(expected_userDefined, material.ERatio.UserDefined);
+      if (!expected_userDefined)
+      {
+        Assert.Equal(expected_shortTerm, material.ERatio.ShortTerm);
+        Assert.Equal(expected_longTerm, material.ERatio.LongTerm);
+        Assert.Equal(expected_vibration, material.ERatio.Vibration);
+        Assert.Equal(expected_shrinkage, material.ERatio.Shrinkage);
+      }
+      Assert.Equal(expected_imposedLoadPercentage, material.ImposedLoadPercentage);
+      Assert.Equal(expected_userStrain, material.UserStrain);
+      if (expected_userStrain)
+        Assert.Equal(expected_shrinkageStrain, material.ShrinkageStrain.Value);
     }
 
     // 1 setup inputs

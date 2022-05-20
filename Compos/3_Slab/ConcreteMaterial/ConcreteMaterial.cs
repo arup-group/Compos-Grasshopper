@@ -84,8 +84,6 @@ namespace ComposAPI
     public Strain ShrinkageStrain { get; set; } //	Concrete Shrinkage strain
     public bool UserStrain { get; set; } = false; //	code or user defined shrinkage strain
 
-
-
     #region constructors
     public ConcreteMaterial()
     {
@@ -176,7 +174,7 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal static IConcreteMaterial FromCoaString(List<string> parameters, ComposUnits units) 
+    internal static IConcreteMaterial FromCoaString(List<string> parameters, ComposUnits units)
     {
       ConcreteMaterial material = new ConcreteMaterial();
       if (parameters[1].Length < 4)
@@ -187,19 +185,48 @@ namespace ComposAPI
       else
       {
         // EC4 GRADES
-        material.Grade = Enum.Parse(typeof(ConcreteGradeEN), parameters[1]).ToString();
+        material.Grade = Enum.Parse(typeof(ConcreteGradeEN), parameters[2].Replace("/", "_")).ToString();
       }
-      material.Type = (WeightType)Enum.Parse(typeof(WeightType), parameters[2]);
-      if (parameters[3] == "USER_DENSITY")
-        material.UserDensity = true;
-      int i = 4;
-      if (material.UserDensity)
+      if (parameters[3] == "NORMAL")
+        material.Type = WeightType.Normal;
+      else
+        material.Type = WeightType.Light;
+
+      int index;
+      if (parameters[4] == "USER_DENSITY")
       {
-        material.DryDensity = CoaHelper.ConvertToDensity(parameters[i], units.Density);
-        i++;
+        material.UserDensity = true;
+        index = 6;
+      }
+      else
+      {
+        material.UserDensity = false;
+        if (parameters[6] != "NOT_APPLY")
+          material.Class = (DensityClass)Enum.Parse(typeof(DensityClass), "DC" + parameters[6]);
+        index = 7;
       }
 
-      // todo: implement!
+      material.DryDensity = CoaHelper.ConvertToDensity(parameters[5], units.Density);
+
+      material.ImposedLoadPercentage = CoaHelper.ConvertToDouble(parameters[index]);
+
+      index++;
+      if (parameters[index] == "CODE_E_RATIO")
+      {
+        index++;
+        material.ERatio = new ERatio();
+      }
+      else
+      {
+        material.ERatio = new ERatio(CoaHelper.ConvertToDouble(parameters[9]), CoaHelper.ConvertToDouble(parameters[10]), CoaHelper.ConvertToDouble(parameters[11]), CoaHelper.ConvertToDouble(parameters[12]));
+        index = index + 5;
+      }
+
+      if (parameters[index] == "USER_STRAIN")
+      {
+        material.UserStrain = true;
+        material.ShrinkageStrain = CoaHelper.ConvertToStrain(parameters[index + 1], units.Strain);
+      }
 
       return material;
     }

@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Oasys.Units;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -104,9 +105,19 @@ namespace ComposAPI.Helpers
       return new Density(Convert.ToDouble(value, NoComma), unit);
     }
 
+    internal static double ConvertToDouble(string value)
+    {
+      return Convert.ToDouble(value, NoComma);
+    }
+
     internal static Length ConvertToLength(string value, LengthUnit unit)
     {
      return new Length(Convert.ToDouble(value, NoComma), unit);
+    }
+
+    internal static Strain ConvertToStrain(string value, StrainUnit unit)
+    {
+      return new Strain(Convert.ToDouble(value, NoComma), unit);
     }
 
     internal static Pressure ConvertToStress(string value, PressureUnit unit)
