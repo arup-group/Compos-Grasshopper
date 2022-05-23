@@ -167,7 +167,7 @@
     <Compile Include="Parameters\2_Studs\StudSpecGoo.cs" />
     <Compile Include="Parameters\2_Studs\StudSpacingGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\EC4SafetyFactorsGoo.cs" />
-    <Compile Include="Parameters\5_Member\MemberGeometryGoo.cs" />
+    <Compile Include="Parameters\5_Member\MemberGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\CreepShrinkageEC4ParamGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\SafetyFactorsGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\DesignOptionsGoo.cs" />
@@ -449,6 +449,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\StandardSteelMaterial.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Compos_8_6">
+      <Guid>{F92EF6FC-1F1A-44F3-9461-2B6AFC71AA95}</Guid>
+      <VersionMajor>8</VersionMajor>
+      <VersionMinor>6</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

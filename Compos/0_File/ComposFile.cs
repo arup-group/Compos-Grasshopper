@@ -12,7 +12,7 @@ namespace ComposAPI
 {
   public class ComposFile : IComposFile
   {
-    public IList<IMember> Members { get; set; }
+    public IList<IMember> Members { get; set; } = new List<IMember>();
     internal IAutomation ComposCOM { get; set; }
     public string FileName { get; internal set; }
 
@@ -57,15 +57,15 @@ namespace ComposAPI
       string tempCoa = Path.GetTempPath() + Guid.NewGuid().ToString() + ".coa";
       File.WriteAllLines(tempCoa, new string[] { coaString });
 
-      IAutomation automation = new Automation();
-      automation.Open(tempCoa);
+      //IAutomation automation = new Automation();
+      //automation.Open(tempCoa);
 
-      // save to .cob with COM object
-      if (!fileName.EndsWith(".cob"))
-        fileName = fileName + ".cob";
-      automation.SaveAs(fileName);
+      //// save to .cob with COM object
+      //if (!fileName.EndsWith(".cob"))
+      //  fileName = fileName + ".cob";
+      //automation.SaveAs(fileName);
 
-      this.FileName = fileName;
+      //this.FileName = fileName;
     }
 
     public override string ToString()
@@ -81,7 +81,7 @@ namespace ComposAPI
     internal static ComposFile FromCoaString(string coaString)
     {
       ComposFile file = new ComposFile();
-      file.Members = new List<IMember> ();
+      file.Members = new List<IMember>();
 
       Dictionary<string, DesignCode> codes = new Dictionary<string, DesignCode>();
       Dictionary<string, Stud> studs = new Dictionary<string, Stud>();
@@ -113,7 +113,7 @@ namespace ComposAPI
         else if (coaIdentifier == CoaIdentifier.UnitData)
         {
           // change the currently used unit
-          units.Change(parameters);
+          units.FromCoaString(parameters);
         }
 
         // ### Design Code ###
@@ -239,9 +239,32 @@ namespace ComposAPI
         Strain = Units.StrainUnit
       };
 
-      string coaString = "";
+      string version = "0.1"; // ??
+
+      string coaString = "! This file was originally written by ComposGH version " + version + " on " + DateTime.Now.ToString("dddd, dd MMMM yyyy HH:MM:ss") + "\n";
+      coaString += "!\n";
+      coaString += "! Notes:\n";
+      coaString += "! 1 All data in this file will be interpreted as being in user units\n";
+      coaString += "!   as defined by UNIT_DATA records. These units remain in force until\n";
+      coaString += "!   another UNIT_DATA record is found.\n";
+      coaString += "!   Length units can be long (LENGTH), short (DISP) or Section (PROP_LENGTH).\n";
+      coaString += "!   In general long length units are used except that.\n";
+      coaString += "!   Section length unit is used for section sizes and\n";
+      coaString += "!   Displacement length unit is used for displacement results.\n";
+      coaString += "!   COMPOS stores all data in SI units.\n";
+      coaString += "! 2 The date specified in the description for catalogue sections is\n";
+      coaString += "!   optional. If omitted then the most recent section in the catalogue\n";
+      coaString += "!   bearing that name will be assumed.\n";
+      coaString += "!\n";
+      coaString += "COMPOS_FILE_VERSION\t1\n";
+      coaString += "TITLE\tCOMPOS\tValidation\tCompos Version 7.2\t77101/90\tRL\n"; // ????????
+
+      coaString += units.ToCoaString();
+
       foreach (IMember member in Members)
         coaString += member.ToCoaString(units);
+
+      coaString += "END\n";
 
       return coaString;
     }

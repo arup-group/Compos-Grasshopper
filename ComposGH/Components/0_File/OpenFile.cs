@@ -10,7 +10,7 @@ using ComposAPI;
 namespace ComposGH.Components
 {
   /// <summary>
-  /// Component to open an existing GSA model
+  /// Component to open an existing compos data file
   /// </summary>
   public class OpenModel : GH_Component, IGH_VariableParameterComponent
   {
@@ -19,7 +19,7 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("51e4fa31-a626-45a0-a3f6-70175ebb80e4");
     public OpenModel()
-      : base("Open Model", "Open", "Open an existing GSA model",
+      : base("Open Model", "Open", "Open an existing compos data file",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat0())
     { this.Hidden = true; } // sets the initial state of the component to hidden

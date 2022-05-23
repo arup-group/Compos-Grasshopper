@@ -16,13 +16,13 @@ namespace ComposAPI.Tests
     {
       string pathName = Path.GetFullPath("..\\..\\..\\TestFiles\\Compos1.cob");
 
-      //ComposFile file = new ComposFile().Open(pathName);
+      ComposFile file = new ComposFile().Open(pathName);
 
-      //IAutomation automation = file.ComposCOM;
+      IAutomation automation = file.ComposCOM;
 
-      //Assert.NotNull(automation); 
+      Assert.NotNull(automation);
 
-      //automation.Close(); 
+      automation.Close();
     }
 
     [Fact]
@@ -30,13 +30,13 @@ namespace ComposAPI.Tests
     {
       string pathName = Path.GetFullPath("..\\..\\..\\TestFiles\\Compos1.coa");
 
-      //ComposFile file = new ComposFile().Open(pathName);
+      ComposFile file = new ComposFile().Open(pathName);
 
-      //IAutomation automation = file.ComposCOM;
+      IAutomation automation = file.ComposCOM;
 
-      //Assert.NotNull(automation);
-      
-      //automation.Close();
+      Assert.NotNull(automation);
+
+      automation.Close();
     }
   }
 }

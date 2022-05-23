@@ -54,7 +54,7 @@ namespace ComposAPI
         switch (parameters[0])
         {
           case (CoaIdentifier.UnitData):
-            units.Change(parameters);
+            units.FromCoaString(parameters);
             break;
 
           case (CoaIdentifier.RebarMaterial):

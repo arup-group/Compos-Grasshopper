@@ -8,7 +8,7 @@ using System.Drawing;
 namespace ComposGH.Components
 {
   /// <summary>
-  /// Component to open an existing GSA model
+  /// Component to save to a compos data file
   /// </summary>
   public class SaveModel : GH_Component, IGH_VariableParameterComponent
   {
@@ -35,11 +35,11 @@ namespace ComposGH.Components
 
     public void SaveFile()
     {
-      if (fileName == null | fileName == "")
+      if (this.FileName == null | this.FileName == "")
         SaveAsFile();
       else
       {
-        composFile.SaveAs(fileName);
+        this.ComposFile.SaveAs(this.FileName);
         
         this.Message = "File saved";
       }
@@ -51,10 +51,10 @@ namespace ComposGH.Components
       var res = fdi.ShowSaveDialog();
       if (res) // == DialogResult.OK)
       {
-        fileName = fdi.FileName;
-        usersetFileName = true;
+        this.FileName = fdi.FileName;
+        this.UsersetFileName = true;
         
-          canOpen = true;
+          this.CanOpen = true;
           //CreateAttributes();
           string mes = "File saved";
 
@@ -71,7 +71,7 @@ namespace ComposGH.Components
               panel.Attributes.Bounds.Width - 40, (float)Attributes.DocObject.Attributes.Bounds.Bottom - panel.Attributes.Bounds.Height);
 
           //populate value list with our own data
-          panel.UserText = fileName;
+          panel.UserText = this.FileName;
 
           //Until now, the panel is a hypothetical object.
           // This command makes it 'real' and adds it to the canvas.
@@ -87,12 +87,12 @@ namespace ComposGH.Components
 
     public void OpenComposexe()
     {
-      if (fileName != null)
+      if (this.FileName != null)
       {
-        if (fileName != "")
+        if (this.FileName != "")
         {
-          if (canOpen)
-            System.Diagnostics.Process.Start(fileName);
+          if (this.CanOpen)
+            System.Diagnostics.Process.Start(this.FileName);
         }
       }
     }
@@ -101,13 +101,13 @@ namespace ComposGH.Components
     #region Input and output
     // This region handles input and output parameters
 
-    string fileName = null;
-    bool usersetFileName = false;
-    ComposFile composFile;
-    bool canOpen = false;
+    string FileName = null;
+    bool UsersetFileName = false;
+    ComposFile ComposFile;
+    bool CanOpen = false;
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter("GSA Model", "GSA", "GSA model to save", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Member", "Mem", "Compos member to save", GH_ParamAccess.item);
       pManager.AddBooleanParameter("Save?", "Save", "Input 'True' to save or use button", GH_ParamAccess.item, false);
       pManager.AddTextParameter("File and Path", "File", "Filename and path", GH_ParamAccess.item);
       pManager[1].Optional = true;
@@ -137,7 +137,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      Params.Input[0].Optional = fileName != null; //filename can have input from user input
+      Params.Input[0].Optional = this.FileName != null; //filename can have input from user input
       Params.Input[0].ClearRuntimeMessages(); // this needs to be called to avoid having a runtime warning message after changed to optional
     }
     #endregion
@@ -148,12 +148,12 @@ namespace ComposGH.Components
     // component states will be remembered when reopening GH script
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      writer.SetString("File", (string)fileName);
+      writer.SetString("File", (string)FileName);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      fileName = (string)reader.GetString("File");
+      FileName = (string)reader.GetString("File");
       UpdateUIFromSelectedItems();
       return base.Read(reader);
     }
@@ -176,7 +176,16 @@ namespace ComposGH.Components
         if (gh_typ.Value is ComposFileGoo)
         {
           ComposFileGoo goo = (ComposFileGoo)gh_typ.Value;
-          composFile = (ComposFile)goo.Value;
+          this.ComposFile = (ComposFile)goo.Value;
+          Message = "";
+        }
+        else if(gh_typ.Value is MemberGoo)
+        {
+          MemberGoo goo = (MemberGoo)gh_typ.Value;
+          IMember member  = (IMember)goo.Value;
+
+          this.ComposFile = new ComposFile();
+          this.ComposFile.Members.Add(member);
           Message = "";
         }
         else
@@ -185,24 +194,24 @@ namespace ComposGH.Components
           return;
         }
 
-        if (!usersetFileName)
+        if (!this.UsersetFileName)
         {
-          if (composFile.FileName != "")
-            fileName = composFile.FileName;
+          if (this.ComposFile.FileName != "")
+            this.FileName = this.ComposFile.FileName;
         }
 
         string tempfile = "";
         if (DA.GetData(2, ref tempfile))
-          fileName = tempfile;
+          this.FileName = tempfile;
 
         bool save = false;
         if (DA.GetData(1, ref save))
         {
           if (save)
-            Message = fileName;
+            Message = this.FileName;
         }
 
-        DA.SetData(0, new ComposFileGoo(composFile));
+        DA.SetData(0, new ComposFileGoo(this.ComposFile));
       }
     }
   }
