@@ -101,7 +101,6 @@ namespace ComposAPI
         List<string> parameters = CoaHelper.Split(line);
         string coaIdentifier = parameters[0];
 
-
         // ### member ###
         if (coaIdentifier == CoaIdentifier.MemberName)
         {

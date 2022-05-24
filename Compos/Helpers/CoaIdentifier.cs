@@ -6,9 +6,9 @@
     internal class Units
     {
       public const string Force = "FORCE";
-      public const string Length_Geometry = "LENGTH";
-      public const string Length_Results = "DISP";
-      public const string Length_Section = "SECTION";
+      public const string Length = "LENGTH";
+      public const string Displacement = "DISP";
+      public const string Section = "SECTION";
       public const string Stress = "STRESS";
       public const string Mass = "MASS";
     }
