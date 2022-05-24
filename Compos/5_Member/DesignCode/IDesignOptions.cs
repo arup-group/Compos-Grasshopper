@@ -1,6 +1,6 @@
 ﻿namespace ComposAPI
 {
-  public interface IDesignOptions
+  public interface IDesignOption
   {
     bool ProppedDuringConstruction { get; }
     bool InclSteelBeamWeight { get; }

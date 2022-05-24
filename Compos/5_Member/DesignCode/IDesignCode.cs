@@ -6,7 +6,7 @@
   public interface IDesignCode
   {
     Code Code { get; }
-    IDesignOptions DesignOptions { get; }
+    IDesignOption DesignOptions { get; }
     ISafetyFactors SafetyFactors { get; }
 
     string ToCoaString(string name);

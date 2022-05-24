@@ -79,6 +79,7 @@ namespace ComposAPI.Tests
       // (optionally return object for other tests)
       return designCode;
     }
+
     [Fact]
     public void ASNZToCoaStringTest()
     {
@@ -128,6 +129,7 @@ namespace ComposAPI.Tests
       // (optionally return object for other tests)
       return designCode;
     }
+
     [Fact]
     public void EC4ToCoaStringTest()
     {
@@ -139,6 +141,7 @@ namespace ComposAPI.Tests
       // Assert
       Assert.Equal(expected_coaString, coaString);
     }
+
     [Fact]
     public void HK05ToCoaStringTest()
     {
@@ -150,6 +153,7 @@ namespace ComposAPI.Tests
       // Assert
       Assert.Equal(expected_coaString, coaString);
     }
+
     [Fact]
     public void HK11ToCoaStringTest()
     {

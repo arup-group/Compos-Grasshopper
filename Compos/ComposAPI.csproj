@@ -130,7 +130,7 @@
     <Compile Include="5_Member\DesignCode\DesignCode.cs" />
     <Compile Include="5_Member\DesignCode\CodeOptions.cs" />
     <Compile Include="5_Member\DesignCode\SafetyFactors.cs" />
-    <Compile Include="5_Member\DesignCode\DesignOptions.cs" />
+    <Compile Include="5_Member\DesignCode\DesignOption.cs" />
     <Compile Include="5_Member\Member.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

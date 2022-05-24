@@ -68,7 +68,7 @@ namespace ComposGH.Components
     private NationalAnnex NA = NationalAnnex.Generic;
     private CementClass CementClass = CementClass.N;
 
-    private DesignOptions DesignOptions = new DesignOptions();
+    private DesignOption DesignOptions = new DesignOption();
     private CodeOptions CodeOptions = new CodeOptions();
     private EC4Options EC4codeOptions = new EC4Options();
 

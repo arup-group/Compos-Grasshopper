@@ -29,7 +29,7 @@ namespace ComposAPI
   public class DesignCode : IDesignCode
   {
     public Code Code { get; set; }
-    public IDesignOptions DesignOptions { get; set; } = new DesignOptions();
+    public IDesignOption DesignOptions { get; set; } = new DesignOption();
     public ISafetyFactors SafetyFactors { get; set; } = new SafetyFactors();
 
     public DesignCode() { }
@@ -61,7 +61,6 @@ namespace ComposAPI
           return "AS/NZS2327:2017";
       }
       return "";
-
     }
 
     #region coa interop
@@ -92,7 +91,7 @@ namespace ComposAPI
           designCode = null;
           break;
       }
-      DesignOptions designOptions = new DesignOptions();
+      DesignOption designOption = new DesignOption();
       designOptions.ProppedDuringConstruction = parameters[3] != "UNPROPPED";
       designOptions.InclSteelBeamWeight = parameters[4] != "BEAM_WEIGHT_NO";
       designOptions.InclConcreteSlabWeight = parameters[5] != "SLAB_WEIGHT_NO";

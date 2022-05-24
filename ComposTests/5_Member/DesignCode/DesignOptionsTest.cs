@@ -5,13 +5,13 @@ namespace ComposAPI.Tests
   public partial class DesignCodeTest
   {
     [Fact]
-    public DesignOptions TestDesignOptionsConstructor()
+    public DesignOption TestDesignOptionsConstructor()
     {
       // 1 setup input
       // use default values
 
       // 2 create object instance with constructor
-      DesignOptions designOptions = new DesignOptions();
+      DesignOption designOption = new DesignOption();
 
       // 3 check that inputs are set in object's members
       Assert.True(designOptions.ProppedDuringConstruction);
@@ -28,8 +28,8 @@ namespace ComposAPI.Tests
     public void TestDesignOptionsDuplicate()
     {
       // 1 create with constructor and duplicate
-      DesignOptions original = new DesignOptions();
-      DesignOptions duplicate = original.Duplicate() as DesignOptions;
+      DesignOption original = new DesignOption();
+      DesignOption duplicate = original.Duplicate() as DesignOption;
 
       // 2 check that duplicate has duplicated values
       Assert.True(duplicate.ProppedDuringConstruction);

@@ -8,10 +8,8 @@ namespace ComposAPI
   public class CodeOptions : ICodeOptions
   {
     public bool ConsiderShrinkageDeflection { get; set; } = false;
-    public virtual ICreepShrinkageParameters LongTerm { get; set; } = new CreepShrinkageParameters()
-    { CreepCoefficient = 2.0 };
-    public virtual ICreepShrinkageParameters ShortTerm { get; set; } = new CreepShrinkageParameters()
-    { CreepCoefficient = 2.0 };
+    public virtual ICreepShrinkageParameters LongTerm { get; set; } = new CreepShrinkageParameters() { CreepCoefficient = 2.0 };
+    public virtual ICreepShrinkageParameters ShortTerm { get; set; } = new CreepShrinkageParameters() { CreepCoefficient = 2.0 };
     /// <summary>
     /// Deafult constructor with AS/NZ values and members
     /// </summary>
@@ -29,6 +27,7 @@ namespace ComposAPI
       N,
       R
     }
+
     public CementClass CementType { get; set; } = CementClass.N;
 
     /// <summary>
@@ -40,7 +39,7 @@ namespace ComposAPI
     /// Use approximate modular ratios - Approximate E ratios are used in accordance with 5.2.2 (11) of EN 1994-1-1:2004 
     /// </summary>
     public bool ApproxModularRatios { get; set; } = false;
-    public new CreepShrinkageEuroCodeParameters LongTerm { get; set; } = new CreepShrinkageEuroCodeParameters() 
+    public new CreepShrinkageEuroCodeParameters LongTerm { get; set; } = new CreepShrinkageEuroCodeParameters()
     { ConcreteAgeAtLoad = 28, CreepCoefficient = 1.1, FinalConcreteAgeCreep = 36500, RelativeHumidity = 0.5 };
     public new CreepShrinkageEuroCodeParameters ShortTerm { get; set; } = new CreepShrinkageEuroCodeParameters()
     { ConcreteAgeAtLoad = 1, CreepCoefficient = 0.55, FinalConcreteAgeCreep = 36500, RelativeHumidity = 0.5 };
@@ -73,6 +72,7 @@ namespace ComposAPI
     /// Relative humidity as fraction (0.5 => 50%), used to calculate the creep coefficient 
     /// </summary>
     public double RelativeHumidity { get; set; } = 0.5;
+
     public CreepShrinkageEuroCodeParameters() { }
   }
 }

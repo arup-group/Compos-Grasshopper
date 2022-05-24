@@ -6,7 +6,7 @@ using UnitsNet;
 
 namespace ComposAPI
 {
-  public class DesignOptions : IDesignOptions
+  public class DesignOption : IDesignOption
   {
     public bool ProppedDuringConstruction { get; set; } = true; // construction type
     public bool InclSteelBeamWeight { get; set; } = false; // include beam weight or not in analysis
@@ -14,7 +14,7 @@ namespace ComposAPI
     public bool ConsiderShearDeflection { get; set; } = false; //	shear deformation
     public bool InclThinFlangeSections { get; set; } = false; // include thin flange section or not in the selection of steel beams in design
 
-    public DesignOptions()
+    public DesignOption()
     {
       // default initialiser
     }
