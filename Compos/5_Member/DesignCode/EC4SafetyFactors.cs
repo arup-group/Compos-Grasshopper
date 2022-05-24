@@ -12,6 +12,7 @@ namespace ComposAPI
     Equation6_10a__6_10b,
     Custom
   }
+
   public class EC4SafetyFactors : IEC4SafetyFactors
   {
     public IEC4MaterialPartialFactors MaterialFactors { get; set; } = null;
@@ -20,7 +21,7 @@ namespace ComposAPI
 
     public EC4SafetyFactors()
     {
-      // default initialiser
+      // empty constructor
     }
 
     public string ToCoaString(string name)

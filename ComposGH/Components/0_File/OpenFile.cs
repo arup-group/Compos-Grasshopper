@@ -19,7 +19,7 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("51e4fa31-a626-45a0-a3f6-70175ebb80e4");
     public OpenModel()
-      : base("Open Model", "Open", "Open an existing compos data file",
+      : base("Open Model", "Open", "Open an existing Compos data file",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat0())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -33,7 +33,7 @@ namespace ComposGH.Components
     //This region overrides the typical component layout
     public override void CreateAttributes()
     {
-      m_attributes = new UI.ButtonComponentUI(this, "Open", OpenFile, "Open GSA file");
+      m_attributes = new UI.ButtonComponentUI(this, "Open", OpenFile, "Open Compos file");
     }
     public void OpenFile()
     {
@@ -161,7 +161,7 @@ namespace ComposGH.Components
           if (!fileName.EndsWith(".cob"))
             fileName = fileName + ".cob";
 
-          ComposFile composFile = new ComposFile().Open(fileName);
+          ComposFile composFile = ComposFile.Open(fileName);
           DA.SetData(0, new ComposFileGoo(composFile));
         }
       }

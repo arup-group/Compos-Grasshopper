@@ -16,7 +16,7 @@ namespace ComposAPI.Tests
     {
       string pathName = Path.GetFullPath("..\\..\\..\\TestFiles\\Compos1.cob");
 
-      ComposFile file = new ComposFile().Open(pathName);
+      ComposFile file = ComposFile.Open(pathName);
 
       IAutomation automation = file.ComposCOM;
 
@@ -30,7 +30,7 @@ namespace ComposAPI.Tests
     {
       string pathName = Path.GetFullPath("..\\..\\..\\TestFiles\\Compos1.coa");
 
-      ComposFile file = new ComposFile().Open(pathName);
+      ComposFile file = ComposFile.Open(pathName);
 
       IAutomation automation = file.ComposCOM;
 

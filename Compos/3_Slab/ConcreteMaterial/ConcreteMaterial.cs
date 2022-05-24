@@ -208,7 +208,7 @@ namespace ComposAPI
 
       material.DryDensity = CoaHelper.ConvertToDensity(parameters[5], units.Density);
 
-      material.ImposedLoadPercentage = CoaHelper.ConvertToDouble(parameters[index]);
+      material.ImposedLoadPercentage = CoaHelper.ConvertToDouble(parameters[index]) * 100;
 
       index++;
       if (parameters[index] == "CODE_E_RATIO")
@@ -236,6 +236,7 @@ namespace ComposAPI
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
+    /// 
     public string ToCoaString(string name, ComposUnits units)
     {
       List<string> parameters = new List<string>();
@@ -254,7 +255,7 @@ namespace ComposAPI
         parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00}", this.DryDensity.ToUnit(units.Density).Value));
         parameters.Add(this.Class.ToString().Replace("DC", ""));
       }
-      parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.000000}", this.ImposedLoadPercentage));
+      parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.000000}", this.ImposedLoadPercentage / 100.0));
       if (this.ERatio.UserDefined)
       {
         parameters.Add("USER_E_RATIO");

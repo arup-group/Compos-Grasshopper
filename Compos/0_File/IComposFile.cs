@@ -7,7 +7,6 @@ namespace ComposAPI
     IList<IMember> Members { get; }
     string FileName { get; }
 
-    ComposFile Open(string fileName);
     void SaveAs(string fileName);
     string ToCoaString();
   }

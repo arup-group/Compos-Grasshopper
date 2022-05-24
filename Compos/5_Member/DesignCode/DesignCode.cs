@@ -16,6 +16,7 @@ namespace ComposAPI
     HKSUOS_2011 = 4,
     AS_NZS2327_2017 = 5
   }
+
   public enum NationalAnnex
   {
     Generic,
@@ -30,7 +31,9 @@ namespace ComposAPI
     public Code Code { get; set; }
     public IDesignOptions DesignOptions { get; set; } = new DesignOptions();
     public ISafetyFactors SafetyFactors { get; set; } = new SafetyFactors();
+
     public DesignCode() { }
+
     public DesignCode(Code designcode)
     {
       this.Code = designcode;
@@ -64,29 +67,29 @@ namespace ComposAPI
     #region coa interop
     internal static DesignCode FromCoaString(List<string> parameters)
     {
-      DesignCode dc = new DesignCode();
+      DesignCode designCode = new DesignCode();
       switch (parameters[2])
       {
         case "BS5950-3.1:1990 (superseded)":
-          dc = new DesignCode(Code.BS5950_3_1_1990_Superseded);
+          designCode = new DesignCode(Code.BS5950_3_1_1990_Superseded);
           break;
         case "BS5950-3.1:1990+A1:2010":
-          dc = new DesignCode(Code.BS5950_3_1_1990_A1_2010);
+          designCode = new DesignCode(Code.BS5950_3_1_1990_A1_2010);
           break;
         case "EN1994-1-1:2004":
-          dc = new EN1994();
+          designCode = new EN1994();
           break;
         case "HKSUOS:2005":
-          dc = new DesignCode(Code.HKSUOS_2005);
+          designCode = new DesignCode(Code.HKSUOS_2005);
           break;
         case "HKSUOS:2011":
-          dc = new DesignCode(Code.HKSUOS_2011);
+          designCode = new DesignCode(Code.HKSUOS_2011);
           break;
         case "AS/NZS2327:2017":
-          dc = new ASNZS2327();
+          designCode = new ASNZS2327();
           break;
         default:
-          dc = null;
+          designCode = null;
           break;
       }
       DesignOptions designOptions = new DesignOptions();
@@ -96,9 +99,9 @@ namespace ComposAPI
       designOptions.ConsiderShearDeflection = parameters[6] != "SHEAR_DEFORM_NO";
       designOptions.InclThinFlangeSections = parameters[7] != "THIN_SECTION_NO";
 
-      dc.DesignOptions = designOptions;
+      designCode.DesignOptions = designOptions;
 
-      if (dc.Code == Code.AS_NZS2327_2017)
+      if (designCode.Code == Code.AS_NZS2327_2017)
       {
         NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
         CodeOptions codeOptions= new CodeOptions();
@@ -106,16 +109,16 @@ namespace ComposAPI
         codeOptions.LongTerm = longterm;
         CreepShrinkageParameters shrinkage = new CreepShrinkageParameters() { CreepCoefficient = Convert.ToDouble(parameters[9], noComma) };
         codeOptions.ShortTerm = shrinkage;
-        ASNZS2327 aSNZS = (ASNZS2327)dc;
+        ASNZS2327 aSNZS = (ASNZS2327)designCode;
         aSNZS.CodeOptions = codeOptions;
         return aSNZS;
       }
-      return dc;
+      return designCode;
     }
 
     public string ToCoaString(string name)
     {
-      string str = CoaIdentifier.DesignCode + '\t' + name + '\t';
+      string str = CoaIdentifier.DesignOption + '\t' + name + '\t';
       switch (this.Code)
       {
         case Code.BS5950_3_1_1990_Superseded:
@@ -178,6 +181,7 @@ namespace ComposAPI
     public NationalAnnex NationalAnnex { get; set; } = NationalAnnex.Generic;
     public EC4Options CodeOptions { get; set; } = new EC4Options();
     public new IEC4SafetyFactors SafetyFactors { get; set; } = new EC4SafetyFactors();
+
     public EN1994()
     {
       this.Code = Code.EN1994_1_1_2004;
@@ -190,6 +194,7 @@ namespace ComposAPI
   public class ASNZS2327 : DesignCode
   {
     public CodeOptions CodeOptions { get; set; } = new CodeOptions();
+
     public ASNZS2327()
     {
       this.Code = Code.AS_NZS2327_2017;

@@ -39,14 +39,6 @@ namespace ComposAPI.Helpers
       return string.Join("", str.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
     }
 
-    internal static List<string> Split(string coaString)
-    {
-      List<string> parameters = coaString.Split('\t').ToList();
-      parameters = parameters.Select(parameter => parameter.Trim()).ToList();
-
-      return parameters;
-    }
-
     public static int GetMagnitude(int num)
     {
       int magnitude = 0;
@@ -112,7 +104,7 @@ namespace ComposAPI.Helpers
 
     internal static Length ConvertToLength(string value, LengthUnit unit)
     {
-     return new Length(Convert.ToDouble(value, NoComma), unit);
+      return new Length(Convert.ToDouble(value, NoComma), unit);
     }
 
     internal static Strain ConvertToStrain(string value, StrainUnit unit)
@@ -125,6 +117,19 @@ namespace ComposAPI.Helpers
       return new Pressure(Convert.ToDouble(value, NoComma), unit);
     }
 
+    internal static List<string> Split(string coaString)
+    {
+      List<string> parameters = coaString.Split('\t').ToList();
+      parameters = parameters.Select(parameter => parameter.Trim()).ToList();
+
+      return parameters;
+    }
+
+    internal static List<string> SplitAndStripLines(string coaString)
+    {
+      return StripComments(SplitLines(coaString));
+    }
+
     internal static List<string> SplitLines(string coaString)
     {
       List<string> lines = coaString.Split('\n').ToList();
@@ -134,6 +139,16 @@ namespace ComposAPI.Helpers
         lines.RemoveAt(lines.Count - 1);
 
       return lines;
+    }
+    internal static List<string> StripComments(List<string> lines)
+    {
+      List<string> stripped = new List<string>();
+      foreach (string line in lines)
+      {
+        if (!line.StartsWith("!"))
+          stripped.Add(line);
+      }
+      return stripped;
     }
   }
 }

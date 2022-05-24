@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -25,29 +26,27 @@ namespace ComposAPI
     {
       this.Members = members;
     }
-    public ComposFile Open(string fileName)
+    #endregion
+
+    #region methods
+    public static ComposFile Open(string fileName)
     {
       IAutomation automation = new Automation();
       automation.Open(fileName);
-      this.ComposCOM = automation;
-
-      this.FileName = fileName;
 
       // save COM object to a temp coa file
       string tempCoa = Path.GetTempPath() + Guid.NewGuid().ToString() + ".coa";
       automation.SaveAs(tempCoa);
 
       // open temp coa file as ASCII string
-      string coaString = File.ReadAllText(tempCoa);
+      string coaString = File.ReadAllText(tempCoa, Encoding.UTF7);
+      ComposFile file = ComposFile.FromCoaString(coaString);
+      file.ComposCOM = automation;
+      file.FileName = fileName;
 
-      // to-do:
-      // convert coa string to members
-
-      return this;
+      return file;
     }
-    #endregion
 
-    #region methods
     public void SaveAs(string fileName)
     {
       // create coastring from members
@@ -55,17 +54,17 @@ namespace ComposAPI
 
       // save coa string to a temp to coa file (ASCII format)
       string tempCoa = Path.GetTempPath() + Guid.NewGuid().ToString() + ".coa";
-      File.WriteAllLines(tempCoa, new string[] { coaString });
+      File.WriteAllLines(tempCoa, new string[] { coaString }, Encoding.UTF7);
 
-      //IAutomation automation = new Automation();
-      //automation.Open(tempCoa);
+      IAutomation automation = new Automation();
+      automation.Open(tempCoa);
 
-      //// save to .cob with COM object
-      //if (!fileName.EndsWith(".cob"))
-      //  fileName = fileName + ".cob";
-      //automation.SaveAs(fileName);
+      // save to .cob with COM object
+      if (!fileName.EndsWith(".cob"))
+        fileName = fileName + ".cob";
+      automation.SaveAs(fileName);
 
-      //this.FileName = fileName;
+      this.FileName = fileName;
     }
 
     public override string ToString()
@@ -93,13 +92,16 @@ namespace ComposAPI
       Dictionary<string, List<ILoad>> loads = new Dictionary<string, List<ILoad>>();
 
       ComposUnits units = ComposUnits.GetStandardUnits();
-      List<string> lines = CoaHelper.SplitLines(coaString);
+      List<string> lines = CoaHelper.SplitAndStripLines(coaString);
 
       // ### collect data from each line ###
       foreach (string line in lines)
       {
         List<string> parameters = CoaHelper.Split(line);
         string coaIdentifier = parameters[0];
+
+        if (coaIdentifier == "END")
+          return file;
 
         // ### member ###
         if (coaIdentifier == CoaIdentifier.MemberName)
@@ -116,7 +118,7 @@ namespace ComposAPI
         }
 
         // ### Design Code ###
-        else if (coaIdentifier == CoaIdentifier.DesignCode)
+        else if (coaIdentifier == CoaIdentifier.DesignOption)
         {
           DesignCode dc = DesignCode.FromCoaString(parameters);
           codes.Add(parameters[1], dc);

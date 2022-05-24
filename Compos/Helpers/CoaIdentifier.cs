@@ -12,7 +12,6 @@
       public const string Stress = "STRESS";
       public const string Mass = "MASS";
     }
-    internal const string DesignCode = "DESIGN_OPTION";
     internal class DesignCodes
     {
       //public const string Force = "FORCE";
@@ -54,6 +53,16 @@
     internal const string SlabDimension = "SLAB_DIMENSION";
 
     internal const string WebOpeningDimension = "WEB_OPEN_DIMENSION";
+
+    internal class DesignCode
+    {
+      internal const string ASNZ = "AS/NZS2327:2017";
+      internal const string BS_Superseded = "BS5950-3.1:1990 (superseded)";
+      internal const string BS = "BS5950-3.1:1990+A1:2010";
+      internal const string EN = "EN1994-1-1:2004";
+      internal const string HKSUOS2005 = "HKSUOS:2005";
+      internal const string HKSUOS2011 = "HKSUOS:2011";
+    }
 
     internal const string Load = "LOAD";
     internal class Loads

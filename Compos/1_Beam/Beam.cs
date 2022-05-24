@@ -42,10 +42,13 @@ namespace ComposAPI
     {
       Beam beam = new Beam();
 
-      List<string> lines = CoaHelper.SplitLines(coaString);
+      List<string> lines = CoaHelper.SplitAndStripLines(coaString);
       foreach (string line in lines)
       {
         List<string> parameters = CoaHelper.Split(line);
+
+        if (parameters[0] == "END")
+          return beam;
 
         if (parameters[1] != name)
           continue;

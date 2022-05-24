@@ -25,11 +25,11 @@ namespace ComposAPI.Tests
   public class ConcreteMaterialTest
   {
     [Theory]
-    [InlineData(ConcreteGrade.C35, WeightType.Normal, 2400, false, 0, 0, 0, 0, false, 0.33, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C35	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // BS Normal
-    [InlineData(ConcreteGrade.C50, WeightType.Light, 2200, true, 0, 0, 0, 0, false, 0.33, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C50	LIGHT	USER_DENSITY	2200.00	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // BS User Density
-    [InlineData(ConcreteGrade.C45, WeightType.Normal, 2400, false, 1, 2, 3, 0, true, 0.3, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.300000	USER_E_RATIO	1.00000	2.00000	3.00000	0.000000	CODE_STRAIN\n")] // BS User ERatio
-    [InlineData(ConcreteGrade.C35, WeightType.Normal, 2450, false, 0, 0, 0, 0, false, 0.33, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C35	NORMAL	CODE_DENSITY	2450.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // HKSUOS Normal
-    [InlineData(ConcreteGrade.C40, WeightType.Normal, 2400, false, 0, 0, 0, 0, false, 0.33, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C40	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // ASNZ Normal
+    [InlineData(ConcreteGrade.C35, WeightType.Normal, 2400, false, 0, 0, 0, 0, false, 33, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C35	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // BS Normal
+    [InlineData(ConcreteGrade.C50, WeightType.Light, 2200, true, 0, 0, 0, 0, false, 33, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C50	LIGHT	USER_DENSITY	2200.00	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // BS User Density
+    [InlineData(ConcreteGrade.C45, WeightType.Normal, 2400, false, 1, 2, 3, 0, true, 30, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.300000	USER_E_RATIO	1.00000	2.00000	3.00000	0.000000	CODE_STRAIN\n")] // BS User ERatio
+    [InlineData(ConcreteGrade.C35, WeightType.Normal, 2450, false, 0, 0, 0, 0, false, 33, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C35	NORMAL	CODE_DENSITY	2450.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // HKSUOS Normal
+    [InlineData(ConcreteGrade.C40, WeightType.Normal, 2400, false, 0, 0, 0, 0, false, 33, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C40	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // ASNZ Normal
     public void ToCoaStringTest(ConcreteGrade grade, WeightType type, double dryDensity, bool userDensity, double shortTerm, double longTerm, double vibration, double shrinkage, bool userDefined, double imposedLoadPercentage, string expected_coaString)
     {
       ERatio eRatio = new ERatio();
@@ -45,10 +45,10 @@ namespace ComposAPI.Tests
     }
 
     [Theory]
-    [InlineData(ConcreteGradeEN.C35_45, DensityClass.NOT_APPLY, 2400, false, 0, 0, 0, 0, false, 0.33, -0.000325, false, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C35/45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // EN Normal
-    [InlineData(ConcreteGradeEN.C35_45, DensityClass.NOT_APPLY, 2400, false, 0, 0, 0, 0, false, 0.33, -0.0003, true, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C35/45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	USER_STRAIN	-0.000300000\n")] // EN Normal User Strain
-    [InlineData(ConcreteGradeEN.LC35_38, DensityClass.DC1801_2000, 2000, false, 0, 0, 0, 0, false, 0.33, -0.0005, false, "SLAB_CONCRETE_MATERIAL	MEMBER-1	LC35/38	LIGHT	CODE_DENSITY	2000.00	1801_2000	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // EN Light
-    [InlineData(ConcreteGradeEN.LC35_38, DensityClass.NOT_APPLY, 1000, true, 0, 0, 0, 0, false, 0.33, -0.0005, false, "SLAB_CONCRETE_MATERIAL	MEMBER-1	LC35/38	LIGHT	USER_DENSITY	1000.00	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // EN Light User Density
+    [InlineData(ConcreteGradeEN.C35_45, DensityClass.NOT_APPLY, 2400, false, 0, 0, 0, 0, false, 33, -0.000325, false, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C35/45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // EN Normal
+    [InlineData(ConcreteGradeEN.C35_45, DensityClass.NOT_APPLY, 2400, false, 0, 0, 0, 0, false, 33, -0.0003, true, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C35/45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	USER_STRAIN	-0.000300000\n")] // EN Normal User Strain
+    [InlineData(ConcreteGradeEN.LC35_38, DensityClass.DC1801_2000, 2000, false, 0, 0, 0, 0, false, 33, -0.0005, false, "SLAB_CONCRETE_MATERIAL	MEMBER-1	LC35/38	LIGHT	CODE_DENSITY	2000.00	1801_2000	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // EN Light
+    [InlineData(ConcreteGradeEN.LC35_38, DensityClass.NOT_APPLY, 1000, true, 0, 0, 0, 0, false, 33, -0.0005, false, "SLAB_CONCRETE_MATERIAL	MEMBER-1	LC35/38	LIGHT	USER_DENSITY	1000.00	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // EN Light User Density
     public void ToCoaStringTestEN(ConcreteGradeEN grade, DensityClass densityClass, double dryDensity, bool userDensity, double shortTerm, double longTerm, double vibration, double shrinkage, bool userDefined, double imposedLoadPercentage, double shrinkageStrain, bool userStrain, string expected_coaString)
     {
       ERatio eRatio = new ERatio();
@@ -64,10 +64,10 @@ namespace ComposAPI.Tests
     }
 
     [Theory]
-    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	C35/45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN\n", "C35_45", DensityClass.NOT_APPLY, 2400, false, 0, 0, 0, 0, false, 0.33, -0.000325, false)] // EN Normal
-    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	C35/45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	USER_STRAIN	-0.000300000\n", "C35_45", DensityClass.NOT_APPLY, 2400, false, 0, 0, 0, 0, false, 0.33, -0.0003, true)] // EN Normal User Strain
-    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	LC35/38	LIGHT	CODE_DENSITY	2000.00	1801_2000	0.330000	CODE_E_RATIO	CODE_STRAIN\n", "LC35_38", DensityClass.DC1801_2000, 2000, false, 0, 0, 0, 0, false, 0.33, -0.0005, false)] // EN Light
-    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	LC35/38	LIGHT	USER_DENSITY	1000.00	0.330000	CODE_E_RATIO	CODE_STRAIN\n", "LC35_38", DensityClass.NOT_APPLY, 1000, true, 0, 0, 0, 0, false, 0.33, -0.0005, false)] // EN Light User Density
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	C35/45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN\n", "C35_45", DensityClass.NOT_APPLY, 2400, false, 0, 0, 0, 0, false, 33, -0.000325, false)] // EN Normal
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	C35/45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	USER_STRAIN	-0.000300000\n", "C35_45", DensityClass.NOT_APPLY, 2400, false, 0, 0, 0, 0, false, 33, -0.0003, true)] // EN Normal User Strain
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	LC35/38	LIGHT	CODE_DENSITY	2000.00	1801_2000	0.330000	CODE_E_RATIO	CODE_STRAIN\n", "LC35_38", DensityClass.DC1801_2000, 2000, false, 0, 0, 0, 0, false, 33, -0.0005, false)] // EN Light
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	LC35/38	LIGHT	USER_DENSITY	1000.00	0.330000	CODE_E_RATIO	CODE_STRAIN\n", "LC35_38", DensityClass.NOT_APPLY, 1000, true, 0, 0, 0, 0, false, 33, -0.0005, false)] // EN Light User Density
     public void FromCoaStringTest(string coaString, string expected_grade, DensityClass expected_densityClass, double expected_dryDensity, bool expected_userDensity, double expected_shortTerm, double expected_longTerm, double expected_vibration, double expected_shrinkage, bool expected_userDefined, double expected_imposedLoadPercentage, double expected_shrinkageStrain, bool expected_userStrain)
     {
       ComposUnits units = ComposUnits.GetStandardUnits();
@@ -94,10 +94,10 @@ namespace ComposAPI.Tests
     }
 
     [Theory]
-    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	C35/45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN\n", "C35_45", DensityClass.NOT_APPLY, 2400, false, 0, 0, 0, 0, false, 0.33, -0.000325, false)] // EN Normal
-    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	C35/45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	USER_STRAIN	-0.000300000\n", "C35_45", DensityClass.NOT_APPLY, 2400, false, 0, 0, 0, 0, false, 0.33, -0.0003, true)] // EN Normal User Strain
-    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	LC35/38	LIGHT	CODE_DENSITY	2000.00	1801_2000	0.330000	CODE_E_RATIO	CODE_STRAIN\n", "LC35_38", DensityClass.DC1801_2000, 2000, false, 0, 0, 0, 0, false, 0.33, -0.0005, false)] // EN Light
-    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	LC35/38	LIGHT	USER_DENSITY	1000.00	0.330000	CODE_E_RATIO	CODE_STRAIN\n", "LC35_38", DensityClass.NOT_APPLY, 1000, true, 0, 0, 0, 0, false, 0.33, -0.0005, false)] // EN Light User Density
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	C35/45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN\n", "C35_45", DensityClass.NOT_APPLY, 2400, false, 0, 0, 0, 0, false, 33, -0.000325, false)] // EN Normal
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	C35/45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	USER_STRAIN	-0.000300000\n", "C35_45", DensityClass.NOT_APPLY, 2400, false, 0, 0, 0, 0, false, 33, -0.0003, true)] // EN Normal User Strain
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	LC35/38	LIGHT	CODE_DENSITY	2000.00	1801_2000	0.330000	CODE_E_RATIO	CODE_STRAIN\n", "LC35_38", DensityClass.DC1801_2000, 2000, false, 0, 0, 0, 0, false, 33, -0.0005, false)] // EN Light
+    [InlineData("SLAB_CONCRETE_MATERIAL	MEMBER-1	LC35/38	LIGHT	USER_DENSITY	1000.00	0.330000	CODE_E_RATIO	CODE_STRAIN\n", "LC35_38", DensityClass.NOT_APPLY, 1000, true, 0, 0, 0, 0, false, 33, -0.0005, false)] // EN Light User Density
     public void FromCoaStringTestEN(string coaString, string expected_grade, DensityClass expected_densityClass, double expected_dryDensity, bool expected_userDensity, double expected_shortTerm, double expected_longTerm, double expected_vibration, double expected_shrinkage, bool expected_userDefined, double expected_imposedLoadPercentage, double expected_shrinkageStrain, bool expected_userStrain)
     {
       ComposUnits units = ComposUnits.GetStandardUnits();
@@ -125,10 +125,10 @@ namespace ComposAPI.Tests
 
     // 1 setup inputs
     [Theory]
-    [InlineData(ConcreteGrade.C30, WeightType.Normal, DensityClass.NOT_APPLY, 2400, false, 0.33, -0.000325, false)]
-    [InlineData(ConcreteGrade.C30, WeightType.Normal, DensityClass.NOT_APPLY, 2300, true, 0.33, -0.000325, false)]
-    [InlineData(ConcreteGrade.C30, WeightType.Light, DensityClass.NOT_APPLY, 1800, false, 0.33, -0.000325, false)]
-    [InlineData(ConcreteGrade.C30, WeightType.Light, DensityClass.NOT_APPLY, 1900, true, 0.33, -0.000325, false)]
+    [InlineData(ConcreteGrade.C30, WeightType.Normal, DensityClass.NOT_APPLY, 2400, false, 33, -0.000325, false)]
+    [InlineData(ConcreteGrade.C30, WeightType.Normal, DensityClass.NOT_APPLY, 2300, true, 33, -0.000325, false)]
+    [InlineData(ConcreteGrade.C30, WeightType.Light, DensityClass.NOT_APPLY, 1800, false, 33, -0.000325, false)]
+    [InlineData(ConcreteGrade.C30, WeightType.Light, DensityClass.NOT_APPLY, 1900, true, 33, -0.000325, false)]
     public void BritishConstructorTest(ConcreteGrade grade, WeightType type, DensityClass densityClass, double dryDensityValue, bool userDensity, double imposedLoadPercentage, double shrinkageStrainValue, bool userStrain)
     {
       // 2 create object instance with constructor

@@ -66,8 +66,7 @@ namespace ComposAPI
       parameters.Add(this.Note);
       string coaString = CoaHelper.CreateString(parameters);
 
-      // not sure how DesignCode is organized..
-      coaString += this.DesignCode.DesignOptions.ToCoaString(this.Name, this.DesignCode.Code);
+      coaString += this.DesignCode.ToCoaString(this.Name);
 
       coaString += this.Beam.ToCoaString(this.Name, this.DesignCode.Code, units);
       coaString += this.Stud.ToCoaString(this.Name, units, this.DesignCode.Code);
