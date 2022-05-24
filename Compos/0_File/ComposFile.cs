@@ -233,9 +233,11 @@ namespace ComposAPI
         Density = Units.DensityUnit,
         Force = Units.ForceUnit,
         Length = Units.LengthUnitGeometry,
+        Displacement = Units.LengthUnitResult,
         Section = Units.LengthUnitSection,
         Stress = Units.StressUnit,
-        Strain = Units.StrainUnit
+        Strain = Units.StrainUnit,
+        Mass = Units.MassUnit,
       };
 
       string version = "0.1"; // ??

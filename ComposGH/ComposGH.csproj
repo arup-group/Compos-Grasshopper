@@ -450,17 +450,6 @@
   <ItemGroup>
     <None Include="Properties\Icons\StandardSteelMaterial.png" />
   </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="Compos_8_6">
-      <Guid>{F92EF6FC-1F1A-44F3-9461-2B6AFC71AA95}</Guid>
-      <VersionMajor>8</VersionMajor>
-      <VersionMinor>6</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
