@@ -310,7 +310,5 @@ namespace ComposAPI.Tests
       Assert.Equal(1.35, original.LoadCombinationFactors.Finalgamma_G);
       Assert.Equal(1.5, original.LoadCombinationFactors.Finalgamma_Q);
     }
-
-    
   }
 }

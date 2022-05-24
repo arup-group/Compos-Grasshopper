@@ -7,7 +7,12 @@ namespace ComposAPI
     IList<IMember> Members { get; }
     string FileName { get; }
 
-    void SaveAs(string fileName);
+    short Analyze(string memberName);
+    short CodeSatisfied(string memberName);
+    short Design(string memberName);
+    IMember GetMember(string name);
+    int SaveAs(string fileName);
     string ToCoaString();
+    float UtilisationFactor(string memberName, UtilisationFactorOption option);
   }
 }

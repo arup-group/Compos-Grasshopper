@@ -27,6 +27,7 @@ namespace ComposAPI.Tests
       // (optionally return object for other tests)
       return designCode;
     }
+
     [Fact]
     public void BSToCoaStringTest()
     {
@@ -38,6 +39,7 @@ namespace ComposAPI.Tests
       // Assert
       Assert.Equal(expected_coaString, coaString);
     }
+
     [Fact]
     public void BSssToCoaStringTest()
     {

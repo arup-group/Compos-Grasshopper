@@ -11,6 +11,20 @@ using UnitsNet.Units;
 
 namespace ComposAPI
 {
+  public enum UtilisationFactorOption
+  {
+    FinalMoment,
+    FinalShear,
+    ConstructionMoment,
+    ConstructionShear,
+    ConstructionBuckling,
+    ConstructionDeflection,
+    FinalDeflection,
+    TransverseShear,
+    WebOpening,
+    NaturalFrequency
+  }
+
   public class ComposFile : IComposFile
   {
     public IList<IMember> Members { get; set; } = new List<IMember>();
@@ -22,6 +36,7 @@ namespace ComposAPI
     {
       // empty constructor
     }
+
     public ComposFile(List<IMember> members)
     {
       this.Members = members;
@@ -29,6 +44,50 @@ namespace ComposAPI
     #endregion
 
     #region methods
+    /// <summary>
+    /// Analyse the member with the given name. Returns a status, as follows:
+    /// 0 – OK
+    /// 1 – failed
+    /// </summary>
+    /// <param name="memberName">the name of the member to be analysed</param>
+    /// <returns></returns>
+    public short Analyze(string memberName)
+    {
+      return this.ComposCOM.Analyse(memberName);
+    }
+
+    /// <summary>
+    /// Returns an integer flag to indicates whether the code requirements are satisfied.  
+    /// </summary>
+    /// <param name="memberName"></param>
+    /// <returns>The return values are:
+    /// 0 - all code requirements are met
+    /// 1 - except the natural frequency is lower than that required, other code requirements are met
+    /// 2 - one or more code requirements are not met
+    /// 3 - the given member name is not valid
+    /// 4 - there is no results for the given named member</returns>
+    public short CodeSatisfied(string memberName)
+    {
+      return this.ComposCOM.CodeSatisfied(memberName);
+    }
+
+    /// <summary>
+    /// Design the member with the given name. Returns a status, as follows:
+    /// 0 – OK
+    /// 1 – failed
+    /// </summary>
+    /// <param name="memberName">the name of the member to be designed</param>
+    /// <returns></returns>
+    public short Design(string memberName)
+    {
+      return this.ComposCOM.Design(memberName);
+    }
+
+    public IMember GetMember(string name)
+    {
+      return this.Members.First(x => x.Name == name);
+    }
+
     public static ComposFile Open(string fileName)
     {
       IAutomation automation = new Automation();
@@ -36,7 +95,10 @@ namespace ComposAPI
 
       // save COM object to a temp coa file
       string tempCoa = Path.GetTempPath() + Guid.NewGuid().ToString() + ".coa";
-      automation.SaveAs(tempCoa);
+      int status = automation.SaveAs(tempCoa);
+
+      if (status == 1)
+        return null;
 
       // open temp coa file as ASCII string
       string coaString = File.ReadAllText(tempCoa, Encoding.UTF7);
@@ -47,7 +109,7 @@ namespace ComposAPI
       return file;
     }
 
-    public void SaveAs(string fileName)
+    public int SaveAs(string fileName)
     {
       // create coastring from members
       string coaString = ToCoaString();
@@ -62,9 +124,12 @@ namespace ComposAPI
       // save to .cob with COM object
       if (!fileName.EndsWith(".cob"))
         fileName = fileName + ".cob";
-      automation.SaveAs(fileName);
 
       this.FileName = fileName;
+
+      int status = automation.SaveAs(fileName);
+
+      return status;
     }
 
     public override string ToString()
@@ -73,6 +138,11 @@ namespace ComposAPI
       foreach (IMember member in Members)
         str += member.ToString();
       return str;
+    }
+
+    public float UtilisationFactor(string memberName, UtilisationFactorOption option)
+    {
+      return this.ComposCOM.UtilisationFactor(memberName, option.ToString());
     }
     #endregion
 
@@ -222,8 +292,6 @@ namespace ComposAPI
         // add loads to members
         member.Loads = loads[name];
       }
-
-
       return file;
     }
 
@@ -270,13 +338,6 @@ namespace ComposAPI
       coaString += "END\n";
 
       return coaString;
-    }
-    #endregion
-
-    #region methods
-    public IMember GetMember(string name)
-    {
-      return this.Members.First(x => x.Name == name);
     }
     #endregion
   }
