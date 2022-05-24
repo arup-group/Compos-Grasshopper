@@ -38,6 +38,7 @@ namespace ComposAPI
     public double MetalDecking { get; set; } = 1.0;
     public double ShearStud { get; set; } = 1.25;
     public double Reinforcement { get; set; } = 1.15;
+
     public MaterialPartialFactors() { }
 
     public string ToCoaString(string name)
@@ -64,6 +65,7 @@ namespace ComposAPI
     public double ConstantLive { get; set; } = 1.4;
     public double FinalDead { get; set; } = 1.6;
     public double FinalLive { get; set; } = 1.6;
+
     public LoadFactors() { }
 
     public string ToCoaString(string name)

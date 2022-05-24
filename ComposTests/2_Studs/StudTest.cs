@@ -3,7 +3,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using System.Collections.Generic;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Studs.Tests
 {
   public partial class StudTest
   {

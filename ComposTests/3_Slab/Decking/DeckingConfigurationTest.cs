@@ -7,7 +7,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Slabs.Tests
 {
   public static class DeckingConfigurationMother
   {

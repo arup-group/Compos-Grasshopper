@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Slabs.Tests
 {
   public class SlabTest
   {

@@ -3,7 +3,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Beams.Tests
 {
   public partial class SteelMaterialTest
   {

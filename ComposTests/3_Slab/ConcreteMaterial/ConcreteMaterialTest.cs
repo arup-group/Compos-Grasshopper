@@ -10,7 +10,7 @@ using UnitsNet.Units;
 using Xunit;
 using static ComposAPI.ConcreteMaterial;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Slabs.Tests
 {
   public static class ConcreteMaterialMother
   {

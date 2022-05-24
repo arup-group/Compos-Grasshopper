@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Compos_8_6;
 using Xunit;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.File.Tests
 {
   public class ComposFileTest
   {

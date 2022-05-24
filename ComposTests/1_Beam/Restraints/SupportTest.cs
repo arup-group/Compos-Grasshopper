@@ -3,7 +3,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using System.Collections.Generic;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Beams.Tests
 {
   public partial class RestraintTest
   {

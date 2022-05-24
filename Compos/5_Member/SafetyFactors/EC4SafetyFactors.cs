@@ -89,7 +89,6 @@ namespace ComposAPI
     }
   }
 
-
   /// <summary>
   /// Custom Load factors. These data can be omitted, if they are omitted, code specified load factor will be used
   /// </summary>

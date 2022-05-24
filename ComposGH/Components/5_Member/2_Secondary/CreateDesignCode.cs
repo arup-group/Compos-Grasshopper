@@ -273,7 +273,7 @@ namespace ComposGH.Components
         case Code.HKSUOS_2011:
           DesignCode otherCodes = new DesignCode();
           otherCodes.Code = Code;
-          otherCodes.DesignOptions = DesignOptions;
+          otherCodes.DesignOption = DesignOptions;
 
           if (safetyFactors != null)
             otherCodes.SafetyFactors = safetyFactors;
@@ -284,7 +284,7 @@ namespace ComposGH.Components
         case Code.EN1994_1_1_2004:
           EN1994 ec4 = new EN1994();
           ec4.NationalAnnex = NA;
-          ec4.DesignOptions = DesignOptions;
+          ec4.DesignOption = DesignOptions;
           ec4.CodeOptions = EC4codeOptions;
 
           CreepShrinkageEuroCodeParameters shrink = (CreepShrinkageEuroCodeParameters)GetInput.GenericGoo<CreepShrinkageEuroCodeParametersGoo>(this, DA, 1);
@@ -302,7 +302,7 @@ namespace ComposGH.Components
 
         case Code.AS_NZS2327_2017:
           ASNZS2327 asnz = new ASNZS2327();
-          asnz.DesignOptions = DesignOptions;
+          asnz.DesignOption = DesignOptions;
           asnz.CodeOptions = CodeOptions;
           double shrinkageparam = 0;
           if (DA.GetData(1, ref shrinkageparam))

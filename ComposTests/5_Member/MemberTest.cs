@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnitsNet;
 using Xunit;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Members.Tests
 {
   public class MemberTest
   {

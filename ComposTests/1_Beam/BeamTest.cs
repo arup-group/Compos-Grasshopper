@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnitsNet;
 using Xunit;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Beams.Tests
 {
   public class BeamTest
   {
@@ -23,7 +23,7 @@ namespace ComposAPI.Tests
       List<IBeamSection> sections = new List<IBeamSection>() { new BeamSection() };
       List<IWebOpening> openings = new List<IWebOpening>() { new WebOpening() };
 
-      Beam beam = new Beam(new Length(length, units.Length), restraint, material, sections, openings );
+      Beam beam = new Beam(new Length(length, units.Length), restraint, material, sections, openings);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(length, beam.Length.Value);

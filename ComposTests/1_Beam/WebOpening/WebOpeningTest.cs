@@ -4,7 +4,7 @@ using UnitsNet.Units;
 using System.Collections.Generic;
 using ComposAPI.Helpers;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Beams.Tests
 {
   public partial class WebOpeningTest
   {

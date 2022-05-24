@@ -3,7 +3,7 @@ using UnitsNet.Units;
 using Xunit;
 using static ComposAPI.Load;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Loads.Tests
 {
   public partial class LoadTest
   {

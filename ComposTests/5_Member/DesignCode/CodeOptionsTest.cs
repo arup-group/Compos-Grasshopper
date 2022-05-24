@@ -3,7 +3,7 @@ using System;
 using System.Linq.Expressions;
 using Xunit;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Members.Tests
 {
   public partial class DesignCodeTest
   {
@@ -69,7 +69,7 @@ namespace ComposAPI.Tests
       // 3 check that inputs are set in object's members
       Assert.False(codeOptions.ApproxModularRatios);
       Assert.False(codeOptions.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
-      Assert.Equal(EC4Options.CementClass.N, codeOptions.CementType);
+      Assert.Equal(CementClass.N, codeOptions.CementType);
       Assert.Equal(1.1, codeOptions.LongTerm.CreepCoefficient);
       Assert.Equal(28, codeOptions.LongTerm.ConcreteAgeAtLoad);
       Assert.Equal(36500, codeOptions.LongTerm.FinalConcreteAgeCreep);
@@ -93,7 +93,7 @@ namespace ComposAPI.Tests
       // 2 check that duplicate has duplicated values
       Assert.False(duplicate.ApproxModularRatios);
       Assert.False(duplicate.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
-      Assert.Equal(EC4Options.CementClass.N, duplicate.CementType);
+      Assert.Equal(CementClass.N, duplicate.CementType);
       Assert.Equal(1.1, duplicate.LongTerm.CreepCoefficient);
       Assert.Equal(28, duplicate.LongTerm.ConcreteAgeAtLoad);
       Assert.Equal(36500, duplicate.LongTerm.FinalConcreteAgeCreep);
@@ -120,12 +120,12 @@ namespace ComposAPI.Tests
       duplicate.ConsiderShrinkageDeflection = true;
       duplicate.ApproxModularRatios = true;
       duplicate.IgnoreShrinkageDeflectionForLowLengthToDepthRatios = true;
-      duplicate.CementType = EC4Options.CementClass.S;
+      duplicate.CementType = CementClass.S;
 
       // 4 check that duplicate has set changes
       Assert.True(duplicate.ApproxModularRatios);
       Assert.True(duplicate.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
-      Assert.Equal(EC4Options.CementClass.S, duplicate.CementType);
+      Assert.Equal(CementClass.S, duplicate.CementType);
       Assert.Equal(4.0, duplicate.LongTerm.CreepCoefficient);
       Assert.Equal(45, duplicate.LongTerm.ConcreteAgeAtLoad);
       Assert.Equal(500, duplicate.LongTerm.FinalConcreteAgeCreep);
@@ -138,7 +138,7 @@ namespace ComposAPI.Tests
       // 5 check that original has not been changed
       Assert.False(original.ApproxModularRatios);
       Assert.False(original.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
-      Assert.Equal(EC4Options.CementClass.N, original.CementType);
+      Assert.Equal(CementClass.N, original.CementType);
       Assert.Equal(1.1, original.LongTerm.CreepCoefficient);
       Assert.Equal(28, original.LongTerm.ConcreteAgeAtLoad);
       Assert.Equal(36500, original.LongTerm.FinalConcreteAgeCreep);

@@ -29,7 +29,7 @@ namespace ComposAPI
   public class DesignCode : IDesignCode
   {
     public Code Code { get; set; }
-    public IDesignOption DesignOptions { get; set; } = new DesignOption();
+    public IDesignOption DesignOption { get; set; } = new DesignOption();
     public ISafetyFactors SafetyFactors { get; set; } = new SafetyFactors();
 
     public DesignCode() { }
@@ -92,13 +92,13 @@ namespace ComposAPI
           break;
       }
       DesignOption designOption = new DesignOption();
-      designOptions.ProppedDuringConstruction = parameters[3] != "UNPROPPED";
-      designOptions.InclSteelBeamWeight = parameters[4] != "BEAM_WEIGHT_NO";
-      designOptions.InclConcreteSlabWeight = parameters[5] != "SLAB_WEIGHT_NO";
-      designOptions.ConsiderShearDeflection = parameters[6] != "SHEAR_DEFORM_NO";
-      designOptions.InclThinFlangeSections = parameters[7] != "THIN_SECTION_NO";
+      designOption.ProppedDuringConstruction = parameters[3] != "UNPROPPED";
+      designOption.InclSteelBeamWeight = parameters[4] != "BEAM_WEIGHT_NO";
+      designOption.InclConcreteSlabWeight = parameters[5] != "SLAB_WEIGHT_NO";
+      designOption.ConsiderShearDeflection = parameters[6] != "SHEAR_DEFORM_NO";
+      designOption.InclThinFlangeSections = parameters[7] != "THIN_SECTION_NO";
 
-      designCode.DesignOptions = designOptions;
+      designCode.DesignOption = designOption;
 
       if (designCode.Code == Code.AS_NZS2327_2017)
       {
@@ -147,11 +147,11 @@ namespace ComposAPI
         default:
           throw new Exception("Code not recognised");
       }
-      str += ((this.DesignOptions.ProppedDuringConstruction) ? "PROPPED" : "UNPROPPED") + '\t';
-      str += ((this.DesignOptions.InclSteelBeamWeight) ? "BEAM_WEIGHT_YES" : "BEAM_WEIGHT_NO") + '\t';
-      str += ((this.DesignOptions.InclConcreteSlabWeight) ? "SLAB_WEIGHT_YES" : "SLAB_WEIGHT_NO") + '\t';
-      str += ((this.DesignOptions.ConsiderShearDeflection) ? "SHEAR_DEFORM_YES" : "SHEAR_DEFORM_NO") + '\t';
-      str += ((this.DesignOptions.InclThinFlangeSections) ? "THIN_SECTION_YES" : "THIN_SECTION_NO") + '\t';
+      str += ((this.DesignOption.ProppedDuringConstruction) ? "PROPPED" : "UNPROPPED") + '\t';
+      str += ((this.DesignOption.InclSteelBeamWeight) ? "BEAM_WEIGHT_YES" : "BEAM_WEIGHT_NO") + '\t';
+      str += ((this.DesignOption.InclConcreteSlabWeight) ? "SLAB_WEIGHT_YES" : "SLAB_WEIGHT_NO") + '\t';
+      str += ((this.DesignOption.ConsiderShearDeflection) ? "SHEAR_DEFORM_YES" : "SHEAR_DEFORM_NO") + '\t';
+      str += ((this.DesignOption.InclThinFlangeSections) ? "THIN_SECTION_YES" : "THIN_SECTION_NO") + '\t';
 
       if (this.Code == Code.AS_NZS2327_2017)
       {

@@ -1,11 +1,11 @@
 using Xunit;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Members.Tests
 {
   public partial class DesignCodeTest
   {
     [Fact]
-    public DesignOption TestDesignOptionsConstructor()
+    public DesignOption TestDesignOptionConstructor()
     {
       // 1 setup input
       // use default values
@@ -14,18 +14,18 @@ namespace ComposAPI.Tests
       DesignOption designOption = new DesignOption();
 
       // 3 check that inputs are set in object's members
-      Assert.True(designOptions.ProppedDuringConstruction);
-      Assert.False(designOptions.InclSteelBeamWeight);
-      Assert.False(designOptions.InclThinFlangeSections);
-      Assert.False(designOptions.InclConcreteSlabWeight);
-      Assert.False(designOptions.ConsiderShearDeflection);
+      Assert.True(designOption.ProppedDuringConstruction);
+      Assert.False(designOption.InclSteelBeamWeight);
+      Assert.False(designOption.InclThinFlangeSections);
+      Assert.False(designOption.InclConcreteSlabWeight);
+      Assert.False(designOption.ConsiderShearDeflection);
 
       // (optionally return object for other tests)
-      return designOptions;
+      return designOption;
     }
 
     [Fact]
-    public void TestDesignOptionsDuplicate()
+    public void TestDesignOptionDuplicate()
     {
       // 1 create with constructor and duplicate
       DesignOption original = new DesignOption();

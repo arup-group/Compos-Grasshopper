@@ -4,7 +4,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using static ComposAPI.Load;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Loads.Tests
 {
   public partial class LoadTest
   {

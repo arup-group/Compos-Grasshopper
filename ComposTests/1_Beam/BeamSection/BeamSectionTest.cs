@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Moq;
 using ComposAPI.Helpers;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Beams.Tests
 {
   public partial class ComposBeamSectionTest
   {

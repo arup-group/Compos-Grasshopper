@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Members.Tests
 {
   public partial class DesignCodeTest
   {
@@ -16,10 +16,10 @@ namespace ComposAPI.Tests
       // 3 check that inputs are set in object's members
       Assert.Equal(code, designCode.Code);
       // designoptions
-      Assert.True(designCode.DesignOptions.ProppedDuringConstruction);
-      Assert.False(designCode.DesignOptions.InclSteelBeamWeight);
-      Assert.False(designCode.DesignOptions.InclThinFlangeSections);
-      Assert.False(designCode.DesignOptions.ConsiderShearDeflection);
+      Assert.True(designCode.DesignOption.ProppedDuringConstruction);
+      Assert.False(designCode.DesignOption.InclSteelBeamWeight);
+      Assert.False(designCode.DesignOption.InclThinFlangeSections);
+      Assert.False(designCode.DesignOption.ConsiderShearDeflection);
       // safety factors
       Assert.Null(designCode.SafetyFactors.MaterialFactors);
       Assert.Null(designCode.SafetyFactors.LoadFactors);
@@ -64,10 +64,10 @@ namespace ComposAPI.Tests
       // 3 check that inputs are set in object's members
       Assert.Equal(Code.AS_NZS2327_2017, designCode.Code);
       // designoptions
-      Assert.True(designCode.DesignOptions.ProppedDuringConstruction);
-      Assert.False(designCode.DesignOptions.InclSteelBeamWeight);
-      Assert.False(designCode.DesignOptions.InclThinFlangeSections);
-      Assert.False(designCode.DesignOptions.ConsiderShearDeflection);
+      Assert.True(designCode.DesignOption.ProppedDuringConstruction);
+      Assert.False(designCode.DesignOption.InclSteelBeamWeight);
+      Assert.False(designCode.DesignOption.InclThinFlangeSections);
+      Assert.False(designCode.DesignOption.ConsiderShearDeflection);
       // safety factors
       Assert.Null(designCode.SafetyFactors.MaterialFactors);
       Assert.Null(designCode.SafetyFactors.LoadFactors);
@@ -105,10 +105,10 @@ namespace ComposAPI.Tests
       Assert.Equal(Code.EN1994_1_1_2004, designCode.Code);
       Assert.Equal(NationalAnnex.Generic, designCode.NationalAnnex);
       // designoptions
-      Assert.True(designCode.DesignOptions.ProppedDuringConstruction);
-      Assert.False(designCode.DesignOptions.InclSteelBeamWeight);
-      Assert.False(designCode.DesignOptions.InclThinFlangeSections);
-      Assert.False(designCode.DesignOptions.ConsiderShearDeflection);
+      Assert.True(designCode.DesignOption.ProppedDuringConstruction);
+      Assert.False(designCode.DesignOption.InclSteelBeamWeight);
+      Assert.False(designCode.DesignOption.InclThinFlangeSections);
+      Assert.False(designCode.DesignOption.ConsiderShearDeflection);
       // safety factors
       Assert.Null(designCode.SafetyFactors.MaterialFactors);
       Assert.Null(designCode.SafetyFactors.LoadCombinationFactors);
@@ -116,7 +116,7 @@ namespace ComposAPI.Tests
       // code options
       Assert.False(designCode.CodeOptions.ApproxModularRatios);
       Assert.False(designCode.CodeOptions.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
-      Assert.Equal(EC4Options.CementClass.N, designCode.CodeOptions.CementType);
+      Assert.Equal(CementClass.N, designCode.CodeOptions.CementType);
       Assert.Equal(1.1, designCode.CodeOptions.LongTerm.CreepCoefficient);
       Assert.Equal(28, designCode.CodeOptions.LongTerm.ConcreteAgeAtLoad);
       Assert.Equal(36500, designCode.CodeOptions.LongTerm.FinalConcreteAgeCreep);
@@ -178,10 +178,10 @@ namespace ComposAPI.Tests
       // 2 check that duplicate has duplicated values
       Assert.Equal(code, duplicate.Code);
       // designoptions
-      Assert.True(duplicate.DesignOptions.ProppedDuringConstruction);
-      Assert.False(duplicate.DesignOptions.InclSteelBeamWeight);
-      Assert.False(duplicate.DesignOptions.InclThinFlangeSections);
-      Assert.False(duplicate.DesignOptions.ConsiderShearDeflection);
+      Assert.True(duplicate.DesignOption.ProppedDuringConstruction);
+      Assert.False(duplicate.DesignOption.InclSteelBeamWeight);
+      Assert.False(duplicate.DesignOption.InclThinFlangeSections);
+      Assert.False(duplicate.DesignOption.ConsiderShearDeflection);
       // safety factors
       Assert.Null(duplicate.SafetyFactors.MaterialFactors);
       Assert.Null(duplicate.SafetyFactors.LoadFactors);
@@ -191,7 +191,7 @@ namespace ComposAPI.Tests
 
       // 4 check that duplicate has set changes
       Assert.Equal(Code.BS5950_3_1_1990_Superseded, duplicate.Code);
-      Assert.False(object.ReferenceEquals(duplicate.DesignOptions, original.DesignOptions));
+      Assert.False(object.ReferenceEquals(duplicate.DesignOption, original.DesignOption));
       Assert.False(object.ReferenceEquals(duplicate.SafetyFactors, original.SafetyFactors));
 
       // 5 check that original has not been changed
@@ -208,10 +208,10 @@ namespace ComposAPI.Tests
       // 2 check that duplicate has duplicated values
       Assert.Equal(Code.AS_NZS2327_2017, duplicate.Code);
       // designoptions
-      Assert.True(duplicate.DesignOptions.ProppedDuringConstruction);
-      Assert.False(duplicate.DesignOptions.InclSteelBeamWeight);
-      Assert.False(duplicate.DesignOptions.InclThinFlangeSections);
-      Assert.False(duplicate.DesignOptions.ConsiderShearDeflection);
+      Assert.True(duplicate.DesignOption.ProppedDuringConstruction);
+      Assert.False(duplicate.DesignOption.InclSteelBeamWeight);
+      Assert.False(duplicate.DesignOption.InclThinFlangeSections);
+      Assert.False(duplicate.DesignOption.ConsiderShearDeflection);
       // safety factors
       Assert.Null(duplicate.SafetyFactors.MaterialFactors);
       Assert.Null(duplicate.SafetyFactors.LoadFactors);
@@ -221,7 +221,7 @@ namespace ComposAPI.Tests
       Assert.Equal(2.0, duplicate.CodeOptions.ShortTerm.CreepCoefficient);
 
       // 3 check that duplicate has differnt memory address than original
-      Assert.False(object.ReferenceEquals(duplicate.DesignOptions, original.DesignOptions));
+      Assert.False(object.ReferenceEquals(duplicate.DesignOption, original.DesignOption));
       Assert.False(object.ReferenceEquals(duplicate.SafetyFactors, original.SafetyFactors));
       Assert.False(object.ReferenceEquals(duplicate.CodeOptions, original.CodeOptions));
     }
@@ -237,10 +237,10 @@ namespace ComposAPI.Tests
       Assert.Equal(Code.EN1994_1_1_2004, duplicate.Code);
       Assert.Equal(NationalAnnex.Generic, duplicate.NationalAnnex);
       // designoptions
-      Assert.True(duplicate.DesignOptions.ProppedDuringConstruction);
-      Assert.False(duplicate.DesignOptions.InclSteelBeamWeight);
-      Assert.False(duplicate.DesignOptions.InclThinFlangeSections);
-      Assert.False(duplicate.DesignOptions.ConsiderShearDeflection);
+      Assert.True(duplicate.DesignOption.ProppedDuringConstruction);
+      Assert.False(duplicate.DesignOption.InclSteelBeamWeight);
+      Assert.False(duplicate.DesignOption.InclThinFlangeSections);
+      Assert.False(duplicate.DesignOption.ConsiderShearDeflection);
       // safety factors
       Assert.Null(duplicate.SafetyFactors.MaterialFactors);
       Assert.Null(duplicate.SafetyFactors.LoadCombinationFactors);
@@ -248,7 +248,7 @@ namespace ComposAPI.Tests
       // code options
       Assert.False(duplicate.CodeOptions.ApproxModularRatios);
       Assert.False(duplicate.CodeOptions.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
-      Assert.Equal(EC4Options.CementClass.N, duplicate.CodeOptions.CementType);
+      Assert.Equal(CementClass.N, duplicate.CodeOptions.CementType);
       Assert.Equal(1.1, duplicate.CodeOptions.LongTerm.CreepCoefficient);
       Assert.Equal(28, duplicate.CodeOptions.LongTerm.ConcreteAgeAtLoad);
       Assert.Equal(36500, duplicate.CodeOptions.LongTerm.FinalConcreteAgeCreep);
@@ -265,7 +265,7 @@ namespace ComposAPI.Tests
       Assert.Equal(NationalAnnex.United_Kingdom, duplicate.NationalAnnex);
 
       // 5 check that duplicate has differnt memory address than original
-      Assert.False(object.ReferenceEquals(duplicate.DesignOptions, original.DesignOptions));
+      Assert.False(object.ReferenceEquals(duplicate.DesignOption, original.DesignOption));
       Assert.False(object.ReferenceEquals(duplicate.SafetyFactors, original.SafetyFactors));
       Assert.False(object.ReferenceEquals(duplicate.CodeOptions, original.CodeOptions));
     }
@@ -296,53 +296,53 @@ namespace ComposAPI.Tests
       Assert.Equal(7, composFile.Members.Count);
       int i = 0;
       Assert.Equal(Code.BS5950_3_1_1990_Superseded, composFile.Members[i].DesignCode.Code);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.ProppedDuringConstruction);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.InclSteelBeamWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.InclConcreteSlabWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.ConsiderShearDeflection);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.InclThinFlangeSections);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.ProppedDuringConstruction);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclSteelBeamWeight);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclConcreteSlabWeight);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.ConsiderShearDeflection);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclThinFlangeSections);
       i++;
       Assert.Equal(Code.BS5950_3_1_1990_A1_2010, composFile.Members[i].DesignCode.Code);
-      Assert.True(composFile.Members[i].DesignCode.DesignOptions.ProppedDuringConstruction);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.InclSteelBeamWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.InclConcreteSlabWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.ConsiderShearDeflection);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.InclThinFlangeSections);
+      Assert.True(composFile.Members[i].DesignCode.DesignOption.ProppedDuringConstruction);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclSteelBeamWeight);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclConcreteSlabWeight);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.ConsiderShearDeflection);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclThinFlangeSections);
       i++;
       Assert.Equal(Code.EN1994_1_1_2004, composFile.Members[i].DesignCode.Code);
-      Assert.True(composFile.Members[i].DesignCode.DesignOptions.ProppedDuringConstruction);
-      Assert.True(composFile.Members[i].DesignCode.DesignOptions.InclSteelBeamWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.InclConcreteSlabWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.ConsiderShearDeflection);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.InclThinFlangeSections);
+      Assert.True(composFile.Members[i].DesignCode.DesignOption.ProppedDuringConstruction);
+      Assert.True(composFile.Members[i].DesignCode.DesignOption.InclSteelBeamWeight);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclConcreteSlabWeight);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.ConsiderShearDeflection);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclThinFlangeSections);
       i++;
       Assert.Equal(Code.EN1994_1_1_2004, composFile.Members[i].DesignCode.Code);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.ProppedDuringConstruction);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.InclSteelBeamWeight);
-      Assert.True(composFile.Members[i].DesignCode.DesignOptions.InclConcreteSlabWeight);
-      Assert.True(composFile.Members[i].DesignCode.DesignOptions.ConsiderShearDeflection);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.InclThinFlangeSections);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.ProppedDuringConstruction);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclSteelBeamWeight);
+      Assert.True(composFile.Members[i].DesignCode.DesignOption.InclConcreteSlabWeight);
+      Assert.True(composFile.Members[i].DesignCode.DesignOption.ConsiderShearDeflection);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclThinFlangeSections);
       i++;
       Assert.Equal(Code.HKSUOS_2005, composFile.Members[i].DesignCode.Code);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.ProppedDuringConstruction);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.InclSteelBeamWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.InclConcreteSlabWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.ConsiderShearDeflection);
-      Assert.True(composFile.Members[i].DesignCode.DesignOptions.InclThinFlangeSections);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.ProppedDuringConstruction);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclSteelBeamWeight);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclConcreteSlabWeight);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.ConsiderShearDeflection);
+      Assert.True(composFile.Members[i].DesignCode.DesignOption.InclThinFlangeSections);
       i++;
       Assert.Equal(Code.HKSUOS_2011, composFile.Members[i].DesignCode.Code);
-      Assert.True(composFile.Members[i].DesignCode.DesignOptions.ProppedDuringConstruction);
-      Assert.True(composFile.Members[i].DesignCode.DesignOptions.InclSteelBeamWeight);
-      Assert.True(composFile.Members[i].DesignCode.DesignOptions.InclConcreteSlabWeight);
-      Assert.True(composFile.Members[i].DesignCode.DesignOptions.ConsiderShearDeflection);
-      Assert.True(composFile.Members[i].DesignCode.DesignOptions.InclThinFlangeSections);
+      Assert.True(composFile.Members[i].DesignCode.DesignOption.ProppedDuringConstruction);
+      Assert.True(composFile.Members[i].DesignCode.DesignOption.InclSteelBeamWeight);
+      Assert.True(composFile.Members[i].DesignCode.DesignOption.InclConcreteSlabWeight);
+      Assert.True(composFile.Members[i].DesignCode.DesignOption.ConsiderShearDeflection);
+      Assert.True(composFile.Members[i].DesignCode.DesignOption.InclThinFlangeSections);
       i++;
       Assert.Equal(Code.AS_NZS2327_2017, composFile.Members[i].DesignCode.Code);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.ProppedDuringConstruction);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.InclSteelBeamWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.InclConcreteSlabWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.ConsiderShearDeflection);
-      Assert.False(composFile.Members[i].DesignCode.DesignOptions.InclThinFlangeSections);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.ProppedDuringConstruction);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclSteelBeamWeight);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclConcreteSlabWeight);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.ConsiderShearDeflection);
+      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclThinFlangeSections);
       ASNZS2327 aSNZS = (ASNZS2327)composFile.Members[i].DesignCode;
       Assert.Equal(1, aSNZS.CodeOptions.LongTerm.CreepCoefficient);
       Assert.Equal(3, aSNZS.CodeOptions.ShortTerm.CreepCoefficient);

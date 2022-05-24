@@ -8,7 +8,7 @@ using UnitsNet.Units;
 using Xunit;
 using ComposAPI;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Slabs.Tests
 {
   public static class SlabDimensionMother
   {

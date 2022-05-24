@@ -2,7 +2,7 @@
 using UnitsNet;
 using UnitsNet.Units;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Beams.Tests
 {
   public partial class WebOpeningTest
   {
