@@ -9,6 +9,7 @@
     double ConstantLive { get; }
     double FinalDead { get; }
     double FinalLive { get; }
+
     string ToCoaString(string name);
   }
 }

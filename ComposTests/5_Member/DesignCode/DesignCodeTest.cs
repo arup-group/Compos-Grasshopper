@@ -1,3 +1,5 @@
+using ComposAPI.Helpers;
+using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Members.Tests
@@ -270,82 +272,36 @@ namespace ComposAPI.Members.Tests
       Assert.False(object.ReferenceEquals(duplicate.CodeOptions, original.CodeOptions));
     }
 
-    public void TestFileCoaStringForDesignCode()
+    [Theory]
+    [InlineData("BS5950_3_1_1990_Superseded", false, false, false, false, false, "MEMBER_TITLE	MEMBER-1		B/tf=15    Change in direction > 11 degrees\nDESIGN_OPTION	MEMBER-1	BS5950-3.1:1990 (superseded)	UNPROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_NO	2.00000	2.00000\n")]
+    [InlineData("BS5950_3_1_1990_A1_2010", true, false, false, false, false, "MEMBER_TITLE	MEMBER-2		B/tf=17.5    Change in direction < 10 degrees\nDESIGN_OPTION	MEMBER-2	BS5950-3.1:1990+A1:2010	PROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_NO	2.00000	2.00000\n")]
+    [InlineData("EN1994_1_1_2004", true, true, false, false, false, "MEMBER_TITLE	MEMBER-3		B/tf=17.5    Change in direction > 10 degrees\nDESIGN_OPTION	MEMBER-3	EN1994-1-1:2004	PROPPED	BEAM_WEIGHT_YES	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_NO	2.00000	2.00000\n")]
+    [InlineData("EN1994_1_1_2004", false, false, true, true, false, "MEMBER_TITLE	MEMBER-4		B/tf=20    Change in direction < 9 degrees\nDESIGN_OPTION	MEMBER-4	EN1994-1-1:2004	UNPROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_YES	SHEAR_DEFORM_YES	THIN_SECTION_NO	2.00000	2.00000\n")]
+    [InlineData("HKSUOS_2005", false, false, false, false, true, "MEMBER_TITLE	MEMBER-5		B/tf=20    Change in direction > 9 degrees\nDESIGN_OPTION	MEMBER-5	HKSUOS:2005	UNPROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_YES	2.00000	2.00000\n")]
+    [InlineData("HKSUOS_2011", true, true, true, true, true, "MEMBER_TITLE	MEMBER-6		B/tf=22.5    Change in direction < 8 degrees\nDESIGN_OPTION	MEMBER-6	HKSUOS:2011	PROPPED	BEAM_WEIGHT_YES	SLAB_WEIGHT_YES	SHEAR_DEFORM_YES	THIN_SECTION_YES	2.00000	2.00000\n")]
+    [InlineData("AS_NZS2327_2017", false, false, false, false, false, "MEMBER_TITLE	MEMBER-7		B/tf=22.5    Change in direction > 8 degrees\nDESIGN_OPTION	MEMBER-7	AS/NZS2327:2017	UNPROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_NO	1.00000	3.00000\n", 1, 3)]
+    public void TestFileCoaStringForDesignCode(string expected_Code, bool expected_ProppedDuringConstruction, bool expected_InclSteelBeamWeight, bool expected_InclConcreteSlabWeight, bool expected_ConsiderShearDeflection, bool expected_InclThinFlangeSections, string coaString, double expected_LongTermCreep = 0, double expected_ShortTermCreep = 0)
     {
       // Arrange 
-      string coaString =
-        "MEMBER_TITLE	MEMBER-1		B/tf=15    Change in direction > 11 degrees" + '\n' +
-        "DESIGN_OPTION	MEMBER-1	BS5950-3.1:1990 (superseded)	UNPROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_NO	2.00000	2.00000" + '\n' +
-        "MEMBER_TITLE	MEMBER-2		B/tf=17.5    Change in direction < 10 degrees" + '\n' +
-        "DESIGN_OPTION	MEMBER-2	BS5950-3.1:1990+A1:2010	PROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_NO	2.00000	2.00000" + '\n' +
-        "MEMBER_TITLE	MEMBER-3		B/tf=17.5    Change in direction > 10 degrees" + '\n' +
-        "DESIGN_OPTION	MEMBER-3	EN1994-1-1:2004	PROPPED	BEAM_WEIGHT_YES	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_NO	2.00000	2.00000" + '\n' +
-        "MEMBER_TITLE	MEMBER-4		B/tf=20    Change in direction < 9 degrees" + '\n' +
-        "DESIGN_OPTION	MEMBER-4	EN1994-1-1:2004	UNPROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_YES	SHEAR_DEFORM_YES	THIN_SECTION_NO	2.00000	2.00000" + '\n' +
-        "MEMBER_TITLE	MEMBER-5		B/tf=20    Change in direction > 9 degrees" + '\n' +
-        "DESIGN_OPTION	MEMBER-5	HKSUOS:2005	UNPROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_YES	2.00000	2.00000" + '\n' +
-        "MEMBER_TITLE	MEMBER-6		B/tf=22.5    Change in direction < 8 degrees" + '\n' +
-        "DESIGN_OPTION	MEMBER-6	HKSUOS:2011	PROPPED	BEAM_WEIGHT_YES	SLAB_WEIGHT_YES	SHEAR_DEFORM_YES	THIN_SECTION_YES	2.00000	2.00000" + '\n' +
-        "MEMBER_TITLE	MEMBER-7		B/tf=22.5    Change in direction > 8 degrees" + '\n' +
-        "DESIGN_OPTION	MEMBER-7	AS/NZS2327:2017	UNPROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_NO	1.00000	3.00000" + '\n';
+      ComposUnits units = ComposUnits.GetStandardUnits();
+      List<string> parameters = CoaHelper.Split(coaString);
 
       // Act
-      IComposFile composFile = ComposFile.FromCoaString(coaString);
+      IDesignCode desingCode = DesignCode.FromCoaString(coaString, parameters[1], units);
 
       // Assert
-      Assert.Equal(7, composFile.Members.Count);
-      int i = 0;
-      Assert.Equal(Code.BS5950_3_1_1990_Superseded, composFile.Members[i].DesignCode.Code);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.ProppedDuringConstruction);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclSteelBeamWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclConcreteSlabWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.ConsiderShearDeflection);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclThinFlangeSections);
-      i++;
-      Assert.Equal(Code.BS5950_3_1_1990_A1_2010, composFile.Members[i].DesignCode.Code);
-      Assert.True(composFile.Members[i].DesignCode.DesignOption.ProppedDuringConstruction);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclSteelBeamWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclConcreteSlabWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.ConsiderShearDeflection);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclThinFlangeSections);
-      i++;
-      Assert.Equal(Code.EN1994_1_1_2004, composFile.Members[i].DesignCode.Code);
-      Assert.True(composFile.Members[i].DesignCode.DesignOption.ProppedDuringConstruction);
-      Assert.True(composFile.Members[i].DesignCode.DesignOption.InclSteelBeamWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclConcreteSlabWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.ConsiderShearDeflection);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclThinFlangeSections);
-      i++;
-      Assert.Equal(Code.EN1994_1_1_2004, composFile.Members[i].DesignCode.Code);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.ProppedDuringConstruction);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclSteelBeamWeight);
-      Assert.True(composFile.Members[i].DesignCode.DesignOption.InclConcreteSlabWeight);
-      Assert.True(composFile.Members[i].DesignCode.DesignOption.ConsiderShearDeflection);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclThinFlangeSections);
-      i++;
-      Assert.Equal(Code.HKSUOS_2005, composFile.Members[i].DesignCode.Code);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.ProppedDuringConstruction);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclSteelBeamWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclConcreteSlabWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.ConsiderShearDeflection);
-      Assert.True(composFile.Members[i].DesignCode.DesignOption.InclThinFlangeSections);
-      i++;
-      Assert.Equal(Code.HKSUOS_2011, composFile.Members[i].DesignCode.Code);
-      Assert.True(composFile.Members[i].DesignCode.DesignOption.ProppedDuringConstruction);
-      Assert.True(composFile.Members[i].DesignCode.DesignOption.InclSteelBeamWeight);
-      Assert.True(composFile.Members[i].DesignCode.DesignOption.InclConcreteSlabWeight);
-      Assert.True(composFile.Members[i].DesignCode.DesignOption.ConsiderShearDeflection);
-      Assert.True(composFile.Members[i].DesignCode.DesignOption.InclThinFlangeSections);
-      i++;
-      Assert.Equal(Code.AS_NZS2327_2017, composFile.Members[i].DesignCode.Code);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.ProppedDuringConstruction);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclSteelBeamWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclConcreteSlabWeight);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.ConsiderShearDeflection);
-      Assert.False(composFile.Members[i].DesignCode.DesignOption.InclThinFlangeSections);
-      ASNZS2327 aSNZS = (ASNZS2327)composFile.Members[i].DesignCode;
-      Assert.Equal(1, aSNZS.CodeOptions.LongTerm.CreepCoefficient);
-      Assert.Equal(3, aSNZS.CodeOptions.ShortTerm.CreepCoefficient);
+      Assert.Equal(expected_Code, desingCode.Code.ToString());
+      Assert.Equal(expected_ProppedDuringConstruction, desingCode.DesignOption.ProppedDuringConstruction);
+      Assert.Equal(expected_InclSteelBeamWeight, desingCode.DesignOption.InclSteelBeamWeight);
+      Assert.Equal(expected_InclConcreteSlabWeight, desingCode.DesignOption.InclConcreteSlabWeight);
+      Assert.Equal(expected_ConsiderShearDeflection, desingCode.DesignOption.ConsiderShearDeflection);
+      Assert.Equal(expected_InclThinFlangeSections, desingCode.DesignOption.InclThinFlangeSections);
+
+      if(desingCode is ASNZS2327 aSNZS)
+      {
+        Assert.Equal(expected_LongTermCreep, aSNZS.CodeOptions.LongTerm.CreepCoefficient);
+        Assert.Equal(expected_ShortTermCreep, aSNZS.CodeOptions.ShortTerm.CreepCoefficient);
+      }
     }
   }
 }

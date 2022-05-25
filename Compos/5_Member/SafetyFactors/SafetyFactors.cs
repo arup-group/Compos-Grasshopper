@@ -15,6 +15,16 @@ namespace ComposAPI
     {
       // default initialiser
     }
+
+    public string ToCoaString(string name)
+    {
+      string str = "";
+      if (this.LoadFactors != null)
+        str = this.LoadFactors.ToCoaString(name);
+      if (this.MaterialFactors != null)
+        str += this.MaterialFactors.ToCoaString(name);
+      return str;
+    }
   }
 
   /// <summary>

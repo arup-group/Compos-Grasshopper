@@ -22,18 +22,6 @@ namespace ComposAPI.Members.Tests
     }
 
     [Fact]
-    public void DefaultToCoaStringTest()
-    {
-      // Arrange
-      string expected_coaString = "";
-      SafetyFactors safetyFactors = new SafetyFactors();
-      // Act
-      string coaString = safetyFactors.ToCoaString("MEMBER-5");
-      // Assert
-      Assert.Equal(expected_coaString, coaString);
-    }
-
-    [Fact]
     public void TestSafetyFactorDuplicate()
     {
       // 1 create with constructor and duplicate
