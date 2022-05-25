@@ -116,7 +116,8 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      LoadCombinationFactors lf = new LoadCombinationFactors();
+      LoadFactors loadFactors = new LoadFactors();
+      LoadCombinationFactors combinationFactors = new LoadCombinationFactors();
       double cxi = 0;
       double cpsi0 = 0;
       double cgammaG = 0;
@@ -126,21 +127,21 @@ namespace ComposGH.Components
       double fgammaG = 0;
       double fgammaQ = 0;
       if (DA.GetData(0, ref cxi))
-        lf.Constantxi = cxi;
+        combinationFactors.ConstantXi = cxi;
       if (DA.GetData(1, ref cpsi0))
-        lf.Constantpsi_0 = cpsi0;
+        combinationFactors.ConstantPsi = cpsi0;
       if (DA.GetData(2, ref cgammaG))
-        lf.Constantgamma_G = cgammaG;
+        loadFactors.ConstantDead = cgammaG;
       if (DA.GetData(3, ref cgammaQ))
-        lf.Constantgamma_Q = cgammaQ;
+        loadFactors.ConstantLive = cgammaQ;
       if (DA.GetData(4, ref fxi))
-        lf.Finalxi = fxi;
+        combinationFactors.FinalXi = fxi;
       if (DA.GetData(5, ref fpsi0))
-        lf.Finalpsi_0 = fpsi0;
+        combinationFactors.FinalPsi = fpsi0;
       if (DA.GetData(6, ref fgammaG))
-        lf.Finalgamma_G = fgammaG;
+        loadFactors.FinalDead = fgammaG;
       if (DA.GetData(7, ref fgammaQ))
-        lf.Finalgamma_Q = fgammaQ;
+        loadFactors.FinalLive = fgammaQ;
       if (this.Params.Input[0].Sources.Count == 0
         & this.Params.Input[1].Sources.Count == 0
         & this.Params.Input[2].Sources.Count == 0
@@ -154,7 +155,7 @@ namespace ComposGH.Components
           "Load combination factors following Equation 6.10 will be used" :
           "Load combination factors for the worse of Equation 6.10a and 6.10b will be used (not applicable for storage structures)";
         AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, remark);
-        lf = null;
+        combinationFactors = null;
         SelectedItems[0] = LoadCombinationType.ToString().Replace("__", " or ").Replace("_", ".");
       }
       else
@@ -198,16 +199,19 @@ namespace ComposGH.Components
         mf = null;
       }
 
-      EC4SafetyFactors sf = new EC4SafetyFactors();
-      if (lf == null)
-        sf.LoadCombination = this.LoadCombinationType;
+      EC4SafetyFactors safetyFactors = new EC4SafetyFactors();
+      if (combinationFactors == null)
+        safetyFactors.LoadCombinationFactors.LoadCombination = this.LoadCombinationType;
       else
-        sf.LoadCombination = LoadCombination.Custom;
-      
-      if (mf != null)
-        sf.MaterialFactors = mf;
+        safetyFactors.LoadCombinationFactors.LoadCombination = LoadCombination.Custom;
 
-      DA.SetData(0, new EC4SafetyFactorsGoo(sf));
+      safetyFactors.LoadFactors = loadFactors;
+      safetyFactors.LoadCombinationFactors = combinationFactors;
+
+      if (mf != null)
+        safetyFactors.MaterialFactors = mf;
+
+      DA.SetData(0, new EC4SafetyFactorsGoo(safetyFactors));
     }
 
     #region (de)serialization

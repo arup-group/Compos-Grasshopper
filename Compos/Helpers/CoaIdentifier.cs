@@ -57,6 +57,8 @@
     internal const string SafetyFactorLoad = "SAFETY_FACTOR_LOAD";
     internal const string SafetyFactorMaterial = "SAFETY_FACTOR_MATERIAL";
 
+    internal const string EC4LoadCombinationFactors = "EC4_LOAD_COMB_FACTORS";
+
     internal class DesignCode
     {
       internal const string ASNZ = "AS/NZS2327:2017";

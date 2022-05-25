@@ -5,7 +5,7 @@ namespace ComposAPI.Members.Tests
   public partial class SafetyFactorsTest
   {
     [Fact]
-    public SafetyFactors TestSafetyFactorConstructor()
+    public SafetyFactors ConstructorTest()
     {
       // 1 setup input
       // empty constructor creates default (non-EC4) values
@@ -22,7 +22,7 @@ namespace ComposAPI.Members.Tests
     }
 
     [Fact]
-    public void TestSafetyFactorDuplicate()
+    public void DuplicateTest()
     {
       // 1 create with constructor and duplicate
       SafetyFactors original = new SafetyFactors();
@@ -86,29 +86,6 @@ namespace ComposAPI.Members.Tests
       Assert.Equal(1.4, original.LoadFactors.ConstantLive);
       Assert.Equal(1.6, original.LoadFactors.FinalDead);
       Assert.Equal(1.6, original.LoadFactors.FinalLive);
-    }
-
-    [Fact]
-    public LoadCombinationFactors TestLoadCombinationFactorsConstructor()
-    {
-      // 1 setup input
-      // empty constructor creates default EC4 values
-
-      // 2 create object instance with constructor
-      LoadCombinationFactors loadFactors = new LoadCombinationFactors();
-
-      // 3 check that inputs are set in object's members
-      Assert.Equal(1.0, loadFactors.Constantxi);
-      Assert.Equal(1.0, loadFactors.Constantpsi_0);
-      Assert.Equal(1.35, loadFactors.Constantgamma_G);
-      Assert.Equal(1.5, loadFactors.Constantgamma_Q);
-      Assert.Equal(1.0, loadFactors.Finalxi);
-      Assert.Equal(1.0, loadFactors.Finalpsi_0);
-      Assert.Equal(1.35, loadFactors.Finalgamma_G);
-      Assert.Equal(1.5, loadFactors.Finalgamma_Q);
-
-      // (optionally return object for other tests)
-      return loadFactors;
     }
   }
 }

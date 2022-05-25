@@ -16,8 +16,8 @@ namespace ComposAPI
   public class EC4SafetyFactors : IEC4SafetyFactors
   {
     public IEC4MaterialPartialFactors MaterialFactors { get; set; } = null;
-    public ILoadCombinationFactors LoadCombinationFactors { get; set; } = null;
-    public LoadCombination LoadCombination { get; set; } = LoadCombination.Equation6_10;
+    public ILoadFactors LoadFactors { get; set; }
+    public ILoadCombinationFactors LoadCombinationFactors { get; set; } = new LoadCombinationFactors();
 
     public EC4SafetyFactors()
     {
@@ -30,9 +30,9 @@ namespace ComposAPI
       if (this.MaterialFactors != null)
         str = this.MaterialFactors.ToCoaString(name);
 
-      if (this.LoadCombination != LoadCombination.Custom)
+      if (this.LoadCombinationFactors.LoadCombination != LoadCombination.Custom)
       {
-        switch (this.LoadCombination)
+        switch (this.LoadCombinationFactors.LoadCombination)
         {
           case LoadCombination.Equation6_10:
             str += "EC4_LOAD_COMB_FACTORS" + '\t' + name + '\t' + "EC0_6_10" + '\t';
@@ -94,30 +94,70 @@ namespace ComposAPI
   /// </summary>
   public class LoadCombinationFactors : ILoadCombinationFactors
   {
-    public double Constantxi { get; set; } = 1.0;
-    public double Constantpsi_0 { get; set; } = 1.0;
-    public double Constantgamma_G { get; set; } = 1.35;
-    public double Constantgamma_Q { get; set; } = 1.5;
-    public double Finalxi { get; set; } = 1.0;
-    public double Finalpsi_0 { get; set; } = 1.0;
-    public double Finalgamma_G { get; set; } = 1.35;
-    public double Finalgamma_Q { get; set; } = 1.5;
+    //public double Constantgamma_G { get; set; } = 1.35;
+    //public double Finalgamma_G { get; set; } = 1.35;
+    //public double Constantgamma_Q { get; set; } = 1.5;
+    //public double Finalgamma_Q { get; set; } = 1.5;
+    public LoadCombination LoadCombination { get; set; } = LoadCombination.Equation6_10;
+    public double ConstantXi { get; set; } = 1.0; //	EC0 reduction factor at construction stage (dead/permenant load)
+    public double FinalXi { get; set; } = 1.0; // EC0 reduction factor at final stage (dead/permenant load)
+    public double ConstantPsi { get; set; } = 1.0; // factor for combination value of variable action at construction stage
+    public double FinalPsi { get; set; } = 1.0; // factor for combination value of variable action at final stage
 
     public LoadCombinationFactors() { }
 
+    #region coainterop
+    internal static ILoadCombinationFactors FromCoaString(List<string> parameters)
+    {
+      LoadCombinationFactors combinationFactors = new LoadCombinationFactors();
+      switch(parameters[2])
+      {
+        case ("EC0_WORST_6_10A_10B"):
+          combinationFactors.LoadCombination = LoadCombination.Equation6_10a__6_10b;
+          break;
+        case ("USER_DEFINED"):
+          combinationFactors.LoadCombination = LoadCombination.Custom;
+          combinationFactors.ConstantXi = CoaHelper.ConvertToDouble(parameters[3]);
+          combinationFactors.FinalXi = CoaHelper.ConvertToDouble(parameters[4]);
+          combinationFactors.ConstantPsi = CoaHelper.ConvertToDouble(parameters[5]);
+          combinationFactors.FinalPsi = CoaHelper.ConvertToDouble(parameters[6]);
+          break;
+        case ("EC0_6_10"):
+        default:
+          combinationFactors.LoadCombination = LoadCombination.Equation6_10;
+          break;
+      }
+      return combinationFactors;
+    }
+
     public string ToCoaString(string name)
     {
-      string str = "SAFETY_FACTOR_LOAD" + '\t' + name + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.Constantgamma_G, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.Finalgamma_G, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.Constantgamma_Q, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.Finalgamma_Q, 6) + '\n';
-      str += "EC4_LOAD_COMB_FACTORS" + '\t' + name + '\t' + "USER_DEFINED" + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.Constantxi, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.Finalxi, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.Constantpsi_0, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.Finalpsi_0, 6) + '\n';
+      //string str = "SAFETY_FACTOR_LOAD" + '\t' + name + '\t';
+      //str += CoaHelper.FormatSignificantFigures(this.Constantgamma_G, 6) + '\t';
+      //str += CoaHelper.FormatSignificantFigures(this.Finalgamma_G, 6) + '\t';
+      //str += CoaHelper.FormatSignificantFigures(this.Constantgamma_Q, 6) + '\t';
+      //str += CoaHelper.FormatSignificantFigures(this.Finalgamma_Q, 6) + '\n';
+      string str = "EC4_LOAD_COMB_FACTORS" + '\t';
+      str += name + '\t';
+      switch (this.LoadCombination)
+      {
+        case (LoadCombination.Equation6_10a__6_10b):
+          str += "EC0_WORST_6_10A_10B";
+          break;
+        case (LoadCombination.Custom):
+          str += "USER_DEFINED";
+          str += CoaHelper.FormatSignificantFigures(this.ConstantXi, 6) + '\t';
+          str += CoaHelper.FormatSignificantFigures(this.FinalXi, 6) + '\t';
+          str += CoaHelper.FormatSignificantFigures(this.ConstantPsi, 6) + '\t';
+          str += CoaHelper.FormatSignificantFigures(this.FinalPsi, 6) + '\n';
+          break;
+        case (LoadCombination.Equation6_10):
+        default:
+          str += "EC0_6_10";
+          break;
+      }
       return str;
     }
+    #endregion
   }
 }

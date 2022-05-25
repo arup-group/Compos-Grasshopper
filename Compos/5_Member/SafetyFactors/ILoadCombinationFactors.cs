@@ -5,14 +5,16 @@
   /// </summary>
   public interface ILoadCombinationFactors
   {
-    double Constantxi { get; }
-    double Constantpsi_0 { get; }
-    double Constantgamma_G { get; }
-    double Constantgamma_Q { get; }
-    double Finalxi { get; }
-    double Finalpsi_0 { get; }
-    double Finalgamma_G { get; }
-    double Finalgamma_Q { get; }
+    LoadCombination LoadCombination { get; set; }
+    double ConstantXi { get; }
+    double FinalXi { get; }
+    double ConstantPsi { get; }
+    double FinalPsi { get; }
+    //double Constantgamma_G { get; }
+    //double Constantgamma_Q { get; }
+    //double Finalgamma_G { get; }
+    //double Finalgamma_Q { get; }
+
     string ToCoaString(string name);
   }
 }
