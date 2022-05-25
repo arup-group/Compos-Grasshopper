@@ -152,7 +152,6 @@ namespace ComposAPI
       ComposFile file = new ComposFile();
       file.Members = new List<IMember>();
 
-      Dictionary<string, DesignCode> codes = new Dictionary<string, DesignCode>();
       Dictionary<string, Stud> studs = new Dictionary<string, Stud>();
       Dictionary<string, StudDimensions> studDimensions = new Dictionary<string, StudDimensions>();
       Dictionary<string, StudDimensions> studECDimensions = new Dictionary<string, StudDimensions>();
@@ -187,22 +186,17 @@ namespace ComposAPI
           units.FromCoaString(parameters);
         }
 
-        // ### Design Code ###
-        else if (coaIdentifier == CoaIdentifier.DesignOption)
-        {
-          DesignCode dc = DesignCode.FromCoaString(parameters);
-          codes.Add(parameters[1], dc);
-        }
+ 
 
         // ### stud related lines ###
         else if (coaIdentifier == CoaIdentifier.StudDimensions.StudDefinition)
         {
-          Code code = codes[parameters[1]].Code;
-          StudDimensions dimensions = StudDimensions.FromCoaString(parameters, units, code);
-          studDimensions.Add(parameters[1], dimensions);
+          //Code code = codes[parameters[1]].Code;
+          //StudDimensions dimensions = StudDimensions.FromCoaString(parameters, units, code);
+          //studDimensions.Add(parameters[1], dimensions);
 
-          bool isWelded = parameters.Last() == "WELDED_YES";
-          studWelded.Add(parameters[1], isWelded);
+          //bool isWelded = parameters.Last() == "WELDED_YES";
+          //studWelded.Add(parameters[1], isWelded);
         }
         else if (coaIdentifier == CoaIdentifier.StudGroupSpacings.StudLayout)
         {
@@ -279,11 +273,10 @@ namespace ComposAPI
       // ### Set data to members ###
       foreach (Member member in file.Members)
       {
-        // add designcode to member
-        member.DesignCode = codes[member.Name];
-
-        Code code = member.DesignCode.Code;
         string name = member.Name;
+
+        member.DesignCode = DesignCode.FromCoaString(coaString, name, units);
+        Code code = member.DesignCode.Code;
 
         member.Beam = Beam.FromCoaString(coaString, name, units);
         member.Stud = studs[name];

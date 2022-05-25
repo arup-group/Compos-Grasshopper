@@ -54,6 +54,9 @@
 
     internal const string WebOpeningDimension = "WEB_OPEN_DIMENSION";
 
+    internal const string SafetyFactorLoad = "SAFETY_FACTOR_LOAD";
+    internal const string SafetyFactorMaterial = "SAFETY_FACTOR_MATERIAL";
+
     internal class DesignCode
     {
       internal const string ASNZ = "AS/NZS2327:2017";

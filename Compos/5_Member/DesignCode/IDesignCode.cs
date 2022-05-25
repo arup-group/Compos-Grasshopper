@@ -7,7 +7,7 @@
   {
     Code Code { get; }
     IDesignOption DesignOption { get; }
-    ISafetyFactors SafetyFactors { get; }
+    ISafetyFactors SafetyFactors { get; set;  }
 
     string ToCoaString(string name);
   }

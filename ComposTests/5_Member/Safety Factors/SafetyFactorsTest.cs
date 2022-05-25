@@ -34,66 +34,6 @@ namespace ComposAPI.Members.Tests
     }
 
     [Fact]
-    public void CustomMaterialFactorsToCoaStringTest()
-    {
-      // Arrange
-      string expected_coaString = "SAFETY_FACTOR_MATERIAL	BS-USER	1.10000	1.00000	1.00000	1.20000	1.30000	1.40000	1.50000	1.60000\n";
-      SafetyFactors safetyFactors = new SafetyFactors();
-      MaterialPartialFactors materialPartialFactors = new MaterialPartialFactors();
-      materialPartialFactors.SteelBeam = 1.1;
-      materialPartialFactors.ConcreteCompression = 1.2;
-      materialPartialFactors.ConcreteShear = 1.3;
-      materialPartialFactors.MetalDecking = 1.4;
-      materialPartialFactors.ShearStud = 1.5;
-      materialPartialFactors.Reinforcement = 1.6;
-      safetyFactors.MaterialFactors = materialPartialFactors;
-      // Act
-      string coaString = safetyFactors.ToCoaString("BS-USER");
-      // Assert
-      Assert.Equal(expected_coaString, coaString);
-    }
-
-    [Fact]
-    public IMaterialPartialFactors TestMaterialPartialFactorsConstructor()
-    {
-      // 1 setup input
-      // empty constructor creates default (non-EC4) values
-
-      // 2 create object instance with constructor
-      IMaterialPartialFactors partialFactors = new MaterialPartialFactors();
-
-      // 3 check that inputs are set in object's members
-      Assert.Equal(1.0, partialFactors.SteelBeam);
-      Assert.Equal(1.5, partialFactors.ConcreteCompression);
-      Assert.Equal(1.25, partialFactors.ConcreteShear);
-      Assert.Equal(1.0, partialFactors.MetalDecking);
-      Assert.Equal(1.25, partialFactors.ShearStud);
-      Assert.Equal(1.15, partialFactors.Reinforcement);
-
-      // (optionally return object for other tests)
-      return partialFactors;
-    }
-
-    [Fact]
-    public LoadFactors TestLoadFactorsConstructor()
-    {
-      // 1 setup input
-      // empty constructor creates default (non-EC4) values
-
-      // 2 create object instance with constructor
-      LoadFactors loadFactors = new LoadFactors();
-
-      // 3 check that inputs are set in object's members
-      Assert.Equal(1.4, loadFactors.ConstantDead);
-      Assert.Equal(1.4, loadFactors.ConstantLive);
-      Assert.Equal(1.6, loadFactors.FinalDead);
-      Assert.Equal(1.6, loadFactors.FinalLive);
-
-      // (optionally return object for other tests)
-      return loadFactors;
-    }
-
-    [Fact]
     public void TestSafetyFactorDuplicate()
     {
       // 1 create with constructor and duplicate

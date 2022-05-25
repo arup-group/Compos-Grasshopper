@@ -15,16 +15,6 @@ namespace ComposAPI
     {
       // default initialiser
     }
-
-    public string ToCoaString(string name)
-    {
-      string str = "";
-      if (this.LoadFactors != null)
-        str = this.LoadFactors.ToCoaString(name);
-      if (this.MaterialFactors != null)
-        str += this.MaterialFactors.ToCoaString(name);
-      return str;
-    }
   }
 
   /// <summary>
@@ -41,9 +31,22 @@ namespace ComposAPI
 
     public MaterialPartialFactors() { }
 
+    #region coainterop
+    internal static IMaterialPartialFactors FromCoaString(List<string> parameters)
+    {
+      MaterialPartialFactors materialPartialFactors = new MaterialPartialFactors();
+      materialPartialFactors.SteelBeam = CoaHelper.ConvertToDouble(parameters[2]);
+      materialPartialFactors.ConcreteCompression = CoaHelper.ConvertToDouble(parameters[5]);
+      materialPartialFactors.ConcreteShear = CoaHelper.ConvertToDouble(parameters[6]);
+      materialPartialFactors.MetalDecking = CoaHelper.ConvertToDouble(parameters[7]);
+      materialPartialFactors.ShearStud = CoaHelper.ConvertToDouble(parameters[8]);
+      materialPartialFactors.Reinforcement = CoaHelper.ConvertToDouble(parameters[9]);
+      return materialPartialFactors;
+    }
+
     public string ToCoaString(string name)
     {
-      string str = "SAFETY_FACTOR_MATERIAL" + '\t' + name + '\t';
+      string str = CoaIdentifier.SafetyFactorMaterial + '\t' + name + '\t';
       str += CoaHelper.FormatSignificantFigures(this.SteelBeam, 6) + '\t';
       str += CoaHelper.FormatSignificantFigures(1.0, 6) + '\t';
       str += CoaHelper.FormatSignificantFigures(1.0, 6) + '\t';
@@ -54,6 +57,7 @@ namespace ComposAPI
       str += CoaHelper.FormatSignificantFigures(this.Reinforcement, 6) + '\n';
       return str;
     }
+    #endregion
   }
 
   /// <summary>
@@ -62,20 +66,32 @@ namespace ComposAPI
   public class LoadFactors : ILoadFactors
   {
     public double ConstantDead { get; set; } = 1.4;
-    public double ConstantLive { get; set; } = 1.4;
     public double FinalDead { get; set; } = 1.6;
+    public double ConstantLive { get; set; } = 1.4;
     public double FinalLive { get; set; } = 1.6;
 
     public LoadFactors() { }
 
+    #region coainterop
+    internal static ILoadFactors FromCoaString(List<string> parameters)
+    {
+      LoadFactors loadFactors = new LoadFactors();
+      loadFactors.ConstantDead = CoaHelper.ConvertToDouble(parameters[2]);
+      loadFactors.FinalDead = CoaHelper.ConvertToDouble(parameters[3]);
+      loadFactors.ConstantLive = CoaHelper.ConvertToDouble(parameters[4]);
+      loadFactors.FinalLive = CoaHelper.ConvertToDouble(parameters[5]);
+      return loadFactors;
+    }
+
     public string ToCoaString(string name)
     {
-      string str = "SAFETY_FACTOR_LOAD" + '\t' + name + '\t';
+      string str = CoaIdentifier.SafetyFactorLoad + '\t' + name + '\t';
       str += CoaHelper.FormatSignificantFigures(this.ConstantDead, 6) + '\t';
       str += CoaHelper.FormatSignificantFigures(this.FinalDead, 6) + '\t';
       str += CoaHelper.FormatSignificantFigures(this.ConstantLive, 6) + '\t';
       str += CoaHelper.FormatSignificantFigures(this.FinalLive, 6) + '\n';
       return str;
     }
+    #endregion
   }
 }
