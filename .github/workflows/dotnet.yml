@@ -8,6 +8,25 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    
+    - name: Download Compos
+      run: |
+        gh release download compos8.6.0.7 --pattern "Arup_Compos_x64_8_6_0_7.msi" --repo arup-group/oasys-combined
+      env:
+        GH_TOKEN: ${{ secrets.GH_PAT }}
+    
+    - name: install Compos
+      run: |
+        $installerPath = $(ls -r ${{env.GITHUB_WORKSPACE}}\Arup_Compos_x64_8_6_0_7.msi)
+        Write-output "Installer Path: ${installerPath}"
+        $app = Start-Process ${installerPath} -ArgumentList '/passive /quiet /l* msiLog.txt' -PassThru -Wait
+        $app.WaitForExit()
+        Write-Output "Exit code: $($app.ExitCode)"
+        Write-Output "Exit time: $($app.ExitTime.ToUniversalTime().ToString('yyyy-MM-dd HH:mm:ss')) UTC"
+        if ($app.ExitCode -ne 0) {
+          Write-Error "Application could not be installed. Error code $($app.ExitCode)"
+          exit(1)
+        }
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1
