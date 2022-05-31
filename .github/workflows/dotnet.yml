@@ -36,3 +36,6 @@ jobs:
 
     - name: Build
       run: msbuild /m /p:Configuration=Release ComposGH.sln
+      
+    - name: Run Tests
+      run: dotnet test .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
