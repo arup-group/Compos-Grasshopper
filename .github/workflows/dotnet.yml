@@ -42,21 +42,14 @@ jobs:
         & 'C:\Program Files\Oasys\Compos 8.6\Compos.exe' /Register
         dotnet test .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
 
-    - uses: codecov/codecov-action@v2
-      name: Collect code coverage for ComposAPI tests
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }} 
-        directory: ComposTests/TestResults
-        flags: composapi,unit
-        name: codecov-composapi-unit-tests 
-        fail_ci_if_error: true 
-        verbose: true
-      
+    - name: Code Coverage
+      run: msbuild .\ComposTests\ComposAPITests.csproj ComposAPITests.csproj /t:InstrumentModules /t:GenerateCoverageResult /p:CollectCoverage=true /p:CoverletOutputForm=cobertura
+
     - name: Upload coverage files
       if: always()
       uses: actions/upload-artifact@v2
       with:
         name: coverage-report
         path: |
-          ComposAPITests/TestResults/**/coverage.cobertura.xml
+          ComposAPITests/coverage.json
 
