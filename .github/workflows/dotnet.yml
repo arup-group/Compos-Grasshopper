@@ -51,16 +51,6 @@ jobs:
         name: codecov-composapi-unit-tests 
         fail_ci_if_error: true 
         verbose: true
-        
-    - uses: codecov/codecov-action@v2
-      name: Collect code coverage for ComposGH tests
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }} 
-        directory: ComposGHTests/TestResults
-        flags: composgh,unit
-        name: codecov-composgh-unit-tests 
-        fail_ci_if_error: true 
-        verbose: true
       
     - name: Upload coverage files
       if: always()
@@ -69,5 +59,4 @@ jobs:
         name: coverage-report
         path: |
           ComposAPITests/TestResults/**/coverage.cobertura.xml
-          tComposGHTests/TestResults/**/coverage.cobertura.xml
 
