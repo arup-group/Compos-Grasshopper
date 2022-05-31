@@ -36,3 +36,8 @@ jobs:
 
     - name: Build
       run: msbuild /m /p:Configuration=Release ComposGH.sln
+      
+    - name: Run Tests
+      run: |
+        & 'C:\Program Files\Oasys\Compos 8.6\Compos.exe' /Register
+        dotnet test .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
