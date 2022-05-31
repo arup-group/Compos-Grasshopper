@@ -1,4 +1,4 @@
-name: MSBuild
+name: Build and Test
 
 on: push
 
@@ -15,7 +15,7 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GH_PAT }}
     
-    - name: install Compos
+    - name: Install Compos
       run: |
         $installerPath = $(ls -r ${{env.GITHUB_WORKSPACE}}\Arup_Compos_x64_8_6_0_7.msi)
         Write-output "Installer Path: ${installerPath}"
@@ -36,8 +36,38 @@ jobs:
 
     - name: Build
       run: msbuild /m /p:Configuration=Release ComposGH.sln
-      
+
     - name: Run Tests
       run: |
         & 'C:\Program Files\Oasys\Compos 8.6\Compos.exe' /Register
         dotnet test .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
+
+    - uses: codecov/codecov-action@v2
+      name: Collect code coverage for ComposAPI tests
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }} 
+        directory: ComposTests/TestResults
+        flags: composapi,unit
+        name: codecov-composapi-unit-tests 
+        fail_ci_if_error: true 
+        verbose: true
+        
+    - uses: codecov/codecov-action@v2
+      name: Collect code coverage for ComposGH tests
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }} 
+        directory: ComposGHTests/TestResults
+        flags: composgh,unit
+        name: codecov-composgh-unit-tests 
+        fail_ci_if_error: true 
+        verbose: true
+      
+    - name: Upload coverage files
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage-report
+        path: |
+          ComposAPITests/TestResults/**/coverage.cobertura.xml
+          tComposGHTests/TestResults/**/coverage.cobertura.xml
+
