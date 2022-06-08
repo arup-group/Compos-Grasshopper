@@ -30,6 +30,11 @@ namespace ComposAPI
     public IList<IMember> Members { get; set; } = new List<IMember>();
     internal IAutomation ComposCOM { get; set; }
     public string FileName { get; internal set; }
+    public string JobTitle { get; set; }
+    public string JobSubTitle { get; set; }
+    public string CalculationHeader { get; set; }
+    public string JobNumber { get; set; }
+    public string Initials { get; set; }
 
     #region constructors
     public ComposFile()
@@ -116,7 +121,7 @@ namespace ComposAPI
 
       // save coa string to a temp to coa file (ASCII format)
       string tempCoa = Path.GetTempPath() + Guid.NewGuid().ToString() + ".coa";
-      File.WriteAllLines(tempCoa, new string[] { coaString }, Encoding.UTF7);
+      File.WriteAllLines(tempCoa, new string[] { coaString }, Encoding.UTF8);
 
       IAutomation automation = new Automation();
       automation.Open(tempCoa);
@@ -186,7 +191,7 @@ namespace ComposAPI
           units.FromCoaString(parameters);
         }
 
- 
+
 
         // ### stud related lines ###
         else if (coaIdentifier == CoaIdentifier.StudDimensions.StudDefinition)
@@ -321,7 +326,7 @@ namespace ComposAPI
       coaString += "!   bearing that name will be assumed.\n";
       coaString += "!\n";
       coaString += "COMPOS_FILE_VERSION\t1\n";
-      coaString += "TITLE\tCOMPOS\tValidation\tCompos Version 7.2\t77101/90\tRL\n"; // ????????
+      coaString += "TITLE\t" + this.JobTitle + "\t" + this.JobSubTitle + "\t" + this.CalculationHeader + "\t" + this.JobNumber + "\t" + this.Initials + "\n";
 
       coaString += units.ToCoaString();
 
