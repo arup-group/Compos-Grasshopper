@@ -69,8 +69,8 @@ namespace ComposAPI
       coaString += this.DesignCode.ToCoaString(this.Name);
 
       coaString += this.Beam.ToCoaString(this.Name, this.DesignCode.Code, units);
-      coaString += this.Stud.ToCoaString(this.Name, units, this.DesignCode.Code);
       coaString += this.Slab.ToCoaString(this.Name, units);
+      coaString += this.Stud.ToCoaString(this.Name, units, this.DesignCode.Code);
 
       foreach (ILoad load in this.Loads)
         coaString += load.ToCoaString(this.Name, units);

@@ -89,12 +89,12 @@ namespace ComposAPI
     public string ToCoaString(string name, ComposUnits units)
     {
       string str = this.Material.ToCoaString(name, units);
-      int num = 1;
-      int index = this.Dimensions.Count + 1;
+      int num = this.Dimensions.Count;
+      int index = 1;
       foreach (SlabDimension dimension in this.Dimensions)
       {
         str += dimension.ToCoaString(name, num, index, units);
-        num++;
+        index++;
       }
       str += this.Transverse.ToCoaString(name, units);
       if (this.Mesh != null)

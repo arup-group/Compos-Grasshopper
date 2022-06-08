@@ -64,7 +64,7 @@ namespace ComposAPI
       parameters.Add(CoaIdentifier.RebarMesh);
       parameters.Add(name);
       parameters.Add(this.MeshType.ToString());
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.Cover.Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.Cover.ToUnit(units.Length).Value, 6));
       if (this.Rotated)
         parameters.Add("PERPENDICULAR");
       else

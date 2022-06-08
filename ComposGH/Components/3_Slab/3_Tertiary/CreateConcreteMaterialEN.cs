@@ -43,7 +43,7 @@ namespace ComposGH.Components
     });
     private bool First = true;
     private ConcreteGradeEN Grade = ConcreteGradeEN.C20_25;
-    private ConcreteMaterial.DensityClass DensityClass = ConcreteMaterial.DensityClass.DC1801_2000;
+    private ConcreteMaterial.DensityClass DensityClass = ConcreteMaterial.DensityClass.NOT_APPLY;
     private DensityUnit DensityUnit = Units.DensityUnit;
     private StrainUnit StrainUnit = StrainUnit.MilliStrain;
 
@@ -171,6 +171,22 @@ namespace ComposGH.Components
       {
         shrinkageStrain = GetInput.Strain(this, DA, 3, StrainUnit, true);
         userStrain = true;
+      }
+
+      switch(this.Grade)
+      {
+        case (ConcreteGradeEN.C20_25):
+        case (ConcreteGradeEN.C25_30):
+        case (ConcreteGradeEN.C30_37):
+        case (ConcreteGradeEN.C32_40):
+        case (ConcreteGradeEN.C35_45):
+        case (ConcreteGradeEN.C40_50):
+        case (ConcreteGradeEN.C45_55):
+        case (ConcreteGradeEN.C50_60):
+        case (ConcreteGradeEN.C55_67):
+        case (ConcreteGradeEN.C60_75):
+          this.DensityClass = ConcreteMaterial.DensityClass.NOT_APPLY;
+          break;
       }
 
       ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, this.DensityClass, dryDensity, userDensity, (eRatio == null) ? new ERatio() { ShortTerm = 6, LongTerm = 18, Vibration = 5.39 } : eRatio.Value, imposedLoadPercentage, shrinkageStrain, userStrain);
