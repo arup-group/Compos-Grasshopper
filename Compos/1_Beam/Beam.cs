@@ -108,9 +108,6 @@ namespace ComposAPI
 
       string str = CoaHelper.CreateString(parameters);
 
-      str += this.Restraint.ToCoaString(name, units);
-      str += this.Material.ToCoaString(name, code, units);
-
       int num = 1;
       int index = this.Sections.Count + 1;
       foreach (IBeamSection section in this.Sections)
@@ -118,6 +115,9 @@ namespace ComposAPI
         str += section.ToCoaString(name, num, index, units);
         num++;
       }
+
+      str += this.Material.ToCoaString(name, code, units);
+      str += this.Restraint.ToCoaString(name, units);
 
       if (this.WebOpenings != null)
       {
