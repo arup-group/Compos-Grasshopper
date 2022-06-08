@@ -41,7 +41,7 @@ namespace ComposGH.Components
       "Cement Type",
       "Settings"
     });
-    List<string> DesigncodesPretty = new List<string>(new string[]
+    List<string> DesignCodePretty = new List<string>(new string[]
     {
       "BS5950-3.1:1990 (superseded)",
       "BS5950-3.1:1990+A1:2010",
@@ -58,7 +58,7 @@ namespace ComposGH.Components
       "Include thin-flange sections",
       "Include concrete slab weight",
       "Consider shear deflection",
-      "Consider shrinkage decflection",
+      "Consider shrinkage deflection",
       "Ignore shrinkage def. if L/d < 20",
       "Use approx. modular ratios"
     });
@@ -80,8 +80,8 @@ namespace ComposGH.Components
         this.SelectedItems = new List<string>();
 
         // code
-        this.DropdownItems.Add(this.DesigncodesPretty);
-        this.SelectedItems.Add(this.DesigncodesPretty[2]); //EC4 default
+        this.DropdownItems.Add(this.DesignCodePretty);
+        this.SelectedItems.Add(this.DesignCodePretty[2]); //EC4 default
 
         // national annex
         this.DropdownItems.Add(Enum.GetValues(typeof(NationalAnnex)).Cast<NationalAnnex>()
@@ -115,9 +115,9 @@ namespace ComposGH.Components
 
       if (i == 0)
       {
-        for (int k = 0; k < this.DesigncodesPretty.Count; k++)
+        for (int k = 0; k < this.DesignCodePretty.Count; k++)
         {
-          if (this.SelectedItems[i] == this.DesigncodesPretty[k])
+          if (this.SelectedItems[i] == this.DesignCodePretty[k])
           {
             if (this.Code == (Code)k)
               return;
@@ -224,9 +224,9 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      for (int i = 0; i < this.DesigncodesPretty.Count; i++)
+      for (int i = 0; i < this.DesignCodePretty.Count; i++)
       {
-        if (this.SelectedItems[0] == this.DesigncodesPretty[i])
+        if (this.SelectedItems[0] == this.DesignCodePretty[i])
           this.Code = (Code)i;
       }
       if (this.Code == Code.EN1994_1_1_2004)
