@@ -1,11 +1,11 @@
-﻿using Compos_8_6;
-using ComposAPI.Helpers;
-using Oasys.Units;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using ComposAPI.Helpers;
+using Compos_8_6;
+using Oasys.Units;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -114,6 +114,15 @@ namespace ComposAPI
       return file;
     }
 
+    /// <summary>
+    /// Save the data to COB, COAor CSV file. Returns a status, as follows:
+    /// 0 – OK
+    /// 1 – no Compos file is open
+    /// 2 – invalid file extension
+    /// 3 – failed to save
+    /// </summary>
+    /// <param name="fileName">the name of the file to be saved, including path and extension.</param>
+    /// <returns></returns>
     public int SaveAs(string fileName)
     {
       // create coastring from members
@@ -145,6 +154,12 @@ namespace ComposAPI
       return str;
     }
 
+    /// <summary>
+    /// Return the utilisation factor (natural frequency) for the given member and the option
+    /// </summary>
+    /// <param name="memberName"></param>
+    /// <param name="option"></param>
+    /// <returns></returns>
     public float UtilisationFactor(string memberName, UtilisationFactorOption option)
     {
       return this.ComposCOM.UtilisationFactor(memberName, option.ToString());
@@ -190,8 +205,6 @@ namespace ComposAPI
           // change the currently used unit
           units.FromCoaString(parameters);
         }
-
-
 
         // ### stud related lines ###
         else if (coaIdentifier == CoaIdentifier.StudDimensions.StudDefinition)
@@ -256,7 +269,6 @@ namespace ComposAPI
         }
       }
 
-
       // add special ec4 stud grade to stud dimensions
       foreach (string name in studECDimensions.Keys)
         studDimensions[name].Fu = studECDimensions[name].Fu;
@@ -272,8 +284,6 @@ namespace ComposAPI
       // add stud specifications to studs
       foreach (string name in studSpecifications.Keys)
         studs[name].StudSpecification = studSpecifications[name];
-
-
 
       // ### Set data to members ###
       foreach (Member member in file.Members)

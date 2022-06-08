@@ -1,9 +1,9 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Drawing;
+using ComposAPI;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
-using System;
-using System.Drawing;
 
 namespace ComposGH.Components
 {
@@ -30,18 +30,34 @@ namespace ComposGH.Components
     //This region overrides the typical component layout
     public override void CreateAttributes()
     {
-      m_attributes = new UI.Button3ComponentUI(this, "Save", "Save As", "Open in Compos", SaveFile, SaveAsFile, OpenComposexe, true, "Save Compos file");
+      m_attributes = new UI.Button3ComponentUI(this, "Save", "Save As", "Open in Compos", SaveFile, SaveAsFile, OpenCompos, true, "Save Compos file");
     }
 
     public void SaveFile()
     {
-      if (this.FileName == null | this.FileName == "")
-        SaveAsFile();
-      else
+      if(this.FileName == null)
       {
-        this.ComposFile.SaveAs(this.FileName);
-        
-        this.Message = "File saved";
+        this.Message = "Please provide filename and path";
+        return;
+      }
+      this.CanOpen = false;
+      int status = this.ComposFile.SaveAs(this.FileName);
+      switch (status)
+      {
+        case 0:
+          this.CanOpen = true;
+          this.Message = "File saved";
+          return;
+        case 1:
+          this.Message = "No Compos file is open";
+          return;
+        case 2:
+          this.Message = "Invalid file extension";
+          return;
+        case 3:
+        default:
+          this.Message = "Failed to save";
+          return;
       }
     }
 
@@ -53,58 +69,55 @@ namespace ComposGH.Components
       {
         this.FileName = fdi.FileName;
         this.UsersetFileName = true;
-        
-          this.CanOpen = true;
-          //CreateAttributes();
-          string mes = "File saved";
 
-          //add panel input with string
-          //delete existing inputs if any
-          while (Params.Input[2].Sources.Count > 0)
-            Grasshopper.Instances.ActiveCanvas.Document.RemoveObject(Params.Input[2].Sources[0], false);
+        SaveFile();
+        //CreateAttributes();
 
-          //instantiate  new panel
-          var panel = new Grasshopper.Kernel.Special.GH_Panel();
-          panel.CreateAttributes();
+        // add panel input with string
+        // delete existing inputs if any
+        while (Params.Input[2].Sources.Count > 0)
+          Grasshopper.Instances.ActiveCanvas.Document.RemoveObject(Params.Input[2].Sources[0], false);
 
-          panel.Attributes.Pivot = new PointF((float)Attributes.DocObject.Attributes.Bounds.Left -
-              panel.Attributes.Bounds.Width - 40, (float)Attributes.DocObject.Attributes.Bounds.Bottom - panel.Attributes.Bounds.Height);
+        // instantiate new panel
+        var panel = new Grasshopper.Kernel.Special.GH_Panel();
+        panel.CreateAttributes();
 
-          //populate value list with our own data
-          panel.UserText = this.FileName;
+        panel.Attributes.Pivot = new PointF((float)Attributes.DocObject.Attributes.Bounds.Left -
+            panel.Attributes.Bounds.Width - 40, (float)Attributes.DocObject.Attributes.Bounds.Bottom - panel.Attributes.Bounds.Height);
 
-          //Until now, the panel is a hypothetical object.
-          // This command makes it 'real' and adds it to the canvas.
-          Grasshopper.Instances.ActiveCanvas.Document.AddObject(panel, false);
+        // populate value list with our own data
+        panel.UserText = this.FileName;
 
-          //Connect the new slider to this component
-          Params.Input[2].AddSource(panel);
-          Params.OnParametersChanged();
-          ExpireSolution(true);
-        this.Message = mes;
+        // Until now, the panel is a hypothetical object.
+        // This command makes it 'real' and adds it to the canvas.
+        Grasshopper.Instances.ActiveCanvas.Document.AddObject(panel, false);
+
+        // Connect the new slider to this component
+        Params.Input[2].AddSource(panel);
+        Params.OnParametersChanged();
+        ExpireSolution(true);
       }
     }
 
-    public void OpenComposexe()
+    public void OpenCompos()
     {
-      if (this.FileName != null)
-      {
-        if (this.FileName != "")
-        {
-          if (this.CanOpen)
-            System.Diagnostics.Process.Start(this.FileName);
-        }
-      }
+      string programFiles = Environment.ExpandEnvironmentVariables("%ProgramW6432%");
+      string fileName = programFiles + @"\Oasys\Compos 8.6\Compos.exe";
+
+      if (this.FileName == null || this.FileName == "")
+        this.SaveAsFile();
+      if (this.CanOpen)
+        System.Diagnostics.Process.Start(fileName, this.FileName);
     }
     #endregion
 
     #region Input and output
     // This region handles input and output parameters
-
     string FileName = null;
     bool UsersetFileName = false;
     ComposFile ComposFile;
     bool CanOpen = false;
+
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       pManager.AddGenericParameter("Member", "Mem", "Compos member to save", GH_ParamAccess.item);
@@ -113,34 +126,40 @@ namespace ComposGH.Components
       pManager[1].Optional = true;
       pManager[2].Optional = true;
     }
+
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
       pManager.AddGenericParameter("File", "Cob", "Compos File", GH_ParamAccess.item);
     }
+    #endregion
+
     #region IGH_VariableParameterComponent null implementation
     //This sub region handles any changes to the component after it has been placed on the canvas
     bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
     {
       return false;
     }
+
     bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
     {
       return false;
     }
+
     IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
     {
       return null;
     }
+
     bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
     {
       return false;
     }
+
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
       Params.Input[0].Optional = this.FileName != null; //filename can have input from user input
       Params.Input[0].ClearRuntimeMessages(); // this needs to be called to avoid having a runtime warning message after changed to optional
     }
-    #endregion
     #endregion
 
     #region (de)serialization
@@ -179,10 +198,10 @@ namespace ComposGH.Components
           this.ComposFile = (ComposFile)goo.Value;
           Message = "";
         }
-        else if(gh_typ.Value is MemberGoo)
+        else if (gh_typ.Value is MemberGoo)
         {
           MemberGoo goo = (MemberGoo)gh_typ.Value;
-          IMember member  = (IMember)goo.Value;
+          IMember member = (IMember)goo.Value;
 
           this.ComposFile = new ComposFile();
           this.ComposFile.Members.Add(member);
@@ -194,6 +213,7 @@ namespace ComposGH.Components
           return;
         }
 
+        this.FileName = null;
         if (!this.UsersetFileName)
         {
           if (this.ComposFile.FileName != "")
@@ -208,7 +228,7 @@ namespace ComposGH.Components
         if (DA.GetData(1, ref save))
         {
           if (save)
-            Message = this.FileName;
+            this.Message = this.FileName;
         }
 
         DA.SetData(0, new ComposFileGoo(this.ComposFile));
@@ -216,4 +236,3 @@ namespace ComposGH.Components
     }
   }
 }
-
