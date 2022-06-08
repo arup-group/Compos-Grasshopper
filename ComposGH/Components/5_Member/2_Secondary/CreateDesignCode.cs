@@ -72,46 +72,46 @@ namespace ComposGH.Components
     private CodeOptions CodeOptions = new CodeOptions();
     private EC4Options EC4codeOptions = new EC4Options();
 
-
     public override void CreateAttributes()
     {
-      if (First)
+      if (this.First)
       {
-        DropdownItems = new List<List<string>>();
-        SelectedItems = new List<string>();
+        this.DropdownItems = new List<List<string>>();
+        this.SelectedItems = new List<string>();
 
         // code
-        DropdownItems.Add(DesigncodesPretty);
-        SelectedItems.Add(DesigncodesPretty[2]); //EC4 default
+        this.DropdownItems.Add(this.DesigncodesPretty);
+        this.SelectedItems.Add(this.DesigncodesPretty[2]); //EC4 default
 
         // national annex
-        DropdownItems.Add(Enum.GetValues(typeof(NationalAnnex)).Cast<NationalAnnex>()
+        this.DropdownItems.Add(Enum.GetValues(typeof(NationalAnnex)).Cast<NationalAnnex>()
             .Select(x => x.ToString().Replace("_", " ")).ToList());
-        SelectedItems.Add(DropdownItems[1][0]); // Generic default
+        this.SelectedItems.Add(this.DropdownItems[1][0]); // Generic default
 
         // cement type
-        DropdownItems.Add(Enum.GetValues(typeof(CementClass)).Cast<CementClass>()
+        this.DropdownItems.Add(Enum.GetValues(typeof(CementClass)).Cast<CementClass>()
             .Select(x => "Cement class " + x.ToString()).ToList());
-        SelectedItems.Add("Cement class " + EC4codeOptions.CementType.ToString()); // Class N default
+        this.SelectedItems.Add("Cement class " + this.EC4codeOptions.CementType.ToString()); // Class N default
 
-        Checkboxes = new List<bool>();
-        Checkboxes.Add(DesignOptions.ProppedDuringConstruction);
-        Checkboxes.Add(DesignOptions.InclSteelBeamWeight);
-        Checkboxes.Add(DesignOptions.InclThinFlangeSections);
-        Checkboxes.Add(DesignOptions.InclConcreteSlabWeight);
-        Checkboxes.Add(DesignOptions.ConsiderShearDeflection);
-        Checkboxes.Add(EC4codeOptions.ConsiderShrinkageDeflection);
-        Checkboxes.Add(EC4codeOptions.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
-        Checkboxes.Add(EC4codeOptions.ApproxModularRatios);
+        this.Checkboxes = new List<bool>();
+        this.Checkboxes.Add(this.DesignOptions.ProppedDuringConstruction);
+        this.Checkboxes.Add(this.DesignOptions.InclSteelBeamWeight);
+        this.Checkboxes.Add(this.DesignOptions.InclThinFlangeSections);
+        this.Checkboxes.Add(this.DesignOptions.InclConcreteSlabWeight);
+        this.Checkboxes.Add(this.DesignOptions.ConsiderShearDeflection);
+        this.Checkboxes.Add(this.EC4codeOptions.ConsiderShrinkageDeflection);
+        this.Checkboxes.Add(this.EC4codeOptions.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
+        this.Checkboxes.Add(this.EC4codeOptions.ApproxModularRatios);
 
         First = false;
       }
-      m_attributes = new UI.MultiDropDownCheckBoxesComponentUI(this, SetSelected, DropdownItems, SelectedItems, CheckBoxToggles, Checkboxes, CheckboxNames, SpacerDescriptions);
+      m_attributes = new UI.MultiDropDownCheckBoxesComponentUI(this, SetSelected, this.DropdownItems, this.SelectedItems, CheckBoxToggles, this.Checkboxes, this.CheckboxNames, this.SpacerDescriptions);
     }
+
     public void SetSelected(int i, int j)
     {
       // change selected item
-      SelectedItems[i] = DropdownItems[i][j];
+      this.SelectedItems[i] = this.DropdownItems[i][j];
 
       if (i == 0)
       {
@@ -196,7 +196,6 @@ namespace ComposGH.Components
       if (i == 2)
         CementClass = (CementClass)Enum.Parse(typeof(CementClass), SelectedItems[i].Last().ToString());
 
-
       // update name of inputs (to display unit on sliders)
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
       ExpireSolution(true);
@@ -207,26 +206,26 @@ namespace ComposGH.Components
     private void CheckBoxToggles(List<bool> newcheckboxes)
     {
       for (int i = 0; i < Checkboxes.Count; i++)
-        Checkboxes[i] = newcheckboxes[i];
+        this.Checkboxes[i] = newcheckboxes[i];
     }
 
     private void UpdateUIFromSelectedItems()
     {
-      for (int i = 0; i < DesigncodesPretty.Count; i++)
+      for (int i = 0; i < this.DesigncodesPretty.Count; i++)
       {
-        if (SelectedItems[0] == DesigncodesPretty[i])
-          Code = (Code)i;
+        if (this.SelectedItems[0] == this.DesigncodesPretty[i])
+          this.Code = (Code)i;
       }
-      if (Code == Code.EN1994_1_1_2004)
+      if (this.Code == Code.EN1994_1_1_2004)
       {
-        NA = (NationalAnnex)Enum.Parse(typeof(NationalAnnex), SelectedItems[1].Replace(" ", "_"));
-        CementClass = (CementClass)Enum.Parse(typeof(CementClass), SelectedItems[2].Last().ToString());
+        this.NA = (NationalAnnex)Enum.Parse(typeof(NationalAnnex), this.SelectedItems[1].Replace(" ", "_"));
+        this.CementClass = (CementClass)Enum.Parse(typeof(CementClass), this.SelectedItems[2].Last().ToString());
       }
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
       ExpireSolution(true);
-      Params.OnParametersChanged();
+      this.Params.OnParametersChanged();
       this.OnDisplayExpired(true);
     }
     #endregion
@@ -254,7 +253,7 @@ namespace ComposGH.Components
       ISafetyFactors safetyFactors = null;
       EC4SafetyFactorsGoo ec4safetyFactorsGoo = null;
       IEC4SafetyFactors ec4safetyFactors = null;
-      if (Code == Code.EN1994_1_1_2004)
+      if (this.Code == Code.EN1994_1_1_2004)
       {
         ec4safetyFactorsGoo = (EC4SafetyFactorsGoo)GetInput.GenericGoo<EC4SafetyFactorsGoo>(this, DA, 0);
         ec4safetyFactors = (ec4safetyFactorsGoo == null) ? null : ec4safetyFactorsGoo.Value;
@@ -265,15 +264,15 @@ namespace ComposGH.Components
         safetyFactors = (safetyFactorsGoo == null) ? null : safetyFactorsGoo.Value;
       }
 
-      switch (Code)
+      switch (this.Code)
       {
         case Code.BS5950_3_1_1990_Superseded:
         case Code.BS5950_3_1_1990_A1_2010:
         case Code.HKSUOS_2005:
         case Code.HKSUOS_2011:
           DesignCode otherCodes = new DesignCode();
-          otherCodes.Code = Code;
-          otherCodes.DesignOption = DesignOptions;
+          otherCodes.Code = this.Code;
+          otherCodes.DesignOption = this.DesignOptions;
 
           if (safetyFactors != null)
             otherCodes.SafetyFactors = safetyFactors;
@@ -283,9 +282,9 @@ namespace ComposGH.Components
 
         case Code.EN1994_1_1_2004:
           EN1994 ec4 = new EN1994();
-          ec4.NationalAnnex = NA;
-          ec4.DesignOption = DesignOptions;
-          ec4.CodeOptions = EC4codeOptions;
+          ec4.NationalAnnex = this.NA;
+          ec4.DesignOption = this.DesignOptions;
+          ec4.CodeOptions = this.EC4codeOptions;
 
           CreepShrinkageEuroCodeParameters shrink = (CreepShrinkageEuroCodeParameters)GetInput.GenericGoo<CreepShrinkageEuroCodeParametersGoo>(this, DA, 1);
           if (shrink != null)
@@ -302,8 +301,8 @@ namespace ComposGH.Components
 
         case Code.AS_NZS2327_2017:
           ASNZS2327 asnz = new ASNZS2327();
-          asnz.DesignOption = DesignOptions;
-          asnz.CodeOptions = CodeOptions;
+          asnz.DesignOption = this.DesignOptions;
+          asnz.CodeOptions = this.CodeOptions;
           double shrinkageparam = 0;
           if (DA.GetData(1, ref shrinkageparam))
             asnz.CodeOptions.ShortTerm.CreepCoefficient = shrinkageparam;
@@ -320,8 +319,8 @@ namespace ComposGH.Components
         default:
           break;
       }
-
     }
+
     #region update input params
     private void ModeChangeClicked()
     {
@@ -332,17 +331,17 @@ namespace ComposGH.Components
         case Code.BS5950_3_1_1990_A1_2010:
         case Code.HKSUOS_2005:
         case Code.HKSUOS_2011:
-          //remove input parameters 
+          // remove input parameters 
           while (Params.Input.Count > 1)
             Params.UnregisterInputParameter(Params.Input[1], true);
           break;
 
         case Code.EN1994_1_1_2004:
-          //remove input parameters
+          // remove input parameters
           while (Params.Input.Count > 1)
             Params.UnregisterInputParameter(Params.Input[1], true);
 
-          //add input parameters of generic type
+          // add input parameters of generic type
           Params.RegisterInputParam(new Param_GenericObject());
           Params.RegisterInputParam(new Param_GenericObject());
           break;
@@ -362,6 +361,7 @@ namespace ComposGH.Components
       }
     }
     #endregion
+
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
@@ -408,18 +408,22 @@ namespace ComposGH.Components
     {
       return false;
     }
+
     bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
     {
       return false;
     }
+
     IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
     {
       return null;
     }
+
     bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
     {
       return false;
     }
+
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
       switch (Code)

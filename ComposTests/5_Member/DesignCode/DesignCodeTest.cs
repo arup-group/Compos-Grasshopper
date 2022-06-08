@@ -7,7 +7,7 @@ namespace ComposAPI.Members.Tests
   public partial class DesignCodeTest
   {
     [Fact]
-    public DesignCode TestConstructor()
+    public void ConstructorTest()
     {
       // 1 setup input
       Code code = Code.BS5950_3_1_1990_A1_2010;
@@ -25,9 +25,6 @@ namespace ComposAPI.Members.Tests
       // safety factors
       Assert.Null(designCode.SafetyFactors.MaterialFactors);
       Assert.Null(designCode.SafetyFactors.LoadFactors);
-
-      // (optionally return object for other tests)
-      return designCode;
     }
 
     [Fact]
@@ -35,7 +32,7 @@ namespace ComposAPI.Members.Tests
     {
       // Arrange
       string expected_coaString = "DESIGN_OPTION	MEMBER-2	BS5950-3.1:1990+A1:2010	PROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_NO	2.00000	2.00000\n";
-      DesignCode dc = TestConstructor();
+      DesignCode dc = new DesignCode(Code.BS5950_3_1_1990_A1_2010);
       // Act
       string coaString = dc.ToCoaString("MEMBER-2");
       // Assert
