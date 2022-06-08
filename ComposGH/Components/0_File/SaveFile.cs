@@ -35,7 +35,7 @@ namespace ComposGH.Components
 
     public void SaveFile()
     {
-      if(this.FileName == null)
+      if (this.FileName == null)
       {
         this.Message = "Please provide filename and path";
         return;
@@ -106,6 +106,8 @@ namespace ComposGH.Components
 
       if (this.FileName == null || this.FileName == "")
         this.SaveAsFile();
+      else
+        this.SaveFile();
       if (this.CanOpen)
         System.Diagnostics.Process.Start(fileName, this.FileName);
     }
