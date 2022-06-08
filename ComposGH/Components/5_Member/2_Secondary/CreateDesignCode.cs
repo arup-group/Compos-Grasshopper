@@ -66,7 +66,6 @@ namespace ComposGH.Components
     private bool First = true;
     private Code Code = Code.EN1994_1_1_2004;
     private NationalAnnex NA = NationalAnnex.Generic;
-    private CementClass CementClass = CementClass.N;
 
     private DesignOption DesignOptions = new DesignOption();
     private CodeOptions CodeOptions = new CodeOptions();
@@ -156,7 +155,7 @@ namespace ComposGH.Components
             // cement type
             this.DropdownItems.Add(Enum.GetValues(typeof(CementClass)).Cast<CementClass>()
                 .Select(x => "Cement class " + x.ToString()).ToList());
-            this.SelectedItems.Add("Cement class " + CementClass.ToString());
+            this.SelectedItems.Add("Cement class " + this.EC4CodeOptions.CementType.ToString());
 
             while (this.Checkboxes.Count > 5)
               this.Checkboxes.RemoveAt(5);
@@ -194,7 +193,7 @@ namespace ComposGH.Components
       if (i == 1)
         this.NA = (NationalAnnex)Enum.Parse(typeof(NationalAnnex), this.SelectedItems[i].Replace(" ", "_"));
       if (i == 2)
-        this.CementClass = (CementClass)Enum.Parse(typeof(CementClass), this.SelectedItems[i].Last().ToString());
+        this.EC4CodeOptions.CementType = (CementClass)Enum.Parse(typeof(CementClass), this.SelectedItems[i].Last().ToString());
 
       // update name of inputs (to display unit on sliders)
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -232,7 +231,7 @@ namespace ComposGH.Components
       if (this.Code == Code.EN1994_1_1_2004)
       {
         this.NA = (NationalAnnex)Enum.Parse(typeof(NationalAnnex), this.SelectedItems[1].Replace(" ", "_"));
-        this.CementClass = (CementClass)Enum.Parse(typeof(CementClass), this.SelectedItems[2].Last().ToString());
+        this.EC4CodeOptions.CementType = (CementClass)Enum.Parse(typeof(CementClass), this.SelectedItems[2].Last().ToString());
       }
 
       CreateAttributes();
