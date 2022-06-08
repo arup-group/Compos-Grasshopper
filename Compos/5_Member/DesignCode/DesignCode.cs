@@ -129,7 +129,7 @@ namespace ComposAPI
       return designCode;
     }
 
-    public string ToCoaString(string name)
+    public virtual string ToCoaString(string name)
     {
       string str = CoaIdentifier.DesignOption + '\t' + name + '\t';
       switch (this.Code)
@@ -221,6 +221,16 @@ namespace ComposAPI
     {
       this.Code = Code.EN1994_1_1_2004;
     }
+
+    #region coa interop
+    public override string ToCoaString(string name)
+    {
+      string str = base.ToCoaString(name);
+      str += this.CodeOptions.ToCoaString(name, this.Code, this.NationalAnnex);
+      str += this.SafetyFactors.ToCoaString(name);
+      return str;
+    }
+    #endregion
   }
 
   /// <summary>

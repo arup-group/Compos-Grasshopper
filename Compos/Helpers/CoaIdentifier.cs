@@ -34,6 +34,7 @@
     internal const string DeckingCatalogue = "DECKING_CATALOGUE";
     internal const string DeckingUser = "DECKING_USER";
     internal const string DesignOption = "DESIGN_OPTION";
+    internal const string EC4DesignOption = "EC4_DESIGN_OPTION";
     internal const string MemberTitle = "MEMBER_TITLE";
     internal const string RebarTransverse = "REBAR_TRANSVERSE";
     internal const string RebarMesh = "REBAR_WESH";

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ComposAPI.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnitsNet;
@@ -47,5 +48,57 @@ namespace ComposAPI
     {
       // default initialiser
     }
+
+    #region coainterop
+    internal ICodeOptions FromCoaString(List<string> parameters)
+    {
+      EC4Options eC4Options = new EC4Options();
+
+      // todo
+
+      return eC4Options;
+    }
+
+    public string ToCoaString(string name, Code code, NationalAnnex nationalAnnex)
+    {
+      List<string> parameters = new List<string>();
+      parameters.Add(CoaIdentifier.EC4DesignOption);
+      parameters.Add(name);
+
+      CoaHelper.AddParameter(parameters, "SHRINKAGE_DEFORM_EC4", this.ConsiderShrinkageDeflection);
+      CoaHelper.AddParameter(parameters, "IGNORE_SHRINKAGE_DEFORM", this.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
+      CoaHelper.AddParameter(parameters, "APPROXIMATE_E_RATIO", this.ApproxModularRatios);
+
+      if(nationalAnnex == NationalAnnex.United_Kingdom)
+        parameters.Add("United Kingdom");
+      else
+        parameters.Add("Generic");
+
+      switch(this.CementType)
+      {
+        case CementClass.S:
+          parameters.Add("CLASS_S");
+          break;
+        case CementClass.N:
+        default:
+          parameters.Add("CLASS_N");
+          break;
+        case CementClass.R:
+          parameters.Add("CLASS_R");
+          break;
+      }
+
+      parameters.Add(CoaHelper.FormatSignificantFigures(LongTerm.CreepCoefficient, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(ShortTerm.CreepCoefficient, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(LongTerm.ConcreteAgeAtLoad, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(ShortTerm.ConcreteAgeAtLoad, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(LongTerm.FinalConcreteAgeCreep, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(ShortTerm.FinalConcreteAgeCreep, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(LongTerm.RelativeHumidity, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(ShortTerm.RelativeHumidity, 6));
+
+      return CoaHelper.CreateString(parameters);
+    }
+    #endregion
   }
 }
