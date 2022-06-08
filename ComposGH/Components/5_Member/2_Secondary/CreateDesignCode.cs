@@ -56,9 +56,9 @@ namespace ComposGH.Components
       "Beam propped during construction",
       "Include steel beam weight",
       "Include thin-flange sections",
-      "Include concrete slabe weight",
+      "Include concrete slab weight",
       "Consider shear deflection",
-      "Consider shrikage declection",
+      "Consider shrinkage decflection",
       "Ignore shrinkage def. if L/d < 20",
       "Use approx. modular ratios"
     });
