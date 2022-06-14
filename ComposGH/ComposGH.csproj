@@ -140,6 +140,8 @@
     <Compile Include="Components\7_Results\ReadStresses.cs" />
     <Compile Include="Components\7_Results\ReadStudResults.cs" />
     <Compile Include="Components\7_Results\ReadDeflections.cs" />
+    <Compile Include="Components\7_Results\ReadTransverseRebarProps.cs" />
+    <Compile Include="Components\7_Results\CodeSatisfied.cs" />
     <Compile Include="Components\7_Results\ReadUtilisations.cs" />
     <Compile Include="Components\7_Results\ReadCapacities.cs" />
     <Compile Include="Components\7_Results\ReadBeamResults.cs" />

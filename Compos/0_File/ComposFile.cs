@@ -16,6 +16,7 @@ namespace ComposAPI
     public IList<IMember> Members { get; } = new List<IMember>();
     internal IAutomation ComposCOM { get; }
     internal bool IsAnalysed { get; set; } = false;
+    internal bool IsDesigned { get; set; } = false;
 
     public string JobTitle { get; set; }
     public string JobSubTitle { get; set; }
@@ -49,7 +50,6 @@ namespace ComposAPI
     public short Analyse()
     {
       Initialise();
-      this.IsAnalysed = true;
 
       short status = 0;
       foreach (Member member in this.Members)
@@ -69,7 +69,7 @@ namespace ComposAPI
     /// 0 – OK
     /// 1 – failed
     /// </returns>
-    public short Analyse(string memberName)
+    internal short Analyse(string memberName)
     {
       return this.ComposCOM.Analyse(memberName);
     }
@@ -105,7 +105,7 @@ namespace ComposAPI
         if (this.Design(member.Name) == 1)
           status = 1;
       }
-      this.IsAnalysed = true;
+      this.IsDesigned = true;
       return status;
     }
 
@@ -117,7 +117,7 @@ namespace ComposAPI
     /// 0 – OK
     /// 1 – failed
     /// </returns>
-    public short Design(string memberName)
+    internal short Design(string memberName)
     {
       return this.ComposCOM.Design(memberName);
     }
@@ -174,9 +174,9 @@ namespace ComposAPI
     public float Result(string memberName, string option, short position)
     {
       if (!this.IsAnalysed)
-      {
        this.Analyse();
-      }
+      if (!this.IsDesigned)
+        this.Design();
       return this.ComposCOM.Result(memberName, option, position);
     }
 
@@ -187,7 +187,7 @@ namespace ComposAPI
     /// <param name="option"></param>
     /// <param name="position">position number</param>
     /// <returns></returns>
-    public float MaxResult(string memberName, ResultOption option, short position)
+    public float MaxResult(string memberName, string option, short position)
     {
       return this.ComposCOM.MaxResult(memberName, option.ToString(), out position);
     }
@@ -199,7 +199,7 @@ namespace ComposAPI
     /// <param name="option"></param>
     /// <param name="position">position number</param>
     /// <returns></returns>
-    public short MaxResultPosition(string memberName, ResultOption option, short position)
+    public short MaxResultPosition(string memberName, string option, short position)
     {
       this.ComposCOM.MaxResult(memberName, option.ToString(), out position);
       return position;
@@ -212,7 +212,7 @@ namespace ComposAPI
     /// <param name="option"></param>
     /// <param name="position">position number</param>
     /// <returns></returns>
-    public float MinResult(string memberName, ResultOption option, short position)
+    public float MinResult(string memberName, string option, short position)
     {
       return this.ComposCOM.MinResult(memberName, option.ToString(), out position);
     }
@@ -224,7 +224,7 @@ namespace ComposAPI
     /// <param name="option"></param>
     /// <param name="position">position number</param>
     /// <returns></returns>
-    public short MinResultPosition(string memberName, ResultOption option, short position)
+    public short MinResultPosition(string memberName, string option, short position)
     {
       this.ComposCOM.MinResult(memberName, option.ToString(), out position);
       return position;
@@ -306,6 +306,10 @@ namespace ComposAPI
     /// <returns></returns>
     public float UtilisationFactor(string memberName, UtilisationFactorOption option)
     {
+      if (!this.IsAnalysed)
+        this.Analyse();
+      if (!this.IsDesigned)
+        this.Design();
       return this.ComposCOM.UtilisationFactor(memberName, option.ToString());
     }
     #endregion

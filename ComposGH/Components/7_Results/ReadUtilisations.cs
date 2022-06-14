@@ -130,18 +130,9 @@ namespace ComposGH.Components
       }
       if (file != null && member != null)
       {
-        // should we check code satisfaction here?
-        int status = file.CodeSatisfied(member.Name);
-        /// <returns>The return values are:
-        /// 0 - all code requirements are met
-        /// 1 - except the natural frequency is lower than that required, other code requirements are met
-        /// 2 - one or more code requirements are not met
-        /// 3 - the given member name is not valid
-        /// 4 - there is no results for the given named member
-        /// </returns>
-
-        status = file.Analyse();
-        if (status == 1)
+        int status = file.Analyse();
+        status += file.Design();
+        if (status > 0)
         {
           this.Message = "One or more members failed";
           return;

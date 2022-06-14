@@ -11,16 +11,16 @@ using Grasshopper.Kernel.Types;
 namespace ComposGH.Components
 {
   /// <summary>
-  /// Component to read stresses from a Compos model
+  /// Component to read transverse rebar properties from a Compos model
   /// </summary>
-  public class ReadStresses : GH_Component, IGH_VariableParameterComponent
+  public class ReadTransverseRebarProps : GH_Component, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
-    public override Guid ComponentGuid => new Guid("390d21e6-95c5-4cb9-9eb1-25ba1c52ca96");
-    public ReadStresses()
-      : base("Stresses", "Stress", "Reads stresses from a Compos model",
+    public override Guid ComponentGuid => new Guid("10f23315-ff32-43aa-8f0f-7fd6bdd2d003");
+    public ReadTransverseRebarProps()
+      : base("Get Utilisations", "Util", "Read utilisations from a Compos model",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat6())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -39,11 +39,11 @@ namespace ComposGH.Components
     // list of descriptions 
     List<string> SpacerDescriptions = new List<string>(new string[]
     {
-      "Stress option"
+      "Transverse rebar option"
     });
 
     private bool First = true;
-    private StressOption Option = StressOption.STRESS_CONS_BEAM_BOT;
+    private TransverseRebarOption Option = TransverseRebarOption.REBAR_DIST_LEFT_SIDE;
 
     public override void CreateAttributes()
     {
@@ -52,7 +52,7 @@ namespace ComposGH.Components
         this.DropdownItems = new List<List<string>>();
         this.SelectedItems = new List<string>();
 
-        this.DropdownItems.Add(Enum.GetValues(typeof(StressOption)).Cast<StressOption>().Select(x => x.ToString()).ToList());
+        this.DropdownItems.Add(Enum.GetValues(typeof(TransverseRebarOption)).Cast<TransverseRebarOption>().Select(x => x.ToString()).ToList());
         this.SelectedItems.Add(this.Option.ToString());
 
         this.First = false;
@@ -67,7 +67,7 @@ namespace ComposGH.Components
 
       if (i == 0)
       {
-        this.Option = (StressOption)Enum.Parse(typeof(StressOption), this.SelectedItems[i]);
+        this.Option = (TransverseRebarOption)Enum.Parse(typeof(TransverseRebarOption), this.SelectedItems[i]);
       }
 
       // update name of inputs (to display unit on sliders)
@@ -79,7 +79,7 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      this.Option = (StressOption)Enum.Parse(typeof(StressOption), this.SelectedItems[0]);
+      this.Option = (TransverseRebarOption)Enum.Parse(typeof(TransverseRebarOption), this.SelectedItems[0]);
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -94,13 +94,11 @@ namespace ComposGH.Components
     {
       pManager.AddGenericParameter("Model", "Mod", "Compos model", GH_ParamAccess.item);
       pManager.AddGenericParameter("Member", "Mem", "Compos member", GH_ParamAccess.item);
-      //pManager.AddIntegerParameter("Position", "Pos", "(Optional) Position number", GH_ParamAccess.item, 0);
-      //pManager[2].Optional = true;
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Stress", "Str", "Stresses", GH_ParamAccess.list);
+      pManager.AddGenericParameter("TranRebarProp", "TRP", "Transverse rebar property", GH_ParamAccess.list);
     }
     #endregion
 
@@ -140,9 +138,9 @@ namespace ComposGH.Components
           return;
         }
         List<GH_Number> result = new List<GH_Number>();
-        for (short pos = 0; pos < file.NumIntermediatePos(member.Name); pos++)
+        for (short num = 0; num < file.NumTranRebar(member.Name); num++)
         {
-          result.Add(new GH_Number(file.Result(member.Name, this.Option.ToString(), Convert.ToInt16(pos))));
+          result.Add(new GH_Number(file.TranRebarProp(member.Name, this.Option, Convert.ToInt16(num))));
         }
 
         DA.SetDataList(0, result);
