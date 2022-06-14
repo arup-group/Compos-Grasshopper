@@ -19,7 +19,7 @@ namespace ComposAPI
     short MinResultPosition(string memberName, ResultOption option, short position);
     short NumIntermediatePos(string memberName);
     short NumTranRebar(string memberName);
-    float Result(string memberName, ResultOption option, short position);
+    float Result(string memberName, string option, short position);
     int SaveAs(string fileName);
     string ToCoaString();
     float TranRebarProp(string memberName, TransverseRebarOption option, short rebarnum);

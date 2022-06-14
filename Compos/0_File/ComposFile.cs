@@ -17,7 +17,6 @@ namespace ComposAPI
     internal IAutomation ComposCOM { get; }
     internal bool IsAnalysed { get; set; } = false;
 
-    //public string FileName { get; internal set; }
     public string JobTitle { get; set; }
     public string JobSubTitle { get; set; }
     public string CalculationHeader { get; set; }
@@ -49,6 +48,9 @@ namespace ComposAPI
     /// </returns>
     public short Analyse()
     {
+      Initialise();
+      this.IsAnalysed = true;
+
       short status = 0;
       foreach (Member member in this.Members)
       {
@@ -140,7 +142,6 @@ namespace ComposAPI
       // open temp coa file as ASCII string
       string coaString = File.ReadAllText(tempCoa, Encoding.UTF7);
       ComposFile file = ComposFile.FromCoaString(coaString);
-      //file.FileName = fileName;
 
       return file;
     }
@@ -170,15 +171,13 @@ namespace ComposAPI
     /// <param name="option"></param>
     /// <param name="position">position number</param>
     /// <returns></returns>
-    public float Result(string memberName, ResultOption option, short position)
+    public float Result(string memberName, string option, short position)
     {
       if (!this.IsAnalysed)
       {
-        Initialise();
-        int status = this.Analyse();
-        this.IsAnalysed = true;
+       this.Analyse();
       }
-      return this.ComposCOM.Result(memberName, option.ToString(), position);
+      return this.ComposCOM.Result(memberName, option, position);
     }
 
     /// <summary>
@@ -273,8 +272,6 @@ namespace ComposAPI
       // save to .cob with COM object
       if (!fileName.EndsWith(".cob"))
         fileName = fileName + ".cob";
-
-      //this.FileName = fileName;
 
       int status = this.ComposCOM.SaveAs(fileName);
 

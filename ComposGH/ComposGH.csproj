@@ -136,7 +136,15 @@
     <Compile Include="Components\5_Member\2_Secondary\CreateEC4SafetyFactors.cs" />
     <Compile Include="Components\5_Member\2_Secondary\CreateCreepShrinkageParams.cs" />
     <Compile Include="Components\5_Member\2_Secondary\CreateSafetyFactors.cs" />
-    <Compile Include="Components\7_Results\ReadResult.cs" />
+    <Compile Include="Components\7_Results\ReadClassResults.cs" />
+    <Compile Include="Components\7_Results\ReadStresses.cs" />
+    <Compile Include="Components\7_Results\ReadStudResults.cs" />
+    <Compile Include="Components\7_Results\ReadDeflections.cs" />
+    <Compile Include="Components\7_Results\ReadUtilisations.cs" />
+    <Compile Include="Components\7_Results\ReadCapacities.cs" />
+    <Compile Include="Components\7_Results\ReadBeamResults.cs" />
+    <Compile Include="Components\7_Results\ReadInternalForces.cs" />
+    <Compile Include="Components\7_Results\ReadResults.cs" />
     <Compile Include="ComposGHInfo.cs" />
     <Compile Include="Helpers\DeSerialization.cs" />
     <Compile Include="Helpers\GhRibbonLayout.cs" />

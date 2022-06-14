@@ -11,18 +11,18 @@ using Grasshopper.Kernel.Types;
 namespace ComposGH.Components
 {
   /// <summary>
-  /// Component to save to a compos data file
+  /// Component to read utilisations from a Compos model
   /// </summary>
-  public class ReadResult : GH_Component, IGH_VariableParameterComponent
+  public class ReadUtilisations : GH_Component, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
-    public override Guid ComponentGuid => new Guid("3517ea0c-5e7f-42b0-aef4-78301b097b2b");
-    public ReadResult()
-      : base("Read Compos Result", "Read", "Reads results from a Compos model",
+    public override Guid ComponentGuid => new Guid("3afd2171-a09d-4a97-8371-fc27572ea5c1");
+    public ReadUtilisations()
+      : base("Get Utilisations", "Util", "Read utilisations from a Compos model",
             Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat0())
+            Ribbon.SubCategoryName.Cat6())
     { this.Hidden = true; } // sets the initial state of the component to hidden
     public override GH_Exposure Exposure => GH_Exposure.primary;
 
@@ -39,20 +39,11 @@ namespace ComposGH.Components
     // list of descriptions 
     List<string> SpacerDescriptions = new List<string>(new string[]
     {
-      "Result option"
+      "Utilisation factor option"
     });
-    //List<string> DesignCodePretty = new List<string>(new string[]
-    //{
-    //  "BS5950-3.1:1990 (superseded)",
-    //  "BS5950-3.1:1990+A1:2010",
-    //  "EN1994-1-1:2004",
-    //  "HKSUOS:2005",
-    //  "HKSUOS:2011",
-    //  "AS/NZS2327:2017"
-    //});
 
     private bool First = true;
-    private ResultOption Option = ResultOption.CRITI_SECT_DIST;
+    private UtilisationFactorOption Option = UtilisationFactorOption.FinalMoment;
 
     public override void CreateAttributes()
     {
@@ -61,7 +52,7 @@ namespace ComposGH.Components
         this.DropdownItems = new List<List<string>>();
         this.SelectedItems = new List<string>();
 
-        this.DropdownItems.Add(Enum.GetValues(typeof(ResultOption)).Cast<ResultOption>().Select(x => x.ToString()).ToList());
+        this.DropdownItems.Add(Enum.GetValues(typeof(UtilisationFactorOption)).Cast<UtilisationFactorOption>().Select(x => x.ToString()).ToList());
         this.SelectedItems.Add(this.Option.ToString());
 
         this.First = false;
@@ -76,7 +67,7 @@ namespace ComposGH.Components
 
       if (i == 0)
       {
-        this.Option = (ResultOption)Enum.Parse(typeof(ResultOption), this.SelectedItems[i]);
+        this.Option = (UtilisationFactorOption)Enum.Parse(typeof(UtilisationFactorOption), this.SelectedItems[i]);
       }
 
       // update name of inputs (to display unit on sliders)
@@ -88,7 +79,7 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      this.Option = (ResultOption)Enum.Parse(typeof(ResultOption), this.SelectedItems[0]);
+      this.Option = (UtilisationFactorOption)Enum.Parse(typeof(UtilisationFactorOption), this.SelectedItems[0]);
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -103,14 +94,11 @@ namespace ComposGH.Components
     {
       pManager.AddGenericParameter("Model", "Mod", "Compos model", GH_ParamAccess.item);
       pManager.AddGenericParameter("Member", "Mem", "Compos member", GH_ParamAccess.item);
-      pManager.AddIntegerParameter("Position", "Pos", "Position", GH_ParamAccess.item, 0);
-      pManager[0].Optional = false;
-      pManager[2].Optional = true;
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddNumberParameter("Result", "Res", "Compos result", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Util", "U", "Utilisation", GH_ParamAccess.item);
     }
     #endregion
 
@@ -142,22 +130,23 @@ namespace ComposGH.Components
       }
       if (file != null && member != null)
       {
-        int position = 0;
-        DA.GetData(2, ref position);
-
-        //string foo = file.MemberName(1);
-
+        // should we check code satisfaction here?
         int status = file.CodeSatisfied(member.Name);
+        /// <returns>The return values are:
+        /// 0 - all code requirements are met
+        /// 1 - except the natural frequency is lower than that required, other code requirements are met
+        /// 2 - one or more code requirements are not met
+        /// 3 - the given member name is not valid
+        /// 4 - there is no results for the given named member
+        /// </returns>
 
         status = file.Analyse();
-        if(status == 1)
+        if (status == 1)
         {
           this.Message = "One or more members failed";
           return;
         }
-
-        float result = file.Result(member.Name, this.Option, Convert.ToInt16(position));
-        DA.SetData(0, new GH_Number(result));
+        DA.SetData(0, new GH_Number(file.UtilisationFactor(member.Name, this.Option)));
       }
     }
 
