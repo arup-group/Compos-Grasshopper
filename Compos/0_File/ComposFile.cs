@@ -11,25 +11,13 @@ using UnitsNet.Units;
 
 namespace ComposAPI
 {
-  public enum UtilisationFactorOption
-  {
-    FinalMoment,
-    FinalShear,
-    ConstructionMoment,
-    ConstructionShear,
-    ConstructionBuckling,
-    ConstructionDeflection,
-    FinalDeflection,
-    TransverseShear,
-    WebOpening,
-    NaturalFrequency
-  }
-
   public class ComposFile : IComposFile
   {
-    public IList<IMember> Members { get; set; } = new List<IMember>();
-    internal IAutomation ComposCOM { get; set; }
-    public string FileName { get; internal set; }
+    public IList<IMember> Members { get; } = new List<IMember>();
+    internal IAutomation ComposCOM { get; }
+    internal bool IsAnalysed { get; set; } = false;
+
+    //public string FileName { get; internal set; }
     public string JobTitle { get; set; }
     public string JobSubTitle { get; set; }
     public string CalculationHeader { get; set; }
@@ -39,24 +27,47 @@ namespace ComposAPI
     #region constructors
     public ComposFile()
     {
-      // empty constructor
+      this.ComposCOM = new Automation();
+      this.Initialise();
     }
 
     public ComposFile(List<IMember> members)
     {
       this.Members = members;
+      this.ComposCOM = new Automation();
+      this.Initialise();
     }
     #endregion
 
     #region methods
     /// <summary>
-    /// Analyse the member with the given name. Returns a status, as follows:
+    /// Analyse all members. 
+    /// </summary>
+    /// <returns>Returns a status, as follows:
     /// 0 – OK
-    /// 1 – failed
+    /// 1 – One or more members failed
+    /// </returns>
+    public short Analyse()
+    {
+      short status = 0;
+      foreach (Member member in this.Members)
+      {
+        if (this.Analyse(member.Name) == 1)
+          status = 1;
+      }
+      this.IsAnalysed = true;
+      return status;
+    }
+
+    /// <summary>
+    /// Analyse the member with the given name. 
     /// </summary>
     /// <param name="memberName">the name of the member to be analysed</param>
-    /// <returns></returns>
-    public short Analyze(string memberName)
+    /// <returns>Returns a status, as follows:
+    /// 0 – OK
+    /// 1 – failed
+    /// </returns>
+    public short Analyse(string memberName)
     {
       return this.ComposCOM.Analyse(memberName);
     }
@@ -70,19 +81,40 @@ namespace ComposAPI
     /// 1 - except the natural frequency is lower than that required, other code requirements are met
     /// 2 - one or more code requirements are not met
     /// 3 - the given member name is not valid
-    /// 4 - there is no results for the given named member</returns>
+    /// 4 - there is no results for the given named member
+    /// </returns>
     public short CodeSatisfied(string memberName)
     {
       return this.ComposCOM.CodeSatisfied(memberName);
     }
 
     /// <summary>
-    /// Design the member with the given name. Returns a status, as follows:
+    /// Design all members.
+    /// </summary>
+    /// <returns> Returns a status, as follows:
     /// 0 – OK
-    /// 1 – failed
+    /// 1 – One or more members failed
+    /// </returns>
+    public short Design()
+    {
+      short status = 0;
+      foreach (Member member in this.Members)
+      {
+        if (this.Design(member.Name) == 1)
+          status = 1;
+      }
+      this.IsAnalysed = true;
+      return status;
+    }
+
+    /// <summary>
+    /// Design the member with the given name.
     /// </summary>
     /// <param name="memberName">the name of the member to be designed</param>
-    /// <returns></returns>
+    /// <returns> Returns a status, as follows:
+    /// 0 – OK
+    /// 1 – failed
+    /// </returns>
     public short Design(string memberName)
     {
       return this.ComposCOM.Design(memberName);
@@ -108,22 +140,148 @@ namespace ComposAPI
       // open temp coa file as ASCII string
       string coaString = File.ReadAllText(tempCoa, Encoding.UTF7);
       ComposFile file = ComposFile.FromCoaString(coaString);
-      file.ComposCOM = automation;
-      file.FileName = fileName;
+      //file.FileName = fileName;
 
       return file;
     }
 
+    public string MemberName(int index)
+    {
+      return this.ComposCOM.MemberName(index);
+    }
+
     /// <summary>
-    /// Save the data to COB, COAor CSV file. Returns a status, as follows:
+    /// Return the number of intermediate positions where analysis results are available. 
+    /// </summary>
+    /// <param name="memberName"></param>
+    /// <returns>If the function is not success, the return values are
+    /// -1 - member doesn't exist
+    /// 0 - there is no results for the given named member
+    /// </returns>
+    public short NumIntermediatePos(string memberName)
+    {
+      return this.ComposCOM.NumIntermediatePos(memberName);
+    }
+
+    /// <summary>
+    /// Return the results for the given member, option and position
+    /// </summary>
+    /// <param name="memberName"></param>
+    /// <param name="option"></param>
+    /// <param name="position">position number</param>
+    /// <returns></returns>
+    public float Result(string memberName, ResultOption option, short position)
+    {
+      if (!this.IsAnalysed)
+      {
+        Initialise();
+        int status = this.Analyse();
+        this.IsAnalysed = true;
+      }
+      return this.ComposCOM.Result(memberName, option.ToString(), position);
+    }
+
+    /// <summary>
+    /// Return the maximum result and the position for the given member
+    /// </summary>
+    /// <param name="memberName"></param>
+    /// <param name="option"></param>
+    /// <param name="position">position number</param>
+    /// <returns></returns>
+    public float MaxResult(string memberName, ResultOption option, short position)
+    {
+      return this.ComposCOM.MaxResult(memberName, option.ToString(), out position);
+    }
+
+    /// <summary>
+    /// Return the position of the maximum result for the given member
+    /// </summary>
+    /// <param name="memberName"></param>
+    /// <param name="option"></param>
+    /// <param name="position">position number</param>
+    /// <returns></returns>
+    public short MaxResultPosition(string memberName, ResultOption option, short position)
+    {
+      this.ComposCOM.MaxResult(memberName, option.ToString(), out position);
+      return position;
+    }
+
+    /// <summary>
+    /// Return the minimum result and the position for the given member
+    /// </summary>
+    /// <param name="memberName"></param>
+    /// <param name="option"></param>
+    /// <param name="position">position number</param>
+    /// <returns></returns>
+    public float MinResult(string memberName, ResultOption option, short position)
+    {
+      return this.ComposCOM.MinResult(memberName, option.ToString(), out position);
+    }
+
+    /// <summary>
+    /// Return the position of the minimum result for the given member
+    /// </summary>
+    /// <param name="memberName"></param>
+    /// <param name="option"></param>
+    /// <param name="position">position number</param>
+    /// <returns></returns>
+    public short MinResultPosition(string memberName, ResultOption option, short position)
+    {
+      this.ComposCOM.MinResult(memberName, option.ToString(), out position);
+      return position;
+    }
+
+    /// <summary>
+    /// Return the number of transverse Rebars available. 
+    /// </summary>
+    /// <param name="membername"></param>
+    /// <returns>If the function is not success, the return values are
+    /// -1 - member doesn't exist
+    /// 0 - there is no results for the given named member
+    /// </returns>
+    public short NumTranRebar(string memberName)
+    {
+      return this.ComposCOM.NumTranRebar(memberName);
+    }
+
+    /// <summary>
+    /// Return the properties of the rebar for the given member, rebar number and option
+    /// </summary>
+    /// <param name="memberName"></param>
+    /// <param name="option"></param>
+    /// <param name="rebarnum">rebar number</param>
+    /// <returns></returns>
+    public float TranRebarProp(string memberName, TransverseRebarOption option, short rebarnum)
+    {
+      return this.ComposCOM.TranRebarProp(memberName, option.ToString(), rebarnum);
+    }
+
+    /// <summary>
+    /// Save the data to COB, COAor CSV file. 
+    /// </summary>
+    /// <param name="fileName">the name of the file to be saved, including path and extension.</param>
+    /// <returns>Returns a status, as follows:
     /// 0 – OK
     /// 1 – no Compos file is open
     /// 2 – invalid file extension
     /// 3 – failed to save
-    /// </summary>
-    /// <param name="fileName">the name of the file to be saved, including path and extension.</param>
-    /// <returns></returns>
+    /// </returns>
     public int SaveAs(string fileName)
+    {
+      Initialise();
+
+      // save to .cob with COM object
+      if (!fileName.EndsWith(".cob"))
+        fileName = fileName + ".cob";
+
+      //this.FileName = fileName;
+
+      int status = this.ComposCOM.SaveAs(fileName);
+
+      return status;
+    }
+
+    private short Initialise()
     {
       // create coastring from members
       string coaString = ToCoaString();
@@ -132,18 +290,7 @@ namespace ComposAPI
       string tempCoa = Path.GetTempPath() + Guid.NewGuid().ToString() + ".coa";
       File.WriteAllLines(tempCoa, new string[] { coaString }, Encoding.UTF8);
 
-      IAutomation automation = new Automation();
-      automation.Open(tempCoa);
-
-      // save to .cob with COM object
-      if (!fileName.EndsWith(".cob"))
-        fileName = fileName + ".cob";
-
-      this.FileName = fileName;
-
-      int status = automation.SaveAs(fileName);
-
-      return status;
+      return this.ComposCOM.Open(tempCoa);
     }
 
     public override string ToString()
@@ -169,8 +316,7 @@ namespace ComposAPI
     #region coa interop
     internal static ComposFile FromCoaString(string coaString)
     {
-      ComposFile file = new ComposFile();
-      file.Members = new List<IMember>();
+      List<IMember> members = new List<IMember>();
 
       Dictionary<string, Stud> studs = new Dictionary<string, Stud>();
       Dictionary<string, StudDimensions> studDimensions = new Dictionary<string, StudDimensions>();
@@ -190,13 +336,13 @@ namespace ComposAPI
         string coaIdentifier = parameters[0];
 
         if (coaIdentifier == "END")
-          return file;
+          return new ComposFile(members);
 
         // ### member ###
         if (coaIdentifier == CoaIdentifier.MemberName)
         {
           IMember member = Member.FromCoaString(parameters);
-          file.Members.Add(member);
+          members.Add(member);
         }
 
         // ### change unit ###
@@ -286,7 +432,7 @@ namespace ComposAPI
         studs[name].StudSpecification = studSpecifications[name];
 
       // ### Set data to members ###
-      foreach (Member member in file.Members)
+      foreach (Member member in members)
       {
         string name = member.Name;
 
@@ -300,7 +446,7 @@ namespace ComposAPI
         // add loads to members
         member.Loads = loads[name];
       }
-      return file;
+      return new ComposFile(members);
     }
 
     public string ToCoaString()
