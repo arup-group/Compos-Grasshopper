@@ -20,13 +20,13 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("809777e9-97ba-4ccf-a2ca-5d332c734d43");
     public ReadDeflections()
-      : base("Deflections", "Deflect", "Reads deflections from a Compos model",
+      : base("Read Deflections", "Deflect", "Reads deflections from a Compos model",
             Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat6())
+            Ribbon.SubCategoryName.Cat7())
     { this.Hidden = true; } // sets the initial state of the component to hidden
     public override GH_Exposure Exposure => GH_Exposure.primary;
 
-    protected override Bitmap Icon => Properties.Resources.SaveModel;
+    protected override Bitmap Icon => Properties.Resources.ReadResult;
     #endregion
 
     #region Custom UI

@@ -20,13 +20,13 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("390d21e6-95c5-4cb9-9eb1-25ba1c52ca96");
     public ReadStresses()
-      : base("Stresses", "Stress", "Reads stresses from a Compos model",
+      : base("Read Stresses", "Stress", "Reads stresses from a Compos model",
             Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat6())
+            Ribbon.SubCategoryName.Cat7())
     { this.Hidden = true; } // sets the initial state of the component to hidden
     public override GH_Exposure Exposure => GH_Exposure.primary;
 
-    protected override Bitmap Icon => Properties.Resources.SaveModel;
+    protected override Bitmap Icon => Properties.Resources.ReadResult;
     #endregion
 
     #region Custom UI

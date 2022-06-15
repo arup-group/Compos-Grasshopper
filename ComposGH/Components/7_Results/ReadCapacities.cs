@@ -20,13 +20,13 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("260bb6cd-3d18-41dd-afdd-5810c3dbcb3e");
     public ReadCapacities()
-      : base("Capacities", "Cap", "Reads capacities from a Compos model",
+      : base("Read Capacities", "Cap", "Reads capacities from a Compos model",
             Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat6())
+            Ribbon.SubCategoryName.Cat7())
     { this.Hidden = true; } // sets the initial state of the component to hidden
     public override GH_Exposure Exposure => GH_Exposure.primary;
 
-    protected override Bitmap Icon => Properties.Resources.SaveModel;
+    protected override Bitmap Icon => Properties.Resources.ReadResult;
     #endregion
 
     #region Custom UI

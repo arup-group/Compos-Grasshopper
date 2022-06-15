@@ -453,6 +453,16 @@ namespace ComposGH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ReadResult {
+            get {
+                object obj = ResourceManager.GetObject("ReadResult", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap RebarMaterial {
             get {
                 object obj = ResourceManager.GetObject("RebarMaterial", resourceCulture);

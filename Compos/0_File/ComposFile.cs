@@ -13,8 +13,8 @@ namespace ComposAPI
 {
   public class ComposFile : IComposFile
   {
+    internal static IAutomation ComposCOM { get; } = new Automation();
     public IList<IMember> Members { get; } = new List<IMember>();
-    internal IAutomation ComposCOM { get; }
     internal bool IsAnalysed { get; set; } = false;
     internal bool IsDesigned { get; set; } = false;
 
@@ -27,14 +27,12 @@ namespace ComposAPI
     #region constructors
     public ComposFile()
     {
-      this.ComposCOM = new Automation();
       this.Initialise();
     }
 
     public ComposFile(List<IMember> members)
     {
       this.Members = members;
-      this.ComposCOM = new Automation();
       this.Initialise();
     }
     #endregion
@@ -71,7 +69,7 @@ namespace ComposAPI
     /// </returns>
     internal short Analyse(string memberName)
     {
-      return this.ComposCOM.Analyse(memberName);
+      return ComposFile.ComposCOM.Analyse(memberName);
     }
 
     /// <summary>
@@ -87,7 +85,7 @@ namespace ComposAPI
     /// </returns>
     public short CodeSatisfied(string memberName)
     {
-      return this.ComposCOM.CodeSatisfied(memberName);
+      return ComposFile.ComposCOM.CodeSatisfied(memberName);
     }
 
     /// <summary>
@@ -119,7 +117,7 @@ namespace ComposAPI
     /// </returns>
     internal short Design(string memberName)
     {
-      return this.ComposCOM.Design(memberName);
+      return ComposFile.ComposCOM.Design(memberName);
     }
 
     public IMember GetMember(string name)
@@ -148,7 +146,7 @@ namespace ComposAPI
 
     public string MemberName(int index)
     {
-      return this.ComposCOM.MemberName(index);
+      return ComposFile.ComposCOM.MemberName(index);
     }
 
     /// <summary>
@@ -161,7 +159,7 @@ namespace ComposAPI
     /// </returns>
     public short NumIntermediatePos(string memberName)
     {
-      return this.ComposCOM.NumIntermediatePos(memberName);
+      return ComposFile.ComposCOM.NumIntermediatePos(memberName);
     }
 
     /// <summary>
@@ -177,7 +175,7 @@ namespace ComposAPI
        this.Analyse();
       if (!this.IsDesigned)
         this.Design();
-      return this.ComposCOM.Result(memberName, option, position);
+      return ComposFile.ComposCOM.Result(memberName, option, position);
     }
 
     /// <summary>
@@ -189,7 +187,7 @@ namespace ComposAPI
     /// <returns></returns>
     public float MaxResult(string memberName, string option, short position)
     {
-      return this.ComposCOM.MaxResult(memberName, option.ToString(), out position);
+      return ComposFile.ComposCOM.MaxResult(memberName, option.ToString(), out position);
     }
 
     /// <summary>
@@ -201,7 +199,7 @@ namespace ComposAPI
     /// <returns></returns>
     public short MaxResultPosition(string memberName, string option, short position)
     {
-      this.ComposCOM.MaxResult(memberName, option.ToString(), out position);
+      ComposFile.ComposCOM.MaxResult(memberName, option.ToString(), out position);
       return position;
     }
 
@@ -214,7 +212,7 @@ namespace ComposAPI
     /// <returns></returns>
     public float MinResult(string memberName, string option, short position)
     {
-      return this.ComposCOM.MinResult(memberName, option.ToString(), out position);
+      return ComposFile.ComposCOM.MinResult(memberName, option.ToString(), out position);
     }
 
     /// <summary>
@@ -226,7 +224,7 @@ namespace ComposAPI
     /// <returns></returns>
     public short MinResultPosition(string memberName, string option, short position)
     {
-      this.ComposCOM.MinResult(memberName, option.ToString(), out position);
+      ComposFile.ComposCOM.MinResult(memberName, option.ToString(), out position);
       return position;
     }
 
@@ -240,7 +238,7 @@ namespace ComposAPI
     /// </returns>
     public short NumTranRebar(string memberName)
     {
-      return this.ComposCOM.NumTranRebar(memberName);
+      return ComposFile.ComposCOM.NumTranRebar(memberName);
     }
 
     /// <summary>
@@ -252,7 +250,7 @@ namespace ComposAPI
     /// <returns></returns>
     public float TranRebarProp(string memberName, TransverseRebarOption option, short rebarnum)
     {
-      return this.ComposCOM.TranRebarProp(memberName, option.ToString(), rebarnum);
+      return ComposFile.ComposCOM.TranRebarProp(memberName, option.ToString(), rebarnum);
     }
 
     /// <summary>
@@ -273,7 +271,7 @@ namespace ComposAPI
       if (!fileName.EndsWith(".cob"))
         fileName = fileName + ".cob";
 
-      int status = this.ComposCOM.SaveAs(fileName);
+      int status = ComposFile.ComposCOM.SaveAs(fileName);
 
       return status;
     }
@@ -287,7 +285,7 @@ namespace ComposAPI
       string tempCoa = Path.GetTempPath() + Guid.NewGuid().ToString() + ".coa";
       File.WriteAllLines(tempCoa, new string[] { coaString }, Encoding.UTF8);
 
-      return this.ComposCOM.Open(tempCoa);
+      return ComposFile.ComposCOM.Open(tempCoa);
     }
 
     public override string ToString()
@@ -310,7 +308,7 @@ namespace ComposAPI
         this.Analyse();
       if (!this.IsDesigned)
         this.Design();
-      return this.ComposCOM.UtilisationFactor(memberName, option.ToString());
+      return ComposFile.ComposCOM.UtilisationFactor(memberName, option.ToString());
     }
     #endregion
 

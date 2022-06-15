@@ -20,13 +20,13 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("10f23315-ff32-43aa-8f0f-7fd6bdd2d003");
     public ReadTransverseRebarProps()
-      : base("Get Utilisations", "Util", "Read utilisations from a Compos model",
+      : base("Read Transverse Rebar Properties", "TranRebar", "Read transverse rebar properties from a Compos model",
             Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat6())
+            Ribbon.SubCategoryName.Cat7())
     { this.Hidden = true; } // sets the initial state of the component to hidden
     public override GH_Exposure Exposure => GH_Exposure.primary;
 
-    protected override Bitmap Icon => Properties.Resources.SaveModel;
+    protected override Bitmap Icon => Properties.Resources.ReadResult;
     #endregion
 
     #region Custom UI
