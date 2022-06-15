@@ -130,13 +130,6 @@ namespace ComposGH.Components
       }
       if (file != null && member != null)
       {
-        int status = file.Analyse();
-        status += file.Design();
-        if (status > 0)
-        {
-          this.Message = "One or more members failed";
-          return;
-        }
         DA.SetData(0, new GH_Number(file.UtilisationFactor(member.Name, this.Option)));
       }
     }

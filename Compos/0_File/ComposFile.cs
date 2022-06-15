@@ -14,6 +14,12 @@ namespace ComposAPI
   public class ComposFile : IComposFile
   {
     internal static IAutomation ComposCOM { get; } = new Automation();
+    internal static string CurrentGuid { get; set; } = "";
+
+    // verbose
+    internal static int counter;
+
+    public string Guid { get; set; } = System.Guid.NewGuid().ToString();
     public IList<IMember> Members { get; } = new List<IMember>();
     internal bool IsAnalysed { get; set; } = false;
     internal bool IsDesigned { get; set; } = false;
@@ -27,13 +33,11 @@ namespace ComposAPI
     #region constructors
     public ComposFile()
     {
-      this.Initialise();
     }
 
     public ComposFile(List<IMember> members)
     {
       this.Members = members;
-      this.Initialise();
     }
     #endregion
 
@@ -45,9 +49,9 @@ namespace ComposAPI
     /// 0 – OK
     /// 1 – One or more members failed
     /// </returns>
-    public short Analyse()
+    internal short Analyse()
     {
-      Initialise();
+      counter++;
 
       short status = 0;
       foreach (Member member in this.Members)
@@ -85,6 +89,7 @@ namespace ComposAPI
     /// </returns>
     public short CodeSatisfied(string memberName)
     {
+      this.Initialise();
       return ComposFile.ComposCOM.CodeSatisfied(memberName);
     }
 
@@ -95,7 +100,7 @@ namespace ComposAPI
     /// 0 – OK
     /// 1 – One or more members failed
     /// </returns>
-    public short Design()
+    internal short Design()
     {
       short status = 0;
       foreach (Member member in this.Members)
@@ -127,12 +132,12 @@ namespace ComposAPI
 
     public static ComposFile Open(string fileName)
     {
-      IAutomation automation = new Automation();
-      automation.Open(fileName);
+      ComposFile.ComposCOM.Close();
+      ComposFile.ComposCOM.Open(fileName);
 
       // save COM object to a temp coa file
-      string tempCoa = Path.GetTempPath() + Guid.NewGuid().ToString() + ".coa";
-      int status = automation.SaveAs(tempCoa);
+      string tempCoa = Path.GetTempPath() + System.Guid.NewGuid().ToString() + ".coa";
+      int status = ComposFile.ComposCOM.SaveAs(tempCoa);
 
       if (status == 1)
         return null;
@@ -146,6 +151,7 @@ namespace ComposAPI
 
     public string MemberName(int index)
     {
+      this.Initialise();
       return ComposFile.ComposCOM.MemberName(index);
     }
 
@@ -159,6 +165,7 @@ namespace ComposAPI
     /// </returns>
     public short NumIntermediatePos(string memberName)
     {
+      this.Initialise();
       return ComposFile.ComposCOM.NumIntermediatePos(memberName);
     }
 
@@ -171,10 +178,7 @@ namespace ComposAPI
     /// <returns></returns>
     public float Result(string memberName, string option, short position)
     {
-      if (!this.IsAnalysed)
-       this.Analyse();
-      if (!this.IsDesigned)
-        this.Design();
+      this.Initialise();
       return ComposFile.ComposCOM.Result(memberName, option, position);
     }
 
@@ -187,6 +191,7 @@ namespace ComposAPI
     /// <returns></returns>
     public float MaxResult(string memberName, string option, short position)
     {
+      this.Initialise();
       return ComposFile.ComposCOM.MaxResult(memberName, option.ToString(), out position);
     }
 
@@ -199,6 +204,7 @@ namespace ComposAPI
     /// <returns></returns>
     public short MaxResultPosition(string memberName, string option, short position)
     {
+      this.Initialise();
       ComposFile.ComposCOM.MaxResult(memberName, option.ToString(), out position);
       return position;
     }
@@ -212,6 +218,7 @@ namespace ComposAPI
     /// <returns></returns>
     public float MinResult(string memberName, string option, short position)
     {
+      this.Initialise();
       return ComposFile.ComposCOM.MinResult(memberName, option.ToString(), out position);
     }
 
@@ -224,6 +231,7 @@ namespace ComposAPI
     /// <returns></returns>
     public short MinResultPosition(string memberName, string option, short position)
     {
+      this.Initialise();
       ComposFile.ComposCOM.MinResult(memberName, option.ToString(), out position);
       return position;
     }
@@ -238,6 +246,7 @@ namespace ComposAPI
     /// </returns>
     public short NumTranRebar(string memberName)
     {
+      this.Initialise();
       return ComposFile.ComposCOM.NumTranRebar(memberName);
     }
 
@@ -250,6 +259,7 @@ namespace ComposAPI
     /// <returns></returns>
     public float TranRebarProp(string memberName, TransverseRebarOption option, short rebarnum)
     {
+      this.Initialise();
       return ComposFile.ComposCOM.TranRebarProp(memberName, option.ToString(), rebarnum);
     }
 
@@ -278,14 +288,24 @@ namespace ComposAPI
 
     private short Initialise()
     {
+      if (this.Guid == ComposFile.CurrentGuid)
+        return -1;
+
+      ComposFile.ComposCOM.Close();
+      ComposFile.CurrentGuid = this.Guid;
+
       // create coastring from members
       string coaString = ToCoaString();
 
       // save coa string to a temp to coa file (ASCII format)
-      string tempCoa = Path.GetTempPath() + Guid.NewGuid().ToString() + ".coa";
+      string tempCoa = Path.GetTempPath() + this.Guid + ".coa";
       File.WriteAllLines(tempCoa, new string[] { coaString }, Encoding.UTF8);
 
-      return ComposFile.ComposCOM.Open(tempCoa);
+      short status = ComposFile.ComposCOM.Open(tempCoa);
+      this.Analyse();
+      this.Design();
+
+      return status;
     }
 
     public override string ToString()
@@ -304,10 +324,7 @@ namespace ComposAPI
     /// <returns></returns>
     public float UtilisationFactor(string memberName, UtilisationFactorOption option)
     {
-      if (!this.IsAnalysed)
-        this.Analyse();
-      if (!this.IsDesigned)
-        this.Design();
+      this.Initialise();
       return ComposFile.ComposCOM.UtilisationFactor(memberName, option.ToString());
     }
     #endregion

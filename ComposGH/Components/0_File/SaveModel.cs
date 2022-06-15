@@ -133,6 +133,7 @@ namespace ComposGH.Components
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
       pManager.AddGenericParameter("Model", "Mod", "Compos Model", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Guid", "Guid", "Guid", GH_ParamAccess.item);
     }
     #endregion
 
@@ -234,6 +235,7 @@ namespace ComposGH.Components
         }
 
         DA.SetData(0, new ComposFileGoo(this.ComposFile));
+        DA.SetData(1, this.ComposFile.Guid);
       }
     }
   }

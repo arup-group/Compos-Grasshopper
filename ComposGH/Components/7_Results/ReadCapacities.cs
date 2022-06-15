@@ -132,13 +132,6 @@ namespace ComposGH.Components
       }
       if (file != null && member != null)
       {
-        int status = file.Analyse();
-        status += file.Design();
-        if (status > 0)
-        {
-          this.Message = "One or more members failed";
-          return;
-        }
         List<GH_Number> result = new List<GH_Number>();
         for (short pos = 0; pos < file.NumIntermediatePos(member.Name); pos++)
         {

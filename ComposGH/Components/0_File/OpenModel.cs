@@ -162,7 +162,6 @@ namespace ComposGH.Components
             fileName = fileName + ".cob";
 
           IComposFile composFile = ComposFile.Open(fileName);
-          composFile.Analyse();
           DA.SetData(0, new ComposFileGoo(composFile));
         }
       }

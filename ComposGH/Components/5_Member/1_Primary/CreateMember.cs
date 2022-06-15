@@ -41,6 +41,7 @@ namespace ComposGH.Components
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
       pManager.AddGenericParameter("Member", "Mem", "Compos Member", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Guid", "Guid", "Guid", GH_ParamAccess.item);
     }
     #endregion
 
@@ -59,9 +60,10 @@ namespace ComposGH.Components
       string note = "";
       DA.GetData(7, ref note);
 
-      IMember member = new Member(name, gridRef, note, code.Value, beam.Value, stud.Value, slab.Value, loads.Select(x => x.Value).ToList());
+      Member member = new Member(name, gridRef, note, code.Value, beam.Value, stud.Value, slab.Value, loads.Select(x => x.Value).ToList());
       
       DA.SetData(0, new MemberGoo(member));
+      DA.SetData(1, member.Guid);
     }
   }
 }

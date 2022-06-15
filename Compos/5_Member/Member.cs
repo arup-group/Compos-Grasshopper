@@ -12,6 +12,8 @@ namespace ComposAPI
 {
   public class Member : IMember
   {
+    public string Guid { get; set; } = System.Guid.NewGuid().ToString();
+
     public IBeam Beam { get; set; }
     public IStud Stud { get; set; }
     public ISlab Slab { get; set; }

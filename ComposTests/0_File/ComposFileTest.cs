@@ -18,7 +18,7 @@ namespace ComposAPI.File.Tests
 
       ComposFile file = ComposFile.Open(pathName);
 
-      IAutomation automation = file.ComposCOM;
+      IAutomation automation = ComposFile.ComposCOM;
 
       Assert.NotNull(automation);
 
@@ -32,7 +32,7 @@ namespace ComposAPI.File.Tests
 
       ComposFile file = ComposFile.Open(pathName);
 
-      IAutomation automation = file.ComposCOM;
+      IAutomation automation = ComposFile.ComposCOM;
 
       Assert.NotNull(automation);
 

@@ -7,10 +7,10 @@ namespace ComposAPI
     IList<IMember> Members { get; }
     //string FileName { get; }
 
-    short Analyse();
+    //short Analyse();
     //short Analyse(string memberName);
     short CodeSatisfied(string memberName);
-    short Design();
+    //short Design();
     //short Design(string memberName);
     IMember GetMember(string name);
     float MaxResult(string memberName, string option, short position);
