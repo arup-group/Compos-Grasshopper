@@ -92,7 +92,6 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter("Model", "Mod", "Compos model", GH_ParamAccess.item);
       pManager.AddGenericParameter("Member", "Mem", "Compos member", GH_ParamAccess.item);
     }
 
@@ -105,19 +104,8 @@ namespace ComposGH.Components
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
-      IComposFile file = null;
       IMember member = null;
       if (DA.GetData(0, ref gh_typ))
-      {
-        if (gh_typ == null) { return; }
-        if (gh_typ.Value is ComposFileGoo)
-        {
-          ComposFileGoo goo = (ComposFileGoo)gh_typ.Value;
-          file = (ComposFile)goo.Value;
-          Message = "";
-        }
-      }
-      if (DA.GetData(1, ref gh_typ))
       {
         if (gh_typ == null) { return; }
 
@@ -128,9 +116,9 @@ namespace ComposGH.Components
           this.Message = "";
         }
       }
-      if (file != null && member != null)
+      if (member != null)
       {
-        DA.SetData(0, new GH_Number(file.UtilisationFactor(member.Name, this.Option)));
+        DA.SetData(0, new GH_Number(member.File.UtilisationFactor(member.Name, this.Option)));
       }
     }
 

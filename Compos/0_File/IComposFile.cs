@@ -4,9 +4,9 @@ namespace ComposAPI
 {
   public interface IComposFile
   {
-    IList<IMember> Members { get; }
     //string FileName { get; }
 
+    void AddMember(IMember member);
     //short Analyse();
     //short Analyse(string memberName);
     short CodeSatisfied(string memberName);

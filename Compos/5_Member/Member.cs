@@ -19,6 +19,7 @@ namespace ComposAPI
     public ISlab Slab { get; set; }
     public IList<ILoad> Loads { get; set; }
     public IDesignCode DesignCode { get; set; }
+    public IComposFile File { get; set; } // the hosting Compos file
 
     public string Name { get; set; }
     public string GridReference { get; set; } = "";

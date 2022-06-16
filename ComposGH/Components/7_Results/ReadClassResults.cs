@@ -92,7 +92,6 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter("Model", "Mod", "Compos model", GH_ParamAccess.item);
       pManager.AddGenericParameter("Member", "Mem", "Compos member", GH_ParamAccess.item);
       //pManager.AddIntegerParameter("Position", "Pos", "(Optional) Position number", GH_ParamAccess.item, 0);
       //pManager[2].Optional = true;
@@ -107,19 +106,8 @@ namespace ComposGH.Components
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
-      IComposFile file = null;
       IMember member = null;
       if (DA.GetData(0, ref gh_typ))
-      {
-        if (gh_typ == null) { return; }
-        if (gh_typ.Value is ComposFileGoo)
-        {
-          ComposFileGoo goo = (ComposFileGoo)gh_typ.Value;
-          file = (ComposFile)goo.Value;
-          Message = "";
-        }
-      }
-      if (DA.GetData(1, ref gh_typ))
       {
         if (gh_typ == null) { return; }
 
@@ -130,12 +118,12 @@ namespace ComposGH.Components
           this.Message = "";
         }
       }
-      if (file != null && member != null)
+      if (member != null)
       {
         List<GH_Number> result = new List<GH_Number>();
-        for (short pos = 0; pos < file.NumIntermediatePos(member.Name); pos++)
+        for (short pos = 0; pos < member.File.NumIntermediatePos(member.Name); pos++)
         {
-          result.Add(new GH_Number(file.Result(member.Name, this.Option.ToString(), Convert.ToInt16(pos))));
+          result.Add(new GH_Number(member.File.Result(member.Name, this.Option.ToString(), Convert.ToInt16(pos))));
         }
 
         DA.SetDataList(0, result);

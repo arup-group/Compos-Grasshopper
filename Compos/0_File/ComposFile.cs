@@ -20,7 +20,7 @@ namespace ComposAPI
     internal static int counter;
 
     public string Guid { get; set; } = System.Guid.NewGuid().ToString();
-    public IList<IMember> Members { get; } = new List<IMember>();
+    internal IList<IMember> Members = new List<IMember>();
     internal bool IsAnalysed { get; set; } = false;
     internal bool IsDesigned { get; set; } = false;
 
@@ -37,11 +37,20 @@ namespace ComposAPI
 
     public ComposFile(List<IMember> members)
     {
-      this.Members = members;
+      foreach (IMember member in members)
+      {
+        this.AddMember(member);
+      }
     }
     #endregion
 
     #region methods
+    public void AddMember(IMember member)
+    {
+      member.File = this;
+      this.Members.Add(member);
+    }
+
     /// <summary>
     /// Analyse all members. 
     /// </summary>
@@ -502,7 +511,7 @@ namespace ComposAPI
 
       coaString += units.ToCoaString();
 
-      foreach (IMember member in Members)
+      foreach (IMember member in this.Members)
         coaString += member.ToCoaString(units);
 
       coaString += "END\n";
