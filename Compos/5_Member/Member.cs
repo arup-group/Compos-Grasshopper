@@ -19,7 +19,7 @@ namespace ComposAPI
     public ISlab Slab { get; set; }
     public IList<ILoad> Loads { get; set; }
     public IDesignCode DesignCode { get; set; }
-    public IComposFile File { get; set; } // the hosting Compos file
+    public IComposFile File { get; set; }
 
     public string Name { get; set; }
     public string GridReference { get; set; } = "";
@@ -28,9 +28,12 @@ namespace ComposAPI
     internal IAutomation ComposCOM { get; set; }
 
     #region constructors
-    public Member() { }
+    public Member()
+    {
+      this.File = new ComposFile(new List<IMember>() { this });
+    }
 
-    public Member(string name, IDesignCode designCode, IBeam beam, IStud stud, ISlab slab, IList<ILoad> loads)
+    public Member(string name, IDesignCode designCode, IBeam beam, IStud stud, ISlab slab, IList<ILoad> loads) : this()
     {
       this.Name = name;
       this.DesignCode = designCode;
@@ -40,7 +43,7 @@ namespace ComposAPI
       this.Loads = loads;
     }
 
-    public Member(string name, string gridRef, string note, IDesignCode designCode, IBeam beam, IStud stud, ISlab slab, IList<ILoad> loads)
+    public Member(string name, string gridRef, string note, IDesignCode designCode, IBeam beam, IStud stud, ISlab slab, IList<ILoad> loads) : this()
     {
       this.Name = name;
       this.GridReference = gridRef;
