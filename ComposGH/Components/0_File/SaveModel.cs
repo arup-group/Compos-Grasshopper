@@ -123,7 +123,7 @@ namespace ComposGH.Components
 
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter("Member", "Mem", "Compos member to save", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Member", "Mem", "Compos member to save", GH_ParamAccess.list);
       pManager.AddBooleanParameter("Save?", "Save", "Input 'True' to save or use button", GH_ParamAccess.item, false);
       pManager.AddTextParameter("File and Path", "File", "Filename and path", GH_ParamAccess.item);
       pManager[1].Optional = true;
@@ -192,23 +192,21 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
-      if (DA.GetData(0, ref gh_typ))
+      List<GH_ObjectWrapper> list = new List<GH_ObjectWrapper>();
+      if (DA.GetDataList(0, list))
       {
-        if (gh_typ == null) { return; }
-        if (gh_typ.Value is ComposFileGoo)
+        if (list == null || list.Count < 1) { return; }
+        if (list[0].Value is MemberGoo)
         {
-          ComposFileGoo goo = (ComposFileGoo)gh_typ.Value;
-          this.ComposFile = (ComposFile)goo.Value;
-          Message = "";
-        }
-        else if (gh_typ.Value is MemberGoo)
-        {
-          MemberGoo goo = (MemberGoo)gh_typ.Value;
-          IMember member = (IMember)goo.Value;
-
-          this.ComposFile = new ComposFile(new List<IMember>() { member });
-          Message = "";
+          List<IMember> members = new List<IMember>();
+          foreach (GH_ObjectWrapper wrapper in list)
+          {
+            MemberGoo goo = (MemberGoo)wrapper.Value;
+            IMember member = (IMember)goo.Value;
+            members.Add(member);
+            Message = "";
+          }
+          this.ComposFile = new ComposFile(members);
         }
         else
         {
