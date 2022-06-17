@@ -7,6 +7,7 @@ using System.Data.SQLite;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
+using ComposAPITests.Helpers;
 
 namespace ComposAPI.Slabs.Tests
 {
@@ -42,15 +43,27 @@ namespace ComposAPI.Slabs.Tests
 
     // 1 setup inputs
     [Theory]
-    [InlineData("RLD", "Ribdeck AL (1.2)", DeckingSteelGrade.S280)]
-    [InlineData("Kingspan", "Multideck 50 (0.85)", DeckingSteelGrade.S350)]
-    public void CatalogeDeckingConstructorTest(string catalogue, string profile, DeckingSteelGrade deckingSteelGrade)
+    [InlineData("RLD", "Ribdeck AL (1.2)", DeckingSteelGrade.S280,
+      300, 120, 140, 10, 40, 50, 1.2)]
+    [InlineData("Kingspan", "Multideck 50 (0.85)", DeckingSteelGrade.S350,
+      150, 40, 135, 0, 0, 50, 0.85)]
+    public void CatalogeDeckingConstructorTest(string catalogue, string profile,
+      DeckingSteelGrade deckingSteelGrade,
+      double b1_expected, double b2_expected, double b3_expected, double b4_expected, double b5_expected, double depth_expected, double thickness_expected)
     {
       // 2 create object instance with constructor
       DeckingConfiguration configuration = new DeckingConfiguration();
+      CatalogueDecking.catalogueDB = new MockCatalogueDB();
       CatalogueDecking decking = new CatalogueDecking(catalogue, profile, deckingSteelGrade, configuration);
 
       // 3 check that inputs are set in object's members
+      Assert.Equal(b1_expected, decking.b1.Millimeters);
+      Assert.Equal(b2_expected, decking.b2.Millimeters);
+      Assert.Equal(b3_expected, decking.b3.Millimeters);
+      Assert.Equal(b4_expected, decking.b4.Millimeters);
+      Assert.Equal(b5_expected, decking.b5.Millimeters);
+      Assert.Equal(depth_expected, decking.Depth.Millimeters);
+      Assert.Equal(thickness_expected, decking.Thickness.Millimeters);
       Assert.Equal(catalogue, decking.Catalogue);
       Assert.Equal(profile, decking.Profile);
       Assert.Equal(deckingSteelGrade, decking.Grade);

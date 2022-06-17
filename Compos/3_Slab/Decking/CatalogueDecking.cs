@@ -18,8 +18,7 @@ namespace ComposAPI
     public string Catalogue { get; set; } //	catalogue name of the decking
     public string Profile { get; set; } // decking name
     public DeckingSteelGrade Grade { get; set; } //	decking material grade
-    internal ICatalogueDB catalogueDB { get; set; } = new CatalogueDB();
-    internal const string CoaIdentifier = "DECKING_CATALOGUE";
+    internal static ICatalogueDB catalogueDB { get; set; } = new CatalogueDB();
 
     public CatalogueDecking()
     {
