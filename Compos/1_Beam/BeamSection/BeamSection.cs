@@ -53,65 +53,6 @@ namespace ComposAPI
     }
 
     /// <summary>
-    /// Create a copy from another IBeamSection and set a new Start Position
-    /// </summary>
-    /// <param name="beamSection"></param>
-    public BeamSection(IBeamSection beamSection, Length newStartPosition)
-    {
-      this.StartPosition = newStartPosition;
-      this.Depth = beamSection.Depth;
-      this.TopFlangeWidth = beamSection.TopFlangeWidth;
-      this.BottomFlangeWidth = beamSection.BottomFlangeWidth;
-      this.TopFlangeThickness = beamSection.TopFlangeThickness;
-      this.BottomFlangeThickness = beamSection.BottomFlangeThickness;
-      this.RootRadius = beamSection.RootRadius;
-      this.WebThickness = beamSection.WebThickness;
-      this.isCatalogue = beamSection.isCatalogue;
-      if (isCatalogue)
-        this.m_taper = false;
-      this.SectionDescription = beamSection.SectionDescription;
-    }
-
-    /// <summary>
-    /// Create a copy from another IBeamSection and set a new Start Position and Taper to Next
-    /// </summary>
-    /// <param name="beamSection"></param>
-    public BeamSection(IBeamSection beamSection, Length newStartPosition, bool taperToNext)
-    {
-      this.StartPosition = newStartPosition;
-      this.Depth = beamSection.Depth;
-      this.TopFlangeWidth = beamSection.TopFlangeWidth;
-      this.BottomFlangeWidth = beamSection.BottomFlangeWidth;
-      this.TopFlangeThickness = beamSection.TopFlangeThickness;
-      this.BottomFlangeThickness = beamSection.BottomFlangeThickness;
-      this.RootRadius = beamSection.RootRadius;
-      this.WebThickness = beamSection.WebThickness;
-      this.isCatalogue = beamSection.isCatalogue;
-      this.TaperedToNext = taperToNext;
-      this.SectionDescription = beamSection.SectionDescription;
-    }
-
-    /// <summary>
-    /// Create a copy from another IBeamSection
-    /// </summary>
-    /// <param name="beamSection"></param>
-    public BeamSection(IBeamSection beamSection)
-    {
-      this.StartPosition = beamSection.StartPosition;
-      this.Depth = beamSection.Depth;
-      this.TopFlangeWidth = beamSection.TopFlangeWidth;
-      this.BottomFlangeWidth = beamSection.BottomFlangeWidth;
-      this.TopFlangeThickness = beamSection.TopFlangeThickness;
-      this.BottomFlangeThickness = beamSection.BottomFlangeThickness;
-      this.RootRadius = beamSection.RootRadius;
-      this.WebThickness = beamSection.WebThickness;
-      this.isCatalogue = beamSection.isCatalogue;
-      if (isCatalogue)
-        this.m_taper = false;
-      this.SectionDescription = beamSection.SectionDescription;
-    }
-
-    /// <summary>
     /// Create assymetric I section
     /// </summary>
     /// <param name="depth"></param>
