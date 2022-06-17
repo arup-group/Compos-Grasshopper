@@ -311,7 +311,7 @@ namespace ComposAPI.Studs.Tests
     {
       // Arrange
       string expected_coaString =
-        "STUD_DEFINITION	MEMBER-1	USER_DEFINED	21.0000	105.000	95000.0	REDUCED_NO	WELDED_YES" + '\n' +
+        "STUD_DEFINITION	MEMBER-1	USER_DEFINED	0.0210000	0.105000	95000.0	REDUCED_NO	WELDED_YES" + '\n' +
         "STUD_LAYOUT	MEMBER-1	AUTO_PERCENT	0.200000	0.850000" + '\n' +
         "STUD_NO_STUD_ZONE	MEMBER-1	1.00000	5.00000" + '\n' +
         "STUD_EC4_APPLY	MEMBER-1	NO" + '\n';
