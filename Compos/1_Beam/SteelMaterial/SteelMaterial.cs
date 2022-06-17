@@ -132,7 +132,7 @@ namespace ComposAPI
       return material;
     }
 
-    public string ToCoaString(string name, Code code, ComposUnits units)
+    public virtual string ToCoaString(string name, Code code, ComposUnits units)
     {
       List<string> steelParameters = new List<string>();
       if (this.isCustom)
