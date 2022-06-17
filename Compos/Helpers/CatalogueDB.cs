@@ -2,24 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Globalization;
 using System.IO;
 
 namespace ComposAPI.Helpers
 {
-  public static class SqlDBconnection
-  {
-    public static SQLiteConnection ConnectSectionCatalogue()
-    {
-      string filePath = Path.Combine(ComposIO.InstallPath, "sectlib.db3");
-      return new SQLiteConnection($"URI=file:{filePath};mode=ReadOnly");
-    }
-    public static SQLiteConnection ConnectDeckingCatalogue()
-    {
-      string filePath = Path.Combine(ComposIO.InstallPath, "decking.db3");
-      return new SQLiteConnection($"URI=file:{filePath};mode=ReadOnly");
-    }
-  }
-  public class CatalogueValues
+  public class CatalogueDB : ICatalogueDB
   {
     /// <summary>
     /// This method will return a list of double with values in [m] units and ordered as follows:
@@ -31,7 +19,7 @@ namespace ComposAPI.Helpers
     /// </summary>
     /// <param name="profileString"></param>
     /// <returns></returns>
-    public static List<double> GetCatalogueProfileValues(string profileString)
+    public List<double> GetCatalogueProfileValues(string profileString)
     {
       // Create empty lists to work on:
       List<double> values = new List<double>();
@@ -65,8 +53,10 @@ namespace ComposAPI.Helpers
 
         string[] vals = data[0].Split(new string[] { " -- " }, StringSplitOptions.None);
 
+        NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+
         foreach (string val in vals)
-          values.Add(double.Parse(val));
+          values.Add(Convert.ToDouble(val, noComma));
       }
       return values;
     }
@@ -84,7 +74,7 @@ namespace ComposAPI.Helpers
     /// <param name="catalogue"></param>
     /// <param name="profile"></param>
     /// <returns></returns>
-    public static List<double> GetCatalogueDeckingValues(string catalogue, string profile)
+    public List<double> GetCatalogueDeckingValues(string catalogue, string profile)
     {
       // Create empty lists to work on:
       List<double> values = new List<double>();
@@ -122,8 +112,10 @@ namespace ComposAPI.Helpers
 
         string[] vals = data[0].Split(new string[] { " -- " }, StringSplitOptions.None);
 
+        NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+
         foreach (string val in vals)
-          values.Add(double.Parse(val));
+          values.Add(Convert.ToDouble(val, noComma));
       }
       return values;
     }

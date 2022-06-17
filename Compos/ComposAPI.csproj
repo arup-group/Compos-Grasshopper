@@ -70,6 +70,7 @@
     <Compile Include="7_Results\TransverseRebarOption.cs" />
     <Compile Include="7_Results\UtilisationFactorOption.cs" />
     <Compile Include="ComposUnits.cs" />
+    <Compile Include="Helpers\ICatalogueDB.cs" />
     <Compile Include="Helpers\CoaHelper.cs" />
     <Compile Include="1_Beam\BeamSection\IBeamSection.cs" />
     <Compile Include="1_Beam\Restraints\IRestraint.cs" />
@@ -102,9 +103,10 @@
     <Compile Include="5_Member\SafetyFactors\ISafetyFactors.cs" />
     <Compile Include="Helpers\CoaIdentifier.cs" />
     <Compile Include="Helpers\ComposIO.cs" />
+    <Compile Include="Helpers\SqlDBconnection.cs" />
     <Compile Include="ICoaObject.cs" />
     <Compile Include="ObjectExtension.cs" />
-    <Compile Include="Helpers\ReadSQLValues.cs" />
+    <Compile Include="Helpers\CatalogueDB.cs" />
     <Compile Include="Helpers\Units.cs" />
     <Compile Include="1_Beam\BeamSection\BeamSection.cs" />
     <Compile Include="1_Beam\Beam.cs" />

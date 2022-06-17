@@ -46,6 +46,8 @@ namespace ComposAPI
 
     public string SectionDescription { get; set; }
 
+    internal static ICatalogueDB catalogueDB { get; set; } = new CatalogueDB();
+
     #region constructors
     public BeamSection()
     {
@@ -194,7 +196,8 @@ namespace ComposAPI
       else if (profile.StartsWith("CAT"))
       {
         string prof = profile.Split(' ').Last();
-        List<double> sqlValues = Helpers.CatalogueValues.GetCatalogueProfileValues(prof);
+
+        List<double> sqlValues = catalogueDB.GetCatalogueProfileValues(prof);
 
         LengthUnit unit = LengthUnit.Meter;
         this.Depth = new Length(sqlValues[0], unit);

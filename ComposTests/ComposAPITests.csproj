@@ -10,11 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Helpers\**" />
     <Compile Remove="Parameters\**" />
-    <EmbeddedResource Remove="Helpers\**" />
     <EmbeddedResource Remove="Parameters\**" />
-    <None Remove="Helpers\**" />
     <None Remove="Parameters\**" />
   </ItemGroup>
 

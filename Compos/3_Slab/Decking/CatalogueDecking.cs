@@ -18,7 +18,8 @@ namespace ComposAPI
     public string Catalogue { get; set; } //	catalogue name of the decking
     public string Profile { get; set; } // decking name
     public DeckingSteelGrade Grade { get; set; } //	decking material grade
-    public const string CoaIdentifier = "DECKING_CATALOGUE";
+    internal ICatalogueDB catalogueDB { get; set; } = new CatalogueDB();
+    internal const string CoaIdentifier = "DECKING_CATALOGUE";
 
     public CatalogueDecking()
     {
@@ -33,7 +34,7 @@ namespace ComposAPI
       this.DeckingConfiguration = deckingConfiguration;
       this.m_type = DeckingType.Catalogue;
 
-      List<double> sqlValues = Helpers.CatalogueValues.GetCatalogueDeckingValues(catalogue, profile);
+      List<double> sqlValues = catalogueDB.GetCatalogueDeckingValues(catalogue, profile);
       LengthUnit unit = LengthUnit.Meter;
       this.Depth = new Length(sqlValues[0], unit);
       this.b1 = new Length(sqlValues[1], unit);
