@@ -14,7 +14,13 @@ jobs:
         gh release download compos8.6.0.7 --pattern "Arup_Compos_x64_8_6_0_7.msi" --repo arup-group/oasys-combined
       env:
         GH_TOKEN: ${{ secrets.GH_PAT }}
-    
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Restore NuGet packages
+      run: nuget restore ComposGH.sln
+      
     - name: Install Compos
       run: |
         $installerPath = $(ls -r ${{env.GITHUB_WORKSPACE}}\Arup_Compos_x64_8_6_0_7.msi)
@@ -27,12 +33,6 @@ jobs:
           Write-Error "Application could not be installed. Error code $($app.ExitCode)"
           exit(1)
         }
-
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1
-
-    - name: Restore NuGet packages
-      run: nuget restore ComposGH.sln
 
     - name: Build
       run: msbuild /m /p:Configuration=Release ComposGH.sln
