@@ -117,7 +117,6 @@ namespace ComposGH.Components
     #region Input and output
     // This region handles input and output parameters
     string FileName = null;
-    bool UsersetFileName = false;
     ComposFile ComposFile;
     bool CanOpen = false;
 
