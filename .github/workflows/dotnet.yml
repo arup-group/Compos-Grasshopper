@@ -38,7 +38,8 @@ jobs:
       run: msbuild /m /p:Configuration=Release ComposGH.sln
 
     - name: Register Compos
-      run: 'C:\Program Files\Oasys\Compos 8.6\Compos.exe' /Register
+      run: |
+        & 'C:\Program Files\Oasys\Compos 8.6\Compos.exe' /register
 
     - name: Run Tests
       run: |
