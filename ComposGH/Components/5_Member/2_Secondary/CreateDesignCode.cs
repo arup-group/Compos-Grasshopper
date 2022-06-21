@@ -181,8 +181,9 @@ namespace ComposGH.Components
             while (this.CheckboxNames.Count > 5)
               this.CheckboxNames.RemoveAt(5);
 
-            this.Checkboxes.Add(this.CodeOptions.ConsiderShrinkageDeflection);
-            this.CheckboxNames.Add("Consider shrinkage deflection");
+            // removed due to Compos ignoring that setting
+            //this.Checkboxes.Add(this.CodeOptions.ConsiderShrinkageDeflection);
+            //this.CheckboxNames.Add("Consider shrinkage deflection");
 
             break;
 
@@ -211,8 +212,9 @@ namespace ComposGH.Components
       this.DesignOptions.InclThinFlangeSections = this.Checkboxes[2];
       this.DesignOptions.InclConcreteSlabWeight = this.Checkboxes[3];
       this.DesignOptions.ConsiderShearDeflection = this.Checkboxes[4];
-      if (this.Checkboxes.Count == 6)
-        this.CodeOptions.ConsiderShrinkageDeflection = this.Checkboxes[5];
+      // removed due to Compos ignoring that setting
+      //if (this.Checkboxes.Count == 6)
+      //  this.CodeOptions.ConsiderShrinkageDeflection = this.Checkboxes[5];
       if (this.Checkboxes.Count == 8)
       {
         this.EC4CodeOptions.ConsiderShrinkageDeflection = this.Checkboxes[5];
