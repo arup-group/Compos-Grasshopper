@@ -11,7 +11,7 @@ jobs:
     
     - name: Download Compos
       run: |
-        gh release download compos8.6.0.7 --pattern "Arup_Compos_x64_8_6_0_7.msi" --repo arup-group/oasys-combined
+        gh release download compos8.6.0.7 --pattern "Arup_Compos_x64_8_6_0_7.exe" --repo arup-group/oasys-combined
       env:
         GH_TOKEN: ${{ secrets.GH_PAT }}
 
@@ -33,13 +33,13 @@ jobs:
           Write-Error "Application could not be installed. Error code $($app.ExitCode)"
           exit(1)
         }
-
-    - name: Build
-      run: msbuild /m /p:Configuration=Release ComposGH.sln
-
+        
     - name: Register Compos
       run: |
         & 'C:\Program Files\Oasys\Compos 8.6\Compos.exe' /register
+        
+    - name: Build
+      run: msbuild /m /p:Configuration=Release ComposGH.sln
 
     - name: Run Tests
       run: |
@@ -53,7 +53,7 @@ jobs:
       uses: codecov/codecov-action@v2
       with:
         directory: ./coverage/reports/
-        fail_ci_if_error: true
+        fail_ci_if_error: false
         files: ComposTests/coverage.json
         flags: unittests
         name: codecov-umbrella
