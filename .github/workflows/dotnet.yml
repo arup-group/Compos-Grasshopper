@@ -47,7 +47,6 @@ jobs:
 
     - name: Run Tests
       run: |
-        & 'C:\Program Files\Oasys\Compos 8.6\Compos.exe' /Register
         dotnet test .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
 
     - name: Code Coverage
