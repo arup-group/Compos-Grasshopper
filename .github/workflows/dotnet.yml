@@ -41,6 +41,10 @@ jobs:
       run: |
         & 'C:\Program Files\Oasys\Compos 8.6\Compos.exe' /register
 
+    - name: Sleep for 120 seconds
+      run: Start-Sleep -s 120
+      shell: powershell
+
     - name: Run Tests
       run: |
         & 'C:\Program Files\Oasys\Compos 8.6\Compos.exe' /Register
