@@ -282,7 +282,7 @@ namespace ComposAPI
     public override string ToString()
     {
       string str = this.Grade.ToString().Replace("_", "/");
-      str += " " + this.Type + ", DD: " + this.DryDensity;
+      str += " " + this.Type + ", D: " + this.DryDensity;
       return str;
     }
     #endregion
