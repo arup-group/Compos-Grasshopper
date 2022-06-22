@@ -66,6 +66,8 @@
     <Compile Include="5_Member\SafetyFactors\IEC4SafetyFactors.cs" />
     <Compile Include="5_Member\SafetyFactors\EC4SafetyFactors.cs" />
     <Compile Include="5_Member\IMember.cs" />
+    <Compile Include="7_Results\IResult.cs" />
+    <Compile Include="7_Results\Result.cs" />
     <Compile Include="7_Results\ResultOption.cs" />
     <Compile Include="7_Results\TransverseRebarOption.cs" />
     <Compile Include="7_Results\UtilisationFactorOption.cs" />

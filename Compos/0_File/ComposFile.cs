@@ -47,7 +47,7 @@ namespace ComposAPI
     #region methods
     public void AddMember(IMember member)
     {
-      member.File = this;
+      member.Register(this);
       this.Members.Add(member);
     }
 
@@ -80,7 +80,7 @@ namespace ComposAPI
     /// 0 – OK
     /// 1 – failed
     /// </returns>
-    internal short Analyse(string memberName)
+    public short Analyse(string memberName)
     {
       return ComposFile.ComposCOM.Analyse(memberName);
     }
@@ -129,7 +129,7 @@ namespace ComposAPI
     /// 0 – OK
     /// 1 – failed
     /// </returns>
-    internal short Design(string memberName)
+    public short Design(string memberName)
     {
       return ComposFile.ComposCOM.Design(memberName);
     }
@@ -312,7 +312,6 @@ namespace ComposAPI
 
       short status = ComposFile.ComposCOM.Open(tempCoa);
       this.Analyse();
-      this.Design();
 
       return status;
     }
