@@ -8,7 +8,7 @@ using ComposAPITests.Helpers;
 
 namespace ComposAPI.Beams.Tests
 {
-  public partial class ComposBeamSectionTest
+  public partial class BeamSectionTest
   {
     [Theory]
     [InlineData(7, 1, 0, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600. 200. 15. 25.", true, "BEAM_SECTION_AT_X	MEMBER-1	7	1	0.000000	STD I 600. 200. 15. 25.	TAPERED_YES\n")]
@@ -18,12 +18,16 @@ namespace ComposAPI.Beams.Tests
     [InlineData(7, 5, 3, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600 200 15 25", true, "BEAM_SECTION_AT_X	MEMBER-1	7	5	3.00000	STD I 600 200 15 25	TAPERED_YES\n")]
     [InlineData(7, 6, 4, 100000, 200000, 200000, 10000, 10000, 0, false, 20000, "STD I(m) 100. 200. 20. 10.", true, "BEAM_SECTION_AT_X	MEMBER-1	7	6	4.00000	STD I(m) 100. 200. 20. 10.	TAPERED_YES\n")]
     [InlineData(7, 7, 5, 100000, 200000, 200000, 20000, 30000, 0, false, 10000, "STD GI(m) 100. 200. 300. 10. 20. 30.", false, "BEAM_SECTION_AT_X	MEMBER-1	7	7	5.00000	STD GI(m) 100. 200. 300. 10. 20. 30.	TAPERED_NO\n")]
+    [InlineData(7, 1, -0.5, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600. 200. 15. 25.", true, "BEAM_SECTION_AT_X	MEMBER-1	7	1	-0.500000	STD I 600. 200. 15. 25.	TAPERED_YES\n")]
     public void ToCoaStringTest(int num, int index, double startPosition, double depth, double topFlangeWidth, double bottomFlangeWidth,
       double topFlangeThickness, double bottomFlangeThickness, double rootRadius, bool isCatalogue, double webThickness, string sectionDescription, bool taperToNext, string expected_coaString)
     {
 
       BeamSection beamSection = new BeamSection();
-      beamSection.StartPosition = new Length(startPosition, LengthUnit.Meter);
+      if (startPosition < 0)
+        beamSection.StartPosition = new Length(startPosition, LengthUnit.AstronomicalUnit);
+      else
+        beamSection.StartPosition = new Length(startPosition, LengthUnit.Meter);
       beamSection.Depth = new Length(depth, LengthUnit.Millimeter);
       beamSection.TopFlangeWidth = new Length(topFlangeWidth, LengthUnit.Millimeter);
       beamSection.BottomFlangeWidth = new Length(bottomFlangeWidth, LengthUnit.Millimeter);
@@ -55,7 +59,10 @@ namespace ComposAPI.Beams.Tests
       List<string> parameters = CoaHelper.Split(coaString);
       IBeamSection beam = BeamSection.FromCoaString(parameters, ComposUnits.GetStandardUnits());
 
-      Assert.Equal(expected_startPosition, beam.StartPosition.Meters);
+      if (beam.StartPosition.Unit == LengthUnit.AstronomicalUnit)
+        Assert.Equal(expected_startPosition, beam.StartPosition.AstronomicalUnits);
+      else
+        Assert.Equal(expected_startPosition, beam.StartPosition.Meters);
       Assert.Equal(expected_depth, beam.Depth.Millimeters);
       Assert.Equal(expected_topFlangeWidth, beam.TopFlangeWidth.Millimeters);
       Assert.Equal(expected_bottomFlangeWidth, beam.BottomFlangeWidth.Millimeters);
@@ -76,7 +83,7 @@ namespace ComposAPI.Beams.Tests
     [InlineData("STD I(ft) 0,9 0,4 0,01 0,02", 274.3201, 121.92, 121.92, 3.048001, 6.096002, 6.096002)]
     [InlineData("STD GI 400. 300. 250. 12. 25. 20.", 400, 300, 250, 12, 25, 20)]
     [InlineData("STD GI(cm) 15. 15. 12. 3. 1. 2.", 150, 150, 120, 30, 10, 20)]
-    [InlineData("CAT IPE IPE100", 100, 55, 55, 4.1, 5.7, 5.7)] //issue with loading GH referencing in testing environment
+    [InlineData("CAT IPE IPE100", 100, 55, 55, 4.1, 5.7, 5.7)] // issue with loading GH referencing in testing environment
     public BeamSection BeamSectionConstructorProfileTest(string profile, double expDepth, double expTopFlangeWidth, double expBottomFlangeWidth, double expWebThickness, double expTopFlangeThickness, double expBottomFlangeThickness)
     {
       //var mock = new Mock<BeamSection>();

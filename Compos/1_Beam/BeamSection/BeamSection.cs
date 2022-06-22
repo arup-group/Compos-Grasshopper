@@ -32,7 +32,7 @@ namespace ComposAPI
       }
     }
     private bool m_taper;
-    public Length StartPosition { get; set; } = Length.Zero; // distance of the section from left (as length or in percent of beam length, negative(sic!) if in percent!)
+    public Length StartPosition { get; set; } = Length.Zero; // distance of the section from left (as length or in percent of beam length, negative(sic!) and astronomical units if in percent!)
 
     // Dimensions
     public Length Depth { get; set; }
@@ -245,7 +245,7 @@ namespace ComposAPI
       double startPosition = CoaHelper.ConvertToDouble(parameters[4]);
       if (startPosition < 0)
         // start position in percent
-        section.StartPosition = new Length(startPosition, LengthUnit.Undefined);
+        section.StartPosition = new Length(startPosition, LengthUnit.AstronomicalUnit);
       else
         section.StartPosition = CoaHelper.ConvertToLength(parameters[4], units.Length);
 
