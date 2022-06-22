@@ -147,6 +147,7 @@
     <Compile Include="Components\7_Results\ReadBeamResults.cs" />
     <Compile Include="Components\7_Results\ReadInternalForces.cs" />
     <Compile Include="Components\7_Results\ReadResults.cs" />
+    <Compile Include="Components\8_Design\1_Primary\DesignMember.cs" />
     <Compile Include="ComposGHInfo.cs" />
     <Compile Include="Helpers\DeSerialization.cs" />
     <Compile Include="Helpers\GhRibbonLayout.cs" />
@@ -260,7 +261,6 @@
     <Folder Include="Components\6_Analysis\3_Tertiary\" />
     <Folder Include="Components\6_Analysis\4_Quarternary\" />
     <Folder Include="Components\6_Analysis\5_Quinary\" />
-    <Folder Include="Components\8_Design\1_Primary\" />
     <Folder Include="Components\8_Design\2_Secondary\" />
     <Folder Include="Components\8_Design\3_Tertiary\" />
     <Folder Include="Components\8_Design\4_Quarternary\" />
