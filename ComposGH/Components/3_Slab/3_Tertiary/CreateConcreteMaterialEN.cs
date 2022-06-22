@@ -65,7 +65,6 @@ namespace ComposGH.Components
 
         // density class
         List<string> densityClasses = Enum.GetValues(typeof(ConcreteMaterial.DensityClass)).Cast<ConcreteMaterial.DensityClass>().Select(x => x.ToString()).ToList();
-        densityClasses.RemoveAt(0);
         this.DropDownItems.Add(densityClasses);
         this.SelectedItems.Add(this.DensityClass.ToString());
 
@@ -156,9 +155,15 @@ namespace ComposGH.Components
         dryDensity = GetInput.Density(this, DA, 0, this.DensityUnit);
         userDensity = true;
       }
-      else
-        if (this.Grade.ToString().StartsWith("L"))
+      else if (this.Grade.ToString().StartsWith("L"))
+      {
+        if (this.DensityClass == ConcreteMaterial.DensityClass.NOT_APPLY)
+        {
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Please select a densitiy class.");
+          return;
+        }
         dryDensity = new Density((double)this.DensityClass, DensityUnit.KilogramPerCubicMeter);
+      }
 
       ERatioGoo eRatio = (ERatioGoo)GetInput.GenericGoo<ERatioGoo>(this, DA, 1);
 
@@ -173,7 +178,7 @@ namespace ComposGH.Components
         userStrain = true;
       }
 
-      switch(this.Grade)
+      switch (this.Grade)
       {
         case (ConcreteGradeEN.C20_25):
         case (ConcreteGradeEN.C25_30):
