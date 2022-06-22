@@ -133,11 +133,13 @@ namespace ComposGH.Components
       pManager.AddGenericParameter("E Ratios", "ER", "(Optional) Steel/concrete Young´s modulus ratios", GH_ParamAccess.item);
       pManager.AddNumberParameter("Imposed Load Percentage [%]", "ILP", "(Optional) Percentage of imposed load acting long term", GH_ParamAccess.item, 33);
       pManager.AddNumberParameter("Shrinkage Strain [" + strainUnitAbbreviation + "]", "SS", "(Optional) Shrinkage strain", GH_ParamAccess.item, -0.0005);
+      pManager.AddGenericParameter("Concrete Grade", "CG", "(Optional) Concrete grade", GH_ParamAccess.item);
 
       pManager[0].Optional = true;
       pManager[1].Optional = true;
       pManager[2].Optional = true;
       pManager[3].Optional = true;
+      pManager[4].Optional = true;
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
@@ -148,6 +150,27 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
+      if (this.Params.Input[4].Sources.Count > 0)
+      {
+        string grade = "";
+        DA.GetData(4, ref grade);
+        try
+        {
+          this.Grade = (ConcreteGradeEN)Enum.Parse(typeof(ConcreteGradeEN), grade);
+        }
+        catch (ArgumentException)
+        {
+          string text = "Could not parse concrete grade. Valid concrete grades are ";
+          foreach (string g in Enum.GetValues(typeof(ConcreteGradeEN)).Cast<ConcreteGradeEN>().Select(x => x.ToString()).ToList())
+          {
+            text += g + ", ";
+          }
+          text = text.Remove(text.Length - 2);
+          text += ".";
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, text);
+        }
+      }
+
       Density dryDensity = new Density(2400, DensityUnit.KilogramPerCubicMeter);
       bool userDensity = false;
       if (this.Params.Input[0].Sources.Count > 0)
