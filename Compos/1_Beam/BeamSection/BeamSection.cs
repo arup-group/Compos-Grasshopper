@@ -16,7 +16,7 @@ namespace ComposAPI
   public class BeamSection : IBeamSection
   {
     // Setting out
-    public bool TaperedToNext
+    public bool TaperedToNext //	tapered or uniform to the next section
     {
       get
       {
@@ -32,7 +32,7 @@ namespace ComposAPI
       }
     }
     private bool m_taper;
-    public Length StartPosition { get; set; } = Length.Zero;
+    public Length StartPosition { get; set; } = Length.Zero; // distance of the section from left (as length or in percent of beam length, negative(sic!) if in percent!)
 
     // Dimensions
     public Length Depth { get; set; }
@@ -242,10 +242,14 @@ namespace ComposAPI
       //BEAM_SECTION_AT_X MEMBER-1 3 2 6.00000 STD GI 730 189.2 222.25 8.5 12.7 12.7 TAPERED_YES
       //BEAM_SECTION_AT_X MEMBER-1 3 3 12.0000 STD GI 200 189.2 222.25 8.5 12.7 12.7 TAPERED_YES
 
-      section.StartPosition = CoaHelper.ConvertToLength(parameters[4], units.Length);
+      double startPosition = CoaHelper.ConvertToDouble(parameters[4]);
+      if (startPosition < 0)
+        // start position in percent
+        section.StartPosition = new Length(startPosition, LengthUnit.Undefined);
+      else
+        section.StartPosition = CoaHelper.ConvertToLength(parameters[4], units.Length);
 
       section.SetFromProfileString(parameters[5]);
-      
       // using StartsWith as string is the last parameter and can contain new line character: "TAPERED_YES\n"
       if (parameters[6].StartsWith("TAPERED_YES"))
         section.TaperedToNext = true;
@@ -254,7 +258,7 @@ namespace ComposAPI
 
       return section;
     }
-    
+
     public string ToCoaString(string name, int num, int index, ComposUnits units)
     {
       List<string> parameters = new List<string>();
@@ -262,7 +266,11 @@ namespace ComposAPI
       parameters.Add(name);
       parameters.Add(Convert.ToString(num));
       parameters.Add(Convert.ToString(index));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(units.Length).Value, 6));
+      if (this.StartPosition.Value < 0)
+        // start position in percent
+        parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.Value, 6));
+      else
+        parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(units.Length).Value, 6));
       parameters.Add(this.SectionDescription);
       CoaHelper.AddParameter(parameters, "TAPERED", this.TaperedToNext);
 

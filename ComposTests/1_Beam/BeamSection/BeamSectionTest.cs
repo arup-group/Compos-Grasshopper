@@ -48,6 +48,7 @@ namespace ComposAPI.Beams.Tests
     [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	5	3.00000	STD I 600 200 15 25	TAPERED_YES\n", 3, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600 200 15 25", true)]
     [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	6	4.00000	STD I(m) 100. 200. 20. 10.	TAPERED_YES\n", 4, 100000, 200000, 200000, 10000, 10000, 0, false, 20000, "STD I(m) 100. 200. 20. 10.", true)]
     [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	7	5.00000	STD GI(m) 100. 200. 300. 10. 20. 30.	TAPERED_NO\n", 5, 100000, 200000, 300000, 20000, 30000, 0, false, 10000, "STD GI(m) 100. 200. 300. 10. 20. 30.", false)]
+    [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	1	-0.500000	STD I 600. 200. 15. 25.	TAPERED_YES\n", -0.5, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600. 200. 15. 25.", true)]
     public void FromCoaStringTest(string coaString, double expected_startPosition, double expected_depth, double expected_topFlangeWidth, double expected_bottomFlangeWidth,
       double expected_topFlangeThickness, double expected_bottomFlangeThickness, double expected_rootRadius, bool expected_isCatalogue, double expected_webThickness, string expected_sectionDescription, bool expected_taperToNext)
     {
