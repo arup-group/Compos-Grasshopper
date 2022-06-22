@@ -40,6 +40,7 @@ namespace ComposGH.Components
       "Density Unit",
       "Strain Unit"
     });
+    List<bool> OverrideDropDownItems;
     private bool First = true;
     private ConcreteGrade Grade = ConcreteGrade.C20;
     private DensityUnit DensityUnit = Units.DensityUnit;
@@ -65,6 +66,7 @@ namespace ComposGH.Components
         this.DropDownItems.Add(Units.FilteredStrainUnits);
         this.SelectedItems.Add(this.StrainUnit.ToString());
 
+        this.OverrideDropDownItems = new List<bool>() { false, false, false };
         this.First = false;
       }
       this.m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, this.DropDownItems, this.SelectedItems, this.SpacerDescriptions);
@@ -118,11 +120,13 @@ namespace ComposGH.Components
       pManager.AddGenericParameter("E Ratios", "ER", "(Optional) Steel/concrete Young´s modulus ratios", GH_ParamAccess.item);
       pManager.AddNumberParameter("Imposed Load Percentage [%]", "ILP", "(Optional) Percentage of imposed load acting long term", GH_ParamAccess.item, 33);
       pManager.AddNumberParameter("Shrinkage Strain [" + strainUnitAbbreviation + "]", "SS", "(Optional) Shrinkage strain", GH_ParamAccess.item, -0.00085);
+      pManager.AddGenericParameter("Concrete Grade", "CG", "(Optional) Concrete grade", GH_ParamAccess.item);
 
       pManager[0].Optional = true;
       pManager[1].Optional = true;
       pManager[2].Optional = true;
       pManager[3].Optional = true;
+      pManager[4].Optional = true;
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
@@ -133,6 +137,37 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
+      // override concrete grade?
+      if (this.Params.Input[4].Sources.Count > 0)
+      {
+        string grade = "";
+        DA.GetData(4, ref grade);
+        try
+        {
+          this.Grade = (ConcreteGrade)Enum.Parse(typeof(ConcreteGrade), grade);
+          this.DropDownItems[0] = new List<string>();
+          this.SelectedItems[0] = "-";
+          this.OverrideDropDownItems[0] = true;
+        }
+        catch (ArgumentException)
+        {
+          string text = "Could not parse concrete grade. Valid concrete grades are ";
+          foreach (string g in Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList())
+          {
+            text += g + ", ";
+          }
+          text = text.Remove(text.Length - 2);
+          text += ".";
+          this.DropDownItems[0] = Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList();
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
+        }
+      }
+      else if (this.OverrideDropDownItems[0])
+      {
+        this.DropDownItems[0] = Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList();
+        this.OverrideDropDownItems[0] = false;
+      }
+
       Density dryDensity = new Density(2450, DensityUnit.KilogramPerCubicMeter);
       bool userDensity = false;
       if (this.Params.Input[0].Sources.Count > 0)

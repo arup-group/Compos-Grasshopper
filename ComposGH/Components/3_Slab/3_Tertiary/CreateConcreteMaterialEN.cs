@@ -78,7 +78,6 @@ namespace ComposGH.Components
         this.SelectedItems.Add(this.StrainUnit.ToString());
 
         this.OverrideDropDownItems = new List<bool>() { false, false, false, false };
-
         this.First = false;
       }
       this.m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, this.DropDownItems, this.SelectedItems, this.SpacerDescriptions);
@@ -155,7 +154,7 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      // concrete grade
+      // override concrete grade?
       if (this.Params.Input[4].Sources.Count > 0)
       {
         string grade = "";
@@ -185,8 +184,7 @@ namespace ComposGH.Components
         this.DropDownItems[0] =  Enum.GetValues(typeof(ConcreteGradeEN)).Cast<ConcreteGradeEN>().Select(x => x.ToString()).ToList();
         this.OverrideDropDownItems[0] = false;
       }
-
-      // density class
+      // override density class?
       if (this.Params.Input[5].Sources.Count > 0)
       {
         string densityClass = "";
