@@ -109,7 +109,8 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      this.Grade = (ConcreteGradeEN)Enum.Parse(typeof(ConcreteGradeEN), this.SelectedItems[0]);
+      if (this.SelectedItems[0] != "-")
+        this.Grade = (ConcreteGradeEN)Enum.Parse(typeof(ConcreteGradeEN), this.SelectedItems[0]);
       this.DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), this.SelectedItems[2]);
       this.StrainUnit = (StrainUnit)Enum.Parse(typeof(StrainUnit), this.SelectedItems[3]);
 
@@ -179,9 +180,9 @@ namespace ComposGH.Components
           AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
         }
       }
-      else if(this.OverrideDropDownItems[0])
+      else if (this.OverrideDropDownItems[0])
       {
-        this.DropDownItems[0] =  Enum.GetValues(typeof(ConcreteGradeEN)).Cast<ConcreteGradeEN>().Select(x => x.ToString()).ToList();
+        this.DropDownItems[0] = Enum.GetValues(typeof(ConcreteGradeEN)).Cast<ConcreteGradeEN>().Select(x => x.ToString()).ToList();
         this.OverrideDropDownItems[0] = false;
       }
       // override density class?

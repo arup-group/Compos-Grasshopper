@@ -29,7 +29,7 @@ namespace ComposGH.Components
     #region Custom UI
 
     // list of lists with all dropdown lists content
-    List<List<string>> DropdownItems;
+    List<List<string>> DropDownItems;
     // list of selected items
     List<string> SelectedItems;
     // list of descriptions 
@@ -37,6 +37,7 @@ namespace ComposGH.Components
     {
             "Grade",
     });
+    List<bool> OverrideDropDownItems;
 
     private bool First = true;
     private StandardSteelGrade SteelGrade = StandardSteelGrade.S235;
@@ -45,23 +46,24 @@ namespace ComposGH.Components
     {
       if (First)
       {
-        DropdownItems = new List<List<string>>();
+        DropDownItems = new List<List<string>>();
         SelectedItems = new List<string>();
 
         // SteelType
-        DropdownItems.Add(Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList());
+        DropDownItems.Add(Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList());
         SelectedItems.Add(SteelGrade.ToString());
 
+        this.OverrideDropDownItems = new List<bool>() { false };
         First = false;
       }
 
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
+      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropDownItems, SelectedItems, SpacerDescriptions);
     }
 
     public void SetSelected(int i, int j)
     {
       // change selected item
-      SelectedItems[i] = DropdownItems[i][j];
+      SelectedItems[i] = DropDownItems[i][j];
 
       if (i == 0)  // change is made to code 
       {
@@ -80,7 +82,8 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), SelectedItems[0]);
+      if (this.SelectedItems[0] != "-")
+        this.SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), this.SelectedItems[0]);
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -93,7 +96,8 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      
+      pManager.AddGenericParameter("Grade", "G", "(Optional) Grade", GH_ParamAccess.item);
+      pManager[0].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
@@ -103,18 +107,49 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-        DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(SteelGrade)));
+      // override steel grade?
+      if (this.Params.Input[0].Sources.Count > 0)
+      {
+        string grade = "";
+        DA.GetData(0, ref grade);
+        try
+        {
+          this.SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), grade);
+          this.DropDownItems[0] = new List<string>();
+          this.SelectedItems[0] = "-";
+          this.OverrideDropDownItems[0] = true;
+        }
+        catch (ArgumentException)
+        {
+          string text = "Could not parse steel grade. Valid steel grades are ";
+          foreach (string g in Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList())
+          {
+            text += g + ", ";
+          }
+          text = text.Remove(text.Length - 2);
+          text += ".";
+          this.DropDownItems[0] = Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList();
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
+        }
+      }
+      else if (this.OverrideDropDownItems[0])
+      {
+        this.DropDownItems[0] = Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList();
+        this.OverrideDropDownItems[0] = false;
+      }
+
+      DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(SteelGrade)));
     }
 
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
+      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropDownItems, SelectedItems, SpacerDescriptions);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
+      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropDownItems, ref SelectedItems, ref SpacerDescriptions);
 
       UpdateUIFromSelectedItems();
 
