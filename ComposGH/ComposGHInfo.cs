@@ -73,7 +73,7 @@ namespace ComposGH
     internal const string Company = "Oasys";
     internal const string Copyright = "Copyright © Oasys 1985 - 2022";
     internal const string Contact = "https://www.oasys-software.com/";
-    internal const string Vers = "0.0.2";
+    internal const string Vers = "0.0.3";
     internal static bool isBeta = true;
     internal const string ProductName = "Compos";
     internal const string PluginName = "ComposGH";
