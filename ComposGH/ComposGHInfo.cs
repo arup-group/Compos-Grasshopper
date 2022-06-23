@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.IO;
+using ComposAPI;
 
 namespace ComposGH
 {
@@ -50,10 +51,20 @@ namespace ComposGH
       // ### Setup units ###
       Units.SetupUnits();
 
+      // subscribe to rhino closing event
+      Rhino.RhinoApp.Closing += CloseFile;
+
       return GH_LoadingInstruction.Proceed;
     }
+
     public static string PluginPath;
     public static string InstallPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Oasys", "Compos 8.6");
+
+    internal static void CloseFile(object sender, EventArgs args)
+    {
+      ComposFile.Close();
+      Rhino.RhinoApp.Closing -= CloseFile;
+    }
   }
 
   public class ComposGHInfo : GH_AssemblyInfo
@@ -91,6 +102,7 @@ namespace ComposGH
         return Icon;
       }
     }
+
     public override string Description
     {
       get
@@ -103,6 +115,7 @@ namespace ComposGH
         + Environment.NewLine + Environment.NewLine + Copyright;
       }
     }
+
     public override Guid Id
     {
       get

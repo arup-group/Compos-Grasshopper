@@ -85,6 +85,11 @@ namespace ComposAPI
       return ComposFile.ComposCOM.Analyse(memberName);
     }
 
+    public static short Close()
+    {
+      return ComposFile.ComposCOM.Close();
+    }
+
     /// <summary>
     /// Returns an integer flag to indicates whether the code requirements are satisfied.  
     /// </summary>
