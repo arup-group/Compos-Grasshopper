@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using ComposAPI;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
@@ -106,9 +107,8 @@ namespace ComposGH.Components
       string fileName = programFiles + @"\Oasys\Compos 8.6\Compos.exe";
 
       if (this.FileName == null || this.FileName == "")
-        this.SaveAsFile();
-      else
-        this.SaveFile();
+        this.FileName = Path.GetTempPath() + ComposFile.Guid + ".coa";
+      this.SaveFile();
       if (this.CanOpen)
         System.Diagnostics.Process.Start(fileName, this.FileName);
     }
