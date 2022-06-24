@@ -75,6 +75,7 @@ namespace ComposGH
     internal const string Contact = "https://www.oasys-software.com/";
     internal const string Vers = "0.0.3";
     internal static bool isBeta = true;
+    internal static string Disclaimer = PluginName + " is pre-release and under active development, including further testing to be undertaken.It is provided \"as-is\" and you bear the risk of using it. Future versions may contain breaking changes.Any files, results, or other types of output information created using " + PluginName + " should not be relied upon without thorough and independent checking.";
     internal const string ProductName = "Compos";
     internal const string PluginName = "ComposGH";
 
@@ -109,7 +110,8 @@ namespace ComposGH
       {
         //Return a short string describing the purpose of this GHA library.
         return "Official Oasys Compos Grasshopper Plugin" + Environment.NewLine
-        + Environment.NewLine + "The plugin requires a Compos license to load."
+          + (isBeta ? Disclaimer : "")
+        + Environment.NewLine + "The plugin requires a licensed version of Compos to load."
         + Environment.NewLine
         + Environment.NewLine + "Contact oasys@arup.com to request a free trial version."
         + Environment.NewLine + Environment.NewLine + Copyright;
