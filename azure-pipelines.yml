@@ -3,8 +3,7 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-trigger:
-- test-ci
+trigger: none
 
 variables:
   - group: s3PushInstallers
@@ -12,7 +11,7 @@ variables:
   - name: configuration
     value: Release
 
-pool: 'vs17_1'
+pool: 'vs17_2'
 
 steps:
 - task: NuGetToolInstaller@1
@@ -23,7 +22,9 @@ steps:
       command: 'restore'
       restoreSolution: 'ComposGH.sln'
 
-- powershell: aws s3 cp s3://oasys-installer-store/compos.msi .\compos.msi
+- powershell: aws s3 cp s3://oasys-installer-store/Compos/compos.msi .\compos.msi
+  displayName: 'Download Compos'
+  failOnStderr: true
 
 - powershell: |
     $installerPath = $(ls -r $(Pipeline.Workspace)\compos.msi)
@@ -36,6 +37,8 @@ steps:
       Write-Error "Application could not be installed. Error code $($app.ExitCode)"
       exit(1)
     }
+  displayName: 'Install Compos'
+  failOnStderr: true
   
 - task: VSBuild@1
   displayName: 'Building project in $(configuration)'
@@ -47,3 +50,19 @@ steps:
     clean: true
   env:
     MSBUILDDISABLENODEREUSE: 1
+
+- powershell: |
+    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
+  displayName: dotnet tests
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'cobertura'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/results/**/coverage.cobertura.xml'
+    pathToSources: '$(System.DefaultWorkingDirectory)'
+
+- powershell: |
+    codecov -t $env:CODECOV_TOKEN -f ComposTests\coverage.json -F unittests
+  env:
+    CODECOV_TOKEN: $(CODECOV_TOKEN)
+  displayName: Upload Code Coverage to codecovio
