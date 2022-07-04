@@ -1,0 +1,58 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+on: push
+
+trigger: none
+
+variables:
+  - group: s3PushInstallers
+  - group: pipeline-tokens
+  - name: configuration
+    value: Release
+
+pool: 'vs17_2'
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  displayName: 'Restoring NuGet packages'
+  inputs:
+      command: 'restore'
+      restoreSolution: 'ComposGH.sln'
+
+- powershell: aws s3 cp s3://oasys-installer-store/Compos/compos.msi .\compos.msi
+  displayName: 'Download Compos'
+  failOnStderr: true
+
+- powershell: |
+    $installerPath = $(ls -r $(Pipeline.Workspace)\compos.msi)
+    Write-output "Installer Path: ${installerPath}"
+    $app = Start-Process ${installerPath} -ArgumentList '/passive /quiet /l* msiLog.txt' -PassThru -Wait
+    $app.WaitForExit()
+    Write-Output "Exit code: $($app.ExitCode)"
+    Write-Output "Exit time: $($app.ExitTime.ToUniversalTime().ToString('yyyy-MM-dd HH:mm:ss')) UTC"
+    if ($app.ExitCode -ne 0) {
+      Write-Error "Application could not be installed. Error code $($app.ExitCode)"
+      exit(1)
+    }
+  displayName: 'Install Compos'
+  failOnStderr: true
+  
+- task: VSBuild@1
+  displayName: 'Building project in $(configuration)'
+  inputs:
+    solution: 'ComposGH.sln'
+    msbuildArgs: '/p:AppxBundlePlatforms="x64" /p:AppxPackageDir="$(build.artifactStagingDirectory)\AppxPackages" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /m /nr:false'
+    platform: 'x64'
+    configuration: '$(configuration)'
+    clean: true
+  env:
+    MSBUILDDISABLENODEREUSE: 1
+
+- powershell: |
+    dotnet test .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
+  displayName: dotnet tests
