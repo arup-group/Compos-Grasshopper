@@ -8,12 +8,13 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Converters</RootNamespace>
     <AssemblyName>Converters</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -48,9 +49,6 @@
     <Compile Include="SpeckleConverter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="AdSecGH">
-      <HintPath>..\..\..\AdSec-Grasshopper\GhAdSec\bin\x64\Debug\AdSecGH.dll</HintPath>
-    </Reference>
     <Reference Include="GraphQL.Client, Version=4.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\GraphQL.Client.4.0.2\lib\net461\GraphQL.Client.dll</HintPath>
       <Private>False</Private>
@@ -66,9 +64,6 @@
     <Reference Include="GraphQL.Primitives, Version=4.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\GraphQL.Primitives.4.0.2\lib\netstandard2.0\GraphQL.Primitives.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="GsaGH">
-      <HintPath>..\..\..\GSA-Grasshopper\GhSA\bin\x64\Debug\GsaGH.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
