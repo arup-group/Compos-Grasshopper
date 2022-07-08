@@ -74,11 +74,11 @@ steps:
     cd Release
     ..\yak spec
     ..\yak build --platform win
-#    $yakCurrentVersName = Get-ChildItem -Path . -Filter "*.yak"
-#    $yakRh7Name =  $yakCurrentVersName -Replace "rh6_27", "rh7_0"
-#    Rename-Item -Path $yakCurrentVersName -NewName $yakRh7Name
-#    ..\yak build --platform win
-#    cd ..
-#    ls Release\*.yak |% {.\yak push $_.FullName}
+    $yakCurrentVersName = Get-ChildItem -Path . -Filter "*.yak"
+    $yakRh7Name =  $yakCurrentVersName -Replace "rh6_27", "rh7_0"
+    Rename-Item -Path $yakCurrentVersName -NewName $yakRh7Name
+    ..\yak build --platform win
+    cd ..
+    ls Release\*.yak |% {.\yak push $_.FullName}
 #  condition: and(succeeded(), eq(variables.isMain, 'true'))
   displayName: Publish yak package
