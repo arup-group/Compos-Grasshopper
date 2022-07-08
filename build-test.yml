@@ -82,5 +82,5 @@ steps:
     ls Release\*.yak |% {.\yak push $_.FullName}
   env:
     YAK_TOKEN: $(YAK_TOKEN)
-  condition: and(succeeded(), eq(variables.isMain, 'true'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
   displayName: Deploy yak package
