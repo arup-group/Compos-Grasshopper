@@ -94,6 +94,7 @@
     <Compile Include="Components\0_File\SaveModel.cs" />
     <Compile Include="Components\1_Beam\1_Primary\CreateBeam.cs" />
     <Compile Include="Components\1_Beam\2_Secondary\CreateRestraint.cs" />
+    <Compile Include="Components\1_Beam\3_Tertiary\CreateStandardENSteelMaterial.cs" />
     <Compile Include="Components\1_Beam\3_Tertiary\CreateStandardASNZSteelMaterial.cs" />
     <Compile Include="Components\1_Beam\3_Tertiary\CreateStandardSteelMaterial.cs" />
     <Compile Include="Components\1_Beam\3_Tertiary\CreateCustomSteelMaterial.cs" />
@@ -458,6 +459,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\ReadResult.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\StandardENSteelMaterial.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

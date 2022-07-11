@@ -9,21 +9,21 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateStandardASNZSteelMaterial : GH_Component, IGH_VariableParameterComponent
+  public class CreateStandardENSteelMaterial : GH_Component, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
-    public override Guid ComponentGuid => new Guid("8656c967-817c-49fe-9297-d863664b714a");
-    public CreateStandardASNZSteelMaterial()
-      : base("Standard ASNZ Steel Material", "StdASNZSteelMat", "Create Standard AS/NZS2327:2017 Steel Material for a Compos Beam",
+    public override Guid ComponentGuid => new Guid("e671a346-5989-47e0-aacc-920c77fdfb1f");
+    public CreateStandardENSteelMaterial()
+      : base("Standard EC4 Steel Material", "ENSteelMat", "Create Standard EN1994-1-1 Steel Material for a Compos Beam",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
 
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.StandardASNZSteelMaterial;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.StandardENSteelMaterial;
     #endregion
 
     #region Custom UI
@@ -40,7 +40,7 @@ namespace ComposGH.Components
     List<bool> OverrideDropDownItems;
 
     private bool First = true;
-    private StandardASNZSteelMaterialGrade SteelGrade = StandardASNZSteelMaterialGrade.C450_AS1163;
+    private StandardSteelGrade SteelGrade = StandardSteelGrade.S235;
 
     public override void CreateAttributes()
     {
@@ -50,15 +50,9 @@ namespace ComposGH.Components
         SelectedItems = new List<string>();
 
         // SteelType
-        List<StandardASNZSteelMaterialGrade> grades = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().ToList();
-        List<string> gradeStrings = new List<string>();
-        foreach (StandardASNZSteelMaterialGrade grade in grades)
-        {
-          ASNZSteelMaterial mat = new ASNZSteelMaterial(grade);
-          gradeStrings.Add(mat.ToString());
-        }
-        DropDownItems.Add(gradeStrings);
-        SelectedItems.Add(gradeStrings[0]);
+        DropDownItems.Add(Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList());
+        DropDownItems[0].RemoveAt(3); // remove S450
+        SelectedItems.Add(SteelGrade.ToString());
 
         this.OverrideDropDownItems = new List<bool>() { false };
         First = false;
@@ -76,9 +70,8 @@ namespace ComposGH.Components
       {
         if (SteelGrade.ToString() == SelectedItems[i])
           return; // return if selected value is same as before
-        StandardASNZSteelMaterialGrade grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), this.SelectedItems[i]);
-        ASNZSteelMaterial mat = new ASNZSteelMaterial(grade);
-        SteelGrade = mat.Grade;
+
+        SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), SelectedItems[i]);
       }
 
       // update name of inputs (to display unit on sliders)
@@ -91,11 +84,7 @@ namespace ComposGH.Components
     private void UpdateUIFromSelectedItems()
     {
       if (this.SelectedItems[0] != "-")
-      {
-        StandardASNZSteelMaterialGrade grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), this.SelectedItems[0]);
-        ASNZSteelMaterial mat = new ASNZSteelMaterial(grade);
-        this.SteelGrade = mat.Grade;
-      }
+        this.SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), this.SelectedItems[0]);
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -126,7 +115,9 @@ namespace ComposGH.Components
         DA.GetData(0, ref grade);
         try
         {
-          this.SteelGrade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), grade);
+          if (Char.IsDigit(grade[0]))
+            grade = "S" + grade;
+          this.SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), grade);
           this.DropDownItems[0] = new List<string>();
           this.SelectedItems[0] = "-";
           this.OverrideDropDownItems[0] = true;
@@ -134,23 +125,23 @@ namespace ComposGH.Components
         catch (ArgumentException)
         {
           string text = "Could not parse steel grade. Valid steel grades are ";
-          foreach (string g in Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().Select(x => x.ToString()).ToList())
+          foreach (string g in Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList())
           {
             text += g + ", ";
           }
           text = text.Remove(text.Length - 2);
           text += ".";
-          this.DropDownItems[0] = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().Select(x => x.ToString()).ToList();
+          this.DropDownItems[0] = Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList();
           AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
         }
       }
       else if (this.OverrideDropDownItems[0])
       {
-        this.DropDownItems[0] = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().Select(x => x.ToString()).ToList();
+        this.DropDownItems[0] = Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList();
         this.OverrideDropDownItems[0] = false;
       }
 
-      DA.SetData(0, new SteelMaterialGoo(new ASNZSteelMaterial(SteelGrade)));
+      DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(SteelGrade, Code.EN1994_1_1_2004)));
     }
 
     #region (de)serialization

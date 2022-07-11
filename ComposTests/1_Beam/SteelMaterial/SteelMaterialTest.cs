@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
@@ -23,7 +25,7 @@ namespace ComposAPI.Beams.Tests
     [InlineData(StandardSteelGrade.S355, Code.EN1994_1_1_2004, "BEAM_STEEL_MATERIAL_STD	MEMBER-1	S355 (EN)\nBEAM_WELDING_MATERIAL	MEMBER-1	Grade 42\n")]
     public void ToCoaStringTest2(StandardSteelGrade steelMaterialGrade, Code code, string expected_coaString)
     {
-      SteelMaterial steelMaterial = new SteelMaterial(steelMaterialGrade);
+      SteelMaterial steelMaterial = new SteelMaterial(steelMaterialGrade, code);
       string coaString = steelMaterial.ToCoaString("MEMBER-1", code, ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_coaString, coaString);
@@ -53,16 +55,21 @@ namespace ComposAPI.Beams.Tests
 
     // 1 setup inputs
     [Theory]
-    [InlineData(StandardSteelGrade.S235)]
-    public void ConstructorTest2(StandardSteelGrade grade)
+    [InlineData(StandardSteelGrade.S235, Code.BS5950_3_1_1990_Superseded)]
+    [InlineData(StandardSteelGrade.S275, Code.BS5950_3_1_1990_A1_2010)]
+    [InlineData(StandardSteelGrade.S355, Code.EN1994_1_1_2004)]
+    [InlineData(StandardSteelGrade.S450, Code.HKSUOS_2005)]
+    [InlineData(StandardSteelGrade.S460, Code.HKSUOS_2011)]
+    public void ConstructorTest2(StandardSteelGrade grade, Code code)
     {
       ComposUnits units = ComposUnits.GetStandardUnits();
 
       // 2 create object instance with constructor
-      SteelMaterial material = new SteelMaterial(grade);
+      SteelMaterial material = new SteelMaterial(grade, code);
 
       // 3 check that inputs are set in object's members
-      Assert.Equal(205, material.E.Value);
+      bool EN = (code == Code.EN1994_1_1_2004);
+      Assert.Equal(EN ? 210 : 205, material.E.Value);
       Assert.Equal(7850, material.Density.Value);
       switch (grade)
       {
@@ -99,6 +106,35 @@ namespace ComposAPI.Beams.Tests
         default:
           Assert.True(material.isCustom);
           break;
+      }
+    }
+
+    [Theory]
+    [InlineData(Code.BS5950_3_1_1990_Superseded)]
+    [InlineData(Code.BS5950_3_1_1990_A1_2010)]
+    [InlineData(Code.HKSUOS_2005)]
+    [InlineData(Code.HKSUOS_2011)]
+    [InlineData(Code.EN1994_1_1_2004)]
+    public void ToCoaAndBack(Code code)
+    {
+      List<StandardSteelGrade> grades = Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().ToList();
+      ComposUnits units = ComposUnits.GetStandardUnits();
+      foreach (StandardSteelGrade grade in grades)
+      {
+        SteelMaterial steelMaterialExpected = new SteelMaterial(grade, code);
+        string coaString = steelMaterialExpected.ToCoaString("MEMBER-1",code, units);
+        List<string> materialStrings = coaString.Split('\n').ToList()[0].Split('\t').ToList();
+        List<string> weldStrings = coaString.Split('\n').ToList()[1].Split('\t').ToList();
+        SteelMaterial materialFromCoa = (SteelMaterial)SteelMaterial.FromCoaString(materialStrings, units);
+        materialFromCoa.WeldGrade = SteelMaterial.WeldGradeFromCoa(weldStrings);
+
+        Assert.Equal(steelMaterialExpected.E, materialFromCoa.E);
+        Assert.Equal(steelMaterialExpected.Density, materialFromCoa.Density);
+        Assert.Equal(steelMaterialExpected.isCustom, materialFromCoa.isCustom);
+        Assert.Equal(steelMaterialExpected.Grade, materialFromCoa.Grade);
+        Assert.Equal(steelMaterialExpected.WeldGrade, materialFromCoa.WeldGrade);
+        Assert.Equal(steelMaterialExpected.fy, materialFromCoa.fy);
+        Assert.Equal(steelMaterialExpected.ReductionFactorMpl, materialFromCoa.ReductionFactorMpl);
       }
     }
   }

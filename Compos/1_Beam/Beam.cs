@@ -76,11 +76,13 @@ namespace ComposAPI
 
           case (CoaIdentifier.BeamSteelMaterialStandard):
           case (CoaIdentifier.BeamSteelMaterialUser):
-          case (CoaIdentifier.BeamWeldingMaterial):
-            // this doesn´t work like this
             beam.Material = SteelMaterial.FromCoaString(parameters, units);
             break;
-
+          case (CoaIdentifier.BeamWeldingMaterial):
+            SteelMaterial steelMaterial = (SteelMaterial)beam.Material;
+            steelMaterial.WeldGrade = SteelMaterial.WeldGradeFromCoa(parameters);
+            beam.Material = steelMaterial;
+            break;
           case (CoaIdentifier.BeamSectionAtX):
             beam.Sections.Add(BeamSection.FromCoaString(parameters, units));
             break;
