@@ -23,7 +23,7 @@ namespace ComposAPITests.Helpers
     {
       // split text string
       // example (IPE100): 0.1 --  0.055 -- 0.0041 -- 0.0057 -- 0.007
-      return new List<double> { 0.100, 0.055, 0.041, 0.0057, 0.007 };
+      return new List<double> { 0.100, 0.055, 0.0041, 0.0057, 0.007 };
     }
   }
 }
