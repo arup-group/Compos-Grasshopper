@@ -40,30 +40,29 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.115.5, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\lib\net46\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="UnitsNet, Version=4.0.0.0, Culture=neutral, PublicKeyToken=f8601875a1f041da, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnitsNet.4.89.0\lib\net40\UnitsNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="0_File\IComposFile.cs" />
     <Compile Include="0_File\ComposFile.cs" />
     <Compile Include="1_Beam\IBeam.cs" />
     <Compile Include="1_Beam\SteelMaterial\ASNZSteelMaterial.cs" />
-    <Compile Include="5_Member\DesignCode\CreepShrinkageParameters.cs" />
-    <Compile Include="5_Member\SafetyFactors\IEC4MaterialPartialFactors.cs" />
-    <Compile Include="5_Member\SafetyFactors\IEC4SafetyFactors.cs" />
-    <Compile Include="5_Member\SafetyFactors\EC4SafetyFactors.cs" />
     <Compile Include="5_Member\IMember.cs" />
-    <Compile Include="7_Results\IResult.cs" />
-    <Compile Include="7_Results\Result.cs" />
-    <Compile Include="7_Results\ResultOption.cs" />
-    <Compile Include="7_Results\TransverseRebarOption.cs" />
-    <Compile Include="7_Results\UtilisationFactorOption.cs" />
     <Compile Include="ComposUnits.cs" />
-    <Compile Include="Helpers\ICatalogueDB.cs" />
     <Compile Include="Helpers\CoaHelper.cs" />
     <Compile Include="1_Beam\BeamSection\IBeamSection.cs" />
     <Compile Include="1_Beam\Restraints\IRestraint.cs" />
@@ -79,7 +78,8 @@
     <Compile Include="3_Slab\ConcreteMaterial\IERatio.cs" />
     <Compile Include="3_Slab\Decking\IDecking.cs" />
     <Compile Include="3_Slab\Decking\IDeckingConfiguration.cs" />
-    <Compile Include="3_Slab\Reinforcement\ICustomTransverseReinforcementLayout.cs" />
+    <Compile Include="3_Slab\Reinforcement\ICustomTransverseReinforcement.cs" />
+    <Compile Include="3_Slab\Reinforcement\IReinforcement.cs" />
     <Compile Include="3_Slab\Reinforcement\IReinforcementMaterial.cs" />
     <Compile Include="3_Slab\ISlab.cs" />
     <Compile Include="3_Slab\Reinforcement\IMeshReinforcement.cs" />
@@ -88,18 +88,17 @@
     <Compile Include="4_Loads\ILoad.cs" />
     <Compile Include="5_Member\DesignCode\IDesignOptions.cs" />
     <Compile Include="5_Member\DesignCode\IDesignCode.cs" />
-    <Compile Include="5_Member\DesignCode\ICreepShrinkageParameters.cs" />
+    <Compile Include="5_Member\DesignCode\ICreepShrinkageEuroCodeParameters.cs" />
     <Compile Include="5_Member\DesignCode\ICodeOptions.cs" />
-    <Compile Include="5_Member\SafetyFactors\ILoadCombinationFactors.cs" />
-    <Compile Include="5_Member\SafetyFactors\ILoadFactors.cs" />
-    <Compile Include="5_Member\SafetyFactors\IMaterialPartialFactors.cs" />
-    <Compile Include="5_Member\SafetyFactors\ISafetyFactors.cs" />
+    <Compile Include="5_Member\DesignCode\ILoadCombinationFactors.cs" />
+    <Compile Include="5_Member\DesignCode\ILoadFactors.cs" />
+    <Compile Include="5_Member\DesignCode\IMaterialPartialFactors.cs" />
+    <Compile Include="5_Member\DesignCode\ISafetyFactors.cs" />
     <Compile Include="Helpers\CoaIdentifier.cs" />
     <Compile Include="Helpers\ComposIO.cs" />
-    <Compile Include="Helpers\SqlDBconnection.cs" />
     <Compile Include="ICoaObject.cs" />
     <Compile Include="ObjectExtension.cs" />
-    <Compile Include="Helpers\CatalogueDB.cs" />
+    <Compile Include="Helpers\ReadSQLValues.cs" />
     <Compile Include="Helpers\Units.cs" />
     <Compile Include="1_Beam\BeamSection\BeamSection.cs" />
     <Compile Include="1_Beam\Beam.cs" />
@@ -122,23 +121,26 @@
     <Compile Include="3_Slab\Decking\DeckingConfiguration.cs" />
     <Compile Include="3_Slab\Reinforcement\MeshReinforcement.cs" />
     <Compile Include="3_Slab\Reinforcement\ReinforcementMaterial.cs" />
-    <Compile Include="3_Slab\Reinforcement\CustomTransverseReinforcementLayout.cs" />
+    <Compile Include="3_Slab\Reinforcement\CustomTransverseReinforcement.cs" />
     <Compile Include="3_Slab\Reinforcement\TransverseReinforcement.cs" />
+    <Compile Include="3_Slab\Reinforcement\Reinforcement.cs" />
     <Compile Include="4_Loads\Load.cs" />
     <Compile Include="4_Loads\LoadValues.cs" />
     <Compile Include="4_Loads\LoadChildren.cs" />
     <Compile Include="5_Member\DesignCode\DesignCode.cs" />
     <Compile Include="5_Member\DesignCode\CodeOptions.cs" />
-    <Compile Include="5_Member\SafetyFactors\SafetyFactors.cs" />
-    <Compile Include="5_Member\DesignCode\DesignOption.cs" />
+    <Compile Include="5_Member\DesignCode\SafetyFactors.cs" />
+    <Compile Include="5_Member\DesignCode\DesignOptions.cs" />
     <Compile Include="5_Member\Member.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="6_Analysis\" />
+    <Folder Include="7_Results\" />
     <Folder Include="8_Design\" />
   </ItemGroup>
   <ItemGroup>
@@ -149,17 +151,16 @@
       <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <Private>True</Private>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>False</Private>
     </COMReference>
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Stub.System.Data.SQLite.Core.NetFramework">
-      <Version>1.0.115.5</Version>
-    </PackageReference>
-    <PackageReference Include="UnitsNet">
-      <Version>4.89.0</Version>
-    </PackageReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
+  </Target>
 </Project>

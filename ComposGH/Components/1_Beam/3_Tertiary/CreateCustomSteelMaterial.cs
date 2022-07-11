@@ -29,60 +29,60 @@ namespace ComposGH.Components
     #region Custom UI
 
     // list of lists with all dropdown lists content
-    List<List<string>> DropdownItems;
+    List<List<string>> DropDownItems;
     // list of selected items
     List<string> SelectedItems;
     // list of descriptions 
     List<string> SpacerDescriptions = new List<string>(new string[]
     {
-            "Steel Type",
-            "Weld Material",
+            "Weld Material Grade",
             "StressUnit",
             "DensityUnit"
     });
+    List<bool> OverrideDropDownItems;
 
     private bool First = true;
     private PressureUnit StressUnit = Units.StressUnit;
     private DensityUnit DensityUnit = Units.DensityUnit;
-    private StandardSteelGrade SteelGrade = StandardSteelGrade.S235;
-    private WeldMaterialGrade WeldingGrade = WeldMaterialGrade.Grade_35;
+    private WeldMaterialGrade Grade = WeldMaterialGrade.Grade_35;
 
     public override void CreateAttributes()
     {
       if (First)
       {
-        DropdownItems = new List<List<string>>();
+        this.DropDownItems = new List<List<string>>();
         SelectedItems = new List<string>();
 
         // WeldMaterial
-        DropdownItems.Add(Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList());
-        SelectedItems.Add(WeldingGrade.ToString());
+        this.DropDownItems.Add(Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList());
+        SelectedItems.Add(Grade.ToString());
 
         // Stress
-        DropdownItems.Add(Units.FilteredStressUnits);
+        this.DropDownItems.Add(Units.FilteredStressUnits);
         SelectedItems.Add(StressUnit.ToString());
 
         // Density
-        DropdownItems.Add(Units.FilteredDensityUnits);
+        this.DropDownItems.Add(Units.FilteredDensityUnits);
         SelectedItems.Add(DensityUnit.ToString());
 
+        this.OverrideDropDownItems = new List<bool>() { false, false, false };
         First = false;
       }
 
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
+      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, this.DropDownItems, SelectedItems, SpacerDescriptions);
     }
 
     public void SetSelected(int i, int j)
     {
       // change selected item
-      SelectedItems[i] = DropdownItems[i][j];
+      SelectedItems[i] = this.DropDownItems[i][j];
 
       if (i == 0)  // change is made to code 
       {
-        if (WeldingGrade.ToString() == SelectedItems[i])
+        if (Grade.ToString() == SelectedItems[i])
           return; // return if selected value is same as before
 
-        WeldingGrade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), SelectedItems[i]);
+        Grade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), SelectedItems[i]);
 
       }
       if (i == 1)
@@ -103,7 +103,8 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      WeldingGrade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), SelectedItems[0]);
+      if (this.SelectedItems[0] != "-")
+        Grade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), SelectedItems[0]);
       StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), SelectedItems[1]);
       DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), SelectedItems[2]);
 
@@ -128,6 +129,9 @@ namespace ComposGH.Components
       pManager.AddGenericParameter("Young's Modulus [" + stressunitAbbreviation + "]", "E", "Steel Young's Modulus", GH_ParamAccess.item);
       pManager.AddGenericParameter("Density [" + densityunitAbbreviation + "]", "ρ", "Steel Density", GH_ParamAccess.item);
       pManager.AddBooleanParameter("Reduction Factor", "RF", "Apply reduction factor for plastic moment capacity, EC4 (6.2.1.2 (2))", GH_ParamAccess.item, false);
+      pManager.AddGenericParameter("Grade", "G", "(Optional) Grade", GH_ParamAccess.item);
+
+      pManager[4].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
@@ -137,27 +141,55 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
+      // override steel grade?
+      if (this.Params.Input[4].Sources.Count > 0)
+      {
+        string grade = "";
+        DA.GetData(4, ref grade);
+        try
+        {
+          this.Grade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), grade);
+          this.DropDownItems[0] = new List<string>();
+          this.SelectedItems[0] = "-";
+          this.OverrideDropDownItems[0] = true;
+        }
+        catch (ArgumentException)
+        {
+          string text = "Could not parse steel grade. Valid steel grades are ";
+          foreach (string g in Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList())
+          {
+            text += g + ", ";
+          }
+          text = text.Remove(text.Length - 2);
+          text += ".";
+          this.DropDownItems[0] = Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList();
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
+        }
+      }
+      else if (this.OverrideDropDownItems[0])
+      {
+        this.DropDownItems[0] = Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList();
+        this.OverrideDropDownItems[0] = false;
+      }
+
       bool redFact = new bool();
 
       if (DA.GetData(3, ref redFact))
         AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Note that reduction factor only applies for EC4 DesignCode");
 
-      DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(
-          GetInput.Stress(this, DA, 0, StressUnit),
-          GetInput.Stress(this, DA, 1, StressUnit),
-          GetInput.Density(this, DA, 2, DensityUnit),
-          WeldingGrade, true, redFact)));
+      DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(GetInput.Stress(this, DA, 0, StressUnit), GetInput.Stress(this, DA, 1, StressUnit), GetInput.Density(this, DA, 2, DensityUnit), Grade, true, redFact)));
     }
 
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
+      Helpers.DeSerialization.writeDropDownComponents(ref writer, this.DropDownItems, SelectedItems, SpacerDescriptions);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
+      Helpers.DeSerialization.readDropDownComponents(ref reader, ref this.DropDownItems, ref SelectedItems, ref SpacerDescriptions);
+      Helpers.DeSerialization.readDropDownComponents(ref reader, ref this.DropDownItems, ref SelectedItems, ref SpacerDescriptions);
 
       UpdateUIFromSelectedItems();
 

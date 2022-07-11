@@ -58,7 +58,7 @@ namespace ComposGH.Components
       }
       if (member != null)
       {
-        int status = member.File.CodeSatisfied(member.Name);
+        int status = member.CodeSatisfied();
         switch (status)
         {
           case 0:

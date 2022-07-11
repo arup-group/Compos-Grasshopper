@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Grasshopper.Kernel;
+﻿using ComposAPI;
 using ComposGH.Parameters;
+using Grasshopper.Kernel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnitsNet;
 using UnitsNet.Units;
-using System.Linq;
-using ComposAPI;
 
 namespace ComposGH.Components
 {
@@ -30,7 +30,7 @@ namespace ComposGH.Components
     //This region overrides the typical component layout
 
     // list of lists with all dropdown lists conctent
-    List<List<string>> DropdownItems;
+    List<List<string>> DropDownItems;
     // list of selected items
     List<string> SelectedItems;
     // list of descriptions 
@@ -39,7 +39,7 @@ namespace ComposGH.Components
       "Intermediate Sup.",
       "Unit"
     });
-
+    List<bool> OverrideDropDownItems;
     private bool First = true;
     private IntermediateRestraint RestraintType = IntermediateRestraint.None;
     private LengthUnit LengthUnit = Units.LengthUnitGeometry;
@@ -48,32 +48,33 @@ namespace ComposGH.Components
     {
       if (First)
       {
-        DropdownItems = new List<List<string>>();
+        DropDownItems = new List<List<string>>();
         SelectedItems = new List<string>();
 
         // type
-        DropdownItems.Add(Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
+        DropDownItems.Add(Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
             .Select(x => x.ToString().Replace("__", "-").Replace("_", " ")).ToList());
-        DropdownItems[0].RemoveAt(DropdownItems[0].Count - 1);
-        SelectedItems.Add(DropdownItems[0][0]);
+        DropDownItems[0].RemoveAt(DropDownItems[0].Count - 1);
+        SelectedItems.Add(DropDownItems[0][0]);
 
         // length
-        DropdownItems.Add(Units.FilteredLengthUnits);
+        DropDownItems.Add(Units.FilteredLengthUnits);
         SelectedItems.Add(LengthUnit.ToString());
 
+        OverrideDropDownItems = new List<bool>() { false, false };
         First = false;
       }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
+      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropDownItems, SelectedItems, SpacerDescriptions);
     }
+
     public void SetSelected(int i, int j)
     {
       // change selected item
-      SelectedItems[i] = DropdownItems[i][j];
+      SelectedItems[i] = DropDownItems[i][j];
 
       if (i == 0)
       {
-        string typ = SelectedItems[i].ToString().Replace("-", "__").Replace(" ", "_");
-        RestraintType = (IntermediateRestraint)Enum.Parse(typeof(IntermediateRestraint), typ);
+        this.ParseRestraintType(this.SelectedItems[0]);
       }
       if (i == 1)
         LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
@@ -87,14 +88,13 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      string typ = SelectedItems[0].ToString().Replace("-", "__").Replace(" ", "_");
-      RestraintType = (IntermediateRestraint)Enum.Parse(typeof(IntermediateRestraint), typ);
-      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[1]);
+      this.ParseRestraintType(this.SelectedItems[0]);
+      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[1]);
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
       ExpireSolution(true);
-      Params.OnParametersChanged();
+      this.Params.OnParametersChanged();
       this.OnDisplayExpired(true);
     }
     #endregion
@@ -109,9 +109,12 @@ namespace ComposGH.Components
       pManager.AddBooleanParameter("Sec. mem. interm. res.", "SMIR", "Take secondary member as intermediate restraint (default = true)", GH_ParamAccess.item, true);
       pManager.AddBooleanParameter("Flngs. free rot. ends", "FFRE", "Both flanges are free to rotate on plan at end restraints (default = true)", GH_ParamAccess.item, true);
       pManager.AddGenericParameter("Restraint Pos [" + unitAbbreviation + "]", "RPxs", "(Optional) Custom defined intermediate restraints Positions along the beam (beam x-axis)", GH_ParamAccess.list);
+      pManager.AddGenericParameter("Int. Support", "ISup", "(Optional) Intermediate support", GH_ParamAccess.item);
+
       pManager[0].Optional = true;
       pManager[1].Optional = true;
       pManager[2].Optional = true;
+      pManager[3].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
@@ -119,8 +122,48 @@ namespace ComposGH.Components
     }
     #endregion
 
+    private void ParseRestraintType(string value)
+    {
+      if (value != "-")
+      {
+        value = value.ToString().Replace("-", "__").Replace(" ", "_");
+        this.RestraintType = (IntermediateRestraint)Enum.Parse(typeof(IntermediateRestraint), value);
+      }
+    }
+
     protected override void SolveInstance(IGH_DataAccess DA)
     {
+      // override intermediate support?
+      if (this.Params.Input[3].Sources.Count > 0)
+      {
+        string restraintType = "";
+        DA.GetData(3, ref restraintType);
+        try
+        {
+          this.ParseRestraintType(restraintType);
+          this.DropDownItems[0] = new List<string>();
+          this.SelectedItems[0] = "-";
+          this.OverrideDropDownItems[0] = true;
+        }
+        catch (ArgumentException)
+        {
+          string text = "Could not parse intermediate restraint. Valid options are ";
+          foreach (string g in Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>().Select(x => x.ToString()).ToList())
+          {
+            text += g + ", ";
+          }
+          text = text.Remove(text.Length - 2);
+          text += ".";
+          this.DropDownItems[0] = Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>().Select(x => x.ToString()).ToList();
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
+        }
+      }
+      else if (this.OverrideDropDownItems[0])
+      {
+        this.DropDownItems[0] = Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>().Select(x => x.ToString()).ToList();
+        this.OverrideDropDownItems[0] = false;
+      }
+
       bool smir = true;
       DA.GetData(0, ref smir);
       bool ffre = true;
@@ -143,12 +186,12 @@ namespace ComposGH.Components
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
+      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropDownItems, SelectedItems, SpacerDescriptions);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
+      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropDownItems, ref SelectedItems, ref SpacerDescriptions);
 
       UpdateUIFromSelectedItems();
 

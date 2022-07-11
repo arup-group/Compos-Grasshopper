@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.IO;
+using ComposAPI;
 
 namespace ComposGH
 {
@@ -50,10 +51,20 @@ namespace ComposGH
       // ### Setup units ###
       Units.SetupUnits();
 
+      // subscribe to rhino closing event
+      Rhino.RhinoApp.Closing += CloseFile;
+
       return GH_LoadingInstruction.Proceed;
     }
+
     public static string PluginPath;
     public static string InstallPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Oasys", "Compos 8.6");
+
+    internal static void CloseFile(object sender, EventArgs args)
+    {
+      ComposFile.Close();
+      Rhino.RhinoApp.Closing -= CloseFile;
+    }
   }
 
   public class ComposGHInfo : GH_AssemblyInfo
@@ -62,9 +73,9 @@ namespace ComposGH
     internal const string Company = "Oasys";
     internal const string Copyright = "Copyright © Oasys 1985 - 2022";
     internal const string Contact = "https://www.oasys-software.com/";
-    internal const string Vers = "0.0.2";
+    internal const string Vers = "0.0.3";
     internal static bool isBeta = true;
-    internal static string Disclaimer = PluginName + " is pre-release and under active development, including further testing to be undertaken.It is provided \"as-is\" and you bear the risk of using it. Future versions may contain breaking changes.Any files, results, or other types of output information created using " + PluginName + " should not be relied upon without thorough and independent checking.";
+    internal static string Disclaimer = PluginName + " is pre-release and under active development, including further testing to be undertaken. It is provided \"as-is\" and you bear the risk of using it. Future versions may contain breaking changes. Any files, results, or other types of output information created using " + PluginName + " should not be relied upon without thorough and independent checking.";
     internal const string ProductName = "Compos";
     internal const string PluginName = "ComposGH";
 
@@ -92,6 +103,7 @@ namespace ComposGH
         return Icon;
       }
     }
+
     public override string Description
     {
       get
@@ -105,6 +117,7 @@ namespace ComposGH
         + Environment.NewLine + Environment.NewLine + Copyright;
       }
     }
+
     public override Guid Id
     {
       get

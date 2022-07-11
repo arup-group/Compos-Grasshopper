@@ -8,10 +8,10 @@ namespace ComposAPI
 
     void AddMember(IMember member);
     //short Analyse();
-    //short Analyse(string memberName);
+    short Analyse(string memberName);
     short CodeSatisfied(string memberName);
     //short Design();
-    //short Design(string memberName);
+    short Design(string memberName);
     IMember GetMember(string name);
     float MaxResult(string memberName, string option, short position);
     short MaxResultPosition(string memberName, string option, short position);

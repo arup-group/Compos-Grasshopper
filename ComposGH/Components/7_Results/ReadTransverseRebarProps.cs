@@ -119,9 +119,9 @@ namespace ComposGH.Components
       if (member != null)
       {
         List<GH_Number> result = new List<GH_Number>();
-        for (short num = 0; num < member.File.NumTranRebar(member.Name); num++)
+        for (short num = 0; num < member.NumTranRebar(); num++)
         {
-          result.Add(new GH_Number(member.File.TranRebarProp(member.Name, this.Option, Convert.ToInt16(num))));
+          result.Add(new GH_Number(member.TranRebarProp(this.Option, Convert.ToInt16(num))));
         }
 
         DA.SetDataList(0, result);

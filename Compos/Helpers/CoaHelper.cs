@@ -55,7 +55,7 @@ namespace ComposAPI.Helpers
       if (num == 0)
         return 0;
       int magnitude = 1;
-      while (num < 1)
+      while (Math.Abs(num) < 1)
       {
         magnitude--;
         num *= 10;

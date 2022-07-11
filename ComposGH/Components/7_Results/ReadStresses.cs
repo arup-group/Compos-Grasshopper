@@ -121,9 +121,9 @@ namespace ComposGH.Components
       if (member != null)
       {
         List<GH_Number> result = new List<GH_Number>();
-        for (short pos = 0; pos < member.File.NumIntermediatePos(member.Name); pos++)
+        for (short pos = 0; pos < member.NumIntermediatePos(); pos++)
         {
-          result.Add(new GH_Number(member.File.Result(member.Name, this.Option.ToString(), Convert.ToInt16(pos))));
+          result.Add(new GH_Number(member.Result(this.Option.ToString(), Convert.ToInt16(pos))));
         }
 
         DA.SetDataList(0, result);

@@ -118,7 +118,7 @@ namespace ComposGH.Components
       }
       if (member != null)
       {
-        DA.SetData(0, new GH_Number(member.File.UtilisationFactor(member.Name, this.Option)));
+        DA.SetData(0, new GH_Number(member.UtilisationFactor(this.Option)));
       }
     }
 
