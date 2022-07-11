@@ -124,20 +124,24 @@ namespace ComposGH.Components
         }
         catch (ArgumentException)
         {
-          string text = "Could not parse steel grade. Valid steel grades are ";
-          foreach (string g in Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList())
+          string text = "Could not parse steel grade. Valid EC4 steel grades are ";
+          List<string> gradesEN = Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList();
+          gradesEN.RemoveAt(3);
+          foreach (string g in gradesEN)
           {
             text += g + ", ";
           }
           text = text.Remove(text.Length - 2);
           text += ".";
-          this.DropDownItems[0] = Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList();
+          this.DropDownItems[0] = gradesEN;
           AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
         }
       }
       else if (this.OverrideDropDownItems[0])
       {
-        this.DropDownItems[0] = Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList();
+        List<string> gradesEN = Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList();
+        gradesEN.RemoveAt(3);
+        this.DropDownItems[0] = gradesEN;
         this.OverrideDropDownItems[0] = false;
       }
 
