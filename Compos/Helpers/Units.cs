@@ -108,7 +108,7 @@ namespace ComposAPI
     #endregion
 
     #region force
-    public static ForceUnit ForceUnit { get; set; } = ForceUnit.Kilonewton;
+    public static ForceUnit ForceUnit { get; set; } = ForceUnit.Newton;
 
     public static List<string> FilteredForceUnits = new List<string>()
         {
