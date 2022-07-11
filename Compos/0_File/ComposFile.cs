@@ -382,20 +382,12 @@ namespace ComposAPI
         }
 
         // ### stud related lines ###
-        else if (coaIdentifier == CoaIdentifier.StudDimensions.StudDefinition)
-        {
-          //Code code = codes[parameters[1]].Code;
-          //StudDimensions dimensions = StudDimensions.FromCoaString(parameters, units, code);
-          //studDimensions.Add(parameters[1], dimensions);
 
-          //bool isWelded = parameters.Last() == "WELDED_YES";
-          //studWelded.Add(parameters[1], isWelded);
-        }
         else if (coaIdentifier == CoaIdentifier.StudGroupSpacings.StudLayout)
         {
           if (parameters[2] != CoaIdentifier.StudGroupSpacings.StudLayoutCustom)
           {
-            Stud stud = Stud.FromCoaString(parameters);
+            Stud stud = Stud.FromCoaString(coaString, name, code, units);
             studs.Add(parameters[1], stud);
           }
 
@@ -403,7 +395,7 @@ namespace ComposAPI
           {
             if (parameters[4] == 1.ToString())
             {
-              Stud stud = Stud.FromCoaString(parameters);
+              Stud stud = Stud.FromCoaString(coaString, name, code, units);
               studs.Add(parameters[1], stud);
             }
 
@@ -449,7 +441,7 @@ namespace ComposAPI
         studDimensions[name].Fu = studECDimensions[name].Fu;
       // add stud dimensions to studs
       foreach (string name in studDimensions.Keys)
-        studs[name].StudDimensions = studDimensions[name];
+        studs[name].Dimensions = studDimensions[name];
       // add custom group spacings to studs
       foreach (string name in studGroupSpacings.Keys)
         studs[name].CustomSpacing = studGroupSpacings[name];
@@ -469,6 +461,9 @@ namespace ComposAPI
         Code code = member.DesignCode.Code;
 
         member.Beam = Beam.FromCoaString(coaString, name, units);
+
+
+
         if (studs.ContainsKey(name))
           member.Stud = studs[name];
         member.Slab = Slab.FromCoaString(coaString, name, code, units);

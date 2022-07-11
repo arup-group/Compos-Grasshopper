@@ -14,7 +14,7 @@ namespace ComposAPI
   /// </summary>
   public class Stud : IStud
   {
-    public IStudDimensions StudDimensions { get; set; }
+    public IStudDimensions Dimensions { get; set; }
     public IStudSpecification StudSpecification { get; set; }
     // Stud Spacing
     public IList<IStudGroupSpacing> CustomSpacing { get; set; } = null;
@@ -67,7 +67,7 @@ namespace ComposAPI
     /// <param name="checkSpacing"></param>
     public Stud(IStudDimensions stud, IStudSpecification spec, List<IStudGroupSpacing> spacings, bool checkSpacing)
     {
-      this.StudDimensions = stud;
+      this.Dimensions = stud;
       this.StudSpecification = spec;
       this.CustomSpacing = spacings;
       this.CheckStudSpacing = checkSpacing;
@@ -86,7 +86,7 @@ namespace ComposAPI
     /// <exception cref="ArgumentException"></exception>
     public Stud(IStudDimensions stud, IStudSpecification spec, double minSaving, StudSpacingType type)
     {
-      this.StudDimensions = stud;
+      this.Dimensions = stud;
       this.StudSpecification = spec;
       this.StudSpacingType = type;
       this.MinSavingMultipleZones = minSaving;
@@ -111,7 +111,7 @@ namespace ComposAPI
     /// <param name="interaction"></param>
     public Stud(IStudDimensions stud, IStudSpecification spec, double minSaving, double interaction)
     {
-      this.StudDimensions = stud;
+      this.Dimensions = stud;
       this.StudSpecification = spec;
       this.StudSpacingType = StudSpacingType.Partial_Interaction;
       this.MinSavingMultipleZones = minSaving;
@@ -120,13 +120,47 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal static Stud FromCoaString(List<string> parameters)
+    internal static Stud FromCoaString(string coaString, string name, Code code, ComposUnits units)
     {
-      Stud stud = new Stud();
       //STUD_LAYOUT	MEMBER-1	AUTO_100	0.200000
       //STUD_LAYOUT	MEMBER-1	AUTO_PERCENT	0.200000	0.850000
       //STUD_LAYOUT	MEMBER-1	AUTO_MINIMUM_STUD	0.200000
       //STUD_LAYOUT	MEMBER-1	USER_DEFINED	3	1	0.000000	2	1	0.0760000	0.0950000	0.150000	CHECK_SPACE_NO
+      Stud stud = new Stud();
+
+      List<string> lines = CoaHelper.SplitAndStripLines(coaString);
+      foreach (string line in lines)
+      {
+        List<string> parameters = CoaHelper.Split(line);
+
+        if (parameters[0] == "END")
+          return stud;
+
+        if (parameters[1] != name)
+          continue;
+
+        switch (parameters[0])
+        {
+          case (CoaIdentifier.UnitData):
+            units.FromCoaString(parameters);
+            break;
+
+          case (CoaIdentifier.StudDimensions.StudDefinition):
+            stud.Dimensions = StudDimensions.FromCoaString(parameters, units, code);
+
+            // where does this property belong to?
+            //bool isWelded = parameters.Last() == "WELDED_YES";
+            //studWelded.Add(parameters[1], isWelded);
+            break;
+
+          default:
+            // continue;
+            break;
+        }
+      }
+
+
+
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       switch (parameters[2])
       {
@@ -151,6 +185,10 @@ namespace ComposAPI
           stud.CheckStudSpacing = parameters.Last() != "CHECK_SPACE_NO";
           break;
       }
+
+
+
+
       return stud;
     }
 
@@ -162,13 +200,13 @@ namespace ComposAPI
       //STUD_DEFINITION	MEMBER-3	USER_DEFINED	12.0000	345.000	75982.5	REDUCED_NO	WELDED_YES
       string str = CoaIdentifier.StudDimensions.StudDefinition + '\t' + name + '\t';
       
-      string studSize = GetStandardSize(this.StudDimensions);
-      if (!this.StudDimensions.isStandard)
+      string studSize = GetStandardSize(this.Dimensions);
+      if (!this.Dimensions.isStandard)
       {
         studSize = CoaIdentifier.StudDimensions.StudDimensionCustom + '\t';
-        studSize += CoaHelper.FormatSignificantFigures(this.StudDimensions.Diameter.ToUnit(units.Section).Value, 6) + '\t';
-        studSize += CoaHelper.FormatSignificantFigures(this.StudDimensions.Height.ToUnit(units.Section).Value, 6) + '\t';
-        studSize += CoaHelper.FormatSignificantFigures(this.StudDimensions.CharacterStrength.ToUnit(units.Force).Value, 6) + '\t';
+        studSize += CoaHelper.FormatSignificantFigures(this.Dimensions.Diameter.ToUnit(units.Section).Value, 6) + '\t';
+        studSize += CoaHelper.FormatSignificantFigures(this.Dimensions.Height.ToUnit(units.Section).Value, 6) + '\t';
+        studSize += CoaHelper.FormatSignificantFigures(this.Dimensions.CharacterStrength.ToUnit(units.Force).Value, 6) + '\t';
         studSize += "REDUCED_NO" + '\t';
       }
       else
@@ -253,11 +291,11 @@ namespace ComposAPI
           //EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_YES	SD2_EN13918
           //EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_NO	4.50000e+008
           str += CoaIdentifier.StudDimensions.StudGradeEC4 + '\t' + name + '\t';
-          string studGrade = GetStandardGrade(this.StudDimensions);
+          string studGrade = GetStandardGrade(this.Dimensions);
           if (studGrade == "Custom")
           {
             str += CoaIdentifier.StudDimensions.StudGradeEC4Custom + '\t';
-            str += CoaHelper.FormatSignificantFigures(this.StudDimensions.Fu.ToUnit(units.Stress).Value, 6) + '\n';
+            str += CoaHelper.FormatSignificantFigures(this.Dimensions.Fu.ToUnit(units.Stress).Value, 6) + '\n';
           }
           else
           {
@@ -380,7 +418,7 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      string size = this.StudDimensions.Diameter.As(Units.LengthUnitSection).ToString("f0") + "/" + this.StudDimensions.Height.ToUnit(Units.LengthUnitSection).ToString("f0");
+      string size = this.Dimensions.Diameter.As(Units.LengthUnitSection).ToString("f0") + "/" + this.Dimensions.Height.ToUnit(Units.LengthUnitSection).ToString("f0");
       return size.Replace(" ", string.Empty);
     }
 
