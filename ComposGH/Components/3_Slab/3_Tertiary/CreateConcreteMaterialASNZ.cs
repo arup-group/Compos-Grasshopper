@@ -152,7 +152,7 @@ namespace ComposGH.Components
         }
         catch (ArgumentException)
         {
-          string text = "Could not parse concrete grade. Valid concrete grades are ";
+          string text = "Could not parse concrete grade. Valid AS/NZS concrete grades are ";
           foreach (string g in Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList())
           {
             text += g + ", ";
@@ -160,7 +160,8 @@ namespace ComposGH.Components
           text = text.Remove(text.Length - 2);
           text += ".";
           this.DropDownItems[0] = Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList();
-          AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, text);
+          return;
         }
       }
       else if (this.OverrideDropDownItems[0])

@@ -134,7 +134,8 @@ namespace ComposGH.Components
           text = text.Remove(text.Length - 2);
           text += ".";
           this.DropDownItems[0] = gradesEN;
-          AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, text);
+          return;
         }
       }
       else if (this.OverrideDropDownItems[0])
