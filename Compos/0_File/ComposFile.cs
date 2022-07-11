@@ -469,7 +469,8 @@ namespace ComposAPI
         Code code = member.DesignCode.Code;
 
         member.Beam = Beam.FromCoaString(coaString, name, units);
-        member.Stud = studs[name];
+        if (studs.ContainsKey(name))
+          member.Stud = studs[name];
         member.Slab = Slab.FromCoaString(coaString, name, code, units);
 
         // add loads to members
