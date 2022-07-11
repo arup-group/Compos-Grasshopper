@@ -21,7 +21,7 @@ namespace ComposAPI
     #region constructors
     public Restraint()
     {
-      // empty constructore
+      // empty constructor
     }
     public Restraint(bool topFlangeRestrained, ISupports constructionStageSupports, ISupports finalStageSupports)
     {
