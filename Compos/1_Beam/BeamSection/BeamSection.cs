@@ -32,7 +32,19 @@ namespace ComposAPI
       }
     }
     private bool m_taper;
-    public Length StartPosition { get; set; } = Length.Zero; // distance of the section from left (as length or in percent of beam length, negative(sic!) and astronomical units if in percent!)
+    public IQuantity StartPosition
+    {
+      get { return this.m_StartPosition; }
+      set
+      {
+        if (value.QuantityInfo.UnitType != typeof(LengthUnit)
+          & value.QuantityInfo.UnitType != typeof(RatioUnit))
+          throw new ArgumentException("StartPosition must be either Length or Ratio");
+        else
+          this.m_StartPosition = value;
+      }
+    }
+    private IQuantity m_StartPosition = Length.Zero;
 
     // Dimensions
     public Length Depth { get; set; }
@@ -245,7 +257,7 @@ namespace ComposAPI
       double startPosition = CoaHelper.ConvertToDouble(parameters[4]);
       if (startPosition < 0)
         // start position in percent
-        section.StartPosition = new Length(startPosition, LengthUnit.AstronomicalUnit);
+        section.StartPosition = new Ratio(startPosition, RatioUnit.DecimalFraction);
       else
         section.StartPosition = CoaHelper.ConvertToLength(parameters[4], units.Length);
 
@@ -266,9 +278,12 @@ namespace ComposAPI
       parameters.Add(name);
       parameters.Add(Convert.ToString(num));
       parameters.Add(Convert.ToString(index));
-      if (this.StartPosition.Value < 0)
+      if (this.StartPosition.QuantityInfo.UnitType == typeof(RatioUnit))
+      {
         // start position in percent
-        parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.Value, 6));
+        Ratio p = (Ratio)this.StartPosition;
+        parameters.Add(CoaHelper.FormatSignificantFigures(p.As(RatioUnit.DecimalFraction), 6));
+      }
       else
         parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(units.Length).Value, 6));
       parameters.Add(this.SectionDescription);
@@ -284,8 +299,21 @@ namespace ComposAPI
     public override string ToString()
     {
       string start = "";
-      if (this.StartPosition != Length.Zero)
-        start = ", Px:" + this.StartPosition.ToUnit(Units.LengthUnitGeometry).ToString("f2").Replace(" ", string.Empty);
+      //if (value.QuantityInfo.UnitType != typeof(LengthUnit)
+      //    & value.QuantityInfo.UnitType != typeof(RatioUnit))
+      if (this.StartPosition.QuantityInfo.UnitType == typeof(LengthUnit)) 
+      {
+        Length l = (Length)this.StartPosition;
+        if (l != Length.Zero)
+          start = ", Px:" + l.ToUnit(Units.LengthUnitGeometry).ToString("f2").Replace(" ", string.Empty);
+      }
+      else
+      {
+        Ratio p = (Ratio)this.StartPosition;
+        if (p != Ratio.Zero)
+          start = ", Px:" + p.ToUnit(RatioUnit.Percent).ToString("f3").Replace(" ", string.Empty);
+      }
+        
       string tapered = "";
       if (this.TaperedToNext)
         tapered = ", Tapered";
