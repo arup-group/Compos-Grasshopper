@@ -39,7 +39,7 @@ namespace ComposAPI
       {
         if (value.QuantityInfo.UnitType != typeof(LengthUnit)
           & value.QuantityInfo.UnitType != typeof(RatioUnit))
-          throw new ArgumentException("StartPosition must be either Length or Ratio");
+          throw new ArgumentException("Start Position must be either Length or Ratio");
         else
           this.m_StartPosition = value;
       }
@@ -282,7 +282,8 @@ namespace ComposAPI
       {
         // start position in percent
         Ratio p = (Ratio)this.StartPosition;
-        parameters.Add(CoaHelper.FormatSignificantFigures(p.As(RatioUnit.DecimalFraction), 6));
+        // percentage in coa string for beam section is a negative decimal fraction!
+        parameters.Add(CoaHelper.FormatSignificantFigures(p.As(RatioUnit.DecimalFraction) * -1, 6));
       }
       else
         parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(units.Length).Value, 6));
@@ -299,9 +300,7 @@ namespace ComposAPI
     public override string ToString()
     {
       string start = "";
-      //if (value.QuantityInfo.UnitType != typeof(LengthUnit)
-      //    & value.QuantityInfo.UnitType != typeof(RatioUnit))
-      if (this.StartPosition.QuantityInfo.UnitType == typeof(LengthUnit)) 
+      if (this.StartPosition.QuantityInfo.UnitType == typeof(LengthUnit))
       {
         Length l = (Length)this.StartPosition;
         if (l != Length.Zero)
@@ -313,7 +312,7 @@ namespace ComposAPI
         if (p != Ratio.Zero)
           start = ", Px:" + p.ToUnit(RatioUnit.Percent).ToString("f3").Replace(" ", string.Empty);
       }
-        
+
       string tapered = "";
       if (this.TaperedToNext)
         tapered = ", Tapered";
