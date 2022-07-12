@@ -364,8 +364,8 @@ namespace ComposAPI.Beams.Tests
     }
 
     [Theory]
-    [InlineData(400, 300, 20, 50, OpeningType.Rectangular, "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	0.400000	0.300000	20.0000%	50.0000%	STIFFENER_NO\n")]
-    [InlineData(400, 400, 20, 50, OpeningType.Circular, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	0.400000	0.400000	20.0000%	50.0000%	STIFFENER_NO\n")]
+    [InlineData(0.4, 0.3, 20, 50, OpeningType.Rectangular, "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	0.400000	0.300000	20.0000%	50.0000%	STIFFENER_NO\n")]
+    [InlineData(0.4, 0.4, 20, 50, OpeningType.Circular, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	0.400000	0.400000	20.0000%	50.0000%	STIFFENER_NO\n")]
     public void FromCoaStringNoStiffenerPercentage(double expected_width, double expected_height, double expected_startPos, double expected_posFromTop, OpeningType expected_OpeningType, string coaString)
     {
       ComposUnits units = ComposUnits.GetStandardUnits();
@@ -381,12 +381,6 @@ namespace ComposAPI.Beams.Tests
           Assert.Equal(expected_height, webOpening.Height.As(units.Section));
           Assert.Equal(expected_startPos, webOpening.CentroidPosFromStart.As(RatioUnit.Percent));
           Assert.Equal(expected_posFromTop, webOpening.CentroidPosFromTop.As(RatioUnit.Percent));
-          break;
-
-        case OpeningType.End_notch:
-        case OpeningType.Start_notch:
-          Assert.Equal(expected_width, webOpening.Width.As(units.Section));
-          Assert.Equal(expected_height, webOpening.Height.As(units.Section));
           break;
 
         case OpeningType.Circular:
