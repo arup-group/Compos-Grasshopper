@@ -70,7 +70,7 @@ namespace ComposAPI
 
       // NO_DECKING ??
       parameters.Add("USER_DEFINED");
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.Strength.ToUnit(units.Stress).Value, 6, true));
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.Strength.ToUnit(units.Stress).Value, 6));
       parameters.Add(CoaHelper.FormatSignificantFigures(this.DeckingConfiguration.Angle.ToUnit(AngleUnit.Degree).Value, 6));
       parameters.Add(CoaHelper.FormatSignificantFigures(this.b1.ToUnit(units.Section).Value, 6));
       parameters.Add(CoaHelper.FormatSignificantFigures(this.b2.ToUnit(units.Section).Value, 6));

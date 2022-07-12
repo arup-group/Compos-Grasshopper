@@ -62,8 +62,22 @@ namespace ComposAPI.Helpers
       }
       return magnitude;
     }
-
-    public static string FormatSignificantFigures(double value, int significantFigures, bool isExponential = false)
+    public static string FormatSignificantFigures(IQuantity lengthOrRatio, LengthUnit lengthUnit, int significantFigures)
+    {
+      if (lengthOrRatio.QuantityInfo.UnitType == typeof(LengthUnit))
+      {
+        Length l = (Length)lengthOrRatio;
+        return FormatSignificantFigures(l.ToUnit(lengthUnit).Value, significantFigures);
+      }
+      else if (lengthOrRatio.QuantityInfo.UnitType == typeof(RatioUnit))
+      {
+        Ratio r = (Ratio)lengthOrRatio;
+        return FormatSignificantFigures(r.Percent, significantFigures) + "%";
+      }
+      else
+        throw new ArgumentException("Unable to format coa string, expected IQuantity of either Length or Ration");
+    }
+    public static string FormatSignificantFigures(double value, int significantFigures)
     {
       // if for instance 6 significant figures and value is above 1,000,000
       // compos coa is shown as 4.50000e+008 which is value.ToString("e6")
