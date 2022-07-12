@@ -103,7 +103,7 @@ namespace ComposAPI
     /// <param name="positionCentroidFromStart"></param>
     /// <param name="positionCentroidFromTop"></param>
     /// <param name="stiffeners"></param>
-    public WebOpening(Length width, Length height, Length positionCentroidFromStart, Length positionCentroidFromTop, IWebOpeningStiffeners stiffeners = null)
+    public WebOpening(Length width, Length height, IQuantity positionCentroidFromStart, IQuantity positionCentroidFromTop, IWebOpeningStiffeners stiffeners = null)
     {
       // static type for this constructor
       this.WebOpeningType = OpeningType.Rectangular;
