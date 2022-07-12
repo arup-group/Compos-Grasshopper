@@ -53,9 +53,9 @@ steps:
 
 - powershell: |
     dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
-#    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results .\ComposTests\bin\Release\net6.0\ComposGHTests.dll
+    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results .\ComposTests\bin\Release\net6.0\ComposGHTests.dll
 #    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results .\ComposTests\bin\Release\net6.0\ConverterTests.dll
-#    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results .\ComposTests\bin\Release\net6.0\IntegrationTests.dll
+    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results .\ComposTests\bin\Release\net6.0\IntegrationTests.dll
   displayName: dotnet tests
 
 - task: PublishCodeCoverageResults@1
