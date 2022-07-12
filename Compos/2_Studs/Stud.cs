@@ -185,8 +185,8 @@ namespace ComposAPI
             stud.Specification.SpecType = StudSpecType.BS5950;
             break;
 
-          // this should be just STUD_GRADE ?!
-          case ("STUD_GRADE"):
+          // this needs to be EC4_STUD_GRADE instead of STUD_GRADE (wrong in Compos documentation!)
+          case ("EC4_STUD_GRADE"):
             //EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_NO	4.50000e+008
             //EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_YES	SD2_EN13918
             if (parameters[2] == CoaIdentifier.StudDimensions.StudGradeEC4Standard)
