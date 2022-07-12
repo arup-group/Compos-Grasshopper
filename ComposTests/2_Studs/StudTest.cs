@@ -28,10 +28,10 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(400, stud.Dimensions.Fu.Megapascals);
       Assert.Equal(Force.Zero, stud.Dimensions.CharacterStrength);
       // specification
-      Assert.NotNull(stud.StudSpecification);
-      Assert.Equal(Length.Zero, stud.StudSpecification.NoStudZoneStart);
-      Assert.Equal(Length.Zero, stud.StudSpecification.NoStudZoneEnd);
-      Assert.True(stud.StudSpecification.Welding);
+      Assert.NotNull(stud.Specification);
+      Assert.Equal(Length.Zero, stud.Specification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, stud.Specification.NoStudZoneEnd);
+      Assert.True(stud.Specification.Welding);
       // spacings
       Assert.NotNull(stud.CustomSpacing);
       Assert.Equal(2, stud.CustomSpacing.Count);
@@ -75,10 +75,10 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(400, stud.Dimensions.Fu.Megapascals);
       Assert.Equal(Force.Zero, stud.Dimensions.CharacterStrength);
       // specification
-      Assert.NotNull(stud.StudSpecification);
-      Assert.Equal(Length.Zero, stud.StudSpecification.NoStudZoneStart);
-      Assert.Equal(Length.Zero, stud.StudSpecification.NoStudZoneEnd);
-      Assert.True(stud.StudSpecification.Welding);
+      Assert.NotNull(stud.Specification);
+      Assert.Equal(Length.Zero, stud.Specification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, stud.Specification.NoStudZoneEnd);
+      Assert.True(stud.Specification.Welding);
       // spacings
       Assert.Null(stud.CustomSpacing);
       //other
@@ -119,10 +119,10 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(400, stud.Dimensions.Fu.Megapascals);
       Assert.Equal(Force.Zero, stud.Dimensions.CharacterStrength);
       // specification
-      Assert.NotNull(stud.StudSpecification);
-      Assert.Equal(Length.Zero, stud.StudSpecification.NoStudZoneStart);
-      Assert.Equal(Length.Zero, stud.StudSpecification.NoStudZoneEnd);
-      Assert.True(stud.StudSpecification.Welding);
+      Assert.NotNull(stud.Specification);
+      Assert.Equal(Length.Zero, stud.Specification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, stud.Specification.NoStudZoneEnd);
+      Assert.True(stud.Specification.Welding);
       // spacings
       Assert.Null(stud.CustomSpacing);
       //other
@@ -148,10 +148,10 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(400, duplicate.Dimensions.Fu.Megapascals);
       Assert.Equal(Force.Zero, duplicate.Dimensions.CharacterStrength);
       // specification
-      Assert.NotNull(duplicate.StudSpecification);
-      Assert.Equal(Length.Zero, duplicate.StudSpecification.NoStudZoneStart);
-      Assert.Equal(Length.Zero, duplicate.StudSpecification.NoStudZoneEnd);
-      Assert.True(duplicate.StudSpecification.Welding);
+      Assert.NotNull(duplicate.Specification);
+      Assert.Equal(Length.Zero, duplicate.Specification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, duplicate.Specification.NoStudZoneEnd);
+      Assert.True(duplicate.Specification.Welding);
       // spacings
       Assert.NotNull(duplicate.CustomSpacing);
       Assert.Equal(2, duplicate.CustomSpacing.Count);
@@ -178,7 +178,7 @@ namespace ComposAPI.Studs.Tests
       studSpacings.Add(new StudGroupSpacing(Length.Zero, 3, 2, new Length(10, LengthUnit.Centimeter)));
 
       duplicate.Dimensions = dimensions;
-      duplicate.StudSpecification = specification;
+      duplicate.Specification = specification;
       duplicate.CustomSpacing = studSpacings;
       duplicate.CheckStudSpacing = false;
 
@@ -190,10 +190,10 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(500, duplicate.Dimensions.Fu.Megapascals);
       Assert.Equal(Force.Zero, duplicate.Dimensions.CharacterStrength);
       // specification
-      Assert.NotNull(duplicate.StudSpecification);
-      Assert.Equal(25, duplicate.StudSpecification.NoStudZoneStart.Centimeters);
-      Assert.Equal(35, duplicate.StudSpecification.NoStudZoneEnd.Centimeters);
-      Assert.False(duplicate.StudSpecification.Welding);
+      Assert.NotNull(duplicate.Specification);
+      Assert.Equal(25, duplicate.Specification.NoStudZoneStart.Centimeters);
+      Assert.Equal(35, duplicate.Specification.NoStudZoneEnd.Centimeters);
+      Assert.False(duplicate.Specification.Welding);
       // spacings
       Assert.NotNull(duplicate.CustomSpacing);
       Assert.Single(duplicate.CustomSpacing);
@@ -216,10 +216,10 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(400, original.Dimensions.Fu.Megapascals);
       Assert.Equal(Force.Zero, original.Dimensions.CharacterStrength);
       // specification
-      Assert.NotNull(original.StudSpecification);
-      Assert.Equal(Length.Zero, original.StudSpecification.NoStudZoneStart);
-      Assert.Equal(Length.Zero, original.StudSpecification.NoStudZoneEnd);
-      Assert.True(original.StudSpecification.Welding);
+      Assert.NotNull(original.Specification);
+      Assert.Equal(Length.Zero, original.Specification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, original.Specification.NoStudZoneEnd);
+      Assert.True(original.Specification.Welding);
       // spacings
       Assert.NotNull(original.CustomSpacing);
       Assert.Equal(2, original.CustomSpacing.Count);
@@ -527,52 +527,52 @@ namespace ComposAPI.Studs.Tests
       int i = 0;
       Assert.Equal(19, composFile.Members[i].Stud.Dimensions.Diameter.Millimeters);
       Assert.Equal(100, composFile.Members[i].Stud.Dimensions.Height.Millimeters);
-      Assert.True(composFile.Members[i].Stud.StudSpecification.Welding);
+      Assert.True(composFile.Members[i].Stud.Specification.Welding);
       Assert.Equal(StudSpacingType.Automatic, composFile.Members[i].Stud.StudSpacingType);
       Assert.Equal(0.2, composFile.Members[i].Stud.MinSavingMultipleZones);
-      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneStart);
-      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneEnd);
-      Assert.True(composFile.Members[i].Stud.StudSpecification.EC4_Limit);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.Specification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.Specification.NoStudZoneEnd);
+      Assert.True(composFile.Members[i].Stud.Specification.EC4_Limit);
       i++;
       Assert.Equal(21, composFile.Members[i].Stud.Dimensions.Diameter.Millimeters);
       Assert.Equal(131, composFile.Members[i].Stud.Dimensions.Height.Millimeters);
-      Assert.False(composFile.Members[i].Stud.StudSpecification.Welding);
+      Assert.False(composFile.Members[i].Stud.Specification.Welding);
       Assert.Equal(99, composFile.Members[i].Stud.Dimensions.CharacterStrength.Kilonewtons);
       Assert.Equal(StudSpacingType.Partial_Interaction, composFile.Members[i].Stud.StudSpacingType);
       Assert.Equal(0.85, composFile.Members[i].Stud.Interaction);
       Assert.Equal(0.2, composFile.Members[i].Stud.MinSavingMultipleZones);
-      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneStart);
-      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneEnd);
-      Assert.False(composFile.Members[i].Stud.StudSpecification.EC4_Limit);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.Specification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.Specification.NoStudZoneEnd);
+      Assert.False(composFile.Members[i].Stud.Specification.EC4_Limit);
       i++;
       Assert.Equal(19, composFile.Members[i].Stud.Dimensions.Diameter.Millimeters);
       Assert.Equal(100, composFile.Members[i].Stud.Dimensions.Height.Millimeters);
       Assert.Equal(450, composFile.Members[i].Stud.Dimensions.Fu.Megapascals);
       Assert.Equal(StudSpacingType.Automatic, composFile.Members[i].Stud.StudSpacingType);
       Assert.Equal(0.2, composFile.Members[i].Stud.MinSavingMultipleZones);
-      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneStart);
-      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneEnd);
-      Assert.Equal(30, composFile.Members[i].Stud.StudSpecification.ReinforcementPosition.Millimeters);
-      Assert.True(composFile.Members[i].Stud.StudSpecification.EC4_Limit);
-      Assert.True(composFile.Members[i].Stud.StudSpecification.NCCI);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.Specification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.Specification.NoStudZoneEnd);
+      Assert.Equal(30, composFile.Members[i].Stud.Specification.ReinforcementPosition.Millimeters);
+      Assert.True(composFile.Members[i].Stud.Specification.EC4_Limit);
+      Assert.True(composFile.Members[i].Stud.Specification.NCCI);
       i++;
       Assert.Equal(19, composFile.Members[i].Stud.Dimensions.Diameter.Millimeters);
       Assert.Equal(100, composFile.Members[i].Stud.Dimensions.Height.Millimeters);
       Assert.Equal(479, composFile.Members[i].Stud.Dimensions.Fu.Megapascals);
       Assert.Equal(StudSpacingType.Min_Num_of_Studs, composFile.Members[i].Stud.StudSpacingType);
       Assert.Equal(0.2, composFile.Members[i].Stud.MinSavingMultipleZones);
-      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneStart);
-      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneEnd);
-      Assert.Equal(30, composFile.Members[i].Stud.StudSpecification.ReinforcementPosition.Millimeters);
-      Assert.True(composFile.Members[i].Stud.StudSpecification.EC4_Limit);
-      Assert.False(composFile.Members[i].Stud.StudSpecification.NCCI);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.Specification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.Specification.NoStudZoneEnd);
+      Assert.Equal(30, composFile.Members[i].Stud.Specification.ReinforcementPosition.Millimeters);
+      Assert.True(composFile.Members[i].Stud.Specification.EC4_Limit);
+      Assert.False(composFile.Members[i].Stud.Specification.NCCI);
       i++;
       Assert.Equal(19, composFile.Members[i].Stud.Dimensions.Diameter.Millimeters);
       Assert.Equal(100, composFile.Members[i].Stud.Dimensions.Height.Millimeters);
-      Assert.True(composFile.Members[i].Stud.StudSpecification.Welding);
+      Assert.True(composFile.Members[i].Stud.Specification.Welding);
       Assert.Equal(StudSpacingType.Custom, composFile.Members[i].Stud.StudSpacingType);
-      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneStart);
-      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneEnd);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.Specification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.Specification.NoStudZoneEnd);
       Assert.Equal(3, composFile.Members[i].Stud.CustomSpacing.Count);
       Assert.Equal(0, composFile.Members[i].Stud.CustomSpacing[0].DistanceFromStart.Meters);
       Assert.Equal(2, composFile.Members[i].Stud.CustomSpacing[0].NumberOfRows);
@@ -586,23 +586,23 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(4, composFile.Members[i].Stud.CustomSpacing[2].NumberOfRows);
       Assert.Equal(3, composFile.Members[i].Stud.CustomSpacing[2].NumberOfLines);
       Assert.Equal(350, composFile.Members[i].Stud.CustomSpacing[2].Spacing.Millimeters, 6);
-      Assert.True(composFile.Members[i].Stud.StudSpecification.EC4_Limit);
+      Assert.True(composFile.Members[i].Stud.Specification.EC4_Limit);
       i++;
       Assert.Equal(19, composFile.Members[i].Stud.Dimensions.Diameter.Millimeters);
       Assert.Equal(95, composFile.Members[i].Stud.Dimensions.Height.Millimeters);
-      Assert.True(composFile.Members[i].Stud.StudSpecification.Welding);
+      Assert.True(composFile.Members[i].Stud.Specification.Welding);
       Assert.Equal(StudSpacingType.Automatic, composFile.Members[i].Stud.StudSpacingType);
       Assert.Equal(0.2, composFile.Members[i].Stud.MinSavingMultipleZones);
-      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneStart);
-      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneEnd);
-      Assert.True(composFile.Members[i].Stud.StudSpecification.EC4_Limit);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.Specification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.Specification.NoStudZoneEnd);
+      Assert.True(composFile.Members[i].Stud.Specification.EC4_Limit);
       i++;
       Assert.Equal(19, composFile.Members[i].Stud.Dimensions.Diameter.Millimeters);
       Assert.Equal(100, composFile.Members[i].Stud.Dimensions.Height.Millimeters);
-      Assert.True(composFile.Members[i].Stud.StudSpecification.Welding);
+      Assert.True(composFile.Members[i].Stud.Specification.Welding);
       Assert.Equal(StudSpacingType.Custom, composFile.Members[i].Stud.StudSpacingType);
-      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneStart);
-      Assert.Equal(Length.Zero, composFile.Members[i].Stud.StudSpecification.NoStudZoneEnd);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.Specification.NoStudZoneStart);
+      Assert.Equal(Length.Zero, composFile.Members[i].Stud.Specification.NoStudZoneEnd);
       Assert.Equal(2, composFile.Members[i].Stud.CustomSpacing.Count);
       Assert.Equal(0, composFile.Members[i].Stud.CustomSpacing[0].DistanceFromStart.Meters);
       Assert.Equal(2, composFile.Members[i].Stud.CustomSpacing[0].NumberOfRows);
@@ -612,7 +612,7 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(3, composFile.Members[i].Stud.CustomSpacing[1].NumberOfRows);
       Assert.Equal(2, composFile.Members[i].Stud.CustomSpacing[1].NumberOfLines);
       Assert.Equal(250, composFile.Members[i].Stud.CustomSpacing[1].Spacing.Millimeters);
-      Assert.True(composFile.Members[i].Stud.StudSpecification.EC4_Limit);
+      Assert.True(composFile.Members[i].Stud.Specification.EC4_Limit);
     }
   }
 }

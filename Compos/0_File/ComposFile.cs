@@ -445,12 +445,9 @@ namespace ComposAPI
       // add custom group spacings to studs
       foreach (string name in studGroupSpacings.Keys)
         studs[name].CustomSpacing = studGroupSpacings[name];
-      // add if Welded to stud specifications
-      foreach (string name in studWelded.Keys)
-        studSpecifications[name].Welding = studWelded[name];
       // add stud specifications to studs
       foreach (string name in studSpecifications.Keys)
-        studs[name].StudSpecification = studSpecifications[name];
+        studs[name].Specification = studSpecifications[name];
 
       // ### Set data to members ###
       foreach (Member member in members)

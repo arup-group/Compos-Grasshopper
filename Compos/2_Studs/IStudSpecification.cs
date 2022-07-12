@@ -8,12 +8,12 @@ namespace ComposAPI
   public interface IStudSpecification
   {
     // Stud Specifications
-     bool Welding { get;  }
-     bool NCCI { get;  }
-     bool EC4_Limit { get;  }
-     Length NoStudZoneStart { get;  }
-     Length NoStudZoneEnd { get;  }
-     Length ReinforcementPosition { get;  }
-     StudSpecType SpecType { get;  }
+    bool Welding { get; set; }
+    bool NCCI { get; }
+    bool EC4_Limit { get; }
+    Length NoStudZoneStart { get; }
+    Length NoStudZoneEnd { get; }
+    Length ReinforcementPosition { get; }
+    StudSpecType SpecType { get; }
   }
 }
