@@ -7,10 +7,13 @@ namespace ComposAPI
   /// </summary>
   public interface IStudDimensions
   {
-    Length Diameter { get; }
-    Length Height { get; }
-    Force CharacterStrength { get; }
-    Pressure Fu { get; }
-    bool isStandard { get; }
+    Length Diameter { get; set; }
+    Length Height { get; set; }
+    Force CharacterStrength { get; set; }
+    Pressure Fu { get; set; }
+    bool IsStandard { get; set; }
+
+    void SetGradeFromStandard(StandardStudGrade standardGrade);
+    void SetSizeFromStandard(StandardStudSize size);
   }
 }
