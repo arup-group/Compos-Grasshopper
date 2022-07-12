@@ -122,6 +122,8 @@ namespace ComposAPI
     internal static Stud FromCoaString(string coaString, string name, Code code, ComposUnits units)
     {
       Stud stud = new Stud();
+      stud.Specification = new StudSpecification();
+      stud.Dimensions = new StudDimensions();
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
 
       List<string> lines = CoaHelper.SplitAndStripLines(coaString);
@@ -146,7 +148,6 @@ namespace ComposAPI
             //STUD_DEFINITION	MEMBER-1	STANDARD	19mm/100mm	WELDED_YES
             //STUD_DEFINITION	MEMBER-2	USER_DEFINED	19.0000	100.000	95000.0	REDUCED_YES	WELDED_YES
             //STUD_DEFINITION	MEMBER-3	USER_DEFINED	12.0000	345.000	75982.5	REDUCED_NO	WELDED_YES
-            stud.Dimensions = new StudDimensions();
             if (parameters[2] == CoaIdentifier.StudDimensions.StudDimensionStandard)
             {
               string size = "D" + parameters[3].Replace("/", "H");
@@ -178,8 +179,10 @@ namespace ComposAPI
             stud.Specification.Welding = isWelded;
             break;
 
-          case ("STUD_EC4_APPLY"):
-
+          case (CoaIdentifier.StudSpecifications.StudEC4):
+            //STUD_EC4_APPLY	MEMBER-1	YES
+            stud.Specification.EC4_Limit = parameters[2] == "YES";
+            stud.Specification.SpecType = StudSpecType.BS5950;
             break;
 
           // this should be just STUD_GRADE ?!
@@ -203,19 +206,52 @@ namespace ComposAPI
             //STUD_LAYOUT	MEMBER-1	AUTO_PERCENT	0.200000	0.850000
             //STUD_LAYOUT	MEMBER-1	AUTO_MINIMUM_STUD	0.200000
             //STUD_LAYOUT	MEMBER-1	USER_DEFINED	3	1	0.000000	2	1	0.0760000	0.0950000	0.150000	CHECK_SPACE_NO
+            switch (parameters[2])
+            {
+              case CoaIdentifier.StudGroupSpacings.StudLayoutAutomatic:
+                stud.StudSpacingType = StudSpacingType.Automatic;
+                stud.MinSavingMultipleZones = Convert.ToDouble(parameters[3], noComma);
+                break;
 
+              case CoaIdentifier.StudGroupSpacings.StudLayoutPartial_Interaction:
+                stud.StudSpacingType = StudSpacingType.Partial_Interaction;
+                stud.MinSavingMultipleZones = Convert.ToDouble(parameters[3], noComma);
+                stud.Interaction = Convert.ToDouble(parameters[4], noComma);
+                break;
+
+              case CoaIdentifier.StudGroupSpacings.StudLayoutMin_Num_of_Studs:
+                stud.StudSpacingType = StudSpacingType.Min_Num_of_Studs;
+                stud.MinSavingMultipleZones = Convert.ToDouble(parameters[3], noComma);
+                break;
+
+              case CoaIdentifier.StudGroupSpacings.StudLayoutCustom:
+                stud.StudSpacingType = StudSpacingType.Custom;
+                stud.CheckStudSpacing = parameters.Last() != "CHECK_SPACE_NO";
+
+                StudGroupSpacing custom = StudGroupSpacing.FromCoaString(parameters, units);
+                if (stud.CustomSpacing == null)
+                  stud.CustomSpacing = new List<IStudGroupSpacing>();
+                stud.CustomSpacing.Add(custom);
+                break;
+            }
             break;
 
-          case ("STUD_NCCI_LIMIT_APPLY"):
-
+          case (CoaIdentifier.StudSpecifications.StudNCCI):
+            //STUD_NCCI_LIMIT_APPLY	MEMBER-1	NO
+            stud.Specification.NCCI = parameters[2] == "YES";
+            stud.Specification.SpecType = StudSpecType.EC4;
             break;
 
-          case ("STUD_NO_STUD_ZONE"):
-
+          case (CoaIdentifier.StudSpecifications.StudNoZone):
+            //STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000
+            stud.Specification.NoStudZoneStart = new Length(Convert.ToDouble(parameters[2], noComma), units.Length);
+            stud.Specification.NoStudZoneEnd = new Length(Convert.ToDouble(parameters[3], noComma), units.Length);
             break;
 
-          case ("STUD_RFT_POSITON"):
-
+          case (CoaIdentifier.StudSpecifications.StudReinfPos):
+            //STUD_EC4_RFT_POS	MEMBER-1	0.0300000
+            stud.Specification.SpecType = StudSpecType.EC4;
+            stud.Specification.ReinforcementPosition = new Length(Convert.ToDouble(parameters[2], noComma), units.Length);
             break;
 
           default:
@@ -223,37 +259,6 @@ namespace ComposAPI
             break;
         }
       }
-
-
-
-      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-      switch (parameters[2])
-      {
-        case CoaIdentifier.StudGroupSpacings.StudLayoutAutomatic:
-          stud.StudSpacingType = StudSpacingType.Automatic;
-          stud.MinSavingMultipleZones = Convert.ToDouble(parameters[3], noComma);
-          break;
-
-        case CoaIdentifier.StudGroupSpacings.StudLayoutPartial_Interaction:
-          stud.StudSpacingType = StudSpacingType.Partial_Interaction;
-          stud.MinSavingMultipleZones = Convert.ToDouble(parameters[3], noComma);
-          stud.Interaction = Convert.ToDouble(parameters[4], noComma);
-          break;
-
-        case CoaIdentifier.StudGroupSpacings.StudLayoutMin_Num_of_Studs:
-          stud.StudSpacingType = StudSpacingType.Min_Num_of_Studs;
-          stud.MinSavingMultipleZones = Convert.ToDouble(parameters[3], noComma);
-          break;
-
-        case CoaIdentifier.StudGroupSpacings.StudLayoutCustom:
-          stud.StudSpacingType = StudSpacingType.Custom;
-          stud.CheckStudSpacing = parameters.Last() != "CHECK_SPACE_NO";
-          break;
-      }
-
-
-
-
       return stud;
     }
 

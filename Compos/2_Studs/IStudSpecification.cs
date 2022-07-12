@@ -9,11 +9,11 @@ namespace ComposAPI
   {
     // Stud Specifications
     bool Welding { get; set; }
-    bool NCCI { get; }
-    bool EC4_Limit { get; }
-    Length NoStudZoneStart { get; }
-    Length NoStudZoneEnd { get; }
-    Length ReinforcementPosition { get; }
-    StudSpecType SpecType { get; }
+    bool NCCI { get; set; }
+    bool EC4_Limit { get; set; }
+    Length NoStudZoneStart { get; set; }
+    Length NoStudZoneEnd { get; set; }
+    Length ReinforcementPosition { get; set; }
+    StudSpecType SpecType { get; set; }
   }
 }

@@ -347,12 +347,6 @@ namespace ComposAPI
     {
       List<IMember> members = new List<IMember>();
 
-      Dictionary<string, Stud> studs = new Dictionary<string, Stud>();
-      Dictionary<string, StudDimensions> studDimensions = new Dictionary<string, StudDimensions>();
-      Dictionary<string, StudDimensions> studECDimensions = new Dictionary<string, StudDimensions>();
-      Dictionary<string, bool> studWelded = new Dictionary<string, bool>();
-      Dictionary<string, StudSpecification> studSpecifications = new Dictionary<string, StudSpecification>();
-      Dictionary<string, List<IStudGroupSpacing>> studGroupSpacings = new Dictionary<string, List<IStudGroupSpacing>>();
       Dictionary<string, List<ILoad>> loads = new Dictionary<string, List<ILoad>>();
 
       ComposUnits units = ComposUnits.GetStandardUnits();
@@ -381,50 +375,6 @@ namespace ComposAPI
           units.FromCoaString(parameters);
         }
 
-        // ### stud related lines ###
-
-        else if (coaIdentifier == CoaIdentifier.StudGroupSpacings.StudLayout)
-        {
-          if (parameters[2] != CoaIdentifier.StudGroupSpacings.StudLayoutCustom)
-          {
-            Stud stud = Stud.FromCoaString(coaString, name, code, units);
-            studs.Add(parameters[1], stud);
-          }
-
-          if (parameters[2] == CoaIdentifier.StudGroupSpacings.StudLayoutCustom)
-          {
-            if (parameters[4] == 1.ToString())
-            {
-              Stud stud = Stud.FromCoaString(coaString, name, code, units);
-              studs.Add(parameters[1], stud);
-            }
-
-            StudGroupSpacing custom = new StudGroupSpacing().FromCoaString(parameters, units);
-            List<IStudGroupSpacing> spacings = new List<IStudGroupSpacing>();
-            if (!studGroupSpacings.ContainsKey(parameters[1]))
-              studGroupSpacings.Add(parameters[1], spacings);
-            studGroupSpacings[parameters[1]].Add(custom);
-          }
-        }
-
-        else if (coaIdentifier == CoaIdentifier.StudSpecifications.StudNoZone |
-          coaIdentifier == CoaIdentifier.StudSpecifications.StudEC4 |
-          coaIdentifier == CoaIdentifier.StudSpecifications.StudNCCI |
-          coaIdentifier == CoaIdentifier.StudSpecifications.StudReinfPos)
-        {
-          StudSpecification spec = new StudSpecification();
-          if (studSpecifications.ContainsKey(parameters[1]))
-            spec = studSpecifications[parameters[1]];
-          spec.FromCoaString(parameters, units);
-          if (!studSpecifications.ContainsKey(parameters[1]))
-            studSpecifications.Add(parameters[1], spec);
-        }
-        else if (coaIdentifier == CoaIdentifier.StudDimensions.StudGradeEC4)
-        {
-          StudDimensions ecDims = StudDimensions.FromCoaString(parameters, units, Code.EN1994_1_1_2004);
-          studECDimensions.Add(parameters[1], ecDims);
-        }
-
         // ### loads ###
         else if (coaIdentifier == CoaIdentifier.Load)
         {
@@ -436,37 +386,20 @@ namespace ComposAPI
         }
       }
 
-      // add special ec4 stud grade to stud dimensions
-      foreach (string name in studECDimensions.Keys)
-        studDimensions[name].Fu = studECDimensions[name].Fu;
-      // add stud dimensions to studs
-      foreach (string name in studDimensions.Keys)
-        studs[name].Dimensions = studDimensions[name];
-      // add custom group spacings to studs
-      foreach (string name in studGroupSpacings.Keys)
-        studs[name].CustomSpacing = studGroupSpacings[name];
-      // add stud specifications to studs
-      foreach (string name in studSpecifications.Keys)
-        studs[name].Specification = studSpecifications[name];
-
       // ### Set data to members ###
       foreach (Member member in members)
       {
         string name = member.Name;
-
         member.DesignCode = DesignCode.FromCoaString(coaString, name, units);
         Code code = member.DesignCode.Code;
 
         member.Beam = Beam.FromCoaString(coaString, name, units);
-
-
-
-        if (studs.ContainsKey(name))
-          member.Stud = studs[name];
+        member.Stud = Stud.FromCoaString(coaString, name, code, units);
         member.Slab = Slab.FromCoaString(coaString, name, code, units);
 
         // add loads to members
-        member.Loads = loads[name];
+        if (loads.ContainsKey(name))
+          member.Loads = loads[name];
       }
       return new ComposFile(members);
     }
