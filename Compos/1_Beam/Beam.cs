@@ -83,6 +83,7 @@ namespace ComposAPI
             steelMaterial.WeldGrade = SteelMaterial.WeldGradeFromCoa(parameters);
             beam.Material = steelMaterial;
             break;
+
           case (CoaIdentifier.BeamSectionAtX):
             beam.Sections.Add(BeamSection.FromCoaString(parameters, units));
             break;
