@@ -125,10 +125,6 @@ namespace ComposAPI
             material.ReductionFactorMpl = false;
           break;
 
-        case (CoaIdentifier.BeamWeldingMaterial):
-          material.WeldGrade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), parameters[2].Replace(' ', '_'));
-          break;
-
         default:
           throw new Exception("Unable to convert " + parameters + " to Compos Steel Material.");
       }
