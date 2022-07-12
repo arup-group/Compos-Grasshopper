@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposAPI
 {
@@ -61,8 +62,32 @@ namespace ComposAPI
     public Length Width { get; set; }
     public Length Height { get; set; }
     public Length Diameter { get; set; }
-    public Length CentroidPosFromStart { get; set; }
-    public Length CentroidPosFromTop { get; set; }
+    public IQuantity CentroidPosFromStart
+    {
+      get { return this.m_CentroidPosFromStart; }
+      set
+      {
+        if (value.QuantityInfo.UnitType != typeof(LengthUnit)
+          & value.QuantityInfo.UnitType != typeof(RatioUnit))
+          throw new ArgumentException("Centroid Position From Start must be either Length or Ratio");
+        else
+          this.m_CentroidPosFromStart = value;
+      }
+    }
+    private IQuantity m_CentroidPosFromStart;
+    public IQuantity CentroidPosFromTop
+    {
+      get { return this.m_CentroidPosFromTop; }
+      set
+      {
+        if (value.QuantityInfo.UnitType != typeof(LengthUnit)
+          & value.QuantityInfo.UnitType != typeof(RatioUnit))
+          throw new ArgumentException("Centroid Position From Top must be either Length or Ratio");
+        else
+          this.m_CentroidPosFromTop = value;
+      }
+    }
+    private IQuantity m_CentroidPosFromTop;
     public IWebOpeningStiffeners OpeningStiffeners { get; set; } = null;
 
     #region constructors
@@ -177,15 +202,27 @@ namespace ComposAPI
           opening.WebOpeningType = OpeningType.Rectangular;
           opening.Width = new Length(Convert.ToDouble(parameters[3], noComma), units.Section);
           opening.Height = new Length(Convert.ToDouble(parameters[4], noComma), units.Section);
-          opening.CentroidPosFromStart = new Length(Convert.ToDouble(parameters[5], noComma), units.Length);
-          opening.CentroidPosFromTop = new Length(Convert.ToDouble(parameters[6], noComma), units.Section);
+          if (parameters[5].EndsWith("%"))
+            opening.CentroidPosFromStart = new Ratio(Convert.ToDouble(parameters[5].Replace("%", string.Empty), noComma), RatioUnit.Percent);
+          else
+            opening.CentroidPosFromStart = new Length(Convert.ToDouble(parameters[5], noComma), units.Length);
+          if (parameters[6].EndsWith("%"))
+            opening.CentroidPosFromTop = new Ratio(Convert.ToDouble(parameters[6].Replace("%", string.Empty), noComma), RatioUnit.Percent);
+          else
+            opening.CentroidPosFromTop = new Length(Convert.ToDouble(parameters[6], noComma), units.Section);
           break;
 
         case "CIRCULAR":
           opening.WebOpeningType = OpeningType.Circular;
           opening.Diameter = new Length(Convert.ToDouble(parameters[3], noComma), units.Section);
-          opening.CentroidPosFromStart = new Length(Convert.ToDouble(parameters[5], noComma), units.Length);
-          opening.CentroidPosFromTop = new Length(Convert.ToDouble(parameters[6], noComma), units.Section);
+          if (parameters[5].EndsWith("%"))
+            opening.CentroidPosFromStart = new Ratio(Convert.ToDouble(parameters[5].Replace("%", string.Empty), noComma), RatioUnit.Percent);
+          else
+            opening.CentroidPosFromStart = new Length(Convert.ToDouble(parameters[5], noComma), units.Length);
+          if (parameters[6].EndsWith("%"))
+            opening.CentroidPosFromTop = new Ratio(Convert.ToDouble(parameters[6].Replace("%", string.Empty), noComma), RatioUnit.Percent);
+          else
+            opening.CentroidPosFromTop = new Length(Convert.ToDouble(parameters[6], noComma), units.Section);
           break;
       }
       if (parameters[7] == "STIFFENER_YES")
@@ -247,16 +284,17 @@ namespace ComposAPI
           parameters.Add("RECTANGULAR");
           parameters.Add(CoaHelper.FormatSignificantFigures(this.Width.ToUnit(units.Section).Value, 6));
           parameters.Add(CoaHelper.FormatSignificantFigures(this.Height.ToUnit(units.Section).Value, 6));
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.CentroidPosFromStart.ToUnit(units.Length).Value, 6));
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.CentroidPosFromTop.ToUnit(units.Section).Value, 6));
+
+          parameters.Add(CoaHelper.FormatSignificantFigures(this.CentroidPosFromStart, units.Section, 6));
+          parameters.Add(CoaHelper.FormatSignificantFigures(this.CentroidPosFromTop, units.Section, 6));
           break;
 
         case OpeningType.Circular:
           parameters.Add("CIRCULAR");
           parameters.Add(CoaHelper.FormatSignificantFigures(this.Diameter.ToUnit(units.Section).Value, 6));
           parameters.Add(CoaHelper.FormatSignificantFigures(this.Diameter.ToUnit(units.Section).Value, 6));
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.CentroidPosFromStart.ToUnit(units.Length).Value, 6));
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.CentroidPosFromTop.ToUnit(units.Section).Value, 6));
+          parameters.Add(CoaHelper.FormatSignificantFigures(this.CentroidPosFromStart, units.Section, 6));
+          parameters.Add(CoaHelper.FormatSignificantFigures(this.CentroidPosFromTop, units.Section, 6));
           break;
       }
       if (this.OpeningStiffeners == null)
@@ -316,7 +354,29 @@ namespace ComposAPI
           break;
         case OpeningType.Rectangular:
         case OpeningType.Circular:
-          typ = ", Pos:(x:" + this.CentroidPosFromStart.ToUnit(Units.LengthUnitGeometry).ToString("f2").Replace(" ", string.Empty) + ", z:" + this.CentroidPosFromTop.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty) + ")";
+          string x = "";
+          if (this.CentroidPosFromStart.QuantityInfo.UnitType == typeof(LengthUnit))
+          {
+            Length l = (Length)this.CentroidPosFromStart;
+            x = l.ToUnit(Units.LengthUnitGeometry).ToString("f2").Replace(" ", string.Empty);
+          }
+          else
+          {
+            Ratio p = (Ratio)this.CentroidPosFromStart;
+            x = p.ToUnit(RatioUnit.Percent).ToString("f3").Replace(" ", string.Empty);
+          }
+          string z = "";
+          if (this.CentroidPosFromTop.QuantityInfo.UnitType == typeof(LengthUnit))
+          {
+            Length l = (Length)this.CentroidPosFromTop;
+            z = l.ToUnit(Units.LengthUnitGeometry).ToString("f2").Replace(" ", string.Empty);
+          }
+          else
+          {
+            Ratio p = (Ratio)this.CentroidPosFromTop;
+            z = p.ToUnit(RatioUnit.Percent).ToString("f3").Replace(" ", string.Empty);
+          }
+          typ = ", Pos:(x:" + x + ", z:" + z + ")";
           break;
       }
       if (this.OpeningStiffeners != null)
