@@ -4,7 +4,7 @@ using UnitsNet.Units;
 using System.Collections.Generic;
 using ComposAPI.Helpers;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Beams.Tests
 {
   public partial class WebOpeningTest
   {
@@ -176,7 +176,7 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void TestDuplicate()
+    public void DuplicateTest()
     {
       // 1 create with constructor and duplicate
       WebOpening original = TestConstructorRectangularWebOpeningWithStiffener(400, 300, 6000, 70);
@@ -239,7 +239,7 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void TestDuplicate2()
+    public void DuplicateTest2()
     {
       // 1 create with constructor and duplicate
       WebOpening original = TestConstructorCircularWebOpeningWithStiffener(300, 7000, 150);
@@ -327,6 +327,7 @@ namespace ComposAPI.Tests
       string coaString = webOpening.ToCoaString("MEMBER-1", units);
       Assert.Equal(expected_CoaString, coaString);
     }
+
     [Theory]
     [InlineData(400, 300, 7.5, 350, OpeningType.Rectangular, "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	400.000	300.000	7.50000	350.000	STIFFENER_NO\n")]
     [InlineData(400, 400, 3.5, 190, OpeningType.Circular, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	400.000	400.000	3.50000	190.000	STIFFENER_NO\n")]
@@ -335,7 +336,7 @@ namespace ComposAPI.Tests
     {
       ComposUnits units = ComposUnits.GetStandardUnits();
       List<string> parameters = CoaHelper.Split(coaString);
-      WebOpening webOpening = new WebOpening().FromCoaString(parameters, units);
+      IWebOpening webOpening = WebOpening.FromCoaString(parameters, units);
 
       Assert.Equal(expected_OpeningType, webOpening.WebOpeningType);
 
@@ -404,7 +405,7 @@ namespace ComposAPI.Tests
     {
       ComposUnits units = ComposUnits.GetStandardUnits();
       List<string> parameters = CoaHelper.Split(coaString);
-      WebOpening webOpening = new WebOpening().FromCoaString(parameters, units);
+      IWebOpening webOpening = WebOpening.FromCoaString(parameters, units);
 
       Assert.Equal(expected_OpeningType, webOpening.WebOpeningType);
 

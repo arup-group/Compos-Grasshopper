@@ -36,7 +36,7 @@ namespace ComposAPI
 
     public static LengthUnit LengthUnitGeometry { get; set; } = LengthUnit.Meter;
 
-    public static LengthUnit LengthUnitSection { get; set; } = LengthUnit.Millimeter;
+    public static LengthUnit LengthUnitSection { get; set; } = LengthUnit.Meter;
 
     public static AreaMomentOfInertiaUnit SectionAreaMomentOfInertiaUnit
     {
@@ -103,7 +103,7 @@ namespace ComposAPI
       }
     }
 
-    public static LengthUnit LengthUnitResult { get; set; } = LengthUnit.Millimeter;
+    public static LengthUnit LengthUnitResult { get; set; } = LengthUnit.Meter;
 
     #endregion
 
@@ -544,7 +544,7 @@ namespace ComposAPI
       get { return m_mass; }
       set { m_mass = value; }
     }
-    private static MassUnit m_mass = MassUnit.Tonne;
+    private static MassUnit m_mass = MassUnit.Kilogram;
     public static List<string> FilteredMassUnits = new List<string>()
         {
             MassUnit.Gram.ToString(),

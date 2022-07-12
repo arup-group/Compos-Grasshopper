@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.IO;
+using ComposAPI;
 
 namespace ComposGH
 {
@@ -20,7 +21,7 @@ namespace ComposGH
         // look in all the other Grasshopper assembly (plugin) folders
         foreach (GH_AssemblyFolderInfo pluginFolder in Grasshopper.Folders.AssemblyFolders)
         {
-          if (File.Exists(Path.Combine(pluginFolder.Folder, "AdSec.gha"))) // if the folder contains the plugin
+          if (File.Exists(Path.Combine(pluginFolder.Folder, "Compos.gha"))) // if the folder contains the plugin
           {
             path = pluginFolder.Folder;
             break;
@@ -50,21 +51,34 @@ namespace ComposGH
       // ### Setup units ###
       Units.SetupUnits();
 
+      // subscribe to rhino closing event
+      Rhino.RhinoApp.Closing += CloseFile;
+
       return GH_LoadingInstruction.Proceed;
     }
+
     public static string PluginPath;
     public static string InstallPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Oasys", "Compos 8.6");
+
+    internal static void CloseFile(object sender, EventArgs args)
+    {
+      ComposFile.Close();
+      Rhino.RhinoApp.Closing -= CloseFile;
+    }
   }
+
   public class ComposGHInfo : GH_AssemblyInfo
   {
     internal static Guid GUID = new Guid("c3884cdc-ac5b-4151-afc2-93590cef4f8f");
     internal const string Company = "Oasys";
     internal const string Copyright = "Copyright © Oasys 1985 - 2022";
     internal const string Contact = "https://www.oasys-software.com/";
-    internal const string Vers = "0.0.1";
+    internal const string Vers = "0.0.3";
     internal static bool isBeta = true;
+    internal static string Disclaimer = PluginName + " is pre-release and under active development, including further testing to be undertaken. It is provided \"as-is\" and you bear the risk of using it. Future versions may contain breaking changes. Any files, results, or other types of output information created using " + PluginName + " should not be relied upon without thorough and independent checking.";
     internal const string ProductName = "Compos";
     internal const string PluginName = "ComposGH";
+
     public override string Name
     {
       get
@@ -72,6 +86,7 @@ namespace ComposGH
         return ProductName;
       }
     }
+
     public override Bitmap Icon
     {
       get
@@ -80,6 +95,7 @@ namespace ComposGH
         return null;
       }
     }
+
     public override Bitmap AssemblyIcon
     {
       get
@@ -87,18 +103,21 @@ namespace ComposGH
         return Icon;
       }
     }
+
     public override string Description
     {
       get
       {
         //Return a short string describing the purpose of this GHA library.
         return "Official Oasys Compos Grasshopper Plugin" + Environment.NewLine
-        + Environment.NewLine + "The plugin requires a Compos license to load."
+          + (isBeta ? Disclaimer : "")
+        + Environment.NewLine + "The plugin requires a licensed version of Compos to load."
         + Environment.NewLine
         + Environment.NewLine + "Contact oasys@arup.com to request a free trial version."
         + Environment.NewLine + Environment.NewLine + Copyright;
       }
     }
+
     public override Guid Id
     {
       get

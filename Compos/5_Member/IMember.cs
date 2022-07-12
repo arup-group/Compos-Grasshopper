@@ -9,12 +9,25 @@ namespace ComposAPI
     IBeam Beam { get; }
     IStud Stud { get; }
     ISlab Slab { get; }
-    List<ILoad> Loads { get; }
+    IList<ILoad> Loads { get; }
     IDesignCode DesignCode { get; }
+    //IComposFile File { get; set; } // the hosting Compos file
     string Name { get; }
     string GridReference { get; }
     string Note { get; }
-
     string ToCoaString(ComposUnits units);
+
+    short Analyse();
+    short CodeSatisfied();
+    float MaxResult(string option, short position);
+    short MaxResultPosition(string option, short position);
+    float MinResult(string option, short position);
+    short MinResultPosition(string option, short position);
+    short NumIntermediatePos();
+    short NumTranRebar();
+    void Register(IComposFile file);
+    float Result(string option, short position);
+    float TranRebarProp(TransverseRebarOption option, short rebarnum);
+    float UtilisationFactor(UtilisationFactorOption option);
   }
 }

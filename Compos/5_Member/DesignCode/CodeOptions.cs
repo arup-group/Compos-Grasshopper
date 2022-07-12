@@ -1,17 +1,23 @@
-﻿using System;
+﻿using ComposAPI.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnitsNet;
 
 namespace ComposAPI
 {
+  public enum CementClass
+  {
+    S,
+    N,
+    R
+  }
+
   public class CodeOptions : ICodeOptions
   {
     public bool ConsiderShrinkageDeflection { get; set; } = false;
-    public virtual ICreepShrinkageParameters LongTerm { get; set; } = new CreepShrinkageParameters()
-    { CreepCoefficient = 2.0 };
-    public virtual ICreepShrinkageParameters ShortTerm { get; set; } = new CreepShrinkageParameters()
-    { CreepCoefficient = 2.0 };
+    public virtual ICreepShrinkageParameters LongTerm { get; set; } = new CreepShrinkageParameters() { CreepCoefficient = 2.0 };
+    public virtual ICreepShrinkageParameters ShortTerm { get; set; } = new CreepShrinkageParameters() { CreepCoefficient = 2.0 };
     /// <summary>
     /// Deafult constructor with AS/NZ values and members
     /// </summary>
@@ -23,14 +29,7 @@ namespace ComposAPI
 
   public class EC4Options : CodeOptions
   {
-    public enum CementClass
-    {
-      S,
-      N,
-      R
-    }
     public CementClass CementType { get; set; } = CementClass.N;
-
     /// <summary>
     /// This member will only be used if <see cref="ConsiderShrinkageDeflection"/> is true.
     /// Ignore shrinkage deflection if the ratio of length to depth is less than 20 for normal weight concrete.
@@ -40,39 +39,66 @@ namespace ComposAPI
     /// Use approximate modular ratios - Approximate E ratios are used in accordance with 5.2.2 (11) of EN 1994-1-1:2004 
     /// </summary>
     public bool ApproxModularRatios { get; set; } = false;
-    public new CreepShrinkageEuroCodeParameters LongTerm { get; set; } = new CreepShrinkageEuroCodeParameters() 
+    public new CreepShrinkageEuroCodeParameters LongTerm { get; set; } = new CreepShrinkageEuroCodeParameters()
     { ConcreteAgeAtLoad = 28, CreepCoefficient = 1.1, FinalConcreteAgeCreep = 36500, RelativeHumidity = 0.5 };
     public new CreepShrinkageEuroCodeParameters ShortTerm { get; set; } = new CreepShrinkageEuroCodeParameters()
     { ConcreteAgeAtLoad = 1, CreepCoefficient = 0.55, FinalConcreteAgeCreep = 36500, RelativeHumidity = 0.5 };
+
     public EC4Options()
     {
       // default initialiser
     }
-  }
 
-  public class CreepShrinkageParameters : ICreepShrinkageParameters
-  {
-    /// <summary>
-    /// Creep multiplier used for calculating E ratio for long term and shrinkage (see clause 5.4.2.2 of EN 1994-1-1:2004) 
-    /// </summary>
-    public double CreepCoefficient { get; set; }
-    public CreepShrinkageParameters() { }
-  }
+    #region coainterop
+    internal ICodeOptions FromCoaString(List<string> parameters)
+    {
+      EC4Options eC4Options = new EC4Options();
 
-  public class CreepShrinkageEuroCodeParameters : CreepShrinkageParameters
-  {
-    /// <summary>
-    /// Age of concrete in days when load applied, used to calculate the creep coefficient 
-    /// </summary>
-    public int ConcreteAgeAtLoad { get; set; }
-    /// <summary>
-    /// Final age of concrete in days, used to calculate the creep coefficient 
-    /// </summary>
-    public int FinalConcreteAgeCreep { get; set; } = 36500;
-    /// <summary>
-    /// Relative humidity as fraction (0.5 => 50%), used to calculate the creep coefficient 
-    /// </summary>
-    public double RelativeHumidity { get; set; } = 0.5;
-    public CreepShrinkageEuroCodeParameters() { }
+      // todo
+
+      return eC4Options;
+    }
+
+    public string ToCoaString(string name, Code code, NationalAnnex nationalAnnex)
+    {
+      List<string> parameters = new List<string>();
+      parameters.Add(CoaIdentifier.EC4DesignOption);
+      parameters.Add(name);
+
+      CoaHelper.AddParameter(parameters, "SHRINKAGE_DEFORM_EC4", this.ConsiderShrinkageDeflection);
+      CoaHelper.AddParameter(parameters, "IGNORE_SHRINKAGE_DEFORM", this.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
+      CoaHelper.AddParameter(parameters, "APPROXIMATE_E_RATIO", this.ApproxModularRatios);
+
+      if(nationalAnnex == NationalAnnex.United_Kingdom)
+        parameters.Add("United Kingdom");
+      else
+        parameters.Add("Generic");
+
+      switch(this.CementType)
+      {
+        case CementClass.S:
+          parameters.Add("CLASS_S");
+          break;
+        case CementClass.N:
+        default:
+          parameters.Add("CLASS_N");
+          break;
+        case CementClass.R:
+          parameters.Add("CLASS_R");
+          break;
+      }
+
+      parameters.Add(CoaHelper.FormatSignificantFigures(LongTerm.CreepCoefficient, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(ShortTerm.CreepCoefficient, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(LongTerm.ConcreteAgeAtLoad, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(ShortTerm.ConcreteAgeAtLoad, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(LongTerm.FinalConcreteAgeCreep, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(ShortTerm.FinalConcreteAgeCreep, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(LongTerm.RelativeHumidity, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(ShortTerm.RelativeHumidity, 6));
+
+      return CoaHelper.CreateString(parameters);
+    }
+    #endregion
   }
 }

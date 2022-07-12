@@ -11,12 +11,12 @@ namespace ComposAPI
 {
   /// <summary>
   /// A Beam Section object contains information about the profile dimensions, 
-  /// start position and if the section is tapered to next section.
+  /// start position and if the section is tapered to the next section.
   /// </summary>
   public class BeamSection : IBeamSection
   {
     // Setting out
-    public bool TaperedToNext
+    public bool TaperedToNext //	tapered or uniform to the next section
     {
       get
       {
@@ -32,7 +32,7 @@ namespace ComposAPI
       }
     }
     private bool m_taper;
-    public Length StartPosition { get; set; } = Length.Zero;
+    public Length StartPosition { get; set; } = Length.Zero; // distance of the section from left (as length or in percent of beam length, negative(sic!) and astronomical units if in percent!)
 
     // Dimensions
     public Length Depth { get; set; }
@@ -46,69 +46,12 @@ namespace ComposAPI
 
     public string SectionDescription { get; set; }
 
+    internal static ICatalogueDB catalogueDB { get; set; } = new CatalogueDB();
+
     #region constructors
     public BeamSection()
     {
       // empty constructor
-    }
-
-    /// <summary>
-    /// Create a copy from another IBeamSection and set a new Start Position
-    /// </summary>
-    /// <param name="beamSection"></param>
-    public BeamSection(IBeamSection beamSection, Length newStartPosition)
-    {
-      this.StartPosition = newStartPosition;
-      this.Depth = beamSection.Depth;
-      this.TopFlangeWidth = beamSection.TopFlangeWidth;
-      this.BottomFlangeWidth = beamSection.BottomFlangeWidth;
-      this.TopFlangeThickness = beamSection.TopFlangeThickness;
-      this.BottomFlangeThickness = beamSection.BottomFlangeThickness;
-      this.RootRadius = beamSection.RootRadius;
-      this.WebThickness = beamSection.WebThickness;
-      this.isCatalogue = beamSection.isCatalogue;
-      if (isCatalogue)
-        this.m_taper = false;
-      this.SectionDescription = beamSection.SectionDescription;
-    }
-
-    /// <summary>
-    /// Create a copy from another IBeamSection and set a new Start Position and Taper to Next
-    /// </summary>
-    /// <param name="beamSection"></param>
-    public BeamSection(IBeamSection beamSection, Length newStartPosition, bool taperToNext)
-    {
-      this.StartPosition = newStartPosition;
-      this.Depth = beamSection.Depth;
-      this.TopFlangeWidth = beamSection.TopFlangeWidth;
-      this.BottomFlangeWidth = beamSection.BottomFlangeWidth;
-      this.TopFlangeThickness = beamSection.TopFlangeThickness;
-      this.BottomFlangeThickness = beamSection.BottomFlangeThickness;
-      this.RootRadius = beamSection.RootRadius;
-      this.WebThickness = beamSection.WebThickness;
-      this.isCatalogue = beamSection.isCatalogue;
-      this.TaperedToNext = taperToNext;
-      this.SectionDescription = beamSection.SectionDescription;
-    }
-
-    /// <summary>
-    /// Create a copy from another IBeamSection
-    /// </summary>
-    /// <param name="beamSection"></param>
-    public BeamSection(IBeamSection beamSection)
-    {
-      this.StartPosition = beamSection.StartPosition;
-      this.Depth = beamSection.Depth;
-      this.TopFlangeWidth = beamSection.TopFlangeWidth;
-      this.BottomFlangeWidth = beamSection.BottomFlangeWidth;
-      this.TopFlangeThickness = beamSection.TopFlangeThickness;
-      this.BottomFlangeThickness = beamSection.BottomFlangeThickness;
-      this.RootRadius = beamSection.RootRadius;
-      this.WebThickness = beamSection.WebThickness;
-      this.isCatalogue = beamSection.isCatalogue;
-      if (isCatalogue)
-        this.m_taper = false;
-      this.SectionDescription = beamSection.SectionDescription;
     }
 
     /// <summary>
@@ -253,7 +196,8 @@ namespace ComposAPI
       else if (profile.StartsWith("CAT"))
       {
         string prof = profile.Split(' ').Last();
-        List<double> sqlValues = Helpers.CatalogueValues.GetCatalogueProfileValues(prof);
+
+        List<double> sqlValues = catalogueDB.GetCatalogueProfileValues(prof);
 
         LengthUnit unit = LengthUnit.Meter;
         this.Depth = new Length(sqlValues[0], unit);
@@ -291,24 +235,30 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal BeamSection(List<string> parameters, ComposUnits units)
+    internal static IBeamSection FromCoaString(List<string> parameters, ComposUnits units)
     {
+      BeamSection section = new BeamSection();
       //BEAM_SECTION_AT_X	MEMBER-1	3	1	0.000000	STD GI 200 189.2 222.25 8.5 12.7 12.7	TAPERED_YES
       //BEAM_SECTION_AT_X MEMBER-1 3 2 6.00000 STD GI 730 189.2 222.25 8.5 12.7 12.7 TAPERED_YES
       //BEAM_SECTION_AT_X MEMBER-1 3 3 12.0000 STD GI 200 189.2 222.25 8.5 12.7 12.7 TAPERED_YES
-      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-      
-      this.StartPosition = new Length(Convert.ToDouble(parameters[4], noComma), units.Length);
-      
-      SetFromProfileString(parameters[5]);
-      
-      // using StartsWith as string is the last parameter and can contain new line character: "TAPERED_YES\n"
-      if (parameters[6].StartsWith("TAPERED_YES")) 
-        TaperedToNext = true;
+
+      double startPosition = CoaHelper.ConvertToDouble(parameters[4]);
+      if (startPosition < 0)
+        // start position in percent
+        section.StartPosition = new Length(startPosition, LengthUnit.AstronomicalUnit);
       else
-        TaperedToNext = false;
+        section.StartPosition = CoaHelper.ConvertToLength(parameters[4], units.Length);
+
+      section.SetFromProfileString(parameters[5]);
+      // using StartsWith as string is the last parameter and can contain new line character: "TAPERED_YES\n"
+      if (parameters[6].StartsWith("TAPERED_YES"))
+        section.TaperedToNext = true;
+      else
+        section.TaperedToNext = false;
+
+      return section;
     }
-    
+
     public string ToCoaString(string name, int num, int index, ComposUnits units)
     {
       List<string> parameters = new List<string>();
@@ -316,7 +266,11 @@ namespace ComposAPI
       parameters.Add(name);
       parameters.Add(Convert.ToString(num));
       parameters.Add(Convert.ToString(index));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(units.Length).Value, 6));
+      if (this.StartPosition.Value < 0)
+        // start position in percent
+        parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.Value, 6));
+      else
+        parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(units.Length).Value, 6));
       parameters.Add(this.SectionDescription);
       CoaHelper.AddParameter(parameters, "TAPERED", this.TaperedToNext);
 

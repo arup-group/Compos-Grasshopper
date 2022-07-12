@@ -16,21 +16,21 @@ namespace ComposGH.Converters
 
     public static Type GetTypeFor(Type type)
     {
-      return null;
       //return typeof(GsaElement1d);
+      return null;
     }
 
     public static bool IsPresent()
     {
-      //  try
-      //  {
-      //    GsaMaterial material = new GsaMaterial();
-      //  }
-      //  catch (DllNotFoundException)
-      //  {
-      return false;
-      //  }
-      //  return true;
+      //try
+      //{
+      //  GsaMaterial material = new GsaMaterial();
+      //}
+      //catch (DllNotFoundException)
+      //{
+        return false;
+      //}
+      //return true;
     }
   }
 }

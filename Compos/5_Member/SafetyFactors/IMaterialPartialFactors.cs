@@ -11,5 +11,7 @@
     double MetalDecking { get; }
     double ShearStud { get; }
     double Reinforcement { get; }
+
+    string ToCoaString(string name);
   }
 }

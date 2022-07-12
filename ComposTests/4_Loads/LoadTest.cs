@@ -4,7 +4,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using static ComposAPI.Load;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Loads.Tests
 {
   public partial class LoadTest
   {
@@ -32,6 +32,7 @@ namespace ComposAPI.Tests
 
       return load;
     }
+
     [Fact]
     public void PointLoadToCoaStringTest()
     {
@@ -69,6 +70,7 @@ namespace ComposAPI.Tests
 
       return load;
     }
+
     [Fact]
     public void UniformLineLoadToCoaStringTest()
     {
@@ -508,9 +510,9 @@ namespace ComposAPI.Tests
       PressureUnit forcePerAreaUnit = Units.GetForcePerAreaUnit(forceUnit, lengthUnit);
 
       // Act
-      ComposFile composFile = new ComposFile(coaString);
+      ComposFile composFile = ComposFile.FromCoaString(coaString);
       IMember member1 = composFile.Members[0];
-      List<ILoad> loads = member1.Loads;
+      IList<ILoad> loads = member1.Loads;
 
       // Assert
       Assert.Equal(13, loads.Count);

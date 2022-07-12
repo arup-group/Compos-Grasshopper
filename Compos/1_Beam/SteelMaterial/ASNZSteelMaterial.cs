@@ -260,7 +260,7 @@ namespace ComposAPI
           throw new Exception("unknown grade");
       }
     }
-    public new string ToCoaString(string name, Code code, ComposUnits units)
+    public override string ToCoaString(string name, Code code, ComposUnits units)
     {
       List<string> steelParameters = new List<string>();
       steelParameters.Add("BEAM_STEEL_MATERIAL_STD");

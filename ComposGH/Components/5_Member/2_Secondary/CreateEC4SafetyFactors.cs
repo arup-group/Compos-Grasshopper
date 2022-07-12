@@ -89,10 +89,14 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddNumberParameter("Const. Dead", "ξ", "EC0 reduction factor at consturction stage (dead/permenant load)", GH_ParamAccess.item, 1.0);
-      pManager.AddNumberParameter("Combination factor", "Ψ0", "Factor for combination value of a variable action", GH_ParamAccess.item, 1.0);
-      pManager.AddNumberParameter("Permanent load factor", "γG", "Partial factor for permanent loads", GH_ParamAccess.item, 1.35);
-      pManager.AddNumberParameter("Variable load factor", "γQ", "Partial factor for variable loads", GH_ParamAccess.item, 1.5);
+      pManager.AddNumberParameter("Const. ξ-factor", "ξ", "EC0 reduction factor at construction stage (dead/permenant load)", GH_ParamAccess.item, 1.0);
+      pManager.AddNumberParameter("Const. Combination factor", "Ψ0", "Factor for construction stage combination value of a variable action", GH_ParamAccess.item, 1.0);
+      pManager.AddNumberParameter("Const. Permanent load factor", "γG", "Partial factor for permanent loads at construction stage", GH_ParamAccess.item, 1.35);
+      pManager.AddNumberParameter("Const. Variable load factor", "γQ", "Partial factor for variable loads at construction stage", GH_ParamAccess.item, 1.5);
+      pManager.AddNumberParameter("Final ξ-factor", "ξ", "EC0 reduction factor at final stage (dead/permenant load)", GH_ParamAccess.item, 1.0);
+      pManager.AddNumberParameter("Final Combination factor", "Ψ0", "Factor for final stage combination value of a variable action", GH_ParamAccess.item, 1.0);
+      pManager.AddNumberParameter("Final Permanent load factor", "γG", "Partial factor for permanent loads at final stage", GH_ParamAccess.item, 1.35);
+      pManager.AddNumberParameter("Final Variable load factor", "γQ", "Partial factor for variable loads at final stage", GH_ParamAccess.item, 1.5);
       pManager.AddNumberParameter("Steel γM0 factor", "γM0", "Steel beam partial factor for resistance of cross-sections whatever the class is", GH_ParamAccess.item, 1.0);
       pManager.AddNumberParameter("Steel γM1 factor", "γM1", "Steel beam partial factor for resistance of members to instability assessed by member checks", GH_ParamAccess.item, 1.5);
       pManager.AddNumberParameter("Steel γM2 factor", "γM2", "Steel beam partial factor for resistance of cross-sections in tension to fracture", GH_ParamAccess.item, 1.25);
@@ -112,29 +116,46 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      LoadCombinationFactors lf = new LoadCombinationFactors();
-      double xi = 0;
-      double psi0 = 0;
-      double gammaG = 0;
-      double gammaQ = 0;
-      if (DA.GetData(0, ref xi))
-        lf.xi = xi;
-      if (DA.GetData(1, ref psi0))
-        lf.psi_0 = psi0;
-      if (DA.GetData(2, ref gammaG))
-        lf.gamma_G = gammaG;
-      if (DA.GetData(3, ref gammaQ))
-        lf.gamma_Q = gammaQ;
+      LoadFactors loadFactors = new LoadFactors();
+      LoadCombinationFactors combinationFactors = new LoadCombinationFactors();
+      double cxi = 0;
+      double cpsi0 = 0;
+      double cgammaG = 0;
+      double cgammaQ = 0;
+      double fxi = 0;
+      double fpsi0 = 0;
+      double fgammaG = 0;
+      double fgammaQ = 0;
+      if (DA.GetData(0, ref cxi))
+        combinationFactors.ConstantXi = cxi;
+      if (DA.GetData(1, ref cpsi0))
+        combinationFactors.ConstantPsi = cpsi0;
+      if (DA.GetData(2, ref cgammaG))
+        loadFactors.ConstantDead = cgammaG;
+      if (DA.GetData(3, ref cgammaQ))
+        loadFactors.ConstantLive = cgammaQ;
+      if (DA.GetData(4, ref fxi))
+        combinationFactors.FinalXi = fxi;
+      if (DA.GetData(5, ref fpsi0))
+        combinationFactors.FinalPsi = fpsi0;
+      if (DA.GetData(6, ref fgammaG))
+        loadFactors.FinalDead = fgammaG;
+      if (DA.GetData(7, ref fgammaQ))
+        loadFactors.FinalLive = fgammaQ;
       if (this.Params.Input[0].Sources.Count == 0
         & this.Params.Input[1].Sources.Count == 0
         & this.Params.Input[2].Sources.Count == 0
-        & this.Params.Input[3].Sources.Count == 0)
+        & this.Params.Input[3].Sources.Count == 0
+        & this.Params.Input[4].Sources.Count == 0
+        & this.Params.Input[5].Sources.Count == 0
+        & this.Params.Input[6].Sources.Count == 0
+        & this.Params.Input[7].Sources.Count == 0)
       {
         string remark = (LoadCombinationType == LoadCombination.Equation6_10) ?
           "Load combination factors following Equation 6.10 will be used" :
           "Load combination factors for the worse of Equation 6.10a and 6.10b will be used (not applicable for storage structures)";
         AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, remark);
-        lf = null;
+        combinationFactors = null;
         SelectedItems[0] = LoadCombinationType.ToString().Replace("__", " or ").Replace("_", ".");
       }
       else
@@ -150,44 +171,47 @@ namespace ComposGH.Components
       double gDeck = 0;
       double gvs = 0;
       double gS = 0;
-      if (DA.GetData(4, ref gM0))
+      if (DA.GetData(8, ref gM0))
         mf.gamma_M0 = gM0;
-      if (DA.GetData(5, ref gM1))
+      if (DA.GetData(9, ref gM1))
         mf.gamma_M1 = gM1;
-      if (DA.GetData(6, ref gM2))
+      if (DA.GetData(10, ref gM2))
         mf.gamma_M2 = gM2;
-      if (DA.GetData(7, ref gC))
+      if (DA.GetData(11, ref gC))
         mf.gamma_C = gC;
-      if (DA.GetData(8, ref gDeck))
+      if (DA.GetData(12, ref gDeck))
         mf.gamma_Deck = gDeck;
-      if (DA.GetData(9, ref gvs))
+      if (DA.GetData(13, ref gvs))
         mf.gamma_vs = gvs;
-      if (DA.GetData(10, ref gS))
+      if (DA.GetData(14, ref gS))
         mf.gamma_S = gS;
 
 
-      if (this.Params.Input[4].Sources.Count == 0
-        & this.Params.Input[5].Sources.Count == 0
-        & this.Params.Input[6].Sources.Count == 0
-        & this.Params.Input[7].Sources.Count == 0
-        & this.Params.Input[8].Sources.Count == 0
+      if (this.Params.Input[8].Sources.Count == 0
         & this.Params.Input[9].Sources.Count == 0
-        & this.Params.Input[10].Sources.Count == 0)
+        & this.Params.Input[10].Sources.Count == 0
+        & this.Params.Input[11].Sources.Count == 0
+        & this.Params.Input[12].Sources.Count == 0
+        & this.Params.Input[13].Sources.Count == 0
+        & this.Params.Input[14].Sources.Count == 0)
       {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Default Material Partial Safety Factor values from EN1994-1-1 will be used");
         mf = null;
       }
 
-      EC4SafetyFactors sf = new EC4SafetyFactors();
-      if (lf == null)
-        sf.LoadCombination = this.LoadCombinationType;
+      EC4SafetyFactors safetyFactors = new EC4SafetyFactors();
+      if (combinationFactors == null)
+        safetyFactors.LoadCombinationFactors.LoadCombination = this.LoadCombinationType;
       else
-        sf.LoadCombination = LoadCombination.Custom;
-      
-      if (mf != null)
-        sf.MaterialFactors = mf;
+        safetyFactors.LoadCombinationFactors.LoadCombination = LoadCombination.Custom;
 
-      DA.SetData(0, new SafetyFactorsGoo(sf));
+      safetyFactors.LoadFactors = loadFactors;
+      safetyFactors.LoadCombinationFactors = combinationFactors;
+
+      if (mf != null)
+        safetyFactors.MaterialFactors = mf;
+
+      DA.SetData(0, new EC4SafetyFactorsGoo(safetyFactors));
     }
 
     #region (de)serialization

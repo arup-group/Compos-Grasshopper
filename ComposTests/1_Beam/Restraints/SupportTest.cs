@@ -3,7 +3,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using System.Collections.Generic;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Beams.Tests
 {
   public partial class RestraintTest
   {
@@ -15,7 +15,6 @@ namespace ComposAPI.Tests
     [InlineData(IntermediateRestraint.Quarter_Points, false, true)]
     public static Supports TestSupportConstructor(IntermediateRestraint intermediateRestraint, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds)
     {
-
       // 2 create object instance with constructor
       Supports sup = new Supports(intermediateRestraint, secondaryMemberIntermediateRestraint, bothFlangesFreeToRotateOnPlanAtEnds);
 
@@ -56,8 +55,6 @@ namespace ComposAPI.Tests
     [Fact]
     public void TestSupportDuplicate()
     {
-      LengthUnit unit = LengthUnit.Millimeter;
-
       // 1 create with constructor and duplicate
       Supports original = TestSupportConstructor(IntermediateRestraint.None, true, false);
       Supports duplicate = original.Duplicate() as Supports;

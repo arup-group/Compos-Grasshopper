@@ -4,10 +4,11 @@ using UnitsNet.Units;
 using System.Collections.Generic;
 using Moq;
 using ComposAPI.Helpers;
+using ComposAPITests.Helpers;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Beams.Tests
 {
-  public partial class ComposBeamSectionTest
+  public partial class BeamSectionTest
   {
     [Theory]
     [InlineData(7, 1, 0, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600. 200. 15. 25.", true, "BEAM_SECTION_AT_X	MEMBER-1	7	1	0.000000	STD I 600. 200. 15. 25.	TAPERED_YES\n")]
@@ -17,12 +18,16 @@ namespace ComposAPI.Tests
     [InlineData(7, 5, 3, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600 200 15 25", true, "BEAM_SECTION_AT_X	MEMBER-1	7	5	3.00000	STD I 600 200 15 25	TAPERED_YES\n")]
     [InlineData(7, 6, 4, 100000, 200000, 200000, 10000, 10000, 0, false, 20000, "STD I(m) 100. 200. 20. 10.", true, "BEAM_SECTION_AT_X	MEMBER-1	7	6	4.00000	STD I(m) 100. 200. 20. 10.	TAPERED_YES\n")]
     [InlineData(7, 7, 5, 100000, 200000, 200000, 20000, 30000, 0, false, 10000, "STD GI(m) 100. 200. 300. 10. 20. 30.", false, "BEAM_SECTION_AT_X	MEMBER-1	7	7	5.00000	STD GI(m) 100. 200. 300. 10. 20. 30.	TAPERED_NO\n")]
+    [InlineData(7, 1, -0.5, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600. 200. 15. 25.", true, "BEAM_SECTION_AT_X	MEMBER-1	7	1	-0.500000	STD I 600. 200. 15. 25.	TAPERED_YES\n")]
     public void ToCoaStringTest(int num, int index, double startPosition, double depth, double topFlangeWidth, double bottomFlangeWidth,
       double topFlangeThickness, double bottomFlangeThickness, double rootRadius, bool isCatalogue, double webThickness, string sectionDescription, bool taperToNext, string expected_coaString)
     {
 
       BeamSection beamSection = new BeamSection();
-      beamSection.StartPosition = new Length(startPosition, LengthUnit.Meter);
+      if (startPosition < 0)
+        beamSection.StartPosition = new Length(startPosition, LengthUnit.AstronomicalUnit);
+      else
+        beamSection.StartPosition = new Length(startPosition, LengthUnit.Meter);
       beamSection.Depth = new Length(depth, LengthUnit.Millimeter);
       beamSection.TopFlangeWidth = new Length(topFlangeWidth, LengthUnit.Millimeter);
       beamSection.BottomFlangeWidth = new Length(bottomFlangeWidth, LengthUnit.Millimeter);
@@ -47,13 +52,17 @@ namespace ComposAPI.Tests
     [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	5	3.00000	STD I 600 200 15 25	TAPERED_YES\n", 3, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600 200 15 25", true)]
     [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	6	4.00000	STD I(m) 100. 200. 20. 10.	TAPERED_YES\n", 4, 100000, 200000, 200000, 10000, 10000, 0, false, 20000, "STD I(m) 100. 200. 20. 10.", true)]
     [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	7	5.00000	STD GI(m) 100. 200. 300. 10. 20. 30.	TAPERED_NO\n", 5, 100000, 200000, 300000, 20000, 30000, 0, false, 10000, "STD GI(m) 100. 200. 300. 10. 20. 30.", false)]
+    [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	1	-0.500000	STD I 600. 200. 15. 25.	TAPERED_YES\n", -0.5, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600. 200. 15. 25.", true)]
     public void FromCoaStringTest(string coaString, double expected_startPosition, double expected_depth, double expected_topFlangeWidth, double expected_bottomFlangeWidth,
       double expected_topFlangeThickness, double expected_bottomFlangeThickness, double expected_rootRadius, bool expected_isCatalogue, double expected_webThickness, string expected_sectionDescription, bool expected_taperToNext)
     {
       List<string> parameters = CoaHelper.Split(coaString);
-      BeamSection beam = new BeamSection(parameters, ComposUnits.GetStandardUnits());
+      IBeamSection beam = BeamSection.FromCoaString(parameters, ComposUnits.GetStandardUnits());
 
-      Assert.Equal(expected_startPosition, beam.StartPosition.Meters);
+      if (beam.StartPosition.Unit == LengthUnit.AstronomicalUnit)
+        Assert.Equal(expected_startPosition, beam.StartPosition.AstronomicalUnits);
+      else
+        Assert.Equal(expected_startPosition, beam.StartPosition.Meters);
       Assert.Equal(expected_depth, beam.Depth.Millimeters);
       Assert.Equal(expected_topFlangeWidth, beam.TopFlangeWidth.Millimeters);
       Assert.Equal(expected_bottomFlangeWidth, beam.BottomFlangeWidth.Millimeters);
@@ -74,13 +83,14 @@ namespace ComposAPI.Tests
     [InlineData("STD I(ft) 0,9 0,4 0,01 0,02", 274.3201, 121.92, 121.92, 3.048001, 6.096002, 6.096002)]
     [InlineData("STD GI 400. 300. 250. 12. 25. 20.", 400, 300, 250, 12, 25, 20)]
     [InlineData("STD GI(cm) 15. 15. 12. 3. 1. 2.", 150, 150, 120, 30, 10, 20)]
-    //[InlineData("CAT IPE IPE100", 100, 55, 55, 4.1, 5.7, 5.7)] //issue with loading GH referencing in testing environment
-    public BeamSection TestBeamSectionConstructorProfile(string profile, double expDepth, double expTopFlangeWidth, double expBottomFlangeWidth, double expWebThickness, double expTopFlangeThickness, double expBottomFlangeThickness)
+    [InlineData("CAT IPE IPE100", 100, 55, 55, 4.1, 5.7, 5.7)] // issue with loading GH referencing in testing environment
+    public BeamSection BeamSectionConstructorProfileTest(string profile, double expDepth, double expTopFlangeWidth, double expBottomFlangeWidth, double expWebThickness, double expTopFlangeThickness, double expBottomFlangeThickness)
     {
       //var mock = new Mock<BeamSection>();
-      //mock.Setup(x => x.)
+      //mock.Setup(x => x.catalogueDB = new MockCatalogueDB())
 
       // 2 create object instance with constructor
+      BeamSection.catalogueDB = new MockCatalogueDB();
       BeamSection beam = new BeamSection(profile);
 
       // 3 check that inputs are set in object's members
@@ -98,16 +108,16 @@ namespace ComposAPI.Tests
     [InlineData("STD R 200 190.5")]
     [InlineData("STD O 200")]
     [InlineData("STD RHS 500 400 40 20")]
-    public void TestBeamSectionConstructorProfileExceptions(string profile)
+    public void BeamSectionConstructorProfileExceptionsTest(string profile)
     {
       // check that exceptions are thrown if inputs does not comply with allowed
-      Assert.Throws<System.ArgumentException>(() => TestBeamSectionConstructorProfile(profile, 0, 0, 0, 0, 0, 0));
+      Assert.Throws<System.ArgumentException>(() => BeamSectionConstructorProfileTest(profile, 0, 0, 0, 0, 0, 0));
     }
 
     // 1 setup inputs
     [Theory]
     [InlineData(200, 190.5, 8.5, 12.7, false, 200, 190.5, 190.5, 8.5, 12.7, 12.7, "STD I 200 190.5 8.5 12.7")]
-    public BeamSection TestBeamSectionConstructorSymmetric(
+    public BeamSection BeamSectionConstructorSymmetricTest(
       double depth, double flangeWidth, double webThickness, double flangeThickness, bool taperToNext,
       double expDepth, double expTopFlangeWidth, double expBottomFlangeWidth, double expWebThickness,
       double expTopFlangeThickness, double expBottomFlangeThickness, string expProfile)
@@ -133,7 +143,7 @@ namespace ComposAPI.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(400, 300, 250, 12, 25, 20, true, 400, 300, 250, 12, 25, 20, "STD GI 400 300 250 12 25 20")]
-    public BeamSection TestBeamSectionConstructorAsymmetric(double depth, double topFlangeWidth, double bottomFlangeWidth,
+    public BeamSection BeamSectionConstructorAsymmetricTest(double depth, double topFlangeWidth, double bottomFlangeWidth,
       double webThickness, double topFlangeThickness, double bottomFlangeThickness, bool taperToNext,
       double expDepth, double expTopFlangeWidth, double expBottomFlangeWidth, double expWebThickness,
       double expTopFlangeThickness, double expBottomFlangeThickness, string expProfile)
@@ -161,7 +171,7 @@ namespace ComposAPI.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(20, 19.05, 0.85, 1.27, false, "STD I(cm) 20 19.05 0.85 1.27")]
-    public BeamSection TestBeamSectionConstructorSymmetricCM(
+    public BeamSection BeamSectionConstructorSymmetricCMTest(
       double depth, double flangeWidth, double webThickness, double flangeThickness, bool taperToNext,
       string expProfile)
     {
@@ -179,7 +189,7 @@ namespace ComposAPI.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(40, 30, 25, 1.2, 2.5, 2, true, "STD GI(cm) 40 30 25 1.2 2.5 2")]
-    public BeamSection TestBeamSectionConstructorAsymmetricCM(double depth, double topFlangeWidth, double bottomFlangeWidth,
+    public BeamSection BeamSectionConstructorAsymmetricCMTest(double depth, double topFlangeWidth, double bottomFlangeWidth,
       double webThickness, double topFlangeThickness, double bottomFlangeThickness, bool taperToNext,
       string expProfile)
     {
@@ -197,7 +207,7 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void TestBeamSectionDuplicate1()
+    public void BeamSectionDuplicateTest1()
     {
       LengthUnit unit = LengthUnit.Millimeter;
       // 1 create with constructor and duplicate
@@ -243,7 +253,7 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void TestBeamSectionDuplicate2()
+    public void BeamSectionDuplicateTest2()
     {
       LengthUnit unit = LengthUnit.Millimeter;
       // 1 create with new constructor and duplicate

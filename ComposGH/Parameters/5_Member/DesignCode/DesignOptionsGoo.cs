@@ -6,17 +6,17 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class DesignOptionsGoo : GH_Goo<IDesignOptions>
+  public class DesignOptionsGoo : GH_Goo<IDesignOption>
   {
     #region constructors
     public DesignOptionsGoo()
     {
-      this.Value = new DesignOptions();
+      this.Value = new DesignOption();
     }
-    public DesignOptionsGoo(IDesignOptions item)
+    public DesignOptionsGoo(IDesignOption item)
     {
       if (item == null)
-        item = new DesignOptions();
+        item = new DesignOption();
       this.Value = item; //.Duplicate() as DesignOptions;
     }
 
@@ -26,7 +26,7 @@ namespace ComposGH.Parameters
     }
     public DesignOptionsGoo DuplicateGoo()
     {
-      return new DesignOptionsGoo(Value == null ? new DesignOptions() : Value);// .Duplicate() as DesignOptions);
+      return new DesignOptionsGoo(Value == null ? new DesignOption() : Value);// .Duplicate() as DesignOptions);
     }
     #endregion
 
@@ -57,7 +57,7 @@ namespace ComposGH.Parameters
       // This function is called when Grasshopper needs to convert this 
       // instance of our custom class into some other type Q.            
 
-      if (typeof(Q).IsAssignableFrom(typeof(DesignOptions)))
+      if (typeof(Q).IsAssignableFrom(typeof(DesignOption)))
       {
         if (Value == null)
           target = default;
@@ -77,9 +77,9 @@ namespace ComposGH.Parameters
       if (source == null) { return false; }
 
       //Cast from GsaMaterial
-      if (typeof(DesignOptions).IsAssignableFrom(source.GetType()))
+      if (typeof(DesignOption).IsAssignableFrom(source.GetType()))
       {
-        Value = (DesignOptions)source;
+        Value = (DesignOption)source;
         return true;
       }
 

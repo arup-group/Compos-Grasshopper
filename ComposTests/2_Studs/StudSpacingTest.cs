@@ -2,7 +2,7 @@
 using UnitsNet;
 using UnitsNet.Units;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Studs.Tests
 {
   public partial class StudTest
   {

@@ -84,8 +84,6 @@ namespace ComposAPI
     public Strain ShrinkageStrain { get; set; } //	Concrete Shrinkage strain
     public bool UserStrain { get; set; } = false; //	code or user defined shrinkage strain
 
-
-
     #region constructors
     public ConcreteMaterial()
     {
@@ -176,30 +174,61 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal ConcreteMaterial(List<string> parameters, ComposUnits units) 
+    internal static IConcreteMaterial FromCoaString(List<string> parameters, ComposUnits units)
     {
-      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+      ConcreteMaterial material = new ConcreteMaterial();
       if (parameters[1].Length < 4)
       {
         // BS5950 GRADES
-        this.Grade = Enum.Parse(typeof(ConcreteGrade), parameters[1]).ToString();
+        material.Grade = Enum.Parse(typeof(ConcreteGrade), parameters[1]).ToString();
       }
       else
       {
         // EC4 GRADES
-        this.Grade = Enum.Parse(typeof(ConcreteGradeEN), parameters[1]).ToString();
+        material.Grade = Enum.Parse(typeof(ConcreteGradeEN), parameters[2].Replace("/", "_")).ToString();
       }
-      this.Type = (WeightType)Enum.Parse(typeof(WeightType), parameters[2]);
-      if (parameters[3] == "USER_DENSITY")
-        this.UserDensity = true;
-      int i = 4;
-      if (this.UserDensity)
+      if (parameters[3] == "NORMAL")
+        material.Type = WeightType.Normal;
+      else
+        material.Type = WeightType.Light;
+
+      int index;
+      if (parameters[4] == "USER_DENSITY")
       {
-        this.DryDensity = new Density(Convert.ToDouble(parameters[i], noComma), units.Density);
-        i++;
+        material.UserDensity = true;
+        index = 6;
+      }
+      else
+      {
+        material.UserDensity = false;
+        if (parameters[6] != "NOT_APPLY")
+          material.Class = (DensityClass)Enum.Parse(typeof(DensityClass), "DC" + parameters[6]);
+        index = 7;
       }
 
-      // todo: implement!
+      material.DryDensity = CoaHelper.ConvertToDensity(parameters[5], units.Density);
+
+      material.ImposedLoadPercentage = CoaHelper.ConvertToDouble(parameters[index]) * 100;
+
+      index++;
+      if (parameters[index] == "CODE_E_RATIO")
+      {
+        index++;
+        material.ERatio = new ERatio();
+      }
+      else
+      {
+        material.ERatio = new ERatio(CoaHelper.ConvertToDouble(parameters[9]), CoaHelper.ConvertToDouble(parameters[10]), CoaHelper.ConvertToDouble(parameters[11]), CoaHelper.ConvertToDouble(parameters[12]));
+        index = index + 5;
+      }
+
+      if (parameters[index] == "USER_STRAIN")
+      {
+        material.UserStrain = true;
+        material.ShrinkageStrain = CoaHelper.ConvertToStrain(parameters[index + 1], units.Strain);
+      }
+
+      return material;
     }
 
     /// <summary>
@@ -207,10 +236,9 @@ namespace ComposAPI
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
+    /// 
     public string ToCoaString(string name, ComposUnits units)
     {
-      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-
       List<string> parameters = new List<string>();
       parameters.Add(CoaIdentifier.SlabConcreteMaterial);
       parameters.Add(name);
@@ -219,29 +247,29 @@ namespace ComposAPI
       if (this.UserDensity)
       {
         parameters.Add("USER_DENSITY");
-        parameters.Add(String.Format(noComma, "{0:0.00}", this.DryDensity.ToUnit(units.Density).Value));
+        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00}", this.DryDensity.ToUnit(units.Density).Value));
       }
       else
       {
         parameters.Add("CODE_DENSITY");
-        parameters.Add(String.Format(noComma, "{0:0.00}", this.DryDensity.ToUnit(units.Density).Value));
+        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00}", this.DryDensity.ToUnit(units.Density).Value));
         parameters.Add(this.Class.ToString().Replace("DC", ""));
       }
-      parameters.Add(String.Format(noComma, "{0:0.000000}", this.ImposedLoadPercentage));
+      parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.000000}", this.ImposedLoadPercentage / 100.0));
       if (this.ERatio.UserDefined)
       {
         parameters.Add("USER_E_RATIO");
-        parameters.Add(String.Format(noComma, "{0:0.00000}", this.ERatio.ShortTerm));
-        parameters.Add(String.Format(noComma, "{0:0.00000}", this.ERatio.LongTerm));
-        parameters.Add(String.Format(noComma, "{0:0.00000}", this.ERatio.Vibration));
-        parameters.Add(String.Format(noComma, "{0:0.000000}", this.ERatio.Shrinkage));
+        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00000}", this.ERatio.ShortTerm));
+        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00000}", this.ERatio.LongTerm));
+        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00000}", this.ERatio.Vibration));
+        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.000000}", this.ERatio.Shrinkage));
       }
       else
         parameters.Add("CODE_E_RATIO");
       if (this.UserStrain)
       {
         parameters.Add("USER_STRAIN");
-        parameters.Add(String.Format(noComma, "{0:0.000000000}", this.ShrinkageStrain.ToUnit(units.Strain).Value));
+        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.000000000}", this.ShrinkageStrain.ToUnit(units.Strain).Value));
       }
       else
         parameters.Add("CODE_STRAIN");
@@ -254,7 +282,7 @@ namespace ComposAPI
     public override string ToString()
     {
       string str = this.Grade.ToString().Replace("_", "/");
-      str += " " + this.Type + ", DD: " + this.DryDensity;
+      str += " " + this.Type + ", D: " + this.DryDensity;
       return str;
     }
     #endregion

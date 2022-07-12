@@ -1,8 +1,8 @@
-﻿using ComposAPI.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using ComposAPI.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -35,8 +35,8 @@ namespace ComposAPI
   /// </summary>
   public class StudDimensions : IStudDimensions
   {
-    public Length Diameter { get; set; }
-    public Length Height { get; set; }
+    public Length Diameter { get; set; } // diameter of stud
+    public Length Height { get; set; } // welded height of stud
     public Pressure Fu
     {
       get { return this.m_fu; }
@@ -46,23 +46,23 @@ namespace ComposAPI
         this.m_strength = Force.Zero;
       }
     }
-    public Force CharacterStrength
+    public Force CharacterStrength // characteristic strength of stud
     {
       get { return this.m_strength; }
       set
       {
         this.m_strength = value;
         this.m_fu = Pressure.Zero;
-        this.isStandard = false;
+        this.IsStandard = false;
       }
     }
-    public bool isStandard { get; set; }
+    public bool IsStandard { get; set; }
     private Force m_strength { get; set; }
     private Pressure m_fu { get; set; }
 
-    private void SetSizeFromStandard(StandardStudSize size)
+    public void SetSizeFromStandard(StandardStudSize size)
     {
-      this.isStandard = true;
+      this.IsStandard = true;
       switch (size)
       {
         case StandardStudSize.D13mmH65mm:
@@ -111,7 +111,8 @@ namespace ComposAPI
           break;
       }
     }
-    private void SetGradeFromStandard(StandardStudGrade standardGrade)
+
+    public void SetGradeFromStandard(StandardStudGrade standardGrade)
     {
       switch (standardGrade)
       {
@@ -125,15 +126,15 @@ namespace ComposAPI
           this.Fu = new Pressure(500, PressureUnit.NewtonPerSquareMillimeter);
           break;
       }
-      this.isStandard = true;
+      this.IsStandard = true;
     }
-
 
     #region constructors
     public StudDimensions()
     {
       // empty constructor
     }
+
     /// <summary>
     /// Create Custom size with strength from Stress
     /// </summary>
@@ -146,6 +147,7 @@ namespace ComposAPI
       this.Height = height;
       this.Fu = fu;
     }
+
     /// <summary>
     /// Create Custom size with strength from Force
     /// </summary>
@@ -158,6 +160,7 @@ namespace ComposAPI
       this.Height = height;
       this.CharacterStrength = strength;
     }
+
     /// <summary>
     /// Create Standard size with standard strength depending on code applied
     /// </summary>
@@ -165,8 +168,9 @@ namespace ComposAPI
     /// <param name="strength"></param>
     public StudDimensions(StandardStudSize size)
     {
-      SetSizeFromStandard(size);
+      this.SetSizeFromStandard(size);
     }
+
     /// <summary>
     /// Create Standard size with custom strength from Stress
     /// </summary>
@@ -174,7 +178,7 @@ namespace ComposAPI
     /// <param name="strength"></param>
     public StudDimensions(StandardStudSize size, Force strength)
     {
-      SetSizeFromStandard(size);
+      this.SetSizeFromStandard(size);
       this.CharacterStrength = strength;
     }
 
@@ -185,9 +189,10 @@ namespace ComposAPI
     /// <param name="fu"></param>
     public StudDimensions(StandardStudSize size, Pressure fu)
     {
-      SetSizeFromStandard(size);
+      this.SetSizeFromStandard(size);
       this.Fu = fu;
     }
+
     /// <summary>
     /// Create Standard size with Standard Grade
     /// </summary>
@@ -195,9 +200,9 @@ namespace ComposAPI
     /// <param name="standardGrade"></param>
     public StudDimensions(StandardStudSize size, StandardStudGrade standardGrade)
     {
-      SetSizeFromStandard(size);
-      SetGradeFromStandard(standardGrade);
-      this.isStandard = true;
+      this.SetSizeFromStandard(size);
+      this.SetGradeFromStandard(standardGrade);
+      this.IsStandard = true;
     }
 
     /// <summary>
@@ -210,53 +215,7 @@ namespace ComposAPI
     {
       this.Diameter = diameter;
       this.Height = height;
-      SetGradeFromStandard(standardGrade);
-    }
-
-    internal StudDimensions FromCoaString(List<string> parameters, ComposUnits units, Code code)
-    {
-      //EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_NO	4.50000e+008
-      //EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_YES	SD2_EN13918
-      if (parameters[2] == CoaIdentifier.StudDimensions.StudGradeEC4Standard)
-      {
-        StandardStudGrade standardGrade = (StandardStudGrade)Enum.Parse(typeof(StandardStudGrade), parameters[3]);
-        SetGradeFromStandard(standardGrade);
-        this.isStandard = true;
-      }
-      else if (parameters[2] == CoaIdentifier.StudDimensions.StudGradeEC4Custom)
-      {
-        NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-        this.Fu = new Pressure(Convert.ToDouble(parameters[3], noComma), units.Stress);
-      }
-      else if (parameters[2] == CoaIdentifier.StudDimensions.StudDimensionStandard)
-      {
-        string size = "D" + parameters[3].Replace("/", "H");
-        StandardStudSize standardSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), size);
-        SetSizeFromStandard(standardSize);
-        switch (code)
-        {
-          case Code.BS5950_3_1_1990_Superseded:
-          case Code.BS5950_3_1_1990_A1_2010:
-            this.CharacterStrength = new Force(90, ForceUnit.Kilonewton);
-            break;
-          case Code.HKSUOS_2005:
-          case Code.HKSUOS_2011:
-            this.CharacterStrength = new Force(76.3497, ForceUnit.Kilonewton);
-            break;
-          case Code.AS_NZS2327_2017:
-            this.CharacterStrength = new Force(97.9845, ForceUnit.Kilonewton);
-            break;
-        }
-        this.isStandard = true;
-      }
-      else if (parameters[2] == CoaIdentifier.StudDimensions.StudDimensionCustom)
-      {
-        NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-        this.Diameter = new Length(Convert.ToDouble(parameters[3], noComma), units.Section);
-        this.Height = new Length(Convert.ToDouble(parameters[4], noComma), units.Section);
-        this.CharacterStrength = new Force(Convert.ToDouble(parameters[5], noComma), units.Force);
-      }
-      return this;
+      this.SetGradeFromStandard(standardGrade);
     }
     #endregion
 
@@ -267,7 +226,7 @@ namespace ComposAPI
       string h = Height.ToUnit(Units.LengthUnitSection).ToString("f0");
       string f = (Fu.Value == 0) ? CharacterStrength.ToUnit(Units.ForceUnit).ToString("f0") : Fu.ToUnit(Units.StressUnit).ToString("f0");
       
-      return "Ø" + dia.Replace(" ", string.Empty) + "/" + h.Replace(" ", string.Empty) + ((this.isStandard) ? "" : ", f:" + f.Replace(" ", string.Empty));
+      return "Ø" + dia.Replace(" ", string.Empty) + "/" + h.Replace(" ", string.Empty) + ((this.IsStandard) ? "" : ", f:" + f.Replace(" ", string.Empty));
     }
     #endregion
   }

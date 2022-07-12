@@ -4,7 +4,7 @@ using UnitsNet.Units;
 using System.Collections.Generic;
 using ComposAPI.Helpers;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Beams.Tests
 {
   public partial class RestraintTest
   {
@@ -14,7 +14,6 @@ namespace ComposAPI.Tests
     [Fact]
     public Restraint TestConstructor()
     {
-
       // 2 create object instance with constructor
       Restraint restraint = new Restraint(true, construction, final);
 
@@ -48,7 +47,7 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void TestDuplicate()
+    public void DuplicateTest()
     {
       // 1 create with constructor and duplicate
       Restraint original = TestConstructor();
@@ -94,7 +93,7 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void TestDuplicate2()
+    public void DuplicateTest2()
     {
       // 1 create with constructor and duplicate
       Restraint original = TestConstructorNoFinalSupports();
@@ -157,7 +156,6 @@ namespace ComposAPI.Tests
 "FINAL_RESTRAINT_NOSTUD	MEMBER-1	NOSTUD_ZONE_LATERAL_FREE\n" +
 "FINAL_RESTRAINT_2ND_BEAM	MEMBER-1	2ND_BEAM_NOT_AS_REST\n" +
 "FINAL_END_FLANGE_FREE_ROTATE	MEMBER-1	NOT_FREE_TO_ROTATE\n")]
-
     public void StandardToCoaStringTest(bool topFlangeRestrained, IntermediateRestraint CSintermediateRestraintPositions, bool CSsecondaryMemberIntermediateRestraint, bool CSbothFlangesFreeToRotateOnPlanAtEnds, bool setFinal, IntermediateRestraint FSintermediateRestraintPositions, bool FSsecondaryMemberIntermediateRestraint, bool FSbothFlangesFreeToRotateOnPlanAtEnds, string expected_coaString)
     {
       Supports construction = TestSupportConstructor(CSintermediateRestraintPositions, CSsecondaryMemberIntermediateRestraint, CSbothFlangesFreeToRotateOnPlanAtEnds);
@@ -196,7 +194,6 @@ namespace ComposAPI.Tests
 "FINAL_RESTRAINT_NOSTUD	MEMBER-1	NOSTUD_ZONE_LATERAL_FREE\n" +
 "FINAL_RESTRAINT_2ND_BEAM	MEMBER-1	2ND_BEAM_NOT_AS_REST\n" +
 "FINAL_END_FLANGE_FREE_ROTATE	MEMBER-1	NOT_FREE_TO_ROTATE\n")]
-
     public void StandardFromCoaStringTest(bool expected_topFlangeRestrained, IntermediateRestraint expected_CSintermediateRestraintPositions, bool expected_CSsecondaryMemberIntermediateRestraint, bool expected_CSbothFlangesFreeToRotateOnPlanAtEnds, bool expected_setFinal, IntermediateRestraint expected_FSintermediateRestraintPositions, bool expected_FSsecondaryMemberIntermediateRestraint, bool expected_FSbothFlangesFreeToRotateOnPlanAtEnds, string coaString)
     {
       List<string> lines = CoaHelper.SplitLines(coaString);

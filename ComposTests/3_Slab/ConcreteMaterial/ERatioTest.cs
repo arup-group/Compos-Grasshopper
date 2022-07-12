@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Slabs.Tests
 {
   public static class ERatioMother
   {
@@ -18,7 +18,7 @@ namespace ComposAPI.Tests
   public class ERatioTest
   {
     [Fact]
-    public ERatio TestEmptyConstructor()
+    public ERatio EmptyConstructorTest()
     {
       ERatio eRatio = new ERatio();
 
@@ -30,7 +30,7 @@ namespace ComposAPI.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(6, 18, 5.39)]
-    public void TestConstructor1(double shortTerm, double longTerm, double vibration)
+    public void Constructor1Test(double shortTerm, double longTerm, double vibration)
     {
       // 2 create object instance with constructor
       ERatio eRatio = new ERatio(shortTerm, longTerm, vibration);
@@ -46,7 +46,7 @@ namespace ComposAPI.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(9.87, 28.72, 9.55, 27.55)]
-    public void TestConstructor2(double shortTerm, double longTerm, double vibration, double shrinkage)
+    public void Constructor2Test(double shortTerm, double longTerm, double vibration, double shrinkage)
     {
       // 2 create object instance with constructor
       ERatio eRatio = new ERatio(shortTerm, longTerm, vibration, shrinkage);
@@ -61,7 +61,7 @@ namespace ComposAPI.Tests
 
     [Theory]
     [InlineData(9.87, 28.72, 9.55, 27.55)]
-    public void TestDuplicate(double shortTerm, double longTerm, double vibration, double shrinkage)
+    public void DuplicateTest(double shortTerm, double longTerm, double vibration, double shrinkage)
     {
       // 1 create with constructor and duplicate
       ERatio original = new ERatio(shortTerm, longTerm, vibration, shrinkage);

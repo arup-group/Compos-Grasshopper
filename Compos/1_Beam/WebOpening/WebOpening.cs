@@ -32,7 +32,6 @@ namespace ComposAPI
   /// </summary>
   public class WebOpening : IWebOpening
   {
-
     public OpeningType WebOpeningType
     {
       get { return m_webOpeningType; }
@@ -57,6 +56,7 @@ namespace ComposAPI
         }
       }
     }
+
     private OpeningType m_webOpeningType;
     public Length Width { get; set; }
     public Length Height { get; set; }
@@ -149,8 +149,9 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal WebOpening FromCoaString(List<string> parameters, ComposUnits units)
+    internal static IWebOpening FromCoaString(List<string> parameters, ComposUnits units)
     {
+      WebOpening opening = new WebOpening();
       //WEB_OPEN_DIMENSION MEMBER-1 RECTANGULAR 400.000 300.000 7.50000 350.000 STIFFENER_NO
       //WEB_OPEN_DIMENSION MEMBER-1 CIRCULAR 400.000 400.000 3.50000 190.000 STIFFENER_NO
       //WEB_OPEN_DIMENSION MEMBER-1 LEFT_NOTCH 400.000 300.000 50.0000 % 50.0000 % STIFFENER_NO
@@ -161,30 +162,30 @@ namespace ComposAPI
       switch (parameters[2])
       {
         case "LEFT_NOTCH":
-          this.WebOpeningType = OpeningType.Start_notch;
-          this.Width = new Length(Convert.ToDouble(parameters[3], noComma), units.Section);
-          this.Height = new Length(Convert.ToDouble(parameters[4], noComma), units.Section);
+          opening.WebOpeningType = OpeningType.Start_notch;
+          opening.Width = new Length(Convert.ToDouble(parameters[3], noComma), units.Section);
+          opening.Height = new Length(Convert.ToDouble(parameters[4], noComma), units.Section);
           break;
 
         case "RIGHT_NOTCH":
-          this.WebOpeningType = OpeningType.End_notch;
-          this.Width = new Length(Convert.ToDouble(parameters[3], noComma), units.Section);
-          this.Height = new Length(Convert.ToDouble(parameters[4], noComma), units.Section);
+          opening.WebOpeningType = OpeningType.End_notch;
+          opening.Width = new Length(Convert.ToDouble(parameters[3], noComma), units.Section);
+          opening.Height = new Length(Convert.ToDouble(parameters[4], noComma), units.Section);
           break;
 
         case "RECTANGULAR":
-          this.WebOpeningType = OpeningType.Rectangular;
-          this.Width = new Length(Convert.ToDouble(parameters[3], noComma), units.Section);
-          this.Height = new Length(Convert.ToDouble(parameters[4], noComma), units.Section);
-          this.CentroidPosFromStart = new Length(Convert.ToDouble(parameters[5], noComma), units.Length);
-          this.CentroidPosFromTop = new Length(Convert.ToDouble(parameters[6], noComma), units.Section);
+          opening.WebOpeningType = OpeningType.Rectangular;
+          opening.Width = new Length(Convert.ToDouble(parameters[3], noComma), units.Section);
+          opening.Height = new Length(Convert.ToDouble(parameters[4], noComma), units.Section);
+          opening.CentroidPosFromStart = new Length(Convert.ToDouble(parameters[5], noComma), units.Length);
+          opening.CentroidPosFromTop = new Length(Convert.ToDouble(parameters[6], noComma), units.Section);
           break;
 
         case "CIRCULAR":
-          this.WebOpeningType = OpeningType.Circular;
-          this.Diameter = new Length(Convert.ToDouble(parameters[3], noComma), units.Section);
-          this.CentroidPosFromStart = new Length(Convert.ToDouble(parameters[5], noComma), units.Length);
-          this.CentroidPosFromTop = new Length(Convert.ToDouble(parameters[6], noComma), units.Section);
+          opening.WebOpeningType = OpeningType.Circular;
+          opening.Diameter = new Length(Convert.ToDouble(parameters[3], noComma), units.Section);
+          opening.CentroidPosFromStart = new Length(Convert.ToDouble(parameters[5], noComma), units.Length);
+          opening.CentroidPosFromTop = new Length(Convert.ToDouble(parameters[6], noComma), units.Section);
           break;
       }
       if (parameters[7] == "STIFFENER_YES")
@@ -208,9 +209,9 @@ namespace ComposAPI
           webOpeningStiffeners.BottomStiffenerWidth = new Length(Convert.ToDouble(parameters[12], noComma), units.Section);
           webOpeningStiffeners.BottomStiffenerThickness = new Length(Convert.ToDouble(parameters[13], noComma), units.Section);
         }
-        this.OpeningStiffeners = webOpeningStiffeners;
+        opening.OpeningStiffeners = webOpeningStiffeners;
       }
-      return this;
+      return opening;
     }
 
     public string ToCoaString(string name, ComposUnits units)
@@ -222,7 +223,7 @@ namespace ComposAPI
       //WEB_OPEN_DIMENSION MEMBER-1 RECTANGULAR 400.000 300.000 1.50000 250.000 STIFFENER_YES BOTH_SIDE_STIFFENER 60.0000 100.000 10.0000 50.0000 5.00000
       //WEB_OPEN_DIMENSION MEMBER-1 CIRCULAR 400.000 400.000 9.50000 150.000 STIFFENER_YES BOTH_SIDE_STIFFENER 10.0000 120.000 12.0000 70.0000 7.00000
       List<string> parameters = new List<string>();
-      parameters.Add("WEB_OPEN_DIMENSION");
+      parameters.Add(CoaIdentifier.WebOpeningDimension);
       parameters.Add(name);
       switch (this.WebOpeningType)
       {

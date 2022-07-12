@@ -1,7 +1,6 @@
 ﻿using ComposAPI.Helpers;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -37,6 +36,27 @@ namespace ComposAPI
     public bool ReductionFactorMpl { get; set; } //	Apply Reduction factor to the plastic moment capacity for S420 (EN) and S460 (EN) GRADES
     public StandardSteelGrade Grade { get; set; } // standard material grade
     public WeldMaterialGrade WeldGrade { get; set; } // welding material grade
+
+    #region constructors
+    public SteelMaterial()
+    {
+      // empty constructor
+    }
+
+    public SteelMaterial(Pressure fy, Pressure E, Density density, WeldMaterialGrade weldGrade, bool isCustom, bool reductionFacorMpl)
+    {
+      this.fy = fy;
+      this.E = E;
+      this.Density = density;
+      this.isCustom = isCustom;
+      this.WeldGrade = weldGrade;
+      this.ReductionFactorMpl = reductionFacorMpl;
+    }
+
+    public SteelMaterial(StandardSteelGrade grade)
+    {
+      SetValuesFromStandard(grade);
+    }
 
     private void SetValuesFromStandard(StandardSteelGrade grade)
     {
@@ -77,60 +97,42 @@ namespace ComposAPI
           break;
       }
     }
-
-    #region constructors
-    public SteelMaterial()
-    {
-      // empty constructor
-    }
-
-    public SteelMaterial(Pressure fy, Pressure E, Density Density, WeldMaterialGrade weldGrade, bool isCustom, bool reductionFacorMpl)
-    {
-      this.fy = fy;
-      this.E = E;
-      this.Density = Density;
-      this.isCustom = isCustom;
-      this.WeldGrade = weldGrade;
-      this.ReductionFactorMpl = reductionFacorMpl;
-    }
-
-    public SteelMaterial(StandardSteelGrade steelType)
-    {
-      SetValuesFromStandard(steelType);
-    }
     #endregion
 
     #region coa interop
-    internal SteelMaterial(List<string> parameters, ComposUnits units)
+    internal static ISteelMaterial FromCoaString(List<string> parameters, ComposUnits units)
     {
+      SteelMaterial material = new SteelMaterial();
+
       switch (parameters[0])
       {
-        case ("BEAM_STEEL_MATERIAL_STD"):
-          this.isCustom = false;
-          this.Grade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), parameters[2]);
+        case (CoaIdentifier.BeamSteelMaterialStandard):
+          material.isCustom = false;
+          material.Grade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), parameters[2]);
           break;
 
-        case ("BEAM_STEEL_MATERIAL_USER"):
-          this.isCustom = true;
-          this.fy = new Pressure(Convert.ToDouble(parameters[2]), units.Stress);
-          this.E = new Pressure(Convert.ToDouble(parameters[3]), units.Stress);
-          this.Density = new Density(Convert.ToDouble(parameters[4]), units.Density);
+        case (CoaIdentifier.BeamSteelMaterialUser):
+          material.isCustom = true;
+          material.fy = new Pressure(Convert.ToDouble(parameters[2]), units.Stress);
+          material.E = new Pressure(Convert.ToDouble(parameters[3]), units.Stress);
+          material.Density = new Density(Convert.ToDouble(parameters[4]), units.Density);
           if (parameters[5] == "TRUE")
-            this.ReductionFactorMpl = true;
+            material.ReductionFactorMpl = true;
           else
-            this.ReductionFactorMpl = false;
+            material.ReductionFactorMpl = false;
           break;
 
-        case ("BEAM_WELDING_MATERIAL"):
-          this.WeldGrade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), parameters[2].Replace(' ', '_'));
+        case (CoaIdentifier.BeamWeldingMaterial):
+          material.WeldGrade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), parameters[2].Replace(' ', '_'));
           break;
 
         default:
           throw new Exception("Unable to convert " + parameters + " to Compos Steel Material.");
       }
+      return material;
     }
 
-    public string ToCoaString(string name, Code code, ComposUnits units)
+    public virtual string ToCoaString(string name, Code code, ComposUnits units)
     {
       List<string> steelParameters = new List<string>();
       if (this.isCustom)

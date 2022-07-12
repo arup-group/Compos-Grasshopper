@@ -38,6 +38,7 @@ namespace ComposGH.Components
       "Grade",
       "Density Unit"
     });
+    List<bool> OverrideDropDownItems;
     private bool First = true;
     private ConcreteGrade Grade = ConcreteGrade.C25;
     private DensityUnit DensityUnit = Units.DensityUnit;
@@ -61,6 +62,7 @@ namespace ComposGH.Components
         this.DropDownItems.Add(Units.FilteredDensityUnits);
         this.SelectedItems.Add(this.DensityUnit.ToString());
 
+        this.OverrideDropDownItems = new List<bool>() { false, false };
         this.First = false;
       }
       this.m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, this.DropDownItems, this.SelectedItems, this.SpacerDescriptions);
@@ -86,7 +88,8 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      this.Grade = (ConcreteGrade)Enum.Parse(typeof(ConcreteGrade), this.SelectedItems[0]);
+      if (this.SelectedItems[0] != "-")
+        this.Grade = (ConcreteGrade)Enum.Parse(typeof(ConcreteGrade), this.SelectedItems[0]);
       this.DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), this.SelectedItems[1]);
 
       CreateAttributes();
@@ -107,10 +110,12 @@ namespace ComposGH.Components
       pManager.AddNumberParameter("Dry Density [" + densityUnitAbbreviation + "]", "DD", "(Optional) Dry density", GH_ParamAccess.item);
       pManager.AddGenericParameter("E Ratios", "ER", "(Optional) Steel/concrete Young´s modulus ratios", GH_ParamAccess.item);
       pManager.AddNumberParameter("Imposed Load Percentage [%]", "ILP", "(Optional) Percentage of imposed load acting long term", GH_ParamAccess.item, 33);
+      pManager.AddGenericParameter("Concrete Grade", "CG", "(Optional) Concrete grade", GH_ParamAccess.item);
 
       pManager[0].Optional = true;
       pManager[1].Optional = true;
       pManager[2].Optional = true;
+      pManager[3].Optional = true;
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
@@ -121,6 +126,37 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
+      // override concrete grade?
+      if (this.Params.Input[3].Sources.Count > 0)
+      {
+        string grade = "";
+        DA.GetData(3, ref grade);
+        try
+        {
+          this.Grade = (ConcreteGrade)Enum.Parse(typeof(ConcreteGrade), grade);
+          this.DropDownItems[0] = new List<string>();
+          this.SelectedItems[0] = "-";
+          this.OverrideDropDownItems[0] = true;
+        }
+        catch (ArgumentException)
+        {
+          string text = "Could not parse concrete grade. Valid concrete grades are ";
+          foreach (string g in Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList())
+          {
+            text += g + ", ";
+          }
+          text = text.Remove(text.Length - 2);
+          text += ".";
+          this.DropDownItems[0] = Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList();
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
+        }
+      }
+      else if (this.OverrideDropDownItems[0])
+      {
+        this.DropDownItems[0] = Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList();
+        this.OverrideDropDownItems[0] = false;
+      }
+
       Density dryDensity = new Density(2450, DensityUnit.KilogramPerCubicMeter);
       bool userDensity = false;
       if (this.Params.Input[0].Sources.Count > 0)

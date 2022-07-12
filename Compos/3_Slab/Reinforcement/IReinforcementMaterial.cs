@@ -2,11 +2,12 @@
 
 namespace ComposAPI
 {
-  /// <summary>
-  /// Custom interface that defines the basic properties and methods for our custom class
-  /// </summary>
   public interface IReinforcementMaterial
   {
-    Pressure Fu { get; }
+    RebarGrade Grade { get; }
+    bool UserDefined { get; }
+    Pressure Fy { get; }
+
+    string ToCoaString(string name);
   }
 }

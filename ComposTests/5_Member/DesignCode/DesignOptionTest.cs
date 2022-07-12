@@ -1,35 +1,35 @@
 using Xunit;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Members.Tests
 {
   public partial class DesignCodeTest
   {
     [Fact]
-    public DesignOptions TestDesignOptionsConstructor()
+    public DesignOption TestDesignOptionConstructor()
     {
       // 1 setup input
       // use default values
 
       // 2 create object instance with constructor
-      DesignOptions designOptions = new DesignOptions();
+      DesignOption designOption = new DesignOption();
 
       // 3 check that inputs are set in object's members
-      Assert.True(designOptions.ProppedDuringConstruction);
-      Assert.False(designOptions.InclSteelBeamWeight);
-      Assert.False(designOptions.InclThinFlangeSections);
-      Assert.False(designOptions.InclConcreteSlabWeight);
-      Assert.False(designOptions.ConsiderShearDeflection);
+      Assert.True(designOption.ProppedDuringConstruction);
+      Assert.False(designOption.InclSteelBeamWeight);
+      Assert.False(designOption.InclThinFlangeSections);
+      Assert.False(designOption.InclConcreteSlabWeight);
+      Assert.False(designOption.ConsiderShearDeflection);
 
       // (optionally return object for other tests)
-      return designOptions;
+      return designOption;
     }
 
     [Fact]
-    public void TestDesignOptionsDuplicate()
+    public void TestDesignOptionDuplicate()
     {
       // 1 create with constructor and duplicate
-      DesignOptions original = new DesignOptions();
-      DesignOptions duplicate = original.Duplicate() as DesignOptions;
+      DesignOption original = new DesignOption();
+      DesignOption duplicate = original.Duplicate() as DesignOption;
 
       // 2 check that duplicate has duplicated values
       Assert.True(duplicate.ProppedDuringConstruction);

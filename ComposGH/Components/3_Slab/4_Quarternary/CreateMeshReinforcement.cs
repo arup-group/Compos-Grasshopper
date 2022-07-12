@@ -14,7 +14,7 @@ namespace ComposGH.Components
   {
     #region Name and Ribbon Layout
     public CreateMeshReinforcement()
-        : base("Mesh Reinforcement", "MeshRb", "Create Compos Slab Reinforcement from a Standard Reinforment Mesh",
+        : base("Mesh Reinforcement", "MeshR", "Create Compos Slab Reinforcement from a Standard Reinforment Mesh",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = false; }
@@ -113,7 +113,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Mesh Reinforcement", "MRb", "Mesh Reinforcement for Compos Slab", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Mesh Reinforcement", "MR", "Mesh Reinforcement for Compos Slab", GH_ParamAccess.item);
     }
     #endregion
 

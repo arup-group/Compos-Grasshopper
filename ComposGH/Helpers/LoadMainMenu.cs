@@ -89,13 +89,13 @@ namespace ComposGH.Helpers
       oasysMenu.DropDown.Items.Add("Compos Units", Properties.Resources.ComposLogo128, (s, a) =>
       {
         UI.UnitSettingsBox unitBox = new UI.UnitSettingsBox();
-        unitBox.Show();
+        unitBox.ShowDialog();
       });
       // add info
       oasysMenu.DropDown.Items.Add("Compos Info", Properties.Resources.ComposLogo128, (s, a) =>
       {
         UI.AboutBox aboutBox = new UI.AboutBox();
-        aboutBox.Show();
+        aboutBox.ShowDialog();
       });
 
       return oasysMenu;

@@ -1,64 +1,76 @@
-﻿using System;
+﻿using ComposAPI.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnitsNet;
 
 namespace ComposAPI
 {
-    public enum ReinforcementMeshType
-    {
-      A393,
-      A252,
-      A193,
-      A142,
-      A98,
-      B1131,
-      B785,
-      B503,
-      B385,
-      B283,
-      B196,
-      C785,
-      C636,
-      C503,
-      C385,
-      C283
-    }
-
-  /// <summary>
-  /// Custom class: this class defines the basic properties and methods for our custom class
-  /// </summary>
-  public class MeshReinforcement : Reinforcement, IMeshReinforcement
+  public enum ReinforcementMeshType
   {
-    public Length Cover { get; set; }
-    public bool Rotated { get; set; }
-    public ReinforcementMeshType MeshType { get; set; }
+    A393,
+    A252,
+    A193,
+    A142,
+    A98,
+    B1131,
+    B785,
+    B503,
+    B385,
+    B283,
+    B196,
+    C785,
+    C636,
+    C503,
+    C385,
+    C283
+  }
+
+  public class MeshReinforcement : IMeshReinforcement
+  {
+    public Length Cover { get; set; } // cover of mesh reinforcement
+    public ReinforcementMeshType MeshType { get; set; } // name of mesh reinforcement
+    public bool Rotated { get; set; } // direction of mesh reinforcement
 
     #region constructors
-    public MeshReinforcement()
-    {
-      this.m_type = ReinforcementType.Mesh;
-    }
+    public MeshReinforcement() { }
 
     public MeshReinforcement(Length cover, ReinforcementMeshType meshType = ReinforcementMeshType.A393, bool rotated = false)
     {
       this.Cover = cover;
       this.MeshType = meshType;
       this.Rotated = rotated;
-      this.m_type = ReinforcementType.Mesh;
     }
-
     #endregion
 
     #region coa interop
-    internal MeshReinforcement(List<string> parameters)
+    internal static IMeshReinforcement FromCoaString(List<string> parameters, ComposUnits units)
     {
+      MeshReinforcement reinforcement = new MeshReinforcement();
 
+      reinforcement.MeshType = (ReinforcementMeshType)Enum.Parse(typeof(ReinforcementMeshType), parameters[2]);
+      reinforcement.Cover = CoaHelper.ConvertToLength(parameters[3], units.Length);
+      if (parameters[4] == "PARALLEL")
+        reinforcement.Rotated = false;
+      else
+        reinforcement.Rotated = true;
+
+      return reinforcement;
     }
 
-    public string ToCoaString(string name)
+    public string ToCoaString(string name, ComposUnits units)
     {
-      return String.Empty;
+      List<string> parameters = new List<string>();
+      parameters.Add(CoaIdentifier.RebarMesh);
+      parameters.Add(name);
+      parameters.Add(this.MeshType.ToString());
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.Cover.ToUnit(units.Length).Value, 6));
+      if (this.Rotated)
+        parameters.Add("PERPENDICULAR");
+      else
+        parameters.Add("PARALLEL");
+
+      return CoaHelper.CreateString(parameters);
     }
     #endregion
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Compos_8_6;
 using Xunit;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.File.Tests
 {
   public class ComposFileTest
   {
@@ -16,13 +16,13 @@ namespace ComposAPI.Tests
     {
       string pathName = Path.GetFullPath("..\\..\\..\\TestFiles\\Compos1.cob");
 
-      ComposFile file = new ComposFile();
+      ComposFile file = ComposFile.Open(pathName);
 
-      IAutomation automation = file.Open(pathName);
+      IAutomation automation = ComposFile.ComposCOM;
 
-      Assert.NotNull(automation); 
+      Assert.NotNull(automation);
 
-      automation.Close(); 
+      automation.Close();
     }
 
     [Fact]
@@ -30,14 +30,13 @@ namespace ComposAPI.Tests
     {
       string pathName = Path.GetFullPath("..\\..\\..\\TestFiles\\Compos1.coa");
 
-      ComposFile file = new ComposFile();
+      ComposFile file = ComposFile.Open(pathName);
 
-      IAutomation automation = file.Open(pathName);
+      IAutomation automation = ComposFile.ComposCOM;
 
       Assert.NotNull(automation);
-      
+
       automation.Close();
     }
-
   }
 }

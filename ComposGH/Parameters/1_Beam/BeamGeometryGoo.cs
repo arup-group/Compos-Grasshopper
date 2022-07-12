@@ -261,7 +261,7 @@ namespace ComposGH.Parameters
       return;
       profileOutlines = new List<PolyCurve>();
       profileExtrusions = new List<Brep>();
-      List<IBeamSection> beamSectionsSorted = SortBeamSections(this.Value.BeamSections.ToList());
+      List<IBeamSection> beamSectionsSorted = SortBeamSections(this.Value.Sections.ToList());
 
       for (int i = 0; i < beamSectionsSorted.Count; i++)
       {
@@ -318,7 +318,7 @@ namespace ComposGH.Parameters
 
       if (this.Value.WebOpenings != null)
       {
-        Length maxWebThickness = new Length(this.Value.BeamSections.Max(x => x.WebThickness.As(LengthUnit)), LengthUnit);
+        Length maxWebThickness = new Length(this.Value.Sections.Max(x => x.WebThickness.As(LengthUnit)), LengthUnit);
         foreach (WebOpening webOpening in this.Value.WebOpenings)
         {
           Brep cutter = OpeningCutter(webOpening, maxWebThickness, beamSectionsSorted);

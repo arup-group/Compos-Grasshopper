@@ -90,6 +90,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\0_File\OpenModel.cs" />
+    <Compile Include="Components\0_File\SaveModel.cs" />
     <Compile Include="Components\1_Beam\1_Primary\CreateBeam.cs" />
     <Compile Include="Components\1_Beam\2_Secondary\CreateRestraint.cs" />
     <Compile Include="Components\1_Beam\3_Tertiary\CreateStandardASNZSteelMaterial.cs" />
@@ -134,6 +136,17 @@
     <Compile Include="Components\5_Member\2_Secondary\CreateEC4SafetyFactors.cs" />
     <Compile Include="Components\5_Member\2_Secondary\CreateCreepShrinkageParams.cs" />
     <Compile Include="Components\5_Member\2_Secondary\CreateSafetyFactors.cs" />
+    <Compile Include="Components\7_Results\ReadClassResults.cs" />
+    <Compile Include="Components\7_Results\ReadStresses.cs" />
+    <Compile Include="Components\7_Results\ReadStudResults.cs" />
+    <Compile Include="Components\7_Results\ReadDeflections.cs" />
+    <Compile Include="Components\7_Results\ReadTransverseRebarProps.cs" />
+    <Compile Include="Components\7_Results\CodeSatisfied.cs" />
+    <Compile Include="Components\7_Results\ReadUtilisations.cs" />
+    <Compile Include="Components\7_Results\ReadCapacities.cs" />
+    <Compile Include="Components\7_Results\ReadBeamResults.cs" />
+    <Compile Include="Components\7_Results\ReadInternalForces.cs" />
+    <Compile Include="Components\7_Results\ReadResults.cs" />
     <Compile Include="ComposGHInfo.cs" />
     <Compile Include="Helpers\DeSerialization.cs" />
     <Compile Include="Helpers\GhRibbonLayout.cs" />
@@ -142,6 +155,7 @@
     <Compile Include="Helpers\GetInputs.cs" />
     <Compile Include="Helpers\_SqlReaderValues.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
+    <Compile Include="Parameters\0_File\ComposFileGoo.cs" />
     <Compile Include="Parameters\1_Beam\BeamGeometryGoo.cs" />
     <Compile Include="Parameters\2_Studs\StudGoo.cs" />
     <Compile Include="Parameters\3_Slab\ConcreteMaterial\ConcreteMaterialGoo.cs" />
@@ -163,7 +177,8 @@
     <Compile Include="Parameters\1_Beam\WebOpening\WebOpeningStiffenersGoo.cs" />
     <Compile Include="Parameters\2_Studs\StudSpecGoo.cs" />
     <Compile Include="Parameters\2_Studs\StudSpacingGoo.cs" />
-    <Compile Include="Parameters\5_Member\MemberGeometryGoo.cs" />
+    <Compile Include="Parameters\5_Member\DesignCode\EC4SafetyFactorsGoo.cs" />
+    <Compile Include="Parameters\5_Member\MemberGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\CreepShrinkageEC4ParamGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\SafetyFactorsGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\DesignOptionsGoo.cs" />
@@ -237,7 +252,6 @@
     <None Include="Properties\Icons\ComposLogo128.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\0_File\" />
     <Folder Include="Components\5_Member\3_Tertiary\" />
     <Folder Include="Components\5_Member\4_Quarternary\" />
     <Folder Include="Components\5_Member\5_Quinary\" />
@@ -246,11 +260,6 @@
     <Folder Include="Components\6_Analysis\3_Tertiary\" />
     <Folder Include="Components\6_Analysis\4_Quarternary\" />
     <Folder Include="Components\6_Analysis\5_Quinary\" />
-    <Folder Include="Components\7_Results\1_Primary\" />
-    <Folder Include="Components\7_Results\2_Secondary\" />
-    <Folder Include="Components\7_Results\3_Tertiary\" />
-    <Folder Include="Components\7_Results\4_Quarternary\" />
-    <Folder Include="Components\7_Results\5_Quinary\" />
     <Folder Include="Components\8_Design\1_Primary\" />
     <Folder Include="Components\8_Design\2_Secondary\" />
     <Folder Include="Components\8_Design\3_Tertiary\" />
@@ -446,6 +455,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\StandardSteelMaterial.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\ReadResult.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

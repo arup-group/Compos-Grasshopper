@@ -7,9 +7,9 @@ namespace ComposAPI
   public interface ISlab
   {
     IConcreteMaterial Material { get; }
-    List<ISlabDimension> Dimensions { get; }
-    ITransverseReinforcement TransverseReinforcement { get; }
-    IMeshReinforcement MeshReinforcement { get; }
+    IList<ISlabDimension> Dimensions { get; }
+    ITransverseReinforcement Transverse { get; }
+    IMeshReinforcement Mesh { get; }
     IDecking Decking { get; }
 
     string ToCoaString(string name, ComposUnits units);

@@ -16,6 +16,7 @@ namespace ComposAPI
     HKSUOS_2011 = 4,
     AS_NZS2327_2017 = 5
   }
+
   public enum NationalAnnex
   {
     Generic,
@@ -28,9 +29,11 @@ namespace ComposAPI
   public class DesignCode : IDesignCode
   {
     public Code Code { get; set; }
-    public IDesignOptions DesignOptions { get; set; } = new DesignOptions();
+    public IDesignOption DesignOption { get; set; } = new DesignOption();
     public ISafetyFactors SafetyFactors { get; set; } = new SafetyFactors();
+
     public DesignCode() { }
+
     public DesignCode(Code designcode)
     {
       this.Code = designcode;
@@ -40,115 +43,128 @@ namespace ComposAPI
         throw new Exception("Must use the ASNZS2327 class to create a AS/NZS2327:2017 DesignCode");
     }
 
-    public override string ToString()
-    {
-      switch (this.Code)
-      {
-        case Code.BS5950_3_1_1990_Superseded:
-          return "BS5950-3.1:1990 (superseded)";
-        case Code.BS5950_3_1_1990_A1_2010:
-          return "BS5950-3.1:1990+A1:2010";
-        case Code.EN1994_1_1_2004:
-          return "EN1994-1-1:2004";
-        case Code.HKSUOS_2005:
-          return "HKSUOS:2005";
-        case Code.HKSUOS_2011:
-          return "HKSUOS:2011";
-        case Code.AS_NZS2327_2017:
-          return "AS/NZS2327:2017";
-      }
-      return "";
-    }
-
     #region coa interop
-    internal DesignCode FromCoaString(List<string> parameters)
+    internal static DesignCode FromCoaString(string coaString, string name, ComposUnits units)
     {
-      DesignCode dc = new DesignCode();
-      switch (parameters[2])
-      {
-        case "BS5950-3.1:1990 (superseded)":
-          dc = new DesignCode(Code.BS5950_3_1_1990_Superseded);
-          break;
-        case "BS5950-3.1:1990+A1:2010":
-          dc = new DesignCode(Code.BS5950_3_1_1990_A1_2010);
-          break;
-        case "EN1994-1-1:2004":
-          dc = new EN1994();
-          break;
-        case "HKSUOS:2005":
-          dc = new DesignCode(Code.HKSUOS_2005);
-          break;
-        case "HKSUOS:2011":
-          dc = new DesignCode(Code.HKSUOS_2011);
-          break;
-        case "AS/NZS2327:2017":
-          dc = new ASNZS2327();
-          break;
-        default:
-          dc = null;
-          break;
-      }
-      DesignOptions designOptions = new DesignOptions();
-      designOptions.ProppedDuringConstruction = parameters[3] != "UNPROPPED";
-      designOptions.InclSteelBeamWeight = parameters[4] != "BEAM_WEIGHT_NO";
-      designOptions.InclConcreteSlabWeight = parameters[5] != "SLAB_WEIGHT_NO";
-      designOptions.ConsiderShearDeflection = parameters[6] != "SHEAR_DEFORM_NO";
-      designOptions.InclThinFlangeSections = parameters[7] != "THIN_SECTION_NO";
+      DesignCode designCode = new DesignCode();
 
-      dc.DesignOptions = designOptions;
-
-      if (dc.Code == Code.AS_NZS2327_2017)
+      List<string> lines = CoaHelper.SplitAndStripLines(coaString);
+      foreach (string line in lines)
       {
-        NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-        CodeOptions codeOptions= new CodeOptions();
-        CreepShrinkageParameters longterm = new CreepShrinkageParameters() { CreepCoefficient = Convert.ToDouble(parameters[8], noComma) };
-        codeOptions.LongTerm = longterm;
-        CreepShrinkageParameters shrinkage = new CreepShrinkageParameters() { CreepCoefficient = Convert.ToDouble(parameters[9], noComma) };
-        codeOptions.ShortTerm = shrinkage;
-        ASNZS2327 aSNZS = (ASNZS2327)dc;
-        aSNZS.CodeOptions = codeOptions;
-        return aSNZS;
+        List<string> parameters = CoaHelper.Split(line);
+
+        if (parameters[0] == "END")
+          return designCode;
+
+        if (parameters[0] == CoaIdentifier.UnitData)
+          units.FromCoaString(parameters);
+
+        if (parameters[1] != name)
+          continue;
+
+        switch (parameters[0])
+        {
+          case (CoaIdentifier.DesignOption):
+            switch (parameters[2])
+            {
+              case CoaIdentifier.DesignCode.BS_Superseded:
+                designCode = new DesignCode(Code.BS5950_3_1_1990_Superseded);
+                break;
+              case CoaIdentifier.DesignCode.BS:
+                designCode = new DesignCode(Code.BS5950_3_1_1990_A1_2010);
+                break;
+              case CoaIdentifier.DesignCode.EN:
+                designCode = new EN1994();
+                break;
+              case CoaIdentifier.DesignCode.HKSUOS2005:
+                designCode = new DesignCode(Code.HKSUOS_2005);
+                break;
+              case CoaIdentifier.DesignCode.HKSUOS2011:
+                designCode = new DesignCode(Code.HKSUOS_2011);
+                break;
+              case CoaIdentifier.DesignCode.ASNZ:
+                designCode = new ASNZS2327();
+                break;
+              default:
+                designCode = null;
+                break;
+            }
+            DesignOption designOption = new DesignOption();
+            designOption.ProppedDuringConstruction = parameters[3] != "UNPROPPED";
+            designOption.InclSteelBeamWeight = parameters[4] != "BEAM_WEIGHT_NO";
+            designOption.InclConcreteSlabWeight = parameters[5] != "SLAB_WEIGHT_NO";
+            designOption.ConsiderShearDeflection = parameters[6] != "SHEAR_DEFORM_NO";
+            designOption.InclThinFlangeSections = parameters[7] != "THIN_SECTION_NO";
+
+            designCode.DesignOption = designOption;
+
+            if (designCode.Code == Code.AS_NZS2327_2017)
+            {
+              NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+              CodeOptions codeOptions = new CodeOptions();
+              CreepShrinkageParameters longterm = new CreepShrinkageParameters() { CreepCoefficient = Convert.ToDouble(parameters[8], noComma) };
+              codeOptions.LongTerm = longterm;
+              CreepShrinkageParameters shrinkage = new CreepShrinkageParameters() { CreepCoefficient = Convert.ToDouble(parameters[9], noComma) };
+              codeOptions.ShortTerm = shrinkage;
+              ASNZS2327 aSNZS = (ASNZS2327)designCode;
+              aSNZS.CodeOptions = codeOptions;
+              return aSNZS;
+            }
+            break;
+
+          case (CoaIdentifier.SafetyFactorLoad):
+            designCode.SafetyFactors.LoadFactors = LoadFactors.FromCoaString(parameters);
+            break;
+
+          case (CoaIdentifier.SafetyFactorMaterial):
+            designCode.SafetyFactors.LoadFactors = LoadFactors.FromCoaString(parameters);
+            break;
+
+          default:
+            // continue;
+            break;
+        }
       }
-      return dc;
+      return designCode;
     }
 
-    public string ToCoaString(string name)
+    public virtual string ToCoaString(string name)
     {
-      string str = CoaIdentifier.DesignCode + '\t' + name + '\t';
+      string str = CoaIdentifier.DesignOption + '\t' + name + '\t';
       switch (this.Code)
       {
         case Code.BS5950_3_1_1990_Superseded:
-          str += "BS5950-3.1:1990 (superseded)" + '\t';
+          str += CoaIdentifier.DesignCode.BS_Superseded + '\t';
           break;
 
         case Code.BS5950_3_1_1990_A1_2010:
-          str += "BS5950-3.1:1990+A1:2010" + '\t';
+          str += CoaIdentifier.DesignCode.BS + '\t';
           break;
 
         case Code.EN1994_1_1_2004:
-          str += "EN1994-1-1:2004" + '\t';
+          str += CoaIdentifier.DesignCode.EN + '\t';
           break;
 
         case Code.HKSUOS_2005:
-          str += "HKSUOS:2005" + '\t';
+          str += CoaIdentifier.DesignCode.HKSUOS2005 + '\t';
           break;
 
         case Code.HKSUOS_2011:
-          str += "HKSUOS:2011" + '\t';
+          str += CoaIdentifier.DesignCode.HKSUOS2011 + '\t';
           break;
 
         case Code.AS_NZS2327_2017:
-          str += "AS/NZS2327:2017" + '\t';
+          str += CoaIdentifier.DesignCode.ASNZ + '\t';
           break;
 
         default:
           throw new Exception("Code not recognised");
       }
-      str += ((this.DesignOptions.ProppedDuringConstruction) ? "PROPPED" : "UNPROPPED") + '\t';
-      str += ((this.DesignOptions.InclSteelBeamWeight) ? "BEAM_WEIGHT_YES" : "BEAM_WEIGHT_NO") + '\t';
-      str += ((this.DesignOptions.InclConcreteSlabWeight) ? "SLAB_WEIGHT_YES" : "SLAB_WEIGHT_NO") + '\t';
-      str += ((this.DesignOptions.ConsiderShearDeflection) ? "SHEAR_DEFORM_YES" : "SHEAR_DEFORM_NO") + '\t';
-      str += ((this.DesignOptions.InclThinFlangeSections) ? "THIN_SECTION_YES" : "THIN_SECTION_NO") + '\t';
+      str += ((this.DesignOption.ProppedDuringConstruction) ? "PROPPED" : "UNPROPPED") + '\t';
+      str += ((this.DesignOption.InclSteelBeamWeight) ? "BEAM_WEIGHT_YES" : "BEAM_WEIGHT_NO") + '\t';
+      str += ((this.DesignOption.InclConcreteSlabWeight) ? "SLAB_WEIGHT_YES" : "SLAB_WEIGHT_NO") + '\t';
+      str += ((this.DesignOption.ConsiderShearDeflection) ? "SHEAR_DEFORM_YES" : "SHEAR_DEFORM_NO") + '\t';
+      str += ((this.DesignOption.InclThinFlangeSections) ? "THIN_SECTION_YES" : "THIN_SECTION_NO") + '\t';
 
       if (this.Code == Code.AS_NZS2327_2017)
       {
@@ -162,7 +178,31 @@ namespace ComposAPI
         str += CoaHelper.FormatSignificantFigures(2.0, 6) + '\n';
       }
 
+      str += this.SafetyFactors.ToCoaString(name);
+
       return str;
+    }
+    #endregion
+
+    #region methods
+    public override string ToString()
+    {
+      switch (this.Code)
+      {
+        case Code.BS5950_3_1_1990_Superseded:
+          return CoaIdentifier.DesignCode.BS_Superseded;
+        case Code.BS5950_3_1_1990_A1_2010:
+          return CoaIdentifier.DesignCode.BS;
+        case Code.EN1994_1_1_2004:
+          return CoaIdentifier.DesignCode.EN;
+        case Code.HKSUOS_2005:
+          return CoaIdentifier.DesignCode.HKSUOS2005;
+        case Code.HKSUOS_2011:
+          return CoaIdentifier.DesignCode.HKSUOS2011;
+        case Code.AS_NZS2327_2017:
+          return CoaIdentifier.DesignCode.ASNZ;
+      }
+      return "";
     }
     #endregion
   }
@@ -174,11 +214,22 @@ namespace ComposAPI
   {
     public NationalAnnex NationalAnnex { get; set; } = NationalAnnex.Generic;
     public EC4Options CodeOptions { get; set; } = new EC4Options();
-    public new EC4SafetyFactors SafetyFactors { get; set; } = new EC4SafetyFactors();
+    public new IEC4SafetyFactors SafetyFactors { get; set; } = new EC4SafetyFactors();
+
     public EN1994()
     {
       this.Code = Code.EN1994_1_1_2004;
     }
+
+    #region coa interop
+    public override string ToCoaString(string name)
+    {
+      string str = base.ToCoaString(name);
+      str += this.CodeOptions.ToCoaString(name, this.Code, this.NationalAnnex);
+      str += this.SafetyFactors.ToCoaString(name);
+      return str;
+    }
+    #endregion
   }
 
   /// <summary>
@@ -187,6 +238,7 @@ namespace ComposAPI
   public class ASNZS2327 : DesignCode
   {
     public CodeOptions CodeOptions { get; set; } = new CodeOptions();
+
     public ASNZS2327()
     {
       this.Code = Code.AS_NZS2327_2017;

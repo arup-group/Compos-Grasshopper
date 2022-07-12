@@ -8,7 +8,7 @@ using UnitsNet.Units;
 using Xunit;
 using ComposAPI;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Slabs.Tests
 {
   public static class SlabDimensionMother
   {
@@ -42,7 +42,7 @@ namespace ComposAPI.Tests
     [Theory]
     [InlineData(800, 250, 310, 300, true)]
     [InlineData(800, 250, 310, 300, false)]
-    public void TestConstructor1(double startPosition, double overallDepth, double availableWidthLeft, double availableWidthRight, bool taperedToNext)
+    public void ConstructorTest1(double startPosition, double overallDepth, double availableWidthLeft, double availableWidthRight, bool taperedToNext)
     {
       // 2 create object instance with constructor
       LengthUnit lengthUnit = LengthUnit.Millimeter;
@@ -60,7 +60,7 @@ namespace ComposAPI.Tests
     [Theory]
     [InlineData(800, 250, 310, 300, true, 250, 240)]
     [InlineData(800, 250, 310, 300, false, 250, 240)]
-    public void TestConstructor2(double startPosition, double overallDepth, double availableWidthLeft, double availableWidthRight, bool taperedToNext, double effectiveWidthLeft, double effectiveWidthRight)
+    public void ConstructorTest2(double startPosition, double overallDepth, double availableWidthLeft, double availableWidthRight, bool taperedToNext, double effectiveWidthLeft, double effectiveWidthRight)
     {
       // 2 create object instance with constructor
       LengthUnit lengthUnit = LengthUnit.Millimeter;
@@ -77,7 +77,7 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void TestDuplicate()
+    public void DuplicateTest()
     {
       // 1 create with constructor and duplicate
       LengthUnit lengthUnit = LengthUnit.Millimeter;

@@ -32,17 +32,9 @@ namespace ComposAPI
       // empty constructor
     }
 
-    public Decking(string coaString)
-    {
-      // to do - implement from coa string method
-    }
-
-    #region coa interop
     public virtual string ToCoaString(string name, ComposUnits units)
     {
       return String.Empty;
     }
-    #endregion
-
   }
 }

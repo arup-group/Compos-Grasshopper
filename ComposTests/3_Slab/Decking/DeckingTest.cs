@@ -7,8 +7,9 @@ using System.Data.SQLite;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
+using ComposAPITests.Helpers;
 
-namespace ComposAPI.Tests
+namespace ComposAPI.Slabs.Tests
 {
   public class DeckingTest
   {
@@ -40,9 +41,57 @@ namespace ComposAPI.Tests
       Assert.Equal(expected_coaString, coaString);
     }
 
-    public void TestConstructor()
+    // 1 setup inputs
+    [Theory]
+    [InlineData("RLD", "Ribdeck AL (1.2)", DeckingSteelGrade.S280,
+      300, 120, 140, 10, 40, 50, 1.2)]
+    [InlineData("Kingspan", "Multideck 50 (0.85)", DeckingSteelGrade.S350,
+      150, 40, 135, 0, 0, 50, 0.85)]
+    public void CatalogeDeckingConstructorTest(string catalogue, string profile,
+      DeckingSteelGrade deckingSteelGrade,
+      double b1_expected, double b2_expected, double b3_expected, double b4_expected, double b5_expected, double depth_expected, double thickness_expected)
     {
-      // todo
+      // 2 create object instance with constructor
+      DeckingConfiguration configuration = new DeckingConfiguration();
+      CatalogueDecking.catalogueDB = new MockCatalogueDB();
+      CatalogueDecking decking = new CatalogueDecking(catalogue, profile, deckingSteelGrade, configuration);
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(b1_expected, decking.b1.Millimeters);
+      Assert.Equal(b2_expected, decking.b2.Millimeters);
+      Assert.Equal(b3_expected, decking.b3.Millimeters);
+      Assert.Equal(b4_expected, decking.b4.Millimeters);
+      Assert.Equal(b5_expected, decking.b5.Millimeters);
+      Assert.Equal(depth_expected, decking.Depth.Millimeters);
+      Assert.Equal(thickness_expected, decking.Thickness.Millimeters);
+      Assert.Equal(catalogue, decking.Catalogue);
+      Assert.Equal(profile, decking.Profile);
+      Assert.Equal(deckingSteelGrade, decking.Grade);
+      Assert.Equal(configuration, decking.DeckingConfiguration);
+      Assert.Equal(DeckingType.Catalogue, decking.Type);
+    }
+
+    // 1 setup inputs
+    [Theory]
+    [InlineData(1, 2, 3, 4, 5, 6, 7, 8)]
+    public void CustomDeckingConstructorTest(double b1, double b2, double b3, double b4, double b5, double depth, double thickness, double strength)
+    {
+      // 2 create object instance with constructor
+      DeckingConfiguration configuration = new DeckingConfiguration();
+      ComposUnits units = ComposUnits.GetStandardUnits();
+      CustomDecking decking = new CustomDecking(new Length(b1, units.Length), new Length(b2, units.Length), new Length(b3, units.Length), new Length(b4, units.Length), new Length(b5, units.Length), new Length(depth, units.Length), new Length(thickness, units.Length), new Pressure(strength, units.Stress), configuration);
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(b1, decking.b1.Value);
+      Assert.Equal(b2, decking.b2.Value);
+      Assert.Equal(b3, decking.b3.Value);
+      Assert.Equal(b4, decking.b4.Value);
+      Assert.Equal(b5, decking.b5.Value);
+      Assert.Equal(depth, decking.Depth.Value);
+      Assert.Equal(thickness, decking.Thickness.Value);
+      Assert.Equal(strength, decking.Strength.Value);
+      Assert.Equal(configuration, decking.DeckingConfiguration);
+      Assert.Equal(DeckingType.Custom, decking.Type);
     }
   }
 }

@@ -13,12 +13,12 @@ namespace ComposAPI
     S350
   }
 
-  public class CatalogueDecking : Decking
+  public class CatalogueDecking : Decking, IDecking
   {
     public string Catalogue { get; set; } //	catalogue name of the decking
     public string Profile { get; set; } // decking name
     public DeckingSteelGrade Grade { get; set; } //	decking material grade
-    public const string CoaIdentifier = "DECKING_CATALOGUE";
+    internal static ICatalogueDB catalogueDB { get; set; } = new CatalogueDB();
 
     public CatalogueDecking()
     {
@@ -33,7 +33,7 @@ namespace ComposAPI
       this.DeckingConfiguration = deckingConfiguration;
       this.m_type = DeckingType.Catalogue;
 
-      List<double> sqlValues = Helpers.CatalogueValues.GetCatalogueDeckingValues(catalogue, profile);
+      List<double> sqlValues = catalogueDB.GetCatalogueDeckingValues(catalogue, profile);
       LengthUnit unit = LengthUnit.Meter;
       this.Depth = new Length(sqlValues[0], unit);
       this.b1 = new Length(sqlValues[1], unit);
@@ -45,14 +45,15 @@ namespace ComposAPI
     }
 
     #region coa interop
-    internal CatalogueDecking(List<string> parameters, ComposUnits units)
+    internal static IDecking FromCoaString(List<string> parameters, ComposUnits units)
     {
-      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-      this.Catalogue = parameters[2];
-      this.Profile = parameters[3];
-      this.Grade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), parameters[4]);
+      CatalogueDecking decking = new CatalogueDecking();
+
+      decking.Catalogue = parameters[2];
+      decking.Profile = parameters[3];
+      decking.Grade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), parameters[4]);
       DeckingConfiguration deckingConfiguration = new DeckingConfiguration();
-      deckingConfiguration.Angle = new Angle(Convert.ToDouble(parameters[5], noComma), AngleUnit.Degree); // COA string always in degrees
+      deckingConfiguration.Angle = CoaHelper.ConvertToAngle(parameters[5], AngleUnit.Degree); // COA string always in degrees
 
       if (parameters[6] == "DECKING_JOINTED")
         deckingConfiguration.IsDiscontinous = true;
@@ -63,7 +64,9 @@ namespace ComposAPI
         deckingConfiguration.IsWelded = true;
       else
         deckingConfiguration.IsWelded = false;
-      this.DeckingConfiguration = deckingConfiguration;
+      decking.DeckingConfiguration = deckingConfiguration;
+
+      return decking;
     }
 
     public override string ToCoaString(string name, ComposUnits units)
