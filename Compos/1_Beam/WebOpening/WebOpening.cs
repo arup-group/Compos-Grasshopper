@@ -128,7 +128,7 @@ namespace ComposAPI
     /// <param name="positionCentroidFromStart"></param>
     /// <param name="positionCentroidFromTop"></param>
     /// <param name="stiffeners"></param>
-    public WebOpening(Length diameter, Length positionCentroidFromStart, Length positionCentroidFromTop, IWebOpeningStiffeners stiffeners = null)
+    public WebOpening(Length diameter, IQuantity positionCentroidFromStart, IQuantity positionCentroidFromTop, IWebOpeningStiffeners stiffeners = null)
     {
       // static type for this constructor
       this.WebOpeningType = OpeningType.Circular;
