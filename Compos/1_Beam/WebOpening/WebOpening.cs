@@ -336,10 +336,10 @@ namespace ComposAPI
         case OpeningType.Start_notch:
         case OpeningType.End_notch:
         case OpeningType.Rectangular:
-          size = this.Width.As(Units.LengthUnitSection).ToString("f0") + "x" + this.Height.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
+          size = this.Width.As(Height.Unit).ToString("g2") + "x" + this.Height.ToString("f0").Replace(" ", string.Empty);
           break;
         case OpeningType.Circular:
-          size = "Ø" + this.Diameter.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
+          size = "Ø" + this.Diameter.ToString("g2").Replace(" ", string.Empty);
           break;
       }
 
@@ -358,23 +358,23 @@ namespace ComposAPI
           if (this.CentroidPosFromStart.QuantityInfo.UnitType == typeof(LengthUnit))
           {
             Length l = (Length)this.CentroidPosFromStart;
-            x = l.ToUnit(Units.LengthUnitGeometry).ToString("f2").Replace(" ", string.Empty);
+            x = l.ToString("f2").Replace(" ", string.Empty);
           }
           else
           {
             Ratio p = (Ratio)this.CentroidPosFromStart;
-            x = p.ToUnit(RatioUnit.Percent).ToString("f3").Replace(" ", string.Empty);
+            x = p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
           }
           string z = "";
           if (this.CentroidPosFromTop.QuantityInfo.UnitType == typeof(LengthUnit))
           {
             Length l = (Length)this.CentroidPosFromTop;
-            z = l.ToUnit(Units.LengthUnitGeometry).ToString("f2").Replace(" ", string.Empty);
+            z = l.ToString("f2").Replace(" ", string.Empty);
           }
           else
           {
             Ratio p = (Ratio)this.CentroidPosFromTop;
-            z = p.ToUnit(RatioUnit.Percent).ToString("f3").Replace(" ", string.Empty);
+            z = p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
           }
           typ = ", Pos:(x:" + x + ", z:" + z + ")";
           break;

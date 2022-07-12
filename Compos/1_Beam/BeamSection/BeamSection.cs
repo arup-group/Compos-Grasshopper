@@ -304,13 +304,13 @@ namespace ComposAPI
       {
         Length l = (Length)this.StartPosition;
         if (l != Length.Zero)
-          start = ", Px:" + l.ToUnit(Units.LengthUnitGeometry).ToString("f2").Replace(" ", string.Empty);
+          start = ", Px:" + l.ToString("g2").Replace(" ", string.Empty);
       }
       else
       {
         Ratio p = (Ratio)this.StartPosition;
         if (p != Ratio.Zero)
-          start = ", Px:" + p.ToUnit(RatioUnit.Percent).ToString("f3").Replace(" ", string.Empty);
+          start = ", Px:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
       }
 
       string tapered = "";
