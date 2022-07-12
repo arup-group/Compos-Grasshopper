@@ -257,7 +257,7 @@ namespace ComposAPI
       double startPosition = CoaHelper.ConvertToDouble(parameters[4]);
       if (startPosition < 0)
         // start position in percent
-        section.StartPosition = new Ratio(startPosition, RatioUnit.DecimalFraction);
+        section.StartPosition = new Ratio(Math.Abs(startPosition), RatioUnit.DecimalFraction).ToUnit(RatioUnit.Percent);
       else
         section.StartPosition = CoaHelper.ConvertToLength(parameters[4], units.Length);
 
@@ -283,7 +283,7 @@ namespace ComposAPI
         // start position in percent
         Ratio p = (Ratio)this.StartPosition;
         // percentage in coa string for beam section is a negative decimal fraction!
-        parameters.Add(CoaHelper.FormatSignificantFigures(p.As(RatioUnit.DecimalFraction) * -1, 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(p.As(RatioUnit.DecimalFraction) * -1, p.DecimalFractions == 1? 5 : 6));
       }
       else
         parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(units.Length).Value, 6));

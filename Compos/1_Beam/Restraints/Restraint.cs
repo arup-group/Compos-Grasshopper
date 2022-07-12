@@ -34,6 +34,7 @@ namespace ComposAPI
     {
       this.TopFlangeRestrained = topFlangeRestrained;
       this.ConstructionStageSupports = constructionStageSupports;
+      this.FinalStageSupports = new Supports(IntermediateRestraint.None, true, true);
       this.finalSupportsSet = false;
     }
     #endregion

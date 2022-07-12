@@ -59,10 +59,10 @@ namespace ComposAPI.Beams.Tests
       List<string> parameters = CoaHelper.Split(coaString);
       IBeamSection beam = BeamSection.FromCoaString(parameters, ComposUnits.GetStandardUnits());
 
-      if (beam.StartPosition.Unit == LengthUnit.AstronomicalUnit)
-        Assert.Equal(expected_startPosition, beam.StartPosition.AstronomicalUnits);
+      if (beam.StartPosition.QuantityInfo.UnitType == typeof(RatioUnit))
+        Assert.Equal(expected_startPosition, beam.StartPosition.As(RatioUnit.DecimalFraction) * -1);
       else
-        Assert.Equal(expected_startPosition, beam.StartPosition.Meters);
+        Assert.Equal(expected_startPosition, beam.StartPosition.As(LengthUnit.Meter));
       Assert.Equal(expected_depth, beam.Depth.Millimeters);
       Assert.Equal(expected_topFlangeWidth, beam.TopFlangeWidth.Millimeters);
       Assert.Equal(expected_bottomFlangeWidth, beam.BottomFlangeWidth.Millimeters);
