@@ -9,10 +9,11 @@ namespace ComposGH.Parameters
   public class SupportsGoo : GH_Goo<ISupports>
   {
     #region constructors
-    public SupportsGoo()
-    {
-      this.Value = new Supports();
-    }
+    //public SupportsGoo()
+    //{
+    //  this.Value = new Supports();
+    //}
+
     public SupportsGoo(ISupports item)
     {
       if (item == null)

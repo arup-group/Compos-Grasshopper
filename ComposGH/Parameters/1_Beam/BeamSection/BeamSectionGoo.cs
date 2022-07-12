@@ -10,10 +10,11 @@ namespace ComposGH.Parameters
   public class BeamSectionGoo : GH_Goo<IBeamSection>
   {
     #region constructors
-    public BeamSectionGoo()
-    {
-      this.Value = new BeamSection();
-    }
+    //public BeamSectionGoo()
+    //{
+    //  this.Value = new BeamSection();
+    //}
+
     public BeamSectionGoo(IBeamSection item)
     {
       if (item == null)
@@ -25,6 +26,7 @@ namespace ComposGH.Parameters
     {
       return DuplicateGoo();
     }
+
     public BeamSectionGoo DuplicateGoo()
     {
       return new BeamSectionGoo(Value == null ? new BeamSection() : Value);// .Duplicate() as BeamSection);
@@ -32,7 +34,7 @@ namespace ComposGH.Parameters
     #endregion
 
     #region properties
-     public override bool IsValid => (this.Value == null) ? false : true;
+    public override bool IsValid => (this.Value == null) ? false : true;
     public override string TypeName => "Beam Section";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot

@@ -9,10 +9,11 @@ namespace ComposGH.Parameters
   public class RestraintGoo : GH_Goo<IRestraint>
   {
     #region constructors
-    public RestraintGoo()
-    {
-      this.Value = new Restraint();
-    }
+    //public RestraintGoo()
+    //{
+    //  this.Value = new Restraint();
+    //}
+
     public RestraintGoo(IRestraint item)
     {
       if (item == null)

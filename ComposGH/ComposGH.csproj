@@ -156,7 +156,7 @@
     <Compile Include="Helpers\_SqlReaderValues.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
     <Compile Include="Parameters\0_File\ComposFileGoo.cs" />
-    <Compile Include="Parameters\1_Beam\BeamGeometryGoo.cs" />
+    <Compile Include="Parameters\1_Beam\BeamGoo.cs" />
     <Compile Include="Parameters\2_Studs\StudGoo.cs" />
     <Compile Include="Parameters\3_Slab\ConcreteMaterial\ConcreteMaterialGoo.cs" />
     <Compile Include="Parameters\3_Slab\ConcreteMaterial\ERatioGoo.cs" />

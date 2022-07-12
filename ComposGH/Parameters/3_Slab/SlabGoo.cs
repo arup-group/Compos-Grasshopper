@@ -12,10 +12,10 @@ namespace ComposGH.Parameters
   public class SlabGoo : GH_Goo<ISlab>
   {
     #region constructors
-    public SlabGoo()
-    {
-      this.Value = new Slab();
-    }
+    //public SlabGoo()
+    //{
+    //  this.Value = new Slab();
+    //}
 
     public SlabGoo(ISlab item)
     {

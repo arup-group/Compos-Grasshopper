@@ -13,21 +13,23 @@ namespace ComposGH.Parameters
   public class ComposFileGoo : GH_Goo<IComposFile>
   {
     #region constructors
-    public ComposFileGoo()
-    {
-      this.Value = new ComposFile();
-    }
+    //public ComposFileGoo()
+    //{
+    //  this.Value = new ComposFile();
+    //}
+
     public ComposFileGoo(IComposFile item)
     {
       if (item == null)
         item = new ComposFile();
-      this.Value = item; //.Duplicate() as IStud;
+      this.Value = item;
     }
 
     public override IGH_Goo Duplicate()
     {
       return DuplicateGoo();
     }
+
     public ComposFileGoo DuplicateGoo()
     {
       return new ComposFileGoo(Value == null ? new ComposFile() : Value);
