@@ -43,15 +43,17 @@ namespace ComposAPI
       {
         List<string> parameters = CoaHelper.Split(line);
 
+        if (parameters[0] == "END")
+          return slab;
+
+        if (parameters[0] == CoaIdentifier.UnitData)
+          units.FromCoaString(parameters);
+
         if (parameters[1] != name)
           continue;
 
         switch (parameters[0])
         {
-          case (CoaIdentifier.UnitData):
-            units.FromCoaString(parameters);
-            break;
-
           case (CoaIdentifier.SlabConcreteMaterial):
             slab.Material = ConcreteMaterial.FromCoaString(lines, units);
             break;

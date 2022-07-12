@@ -346,9 +346,6 @@ namespace ComposAPI
     internal static ComposFile FromCoaString(string coaString)
     {
       List<IMember> members = new List<IMember>();
-
-      Dictionary<string, List<ILoad>> loads = new Dictionary<string, List<ILoad>>();
-
       ComposUnits units = ComposUnits.GetStandardUnits();
       List<string> lines = CoaHelper.SplitAndStripLines(coaString);
 
@@ -374,16 +371,6 @@ namespace ComposAPI
           // change the currently used unit
           units.FromCoaString(parameters);
         }
-
-        // ### loads ###
-        else if (coaIdentifier == CoaIdentifier.Load)
-        {
-          Load load = Load.FromCoaString(parameters, units);
-          List<ILoad> memLoads = new List<ILoad>();
-          if (!loads.ContainsKey(parameters[1]))
-            loads.Add(parameters[1], memLoads);
-          loads[parameters[1]].Add(load);
-        }
       }
 
       // ### Set data to members ###
@@ -396,10 +383,7 @@ namespace ComposAPI
         member.Beam = Beam.FromCoaString(coaString, name, units);
         member.Stud = Stud.FromCoaString(coaString, name, code, units);
         member.Slab = Slab.FromCoaString(coaString, name, code, units);
-
-        // add loads to members
-        if (loads.ContainsKey(name))
-          member.Loads = loads[name];
+        member.Loads = Load.FromCoaString(coaString, name, units);
       }
       return new ComposFile(members);
     }

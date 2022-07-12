@@ -134,15 +134,14 @@ namespace ComposAPI
         if (parameters[0] == "END")
           return stud;
 
+        if (parameters[0] == CoaIdentifier.UnitData)
+          units.FromCoaString(parameters);
+
         if (parameters[1] != name)
           continue;
 
         switch (parameters[0])
         {
-          case (CoaIdentifier.UnitData):
-            units.FromCoaString(parameters);
-            break;
-
           case (CoaIdentifier.StudDimensions.StudDefinition):
             // ### Stud dimensions  / STUD_DEFINITION ###
             //STUD_DEFINITION	MEMBER-1	STANDARD	19mm/100mm	WELDED_YES

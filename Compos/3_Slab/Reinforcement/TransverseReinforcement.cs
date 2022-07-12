@@ -48,15 +48,17 @@ namespace ComposAPI
       {
         List<string> parameters = CoaHelper.Split(line);
 
+        if (parameters[0] == "END")
+          return reinforcement;
+
+        if (parameters[0] == CoaIdentifier.UnitData)
+          units.FromCoaString(parameters);
+
         if (parameters[1] != name)
           continue;
 
         switch (parameters[0])
         {
-          case (CoaIdentifier.UnitData):
-            units.FromCoaString(parameters);
-            break;
-
           case (CoaIdentifier.RebarMaterial):
             reinforcement.Material = ReinforcementMaterial.FromCoaString(parameters, code);
             break;
