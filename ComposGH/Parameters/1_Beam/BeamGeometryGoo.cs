@@ -672,9 +672,11 @@ namespace ComposGH.Parameters
       // find local plane on line
       Plane local = new Plane();
 
-      double t = beamSection.StartPosition.As(LengthUnit);
-      if (beamSection.StartPosition == Length.Zero)
-        t = 0;
+      double t = 0;
+      if (beamSection.StartPosition.QuantityInfo.UnitType == typeof(LengthUnit))
+        t = beamSection.StartPosition.As(LengthUnit);
+      else
+        t = beamSection.StartPosition.As(RatioUnit.DecimalFraction) * this.Value.Length.As(LengthUnit);
 
       if (t > this.Value.Length.As(LengthUnit))
         throw new Exception("Beam Section Start Position lies outside the Beam's domain");
