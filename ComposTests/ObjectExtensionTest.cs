@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -12,6 +13,131 @@ namespace ComposAPI.Tests
 {
   public class ObjectExtensionTest
   {
+    public static void Equals(object objA, object objB)
+    {
+      Type typeA = objA.GetType();
+      Type typeB = objB.GetType();
+
+      PropertyInfo[] propertyInfoA = typeA.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+      PropertyInfo[] propertyInfoB = typeB.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+      for (int i = 0; i < propertyInfoA.Length; i++)
+      {
+        PropertyInfo propertyA = propertyInfoA[i];
+        PropertyInfo propertyB = propertyInfoB[i];
+
+        if (!propertyA.CanWrite && !propertyB.CanWrite)
+          continue;
+        else if (!propertyA.CanWrite || !propertyB.CanWrite)
+          Assert.Equal(objA, objB);
+
+        object objPropertyValueA;
+        object objPropertyValueB;
+        Type propertyTypeA = propertyA.PropertyType;
+        Type propertyTypeB = propertyB.PropertyType;
+
+        try
+        {
+          objPropertyValueA = propertyA.GetValue(objA, null);
+          objPropertyValueB = propertyB.GetValue(objB, null);
+
+          // check wether property is an interface
+          if (propertyTypeA.IsInterface)
+          {
+            if (objPropertyValueA != null)
+              propertyTypeA = objPropertyValueA.GetType();
+          }
+          if (propertyTypeB.IsInterface)
+          {
+            if (objPropertyValueB != null)
+              propertyTypeB = objPropertyValueB.GetType();
+          }
+
+          // check wether property is an enumerable
+          if (typeof(IEnumerable).IsAssignableFrom(propertyTypeA) && !typeof(string).IsAssignableFrom(propertyTypeA))
+          {
+            if (typeof(IEnumerable).IsAssignableFrom(propertyTypeB) && !typeof(string).IsAssignableFrom(propertyTypeB))
+            {
+              if (objPropertyValueA == null || objPropertyValueB == null)
+              {
+                Assert.Equal(objPropertyValueA, objPropertyValueB);
+              }
+              else
+              {
+                IEnumerable<object> enumerableA = ((IEnumerable)objPropertyValueA).Cast<object>();
+                IEnumerable<object> enumerableB = ((IEnumerable)objPropertyValueB).Cast<object>();
+
+                Type[] asdfasdf = enumerableA.GetType().GetGenericArguments();
+                Type[] asdfsdfdsf = enumerableB.GetType().GetGenericArguments();
+
+                Type enumrableTypeA = null;
+                Type enumrableTypeB = null;
+                if (enumerableA.GetType().GetGenericArguments().Length > 0)
+                  enumrableTypeA = enumerableA.GetType().GetGenericArguments()[0];
+                if (enumerableB.GetType().GetGenericArguments().Length > 0)
+                  enumrableTypeB = enumerableB.GetType().GetGenericArguments()[0];
+                Assert.Equal(enumrableTypeA, enumrableTypeB);
+
+                // if type is a struct, we have to check the actual list items
+                // this will fail if list is actually of type "System.Object"..
+                if (enumrableTypeA.ToString() is "System.Object")
+                {
+                  if (enumerableA.Any())
+                    enumrableTypeA = enumerableA.First().GetType();
+                  else
+                    continue; // can´t get type of struct in empty list? 
+                }
+                if (enumrableTypeB.ToString() is "System.Object")
+                {
+                  if (enumerableB.Any())
+                    enumrableTypeB = enumerableB.First().GetType();
+                  else
+                    continue; // can´t get type of struct in empty list? 
+                }
+
+                Type genericListTypeA = typeof(List<>).MakeGenericType(enumrableTypeA);
+                Type genericListTypeB = typeof(List<>).MakeGenericType(enumrableTypeB);
+                Assert.Equal(genericListTypeA, genericListTypeB);
+
+                var enumeratorB = enumerableB.GetEnumerator();
+
+                using (var enumeratorA = enumerableA.GetEnumerator())
+                {
+                  while (enumeratorA.MoveNext())
+                  {
+                    Assert.True(enumeratorB.MoveNext());
+                    ObjectExtensionTest.Equals(enumeratorA.Current, enumeratorB.Current);
+                  }
+                }
+              }
+            }
+            else
+            {
+              Assert.Equal(objPropertyValueA, objPropertyValueB);
+            }
+          }
+          // check whether property type is value type, enum or string type
+          else if (propertyTypeA.IsValueType || propertyTypeA.IsEnum || propertyTypeA.Equals(typeof(System.String)))
+          {
+            Assert.Equal(objPropertyValueA, objPropertyValueB);
+          }
+          else if (objPropertyValueA == null || objPropertyValueB == null)
+          {
+            Assert.Equal(objPropertyValueA, objPropertyValueB);
+          }
+          else
+          // property type is object/complex type, so need to recursively call this method until the end of the tree is reached
+          {
+            ObjectExtensionTest.Equals(objPropertyValueA, objPropertyValueB);
+          }
+        }
+        catch (TargetParameterCountException ex)
+        {
+          propertyTypeA = propertyA.PropertyType;
+        }
+      }
+    }
+
     [Fact]
     public void DuplicateTest1()
     {
@@ -44,6 +170,22 @@ namespace ComposAPI.Tests
       Assert.Equal(force, original.Children[0].Children[0].Force);
       Assert.Equal(iQuantities, original.Children[0].Children[0].IQuantities);
       Assert.Equal(structs, original.Children[0].Children[0].Structs);
+    }
+
+    [Fact]
+    public void EqualityTest2()
+    {
+      Force quantity = new Force(1, ForceUnit.Kilonewton);
+      Force force = new Force(2, ForceUnit.Decanewton);
+      IList<IQuantity> iQuantities = new List<IQuantity>() { Force.Zero, new Length(100, LengthUnit.Millimeter) };
+      IList<Length> structs = new List<Length>() { Length.Zero, new Length(100, LengthUnit.Millimeter) };
+
+      TestObject grandChild = new TestObject(true, 1.0, 1, "a", TestEnum.Value1, quantity, force, new List<TestObject>(), iQuantities, structs);
+      TestObject original = new TestObject(new TestObject(grandChild));
+
+      TestObject duplicate = original.Duplicate() as TestObject;
+
+      ObjectExtensionTest.Equals(original, duplicate);
     }
   }
 
