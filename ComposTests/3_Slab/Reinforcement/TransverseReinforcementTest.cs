@@ -13,7 +13,7 @@ namespace ComposAPI.Slabs.Tests
   public class TransverseReinforcementTest
   {
     [Theory]
-    [InlineData(RebarGrade.AS_D500E, "REBAR_MATERIAL	MEMBER-1	STANDARD	D500E\nREBAR_TRANSVERSE	MEMBER-1	PROGRAM_DESIGNED\n")]
+    [InlineData(RebarGrade.AS_D500E, "REBAR_MATERIAL	MEMBER-1	STANDARD	D500E\nREBAR_LONGITUDINAL	MEMBER-1	PROGRAM_DESIGNED\nREBAR_TRANSVERSE	MEMBER-1	PROGRAM_DESIGNED\n")]
     public void ToCoaStringTest(RebarGrade grade, string expected_coaString)
     {
       TransverseReinforcement transverseReinforcement = new TransverseReinforcement(new ReinforcementMaterial(grade));
@@ -24,7 +24,7 @@ namespace ComposAPI.Slabs.Tests
     }
 
     [Theory]
-    [InlineData(RebarGrade.BS_500X, "REBAR_MATERIAL	MEMBER-1	STANDARD	500X\nREBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\n")]
+    [InlineData(RebarGrade.BS_500X, "REBAR_MATERIAL	MEMBER-1	STANDARD	500X\nREBAR_LONGITUDINAL	MEMBER-1	PROGRAM_DESIGNED\nREBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\n")]
     public void ToCoaStringCustomLayoutTest(RebarGrade grade, string expected_coaString)
     {
       ComposUnits units = ComposUnits.GetStandardUnits();

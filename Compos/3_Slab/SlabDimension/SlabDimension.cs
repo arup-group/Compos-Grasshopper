@@ -113,7 +113,7 @@ namespace ComposAPI
       parameters.Add(name);
       parameters.Add(Convert.ToString(num));
       parameters.Add(Convert.ToString(index));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(units.Length).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition, units.Length, 6));
       parameters.Add(String.Format(noComma, "{0:0.000000}", this.OverallDepth.ToUnit(units.Length).Value));
       parameters.Add(String.Format(noComma, "{0:0.00000}", this.AvailableWidthLeft.ToUnit(units.Length).Value));
       parameters.Add(String.Format(noComma, "{0:0.00000}", this.AvailableWidthRight.ToUnit(units.Length).Value));

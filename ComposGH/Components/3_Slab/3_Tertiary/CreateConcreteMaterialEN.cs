@@ -134,8 +134,8 @@ namespace ComposGH.Components
       // optional
       pManager.AddNumberParameter("Dry Density [" + densityUnitAbbreviation + "]", "DD", "(Optional) Dry density", GH_ParamAccess.item);
       pManager.AddGenericParameter("E Ratios", "ER", "(Optional) Steel/concrete Young´s modulus ratios", GH_ParamAccess.item);
-      pManager.AddNumberParameter("Imposed Load Percentage [%]", "ILP", "(Optional) Percentage of imposed load acting long term", GH_ParamAccess.item, 33);
-      pManager.AddNumberParameter("Shrinkage Strain [" + strainUnitAbbreviation + "]", "SS", "(Optional) Shrinkage strain", GH_ParamAccess.item, -0.0005);
+      pManager.AddNumberParameter("Imposed Load Percentage [-]", "ILP", "(Optional) Percentage of imposed load acting long term as decimal fraction", GH_ParamAccess.item, 0.33);
+      pManager.AddNumberParameter("Shrinkage Strain [" + strainUnitAbbreviation + "]", "SS", "(Optional) Shrinkage strain", GH_ParamAccess.item, -0.5);
       pManager.AddGenericParameter("Concrete Grade", "CG", "(Optional) Concrete grade", GH_ParamAccess.item);
       pManager.AddGenericParameter("Density Class", "DC", "(Optional) Density class", GH_ParamAccess.item);
 
@@ -236,10 +236,9 @@ namespace ComposGH.Components
 
       ERatioGoo eRatio = (ERatioGoo)GetInput.GenericGoo<ERatioGoo>(this, DA, 1);
 
-      double imposedLoadPercentage = 33;
-      DA.GetData(2, ref imposedLoadPercentage);
+      Ratio imposedLoadPercentage = GetInput.Ratio(this, DA, 2, RatioUnit.DecimalFraction);
 
-      Strain shrinkageStrain = new Strain(-0.0005, StrainUnit.MilliStrain);
+      Strain shrinkageStrain = new Strain(-0.5, StrainUnit.MilliStrain);
       bool userStrain = false;
       if (this.Params.Input[3].Sources.Count > 0)
       {

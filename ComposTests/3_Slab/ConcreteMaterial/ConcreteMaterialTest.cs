@@ -16,9 +16,9 @@ namespace ComposAPI.Slabs.Tests
   {
     public static IConcreteMaterial CreateConcreteMaterial()
     {
-      Density dryDensity = new Density(2400, DensityUnit.KilogramPerCubicCentimeter);
-      IERatio eRatio = ERatioMother.CreateERatio();
-      return new ConcreteMaterial(ConcreteGrade.C30, WeightType.Normal, dryDensity, false, eRatio, 0.33);
+      Density dryDensity = new Density(2400, DensityUnit.KilogramPerCubicMeter);
+      IERatio eRatio = new ERatio();
+      return new ConcreteMaterial(ConcreteGrade.C30, WeightType.Normal, dryDensity, false, eRatio, new Ratio(0.33, RatioUnit.DecimalFraction));
     }
   }
 
@@ -38,7 +38,7 @@ namespace ComposAPI.Slabs.Tests
       eRatio.Vibration = vibration;
       eRatio.Shrinkage = shrinkage;
       eRatio.UserDefined = userDefined;
-      ConcreteMaterial concreteMaterial = new ConcreteMaterial(grade, type, new Density(dryDensity, DensityUnit.KilogramPerCubicMeter), userDensity, eRatio, imposedLoadPercentage);
+      ConcreteMaterial concreteMaterial = new ConcreteMaterial(grade, type, new Density(dryDensity, DensityUnit.KilogramPerCubicMeter), userDensity, eRatio, new Ratio(imposedLoadPercentage, RatioUnit.Percent));
       string coaString = concreteMaterial.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_coaString, coaString);
@@ -57,7 +57,7 @@ namespace ComposAPI.Slabs.Tests
       eRatio.Vibration = vibration;
       eRatio.Shrinkage = shrinkage;
       eRatio.UserDefined = userDefined;
-      ConcreteMaterial concreteMaterial = new ConcreteMaterial(grade, densityClass, new Density(dryDensity, DensityUnit.KilogramPerCubicMeter), userDensity, eRatio, imposedLoadPercentage, new Strain(shrinkageStrain, StrainUnit.MilliStrain), userStrain);
+      ConcreteMaterial concreteMaterial = new ConcreteMaterial(grade, densityClass, new Density(dryDensity, DensityUnit.KilogramPerCubicMeter), userDensity, eRatio, new Ratio(imposedLoadPercentage, RatioUnit.Percent), new Strain(shrinkageStrain, StrainUnit.Ratio), userStrain);
       string coaString = concreteMaterial.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_coaString, coaString);
@@ -87,7 +87,7 @@ namespace ComposAPI.Slabs.Tests
         Assert.Equal(expected_vibration, material.ERatio.Vibration);
         Assert.Equal(expected_shrinkage, material.ERatio.Shrinkage);
       }
-      Assert.Equal(expected_imposedLoadPercentage, material.ImposedLoadPercentage);
+      Assert.Equal(expected_imposedLoadPercentage, material.ImposedLoadPercentage.Percent);
       Assert.Equal(expected_userStrain, material.UserStrain);
       if (expected_userStrain)
         Assert.Equal(expected_shrinkageStrain, material.ShrinkageStrain.Value);
@@ -117,7 +117,7 @@ namespace ComposAPI.Slabs.Tests
         Assert.Equal(expected_vibration, material.ERatio.Vibration);
         Assert.Equal(expected_shrinkage, material.ERatio.Shrinkage);
       }
-      Assert.Equal(expected_imposedLoadPercentage, material.ImposedLoadPercentage);
+      Assert.Equal(expected_imposedLoadPercentage, material.ImposedLoadPercentage.Percent);
       Assert.Equal(expected_userStrain, material.UserStrain);
       if (expected_userStrain)
         Assert.Equal(expected_shrinkageStrain, material.ShrinkageStrain.Value);
@@ -134,8 +134,8 @@ namespace ComposAPI.Slabs.Tests
       // 2 create object instance with constructor
       Density dryDensity = new Density(dryDensityValue, DensityUnit.KilogramPerCubicCentimeter);
       ERatio eRatio = new ERatio();
-      Strain shrinkageStrain = new Strain(shrinkageStrainValue, StrainUnit.MilliStrain);
-      ConcreteMaterial concreteMaterial = new ConcreteMaterial(grade, type, dryDensity, userDensity, eRatio, imposedLoadPercentage);
+      Strain shrinkageStrain = new Strain(shrinkageStrainValue, StrainUnit.Ratio);
+      ConcreteMaterial concreteMaterial = new ConcreteMaterial(grade, type, dryDensity, userDensity, eRatio, new Ratio(imposedLoadPercentage, RatioUnit.Percent));
 
       // 3 check that inputs are set in object's members
       Assert.Equal(grade.ToString(), concreteMaterial.Grade);
@@ -144,8 +144,8 @@ namespace ComposAPI.Slabs.Tests
       Assert.Equal(dryDensity, concreteMaterial.DryDensity);
       Assert.Equal(userDensity, concreteMaterial.UserDensity);
       Assert.Equal(eRatio, concreteMaterial.ERatio);
-      Assert.Equal(imposedLoadPercentage, concreteMaterial.ImposedLoadPercentage);
-      Assert.Equal(shrinkageStrain, concreteMaterial.ShrinkageStrain);
+      Assert.Equal(imposedLoadPercentage, concreteMaterial.ImposedLoadPercentage.Percent);
+      Assert.Equal(shrinkageStrain.Ratio, concreteMaterial.ShrinkageStrain.Ratio, 6);
       Assert.Equal(userStrain, concreteMaterial.UserStrain);
     }
 
@@ -168,7 +168,7 @@ namespace ComposAPI.Slabs.Tests
       Density dryDensity = new Density(dryDensityValue, DensityUnit.KilogramPerCubicCentimeter);
       ERatio eRatio = new ERatio();
       Strain shrinkageStrain = new Strain(shrinkageStrainValue, StrainUnit.MilliStrain);
-      ConcreteMaterial concreteMaterial = new ConcreteMaterial(grade, densityClass, dryDensity, userDensity, eRatio, imposedLoadPercentage, shrinkageStrain, userStrain);
+      ConcreteMaterial concreteMaterial = new ConcreteMaterial(grade, densityClass, dryDensity, userDensity, eRatio, new Ratio(imposedLoadPercentage, RatioUnit.DecimalFraction), shrinkageStrain, userStrain);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(grade.ToString(), concreteMaterial.Grade);
@@ -177,7 +177,7 @@ namespace ComposAPI.Slabs.Tests
       Assert.Equal(dryDensity, concreteMaterial.DryDensity);
       Assert.Equal(userDensity, concreteMaterial.UserDensity);
       Assert.Equal(eRatio, concreteMaterial.ERatio);
-      Assert.Equal(imposedLoadPercentage, concreteMaterial.ImposedLoadPercentage);
+      Assert.Equal(imposedLoadPercentage, concreteMaterial.ImposedLoadPercentage.DecimalFractions);
       Assert.Equal(shrinkageStrain, concreteMaterial.ShrinkageStrain);
       Assert.Equal(userStrain, concreteMaterial.UserStrain);
     }
@@ -193,7 +193,7 @@ namespace ComposAPI.Slabs.Tests
       Density dryDensity = new Density(dryDensityValue, DensityUnit.KilogramPerCubicCentimeter);
       ERatio eRatio = new ERatio();
       Strain shrinkageStrain = new Strain(shrinkageStrainValue, StrainUnit.MilliStrain);
-      ConcreteMaterial concreteMaterial = new ConcreteMaterial(grade, dryDensity, userDensity, eRatio, imposedLoadPercentage);
+      ConcreteMaterial concreteMaterial = new ConcreteMaterial(grade, dryDensity, userDensity, eRatio, new Ratio(imposedLoadPercentage, RatioUnit.DecimalFraction));
 
       // 3 check that inputs are set in object's members
       Assert.Equal(grade.ToString(), concreteMaterial.Grade);
@@ -202,7 +202,7 @@ namespace ComposAPI.Slabs.Tests
       Assert.Equal(dryDensity, concreteMaterial.DryDensity);
       Assert.Equal(userDensity, concreteMaterial.UserDensity);
       Assert.Equal(eRatio, concreteMaterial.ERatio);
-      Assert.Equal(imposedLoadPercentage, concreteMaterial.ImposedLoadPercentage);
+      Assert.Equal(imposedLoadPercentage, concreteMaterial.ImposedLoadPercentage.DecimalFractions);
       Assert.Equal(shrinkageStrain, concreteMaterial.ShrinkageStrain);
       Assert.Equal(userStrain, concreteMaterial.UserStrain);
     }
@@ -219,7 +219,7 @@ namespace ComposAPI.Slabs.Tests
       Density dryDensity = new Density(dryDensityValue, DensityUnit.KilogramPerCubicCentimeter);
       ERatio eRatio = new ERatio();
       Strain shrinkageStrain = new Strain(shrinkageStrainValue, StrainUnit.MilliStrain);
-      ConcreteMaterial concreteMaterial = new ConcreteMaterial(grade, dryDensity, userDensity, eRatio, imposedLoadPercentage, shrinkageStrain, userStrain);
+      ConcreteMaterial concreteMaterial = new ConcreteMaterial(grade, dryDensity, userDensity, eRatio, new Ratio(imposedLoadPercentage, RatioUnit.DecimalFraction), shrinkageStrain, userStrain);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(grade.ToString(), concreteMaterial.Grade);
@@ -228,7 +228,7 @@ namespace ComposAPI.Slabs.Tests
       Assert.Equal(dryDensity, concreteMaterial.DryDensity);
       Assert.Equal(userDensity, concreteMaterial.UserDensity);
       Assert.Equal(eRatio, concreteMaterial.ERatio);
-      Assert.Equal(imposedLoadPercentage, concreteMaterial.ImposedLoadPercentage);
+      Assert.Equal(imposedLoadPercentage, concreteMaterial.ImposedLoadPercentage.DecimalFractions);
       Assert.Equal(shrinkageStrain, concreteMaterial.ShrinkageStrain);
       Assert.Equal(userStrain, concreteMaterial.UserStrain);
     }
@@ -241,7 +241,7 @@ namespace ComposAPI.Slabs.Tests
       Density dryDensity = new Density(dryDensityValue, DensityUnit.KilogramPerCubicCentimeter);
       ERatio eRatio = new ERatio(9.87, 28.72, 9.55, 27.55);
       Strain shrinkageStrain = new Strain(shrinkageStrainValue, StrainUnit.MilliStrain);
-      ConcreteMaterial original = new ConcreteMaterial(grade, densityClass, dryDensity, userDensity, eRatio, imposedLoadPercentage, shrinkageStrain, userStrain);
+      ConcreteMaterial original = new ConcreteMaterial(grade, densityClass, dryDensity, userDensity, eRatio, new Ratio(imposedLoadPercentage, RatioUnit.DecimalFraction), shrinkageStrain, userStrain);
       ConcreteMaterial? duplicate = original.Duplicate() as ConcreteMaterial;
 
       // 2 check that duplicate has duplicated values
@@ -254,7 +254,7 @@ namespace ComposAPI.Slabs.Tests
       Assert.Equal(28.72, duplicate.ERatio.LongTerm);
       Assert.Equal(9.55, duplicate.ERatio.Vibration);
       Assert.Equal(27.55, duplicate.ERatio.Shrinkage);
-      Assert.Equal(imposedLoadPercentage, duplicate.ImposedLoadPercentage);
+      Assert.Equal(imposedLoadPercentage, duplicate.ImposedLoadPercentage.DecimalFractions);
       Assert.Equal(shrinkageStrain, duplicate.ShrinkageStrain);
       Assert.Equal(userStrain, duplicate.UserStrain);
 
@@ -274,7 +274,7 @@ namespace ComposAPI.Slabs.Tests
       duplicateERatio.Shrinkage = 4;
 
 
-      duplicate.ImposedLoadPercentage = 0.5;
+      duplicate.ImposedLoadPercentage = new Ratio(0.5, RatioUnit.DecimalFraction);
       Strain duplicateStrain = new Strain(-0.0004, StrainUnit.MilliStrain);
       duplicate.ShrinkageStrain = duplicateStrain;
       duplicate.UserStrain = true;
@@ -289,7 +289,7 @@ namespace ComposAPI.Slabs.Tests
       Assert.Equal(2, duplicate.ERatio.LongTerm);
       Assert.Equal(3, duplicate.ERatio.Vibration);
       Assert.Equal(4, duplicate.ERatio.Shrinkage);
-      Assert.Equal(0.5, duplicate.ImposedLoadPercentage);
+      Assert.Equal(0.5, duplicate.ImposedLoadPercentage.DecimalFractions);
       Assert.Equal(duplicateStrain, duplicate.ShrinkageStrain);
       Assert.True(duplicate.UserStrain);
 
@@ -303,7 +303,7 @@ namespace ComposAPI.Slabs.Tests
       Assert.Equal(28.72, original.ERatio.LongTerm);
       Assert.Equal(9.55, original.ERatio.Vibration);
       Assert.Equal(27.55, original.ERatio.Shrinkage);
-      Assert.Equal(imposedLoadPercentage, original.ImposedLoadPercentage);
+      Assert.Equal(imposedLoadPercentage, original.ImposedLoadPercentage.DecimalFractions);
       Assert.Equal(shrinkageStrain, original.ShrinkageStrain);
       Assert.Equal(userStrain, original.UserStrain);
     }
