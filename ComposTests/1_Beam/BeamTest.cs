@@ -10,7 +10,7 @@ using ComposAPITests.Helpers;
 
 namespace ComposAPI.Beams.Tests
 {
-  public class BeamTest
+  public static class BeamMother
   {
     public static string Example1CoaString()
     {
@@ -45,96 +45,42 @@ namespace ComposAPI.Beams.Tests
 
       SteelMaterial steelMaterial = new SteelMaterial(StandardSteelGrade.S355, Code.EN1994_1_1_2004);
 
-      BeamSection section1 = new BeamSection(
-        new Length(600, LengthUnit.Millimeter),
-        new Length(200, LengthUnit.Millimeter),
-        new Length(15, LengthUnit.Millimeter),
-        new Length(25, LengthUnit.Millimeter));
+      BeamSection section1 = new BeamSection(new Length(600, LengthUnit.Millimeter), new Length(200, LengthUnit.Millimeter), new Length(15, LengthUnit.Millimeter), new Length(25, LengthUnit.Millimeter));
       section1.TaperedToNext = true;
 
-      BeamSection section2 = new BeamSection(
-      new Length(900, LengthUnit.Millimeter),
-      new Length(200, LengthUnit.Millimeter),
-      new Length(15, LengthUnit.Millimeter),
-      new Length(25, LengthUnit.Millimeter));
+      BeamSection section2 = new BeamSection(new Length(900, LengthUnit.Millimeter), new Length(200, LengthUnit.Millimeter), new Length(15, LengthUnit.Millimeter), new Length(25, LengthUnit.Millimeter));
       section2.TaperedToNext = true;
       section2.StartPosition = new Ratio(50, RatioUnit.Percent);
 
-      BeamSection section3 = new BeamSection(
-      new Length(600, LengthUnit.Millimeter),
-      new Length(200, LengthUnit.Millimeter),
-      new Length(15, LengthUnit.Millimeter),
-      new Length(25, LengthUnit.Millimeter));
+      BeamSection section3 = new BeamSection(new Length(600, LengthUnit.Millimeter), new Length(200, LengthUnit.Millimeter), new Length(15, LengthUnit.Millimeter), new Length(25, LengthUnit.Millimeter));
       section3.TaperedToNext = true;
       section3.StartPosition = new Ratio(100, RatioUnit.Percent);
 
-      List<IBeamSection> sections = new List<IBeamSection>();
-      sections.Add(section1);
-      sections.Add(section2);
-      sections.Add(section3);
+      List<IBeamSection> sections = new() { section1, section2, section3 };
 
-      WebOpening rect1 = new WebOpening(
-        new Length(0.4, LengthUnit.Meter),
-        new Length(0.3, LengthUnit.Meter),
-        new Ratio(20, RatioUnit.Percent), new Ratio(50, RatioUnit.Percent));
+      WebOpening rect1 = new WebOpening(new Length(0.4, LengthUnit.Meter), new Length(0.3, LengthUnit.Meter), new Ratio(20, RatioUnit.Percent), new Ratio(50, RatioUnit.Percent));
 
-      WebOpening circ1 = new WebOpening(
-        new Length(0.4, LengthUnit.Meter),
-        new Length(3.5, LengthUnit.Meter), new Ratio(50, RatioUnit.Percent));
+      WebOpening circ1 = new WebOpening(new Length(0.4, LengthUnit.Meter), new Length(3.5, LengthUnit.Meter), new Ratio(50, RatioUnit.Percent));
 
-      WebOpening rightNotch = new WebOpening(
-        new Length(0.4, LengthUnit.Meter),
-        new Length(0.3, LengthUnit.Meter), NotchPosition.End);
+      WebOpening rightNotch = new WebOpening(new Length(0.4, LengthUnit.Meter), new Length(0.3, LengthUnit.Meter), NotchPosition.End);
 
-      WebOpening leftNotch = new WebOpening(
-        new Length(0.4, LengthUnit.Meter),
-        new Length(0.3, LengthUnit.Meter), NotchPosition.Start);
+      WebOpening leftNotch = new WebOpening(new Length(0.4, LengthUnit.Meter), new Length(0.3, LengthUnit.Meter), NotchPosition.Start);
 
-      WebOpeningStiffeners oneSideStiffener = new WebOpeningStiffeners(
-        new Length(0.05, LengthUnit.Meter),
-        new Length(0.1, LengthUnit.Meter),
-        new Length(0.01, LengthUnit.Meter),
-        new Length(0.1, LengthUnit.Meter),
-        new Length(0.01, LengthUnit.Meter),
-        false);
+      WebOpeningStiffeners oneSideStiffener = new WebOpeningStiffeners(new Length(0.05, LengthUnit.Meter), new Length(0.1, LengthUnit.Meter), new Length(0.01, LengthUnit.Meter), new Length(0.1, LengthUnit.Meter), new Length(0.01, LengthUnit.Meter), false);
 
-      WebOpening rect2 = new WebOpening(
-        new Length(0.4, LengthUnit.Meter),
-        new Length(0.3, LengthUnit.Meter),
-        new Length(5.5, LengthUnit.Meter), new Length(0.4, LengthUnit.Meter),
-        oneSideStiffener);
+      WebOpening rect2 = new WebOpening(new Length(0.4, LengthUnit.Meter), new Length(0.3, LengthUnit.Meter), new Length(5.5, LengthUnit.Meter), new Length(0.4, LengthUnit.Meter), oneSideStiffener);
 
-      WebOpeningStiffeners bothSideStiffener = new WebOpeningStiffeners(
-        new Length(0.06, LengthUnit.Meter),
-        new Length(0.15, LengthUnit.Meter),
-        new Length(0.02, LengthUnit.Meter),
-        new Length(0.15, LengthUnit.Meter),
-        new Length(0.02, LengthUnit.Meter),
-        true);
+      WebOpeningStiffeners bothSideStiffener = new WebOpeningStiffeners(new Length(0.06, LengthUnit.Meter), new Length(0.15, LengthUnit.Meter), new Length(0.02, LengthUnit.Meter), new Length(0.15, LengthUnit.Meter), new Length(0.02, LengthUnit.Meter), true);
 
-      WebOpening circ2 = new WebOpening(
-        new Length(0.3, LengthUnit.Meter),
-        new Ratio(80, RatioUnit.Percent), new Length(0.35, LengthUnit.Meter),
-        bothSideStiffener);
+      WebOpening circ2 = new WebOpening(new Length(0.3, LengthUnit.Meter), new Ratio(80, RatioUnit.Percent), new Length(0.35, LengthUnit.Meter), bothSideStiffener);
 
-      List<IWebOpening> webOpenings = new List<IWebOpening>();
-      webOpenings.Add(rect1);
-      webOpenings.Add(circ1);
-      webOpenings.Add(rightNotch);
-      webOpenings.Add(leftNotch);
-      webOpenings.Add(rect2);
-      webOpenings.Add(circ2);
+      List<IWebOpening> webOpenings = new() { rect1, circ1, rightNotch, leftNotch, rect2, circ2 };
 
-      Beam beam = new Beam(
-        new Length(9, LengthUnit.Meter),
-        restraint,
-        steelMaterial,
-        sections,
-        webOpenings);
-
-      return beam;
+      return new Beam(new Length(9, LengthUnit.Meter), restraint, steelMaterial, sections, webOpenings);
     }
-
+  }
+  public class BeamTest
+  {
     // 1 setup inputs
     [Theory]
     [InlineData(6)]
@@ -162,23 +108,23 @@ namespace ComposAPI.Beams.Tests
     public void ToCoaStringTest()
     {
       // Assemble
-      Beam beam = Example1Beam();
+      Beam beam = BeamMother.Example1Beam();
 
       // Act
       string coaString = beam.ToCoaString("MEMBER-1", Code.EN1994_1_1_2004, ComposUnits.GetStandardUnits());
       
       // Assert
-      Assert.Equal(Example1CoaString(), coaString);
+      Assert.Equal(BeamMother.Example1CoaString(), coaString);
     }
 
     [Fact]
     public void FromCoaStringTest()
     {
       // Assemble 
-      Beam expectedBeam = Example1Beam();
+      Beam expectedBeam = BeamMother.Example1Beam();
 
       // Act
-      Beam beam = (Beam)Beam.FromCoaString(Example1CoaString(), "MEMBER-1", ComposUnits.GetStandardUnits());
+      Beam beam = (Beam)Beam.FromCoaString(BeamMother.Example1CoaString(), "MEMBER-1", ComposUnits.GetStandardUnits());
 
       // Assert
       Assert.Equal(expectedBeam.Length.Millimeters, beam.Length.Millimeters);
@@ -243,11 +189,5 @@ namespace ComposAPI.Beams.Tests
         }
       }
     }
-
-    
-
-    
-
-    
   }
 }
