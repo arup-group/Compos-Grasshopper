@@ -86,8 +86,8 @@ namespace ComposAPI
             {
               property.SetValue(objTarget, objPropertyValue, null);
             }
-            // else property type is object/complex types, so need to recursively call this method until the end of the tree is reached
             else
+            // property type is object/complex type, so need to recursively call this method until the end of the tree is reached
             {
               if (objPropertyValue == null)
               {
@@ -108,5 +108,4 @@ namespace ComposAPI
       return objTarget;
     }
   }
-
 }

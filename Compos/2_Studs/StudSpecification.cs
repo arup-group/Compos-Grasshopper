@@ -1,8 +1,8 @@
-﻿using ComposAPI.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using ComposAPI.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -84,39 +84,6 @@ namespace ComposAPI
     }
 
     #endregion
-
-    internal void FromCoaString(List<string> parameters, ComposUnits units)
-    {
-      //STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000
-      //STUD_EC4_APPLY	MEMBER-1	YES
-      //STUD_NCCI_LIMIT_APPLY	MEMBER-1	NO
-      //STUD_EC4_RFT_POS	MEMBER-1	0.0300000
-      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-
-      if (parameters[0] == CoaIdentifier.StudSpecifications.StudNoZone)
-      {
-        this.NoStudZoneStart = new Length(Convert.ToDouble(parameters[2], noComma), units.Length);
-        this.NoStudZoneEnd = new Length(Convert.ToDouble(parameters[3], noComma), units.Length);
-      }
-
-      if (parameters[0] == CoaIdentifier.StudSpecifications.StudEC4)
-      {
-        this.EC4_Limit = parameters[2] == "YES";
-        this.SpecType = StudSpecType.BS5950;
-      }
-
-      if (parameters[0] == CoaIdentifier.StudSpecifications.StudNCCI)
-      {
-        this.NCCI = parameters[2] == "YES";
-        this.SpecType = StudSpecType.EC4;
-      }
-
-      if (parameters[0] == CoaIdentifier.StudSpecifications.StudReinfPos)
-      {
-        this.SpecType = StudSpecType.EC4;
-        this.ReinforcementPosition = new Length(Convert.ToDouble(parameters[2], noComma), units.Length);
-      }
-    }
 
     #region methods
     public override string ToString()

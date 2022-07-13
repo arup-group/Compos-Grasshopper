@@ -50,15 +50,14 @@ namespace ComposAPI
         if (parameters[0] == "END")
           return beam;
 
+        if (parameters[0] == CoaIdentifier.UnitData)
+          units.FromCoaString(parameters);
+
         if (parameters[1] != name)
           continue;
 
         switch (parameters[0])
         {
-          case (CoaIdentifier.UnitData):
-            units.FromCoaString(parameters);
-            break;
-
           case (CoaIdentifier.BeamSpanLength):
             beam.Length = CoaHelper.ConvertToLength(parameters[3], units.Length);
             break;

@@ -56,15 +56,14 @@ namespace ComposAPI
         if (parameters[0] == "END")
           return designCode;
 
+        if (parameters[0] == CoaIdentifier.UnitData)
+          units.FromCoaString(parameters);
+
         if (parameters[1] != name)
           continue;
 
         switch (parameters[0])
         {
-          case (CoaIdentifier.UnitData):
-            units.FromCoaString(parameters);
-            break;
-
           case (CoaIdentifier.DesignOption):
             switch (parameters[2])
             {

@@ -8,8 +8,8 @@ namespace ComposAPI
   /// </summary>
   public interface IStud
   {
-    IStudDimensions StudDimensions { get; }
-    IStudSpecification StudSpecification { get; }
+    IStudDimensions Dimensions { get; }
+    IStudSpecification Specification { get; }
     // Stud Spacing
     IList<IStudGroupSpacing> CustomSpacing { get; }
     double Interaction { get; }
