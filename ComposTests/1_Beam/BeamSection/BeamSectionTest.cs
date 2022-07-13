@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Moq;
 using ComposAPI.Helpers;
 using ComposAPITests.Helpers;
+using System;
 
 namespace ComposAPI.Beams.Tests
 {
@@ -25,7 +26,7 @@ namespace ComposAPI.Beams.Tests
 
       BeamSection beamSection = new BeamSection();
       if (startPosition < 0)
-        beamSection.StartPosition = new Length(startPosition, LengthUnit.AstronomicalUnit);
+        beamSection.StartPosition = new Ratio(Math.Abs(startPosition), RatioUnit.DecimalFraction);
       else
         beamSection.StartPosition = new Length(startPosition, LengthUnit.Meter);
       beamSection.Depth = new Length(depth, LengthUnit.Millimeter);

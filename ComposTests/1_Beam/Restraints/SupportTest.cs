@@ -33,7 +33,7 @@ namespace ComposAPI.Beams.Tests
     public Supports TestSupportConstructorCustom(double val1, double val2, double val3, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds)
     {
       LengthUnit unit = LengthUnit.Millimeter;
-      List<Length> customIntermediateRestraintPositions = new List<Length>();
+      List<IQuantity> customIntermediateRestraintPositions = new List<IQuantity>();
       customIntermediateRestraintPositions.Add(new Length(val1, unit));
       customIntermediateRestraintPositions.Add(new Length(val2, unit));
       customIntermediateRestraintPositions.Add(new Length(val3, unit));
@@ -42,9 +42,9 @@ namespace ComposAPI.Beams.Tests
       Supports sup = new Supports(customIntermediateRestraintPositions, secondaryMemberIntermediateRestraint, bothFlangesFreeToRotateOnPlanAtEnds);
 
       // 3 check that inputs are set in object's members
-      Assert.Equal(val1, sup.CustomIntermediateRestraintPositions[0].Millimeters);
-      Assert.Equal(val2, sup.CustomIntermediateRestraintPositions[1].Millimeters);
-      Assert.Equal(val3, sup.CustomIntermediateRestraintPositions[2].Millimeters);
+      Assert.Equal(val1, sup.CustomIntermediateRestraintPositions[0].As(LengthUnit.Millimeter));
+      Assert.Equal(val2, sup.CustomIntermediateRestraintPositions[1].As(LengthUnit.Millimeter));
+      Assert.Equal(val3, sup.CustomIntermediateRestraintPositions[2].As(LengthUnit.Millimeter));
       Assert.Equal(secondaryMemberIntermediateRestraint, sup.SecondaryMemberIntermediateRestraint);
       Assert.Equal(bothFlangesFreeToRotateOnPlanAtEnds, sup.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.Equal(IntermediateRestraint.Custom, sup.IntermediateRestraintPositions);
@@ -95,14 +95,14 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(IntermediateRestraint.Custom, duplicate.IntermediateRestraintPositions);
       Assert.False(duplicate.SecondaryMemberIntermediateRestraint);
       Assert.True(duplicate.BothFlangesFreeToRotateOnPlanAtEnds);
-      Assert.Equal(1, duplicate.CustomIntermediateRestraintPositions[0].Millimeters);
-      Assert.Equal(2, duplicate.CustomIntermediateRestraintPositions[1].Millimeters);
-      Assert.Equal(3, duplicate.CustomIntermediateRestraintPositions[2].Millimeters);
+      Assert.Equal(1, duplicate.CustomIntermediateRestraintPositions[0].As(LengthUnit.Millimeter));
+      Assert.Equal(2, duplicate.CustomIntermediateRestraintPositions[1].As(LengthUnit.Millimeter));
+      Assert.Equal(3, duplicate.CustomIntermediateRestraintPositions[2].As(LengthUnit.Millimeter));
 
       // 3 make some changes to duplicate
       duplicate.SecondaryMemberIntermediateRestraint = true;
       duplicate.BothFlangesFreeToRotateOnPlanAtEnds = false;
-      List<Length> customIntermediateRestraintPositions = new List<Length>();
+      List<IQuantity> customIntermediateRestraintPositions = new List<IQuantity>();
       customIntermediateRestraintPositions.Add(new Length(4, unit));
       customIntermediateRestraintPositions.Add(new Length(5, unit));
       customIntermediateRestraintPositions.Add(new Length(6, unit));
@@ -113,18 +113,18 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(IntermediateRestraint.Custom, duplicate.IntermediateRestraintPositions);
       Assert.True(duplicate.SecondaryMemberIntermediateRestraint);
       Assert.False(duplicate.BothFlangesFreeToRotateOnPlanAtEnds);
-      Assert.Equal(4, duplicate.CustomIntermediateRestraintPositions[0].Millimeters);
-      Assert.Equal(5, duplicate.CustomIntermediateRestraintPositions[1].Millimeters);
-      Assert.Equal(6, duplicate.CustomIntermediateRestraintPositions[2].Millimeters);
-      Assert.Equal(7, duplicate.CustomIntermediateRestraintPositions[3].Millimeters);
+      Assert.Equal(4, duplicate.CustomIntermediateRestraintPositions[0].As(LengthUnit.Millimeter));
+      Assert.Equal(5, duplicate.CustomIntermediateRestraintPositions[1].As(LengthUnit.Millimeter));
+      Assert.Equal(6, duplicate.CustomIntermediateRestraintPositions[2].As(LengthUnit.Millimeter));
+      Assert.Equal(7, duplicate.CustomIntermediateRestraintPositions[3].As(LengthUnit.Millimeter));
 
       // 5 check that original has not been changed
       Assert.Equal(IntermediateRestraint.Custom, original.IntermediateRestraintPositions);
       Assert.False(original.SecondaryMemberIntermediateRestraint);
       Assert.True(original.BothFlangesFreeToRotateOnPlanAtEnds);
-      Assert.Equal(1, original.CustomIntermediateRestraintPositions[0].Millimeters);
-      Assert.Equal(2, original.CustomIntermediateRestraintPositions[1].Millimeters);
-      Assert.Equal(3, original.CustomIntermediateRestraintPositions[2].Millimeters);
+      Assert.Equal(1, original.CustomIntermediateRestraintPositions[0].As(LengthUnit.Millimeter));
+      Assert.Equal(2, original.CustomIntermediateRestraintPositions[1].As(LengthUnit.Millimeter));
+      Assert.Equal(3, original.CustomIntermediateRestraintPositions[2].As(LengthUnit.Millimeter));
     }
   }
 }
