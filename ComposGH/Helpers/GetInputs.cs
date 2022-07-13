@@ -139,7 +139,54 @@ namespace ComposGH.Components
 
       return unitNumber.Value;
     }
-
+    internal static List<IQuantity> LengthsOrRatios(GH_Component owner, IGH_DataAccess DA, int inputid, LengthUnit docLengthUnit, bool isOptional = false)
+    {
+      List<IQuantity> lengths = new List<IQuantity>();
+      List<GH_ObjectWrapper> gh_typs = new List<GH_ObjectWrapper>();
+      if (DA.GetDataList(inputid, gh_typs))
+      {
+        for (int i = 0; i < gh_typs.Count; i++)
+        {
+          GH_UnitNumber unitNumber = null;
+          // try cast directly to quantity type
+          if (gh_typs[i].Value is GH_UnitNumber)
+          {
+            unitNumber = (GH_UnitNumber)gh_typs[i].Value;
+            // check that unit is of right type
+            if (!unitNumber.Value.QuantityInfo.UnitType.Equals(typeof(LengthUnit)) &&
+              !unitNumber.Value.QuantityInfo.UnitType.Equals(typeof(RatioUnit)))
+            {
+              owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Error in " + owner.Params.Input[inputid].NickName + " (item " + i + ") input: Wrong unit type"
+                  + Environment.NewLine + "Unit type is " + unitNumber.Value.QuantityInfo.Name + " but must be Length or Ratio");
+            }
+            else
+            {
+              lengths.Add(unitNumber.Value);
+            }
+          }
+          // try cast to double
+          else if (GH_Convert.ToDouble(gh_typs[i].Value, out double val, GH_Conversion.Both))
+          {
+            // create new quantity from default units
+            if (val < 0)
+              lengths.Add(new Ratio(Math.Abs(val), RatioUnit.DecimalFraction));
+            else
+              lengths.Add(new Length(val, docLengthUnit));
+          }
+          else
+          {
+            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to UnitNumber");
+            continue;
+          }
+        }
+        return lengths;
+      }
+      else if (!isOptional)
+      {
+        owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Input parameter " + owner.Params.Input[inputid].NickName + " failed to collect data!");
+      }
+      return null;
+    }
     internal static List<Length> Lengths(GH_Component owner, IGH_DataAccess DA, int inputid, LengthUnit docLengthUnit, bool isOptional = false)
     {
       List<Length> lengths = new List<Length>();

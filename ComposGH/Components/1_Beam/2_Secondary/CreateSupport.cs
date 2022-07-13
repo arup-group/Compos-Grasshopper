@@ -171,7 +171,7 @@ namespace ComposGH.Components
 
       if (this.Params.Input[2].Sources.Count > 0)
       {
-        List<Length> restrs = GetInput.Lengths(this, DA, 2, LengthUnit);
+        List<IQuantity> restrs = GetInput.LengthsOrRatios(this, DA, 2, LengthUnit);
         SelectedItems[0] = "Custom";
         Supports sup = new Supports(restrs, smir, ffre);
         DA.SetData(0, new SupportsGoo(sup));
