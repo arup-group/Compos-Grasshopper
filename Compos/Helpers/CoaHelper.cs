@@ -64,6 +64,9 @@ namespace ComposAPI.Helpers
     }
     public static string FormatSignificantFigures(IQuantity lengthOrRatio, LengthUnit lengthUnit, int significantFigures)
     {
+      if (lengthOrRatio.Value == 0)
+        return FormatSignificantFigures(0, 6);
+
       if (lengthOrRatio.QuantityInfo.UnitType == typeof(LengthUnit))
       {
         Length l = (Length)lengthOrRatio;

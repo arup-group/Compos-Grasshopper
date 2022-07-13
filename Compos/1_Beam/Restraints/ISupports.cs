@@ -10,7 +10,7 @@ namespace ComposAPI
   {
     bool SecondaryMemberIntermediateRestraint { get; }
     bool BothFlangesFreeToRotateOnPlanAtEnds { get; }
-    IList<Length> CustomIntermediateRestraintPositions { get; }
+    IList<IQuantity> CustomIntermediateRestraintPositions { get; }
     IntermediateRestraint IntermediateRestraintPositions { get; }
   }
 }

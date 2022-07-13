@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposAPI
 {
@@ -77,12 +78,18 @@ namespace ComposAPI
             //RESTRAINT_POINT	MEMBER-2	USER_DEFINED	3	1	0.000000	F12LW TR MAJV MINV
             //RESTRAINT_POINT MEMBER-2 USER_DEFINED 3 2 5.00000 F1L TP MINV
             //RESTRAINT_POINT MEMBER-2 USER_DEFINED 3 3 6.00000 F1L TP MINV
-            List<Length> positions = new List<Length>();
+            //RESTRAINT_POINT	MEMBER-1	USER_DEFINED	3	1	0.000000	F12LW TR MAJV MINV
+            //RESTRAINT_POINT	MEMBER-1	USER_DEFINED	3	2	50.0000%	F1L TP MINV
+            //RESTRAINT_POINT	MEMBER-1	USER_DEFINED	3	3	100.000%	F12LW TR MAJV MINV
+            List<IQuantity> positions = new List<IQuantity>();
             if (this.ConstructionStageSupports == null)
               this.ConstructionStageSupports = new Supports();
             if (this.ConstructionStageSupports.CustomIntermediateRestraintPositions != null & this.ConstructionStageSupports.CustomIntermediateRestraintPositions.Count != 0)
               positions = this.ConstructionStageSupports.CustomIntermediateRestraintPositions.ToList();
-            positions.Add(new Length(Convert.ToDouble(parameters[5], noComma), units.Length));
+            if (parameters[5].EndsWith("%"))
+              positions.Add(new Ratio(Convert.ToDouble(parameters[5].Replace("%", string.Empty), noComma), RatioUnit.Percent));
+            else
+              positions.Add(new Length(Convert.ToDouble(parameters[5], noComma), units.Length));
 
             this.ConstructionStageSupports = new Supports(positions,
                 this.ConstructionStageSupports.SecondaryMemberIntermediateRestraint, this.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
@@ -150,12 +157,15 @@ namespace ComposAPI
             //FINAL_RESTRAINT_POINT	MEMBER-2	USER_DEFINED	3	1	0.000000	F12LW TR MAJV MINV
             //FINAL_RESTRAINT_POINT MEMBER-2 USER_DEFINED 3 2 5.00000 F1L TP MINV
             //FINAL_RESTRAINT_POINT MEMBER-2 USER_DEFINED 3 3 6.00000 F1L TP MINV
-            List<Length> positions = new List<Length>();
+            List<IQuantity> positions = new List<IQuantity>();
             if (this.FinalStageSupports == null)
               this.FinalStageSupports = new Supports();
             if (this.FinalStageSupports.CustomIntermediateRestraintPositions != null & this.FinalStageSupports.CustomIntermediateRestraintPositions.Count != 0)
               positions = this.FinalStageSupports.CustomIntermediateRestraintPositions.ToList();
-            positions.Add(new Length(Convert.ToDouble(parameters[5], noComma), units.Length));
+            if (parameters[5].EndsWith("%"))
+              positions.Add(new Ratio(Convert.ToDouble(parameters[5].Replace("%", string.Empty), noComma), RatioUnit.Percent));
+            else
+              positions.Add(new Length(Convert.ToDouble(parameters[5], noComma), units.Length));
 
             this.FinalStageSupports = new Supports(positions,
                 this.FinalStageSupports.SecondaryMemberIntermediateRestraint, this.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
@@ -261,7 +271,7 @@ namespace ComposAPI
             parameters.Add("USER_DEFINED");
             parameters.Add(count.ToString());
             parameters.Add((i + 1).ToString());
-            parameters.Add(CoaHelper.FormatSignificantFigures(this.ConstructionStageSupports.CustomIntermediateRestraintPositions[i].ToUnit(units.Length).Value, 6));
+            parameters.Add(CoaHelper.FormatSignificantFigures(this.ConstructionStageSupports.CustomIntermediateRestraintPositions[i], units.Length, 6));
             str += CoaHelper.CreateString(parameters);
           }
         }
@@ -348,7 +358,7 @@ namespace ComposAPI
             parameters.Add("USER_DEFINED");
             parameters.Add(count.ToString());
             parameters.Add((i + 1).ToString());
-            parameters.Add(CoaHelper.FormatSignificantFigures(this.FinalStageSupports.CustomIntermediateRestraintPositions[i].ToUnit(units.Length).Value, 6));
+            parameters.Add(CoaHelper.FormatSignificantFigures(this.FinalStageSupports.CustomIntermediateRestraintPositions[i], units.Length, 6));
             str += CoaHelper.CreateString(parameters);
           }
         }
