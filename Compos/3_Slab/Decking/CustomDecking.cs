@@ -1,6 +1,7 @@
 ﻿using ComposAPI.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,25 +36,26 @@ namespace ComposAPI
     #region coa interop
     internal static IDecking FromCoaString(List<string> parameters, ComposUnits units)
     {
+      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       CustomDecking decking = new CustomDecking();
 
-      decking.Strength = new Pressure(Convert.ToDouble(parameters[3]), units.Stress);
+      decking.Strength = new Pressure(Convert.ToDouble(parameters[3], noComma), units.Stress);
       DeckingConfiguration deckingConfiguration = new DeckingConfiguration();
-      deckingConfiguration.Angle = new Angle(Convert.ToDouble(parameters[4]), units.Angle);
-      decking.b1 = new Length(Convert.ToDouble(parameters[5]), units.Length);
-      decking.b2 = new Length(Convert.ToDouble(parameters[6]), units.Length);
-      decking.b3 = new Length(Convert.ToDouble(parameters[7]), units.Length);
-      decking.Depth = new Length(Convert.ToDouble(parameters[8]), units.Length);
-      decking.Thickness = new Length(Convert.ToDouble(parameters[9]), units.Length);
-      decking.b4 = new Length(Convert.ToDouble(parameters[10]), units.Length);
-      decking.b5 = new Length(Convert.ToDouble(parameters[11]), units.Length);
+      deckingConfiguration.Angle = new Angle(Convert.ToDouble(parameters[4], noComma), units.Angle);
+      decking.b1 = new Length(Convert.ToDouble(parameters[5], noComma), units.Length);
+      decking.b2 = new Length(Convert.ToDouble(parameters[6], noComma), units.Length);
+      decking.b3 = new Length(Convert.ToDouble(parameters[7], noComma), units.Length);
+      decking.Depth = new Length(Convert.ToDouble(parameters[8], noComma), units.Length);
+      decking.Thickness = new Length(Convert.ToDouble(parameters[9], noComma), units.Length);
+      decking.b4 = new Length(Convert.ToDouble(parameters[10], noComma), units.Length);
+      decking.b5 = new Length(Convert.ToDouble(parameters[11], noComma), units.Length);
 
       if (parameters[12] == "DECKING_JOINTED")
         deckingConfiguration.IsDiscontinous = true;
       else
         deckingConfiguration.IsDiscontinous = false;
 
-      if (parameters[12] == "JOINT_WELDED")
+      if (parameters[13] == "JOINT_WELDED")
         deckingConfiguration.IsWelded = true;
       else
         deckingConfiguration.IsWelded = false;
