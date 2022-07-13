@@ -173,7 +173,7 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void EqualityTest()
+    public void EqualityTest1()
     {
       Force quantity = new Force(1, ForceUnit.Kilonewton);
       Force force = new Force(2, ForceUnit.Decanewton);
@@ -187,6 +187,23 @@ namespace ComposAPI.Tests
 
       ObjectExtensionTest.Equals(original, duplicate);
     }
+
+    // [Theory]
+    // [InlineData(new Force(1, ForceUnit.Kilonewton))]
+    // public void EqualityTest2(Force quantity)
+    // {
+    //   Force quantity = new Force(1, ForceUnit.Kilonewton);
+    //   Force force = new Force(2, ForceUnit.Decanewton);
+    //   IList<IQuantity> iQuantities = new List<IQuantity>() { Force.Zero, new Length(100, LengthUnit.Millimeter) };
+    //   IList<Length> structs = new List<Length>() { Length.Zero, new Length(100, LengthUnit.Millimeter) };
+
+    //   TestObject grandChild = new TestObject(true, 1.0, 1, "a", TestEnum.Value1, quantity, force, new List<TestObject>(), iQuantities, structs);
+    //   TestObject original = new TestObject(new TestObject(grandChild));
+
+    //   TestObject duplicate = original.Duplicate() as TestObject;
+
+    //   ObjectExtensionTest.Equals(original, duplicate);
+    // }
   }
 
   enum TestEnum
