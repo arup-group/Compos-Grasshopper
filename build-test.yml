@@ -10,8 +10,6 @@ variables:
   - group: pipeline-tokens
   - name: configuration
     value: Release
-  - name: summaryFileLocation
-    value: '$(System.DefaultWorkingDirectory)/results/**/coverage.cobertura.xml'
 
 pool: 'vs17_2'
 
@@ -60,11 +58,11 @@ steps:
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'cobertura'
-    summaryFileLocation: '$(summaryFileLocation)'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/results/**/coverage.cobertura.xml'
     pathToSources: '$(System.DefaultWorkingDirectory)'
 
 - powershell: |
-    codecov -t $env:CODECOV_TOKEN -f $(summaryFileLocation) -F unittests
+    codecov -t $env:CODECOV_TOKEN -f $(System.DefaultWorkingDirectory)/results/**/coverage.cobertura.xml -F unittests
   env:
     CODECOV_TOKEN: $(CODECOV_TOKEN)
   displayName: Upload Code Coverage to codecovio
