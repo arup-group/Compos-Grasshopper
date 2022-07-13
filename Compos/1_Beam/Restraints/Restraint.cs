@@ -41,6 +41,7 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
+    // not static to update the object 
     internal Restraint FromCoaString(List<string> parameters, ComposUnits units)
     {
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;

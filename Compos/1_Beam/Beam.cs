@@ -73,8 +73,8 @@ namespace ComposAPI
           case (CoaIdentifier.FinalEndFlangeFreeRotate):
             if (beam.Restraint == null) { beam.Restraint = new Restraint(); }
             Restraint restraint = (Restraint)beam.Restraint;
+            // not static to update the object 
             restraint.FromCoaString(parameters, ComposUnits.GetStandardUnits());
-            beam.Restraint = restraint;
             break;
 
           case (CoaIdentifier.BeamSteelMaterialStandard):
@@ -84,7 +84,6 @@ namespace ComposAPI
           case (CoaIdentifier.BeamWeldingMaterial):
             SteelMaterial steelMaterial = (SteelMaterial)beam.Material;
             steelMaterial.WeldGrade = SteelMaterial.WeldGradeFromCoa(parameters);
-            beam.Material = steelMaterial;
             break;
 
           case (CoaIdentifier.BeamSectionAtX):
