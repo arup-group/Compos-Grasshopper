@@ -1,7 +1,8 @@
-﻿using Xunit;
+﻿using System.Collections.Generic;
+using ComposAPI.Tests;
 using UnitsNet;
 using UnitsNet.Units;
-using System.Collections.Generic;
+using Xunit;
 
 namespace ComposAPI.Studs.Tests
 {
@@ -170,6 +171,8 @@ namespace ComposAPI.Studs.Tests
       Assert.True(duplicate.CheckStudSpacing);
       Assert.Equal(double.NaN, duplicate.Interaction);
       Assert.Equal(double.NaN, duplicate.MinSavingMultipleZones);
+
+      ObjectExtensionTest.Equals(original, duplicate);
 
       // 3 make some changes to duplicate
       IStudDimensions dimensions = new StudDimensions(StandardStudSize.D25mmH100mm, StandardStudGrade.SD3_EN13918);

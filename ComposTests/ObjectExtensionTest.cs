@@ -173,7 +173,7 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void EqualityTest2()
+    public void EqualityTest()
     {
       Force quantity = new Force(1, ForceUnit.Kilonewton);
       Force force = new Force(2, ForceUnit.Decanewton);
