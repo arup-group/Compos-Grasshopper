@@ -14,7 +14,7 @@ namespace ComposAPI
   /// </summary>
   public class SlabDimension : ISlabDimension, ICoaObject
   {
-    public Length StartPosition { get; set; } = Length.Zero;
+    public IQuantity StartPosition { get; set; } = Length.Zero;
 
     // Dimensions
     public Length OverallDepth { get; set; } //	depth of slab
@@ -33,7 +33,7 @@ namespace ComposAPI
       // empty constructor
     }
 
-    public SlabDimension(Length startPosition, Length overallDepth, Length availableWidthLeft, Length availableWidthRight, bool taperedToNext = false)
+    public SlabDimension(IQuantity startPosition, Length overallDepth, Length availableWidthLeft, Length availableWidthRight, bool taperedToNext = false)
     {
       this.StartPosition = startPosition;
       this.OverallDepth = overallDepth;
@@ -43,7 +43,7 @@ namespace ComposAPI
       this.TaperedToNext = taperedToNext;
     }
 
-    public SlabDimension(Length startPosition, Length overallDepth, Length availableWidthLeft, Length availableWidthRight,
+    public SlabDimension(IQuantity startPosition, Length overallDepth, Length availableWidthLeft, Length availableWidthRight,
       Length effectiveWidthLeft, Length effectiveWidthRight, bool taperedToNext = false)
     {
       this.StartPosition = startPosition;
@@ -60,13 +60,19 @@ namespace ComposAPI
     #region coa interop
     internal static ISlabDimension FromCoaString(List<string> parameters, ComposUnits units)
     {
-      SlabDimension dimension = new SlabDimension();
-
       if (parameters.Count < 10)
       {
         throw new Exception("Unable to convert " + parameters + " to Compos Slab Dimension.");
       }
-      dimension.StartPosition = CoaHelper.ConvertToLength(parameters[4], units.Length);
+
+      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+      SlabDimension dimension = new SlabDimension();
+      
+      if (parameters[4].EndsWith("%"))
+        dimension.StartPosition = new Ratio(Convert.ToDouble(parameters[4].Replace("%", string.Empty), noComma), RatioUnit.Percent);
+      else
+        dimension.StartPosition = new Length(Convert.ToDouble(parameters[4], noComma), units.Length);
+
       dimension.OverallDepth = CoaHelper.ConvertToLength(parameters[5], units.Length);
       dimension.AvailableWidthLeft = CoaHelper.ConvertToLength(parameters[6], units.Length);
       dimension.AvailableWidthRight = CoaHelper.ConvertToLength(parameters[7], units.Length);
@@ -76,15 +82,15 @@ namespace ComposAPI
       else
         dimension.TaperedToNext = false;
 
-      if (parameters[8] == "EFFECTIVE_WIDTH_YES")
+      if (parameters[9] == "EFFECTIVE_WIDTH_YES")
       {
         dimension.UserEffectiveWidth = true;
         if (parameters.Count != 12)
         {
           throw new Exception("Unable to convert " + parameters + " to Compos Slab Dimension.");
         }
-        dimension.EffectiveWidthLeft = CoaHelper.ConvertToLength(parameters[9], units.Length);
-        dimension.EffectiveWidthRight = CoaHelper.ConvertToLength(parameters[10], units.Length);
+        dimension.EffectiveWidthLeft = CoaHelper.ConvertToLength(parameters[10], units.Length);
+        dimension.EffectiveWidthRight = CoaHelper.ConvertToLength(parameters[11], units.Length);
       }
       return dimension;
     }
@@ -126,8 +132,17 @@ namespace ComposAPI
     public override string ToString()
     {
       string start = "";
-      if (this.StartPosition != Length.Zero)
-        start = ", Px:" + this.StartPosition.ToUnit(Units.LengthUnitGeometry).ToString("f0.0#").Replace(" ", string.Empty);
+      if (this.StartPosition.QuantityInfo.UnitType == typeof(Length))
+      {
+        Length l = (Length)this.StartPosition;
+        start += l.ToUnit(Units.LengthUnitGeometry).ToString("g2").Replace(" ", string.Empty);
+      }
+      else
+      {
+        Ratio p = (Ratio)this.StartPosition;
+        start += p.ToString("g2").Replace(" ", string.Empty);
+      }
+      
       string tapered = "";
       if (this.TaperedToNext)
         tapered = ", Tapered";

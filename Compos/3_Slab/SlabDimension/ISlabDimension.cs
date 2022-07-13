@@ -7,7 +7,7 @@ namespace ComposAPI
   /// </summary>
   public interface ISlabDimension
   {
-    Length StartPosition { get; }
+    IQuantity StartPosition { get; }
     // Dimensions
     Length OverallDepth { get; }
     Length AvailableWidthLeft { get; }
