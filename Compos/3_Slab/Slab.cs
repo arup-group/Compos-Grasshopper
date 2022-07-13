@@ -55,7 +55,7 @@ namespace ComposAPI
         switch (parameters[0])
         {
           case (CoaIdentifier.SlabConcreteMaterial):
-            slab.Material = ConcreteMaterial.FromCoaString(lines, units);
+            slab.Material = ConcreteMaterial.FromCoaString(parameters, units);
             break;
 
           case (CoaIdentifier.SlabDimension):

@@ -127,67 +127,7 @@ namespace ComposAPI.Beams.Tests
       Beam beam = (Beam)Beam.FromCoaString(BeamMother.Example1CoaString(), "MEMBER-1", ComposUnits.GetStandardUnits());
 
       // Assert
-      Assert.Equal(expectedBeam.Length.Millimeters, beam.Length.Millimeters);
-
-      ISupports expectedCStage = expectedBeam.Restraint.ConstructionStageSupports;
-      ISupports cStage = beam.Restraint.ConstructionStageSupports;
-      Assert.Equal(expectedCStage.IntermediateRestraintPositions, cStage.IntermediateRestraintPositions);
-      Assert.Equal(expectedCStage.CustomIntermediateRestraintPositions, cStage.CustomIntermediateRestraintPositions);
-      Assert.Equal(expectedCStage.SecondaryMemberIntermediateRestraint, cStage.SecondaryMemberIntermediateRestraint);
-      Assert.Equal(expectedCStage.BothFlangesFreeToRotateOnPlanAtEnds, cStage.BothFlangesFreeToRotateOnPlanAtEnds);
-      ISupports expectedFStage = expectedBeam.Restraint.FinalStageSupports;
-      ISupports fStage = beam.Restraint.FinalStageSupports;
-      Assert.Equal(expectedFStage.IntermediateRestraintPositions, fStage.IntermediateRestraintPositions);
-      Assert.Equal(expectedFStage.CustomIntermediateRestraintPositions, fStage.CustomIntermediateRestraintPositions);
-      Assert.Equal(expectedFStage.SecondaryMemberIntermediateRestraint, fStage.SecondaryMemberIntermediateRestraint);
-      Assert.Equal(expectedFStage.BothFlangesFreeToRotateOnPlanAtEnds, fStage.BothFlangesFreeToRotateOnPlanAtEnds);
-
-      ISteelMaterial expectedMat = expectedBeam.Material;
-      ISteelMaterial mat = beam.Material;
-      Assert.Equal(expectedMat.Grade, mat.Grade);
-      Assert.Equal(expectedMat.fy, mat.fy);
-      Assert.Equal(expectedMat.Density, mat.Density);
-      Assert.Equal(expectedMat.E, mat.E);
-      Assert.Equal(expectedMat.isCustom, mat.isCustom);
-      Assert.Equal(expectedMat.ReductionFactorMpl, mat.ReductionFactorMpl);
-      Assert.Equal(expectedMat.WeldGrade, mat.WeldGrade);
-
-      for (int i = 0; i < expectedBeam.Sections.Count; i++)
-      {
-        IBeamSection expectedSection = expectedBeam.Sections[i];
-        IBeamSection section = beam.Sections[i];
-        Assert.Equal(expectedSection.SectionDescription, section.SectionDescription);
-        Assert.Equal(expectedSection.StartPosition, section.StartPosition);
-        Assert.Equal(expectedSection.isCatalogue, section.isCatalogue);
-        Assert.Equal(expectedSection.TaperedToNext, section.TaperedToNext);
-      }
-     
-      if (expectedBeam.WebOpenings != null)
-      {
-        for (int i = 0; i < expectedBeam.WebOpenings.Count; i++)
-        {
-          IWebOpening expectedOpening = expectedBeam.WebOpenings[i];
-          IWebOpening webOpening = beam.WebOpenings[i];
-          Assert.Equal(expectedOpening.WebOpeningType, webOpening.WebOpeningType);
-          Assert.Equal(expectedOpening.Width, webOpening.Width);
-          Assert.Equal(expectedOpening.Diameter, webOpening.Diameter);
-          Assert.Equal(expectedOpening.Height, webOpening.Height);
-          Assert.Equal(expectedOpening.CentroidPosFromStart, webOpening.CentroidPosFromStart);
-          Assert.Equal(expectedOpening.CentroidPosFromTop, webOpening.CentroidPosFromTop);
-          if (expectedOpening.OpeningStiffeners != null)
-          {
-            IWebOpeningStiffeners expStiffener = expectedOpening.OpeningStiffeners;
-            IWebOpeningStiffeners stiffener = webOpening.OpeningStiffeners;
-            Assert.Equal(expStiffener.DistanceFrom, stiffener.DistanceFrom);
-            Assert.Equal(expStiffener.TopStiffenerWidth, stiffener.TopStiffenerWidth);
-            Assert.Equal(expStiffener.TopStiffenerThickness, stiffener.TopStiffenerThickness);
-            Assert.Equal(expStiffener.BottomStiffenerWidth, stiffener.BottomStiffenerWidth);
-            Assert.Equal(expStiffener.BottomStiffenerThickness, stiffener.TopStiffenerThickness);
-            Assert.Equal(expStiffener.isBothSides, stiffener.isBothSides);
-            Assert.Equal(expStiffener.isNotch, stiffener.isNotch);
-          }
-        }
-      }
+      ObjectExtension.Equals(expectedBeam, beam);
     }
   }
 }

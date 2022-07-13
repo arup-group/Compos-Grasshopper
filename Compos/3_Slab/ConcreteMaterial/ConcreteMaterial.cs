@@ -179,10 +179,10 @@ namespace ComposAPI
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
 
       ConcreteMaterial material = new ConcreteMaterial();
-      if (parameters[1].Length < 4)
+      if (parameters[2].Length < 4)
       {
         // BS5950 GRADES
-        material.Grade = Enum.Parse(typeof(ConcreteGrade), parameters[1]).ToString();
+        material.Grade = Enum.Parse(typeof(ConcreteGrade), parameters[2]).ToString();
       }
       else
       {

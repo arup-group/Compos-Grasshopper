@@ -48,6 +48,34 @@ namespace ComposAPI.Slabs.Tests
   }
   public class SlabTest
   {
+    [Fact]
+    public void ToCoaStringTest()
+    {
+      // Assemble
+      ComposUnits units = ComposUnits.GetStandardUnits();
+      string expectedCoaString = SlabMother.Example1CoaString();
+
+      // Act
+      string coaString = SlabMother.Example1Slab().ToCoaString("MEMBER-1", units);
+
+      // Assert
+      Assert.Equal(expectedCoaString, coaString);
+    }
+
+    [Fact]
+    public void FromCoaStringTest()
+    {
+      // Assemble
+      ComposUnits units = ComposUnits.GetStandardUnits();
+      Slab expectedSlab = SlabMother.Example1Slab();
+
+      // Act
+      Slab slab = (Slab)Slab.FromCoaString(SlabMother.Example1CoaString(), "MEMBER-1", Code.BS5950_3_1_1990_A1_2010, units);
+
+      // Assert
+      ObjectExtension.Equals(expectedSlab, slab);
+    }
+
     // 1 setup inputs
     [Fact]
     public void ConstructorTest1()
@@ -86,34 +114,6 @@ namespace ComposAPI.Slabs.Tests
       Assert.Equal(transverse, slab.Transverse);
       Assert.Null(slab.Mesh);
       Assert.Null(slab.Decking);
-    }
-
-    [Fact]
-    public void ToCoaStringTest()
-    {
-      // Assemble
-      ComposUnits units = ComposUnits.GetStandardUnits();
-      string expectedCoaString = SlabMother.Example1CoaString();
-      
-      // Act
-      string coaString = SlabMother.Example1Slab().ToCoaString("MEMBER-1", units);
-
-      // Assert
-      Assert.Equal(expectedCoaString, coaString);
-    }
-
-    [Fact]
-    public void FromCoaStringTest()
-    {
-      // Assemble
-      ComposUnits units = ComposUnits.GetStandardUnits();
-      Slab expectedSlab = SlabMother.Example1Slab();
-
-      // Act
-      Slab slab = (Slab)Slab.FromCoaString(SlabMother.Example1CoaString(), "MEMBER-1", Code.BS5950_3_1_1990_A1_2010, units);
-
-      // Assert
-      Assert.Equal(expectedSlab, slab);
     }
   }
 }
