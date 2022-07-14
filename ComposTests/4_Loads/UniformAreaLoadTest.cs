@@ -33,9 +33,6 @@ namespace ComposAPI.Loads.Tests
     [Fact]
     public void UniformAreaLoadToCoaStringTest()
     {
-      ForceUnit forceUnit = ForceUnit.Kilonewton;
-      LengthUnit lengthUnit = LengthUnit.Meter;
-
       // Arrange
       string expected_coaString = "LOAD	MEMBER-1	Uniform	Area	3.00000	4.50000	6.00000	7.00000\n";
       Load load = TestUniformAreaLoadConstructor(0.003, 0.0045, 0.006, 0.007); // input unit in kN/m, coa string in N/m

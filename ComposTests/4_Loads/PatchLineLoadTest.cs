@@ -73,9 +73,6 @@ namespace ComposAPI.Loads.Tests
     [Fact]
     public void PatchLineLoadToCoaStringTest()
     {
-      ForceUnit forceUnit = ForceUnit.Kilonewton;
-      LengthUnit lengthUnit = LengthUnit.Meter;
-
       // Arrange
       string expected_coaString = "LOAD	MEMBER-1	Patch	Line	2.00000	3.00000	4.50000	6.00000	7.00000	3.00000	4.50000	6.00000	7.00000	8.90000\n";
       Load load = TestPatchLineLoadConstructor(0.002, 0.003, 0.0045, 0.006, 7000, 0.003, 0.0045, 0.006, 0.007, 8900); // input unit in kN/m, coa string in N/m - input pos units in mm, coa string in m
@@ -88,9 +85,6 @@ namespace ComposAPI.Loads.Tests
     [Fact]
     public void PatchLineLoadToCoaStringTestPercentage()
     {
-      ForceUnit forceUnit = ForceUnit.Kilonewton;
-      LengthUnit lengthUnit = LengthUnit.Meter;
-
       // Arrange
       string expected_coaString = "LOAD	MEMBER-1	Patch	Line	2.00000	3.00000	4.50000	6.00000	7.00000%	3.00000	4.50000	6.00000	7.00000	8.90000%\n";
       Load load = TestPatchLineLoadConstructorPercentage(0.002, 0.003, 0.0045, 0.006, 7, 0.003, 0.0045, 0.006, 0.007, 8.9); // input unit in kN/m, coa string in N/m - input pos units in mm, coa string in m

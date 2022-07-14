@@ -34,9 +34,6 @@ namespace ComposAPI.Loads.Tests
     [Fact]
     public void UniformLineLoadToCoaStringTest()
     {
-      ForceUnit forceUnit = ForceUnit.Kilonewton;
-      LengthUnit lengthUnit = LengthUnit.Centimeter;
-
       // Arrange
       string expected_coaString = "LOAD	MEMBER-1	Uniform	Line	2.00000	3.00000	4.50000	6.00000\n";
       Load load = TestUniformLineLoadConstructor(0.002, 0.003, 0.0045, 0.006); // input unit in kN/m, coa string in N/m

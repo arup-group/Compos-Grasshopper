@@ -13,7 +13,7 @@ namespace ComposAPI.Tests
 {
   public class ObjectExtensionTest
   {
-    public static void Equals(object objA, object objB)
+    public static void IsEqual(object objA, object objB)
     {
       Type typeA = objA.GetType();
       Type typeB = objB.GetType();
@@ -38,8 +38,10 @@ namespace ComposAPI.Tests
 
         try
         {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
           objPropertyValueA = propertyA.GetValue(objA, null);
           objPropertyValueB = propertyB.GetValue(objB, null);
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
           // check wether property is an interface
           if (propertyTypeA.IsInterface)
@@ -67,8 +69,10 @@ namespace ComposAPI.Tests
                 IEnumerable<object> enumerableA = ((IEnumerable)objPropertyValueA).Cast<object>();
                 IEnumerable<object> enumerableB = ((IEnumerable)objPropertyValueB).Cast<object>();
 
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                 Type enumrableTypeA = null;
                 Type enumrableTypeB = null;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
                 if (enumerableA.GetType().GetGenericArguments().Length > 0)
                   enumrableTypeA = enumerableA.GetType().GetGenericArguments()[0];
                 if (enumerableB.GetType().GetGenericArguments().Length > 0)
@@ -77,6 +81,7 @@ namespace ComposAPI.Tests
 
                 // if type is a struct, we have to check the actual list items
                 // this will fail if list is actually of type "System.Object"..
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 if (enumrableTypeA.ToString() is "System.Object")
                 {
                   if (enumerableA.Any())
@@ -91,6 +96,7 @@ namespace ComposAPI.Tests
                   else
                     continue; // can´t get type of struct in empty list? 
                 }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
                 Type genericListTypeA = typeof(List<>).MakeGenericType(enumrableTypeA);
                 Type genericListTypeB = typeof(List<>).MakeGenericType(enumrableTypeB);
@@ -103,7 +109,7 @@ namespace ComposAPI.Tests
                   while (enumeratorA.MoveNext())
                   {
                     Assert.True(enumeratorB.MoveNext());
-                    ObjectExtensionTest.Equals(enumeratorA.Current, enumeratorB.Current);
+                    ObjectExtensionTest.IsEqual(enumeratorA.Current, enumeratorB.Current);
                   }
                 }
               }
@@ -125,10 +131,10 @@ namespace ComposAPI.Tests
           else
           // property type is object/complex type, so need to recursively call this method until the end of the tree is reached
           {
-            ObjectExtensionTest.Equals(objPropertyValueA, objPropertyValueB);
+            ObjectExtensionTest.IsEqual(objPropertyValueA, objPropertyValueB);
           }
         }
-        catch (TargetParameterCountException ex)
+        catch (TargetParameterCountException)
         {
           propertyTypeA = propertyA.PropertyType;
         }
@@ -146,7 +152,7 @@ namespace ComposAPI.Tests
       TestObject grandChild = new TestObject(true, 1.0, 1, "a", TestEnum.Value1, quantity, force, new List<TestObject>(), iQuantities, structs);
       TestObject original = new TestObject(new TestObject(grandChild));
 
-      TestObject duplicate = original.Duplicate() as TestObject;
+      TestObject duplicate = (TestObject)original.Duplicate();
 
       duplicate.Children[0].Children[0].B = false;
       duplicate.Children[0].Children[0].D = -1.0;
@@ -158,7 +164,7 @@ namespace ComposAPI.Tests
       duplicate.Children[0].Children[0].IQuantities = new List<IQuantity>() { Force.Zero, new Length(100, LengthUnit.Millimeter) };
       duplicate.Children[0].Children[0].IQuantities.RemoveAt(0);
 
-      Assert.Equal(true, original.Children[0].Children[0].B);
+      Assert.True(original.Children[0].Children[0].B);
       Assert.Equal(1.0, original.Children[0].Children[0].D);
       Assert.Equal(1, original.Children[0].Children[0].I);
       Assert.Equal("a", original.Children[0].Children[0].S);
@@ -180,9 +186,9 @@ namespace ComposAPI.Tests
       TestObject grandChild = new TestObject(true, 1.0, 1, "a", TestEnum.Value1, quantity, force, new List<TestObject>(), iQuantities, structs);
       TestObject original = new TestObject(new TestObject(grandChild));
 
-      TestObject duplicate = original.Duplicate() as TestObject;
+      TestObject duplicate = (TestObject)original.Duplicate();
 
-      ObjectExtensionTest.Equals(original, duplicate);
+      ObjectExtensionTest.IsEqual(original, duplicate);
     }
 
     public static IEnumerable<object[]> GetDataEqualsTest2()
@@ -216,7 +222,7 @@ namespace ComposAPI.Tests
 
       TestObject grandChild = new TestObject(true, 1.0, 1, "a", TestEnum.Value1, quantity, force, new List<TestObject>(), iQuantities, structs);
       TestObject original = new TestObject(new TestObject(grandChild));
-      TestObject duplicate = original.Duplicate() as TestObject;
+      TestObject duplicate = (TestObject)original.Duplicate();
 
       for (int i = 1; i <= 14; i++)
       {
@@ -267,9 +273,9 @@ namespace ComposAPI.Tests
         }
         //ObjectExtensionTest.Equals(original, duplicate);
         if (i < 14)
-          Assert.Throws<Xunit.Sdk.EqualException>(() => ObjectExtensionTest.Equals(original, duplicate));
+          Assert.Throws<Xunit.Sdk.EqualException>(() => ObjectExtensionTest.IsEqual(original, duplicate));
         else
-          Assert.Throws<Xunit.Sdk.TrueException>(() => ObjectExtensionTest.Equals(original, duplicate));
+          Assert.Throws<Xunit.Sdk.TrueException>(() => ObjectExtensionTest.IsEqual(original, duplicate));
       }
     }
   }
@@ -295,6 +301,7 @@ namespace ComposAPI.Tests
     internal IList<IQuantity> IQuantities { get; set; } = new List<IQuantity>();
     internal IList<Length> Structs { get; set; } = new List<Length>();
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     public TestObject() { }
 
     public TestObject(TestObject child)
@@ -306,6 +313,7 @@ namespace ComposAPI.Tests
     {
       this.Children = children;
     }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
     internal TestObject(bool b, double d, int i, string s, TestEnum testEnum, IQuantity quantity, Force force, IList<TestObject> children, IList<IQuantity> iQuantities, IList<Length> structs)
     {

@@ -38,9 +38,6 @@ namespace ComposAPI.Loads.Tests
     [Fact]
     public void LinearAreaLoadToCoaStringTest()
     {
-      ForceUnit forceUnit = ForceUnit.Kilonewton;
-      LengthUnit lengthUnit = LengthUnit.Meter;
-
       // Arrange
       string expected_coaString = "LOAD	MEMBER-1	Linear	Area	1.00000	2.00000	3.00000	4.50000	6.00000	7.00000	8.00000	9.00000\n";
       Load load = TestLinearAreaLoadConstructor(0.001, 0.002, 0.003, 0.0045, 0.006, 0.007, 0.008, 0.009); //input unit in kN/m, coa string in N/m

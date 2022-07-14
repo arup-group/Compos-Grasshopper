@@ -61,9 +61,6 @@ namespace ComposAPI.Loads.Tests
     [Fact]
     public void PointLoadToCoaStringTest()
     {
-      ForceUnit forceUnit = ForceUnit.Kilonewton;
-      LengthUnit lengthUnit = LengthUnit.Centimeter;
-
       // Arrange
       string expected_coaString = "LOAD	MEMBER-1	Point	1.00000	2.00000	3.00000	4.50000	6.00000\n";
       Load load = TestPointLoadConstructor(0.001, 0.002, 0.003, 0.0045, 6000); // input load in kN, coa string in N - input position length unit in mm, coa string in m
@@ -76,9 +73,6 @@ namespace ComposAPI.Loads.Tests
     [Fact]
     public void PointLoadToCoaStringTestPercentage()
     {
-      ForceUnit forceUnit = ForceUnit.Kilonewton;
-      LengthUnit lengthUnit = LengthUnit.Centimeter;
-
       // Arrange
       string expected_coaString = "LOAD	MEMBER-1	Point	1.00000	2.00000	3.00000	4.50000	6.00000%\n";
       Load load = TestPointLoadConstructorPercentage(0.001, 0.002, 0.003, 0.0045, 6); // input load in kN, coa string in N - input position length unit in mm, coa string in m

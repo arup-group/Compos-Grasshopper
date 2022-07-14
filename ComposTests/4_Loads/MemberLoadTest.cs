@@ -33,8 +33,6 @@ namespace ComposAPI.Loads.Tests
     [InlineData(4000, "MEMBER-1", MemberLoad.SupportSide.Left)]
     public Load TestMemberLoadConstructorPercentage(double position, string name, MemberLoad.SupportSide side)
     {
-      LengthUnit length = LengthUnit.Millimeter;
-
       // 2 create object instance with constructor
       MemberLoad load = new MemberLoad(name, side, new Ratio(position, RatioUnit.Percent));
 
@@ -50,9 +48,6 @@ namespace ComposAPI.Loads.Tests
     [Fact]
     public void MemberLoadLeftToCoaStringTest()
     {
-      ForceUnit forceUnit = ForceUnit.Kilonewton;
-      LengthUnit lengthUnit = LengthUnit.Millimeter;
-
       // Arrange
       string expected_coaString = "LOAD	MEMBER-1	Member load	MEMBER-2	Left	0.150000\n";
       Load load = TestMemberLoadConstructor(150, "Member-2", MemberLoad.SupportSide.Left); // pos units in mm
@@ -65,9 +60,6 @@ namespace ComposAPI.Loads.Tests
     [Fact]
     public void MemberLoadRightToCoaStringTest()
     {
-      ForceUnit forceUnit = ForceUnit.Kilonewton;
-      LengthUnit lengthUnit = LengthUnit.Millimeter;
-
       // Arrange
       string expected_coaString = "LOAD	MEMBER-1	Member load	MEMBER-2	Right	0.00250000\n";
       Load load = TestMemberLoadConstructor(2.5, "Member-2", MemberLoad.SupportSide.Right); // pos units in mm
@@ -130,9 +122,6 @@ namespace ComposAPI.Loads.Tests
     [Fact]
     public void MemberLoadLeftToCoaStringTestPercentage()
     {
-      ForceUnit forceUnit = ForceUnit.Kilonewton;
-      LengthUnit lengthUnit = LengthUnit.Millimeter;
-
       // Arrange
       string expected_coaString = "LOAD	MEMBER-1	Member load	MEMBER-2	Left	0.150000%\n";
       Load load = TestMemberLoadConstructorPercentage(0.15, "Member-2", MemberLoad.SupportSide.Left); // pos units in mm
@@ -145,9 +134,6 @@ namespace ComposAPI.Loads.Tests
     [Fact]
     public void MemberLoadRightToCoaStringTestPercentage()
     {
-      ForceUnit forceUnit = ForceUnit.Kilonewton;
-      LengthUnit lengthUnit = LengthUnit.Millimeter;
-
       // Arrange
       string expected_coaString = "LOAD	MEMBER-1	Member load	MEMBER-2	Right	0.00250000%\n";
       Load load = TestMemberLoadConstructorPercentage(0.0025, "Member-2", MemberLoad.SupportSide.Right); // pos units in mm

@@ -74,8 +74,6 @@ namespace ComposAPI.Loads.Tests
     public void TriLinearAreaLoadToCoaStringTest()
     {
       // Arrange
-      ForceUnit forceUnit = ForceUnit.Kilonewton;
-      LengthUnit lengthUnit = LengthUnit.Meter;
       string expected_coaString = "LOAD	MEMBER-1	Tri-Linear	Area	3.00000	4.50000	6.00000	7.00000	8.00000	4.50000	6.00000	7.00000	8.90000	10.0000\n";
       Load load = TestTriLinearAreaLoadConstructor(0.003, 0.0045, 0.006, 0.007, 8000, 0.0045, 0.006, 0.007, 0.0089, 10000); // input unit in kN/m, coa string in N/m - input pos units in mm, coa string in m
       // Act
@@ -88,8 +86,6 @@ namespace ComposAPI.Loads.Tests
     public void TriLinearAreaLoadToCoaStringTestPercentage()
     {
       // Arrange
-      ForceUnit forceUnit = ForceUnit.Kilonewton;
-      LengthUnit lengthUnit = LengthUnit.Meter;
       string expected_coaString = "LOAD	MEMBER-1	Tri-Linear	Area	3.00000	4.50000	6.00000	7.00000	8.00000%	4.50000	6.00000	7.00000	8.90000	10.0000%\n";
       Load load = TestTriLinearAreaLoadConstructorPercentage(0.003, 0.0045, 0.006, 0.007, 8, 0.0045, 0.006, 0.007, 0.0089, 10); // input unit in kN/m, coa string in N/m - input pos units in mm, coa string in m
       // Act
