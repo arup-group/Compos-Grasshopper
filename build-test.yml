@@ -53,16 +53,16 @@ steps:
 
 - powershell: |
     dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
-    $coverage_file = (Resolve-Path $(System.DefaultWorkingDirectory)/results/*/coverage.cobertura.xm).Path
   displayName: dotnet tests
 
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'cobertura'
-    summaryFileLocation: '$coverage_file'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/results/**/coverage.cobertura.xml'
     pathToSources: '$(System.DefaultWorkingDirectory)'
 
 - powershell: |
+    $coverage_file = (Resolve-Path $(System.DefaultWorkingDirectory)/results/*/coverage.cobertura.xm).Path
     codecov -t $env:CODECOV_TOKEN -f $coverage_file -F unittests
   env:
     CODECOV_TOKEN: $(CODECOV_TOKEN)
