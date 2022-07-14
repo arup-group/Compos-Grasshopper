@@ -67,9 +67,6 @@ namespace ComposAPI.Tests
                 IEnumerable<object> enumerableA = ((IEnumerable)objPropertyValueA).Cast<object>();
                 IEnumerable<object> enumerableB = ((IEnumerable)objPropertyValueB).Cast<object>();
 
-                Type[] asdfasdf = enumerableA.GetType().GetGenericArguments();
-                Type[] asdfsdfdsf = enumerableB.GetType().GetGenericArguments();
-
                 Type enumrableTypeA = null;
                 Type enumrableTypeB = null;
                 if (enumerableA.GetType().GetGenericArguments().Length > 0)
@@ -173,7 +170,7 @@ namespace ComposAPI.Tests
     }
 
     [Fact]
-    public void EqualityTest()
+    public void EqualsTest1()
     {
       Force quantity = new Force(1, ForceUnit.Kilonewton);
       Force force = new Force(2, ForceUnit.Decanewton);
@@ -187,9 +184,97 @@ namespace ComposAPI.Tests
 
       ObjectExtensionTest.Equals(original, duplicate);
     }
+
+    public static IEnumerable<object[]> GetDataEqualsTest2()
+    {
+      var allData = new List<object[]>
+        {
+          new object[] {
+            false,
+            2.0,
+            2,
+            "b",
+            TestEnum.Value2,
+            new Force(1, ForceUnit.Kilonewton),
+            new Force(2, ForceUnit.Decanewton),
+            new List<IQuantity>() { Force.Zero, new Length(100, LengthUnit.Millimeter) },
+            new List<Length>() { Length.Zero, new Length(100, LengthUnit.Millimeter) },
+            new TestObject(false, 1.0, 1, "a", TestEnum.Value1, new Force(1, ForceUnit.Kilonewton), new Force(2, ForceUnit.Decanewton), new List<TestObject>(), new List<IQuantity>() { Length.Zero, new Length(100, LengthUnit.Millimeter) }, new List<Length>() { Length.Zero, new Length(100, LengthUnit.Millimeter) })
+          },
+      };
+      return allData;
+    }
+
+    [Theory]
+    [MemberData(nameof(GetDataEqualsTest2))]
+    public void EqualsTest2(bool duplicateB, double duplicateD, int duplicateI, string duplicateS, TestEnum duplicateTestEnum, Force duplicateIQuantity, Force duplicateForce, IList<IQuantity> duplicateIQuantities, IList<Length> duplicateStructs, TestObject duplicateGrandChild)
+    {
+      Force quantity = new Force(1, ForceUnit.Kilonewton);
+      Force force = new Force(2, ForceUnit.Decanewton);
+      IList<IQuantity> iQuantities = new List<IQuantity>() { Force.Zero, new Length(100, LengthUnit.Millimeter) };
+      IList<Length> structs = new List<Length>() { Length.Zero, new Length(100, LengthUnit.Millimeter) };
+
+      TestObject grandChild = new TestObject(true, 1.0, 1, "a", TestEnum.Value1, quantity, force, new List<TestObject>(), iQuantities, structs);
+      TestObject original = new TestObject(new TestObject(grandChild));
+      TestObject duplicate = original.Duplicate() as TestObject;
+
+      for (int i = 1; i <= 14; i++)
+      {
+        switch (i)
+        {
+          case 1:
+            duplicate.Children[0].Children[0].B = duplicateB;
+            break;
+          case 2:
+            duplicate.Children[0].Children[0].D = duplicateD;
+            break;
+          case 3:
+            duplicate.Children[0].Children[0].I = duplicateI;
+            break;
+          case 4:
+            duplicate.Children[0].Children[0].S = duplicateS;
+            break;
+          case 5:
+            duplicate.Children[0].Children[0].TestEnum = duplicateTestEnum;
+            break;
+          case 6:
+            duplicate.Children[0].Children[0].IQuantity = duplicateIQuantity;
+            break;
+          case 7:
+            duplicate.Children[0].Children[0].Force = duplicateForce;
+            break;
+          case 8:
+            duplicate.Children[0].Children[0].IQuantities = new List<IQuantity>();
+            break;
+          case 9:
+            duplicate.Children[0].Children[0].IQuantities = duplicateIQuantities;
+            break;
+          case 10:
+            duplicate.Children[0].Children[0].Structs = new List<Length>();
+            break;
+          case 11:
+            duplicate.Children[0].Children[0].Structs = duplicateStructs;
+            break;
+          case 12:
+            duplicate.Children[0].Children[0] = duplicateGrandChild;
+            break;
+          case 13:
+            duplicate.Children[0].Children[0].Children = new List<TestObject>();
+            break;
+          case 14:
+            duplicate.Children = new List<TestObject>();
+            break;
+        }
+        //ObjectExtensionTest.Equals(original, duplicate);
+        if (i < 14)
+          Assert.Throws<Xunit.Sdk.EqualException>(() => ObjectExtensionTest.Equals(original, duplicate));
+        else
+          Assert.Throws<Xunit.Sdk.TrueException>(() => ObjectExtensionTest.Equals(original, duplicate));
+      }
+    }
   }
 
-  enum TestEnum
+  public enum TestEnum
   {
     Value1 = 1,
     Value2 = 2,
