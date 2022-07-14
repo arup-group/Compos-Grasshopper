@@ -37,16 +37,6 @@ namespace ComposAPI
     }
     #endregion
 
-    #region properties
-    public bool IsValid
-    {
-      get
-      {
-        return true;
-      }
-    }
-    #endregion
-
     #region coa interop
     internal static IList<ILoad> FromCoaString(string coaString, string name, ComposUnits units)
     {
