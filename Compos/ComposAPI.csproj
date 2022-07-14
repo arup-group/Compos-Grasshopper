@@ -52,6 +52,13 @@
     <Compile Include="0_File\ComposFile.cs" />
     <Compile Include="1_Beam\IBeam.cs" />
     <Compile Include="1_Beam\SteelMaterial\ASNZSteelMaterial.cs" />
+    <Compile Include="4_Loads\LinearLoad.cs" />
+    <Compile Include="4_Loads\AxialLoad.cs" />
+    <Compile Include="4_Loads\MemberLoad.cs" />
+    <Compile Include="4_Loads\PatchLoad.cs" />
+    <Compile Include="4_Loads\TriLinearLoad.cs" />
+    <Compile Include="4_Loads\UniformLoad.cs" />
+    <Compile Include="4_Loads\PointLoad.cs" />
     <Compile Include="5_Member\DesignCode\CreepShrinkageParameters.cs" />
     <Compile Include="5_Member\SafetyFactors\IEC4MaterialPartialFactors.cs" />
     <Compile Include="5_Member\SafetyFactors\IEC4SafetyFactors.cs" />
@@ -126,7 +133,6 @@
     <Compile Include="3_Slab\Reinforcement\TransverseReinforcement.cs" />
     <Compile Include="4_Loads\Load.cs" />
     <Compile Include="4_Loads\LoadValues.cs" />
-    <Compile Include="4_Loads\LoadChildren.cs" />
     <Compile Include="5_Member\DesignCode\DesignCode.cs" />
     <Compile Include="5_Member\DesignCode\CodeOptions.cs" />
     <Compile Include="5_Member\SafetyFactors\SafetyFactors.cs" />

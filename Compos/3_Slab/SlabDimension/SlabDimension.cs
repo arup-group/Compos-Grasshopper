@@ -35,6 +35,9 @@ namespace ComposAPI
 
     public SlabDimension(IQuantity startPosition, Length overallDepth, Length availableWidthLeft, Length availableWidthRight, bool taperedToNext = false)
     {
+      if (startPosition.QuantityInfo.UnitType != typeof(LengthUnit) &&
+        startPosition.QuantityInfo.UnitType != typeof(RatioUnit))
+        throw new Exception("Start Position must be either Length or Ratio");
       this.StartPosition = startPosition;
       this.OverallDepth = overallDepth;
       this.AvailableWidthLeft = availableWidthLeft;
@@ -46,6 +49,9 @@ namespace ComposAPI
     public SlabDimension(IQuantity startPosition, Length overallDepth, Length availableWidthLeft, Length availableWidthRight,
       Length effectiveWidthLeft, Length effectiveWidthRight, bool taperedToNext = false)
     {
+      if (startPosition.QuantityInfo.UnitType != typeof(LengthUnit) &&
+        startPosition.QuantityInfo.UnitType != typeof(RatioUnit))
+        throw new Exception("Start Position must be either Length or Ratio");
       this.StartPosition = startPosition;
       this.OverallDepth = overallDepth;
       this.AvailableWidthLeft = availableWidthLeft;

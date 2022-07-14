@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposAPI
 {
@@ -26,11 +27,15 @@ namespace ComposAPI
 
   public class NonConstantLoad : LoadValues
   {
-    public Length Position { get; set; }
+    public IQuantity Position { get; set; }
 
-    public NonConstantLoad(IQuantity consDead, IQuantity consLive, IQuantity finalDead, IQuantity finalLive, Length position)
+    public NonConstantLoad(IQuantity consDead, IQuantity consLive, IQuantity finalDead, IQuantity finalLive, IQuantity position)
       : base(consDead, consLive, finalDead, finalLive)
     {
+      if (position.QuantityInfo.UnitType != typeof(LengthUnit) &&
+        position.QuantityInfo.UnitType != typeof(RatioUnit))
+        throw new Exception("Position must be either Length or Ratio");
+      
       this.Position = position;
     }
 

@@ -34,6 +34,15 @@ namespace ComposAPI.Helpers
       return str;
     }
 
+    internal static IQuantity ConvertToLengthOrRatio(string parameters, LengthUnit lengthUnit, RatioUnit ratioUnit = RatioUnit.Percent)
+    {
+      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+      if (parameters.EndsWith("%"))
+        return new Ratio(Convert.ToDouble(parameters.Replace("%", string.Empty), noComma), ratioUnit);
+      else
+        return new Length(Convert.ToDouble(parameters, noComma), lengthUnit);
+    }
+
     internal static string RemoveWhitespace(string str)
     {
       return string.Join("", str.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
@@ -78,7 +87,7 @@ namespace ComposAPI.Helpers
         return FormatSignificantFigures(r.Percent, significantFigures) + "%";
       }
       else
-        throw new ArgumentException("Unable to format coa string, expected IQuantity of either Length or Ration");
+        throw new Exception("Unable to format coa string, expected IQuantity of either Length or Ratio");
     }
     public static string FormatSignificantFigures(double value, int significantFigures)
     {

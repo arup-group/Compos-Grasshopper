@@ -202,14 +202,8 @@ namespace ComposAPI
           opening.WebOpeningType = OpeningType.Rectangular;
           opening.Width = new Length(Convert.ToDouble(parameters[3], noComma), units.Section);
           opening.Height = new Length(Convert.ToDouble(parameters[4], noComma), units.Section);
-          if (parameters[5].EndsWith("%"))
-            opening.CentroidPosFromStart = new Ratio(Convert.ToDouble(parameters[5].Replace("%", string.Empty), noComma), RatioUnit.Percent);
-          else
-            opening.CentroidPosFromStart = new Length(Convert.ToDouble(parameters[5], noComma), units.Length);
-          if (parameters[6].EndsWith("%"))
-            opening.CentroidPosFromTop = new Ratio(Convert.ToDouble(parameters[6].Replace("%", string.Empty), noComma), RatioUnit.Percent);
-          else
-            opening.CentroidPosFromTop = new Length(Convert.ToDouble(parameters[6], noComma), units.Section);
+          opening.CentroidPosFromStart = CoaHelper.ConvertToLengthOrRatio(parameters[5], units.Length);
+          opening.CentroidPosFromTop = CoaHelper.ConvertToLengthOrRatio(parameters[6], units.Length);
           break;
 
         case "CIRCULAR":
