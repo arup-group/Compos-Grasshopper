@@ -61,8 +61,9 @@ steps:
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/results/**/coverage.cobertura.xml'
     pathToSources: '$(System.DefaultWorkingDirectory)'
 
+#    $coverage_file = (Resolve-Path $(System.DefaultWorkingDirectory)/results\*.trx).Path
 - powershell: |
-    $coverage_file = (Resolve-Path $(System.DefaultWorkingDirectory)/results\*.trx).Path
+    $coverage_file = (Resolve-Path $(System.DefaultWorkingDirectory)/results/*/coverage.cobertura.xml).Path
     codecov -t $env:CODECOV_TOKEN -f $coverage_file -F unittests
   env:
     CODECOV_TOKEN: $(CODECOV_TOKEN)
