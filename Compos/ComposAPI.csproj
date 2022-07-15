@@ -59,7 +59,11 @@
     <Compile Include="4_Loads\TriLinearLoad.cs" />
     <Compile Include="4_Loads\UniformLoad.cs" />
     <Compile Include="4_Loads\PointLoad.cs" />
-    <Compile Include="5_Member\DesignCode\CreepShrinkageParameters.cs" />
+    <Compile Include="5_Member\DesignCode\EN\CodeOptionsEN.cs" />
+    <Compile Include="5_Member\DesignCode\EN\CreepShrinkageParametersEN.cs" />
+    <Compile Include="5_Member\DesignCode\ASNZ\CreepShrinkageParametersASNZ.cs" />
+    <Compile Include="5_Member\DesignCode\ASNZ\DesignCodeASNZ.cs" />
+    <Compile Include="5_Member\DesignCode\EN\DesignCodeEN.cs" />
     <Compile Include="5_Member\SafetyFactors\IEC4MaterialPartialFactors.cs" />
     <Compile Include="5_Member\SafetyFactors\IEC4SafetyFactors.cs" />
     <Compile Include="5_Member\SafetyFactors\EC4SafetyFactors.cs" />
@@ -134,7 +138,7 @@
     <Compile Include="4_Loads\Load.cs" />
     <Compile Include="4_Loads\LoadValues.cs" />
     <Compile Include="5_Member\DesignCode\DesignCode.cs" />
-    <Compile Include="5_Member\DesignCode\CodeOptions.cs" />
+    <Compile Include="5_Member\DesignCode\ASNZ\CodeOptionsASNZ.cs" />
     <Compile Include="5_Member\SafetyFactors\SafetyFactors.cs" />
     <Compile Include="5_Member\DesignCode\DesignOption.cs" />
     <Compile Include="5_Member\Member.cs" />

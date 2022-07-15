@@ -17,12 +17,6 @@ namespace ComposAPI
     AS_NZS2327_2017 = 5
   }
 
-  public enum NationalAnnex
-  {
-    Generic,
-    United_Kingdom
-  }
-
   /// <summary>
   /// Use this class to create a DesignCode. Use inheriting <see cref="EN1994"/> or <see cref="ASNZS2327"/> specifically for those codes respectively.
   /// </summary>
@@ -36,11 +30,11 @@ namespace ComposAPI
 
     public DesignCode(Code designcode)
     {
-      this.Code = designcode;
       if (designcode == Code.EN1994_1_1_2004)
         throw new Exception("Must use the EN1994 class to create a EN 1994-1-1:2004 DesignCode");
       if (designcode == Code.AS_NZS2327_2017)
         throw new Exception("Must use the ASNZS2327 class to create a AS/NZS2327:2017 DesignCode");
+      this.Code = designcode;
     }
 
     #region coa interop
@@ -101,10 +95,10 @@ namespace ComposAPI
             if (designCode.Code == Code.AS_NZS2327_2017)
             {
               NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-              CodeOptions codeOptions = new CodeOptions();
-              CreepShrinkageParameters longterm = new CreepShrinkageParameters() { CreepCoefficient = Convert.ToDouble(parameters[8], noComma) };
+              CodeOptionsASNZ codeOptions = new CodeOptionsASNZ();
+              CreepShrinkageParametersASNZ longterm = new CreepShrinkageParametersASNZ() { CreepCoefficient = Convert.ToDouble(parameters[8], noComma) };
               codeOptions.LongTerm = longterm;
-              CreepShrinkageParameters shrinkage = new CreepShrinkageParameters() { CreepCoefficient = Convert.ToDouble(parameters[9], noComma) };
+              CreepShrinkageParametersASNZ shrinkage = new CreepShrinkageParametersASNZ() { CreepCoefficient = Convert.ToDouble(parameters[9], noComma) };
               codeOptions.ShortTerm = shrinkage;
               ASNZS2327 aSNZS = (ASNZS2327)designCode;
               aSNZS.CodeOptions = codeOptions;
@@ -205,43 +199,5 @@ namespace ComposAPI
       return "";
     }
     #endregion
-  }
-
-  /// <summary>
-  /// <see cref="DesignCode"/> inherit class specific to EN 1994-1-1:2004
-  /// </summary>
-  public class EN1994 : DesignCode
-  {
-    public NationalAnnex NationalAnnex { get; set; } = NationalAnnex.Generic;
-    public EC4Options CodeOptions { get; set; } = new EC4Options();
-    public new IEC4SafetyFactors SafetyFactors { get; set; } = new EC4SafetyFactors();
-
-    public EN1994()
-    {
-      this.Code = Code.EN1994_1_1_2004;
-    }
-
-    #region coa interop
-    public override string ToCoaString(string name)
-    {
-      string str = base.ToCoaString(name);
-      str += this.CodeOptions.ToCoaString(name, this.Code, this.NationalAnnex);
-      str += this.SafetyFactors.ToCoaString(name);
-      return str;
-    }
-    #endregion
-  }
-
-  /// <summary>
-  /// <see cref="DesignCode"/> inherit class specific to AS/NZS2327:2017
-  /// </summary>
-  public class ASNZS2327 : DesignCode
-  {
-    public CodeOptions CodeOptions { get; set; } = new CodeOptions();
-
-    public ASNZS2327()
-    {
-      this.Code = Code.AS_NZS2327_2017;
-    }
   }
 }

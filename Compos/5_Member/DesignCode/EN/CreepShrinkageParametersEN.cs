@@ -5,18 +5,12 @@ using UnitsNet;
 
 namespace ComposAPI
 {
-  public class CreepShrinkageParameters : ICreepShrinkageParameters
+  public class CreepShrinkageParametersEN : ICreepShrinkageParameters
   {
     /// <summary>
     /// Creep multiplier used for calculating E ratio for long term and shrinkage (see clause 5.4.2.2 of EN 1994-1-1:2004) 
     /// </summary>
     public double CreepCoefficient { get; set; }
-
-    public CreepShrinkageParameters() { }
-  }
-
-  public class CreepShrinkageEuroCodeParameters : CreepShrinkageParameters
-  {
     /// <summary>
     /// Age of concrete in days when load applied, used to calculate the creep coefficient 
     /// </summary>
@@ -30,6 +24,6 @@ namespace ComposAPI
     /// </summary>
     public double RelativeHumidity { get; set; } = 0.5;
 
-    public CreepShrinkageEuroCodeParameters() { }
+    public CreepShrinkageParametersEN() { }
   }
 }

@@ -113,17 +113,19 @@ namespace ComposAPI.Members.Tests
       //Assert.Null(designCode.SafetyFactors.LoadCombinationFactors);
       Assert.Equal(LoadCombination.Equation6_10, designCode.SafetyFactors.LoadCombinationFactors.LoadCombination);
       // code options
+      CreepShrinkageParametersEN lt = (CreepShrinkageParametersEN)designCode.CodeOptions.LongTerm;
+      CreepShrinkageParametersEN st = (CreepShrinkageParametersEN)designCode.CodeOptions.ShortTerm;
       Assert.False(designCode.CodeOptions.ApproxModularRatios);
       Assert.False(designCode.CodeOptions.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
       Assert.Equal(CementClass.N, designCode.CodeOptions.CementType);
-      Assert.Equal(1.1, designCode.CodeOptions.LongTerm.CreepCoefficient);
-      Assert.Equal(28, designCode.CodeOptions.LongTerm.ConcreteAgeAtLoad);
-      Assert.Equal(36500, designCode.CodeOptions.LongTerm.FinalConcreteAgeCreep);
-      Assert.Equal(0.5, designCode.CodeOptions.LongTerm.RelativeHumidity);
-      Assert.Equal(0.55, designCode.CodeOptions.ShortTerm.CreepCoefficient);
-      Assert.Equal(1, designCode.CodeOptions.ShortTerm.ConcreteAgeAtLoad);
-      Assert.Equal(36500, designCode.CodeOptions.ShortTerm.FinalConcreteAgeCreep);
-      Assert.Equal(0.5, designCode.CodeOptions.ShortTerm.RelativeHumidity);
+      Assert.Equal(1.1, lt.CreepCoefficient);
+      Assert.Equal(28, lt.ConcreteAgeAtLoad);
+      Assert.Equal(36500, lt.FinalConcreteAgeCreep);
+      Assert.Equal(0.5, lt.RelativeHumidity);
+      Assert.Equal(0.55, st.CreepCoefficient);
+      Assert.Equal(1, st.ConcreteAgeAtLoad);
+      Assert.Equal(36500, st.FinalConcreteAgeCreep);
+      Assert.Equal(0.5, st.RelativeHumidity);
 
       // (optionally return object for other tests)
       return designCode;
@@ -245,17 +247,19 @@ namespace ComposAPI.Members.Tests
       //Assert.Null(duplicate.SafetyFactors.LoadCombinationFactors);
       Assert.Equal(LoadCombination.Equation6_10, duplicate.SafetyFactors.LoadCombinationFactors.LoadCombination);
       // code options
+      CreepShrinkageParametersEN lt = (CreepShrinkageParametersEN)duplicate.CodeOptions.LongTerm;
+      CreepShrinkageParametersEN st = (CreepShrinkageParametersEN)duplicate.CodeOptions.ShortTerm;
       Assert.False(duplicate.CodeOptions.ApproxModularRatios);
       Assert.False(duplicate.CodeOptions.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
       Assert.Equal(CementClass.N, duplicate.CodeOptions.CementType);
-      Assert.Equal(1.1, duplicate.CodeOptions.LongTerm.CreepCoefficient);
-      Assert.Equal(28, duplicate.CodeOptions.LongTerm.ConcreteAgeAtLoad);
-      Assert.Equal(36500, duplicate.CodeOptions.LongTerm.FinalConcreteAgeCreep);
-      Assert.Equal(0.5, duplicate.CodeOptions.LongTerm.RelativeHumidity);
-      Assert.Equal(0.55, duplicate.CodeOptions.ShortTerm.CreepCoefficient);
-      Assert.Equal(1, duplicate.CodeOptions.ShortTerm.ConcreteAgeAtLoad);
-      Assert.Equal(36500, duplicate.CodeOptions.ShortTerm.FinalConcreteAgeCreep);
-      Assert.Equal(0.5, duplicate.CodeOptions.ShortTerm.RelativeHumidity);
+      Assert.Equal(1.1, lt.CreepCoefficient);
+      Assert.Equal(28, lt.ConcreteAgeAtLoad);
+      Assert.Equal(36500, lt.FinalConcreteAgeCreep);
+      Assert.Equal(0.5, lt.RelativeHumidity);
+      Assert.Equal(0.55, st.CreepCoefficient);
+      Assert.Equal(1, st.ConcreteAgeAtLoad);
+      Assert.Equal(36500, st.FinalConcreteAgeCreep);
+      Assert.Equal(0.5, st.RelativeHumidity);
 
       // 3 make some changes to duplicate
       duplicate.NationalAnnex = NationalAnnex.United_Kingdom;

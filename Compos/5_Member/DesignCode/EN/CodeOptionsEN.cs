@@ -6,29 +6,9 @@ using UnitsNet;
 
 namespace ComposAPI
 {
-  public enum CementClass
-  {
-    S,
-    N,
-    R
-  }
-
-  public class CodeOptions : ICodeOptions
+  public class CodeOptionsEN : ICodeOptions
   {
     public bool ConsiderShrinkageDeflection { get; set; } = false;
-    public virtual ICreepShrinkageParameters LongTerm { get; set; } = new CreepShrinkageParameters() { CreepCoefficient = 2.0 };
-    public virtual ICreepShrinkageParameters ShortTerm { get; set; } = new CreepShrinkageParameters() { CreepCoefficient = 2.0 };
-    /// <summary>
-    /// Deafult constructor with AS/NZ values and members
-    /// </summary>
-    public CodeOptions()
-    {
-      // default initialiser
-    }
-  }
-
-  public class EC4Options : CodeOptions
-  {
     public CementClass CementType { get; set; } = CementClass.N;
     /// <summary>
     /// This member will only be used if <see cref="ConsiderShrinkageDeflection"/> is true.
@@ -39,12 +19,12 @@ namespace ComposAPI
     /// Use approximate modular ratios - Approximate E ratios are used in accordance with 5.2.2 (11) of EN 1994-1-1:2004 
     /// </summary>
     public bool ApproxModularRatios { get; set; } = false;
-    public new CreepShrinkageEuroCodeParameters LongTerm { get; set; } = new CreepShrinkageEuroCodeParameters()
+    public ICreepShrinkageParameters LongTerm { get; set; } = new CreepShrinkageParametersEN()
     { ConcreteAgeAtLoad = 28, CreepCoefficient = 1.1, FinalConcreteAgeCreep = 36500, RelativeHumidity = 0.5 };
-    public new CreepShrinkageEuroCodeParameters ShortTerm { get; set; } = new CreepShrinkageEuroCodeParameters()
+    public ICreepShrinkageParameters ShortTerm { get; set; } = new CreepShrinkageParametersEN()
     { ConcreteAgeAtLoad = 1, CreepCoefficient = 0.55, FinalConcreteAgeCreep = 36500, RelativeHumidity = 0.5 };
 
-    public EC4Options()
+    public CodeOptionsEN()
     {
       // default initialiser
     }
@@ -52,7 +32,7 @@ namespace ComposAPI
     #region coainterop
     internal ICodeOptions FromCoaString(List<string> parameters)
     {
-      EC4Options eC4Options = new EC4Options();
+      CodeOptionsEN eC4Options = new CodeOptionsEN();
 
       // todo
 
@@ -87,15 +67,16 @@ namespace ComposAPI
           parameters.Add("CLASS_R");
           break;
       }
-
-      parameters.Add(CoaHelper.FormatSignificantFigures(LongTerm.CreepCoefficient, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(ShortTerm.CreepCoefficient, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(LongTerm.ConcreteAgeAtLoad, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(ShortTerm.ConcreteAgeAtLoad, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(LongTerm.FinalConcreteAgeCreep, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(ShortTerm.FinalConcreteAgeCreep, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(LongTerm.RelativeHumidity, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(ShortTerm.RelativeHumidity, 6));
+      CreepShrinkageParametersEN lt = (CreepShrinkageParametersEN)LongTerm;
+      CreepShrinkageParametersEN st = (CreepShrinkageParametersEN)ShortTerm;
+      parameters.Add(CoaHelper.FormatSignificantFigures(lt.CreepCoefficient, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(st.CreepCoefficient, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(lt.ConcreteAgeAtLoad, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(st.ConcreteAgeAtLoad, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(lt.FinalConcreteAgeCreep, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(st.FinalConcreteAgeCreep, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(lt.RelativeHumidity, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(st.RelativeHumidity, 6));
 
       return CoaHelper.CreateString(parameters);
     }

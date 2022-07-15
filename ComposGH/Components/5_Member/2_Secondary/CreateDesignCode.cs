@@ -5,7 +5,7 @@ using ComposGH.Parameters;
 using System.Linq;
 using Grasshopper.Kernel.Parameters;
 using ComposAPI;
-using static ComposAPI.EC4Options;
+using static ComposAPI.CodeOptionsEN;
 
 namespace ComposGH.Components
 {
@@ -68,8 +68,8 @@ namespace ComposGH.Components
     private NationalAnnex NA = NationalAnnex.Generic;
 
     private DesignOption DesignOptions = new DesignOption();
-    private CodeOptions CodeOptions = new CodeOptions();
-    private EC4Options EC4CodeOptions = new EC4Options();
+    private CodeOptionsASNZ CodeOptions = new CodeOptionsASNZ();
+    private CodeOptionsEN EC4CodeOptions = new CodeOptionsEN();
 
     public override void CreateAttributes()
     {
@@ -300,10 +300,10 @@ namespace ComposGH.Components
           ec4.DesignOption = this.DesignOptions;
           ec4.CodeOptions = this.EC4CodeOptions;
 
-          CreepShrinkageEuroCodeParameters shrink = (CreepShrinkageEuroCodeParameters)GetInput.GenericGoo<CreepShrinkageEuroCodeParametersGoo>(this, DA, 1);
+          CreepShrinkageParametersEN shrink = (CreepShrinkageParametersEN)GetInput.GenericGoo<CreepShrinkageEuroCodeParametersGoo>(this, DA, 1);
           if (shrink != null)
             ec4.CodeOptions.ShortTerm = shrink;
-          CreepShrinkageEuroCodeParameters longt = (CreepShrinkageEuroCodeParameters)GetInput.GenericGoo<CreepShrinkageEuroCodeParametersGoo>(this, DA, 2);
+          CreepShrinkageParametersEN longt = (CreepShrinkageParametersEN)GetInput.GenericGoo<CreepShrinkageEuroCodeParametersGoo>(this, DA, 2);
           if (longt != null)
             ec4.CodeOptions.LongTerm = longt;
 

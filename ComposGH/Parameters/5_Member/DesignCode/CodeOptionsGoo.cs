@@ -11,12 +11,12 @@ namespace ComposGH.Parameters
     #region constructors
     public CodeOptionsGoo()
     {
-      this.Value = new CodeOptions();
+      this.Value = new CodeOptionsASNZ();
     }
     public CodeOptionsGoo(ICodeOptions item)
     {
       if (item == null)
-        item = new CodeOptions();
+        item = new CodeOptionsASNZ();
       this.Value = item; //.Duplicate() as CodeOptions;
     }
 
@@ -26,7 +26,7 @@ namespace ComposGH.Parameters
     }
     public CodeOptionsGoo DuplicateGoo()
     {
-      return new CodeOptionsGoo(Value == null ? new CodeOptions() : Value);// .Duplicate() as CodeOptions);
+      return new CodeOptionsGoo(Value == null ? new CodeOptionsASNZ() : Value);// .Duplicate() as CodeOptions);
     }
     #endregion
 
@@ -57,7 +57,7 @@ namespace ComposGH.Parameters
       // This function is called when Grasshopper needs to convert this 
       // instance of our custom class into some other type Q.            
 
-      if (typeof(Q).IsAssignableFrom(typeof(CodeOptions)))
+      if (typeof(Q).IsAssignableFrom(typeof(CodeOptionsASNZ)))
       {
         if (Value == null)
           target = default;
@@ -77,9 +77,9 @@ namespace ComposGH.Parameters
       if (source == null) { return false; }
 
       //Cast from GsaMaterial
-      if (typeof(CodeOptions).IsAssignableFrom(source.GetType()))
+      if (typeof(CodeOptionsASNZ).IsAssignableFrom(source.GetType()))
       {
-        Value = (CodeOptions)source;
+        Value = (CodeOptionsASNZ)source;
         return true;
       }
 

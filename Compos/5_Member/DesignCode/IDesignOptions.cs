@@ -7,7 +7,5 @@
     bool InclThinFlangeSections { get; }
     bool ConsiderShearDeflection { get; }
     bool InclConcreteSlabWeight { get; }
-
-    //string ToCoaString(string name, Code code);
   }
 }

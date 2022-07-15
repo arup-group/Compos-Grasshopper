@@ -39,7 +39,7 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      CreepShrinkageEuroCodeParameters csparams = new CreepShrinkageEuroCodeParameters();
+      CreepShrinkageParametersEN csparams = new CreepShrinkageParametersEN();
       csparams.ConcreteAgeAtLoad = 28;
 
       
