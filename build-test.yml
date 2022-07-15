@@ -51,13 +51,13 @@ steps:
   env:
     MSBUILDDISABLENODEREUSE: 1
 
-#- powershell: |
-#    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
-#  displayName: dotnet test
-
 - powershell: |
-    dotnet test --logger trx --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=$(System.DefaultWorkingDirectory)/results/ .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
-  displayName: 'dotnet test'
+    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
+  displayName: dotnet test
+
+#- powershell: |
+#    dotnet test --logger trx --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=$(System.DefaultWorkingDirectory)/results/ .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
+#  displayName: 'dotnet test'
 
 #- task: DotNetCoreCLI@2
 #  inputs:
