@@ -52,7 +52,7 @@ steps:
     MSBUILDDISABLENODEREUSE: 1
 
 - powershell: |
-    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
+    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --logger trx .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
   displayName: dotnet tests
 
 - task: PublishCodeCoverageResults@1
@@ -62,7 +62,7 @@ steps:
     pathToSources: '$(System.DefaultWorkingDirectory)'
 
 - powershell: |
-    codecov -t $env:CODECOV_TOKEN -f '$(System.DefaultWorkingDirectory)/results/$(Release.Deployment.StartTime)/coverage.cobertura.xml -F unittests
+    codecov -t $env:CODECOV_TOKEN -f './results/coverage.xml -F unittests
   env:
     CODECOV_TOKEN: $(CODECOV_TOKEN)
   displayName: Upload Code Coverage to codecovio
