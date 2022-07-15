@@ -235,6 +235,7 @@ namespace ComposGH.Parameters
 
     #endregion
 
+#pragma warning disable IDE0044 // Add readonly modifier
     #region preview geometry
     List<PolyCurve> profileOutlines;
     List<Brep> profileExtrusions;
@@ -243,6 +244,7 @@ namespace ComposGH.Parameters
     {
 
     }
+#pragma warning restore IDE0044 // Add readonly modifier
     #endregion
 
     #region drawing methods

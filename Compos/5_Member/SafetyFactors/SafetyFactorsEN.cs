@@ -13,13 +13,13 @@ namespace ComposAPI
     Custom
   }
 
-  public class EC4SafetyFactors : IEC4SafetyFactors
+  public class SafetyFactorsEN : IEC4SafetyFactors
   {
     public IEC4MaterialPartialFactors MaterialFactors { get; set; } = null;
     public ILoadFactors LoadFactors { get; set; }
     public ILoadCombinationFactors LoadCombinationFactors { get; set; } = new LoadCombinationFactors();
 
-    public EC4SafetyFactors()
+    public SafetyFactorsEN()
     {
       // empty constructor
     }

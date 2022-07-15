@@ -26,7 +26,7 @@ namespace ComposAPI.Members.Tests
     {
       // 1 create with constructor and duplicate
       SafetyFactors original = new SafetyFactors();
-      SafetyFactors duplicate = original.Duplicate() as SafetyFactors;
+      SafetyFactors duplicate = (SafetyFactors)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Null(duplicate.MaterialFactors);
@@ -35,7 +35,7 @@ namespace ComposAPI.Members.Tests
       // 1 create member objects and duplicate again
       original.MaterialFactors = new MaterialPartialFactors();
       original.LoadFactors = new LoadFactors();
-      duplicate = original.Duplicate() as SafetyFactors;
+      duplicate = (SafetyFactors)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(1.0, duplicate.MaterialFactors.SteelBeam);
@@ -50,14 +50,14 @@ namespace ComposAPI.Members.Tests
       Assert.Equal(1.6, duplicate.LoadFactors.FinalLive);
 
       // 3 make some changes to duplicate
-      MaterialPartialFactors materialPartialFactors = duplicate.MaterialFactors as MaterialPartialFactors;
+      MaterialPartialFactors materialPartialFactors = (MaterialPartialFactors)duplicate.MaterialFactors;
       materialPartialFactors.SteelBeam = 1.2;
       materialPartialFactors.ConcreteCompression = 1.25;
       materialPartialFactors.ConcreteShear = 1.3;
       materialPartialFactors.MetalDecking = 1.35;
       materialPartialFactors.ShearStud = 1.4;
       materialPartialFactors.Reinforcement = 1.05;
-      LoadFactors loadFactors = duplicate.LoadFactors as LoadFactors;
+      LoadFactors loadFactors = (LoadFactors)duplicate.LoadFactors;
       loadFactors.ConstantDead = 1.15;
       loadFactors.ConstantLive = 1.45;
       loadFactors.FinalDead = 1.55;

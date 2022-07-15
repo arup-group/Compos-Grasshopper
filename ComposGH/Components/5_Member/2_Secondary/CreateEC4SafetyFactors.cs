@@ -199,7 +199,7 @@ namespace ComposGH.Components
         mf = null;
       }
 
-      EC4SafetyFactors safetyFactors = new EC4SafetyFactors();
+      SafetyFactorsEN safetyFactors = new SafetyFactorsEN();
       if (combinationFactors == null)
         safetyFactors.LoadCombinationFactors.LoadCombination = this.LoadCombinationType;
       else

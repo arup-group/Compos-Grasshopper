@@ -11,12 +11,12 @@ namespace ComposGH.Parameters
     #region constructors
     public EC4SafetyFactorsGoo()
     {
-      this.Value = new EC4SafetyFactors();
+      this.Value = new SafetyFactorsEN();
     }
     public EC4SafetyFactorsGoo(IEC4SafetyFactors item)
     {
       if (item == null)
-        item = new EC4SafetyFactors();
+        item = new SafetyFactorsEN();
       this.Value = item; //.Duplicate() as SafetyFactors;
     }
 
@@ -26,7 +26,7 @@ namespace ComposGH.Parameters
     }
     public EC4SafetyFactorsGoo DuplicateGoo()
     {
-      return new EC4SafetyFactorsGoo(Value == null ? new EC4SafetyFactors() : Value);// .Duplicate() as SafetyFactors);
+      return new EC4SafetyFactorsGoo(Value == null ? new SafetyFactorsEN() : Value);// .Duplicate() as SafetyFactors);
     }
     #endregion
 
@@ -77,9 +77,9 @@ namespace ComposGH.Parameters
       if (source == null) { return false; }
 
       //Cast from GsaMaterial
-      if (typeof(EC4SafetyFactors).IsAssignableFrom(source.GetType()))
+      if (typeof(SafetyFactorsEN).IsAssignableFrom(source.GetType()))
       {
-        Value = (EC4SafetyFactors)source;
+        Value = (SafetyFactorsEN)source;
         return true;
       }
 

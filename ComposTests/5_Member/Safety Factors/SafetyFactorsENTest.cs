@@ -4,16 +4,16 @@ using Xunit;
 
 namespace ComposAPI.Members.Tests
 {
-  public partial class EC4SafetyFactorsTest
+  public partial class SafetyFactorsENTest
   {
     [Fact]
-    public EC4SafetyFactors ConstructorTest()
+    public SafetyFactorsEN ConstructorTest()
     {
       // 1 setup input
       // empty constructor creates default EC4 values
 
       // 2 create object instance with constructor
-      EC4SafetyFactors safetyFactors = new EC4SafetyFactors();
+      SafetyFactorsEN safetyFactors = new SafetyFactorsEN();
 
       // 3 check that inputs are set in object's members
       Assert.Null(safetyFactors.MaterialFactors);
@@ -28,8 +28,8 @@ namespace ComposAPI.Members.Tests
     public void DuplicateTest()
     {
       // 1 create with constructor and duplicate
-      EC4SafetyFactors original = new EC4SafetyFactors();
-      EC4SafetyFactors duplicate = original.Duplicate() as EC4SafetyFactors;
+      SafetyFactorsEN original = new SafetyFactorsEN();
+      SafetyFactorsEN duplicate = (SafetyFactorsEN)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Null(duplicate.MaterialFactors);
@@ -39,7 +39,7 @@ namespace ComposAPI.Members.Tests
       // 1 create member objects and duplicate again
       original.MaterialFactors = new EC4MaterialPartialFactors();
       original.LoadCombinationFactors = new LoadCombinationFactors();
-      duplicate = original.Duplicate() as EC4SafetyFactors;
+      duplicate = (SafetyFactorsEN)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(1.0, duplicate.MaterialFactors.gamma_M0);

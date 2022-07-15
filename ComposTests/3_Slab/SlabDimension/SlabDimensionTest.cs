@@ -110,7 +110,7 @@ namespace ComposAPI.Slabs.Tests
       // 1 create with constructor and duplicate
       LengthUnit lengthUnit = LengthUnit.Millimeter;
       ISlabDimension original = new SlabDimension(new Length(800, lengthUnit), new Length(250, lengthUnit), new Length(310, lengthUnit), new Length(300, lengthUnit), new Length(250, lengthUnit), new Length(240, lengthUnit), true);
-      SlabDimension duplicate = original.Duplicate() as SlabDimension;
+      SlabDimension duplicate = (SlabDimension)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(800, duplicate.StartPosition.As(lengthUnit));

@@ -180,7 +180,7 @@ namespace ComposAPI.Beams.Tests
     {
       // 1 create with constructor and duplicate
       WebOpening original = TestConstructorRectangularWebOpeningWithStiffener(400, 300, 6000, 70);
-      WebOpening duplicate = original.Duplicate() as WebOpening;
+      WebOpening duplicate = (WebOpening)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(OpeningType.Rectangular, duplicate.WebOpeningType);
@@ -243,7 +243,7 @@ namespace ComposAPI.Beams.Tests
     {
       // 1 create with constructor and duplicate
       WebOpening original = TestConstructorCircularWebOpeningWithStiffener(300, 7000, 150);
-      WebOpening duplicate = original.Duplicate() as WebOpening;
+      WebOpening duplicate = (WebOpening)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(OpeningType.Circular, duplicate.WebOpeningType);

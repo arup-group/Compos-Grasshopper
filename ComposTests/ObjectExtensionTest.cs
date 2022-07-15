@@ -13,7 +13,7 @@ namespace ComposAPI.Tests
 {
   public class ObjectExtensionTest
   {
-    public static void IsEqual(object objA, object objB)
+    public static bool IsEqual(object objA, object objB)
     {
       Type typeA = objA.GetType();
       Type typeB = objB.GetType();
@@ -139,6 +139,7 @@ namespace ComposAPI.Tests
           propertyTypeA = propertyA.PropertyType;
         }
       }
+      return true;
     }
 
     [Fact]

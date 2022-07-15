@@ -54,7 +54,7 @@ namespace ComposAPI.Beams.Tests
     {
       // 1 create with constructor and duplicate
       Restraint original = TestConstructor();
-      Restraint duplicate = original.Duplicate() as Restraint;
+      Restraint duplicate = (Restraint)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.True(duplicate.TopFlangeRestrained);
@@ -67,11 +67,11 @@ namespace ComposAPI.Beams.Tests
 
       // 3 make some changes to duplicate
       duplicate.TopFlangeRestrained = false;
-      Supports constructionStageSupports = duplicate.ConstructionStageSupports as Supports;
+      Supports constructionStageSupports = (Supports)duplicate.ConstructionStageSupports;
       constructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds = true;
       constructionStageSupports.SecondaryMemberIntermediateRestraint = true;
       constructionStageSupports.IntermediateRestraintPositions = IntermediateRestraint.None;
-      Supports finalStageSupports = duplicate.FinalStageSupports as Supports;
+      Supports finalStageSupports = (Supports)duplicate.FinalStageSupports;
       finalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds = false;
       finalStageSupports.SecondaryMemberIntermediateRestraint = false;
       finalStageSupports.IntermediateRestraintPositions = IntermediateRestraint.Mid__Span;
@@ -100,7 +100,7 @@ namespace ComposAPI.Beams.Tests
     {
       // 1 create with constructor and duplicate
       Restraint original = TestConstructorNoFinalSupports();
-      Restraint duplicate = original.Duplicate() as Restraint;
+      Restraint duplicate = (Restraint)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.False(duplicate.TopFlangeRestrained);
@@ -113,11 +113,11 @@ namespace ComposAPI.Beams.Tests
 
       // 3 make some changes to duplicate
       duplicate.TopFlangeRestrained = true;
-      Supports constructionStageSupports2 = duplicate.ConstructionStageSupports as Supports;
+      Supports constructionStageSupports2 = (Supports)duplicate.ConstructionStageSupports;
       constructionStageSupports2.BothFlangesFreeToRotateOnPlanAtEnds = false;
       constructionStageSupports2.SecondaryMemberIntermediateRestraint = true;
       constructionStageSupports2.IntermediateRestraintPositions = IntermediateRestraint.Third_Points;
-      Supports finalStageSupports2 = duplicate.FinalStageSupports as Supports;
+      Supports finalStageSupports2 = (Supports)duplicate.FinalStageSupports;
       finalStageSupports2.BothFlangesFreeToRotateOnPlanAtEnds = false;
       finalStageSupports2.SecondaryMemberIntermediateRestraint = false;
       finalStageSupports2.IntermediateRestraintPositions = IntermediateRestraint.Mid__Span;
