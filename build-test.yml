@@ -39,7 +39,7 @@ steps:
     }
   displayName: 'Install Compos'
   failOnStderr: true
-  
+
 - task: VSBuild@1
   displayName: 'Building project in $(configuration)'
   inputs:
@@ -58,12 +58,11 @@ steps:
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'cobertura'
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/results/**/coverage.cobertura.xml'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/results/$(Release.Deployment.StartTime)/coverage.cobertura.xml'
     pathToSources: '$(System.DefaultWorkingDirectory)'
 
 - powershell: |
-    $coverage_file = (Resolve-Path $(System.DefaultWorkingDirectory)/results/*/coverage.cobertura.xm).Path
-    codecov -t $env:CODECOV_TOKEN -f $coverage_file -F unittests
+    codecov -t $env:CODECOV_TOKEN -f '$(System.DefaultWorkingDirectory)/results/$(Release.Deployment.StartTime)/coverage.cobertura.xml -F unittests
   env:
     CODECOV_TOKEN: $(CODECOV_TOKEN)
   displayName: Upload Code Coverage to codecovio
