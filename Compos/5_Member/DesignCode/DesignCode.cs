@@ -41,6 +41,7 @@ namespace ComposAPI
     internal static DesignCode FromCoaString(string coaString, string name, ComposUnits units)
     {
       DesignCode designCode = new DesignCode();
+      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
 
       List<string> lines = CoaHelper.SplitAndStripLines(coaString);
       foreach (string line in lines)
@@ -64,21 +65,36 @@ namespace ComposAPI
               case CoaIdentifier.DesignCode.BS_Superseded:
                 designCode = new DesignCode(Code.BS5950_3_1_1990_Superseded);
                 break;
+
               case CoaIdentifier.DesignCode.BS:
                 designCode = new DesignCode(Code.BS5950_3_1_1990_A1_2010);
                 break;
+
               case CoaIdentifier.DesignCode.EN:
                 designCode = new EN1994();
                 break;
+
               case CoaIdentifier.DesignCode.HKSUOS2005:
                 designCode = new DesignCode(Code.HKSUOS_2005);
                 break;
+
               case CoaIdentifier.DesignCode.HKSUOS2011:
                 designCode = new DesignCode(Code.HKSUOS_2011);
                 break;
+
               case CoaIdentifier.DesignCode.ASNZ:
                 designCode = new ASNZS2327();
+                // because the coa string for "DESIGN_OPTION" includes two values in the end
+                // only for ASNZ code creep multipliers this is included here
+                CodeOptionsASNZ codeOptionsASNZ = new CodeOptionsASNZ();
+                CreepShrinkageParametersASNZ longterm = new CreepShrinkageParametersASNZ() { CreepCoefficient = Convert.ToDouble(parameters[8], noComma) };
+                codeOptionsASNZ.LongTerm = longterm;
+                CreepShrinkageParametersASNZ shrinkage = new CreepShrinkageParametersASNZ() { CreepCoefficient = Convert.ToDouble(parameters[9], noComma) };
+                codeOptionsASNZ.ShortTerm = shrinkage;
+                ASNZS2327 aSNZS = (ASNZS2327)designCode;
+                aSNZS.CodeOptions = codeOptionsASNZ;
                 break;
+
               default:
                 designCode = null;
                 break;
@@ -92,18 +108,6 @@ namespace ComposAPI
 
             designCode.DesignOption = designOption;
 
-            if (designCode.Code == Code.AS_NZS2327_2017)
-            {
-              NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-              CodeOptionsASNZ codeOptions = new CodeOptionsASNZ();
-              CreepShrinkageParametersASNZ longterm = new CreepShrinkageParametersASNZ() { CreepCoefficient = Convert.ToDouble(parameters[8], noComma) };
-              codeOptions.LongTerm = longterm;
-              CreepShrinkageParametersASNZ shrinkage = new CreepShrinkageParametersASNZ() { CreepCoefficient = Convert.ToDouble(parameters[9], noComma) };
-              codeOptions.ShortTerm = shrinkage;
-              ASNZS2327 aSNZS = (ASNZS2327)designCode;
-              aSNZS.CodeOptions = codeOptions;
-              return aSNZS;
-            }
             break;
 
           case (CoaIdentifier.SafetyFactorLoad):
@@ -162,6 +166,8 @@ namespace ComposAPI
 
       if (this.Code == Code.AS_NZS2327_2017)
       {
+        // because the coa string for "DESIGN_OPTION" includes two values in the end
+        // only for ASNZ code creep multipliers this is included here
         ASNZS2327 aSNZS = (ASNZS2327)this;
         str += CoaHelper.FormatSignificantFigures(aSNZS.CodeOptions.LongTerm.CreepCoefficient, 6) + '\t';
         str += CoaHelper.FormatSignificantFigures(aSNZS.CodeOptions.ShortTerm.CreepCoefficient, 6) + '\n';
