@@ -64,8 +64,9 @@ steps:
 #    $coverage_file = (Resolve-Path $(System.DefaultWorkingDirectory)/results\*.trx).Path
 - powershell: |
     $coverage_file = (Resolve-Path $(System.DefaultWorkingDirectory)/results/*/coverage.cobertura.xml).Path
-    Copy-Item $coverage_file $(System.DefaultWorkingDirectory)/results/coverage.xml
-    codecov -t $env:CODECOV_TOKEN -f $(System.DefaultWorkingDirectory)/results/coverage.xml -F unittests
+    echo $coverage_file
+    Copy-Item $coverage_file $(System.DefaultWorkingDirectory)\results\coverage.xml
+    codecov -t $env:CODECOV_TOKEN -f $(System.DefaultWorkingDirectory)\results\coverage.xml -F unittests
   env:
     CODECOV_TOKEN: $(CODECOV_TOKEN)
   displayName: Upload Code Coverage to codecovio
