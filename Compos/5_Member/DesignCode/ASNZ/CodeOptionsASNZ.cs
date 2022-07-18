@@ -6,12 +6,7 @@ using UnitsNet;
 
 namespace ComposAPI
 {
-  public enum CementClass
-  {
-    S,
-    N,
-    R
-  }
+
 
   public class CodeOptionsASNZ : ICodeOptions
   {

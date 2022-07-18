@@ -6,6 +6,12 @@ using UnitsNet;
 
 namespace ComposAPI
 {
+  public enum CementClass
+  {
+    S,
+    N,
+    R
+  }
   public class CodeOptionsEN : ICodeOptions
   {
     public bool ConsiderShrinkageDeflection { get; set; } = false;
