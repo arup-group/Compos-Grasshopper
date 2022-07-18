@@ -20,7 +20,7 @@ namespace ComposAPI
   {
     public NationalAnnex NationalAnnex { get; set; } = NationalAnnex.Generic;
     public CodeOptionsEN CodeOptions { get; set; } = new CodeOptionsEN();
-    public new IEC4SafetyFactors SafetyFactors { get; set; } = new SafetyFactorsEN();
+    public new ISafetyFactorsEN SafetyFactors { get; set; } = new SafetyFactorsEN();
 
     public EN1994()
     {

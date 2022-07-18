@@ -1,4 +1,5 @@
 using ComposAPI.Helpers;
+using ComposAPI.Tests;
 using System.Collections.Generic;
 using Xunit;
 
@@ -121,11 +122,11 @@ namespace ComposAPI.Members.Tests
       Assert.Equal(1.1, lt.CreepCoefficient);
       Assert.Equal(28, lt.ConcreteAgeAtLoad);
       Assert.Equal(36500, lt.FinalConcreteAgeCreep);
-      Assert.Equal(0.5, lt.RelativeHumidity);
+      Assert.Equal(0.5, lt.RelativeHumidity.DecimalFractions);
       Assert.Equal(0.55, st.CreepCoefficient);
       Assert.Equal(1, st.ConcreteAgeAtLoad);
       Assert.Equal(36500, st.FinalConcreteAgeCreep);
-      Assert.Equal(0.5, st.RelativeHumidity);
+      Assert.Equal(0.5, st.RelativeHumidity.DecimalFractions);
 
       // (optionally return object for other tests)
       return designCode;
@@ -135,12 +136,25 @@ namespace ComposAPI.Members.Tests
     public void EC4ToCoaStringTest()
     {
       // Arrange
-      string expected_coaString = "DESIGN_OPTION	MEMBER-4	EN1994-1-1:2004	PROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_NO	2.00000	2.00000\nEC4_DESIGN_OPTION\tMEMBER-4\tSHRINKAGE_DEFORM_EC4_NO\tIGNORE_SHRINKAGE_DEFORM_NO\tAPPROXIMATE_E_RATIO_NO\tGeneric\tCLASS_N\t1.10000\t0.550000\t28.0000\t1.00000\t36500.0\t36500.0\t0.500000\t0.500000\nEC4_LOAD_COMB_FACTORS\tMEMBER-4\tEC0_6_10\t1.35000\t1.35000\t1.50000\t1.50000\n";
+      string expected_coaString = "DESIGN_OPTION	MEMBER-4	EN1994-1-1:2004	PROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_NO	2.00000	2.00000\nEC4_DESIGN_OPTION\tMEMBER-4\tSHRINKAGE_DEFORM_EC4_NO\tIGNORE_SHRINKAGE_DEFORM_NO\tAPPROXIMATE_E_RATIO_NO\tGeneric\tCLASS_N\t1.10000\t0.550000\t28.0000\t1.00000\t36500.0\t36500.0\t50.0000\t50.0000\nEC4_LOAD_COMB_FACTORS\tMEMBER-4\tEC0_6_10\t1.35000\t1.35000\t1.50000\t1.50000\n";
       DesignCode dc = TestEC4Constructor();
       // Act
       string coaString = dc.ToCoaString("MEMBER-4");
       // Assert
       Assert.Equal(expected_coaString, coaString);
+    }
+
+    [Fact]
+    public void EC4FromCoaStringTest()
+    {
+      // Arrange
+      string coaString = "DESIGN_OPTION	MEMBER-4	EN1994-1-1:2004	PROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_NO	2.00000	2.00000\nEC4_DESIGN_OPTION\tMEMBER-4\tSHRINKAGE_DEFORM_EC4_NO\tIGNORE_SHRINKAGE_DEFORM_NO\tAPPROXIMATE_E_RATIO_NO\tGeneric\tCLASS_N\t1.10000\t0.550000\t28.0000\t1.00000\t36500.0\t36500.0\t50.0000\t50.0000\nEC4_LOAD_COMB_FACTORS\tMEMBER-4\tEC0_6_10\t1.35000\t1.35000\t1.50000\t1.50000\n";
+
+      IDesignCode expected_dc = TestEC4Constructor();
+      // Act
+      IDesignCode actual = EN1994.FromCoaString(coaString, "MEMBER-4", ComposUnits.GetStandardUnits());
+      // Assert
+      ObjectExtensionTest.IsEqual(expected_dc, actual);
     }
 
     [Fact]
@@ -255,11 +269,11 @@ namespace ComposAPI.Members.Tests
       Assert.Equal(1.1, lt.CreepCoefficient);
       Assert.Equal(28, lt.ConcreteAgeAtLoad);
       Assert.Equal(36500, lt.FinalConcreteAgeCreep);
-      Assert.Equal(0.5, lt.RelativeHumidity);
+      Assert.Equal(0.5, lt.RelativeHumidity.DecimalFractions);
       Assert.Equal(0.55, st.CreepCoefficient);
       Assert.Equal(1, st.ConcreteAgeAtLoad);
       Assert.Equal(36500, st.FinalConcreteAgeCreep);
-      Assert.Equal(0.5, st.RelativeHumidity);
+      Assert.Equal(0.5, st.RelativeHumidity.DecimalFractions);
 
       // 3 make some changes to duplicate
       duplicate.NationalAnnex = NationalAnnex.United_Kingdom;

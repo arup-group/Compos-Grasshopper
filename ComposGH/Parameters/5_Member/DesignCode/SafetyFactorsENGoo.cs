@@ -6,14 +6,14 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class EC4SafetyFactorsGoo : GH_Goo<IEC4SafetyFactors>
+  public class SafetyFactorsENGoo : GH_Goo<ISafetyFactorsEN>
   {
     #region constructors
-    public EC4SafetyFactorsGoo()
+    public SafetyFactorsENGoo()
     {
       this.Value = new SafetyFactorsEN();
     }
-    public EC4SafetyFactorsGoo(IEC4SafetyFactors item)
+    public SafetyFactorsENGoo(ISafetyFactorsEN item)
     {
       if (item == null)
         item = new SafetyFactorsEN();
@@ -24,9 +24,9 @@ namespace ComposGH.Parameters
     {
       return DuplicateGoo();
     }
-    public EC4SafetyFactorsGoo DuplicateGoo()
+    public SafetyFactorsENGoo DuplicateGoo()
     {
-      return new EC4SafetyFactorsGoo(Value == null ? new SafetyFactorsEN() : Value);// .Duplicate() as SafetyFactors);
+      return new SafetyFactorsENGoo(Value == null ? new SafetyFactorsEN() : Value);// .Duplicate() as SafetyFactors);
     }
     #endregion
 

@@ -3,7 +3,7 @@
   public interface ISafetyFactors
   {
     IMaterialPartialFactors MaterialFactors { get;  }  
-    ILoadFactors LoadFactors { get; set; }
+    ILoadFactors LoadFactors { get; }
 
     string ToCoaString(string name);
   }

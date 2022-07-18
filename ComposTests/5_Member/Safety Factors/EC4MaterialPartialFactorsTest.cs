@@ -5,13 +5,13 @@ namespace ComposAPI.Members.Tests
   public partial class EC4MaterialPartialFactorsTest
   {
     [Fact]
-    public EC4MaterialPartialFactors ConstructorTest()
+    public MaterialPartialFactorsEN ConstructorTest()
     {
       // 1 setup input
       // empty constructor creates default EC4 values
 
       // 2 create object instance with constructor
-      EC4MaterialPartialFactors partialFactors = new EC4MaterialPartialFactors();
+      MaterialPartialFactorsEN partialFactors = new MaterialPartialFactorsEN();
 
       // 3 check that inputs are set in object's members
       Assert.Equal(1.0, partialFactors.gamma_M0);

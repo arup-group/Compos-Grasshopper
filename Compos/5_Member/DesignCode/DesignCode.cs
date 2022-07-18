@@ -38,7 +38,7 @@ namespace ComposAPI
     }
 
     #region coa interop
-    internal static DesignCode FromCoaString(string coaString, string name, ComposUnits units)
+    internal static IDesignCode FromCoaString(string coaString, string name, ComposUnits units)
     {
       DesignCode designCode = new DesignCode();
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
@@ -72,6 +72,8 @@ namespace ComposAPI
 
               case CoaIdentifier.DesignCode.EN:
                 designCode = new EN1994();
+                EN1994 enCode = (EN1994)designCode;
+                enCode.SafetyFactors = SafetyFactorsEN.FromCoaString(coaString, name);
                 break;
 
               case CoaIdentifier.DesignCode.HKSUOS2005:
@@ -109,13 +111,35 @@ namespace ComposAPI
             designCode.DesignOption = designOption;
 
             break;
+          
+          case (CoaIdentifier.EC4DesignOption):
+            EN1994 en = (EN1994)designCode;
+            en.CodeOptions = CodeOptionsEN.FromCoaString(parameters);
+            if (parameters[5].ToUpper() == "UNITED KINGDOM")
+              en.NationalAnnex = NationalAnnex.United_Kingdom;
+            else
+              en.NationalAnnex = NationalAnnex.Generic;
+            designCode = en;
+            break;
 
           case (CoaIdentifier.SafetyFactorLoad):
-            designCode.SafetyFactors.LoadFactors = LoadFactors.FromCoaString(parameters);
+            if (designCode.Code == Code.EN1994_1_1_2004) { break; }
+            else
+            {
+              SafetyFactors sf_load = (SafetyFactors)designCode.SafetyFactors;
+              sf_load.LoadFactors = (LoadFactors)LoadFactors.FromCoaString(parameters);
+              designCode.SafetyFactors = sf_load;
+            }
             break;
 
           case (CoaIdentifier.SafetyFactorMaterial):
-            designCode.SafetyFactors.LoadFactors = LoadFactors.FromCoaString(parameters);
+            if (designCode.Code == Code.EN1994_1_1_2004) { break; }
+            else
+            {
+              SafetyFactors sf_mat = (SafetyFactors)designCode.SafetyFactors;
+              sf_mat.MaterialFactors = MaterialPartialFactors.FromCoaString(parameters);
+              designCode.SafetyFactors = sf_mat;
+            }
             break;
 
           default:

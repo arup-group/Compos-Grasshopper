@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposAPI
 {
@@ -22,7 +23,7 @@ namespace ComposAPI
     /// <summary>
     /// Relative humidity as fraction (0.5 => 50%), used to calculate the creep coefficient 
     /// </summary>
-    public double RelativeHumidity { get; set; } = 0.5;
+    public Ratio RelativeHumidity { get; set; } = new Ratio(50, RatioUnit.Percent);
 
     public CreepShrinkageParametersEN() { }
   }

@@ -1,6 +1,8 @@
 using Moq;
 using System;
 using System.Linq.Expressions;
+using UnitsNet;
+using UnitsNet.Units;
 using Xunit;
 
 namespace ComposAPI.Members.Tests
@@ -75,11 +77,11 @@ namespace ComposAPI.Members.Tests
       Assert.Equal(1.1, lt.CreepCoefficient);
       Assert.Equal(28, lt.ConcreteAgeAtLoad);
       Assert.Equal(36500, lt.FinalConcreteAgeCreep);
-      Assert.Equal(0.5, lt.RelativeHumidity);
+      Assert.Equal(0.5, lt.RelativeHumidity.DecimalFractions);
       Assert.Equal(0.55, st.CreepCoefficient);
       Assert.Equal(1, st.ConcreteAgeAtLoad);
       Assert.Equal(36500, st.FinalConcreteAgeCreep);
-      Assert.Equal(0.5, st.RelativeHumidity);
+      Assert.Equal(0.5, st.RelativeHumidity.DecimalFractions);
 
       // (optionally return object for other tests)
       return codeOptions;
@@ -101,23 +103,23 @@ namespace ComposAPI.Members.Tests
       Assert.Equal(1.1, lt.CreepCoefficient);
       Assert.Equal(28, lt.ConcreteAgeAtLoad);
       Assert.Equal(36500, lt.FinalConcreteAgeCreep);
-      Assert.Equal(0.5, lt.RelativeHumidity);
+      Assert.Equal(0.5, lt.RelativeHumidity.DecimalFractions);
       Assert.Equal(0.55, st.CreepCoefficient);
       Assert.Equal(1, st.ConcreteAgeAtLoad);
       Assert.Equal(36500, st.FinalConcreteAgeCreep);
-      Assert.Equal(0.5, st.RelativeHumidity);
+      Assert.Equal(0.5, st.RelativeHumidity.DecimalFractions);
 
       // 3 make some changes to duplicate
       CreepShrinkageParametersEN longTerm = new CreepShrinkageParametersEN();
       longTerm.CreepCoefficient = 4.0;
       longTerm.ConcreteAgeAtLoad = 45;
       longTerm.FinalConcreteAgeCreep = 500;
-      longTerm.RelativeHumidity = 0.3;
+      longTerm.RelativeHumidity = new Ratio(0.3, RatioUnit.DecimalFraction);
       CreepShrinkageParametersEN shortTerm = new CreepShrinkageParametersEN();
       shortTerm.CreepCoefficient = 2.0;
       shortTerm.ConcreteAgeAtLoad = 2;
       shortTerm.FinalConcreteAgeCreep = 28;
-      shortTerm.RelativeHumidity = 0.95;
+      shortTerm.RelativeHumidity = new Ratio(0.95, RatioUnit.DecimalFraction);
 
       duplicate.LongTerm = longTerm;
       duplicate.ShortTerm = shortTerm;
@@ -135,11 +137,11 @@ namespace ComposAPI.Members.Tests
       Assert.Equal(4.0, lt2.CreepCoefficient);
       Assert.Equal(45, lt2.ConcreteAgeAtLoad);
       Assert.Equal(500, lt2.FinalConcreteAgeCreep);
-      Assert.Equal(0.3, lt2.RelativeHumidity);
+      Assert.Equal(0.3, lt2.RelativeHumidity.DecimalFractions);
       Assert.Equal(2.0, st2.CreepCoefficient);
       Assert.Equal(2, st2.ConcreteAgeAtLoad);
       Assert.Equal(28, st2.FinalConcreteAgeCreep);
-      Assert.Equal(0.95, st2.RelativeHumidity);
+      Assert.Equal(0.95, st2.RelativeHumidity.DecimalFractions);
 
       // 5 check that original has not been changed
       CreepShrinkageParametersEN olt = (CreepShrinkageParametersEN)original.LongTerm;
@@ -150,11 +152,11 @@ namespace ComposAPI.Members.Tests
       Assert.Equal(1.1, olt.CreepCoefficient);
       Assert.Equal(28, olt.ConcreteAgeAtLoad);
       Assert.Equal(36500, olt.FinalConcreteAgeCreep);
-      Assert.Equal(0.5, olt.RelativeHumidity);
+      Assert.Equal(0.5, olt.RelativeHumidity.DecimalFractions);
       Assert.Equal(0.55, ost.CreepCoefficient);
       Assert.Equal(1, ost.ConcreteAgeAtLoad);
       Assert.Equal(36500, ost.FinalConcreteAgeCreep);
-      Assert.Equal(0.5, ost.RelativeHumidity);
+      Assert.Equal(0.5, ost.RelativeHumidity.DecimalFractions);
     }
   }
 }

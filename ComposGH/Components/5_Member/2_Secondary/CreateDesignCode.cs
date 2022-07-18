@@ -265,11 +265,11 @@ namespace ComposGH.Components
     {
       SafetyFactorsGoo safetyFactorsGoo = null;
       ISafetyFactors safetyFactors = null;
-      EC4SafetyFactorsGoo ec4safetyFactorsGoo = null;
-      IEC4SafetyFactors ec4safetyFactors = null;
+      SafetyFactorsENGoo ec4safetyFactorsGoo = null;
+      ISafetyFactorsEN ec4safetyFactors = null;
       if (this.Code == Code.EN1994_1_1_2004)
       {
-        ec4safetyFactorsGoo = (EC4SafetyFactorsGoo)GetInput.GenericGoo<EC4SafetyFactorsGoo>(this, DA, 0);
+        ec4safetyFactorsGoo = (SafetyFactorsENGoo)GetInput.GenericGoo<SafetyFactorsENGoo>(this, DA, 0);
         ec4safetyFactors = (ec4safetyFactorsGoo == null) ? null : ec4safetyFactorsGoo.Value;
       }
       else

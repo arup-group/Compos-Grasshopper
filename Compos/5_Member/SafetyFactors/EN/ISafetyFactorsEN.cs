@@ -1,8 +1,8 @@
 ﻿namespace ComposAPI
 {
-  public interface IEC4SafetyFactors
+  public interface ISafetyFactorsEN
   {
-    IEC4MaterialPartialFactors MaterialFactors { get; }
+    IMaterialPartialFactorsEN MaterialFactors { get; }
     ILoadCombinationFactors LoadCombinationFactors { get; }
     
     string ToCoaString(string name);
