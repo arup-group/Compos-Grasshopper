@@ -55,16 +55,6 @@ steps:
     dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
   displayName: dotnet test
 
-#- powershell: |
-#    dotnet test --logger trx --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=$(System.DefaultWorkingDirectory)/results/ .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
-#  displayName: 'dotnet test'
-
-#- task: DotNetCoreCLI@2
-#  inputs:
-#    command: 'test'
-#    arguments: '.\ComposTests\bin\Release\net6.0\ComposAPITests.dll -c Debug /p:CollectCoverage=true /p:CoverletOutputFormat=opencover'
-#  displayName: '.NET Test'
-
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'cobertura'
@@ -74,7 +64,8 @@ steps:
 #    $coverage_file = (Resolve-Path $(System.DefaultWorkingDirectory)/results\*.trx).Path
 - powershell: |
     $coverage_file = (Resolve-Path $(System.DefaultWorkingDirectory)/results/*/coverage.cobertura.xml).Path
-    codecov -t $env:CODECOV_TOKEN -f $coverage_file -F unittests
+    Copy-Item $coverage_file $(System.DefaultWorkingDirectory)/results/coverage.xml
+    codecov -t $env:CODECOV_TOKEN -f $(System.DefaultWorkingDirectory)/results/coverage.xml -F unittests
   env:
     CODECOV_TOKEN: $(CODECOV_TOKEN)
   displayName: Upload Code Coverage to codecovio
