@@ -66,6 +66,8 @@ steps:
     $coverage_file = (Resolve-Path $(System.DefaultWorkingDirectory)/results/*/coverage.cobertura.xml).Path
     echo $coverage_file
     Copy-Item $coverage_file $(System.DefaultWorkingDirectory)\results\coverage.xml
+    Get-Children -Path $(System.DefaultWorkingDirectory)\results\
+    ls $(System.DefaultWorkingDirectory)\results\
     codecov -t $env:CODECOV_TOKEN -f $(System.DefaultWorkingDirectory)\results\coverage.xml -F unittests
   env:
     CODECOV_TOKEN: $(CODECOV_TOKEN)
