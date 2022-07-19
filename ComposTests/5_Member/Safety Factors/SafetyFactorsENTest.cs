@@ -71,10 +71,10 @@ namespace ComposAPI.Members.Tests
 
     [Theory]
     [InlineData("SAFETY_FACTOR_MATERIAL	MEMBER-1	11.0000	12.0000	13.0000	14.0000	1.25000	15.0000	16.0000	17.0000\nSAFETY_FACTOR_LOAD	MEMBER-1	22.0000	23.0000	24.0000	25.0000\nEC4_LOAD_COMB_FACTORS	MEMBER-1	USER_DEFINED	1.10000	1.20000	1.30000	1.40000\n", true, 11, 12, 13, 14, 15, 16, 17, LoadCombination.Custom, 22, 23, 24, 25, 1.1, 1.2, 1.3, 1.4)]
-    [InlineData("EC4_LOAD_COMB_FACTORS	MEMBER-1	EC0_6_10\n", false, 0, 0, 0, 0, 0, 0, 0, LoadCombination.Equation6_10, 1.35, 1.5, 1.35, 1.5, 1.0, 1.0, 1.0, 1.0)]
-    [InlineData("EC4_LOAD_COMB_FACTORS	MEMBER-1	EC0_WORST_6_10A_10B\n", false, 0, 0, 0, 0, 0, 0, 0, LoadCombination.Equation6_10a__6_10b, 1.35, 1.5, 1.35, 1.5, 0.85, 0.85, 1.0, 0.7)]
+    [InlineData("EC4_LOAD_COMB_FACTORS	MEMBER-1	EC0_6_10	1.00000	1.00000	1.00000	1.00000\n", false, 0, 0, 0, 0, 0, 0, 0, LoadCombination.Equation6_10, 1.35, 1.35, 1.5, 1.5, 1.0, 1.0, 1.0, 1.0)]
+    [InlineData("EC4_LOAD_COMB_FACTORS	MEMBER-1	EC0_WORST_6_10A_10B	0.850000	0.850000	1.00000	0.700000\n", false, 0, 0, 0, 0, 0, 0, 0, LoadCombination.Equation6_10a__6_10b, 1.35, 1.35, 1.5, 1.5, 0.85, 0.85, 1.0, 0.7)]
     [InlineData("SAFETY_FACTOR_LOAD	MEMBER-1	12.0000	13.0000	14.0000	15.0000\nEC4_LOAD_COMB_FACTORS	MEMBER-1	USER_DEFINED	1.10000	1.20000	1.30000	1.40000\n", false, 0, 0, 0, 0, 0, 0, 0, LoadCombination.Custom, 12, 13, 14, 15, 1.1, 1.2, 1.3, 1.4)]
-    public void ToCoaStringTest(string expected_CoaString, bool materialFactorsSet, double gamma_M0, double gamma_M1, double gamma_M2, double gamma_C, double gamma_Deck, double gamma_vs, double gamma_S, LoadCombination loadCombination, double constantgamma_G, double constantgamma_Q, double finalgamma_G, double finalgamma_Q, double constantxi, double finalXi, double constantPsi, double finalPsi)
+    public void ToCoaStringTest(string expected_CoaString, bool materialFactorsSet, double gamma_M0, double gamma_M1, double gamma_M2, double gamma_C, double gamma_Deck, double gamma_vs, double gamma_S, LoadCombination loadCombination, double constantgamma_G, double finalgamma_G, double constantgamma_Q, double finalgamma_Q, double constantxi, double finalXi, double constantPsi, double finalPsi)
     {
       // Assemble
       SafetyFactorsEN safetyFactorsEN = new SafetyFactorsEN();

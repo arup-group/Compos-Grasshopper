@@ -66,8 +66,12 @@
     <Compile Include="5_Member\DesignCode\EN\DesignCodeEN.cs" />
     <Compile Include="5_Member\SafetyFactors\EN\IMaterialPartialFactorsEN.cs" />
     <Compile Include="5_Member\SafetyFactors\EN\ISafetyFactorsEN.cs" />
+    <Compile Include="5_Member\SafetyFactors\EN\LoadCombinationFactors.cs" />
+    <Compile Include="5_Member\SafetyFactors\EN\MaterialPartialFactorsEN.cs" />
     <Compile Include="5_Member\SafetyFactors\EN\SafetyFactorsEN.cs" />
     <Compile Include="5_Member\IMember.cs" />
+    <Compile Include="5_Member\SafetyFactors\MaterialPartialFactors.cs" />
+    <Compile Include="5_Member\SafetyFactors\LoadFactors.cs" />
     <Compile Include="7_Results\IResult.cs" />
     <Compile Include="7_Results\Result.cs" />
     <Compile Include="7_Results\ResultOption.cs" />
