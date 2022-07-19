@@ -21,6 +21,40 @@ namespace ComposAPI.Members.Tests
       return safetyFactors;
     }
 
+    [Theory]
+    [InlineData("SAFETY_FACTOR_LOAD	MEMBER-1	2.00000	3.00000	4.00000	5.00000\nSAFETY_FACTOR_MATERIAL	MEMBER-1	6.00000	1.00000	1.00000	7.00000	8.00000	9.00000	10.0000	11.0000\n", true, 6, 7, 8, 9, 10, 11, 2, 3, 4, 5)]
+    [InlineData("SAFETY_FACTOR_LOAD	MEMBER-1	1.10000	1.20000	1.30000	1.40000\n", false, 0, 0, 0, 0, 0, 0, 1.1, 1.2, 1.3, 1.4)]
+    public void ToCoaStringTest(string expected_CoaString, bool materialFactorsSet, double steelBeam, double concreteCompression, double concreteShear, double metalDecking, double shearStud, double reinforcement,double constantDead, double finalDead, double constantLive, double finalLive)
+    {
+      // Assemble
+      SafetyFactors safetyFactors = new SafetyFactors();
+
+      if (materialFactorsSet)
+      {
+        MaterialFactors mat = new MaterialFactors();
+        mat.SteelBeam = steelBeam;
+        mat.ConcreteCompression = concreteCompression;
+        mat.ConcreteShear = concreteShear;
+        mat.MetalDecking = metalDecking;
+        mat.ShearStud = shearStud;
+        mat.Reinforcement = reinforcement;
+        safetyFactors.MaterialFactors = mat;
+      }
+
+      LoadFactors loadFactors = new LoadFactors();
+      loadFactors.ConstantDead = constantDead;
+      loadFactors.ConstantLive = constantLive;
+      loadFactors.FinalDead = finalDead;
+      loadFactors.FinalLive = finalLive;
+      safetyFactors.LoadFactors = loadFactors;
+
+      // Act
+      string coaString = safetyFactors.ToCoaString("MEMBER-1");
+
+      // Assert
+      Assert.Equal(expected_CoaString, coaString);
+    }
+
     [Fact]
     public void DuplicateTest()
     {
@@ -33,7 +67,7 @@ namespace ComposAPI.Members.Tests
       Assert.Null(duplicate.LoadFactors);
 
       // 1 create member objects and duplicate again
-      original.MaterialFactors = new MaterialPartialFactors();
+      original.MaterialFactors = new MaterialFactors();
       original.LoadFactors = new LoadFactors();
       duplicate = (SafetyFactors)original.Duplicate();
 
@@ -50,7 +84,7 @@ namespace ComposAPI.Members.Tests
       Assert.Equal(1.6, duplicate.LoadFactors.FinalLive);
 
       // 3 make some changes to duplicate
-      MaterialPartialFactors materialPartialFactors = (MaterialPartialFactors)duplicate.MaterialFactors;
+      MaterialFactors materialPartialFactors = (MaterialFactors)duplicate.MaterialFactors;
       materialPartialFactors.SteelBeam = 1.2;
       materialPartialFactors.ConcreteCompression = 1.25;
       materialPartialFactors.ConcreteShear = 1.3;

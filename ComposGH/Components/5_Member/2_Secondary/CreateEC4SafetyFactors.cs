@@ -162,7 +162,7 @@ namespace ComposGH.Components
         SelectedItems[0] = "Custom";
       }
 
-      MaterialPartialFactorsEN mf = new MaterialPartialFactorsEN();
+      MaterialPartialFactors mf = new MaterialPartialFactors();
       double gM0 = 0;
       double gM1 = 0;
       double gM2 = 0;

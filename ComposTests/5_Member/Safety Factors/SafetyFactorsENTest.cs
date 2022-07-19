@@ -45,7 +45,7 @@ namespace ComposAPI.Members.Tests
       // Assert
       if (materialFactorsSet)
       {
-        IMaterialPartialFactorsEN mat = safetyFactorsEN.MaterialFactors;
+        IMaterialPartialFactors mat = safetyFactorsEN.MaterialFactors;
         Assert.Equal(expected_gamma_M0, mat.gamma_M0);
         Assert.Equal(expected_gamma_M1, mat.gamma_M1);
         Assert.Equal(expected_gamma_M2, mat.gamma_M2);
@@ -81,7 +81,7 @@ namespace ComposAPI.Members.Tests
       
       if (materialFactorsSet)
       {
-        MaterialPartialFactorsEN mat = new MaterialPartialFactorsEN();
+        MaterialPartialFactors mat = new MaterialPartialFactors();
         mat.gamma_M0 = gamma_M0;
         mat.gamma_M1 = gamma_M1;
         mat.gamma_M2 = gamma_M2;
@@ -124,7 +124,7 @@ namespace ComposAPI.Members.Tests
       Assert.Equal(LoadCombination.Equation6_10, duplicate.LoadCombinationFactors.LoadCombination);
 
       // 1 create member objects and duplicate again
-      original.MaterialFactors = new MaterialPartialFactorsEN();
+      original.MaterialFactors = new MaterialPartialFactors();
       original.LoadCombinationFactors = new LoadCombinationFactors();
       duplicate = (SafetyFactorsEN)original.Duplicate();
 
@@ -146,7 +146,7 @@ namespace ComposAPI.Members.Tests
       Assert.Equal(1.5, duplicate.LoadCombinationFactors.Finalgamma_Q);
 
       // 3 make some changes to duplicate
-      MaterialPartialFactorsEN partialFactors = new MaterialPartialFactorsEN();
+      MaterialPartialFactors partialFactors = new MaterialPartialFactors();
       partialFactors.gamma_M0 = 1.2;
       partialFactors.gamma_M1 = 1.25;
       partialFactors.gamma_M2 = 1.3;
