@@ -8,7 +8,7 @@ namespace ComposAPI
 {
   public class SafetyFactors : ISafetyFactors
   {
-    public IMaterialPartialFactors MaterialFactors { get; set; } = null;
+    public IMaterialFactors MaterialFactors { get; set; } = null;
     public ILoadFactors LoadFactors { get; set; } = null;
 
     public SafetyFactors()

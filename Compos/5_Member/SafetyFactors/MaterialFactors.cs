@@ -9,7 +9,7 @@ namespace ComposAPI
   /// <summary>
   /// Class for custom material factors. These data can be omitted, if they are omitted, code specified safety factor will be used
   /// </summary>
-  public class MaterialPartialFactors : IMaterialPartialFactors
+  public class MaterialFactors : IMaterialFactors
   {
     public double SteelBeam { get; set; } = 1.0;
     public double ConcreteCompression { get; set; } = 1.5;
@@ -18,12 +18,12 @@ namespace ComposAPI
     public double ShearStud { get; set; } = 1.25;
     public double Reinforcement { get; set; } = 1.15;
 
-    public MaterialPartialFactors() { }
+    public MaterialFactors() { }
 
     #region coainterop
-    internal static IMaterialPartialFactors FromCoaString(List<string> parameters)
+    internal static IMaterialFactors FromCoaString(List<string> parameters)
     {
-      MaterialPartialFactors materialPartialFactors = new MaterialPartialFactors();
+      MaterialFactors materialPartialFactors = new MaterialFactors();
       materialPartialFactors.SteelBeam = CoaHelper.ConvertToDouble(parameters[2]);
       materialPartialFactors.ConcreteCompression = CoaHelper.ConvertToDouble(parameters[5]);
       materialPartialFactors.ConcreteShear = CoaHelper.ConvertToDouble(parameters[6]);

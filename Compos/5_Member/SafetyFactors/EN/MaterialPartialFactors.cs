@@ -10,7 +10,7 @@ namespace ComposAPI
   /// <summary>
   /// Class for custom material factors. These data can be omitted, if they are omitted, code specified safety factor will be used
   /// </summary>
-  public class MaterialPartialFactorsEN : IMaterialPartialFactorsEN
+  public class MaterialPartialFactors : IMaterialPartialFactors
   {
     public double gamma_M0 { get; set; } = 1.0;
     public double gamma_M1 { get; set; } = 1.0;
@@ -19,11 +19,11 @@ namespace ComposAPI
     public double gamma_Deck { get; set; } = 1.0;
     public double gamma_vs { get; set; } = 1.25;
     public double gamma_S { get; set; } = 1.15;
-    public MaterialPartialFactorsEN() { }
+    public MaterialPartialFactors() { }
 
-    internal static MaterialPartialFactorsEN FromCoaString(List<string> parameters)
+    internal static MaterialPartialFactors FromCoaString(List<string> parameters)
     {
-      MaterialPartialFactorsEN materialPartialFactors = new MaterialPartialFactorsEN();
+      MaterialPartialFactors materialPartialFactors = new MaterialPartialFactors();
       materialPartialFactors.gamma_M0 = CoaHelper.ConvertToDouble(parameters[2]);
       materialPartialFactors.gamma_M1 = CoaHelper.ConvertToDouble(parameters[3]);
       materialPartialFactors.gamma_M2 = CoaHelper.ConvertToDouble(parameters[4]);

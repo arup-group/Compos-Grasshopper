@@ -9,7 +9,7 @@ namespace ComposAPI
 {
   public class SafetyFactorsEN : ISafetyFactorsEN
   {
-    public IMaterialPartialFactorsEN MaterialFactors { get; set; } = null;
+    public IMaterialPartialFactors MaterialFactors { get; set; } = null;
     public ILoadCombinationFactors LoadCombinationFactors { get; set; } = new LoadCombinationFactors();
 
     public SafetyFactorsEN()
@@ -67,7 +67,7 @@ namespace ComposAPI
             break;
 
           case (CoaIdentifier.SafetyFactorMaterial):
-            safetyFactors.MaterialFactors = MaterialPartialFactorsEN.FromCoaString(parameters);
+            safetyFactors.MaterialFactors = MaterialPartialFactors.FromCoaString(parameters);
             break;
         }
       }

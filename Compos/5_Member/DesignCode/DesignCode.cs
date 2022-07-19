@@ -123,7 +123,7 @@ namespace ComposAPI
             break;
 
           case (CoaIdentifier.SafetyFactorLoad):
-            if (designCode.Code == Code.EN1994_1_1_2004) { break; }
+            if (designCode.Code == Code.EN1994_1_1_2004) { break; } // safety factor for EN handele in switch case for DesignCode above
             else
             {
               SafetyFactors sf_load = (SafetyFactors)designCode.SafetyFactors;
@@ -133,11 +133,11 @@ namespace ComposAPI
             break;
 
           case (CoaIdentifier.SafetyFactorMaterial):
-            if (designCode.Code == Code.EN1994_1_1_2004) { break; }
+            if (designCode.Code == Code.EN1994_1_1_2004) { break; } // safety factor for EN handele in switch case for DesignCode above
             else
             {
               SafetyFactors sf_mat = (SafetyFactors)designCode.SafetyFactors;
-              sf_mat.MaterialFactors = MaterialPartialFactors.FromCoaString(parameters);
+              sf_mat.MaterialFactors = MaterialFactors.FromCoaString(parameters);
               designCode.SafetyFactors = sf_mat;
             }
             break;
