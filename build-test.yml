@@ -39,7 +39,7 @@ steps:
     }
   displayName: 'Install Compos'
   failOnStderr: true
-  
+
 - task: VSBuild@1
   displayName: 'Building project in $(configuration)'
   inputs:
@@ -52,8 +52,8 @@ steps:
     MSBUILDDISABLENODEREUSE: 1
 
 - powershell: |
-    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
-  displayName: dotnet tests
+    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
+  displayName: dotnet test
 
 - task: PublishCodeCoverageResults@1
   inputs:
@@ -61,11 +61,17 @@ steps:
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/results/**/coverage.cobertura.xml'
     pathToSources: '$(System.DefaultWorkingDirectory)'
 
+#    $coverage_file = (Resolve-Path $(System.DefaultWorkingDirectory)/results\*.trx).Path
 - powershell: |
-    codecov -t $env:CODECOV_TOKEN -f ComposTests\coverage.json -F unittests
+    $coverage_file = (Resolve-Path $(System.DefaultWorkingDirectory)/results/*/coverage.cobertura.xml).Path
+    echo $coverage_file
+    Copy-Item $coverage_file $(System.DefaultWorkingDirectory)\results\coverage.xml
+    ls $(System.DefaultWorkingDirectory)\results\
+    codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage.xml --flags unittests
   env:
     CODECOV_TOKEN: $(CODECOV_TOKEN)
   displayName: Upload Code Coverage to codecovio
+  failOnStderr: true
 
 - powershell: |
     cd ComposGH\bin\x64
