@@ -9,7 +9,7 @@ using static ComposAPI.EC4Options;
 
 namespace ComposGH.Components
 {
-  public class CreateDesignCode : GH_Component, IGH_VariableParameterComponent
+  public class CreateDesignCode : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon

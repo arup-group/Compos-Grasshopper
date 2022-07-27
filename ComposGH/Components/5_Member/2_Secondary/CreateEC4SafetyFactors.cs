@@ -7,7 +7,7 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateEC4SafetyFactors : GH_Component, IGH_VariableParameterComponent
+  public class CreateEC4SafetyFactors : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon

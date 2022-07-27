@@ -5,7 +5,7 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using ComposGH.Parameters;
 using ComposAPI;
-
+using ComposGH.Helpers;
 
 namespace ComposGH.Components
 {
@@ -162,6 +162,7 @@ namespace ComposGH.Components
             fileName = fileName + ".cob";
 
           IComposFile composFile = ComposFile.Open(fileName);
+          PostHog.ModelIO("openCOB");
           DA.SetData(0, new ComposFileGoo(composFile));
         }
       }

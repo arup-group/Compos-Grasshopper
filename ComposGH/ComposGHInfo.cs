@@ -3,6 +3,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using ComposAPI;
+using ComposGH.Helpers;
 
 namespace ComposGH
 {
@@ -50,6 +51,8 @@ namespace ComposGH
 
       // ### Setup units ###
       Units.SetupUnits();
+
+      PostHog.PluginLoaded();
 
       // subscribe to rhino closing event
       Rhino.RhinoApp.Closing += CloseFile;
