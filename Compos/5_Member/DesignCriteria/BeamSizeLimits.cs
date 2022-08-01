@@ -8,16 +8,16 @@ using UnitsNet.Units;
 
 namespace ComposAPI
 {
-  public class BeamSizeLimit : IBeamSizeLimits
+  public class BeamSizeLimits : IBeamSizeLimits
   {
     public Length MinDepth { get; set; } = new Length(0.2, LengthUnit.Meter);
     public Length MaxDepth { get; set; } = new Length(1, LengthUnit.Meter);
     public Length MinWidth { get; set; } = new Length(0.1, LengthUnit.Meter);
     public Length MaxWidth { get; set; } = new Length(0.5, LengthUnit.Meter);
 
-    public BeamSizeLimit() { }
+    public BeamSizeLimits() { }
 
-    public BeamSizeLimit(double minDepth, double maxDepth, double minWidth, double maxWidth, LengthUnit lengthUnit)
+    public BeamSizeLimits(double minDepth, double maxDepth, double minWidth, double maxWidth, LengthUnit lengthUnit)
     {
       this.MinDepth = new Length(minDepth, lengthUnit);
       this.MaxDepth = new Length(maxDepth, lengthUnit);
@@ -28,17 +28,15 @@ namespace ComposAPI
     #region coa interop
     internal static IBeamSizeLimits FromCoaString(List<string> parameters, ComposUnits units)
     {
-      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-      
       LengthUnit unit = units.Section;
 
-      BeamSizeLimit beamSizeLimit = new BeamSizeLimit();
+      BeamSizeLimits beamSizeLimit = new BeamSizeLimits();
       int i = 2;
-      beamSizeLimit.MinDepth = new Length(Convert.ToDouble(parameters[i++], noComma), unit);
-      beamSizeLimit.MaxDepth = new Length(Convert.ToDouble(parameters[i++], noComma), unit);
-      beamSizeLimit.MinWidth = new Length(Convert.ToDouble(parameters[i++], noComma), unit);
-      beamSizeLimit.MaxWidth = new Length(Convert.ToDouble(parameters[i++], noComma), unit);
-      
+      beamSizeLimit.MinDepth = new Length(CoaHelper.ConvertToDouble(parameters[i++]), unit);
+      beamSizeLimit.MaxDepth = new Length(CoaHelper.ConvertToDouble(parameters[i++]), unit);
+      beamSizeLimit.MinWidth = new Length(CoaHelper.ConvertToDouble(parameters[i++]), unit);
+      beamSizeLimit.MaxWidth = new Length(CoaHelper.ConvertToDouble(parameters[i++]), unit);
+
       return beamSizeLimit;
     }
 
