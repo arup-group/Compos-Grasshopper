@@ -3,6 +3,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using ComposAPI;
+using System.Threading.Tasks;
 
 namespace ComposGH
 {
@@ -45,8 +46,10 @@ namespace ComposGH
       Grasshopper.Instances.ComponentServer.AddCategoryIcon("Compos", Properties.Resources.ComposLogo128);
 
       // ### Queue up Main menu loader ###
-      Helpers.Loader menuLoad = new Helpers.Loader();
-      menuLoad.CreateMainMenuItem();
+      Task task = new Task(UI.Menu.MenuLoad.OnStartup);
+      task.Start();
+      //Helpers.Loader menuLoad = new Helpers.Loader();
+      //menuLoad.CreateMainMenuItem();
 
       // ### Setup units ###
       Units.SetupUnits();
