@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SQLite;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
 using ComposAPITests.Helpers;
+using ComposAPI.Helpers;
 
 namespace ComposAPI.Slabs.Tests
 {
@@ -91,6 +91,60 @@ namespace ComposAPI.Slabs.Tests
       Assert.Equal(thickness, decking.Thickness.Value);
       Assert.Equal(strength, decking.Strength.Value);
       Assert.Equal(configuration, decking.DeckingConfiguration);
+      Assert.Equal(DeckingType.Custom, decking.Type);
+    }
+
+    [Theory]
+    [InlineData("RLD", "Ribdeck AL (0.9)", DeckingSteelGrade.S280, 90, true, true, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck AL (0.9)	S280	90.0000	DECKING_JOINTED	JOINT_WELDED\n")]
+    [InlineData("RLD", "Ribdeck AL (1.0)", DeckingSteelGrade.S280, 91, true, false, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck AL (1.0)	S280	91.0000	DECKING_JOINTED	JOINT_NOT_WELD\n")]
+    [InlineData("RLD", "Ribdeck AL (1.2)", DeckingSteelGrade.S350, 92, false, true, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck AL (1.2)	S350	92.0000	DECKING_CONTINUED	JOINT_WELDED\n")]
+    [InlineData("RLD", "Ribdeck E60 (0.9)", DeckingSteelGrade.S350, 93, false, false, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck E60 (0.9)	S350	93.0000	DECKING_CONTINUED	JOINT_NOT_WELD\n")]
+    public void CatalogueDeckingFromCoaStringTest(string catalogue, string profile, DeckingSteelGrade deckingSteelGrade, double angle, bool isDiscontinous, bool isWelded, string expected_coaString)
+    {
+      // Assemble
+      List<string> parameters = CoaHelper.Split(expected_coaString);
+      ComposUnits units = ComposUnits.GetStandardUnits();
+      
+      // Act
+      CatalogueDecking decking = (CatalogueDecking)CatalogueDecking.FromCoaString(parameters, units);
+
+      // Assert
+      Assert.Equal(catalogue, decking.Catalogue);
+      Assert.Equal(profile, decking.Profile);
+      Assert.Equal(deckingSteelGrade, decking.Grade);
+      Assert.Equal(angle, decking.DeckingConfiguration.Angle.Degrees);
+      Assert.Equal(isDiscontinous, decking.DeckingConfiguration.IsDiscontinous);
+      Assert.Equal(isWelded, decking.DeckingConfiguration.IsWelded);
+      Assert.Equal(DeckingType.Catalogue, decking.Type);
+    }
+
+    [Theory]
+    [InlineData(0.3, 0.12, 0.14, 0.01, 0.04, 0.05, 0.0012, 2.75E8, 90, true, true, "DECKING_USER	MEMBER-1	USER_DEFINED	2.75000e+008	90.0000	0.300000	0.120000	0.140000	0.0500000	0.00120000	0.0100000	0.0400000	DECKING_JOINTED	JOINT_WELDED\n")]
+    [InlineData(0.3, 0.12, 0.14, 0.01, 0.04, 0.05, 0.0012, 2.75E8, 90, true, false, "DECKING_USER	MEMBER-1	USER_DEFINED	2.75000e+008	90.0000	0.300000	0.120000	0.140000	0.0500000	0.00120000	0.0100000	0.0400000	DECKING_JOINTED	JOINT_NOT_WELD\n")]
+    [InlineData(0.3, 0.12, 0.14, 0.01, 0.04, 0.05, 0.0012, 2.75E8, 90, false, true, "DECKING_USER	MEMBER-1	USER_DEFINED	2.75000e+008	90.0000	0.300000	0.120000	0.140000	0.0500000	0.00120000	0.0100000	0.0400000	DECKING_CONTINUED	JOINT_WELDED\n")]
+    [InlineData(0.3, 0.12, 0.14, 0.01, 0.04, 0.05, 0.0012, 2.75E8, 90, false, false, "DECKING_USER	MEMBER-1	USER_DEFINED	2.75000e+008	90.0000	0.300000	0.120000	0.140000	0.0500000	0.00120000	0.0100000	0.0400000	DECKING_CONTINUED	JOINT_NOT_WELD\n")]
+    [InlineData(300, 120, 140, 10, 40, 50, 0.12, 2.75E8, 90, true, true, "DECKING_USER	MEMBER-1	USER_DEFINED	2.75000e+008	90.0000	300.000	120.000	140.000	50.0000	0.120000	10.0000	40.0000	DECKING_JOINTED	JOINT_WELDED\n")]
+    public void CustomDeckingFromCoaStringTest(double b1_exp, double b2_exp, double b3_exp, double b4_exp, double b5_exp, double depth_exp, double thickness_exp, double stress_exp, double angle_exp, bool isDiscontinous_exp, bool isWelded_exp, string coaString)
+    {
+      // Assemble
+      List<string> parameters = CoaHelper.Split(coaString);
+      ComposUnits units = ComposUnits.GetStandardUnits();
+
+      // Act
+      CustomDecking decking = (CustomDecking)CustomDecking.FromCoaString(parameters, units);
+
+      // Assert
+      Assert.Equal(b1_exp, decking.b1.Value);
+      Assert.Equal(b2_exp, decking.b2.Value);
+      Assert.Equal(b3_exp, decking.b3.Value);
+      Assert.Equal(b4_exp, decking.b4.Value);
+      Assert.Equal(b5_exp, decking.b5.Value);
+      Assert.Equal(depth_exp, decking.Depth.Value);
+      Assert.Equal(thickness_exp, decking.Thickness.Value);
+      Assert.Equal(stress_exp, decking.Strength.Value);
+      Assert.Equal(angle_exp, decking.DeckingConfiguration.Angle.Degrees);
+      Assert.Equal(isDiscontinous_exp, decking.DeckingConfiguration.IsDiscontinous);
+      Assert.Equal(isWelded_exp, decking.DeckingConfiguration.IsWelded);
       Assert.Equal(DeckingType.Custom, decking.Type);
     }
   }

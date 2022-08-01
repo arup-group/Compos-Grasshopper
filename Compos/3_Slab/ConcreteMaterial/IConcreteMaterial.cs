@@ -17,7 +17,7 @@ namespace ComposAPI
     Density DryDensity { get; }
     bool UserDensity { get; }
     IERatio ERatio { get; }
-    double ImposedLoadPercentage { get; }
+    Ratio ImposedLoadPercentage { get; }
     Strain ShrinkageStrain { get; }
     bool UserStrain { get; }
 

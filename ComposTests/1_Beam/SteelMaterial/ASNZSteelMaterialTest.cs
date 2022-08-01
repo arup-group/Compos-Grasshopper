@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
@@ -16,6 +18,22 @@ namespace ComposAPI.Beams.Tests
       string coaString = steelMaterial.ToCoaString("MEMBER-1", Code.AS_NZS2327_2017, ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_coaString, coaString);
+    }
+
+    [Fact]
+    public void ToCoaAndBack()
+    {
+      List<StandardASNZSteelMaterialGrade> grades = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().ToList();
+
+      foreach (StandardASNZSteelMaterialGrade grade in grades)
+      {
+        ASNZSteelMaterial steelMaterial = new ASNZSteelMaterial(grade);
+        string coaString = steelMaterial.ToCoaString("MEMBER-1", Code.AS_NZS2327_2017, ComposUnits.GetStandardUnits());
+        List<string> parts = coaString.Split('\t').ToList();
+        string gradeString = parts.Last().Replace("\n", string.Empty);
+        StandardASNZSteelMaterialGrade gradeFromString = ASNZSteelMaterial.FromString(gradeString);
+        Assert.Equal(steelMaterial.Grade, gradeFromString);
+      }
     }
 
     // 1 setup inputs
@@ -50,7 +68,6 @@ namespace ComposAPI.Beams.Tests
     [InlineData(StandardASNZSteelMaterialGrade.Gr350_AS3679_1_Hollow, 340, WeldMaterialGrade.Grade_35)]
     [InlineData(StandardASNZSteelMaterialGrade.Gr300_AS3679_1_Hollow, 300, WeldMaterialGrade.Grade_35)]
     [InlineData(StandardASNZSteelMaterialGrade.Gr250_AS3679_1_Hollow, 250, WeldMaterialGrade.Grade_35)]
-    
     public void ConstructorTest(StandardASNZSteelMaterialGrade grade, double fy_expected, WeldMaterialGrade weldGrade_expected)
     {
       // 2 create object instance with constructor

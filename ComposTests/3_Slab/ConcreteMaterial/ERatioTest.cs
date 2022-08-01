@@ -65,7 +65,7 @@ namespace ComposAPI.Slabs.Tests
     {
       // 1 create with constructor and duplicate
       ERatio original = new ERatio(shortTerm, longTerm, vibration, shrinkage);
-      ERatio? duplicate = original.Duplicate() as ERatio;
+      ERatio duplicate = (ERatio)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(original.ShortTerm, duplicate.ShortTerm);

@@ -70,7 +70,7 @@ namespace ComposGH.Components
         lf = null;
       }
 
-      MaterialPartialFactors mf = new MaterialPartialFactors();
+      MaterialFactors mf = new MaterialFactors();
       double steel = 0;
       double conc_comp = 0;
       double conc_shear = 0;

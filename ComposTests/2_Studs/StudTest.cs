@@ -139,7 +139,7 @@ namespace ComposAPI.Studs.Tests
     {
       // 1 create with constructor and duplicate
       Stud original = TestConstructorStudCustomSpacing();
-      Stud duplicate = original.Duplicate() as Stud;
+      Stud duplicate = (Stud)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       // dimensions
@@ -172,7 +172,7 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(double.NaN, duplicate.Interaction);
       Assert.Equal(double.NaN, duplicate.MinSavingMultipleZones);
 
-      ObjectExtensionTest.Equals(original, duplicate);
+      ObjectExtensionTest.IsEqual(original, duplicate);
 
       // 3 make some changes to duplicate
       IStudDimensions dimensions = new StudDimensions(StandardStudSize.D25mmH100mm, StandardStudGrade.SD3_EN13918);
@@ -248,7 +248,7 @@ namespace ComposAPI.Studs.Tests
     {
       // 1 create with constructor and duplicate
       Stud original = TestConstructorStudAutomaticOrMinSpacing(StudSpacingType.Automatic, 0.2);
-      Stud duplicate = original.Duplicate() as Stud;
+      Stud duplicate = (Stud)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(StudSpacingType.Automatic, duplicate.StudSpacingType);
@@ -267,7 +267,7 @@ namespace ComposAPI.Studs.Tests
 
       // 1 create with new constructor and duplicate
       original = TestConstructorStudPartialSpacing(0.15, 0.90);
-      duplicate = original.Duplicate() as Stud;
+      duplicate = (Stud)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(StudSpacingType.Partial_Interaction, duplicate.StudSpacingType);

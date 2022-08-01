@@ -37,16 +37,6 @@ namespace ComposAPI
     }
     #endregion
 
-    #region properties
-    public bool IsValid
-    {
-      get
-      {
-        return true;
-      }
-    }
-    #endregion
-
     #region coa interop
     internal static IList<ILoad> FromCoaString(string coaString, string name, ComposUnits units)
     {
@@ -80,15 +70,16 @@ namespace ComposAPI
           switch (parameters[i++])
           {
             case (CoaIdentifier.Loads.PointLoad):
+
               loads.Add(new PointLoad(
                 new Force(Convert.ToDouble(parameters[i++], noComma), forceUnit),
                 new Force(Convert.ToDouble(parameters[i++], noComma), forceUnit),
                 new Force(Convert.ToDouble(parameters[i++], noComma), forceUnit),
                 new Force(Convert.ToDouble(parameters[i++], noComma), forceUnit),
-                new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit)
+                CoaHelper.ConvertToLengthOrRatio(parameters[i++], lengthUnit)
                 ));
               break;
-
+              
             case (CoaIdentifier.Loads.UniformLoad):
               if (parameters[i++] == CoaIdentifier.Loads.DistributionLinear)
                 loads.Add(new UniformLoad(
@@ -138,12 +129,12 @@ namespace ComposAPI
                   new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
                   new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
                   new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
-                  new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit),
+                  CoaHelper.ConvertToLengthOrRatio(parameters[i++], lengthUnit),
                   new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
                   new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
                   new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
                   new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
-                  new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit)
+                  CoaHelper.ConvertToLengthOrRatio(parameters[i++], lengthUnit)
                   ));
               else
                 loads.Add(new TriLinearLoad(
@@ -151,12 +142,12 @@ namespace ComposAPI
                   new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
                   new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
                   new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
-                  new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit),
+                  CoaHelper.ConvertToLengthOrRatio(parameters[i++], lengthUnit),
                   new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
                   new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
                   new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
                   new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
-                  new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit)
+                  CoaHelper.ConvertToLengthOrRatio(parameters[i++], lengthUnit)
                   ));
               break;
 
@@ -167,12 +158,12 @@ namespace ComposAPI
                   new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
                   new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
                   new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
-                  new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit),
+                  CoaHelper.ConvertToLengthOrRatio(parameters[i++], lengthUnit),
                   new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
                   new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
                   new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
                   new ForcePerLength(Convert.ToDouble(parameters[i++], noComma), forcePerLengthUnit),
-                  new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit)
+                  CoaHelper.ConvertToLengthOrRatio(parameters[i++], lengthUnit)
                   ));
               else
                 loads.Add(new PatchLoad(
@@ -180,12 +171,12 @@ namespace ComposAPI
                   new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
                   new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
                   new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
-                  new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit),
+                  CoaHelper.ConvertToLengthOrRatio(parameters[i++], lengthUnit),
                   new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
                   new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
                   new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
                   new Pressure(Convert.ToDouble(parameters[i++], noComma), forcePerAreaUnit),
-                  new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit)
+                  CoaHelper.ConvertToLengthOrRatio(parameters[i++], lengthUnit)
                   ));
               break;
 
@@ -205,7 +196,9 @@ namespace ComposAPI
               break;
 
             case (CoaIdentifier.Loads.MemberLoad):
-              loads.Add(new MemberLoad(parameters[i++], (MemberLoad.SupportSide)Enum.Parse(typeof(MemberLoad.SupportSide), parameters[i++]), new Length(Convert.ToDouble(parameters[i++], noComma), lengthUnit)));
+              loads.Add(new MemberLoad(parameters[i++], 
+                (MemberLoad.SupportSide)Enum.Parse(typeof(MemberLoad.SupportSide), parameters[i++]),
+                CoaHelper.ConvertToLengthOrRatio(parameters[i++], lengthUnit)));
               break;
 
             default:
@@ -241,7 +234,7 @@ namespace ComposAPI
           // | FinalLive1 |
           str += CoaHelper.FormatSignificantFigures(pointLoad.Load.FinalLive.ToUnit(unit).Value, 6) + '\t';
           // | Dist1 |
-          str += CoaHelper.FormatSignificantFigures(pointLoad.Load.Position.ToUnit(units.Length).Value, 6) + '\t';
+          str += CoaHelper.FormatSignificantFigures(pointLoad.Load.Position,units.Length, 6) + '\t';
 
           break;
 
@@ -316,7 +309,7 @@ namespace ComposAPI
           // | FinalLive1 |
           str += CoaHelper.FormatSignificantFigures(triLinearLoad.LoadW1.FinalLive.ToUnit(unit).Value, 6) + '\t';
           // | Dist1 |
-          str += CoaHelper.FormatSignificantFigures(triLinearLoad.LoadW1.Position.ToUnit(units.Length).Value, 6) + '\t';
+          str += CoaHelper.FormatSignificantFigures(triLinearLoad.LoadW1.Position, units.Length, 6) + '\t';
           // | ConsDead2 |
           str += CoaHelper.FormatSignificantFigures(triLinearLoad.LoadW2.ConstantDead.ToUnit(unit).Value, 6) + '\t';
           // | ConsLive2 |
@@ -326,7 +319,7 @@ namespace ComposAPI
           // | FinalLive@ |
           str += CoaHelper.FormatSignificantFigures(triLinearLoad.LoadW2.FinalLive.ToUnit(unit).Value, 6) + '\t';
           // | Dist2 |
-          str += CoaHelper.FormatSignificantFigures(triLinearLoad.LoadW2.Position.ToUnit(units.Length).Value, 6) + '\t';
+          str += CoaHelper.FormatSignificantFigures(triLinearLoad.LoadW2.Position, units.Length, 6) + '\t';
           break;
 
         case LoadType.Patch:
@@ -349,7 +342,7 @@ namespace ComposAPI
           // | FinalLive1 |
           str += CoaHelper.FormatSignificantFigures(patchLoad.LoadW1.FinalLive.ToUnit(unit).Value, 6) + '\t';
           // | Dist1 |
-          str += CoaHelper.FormatSignificantFigures(patchLoad.LoadW1.Position.ToUnit(units.Length).Value, 6) + '\t';
+          str += CoaHelper.FormatSignificantFigures(patchLoad.LoadW1.Position, units.Length, 6) + '\t';
           // | ConsDead2 |
           str += CoaHelper.FormatSignificantFigures(patchLoad.LoadW2.ConstantDead.ToUnit(unit).Value, 6) + '\t';
           // | ConsLive2 |
@@ -359,7 +352,7 @@ namespace ComposAPI
           // | FinalLive@ |
           str += CoaHelper.FormatSignificantFigures(patchLoad.LoadW2.FinalLive.ToUnit(unit).Value, 6) + '\t';
           // | Dist2 |
-          str += CoaHelper.FormatSignificantFigures(patchLoad.LoadW2.Position.ToUnit(units.Length).Value, 6) + '\t';
+          str += CoaHelper.FormatSignificantFigures(patchLoad.LoadW2.Position, units.Length, 6) + '\t';
           break;
 
         case LoadType.MemberLoad:
@@ -372,7 +365,7 @@ namespace ComposAPI
           // | support |
           str += memberLoad.Support.ToString() + '\t';
           // | pos |
-          str += CoaHelper.FormatSignificantFigures(memberLoad.Position.ToUnit(units.Length).Value, 6) + '\t';
+          str += CoaHelper.FormatSignificantFigures(memberLoad.Position, units.Length, 6) + '\t';
           break;
 
         case LoadType.Axial:

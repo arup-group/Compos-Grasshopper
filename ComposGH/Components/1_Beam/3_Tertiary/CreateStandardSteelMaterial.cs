@@ -114,6 +114,8 @@ namespace ComposGH.Components
         DA.GetData(0, ref grade);
         try
         {
+          if (Char.IsDigit(grade[0]))
+            grade = "S" + grade;
           this.SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), grade);
           this.DropDownItems[0] = new List<string>();
           this.SelectedItems[0] = "-";
@@ -129,7 +131,8 @@ namespace ComposGH.Components
           text = text.Remove(text.Length - 2);
           text += ".";
           this.DropDownItems[0] = Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList();
-          AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, text);
+          return;
         }
       }
       else if (this.OverrideDropDownItems[0])
@@ -138,7 +141,7 @@ namespace ComposGH.Components
         this.OverrideDropDownItems[0] = false;
       }
 
-      DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(SteelGrade)));
+      DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(SteelGrade, Code.BS5950_3_1_1990_A1_2010))); //any code other than EN or ASNZ will do...
     }
 
     #region (de)serialization

@@ -59,7 +59,7 @@ namespace ComposAPI
         switch (parameters[0])
         {
           case (CoaIdentifier.BeamSpanLength):
-            beam.Length = CoaHelper.ConvertToLength(parameters[2], units.Length);
+            beam.Length = CoaHelper.ConvertToLength(parameters[3], units.Length);
             break;
 
           case (CoaIdentifier.RetraintPoint):
@@ -70,14 +70,19 @@ namespace ComposAPI
           case (CoaIdentifier.FinalRestraintNoStud):
           case (CoaIdentifier.FinalRestraint2ndBeam):
           case (CoaIdentifier.FinalEndFlangeFreeRotate):
-            // todo
+            if (beam.Restraint == null) { beam.Restraint = new Restraint(); }
+            Restraint restraint = (Restraint)beam.Restraint;
+            // not static to update the object 
+            restraint.FromCoaString(parameters, ComposUnits.GetStandardUnits());
             break;
 
           case (CoaIdentifier.BeamSteelMaterialStandard):
           case (CoaIdentifier.BeamSteelMaterialUser):
-          case (CoaIdentifier.BeamWeldingMaterial):
-            // this doesn´t work like this
             beam.Material = SteelMaterial.FromCoaString(parameters, units);
+            break;
+          case (CoaIdentifier.BeamWeldingMaterial):
+            SteelMaterial steelMaterial = (SteelMaterial)beam.Material;
+            steelMaterial.WeldGrade = SteelMaterial.WeldGradeFromCoa(parameters);
             break;
 
           case (CoaIdentifier.BeamSectionAtX):
@@ -85,6 +90,7 @@ namespace ComposAPI
             break;
 
           case (CoaIdentifier.WebOpeningDimension):
+            if (beam.WebOpenings == null) { beam.WebOpenings = new List<IWebOpening>(); }
             beam.WebOpenings.Add(WebOpening.FromCoaString(parameters, units));
             break;
 
@@ -99,23 +105,21 @@ namespace ComposAPI
     public string ToCoaString(string name, Code code, ComposUnits units)
     {
       List<string> parameters = new List<string>();
+      
+      string str = this.Material.ToCoaString(name, code, units);
+      
       parameters.Add(CoaIdentifier.BeamSpanLength);
       parameters.Add(name);
-      // span number always 1?
+      // span number always 1 - placeholder for future feature in Compos to have continuous beams.
       parameters.Add(Convert.ToString(1));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.Length.ToUnit(units.Length).Value, 5));
+      parameters.Add(CoaHelper.FormatSignificantFigures(this.Length.ToUnit(units.Length).Value, 6));
 
-      string str = CoaHelper.CreateString(parameters);
+      str += CoaHelper.CreateString(parameters);
 
       int num = 1;
-      int index = this.Sections.Count + 1;
       foreach (IBeamSection section in this.Sections)
-      {
-        str += section.ToCoaString(name, num, index, units);
-        num++;
-      }
+        str += section.ToCoaString(name, this.Sections.Count, num++, units);
 
-      str += this.Material.ToCoaString(name, code, units);
       str += this.Restraint.ToCoaString(name, units);
 
       if (this.WebOpenings != null)

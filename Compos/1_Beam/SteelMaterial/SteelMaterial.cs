@@ -8,11 +8,11 @@ namespace ComposAPI
 {
   public enum StandardSteelGrade
   {
-    S235,
-    S275,
-    S355,
-    S450,
-    S460
+    S235 = 235,
+    S275 = 275,
+    S355 = 355,
+    S450 = 450,
+    S460 = 460
   }
 
   public enum WeldMaterialGrade
@@ -53,14 +53,15 @@ namespace ComposAPI
       this.ReductionFactorMpl = reductionFacorMpl;
     }
 
-    public SteelMaterial(StandardSteelGrade grade)
+    public SteelMaterial(StandardSteelGrade grade, Code code)
     {
-      SetValuesFromStandard(grade);
+      bool EN = (code == Code.EN1994_1_1_2004);
+      SetValuesFromStandard(grade, EN);
     }
 
-    private void SetValuesFromStandard(StandardSteelGrade grade)
+    private void SetValuesFromStandard(StandardSteelGrade grade, bool EN)
     {
-      this.E = new Pressure(205, PressureUnit.Gigapascal);
+      this.E = new Pressure(EN ? 210 : 205, PressureUnit.Gigapascal);
       this.Density = new Density(7850, DensityUnit.KilogramPerCubicMeter);
       this.Grade = grade;
       this.isCustom = false;
@@ -93,8 +94,7 @@ namespace ComposAPI
           break;
 
         default:
-          this.isCustom = true;
-          break;
+          throw new Exception("Unrecognised StandardSteelGrade Enum");
       }
     }
     #endregion
@@ -107,8 +107,11 @@ namespace ComposAPI
       switch (parameters[0])
       {
         case (CoaIdentifier.BeamSteelMaterialStandard):
-          material.isCustom = false;
-          material.Grade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), parameters[2]);
+          string grade = parameters[2];
+          bool EN = grade.EndsWith(" (EN)");
+          if (EN)
+            grade = grade.Replace(" (EN)", string.Empty);
+          material.SetValuesFromStandard((StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), grade), EN);
           break;
 
         case (CoaIdentifier.BeamSteelMaterialUser):
@@ -122,14 +125,14 @@ namespace ComposAPI
             material.ReductionFactorMpl = false;
           break;
 
-        case (CoaIdentifier.BeamWeldingMaterial):
-          material.WeldGrade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), parameters[2].Replace(' ', '_'));
-          break;
-
         default:
           throw new Exception("Unable to convert " + parameters + " to Compos Steel Material.");
       }
       return material;
+    }
+    internal static WeldMaterialGrade WeldGradeFromCoa(List<string> parameters)
+    {
+      return (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), parameters[2].Replace(' ', '_'));
     }
 
     public virtual string ToCoaString(string name, Code code, ComposUnits units)

@@ -3,7 +3,7 @@
   /// <summary>
   /// Interface for custom material factors according to EN1994-1-1:2004. These data can be omitted, if they are omitted, code specified safety factor will be used.
   /// </summary>
-  public interface IEC4MaterialPartialFactors
+  public interface IMaterialPartialFactors
   {
     double gamma_M0 { get; }
     double gamma_M1 { get; }
