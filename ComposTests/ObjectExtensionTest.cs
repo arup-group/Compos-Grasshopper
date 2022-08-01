@@ -38,10 +38,8 @@ namespace ComposAPI.Tests
 
         try
         {
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
           objPropertyValueA = propertyA.GetValue(objA, null);
           objPropertyValueB = propertyB.GetValue(objB, null);
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
           // check wether property is an interface
           if (propertyTypeA.IsInterface)
@@ -69,10 +67,8 @@ namespace ComposAPI.Tests
                 IEnumerable<object> enumerableA = ((IEnumerable)objPropertyValueA).Cast<object>();
                 IEnumerable<object> enumerableB = ((IEnumerable)objPropertyValueB).Cast<object>();
 
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                 Type enumrableTypeA = null;
                 Type enumrableTypeB = null;
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
                 if (enumerableA.GetType().GetGenericArguments().Length > 0)
                   enumrableTypeA = enumerableA.GetType().GetGenericArguments()[0];
                 if (enumerableB.GetType().GetGenericArguments().Length > 0)
@@ -81,7 +77,6 @@ namespace ComposAPI.Tests
 
                 // if type is a struct, we have to check the actual list items
                 // this will fail if list is actually of type "System.Object"..
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 if (enumrableTypeA.ToString() is "System.Object")
                 {
                   if (enumerableA.Any())
@@ -96,7 +91,6 @@ namespace ComposAPI.Tests
                   else
                     continue; // can´t get type of struct in empty list? 
                 }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
                 Type genericListTypeA = typeof(List<>).MakeGenericType(enumrableTypeA);
                 Type genericListTypeB = typeof(List<>).MakeGenericType(enumrableTypeB);
