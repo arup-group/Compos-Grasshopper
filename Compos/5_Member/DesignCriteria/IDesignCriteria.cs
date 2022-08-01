@@ -9,14 +9,14 @@ namespace ComposAPI
     IBeamSizeLimits BeamSizeLimits { get; }
 
     // deflection limits
-    IDeflectionLimits ConstructionDeadLoad { get; }
-    IDeflectionLimits AdditionalDeadLoad { get; }
-    IDeflectionLimits FinalLiveLoad { get; }
-    IDeflectionLimits TotalLoads { get; }
+    IDeflectionLimit ConstructionDeadLoad { get; }
+    IDeflectionLimit AdditionalDeadLoad { get; }
+    IDeflectionLimit FinalLiveLoad { get; }
+    IDeflectionLimit TotalLoads { get; }
     /// <summary>
     /// Total loads minus construction dead load
     /// </summary>
-    IDeflectionLimits PostConstruction { get; }
+    IDeflectionLimit PostConstruction { get; }
     
     /// <summary>
     /// True to optimise for minimum weight, else (if false) minimum depth will be used as criterion
