@@ -8,18 +8,17 @@ using UnitsNet.Units;
 
 namespace ComposAPI
 {
-  // name linked with coa string naming, do not change!
   public enum OptimiseOption
   {
-    MINIMUM_WEIGHT,
-    MINIMUM_DEPTH
+    MinimumWeight,
+    MinimumHeight
   }
   public class DesignCriteria : IDesignCriteria
   {
     // beam size
     public IBeamSizeLimits BeamSizeLimits { get; set; }
     public IList<int> CatalogueSectionTypes { get; set; }
-    public OptimiseOption OptimiseOption { get; set; } = OptimiseOption.MINIMUM_WEIGHT;
+    public OptimiseOption OptimiseOption { get; set; } = OptimiseOption.MinimumWeight;
 
     // deflection limits
     public IDeflectionLimit ConstructionDeadLoad { get; set; } = null;
@@ -44,8 +43,30 @@ namespace ComposAPI
       this.PostConstruction = postConstr;
       this.FrequencyLimits = frequencyLimits;
     }
-    
+
     #region coa interop
+    internal static string GetOptionCoaString(OptimiseOption type)
+    {
+      switch (type)
+      {
+        case OptimiseOption.MinimumHeight:
+          return "MINIMUM_DEPTH";
+        case OptimiseOption.MinimumWeight:
+          return "MINIMUM_WEIGHT";
+      }
+      return null;
+    }
+    internal static OptimiseOption GetOption(string coaString)
+    {
+      switch (coaString)
+      {
+        case "MINIMUM_DEPTH":
+          return OptimiseOption.MinimumHeight;
+        case "MINIMUM_WEIGHT":
+          return OptimiseOption.MinimumWeight;
+      }
+      return OptimiseOption.MinimumWeight;
+    }
     internal static IDesignCriteria FromCoaString(string coaString, string name, ComposUnits units)
     {
       DesignCriteria designCrit = new DesignCriteria();
@@ -67,22 +88,22 @@ namespace ComposAPI
         switch (parameters[0])
         {
           case CoaIdentifier.DesignCriteria.DeflectionLimit:
-            DeflectionLimitLoadType type = (DeflectionLimitLoadType)Enum.Parse(typeof(DeflectionLimitLoadType), parameters[2]);
+            DeflectionLimitLoadType type = DeflectionLimit.GetLoadType(parameters[2]);
             switch (type)
             {
-              case DeflectionLimitLoadType.CONSTRUCTION_DEAD_LOAD:
+              case DeflectionLimitLoadType.ConstructionDeadLoad:
                 designCrit.ConstructionDeadLoad = DeflectionLimit.FromCoaString(coaString, name, type, units);
                 break;
-              case DeflectionLimitLoadType.ADDITIONAL_DEAD_LOAD:
+              case DeflectionLimitLoadType.AdditionalDeadLoad:
                 designCrit.AdditionalDeadLoad = DeflectionLimit.FromCoaString(coaString, name, type, units);
                 break;
-              case DeflectionLimitLoadType.FINAL_LIVE_LOAD:
+              case DeflectionLimitLoadType.FinalLiveLoad:
                 designCrit.FinalLiveLoad = DeflectionLimit.FromCoaString(coaString, name, type, units);
                 break;
-              case DeflectionLimitLoadType.TOTAL:
+              case DeflectionLimitLoadType.Total:
                 designCrit.TotalLoads = DeflectionLimit.FromCoaString(coaString, name, type, units);
                 break;
-              case DeflectionLimitLoadType.POST_CONSTRUCTION:
+              case DeflectionLimitLoadType.PostConstruction:
                 designCrit.PostConstruction = DeflectionLimit.FromCoaString(coaString, name, type, units);
                 break;
             }
@@ -93,7 +114,7 @@ namespace ComposAPI
             break;
           
           case CoaIdentifier.DesignCriteria.OptimiseOption:
-            designCrit.OptimiseOption = (OptimiseOption)Enum.Parse(typeof(OptimiseOption), parameters[2]);
+            designCrit.OptimiseOption = GetOption(parameters[2]);
             break;
           
           case CoaIdentifier.DesignCriteria.SectionType:
@@ -118,22 +139,22 @@ namespace ComposAPI
       string coaString = "";
 
       if (this.ConstructionDeadLoad != null)
-        coaString += this.ConstructionDeadLoad.ToCoaString(name, DeflectionLimitLoadType.CONSTRUCTION_DEAD_LOAD, units);
+        coaString += this.ConstructionDeadLoad.ToCoaString(name, DeflectionLimitLoadType.ConstructionDeadLoad, units);
       if (this.AdditionalDeadLoad != null)
-        coaString += this.AdditionalDeadLoad.ToCoaString(name, DeflectionLimitLoadType.ADDITIONAL_DEAD_LOAD, units);
+        coaString += this.AdditionalDeadLoad.ToCoaString(name, DeflectionLimitLoadType.AdditionalDeadLoad, units);
       if (this.FinalLiveLoad != null)
-        coaString += this.FinalLiveLoad.ToCoaString(name, DeflectionLimitLoadType.FINAL_LIVE_LOAD, units);
+        coaString += this.FinalLiveLoad.ToCoaString(name, DeflectionLimitLoadType.FinalLiveLoad, units);
       if (this.TotalLoads != null)
-        coaString += this.TotalLoads.ToCoaString(name, DeflectionLimitLoadType.TOTAL, units);
+        coaString += this.TotalLoads.ToCoaString(name, DeflectionLimitLoadType.Total, units);
       if (this.PostConstruction != null)
-        coaString += this.PostConstruction.ToCoaString(name, DeflectionLimitLoadType.POST_CONSTRUCTION, units);
+        coaString += this.PostConstruction.ToCoaString(name, DeflectionLimitLoadType.PostConstruction, units);
 
       coaString += this.BeamSizeLimits.ToCoaString(name, units);
 
       List<string> parameters = new List<string>();
       parameters.Add(CoaIdentifier.DesignCriteria.OptimiseOption);
       parameters.Add(name);
-      parameters.Add((this.OptimiseOption == OptimiseOption.MINIMUM_WEIGHT ? "MINIMUM_WEIGHT" : "MINIMUM_DEPTH"));
+      parameters.Add(GetOptionCoaString(this.OptimiseOption));
       coaString += CoaHelper.CreateString(parameters);
 
       parameters = new List<string>();

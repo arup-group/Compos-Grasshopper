@@ -8,14 +8,13 @@ using UnitsNet.Units;
 
 namespace ComposAPI
 {
-  // name linked with coa string naming, do not change!
   public enum DeflectionLimitLoadType
   {
-    CONSTRUCTION_DEAD_LOAD,
-    ADDITIONAL_DEAD_LOAD,
-    FINAL_LIVE_LOAD,
-    TOTAL,
-    POST_CONSTRUCTION
+    ConstructionDeadLoad,
+    AdditionalDeadLoad,
+    FinalLiveLoad,
+    Total,
+    PostConstruction
   }
   public class DeflectionLimit : IDeflectionLimit
   {
@@ -34,6 +33,40 @@ namespace ComposAPI
     }
     
     #region coa interop
+    internal static string GetLoadTypeCoaString(DeflectionLimitLoadType type)
+    {
+      switch (type)
+      {
+        case DeflectionLimitLoadType.ConstructionDeadLoad:
+          return "CONSTRUCTION_DEAD_LOAD";
+        case DeflectionLimitLoadType.AdditionalDeadLoad:
+          return "ADDITIONAL_DEAD_LOAD";
+        case DeflectionLimitLoadType.FinalLiveLoad:
+          return "FINAL_LIVE_LOAD";
+        case DeflectionLimitLoadType.Total:
+          return "TOTAL";
+        case DeflectionLimitLoadType.PostConstruction:
+          return "POST_CONSTRUCTION";
+      }
+      return null;
+    }
+    internal static DeflectionLimitLoadType GetLoadType(string coaString)
+    {
+      switch (coaString)
+      {
+        case "CONSTRUCTION_DEAD_LOAD":
+          return DeflectionLimitLoadType.ConstructionDeadLoad;
+        case "ADDITIONAL_DEAD_LOAD":
+          return DeflectionLimitLoadType.AdditionalDeadLoad;
+        case "FINAL_LIVE_LOAD":
+          return DeflectionLimitLoadType.FinalLiveLoad;
+        case "TOTAL":
+          return DeflectionLimitLoadType.Total;
+        case "POST_CONSTRUCTION":
+          return DeflectionLimitLoadType.PostConstruction;
+      }
+      return DeflectionLimitLoadType.Total;
+    }
     internal static IDeflectionLimit FromCoaString(string coaString, string name, DeflectionLimitLoadType type, ComposUnits units)
     {
       DeflectionLimit defLim = new DeflectionLimit();
@@ -52,7 +85,7 @@ namespace ComposAPI
         if (parameters[1] != name)
           continue;
 
-        if (parameters[2] != type.ToString())
+        if (parameters[2] != GetLoadTypeCoaString(type))
           continue;
 
         if (parameters[3] == "SPAN/DEF_RATIO")
@@ -73,7 +106,7 @@ namespace ComposAPI
         List<string> parameters = new List<string>();
         parameters.Add(CoaIdentifier.DesignCriteria.DeflectionLimit);
         parameters.Add(name);
-        parameters.Add(type.ToString());
+        parameters.Add(GetLoadTypeCoaString(type));
         parameters.Add("ABSOLUTE");
         parameters.Add(CoaHelper.FormatSignificantFigures(this.AbsoluteDeflection.ToUnit(units.Displacement).Value, 6));
 
@@ -85,7 +118,7 @@ namespace ComposAPI
         List<string> parameters = new List<string>();
         parameters.Add(CoaIdentifier.DesignCriteria.DeflectionLimit);
         parameters.Add(name);
-        parameters.Add(type.ToString());
+        parameters.Add(GetLoadTypeCoaString(type));
         parameters.Add("SPAN/DEF_RATIO");
         parameters.Add(CoaHelper.FormatSignificantFigures(this.AbsoluteDeflection.ToUnit(units.Displacement).Value, 6));
 
