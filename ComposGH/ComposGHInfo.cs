@@ -48,8 +48,6 @@ namespace ComposGH
       // ### Queue up Main menu loader ###
       Task task = new Task(UI.Menu.MenuLoad.OnStartup);
       task.Start();
-      //Helpers.Loader menuLoad = new Helpers.Loader();
-      //menuLoad.CreateMainMenuItem();
 
       // ### Setup units ###
       Units.SetupUnits();
