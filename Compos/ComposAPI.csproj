@@ -64,6 +64,7 @@
     <Compile Include="5_Member\DesignCode\ASNZ\CreepShrinkageParametersASNZ.cs" />
     <Compile Include="5_Member\DesignCode\ASNZ\DesignCodeASNZ.cs" />
     <Compile Include="5_Member\DesignCode\EN\DesignCodeEN.cs" />
+    <Compile Include="5_Member\DesignCriteria\BeamSizeLimit.cs" />
     <Compile Include="5_Member\DesignCriteria\IFrequencyLimits.cs" />
     <Compile Include="5_Member\DesignCriteria\IDeflectionLimits.cs" />
     <Compile Include="5_Member\DesignCriteria\IBeamSizeLimits.cs" />

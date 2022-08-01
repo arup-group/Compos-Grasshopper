@@ -8,6 +8,6 @@ namespace ComposAPI
     Length MaxDepth { get; }
     Length MinWidth { get; }
     Length MaxWidth { get; }
-    string ToCoaString(string name);
+    string ToCoaString(string name, ComposUnits units);
   }
 }
