@@ -8,6 +8,7 @@ using UnitsNet.Units;
 
 namespace ComposAPI
 {
+  // name linked with coa string naming, do not change!
   public enum DeflectionLimitLoadType
   {
     CONSTRUCTION_DEAD_LOAD,

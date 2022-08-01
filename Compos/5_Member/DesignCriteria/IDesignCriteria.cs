@@ -17,15 +17,15 @@ namespace ComposAPI
     /// Total loads minus construction dead load
     /// </summary>
     IDeflectionLimit PostConstruction { get; }
-    
+
     /// <summary>
     /// True to optimise for minimum weight, else (if false) minimum depth will be used as criterion
     /// </summary>
-    bool OptimiseForWeight { get; }
+    OptimiseOption OptimiseOption { get; }
 
     IFrequencyLimits FrequencyLimits { get; }
 
     IList<int> CatalogueSectionTypes { get; }
-    string ToCoaString(string name);
+    string ToCoaString(string name, ComposUnits units);
   }
 }
