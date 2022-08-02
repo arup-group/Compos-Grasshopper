@@ -15,7 +15,13 @@ namespace ComposAPI
     public Ratio LiveLoadIncl { get; set; } = new Ratio(0.1, RatioUnit.DecimalFraction);
 
     public FrequencyLimits() { }
-    
+    public FrequencyLimits(double minReqFrequencyHertz, double deadLoadInclPercentage, double liveLoadInclPercentage) 
+    { 
+      this.MinimumRequired = new Frequency(minReqFrequencyHertz, FrequencyUnit.Hertz);
+      this.DeadLoadIncl = new Ratio(deadLoadInclPercentage, RatioUnit.Percent);
+      this.LiveLoadIncl = new Ratio(liveLoadInclPercentage, RatioUnit.Percent);
+    }
+
     #region coa interop
     internal static IFrequencyLimits FromCoaString(List<string> parameters)
     {
@@ -32,7 +38,6 @@ namespace ComposAPI
 
     public string ToCoaString(string name)
     {
-
       List<string> parameters = new List<string>();
       parameters.Add(CoaIdentifier.DesignCriteria.Frequency);
       parameters.Add(name);
