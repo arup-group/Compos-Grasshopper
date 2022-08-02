@@ -92,7 +92,6 @@ namespace ComposAPI
           defLim.SpanOverDeflectionRatio = new Ratio(CoaHelper.ConvertToDouble(parameters[4]), RatioUnit.DecimalFraction);
         else if (parameters[3] == "ABSOLUTE")
           defLim.AbsoluteDeflection = new Length(CoaHelper.ConvertToDouble(parameters[4]), units.Displacement);
-
       }
       return defLim;
     }
@@ -120,7 +119,7 @@ namespace ComposAPI
         parameters.Add(name);
         parameters.Add(GetLoadTypeCoaString(type));
         parameters.Add("SPAN/DEF_RATIO");
-        parameters.Add(CoaHelper.FormatSignificantFigures(this.AbsoluteDeflection.ToUnit(units.Displacement).Value, 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(this.SpanOverDeflectionRatio.DecimalFractions, 6));
 
         coaString += CoaHelper.CreateString(parameters);
       }
