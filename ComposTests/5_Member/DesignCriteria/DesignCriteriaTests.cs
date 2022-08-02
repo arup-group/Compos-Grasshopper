@@ -1,4 +1,5 @@
 using ComposAPI.Tests;
+using System;
 using System.Collections.Generic;
 using UnitsNet;
 using UnitsNet.Units;
@@ -16,6 +17,16 @@ namespace ComposAPI.Members.Tests
       ObjectExtensionTest.IsEqual(new BeamSizeLimits(), designCriteria.BeamSizeLimits);
       Assert.Equal(OptimiseOption.MinimumWeight, designCriteria.OptimiseOption);
       Assert.Equal(0, designCriteria.CatalogueSectionTypes.Count);
+    }
+
+    [Fact]
+    public void CheckSetCatalogueSectionIDs()
+    {
+      DesignCriteria designCriteria = new DesignCriteria();
+
+      List<int> wrongIDs = new List<int>() { 4, 5 };
+
+      Assert.Throws<System.Exception>(() => designCriteria.CatalogueSectionTypes = wrongIDs);
     }
 
     [Fact]

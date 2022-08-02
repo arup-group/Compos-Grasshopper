@@ -86,6 +86,7 @@
     <Compile Include="7_Results\TransverseRebarOption.cs" />
     <Compile Include="7_Results\UtilisationFactorOption.cs" />
     <Compile Include="ComposUnits.cs" />
+    <Compile Include="Helpers\CatalogueTypeIdNames.cs" />
     <Compile Include="Helpers\ICatalogueDB.cs" />
     <Compile Include="Helpers\CoaHelper.cs" />
     <Compile Include="1_Beam\BeamSection\IBeamSection.cs" />
