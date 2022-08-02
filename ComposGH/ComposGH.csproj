@@ -180,6 +180,10 @@
     <Compile Include="Parameters\2_Studs\StudSpecGoo.cs" />
     <Compile Include="Parameters\2_Studs\StudSpacingGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\SafetyFactorsENGoo.cs" />
+    <Compile Include="Parameters\5_Member\DesignCriteria\FrequencyLimitsGoo.cs" />
+    <Compile Include="Parameters\5_Member\DesignCriteria\DeflectionLimitGoo.cs" />
+    <Compile Include="Parameters\5_Member\DesignCriteria\BeamSizeLimitsGoo.cs" />
+    <Compile Include="Parameters\5_Member\DesignCriteria\DesignCriteriaGoo.cs" />
     <Compile Include="Parameters\5_Member\MemberGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\CreepShrinkageEC4ParamGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\SafetyFactorsGoo.cs" />
