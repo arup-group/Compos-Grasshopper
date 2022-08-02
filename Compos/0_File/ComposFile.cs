@@ -379,6 +379,7 @@ namespace ComposAPI
         string name = member.Name;
         member.DesignCode = DesignCode.FromCoaString(coaString, name, units);
         Code code = member.DesignCode.Code;
+        member.DesignCriteria = DesignCriteria.FromCoaString(coaString, name, units);
 
         member.Beam = Beam.FromCoaString(coaString, name, units);
         member.Stud = Stud.FromCoaString(coaString, name, code, units);
