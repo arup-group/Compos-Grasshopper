@@ -1,48 +1,34 @@
+using ComposAPI.Helpers;
 using ComposAPI.Tests;
+using System.Collections.Generic;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
 
 namespace ComposAPI.Members.Tests
 {
-  public partial class DesignCriteriaTest
+  public class BeamSizeLimitsTests
   {
     [Fact]
-    public BeamSizeLimits EmptyConstructorTest()
+    public void EmptyConstructorTest()
     {
-      // 1 setup input
-      // empty constructor 
-
-      // 2 create object instance with constructor
       BeamSizeLimits beamSizeLimits = new BeamSizeLimits();
 
-      // 3 check that inputs are set in object's members
       Assert.Equal(new Length(0.2, LengthUnit.Meter), beamSizeLimits.MinDepth);
       Assert.Equal(new Length(1, LengthUnit.Meter), beamSizeLimits.MaxDepth);
       Assert.Equal(new Length(0.1, LengthUnit.Meter), beamSizeLimits.MinWidth);
       Assert.Equal(new Length(0.5, LengthUnit.Meter), beamSizeLimits.MaxWidth);
-
-      // (optionally return object for other tests)
-      return beamSizeLimits;
     }
 
     [Fact]
-    public BeamSizeLimits ConstructorTest()
+    public void ConstructorTest()
     {
-      // 1 setup input
-      // empty constructor 
-
-      // 2 create object instance with constructor
       BeamSizeLimits beamSizeLimits = new BeamSizeLimits(0.3, 1.1, 0.2, 0.6, LengthUnit.Meter);
 
-      // 3 check that inputs are set in object's members
       Assert.Equal(new Length(0.3, LengthUnit.Meter), beamSizeLimits.MinDepth);
       Assert.Equal(new Length(1.1, LengthUnit.Meter), beamSizeLimits.MaxDepth);
       Assert.Equal(new Length(0.2, LengthUnit.Meter), beamSizeLimits.MinWidth);
       Assert.Equal(new Length(0.6, LengthUnit.Meter), beamSizeLimits.MaxWidth);
-
-      // (optionally return object for other tests)
-      return beamSizeLimits;
     }
 
     [Theory]
@@ -60,6 +46,24 @@ namespace ComposAPI.Members.Tests
 
       // Assert
       Assert.Equal(expected_CoaString, coaString);
+    }
+
+    [Theory]
+    [InlineData("CRITERIA_BEAM_SIZE_LIMIT	MEMBER-1	20.0000	100.000	10.0000	50.0000\n", 20, 100, 10, 50)]
+    public void FromCoaStringTest(string coaString, double minDepth, double maxDepth, double minWidth, double maxWidth)
+    {
+      // Assemble
+      LengthUnit unit = LengthUnit.Millimeter;
+      ComposUnits units = ComposUnits.GetStandardUnits();
+      units.Section = unit;
+      BeamSizeLimits expectedBeamSizeLimits = new BeamSizeLimits(minDepth, maxDepth, minWidth, maxWidth, unit);
+      List<string> parameters = CoaHelper.Split(coaString);
+
+      // Act
+      IBeamSizeLimits beamSizeLimits = BeamSizeLimits.FromCoaString(parameters, units);
+
+      // Assert
+      ObjectExtensionTest.IsEqual(expectedBeamSizeLimits, beamSizeLimits);
     }
 
     [Fact]
