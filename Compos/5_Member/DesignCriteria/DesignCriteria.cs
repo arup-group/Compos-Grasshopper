@@ -16,8 +16,8 @@ namespace ComposAPI
   public class DesignCriteria : IDesignCriteria
   {
     // beam size
-    public IBeamSizeLimits BeamSizeLimits { get; set; }
-    public IList<int> CatalogueSectionTypes { get; set; }
+    public IBeamSizeLimits BeamSizeLimits { get; set; } = new BeamSizeLimits();
+    public IList<int> CatalogueSectionTypes { get; set; } = new List<int>();
     public OptimiseOption OptimiseOption { get; set; } = OptimiseOption.MinimumWeight;
 
     // deflection limits
