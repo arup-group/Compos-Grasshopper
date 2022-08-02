@@ -21,8 +21,9 @@ namespace ComposAPI.Members.Tests
       ISlab slab = new Slab();
       IList<ILoad> loads = new List<ILoad>() { new Load() };
       IDesignCode designCode = new DesignCode();
+      IDesignCriteria designCriteria = new DesignCriteria();
 
-      Member member = new Member(name, designCode, beam, stud, slab, loads);
+      Member member = new Member(name, designCode, beam, stud, slab, loads, designCriteria);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(name, member.Name);
@@ -32,6 +33,7 @@ namespace ComposAPI.Members.Tests
       Assert.Equal(beam, member.Beam);
       Assert.Equal(slab, member.Slab);
       Assert.Equal(loads, member.Loads);
+      Assert.Equal(designCriteria, member.DesignCriteria);
     }
 
     // 1 setup inputs
@@ -45,8 +47,9 @@ namespace ComposAPI.Members.Tests
       ISlab slab = new Slab();
       IList<ILoad> loads = new List<ILoad>() { new Load() };
       IDesignCode designCode = new DesignCode();
+      IDesignCriteria designCriteria = new DesignCriteria();
 
-      Member member = new Member(name, gridRef, note, designCode, beam, stud, slab, loads);
+      Member member = new Member(name, gridRef, note, designCode, beam, stud, slab, loads, designCriteria);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(name, member.Name);
@@ -56,6 +59,7 @@ namespace ComposAPI.Members.Tests
       Assert.Equal(beam, member.Beam);
       Assert.Equal(slab, member.Slab);
       Assert.Equal(loads, member.Loads);
+      Assert.Equal(designCriteria, member.DesignCriteria);
     }
   }
 }

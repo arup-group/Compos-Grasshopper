@@ -11,6 +11,7 @@ namespace ComposAPI
     ISlab Slab { get; }
     IList<ILoad> Loads { get; }
     IDesignCode DesignCode { get; }
+    IDesignCriteria DesignCriteria { get; }
     //IComposFile File { get; set; } // the hosting Compos file
     string Name { get; }
     string GridReference { get; }
