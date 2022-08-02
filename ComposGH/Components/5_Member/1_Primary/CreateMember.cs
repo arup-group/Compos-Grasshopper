@@ -30,7 +30,7 @@ namespace ComposGH.Components
       pManager.AddGenericParameter("Stud", "Stu", "Compos Shear Stud", GH_ParamAccess.item);
       pManager.AddGenericParameter("Slab", "Sla", "Compos Concrete slab", GH_ParamAccess.item);
       pManager.AddGenericParameter("Loads", "Ld", "Compos Loads", GH_ParamAccess.list);
-      pManager.AddGenericParameter("Design Code", "DC", "Compos Design Code", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Design Code", "Co", "Compos Design Code", GH_ParamAccess.item);
       pManager.AddTextParameter("Name", "Na", "Set Member Name", GH_ParamAccess.item);
       pManager.AddTextParameter("GridRef", "Grd", "(Optional) Set Member's Grid Reference", GH_ParamAccess.item);
       pManager.AddTextParameter("Note", "Nt", "(Optional) Set Notes about the Member", GH_ParamAccess.item);

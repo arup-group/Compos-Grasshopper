@@ -257,7 +257,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Design Code", "DC", "Compos Design Code", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Design Code", "Co", "Compos Design Code", GH_ParamAccess.item);
     }
     #endregion
 

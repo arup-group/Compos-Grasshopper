@@ -98,7 +98,7 @@ namespace ComposGH.Parameters
   public class DesignCriteriaParameter : GH_PersistentParam<DesignCriteriaGoo>
   {
     public DesignCriteriaParameter()
-      : base(new GH_InstanceDescription("DesignCriteria", "Crit", "Maintains a collection of Compos Design Criteria data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+      : base(new GH_InstanceDescription("DesignCriteria", "Crt", "Maintains a collection of Compos Design Criteria data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
     public override Guid ComponentGuid => new Guid("48fe6e4a-2d32-415c-8ad9-1e467bdfbd01");
