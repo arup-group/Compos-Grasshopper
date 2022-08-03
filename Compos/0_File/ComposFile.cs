@@ -20,7 +20,7 @@ namespace ComposAPI
     internal static int counter;
 
     public string Guid { get; set; } = System.Guid.NewGuid().ToString();
-    internal IList<IMember> Members = new List<IMember>();
+    public IList<IMember> Members { get; } = new List<IMember>();
     internal bool IsAnalysed { get; set; } = false;
     internal bool IsDesigned { get; set; } = false;
 
@@ -137,6 +137,11 @@ namespace ComposAPI
     public short Design(string memberName)
     {
       return ComposFile.ComposCOM.Design(memberName);
+    }
+
+    public string BeamSectDesc(string memberName)
+    {
+      return ComposFile.ComposCOM.BeamSectDesc(memberName);
     }
 
     public IMember GetMember(string name)

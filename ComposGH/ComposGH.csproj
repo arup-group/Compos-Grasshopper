@@ -470,6 +470,36 @@
   <ItemGroup>
     <None Include="Properties\Icons\StandardENSteelMaterial.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\BeamSizeLimits.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CatalogueID.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\DeflectionLimit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\DesignCriteria.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\DesignCriteriaParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\FrequencyLimit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\DesignMember.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CodeReqMet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CodeReqNotAvailable.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CodeReqNotMet.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

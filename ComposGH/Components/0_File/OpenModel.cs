@@ -5,7 +5,7 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using ComposGH.Parameters;
 using ComposAPI;
-
+using System.Collections.Generic;
 
 namespace ComposGH.Components
 {
@@ -103,7 +103,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Model", "Mod", "Compos Model", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Member(s)", "Mem", "Compos Members contained in the file.", GH_ParamAccess.list);
     }
     #region IGH_VariableParameterComponent null implementation
     //This sub region handles any changes to the component after it has been placed on the canvas
@@ -162,7 +162,10 @@ namespace ComposGH.Components
             fileName = fileName + ".cob";
 
           IComposFile composFile = ComposFile.Open(fileName);
-          DA.SetData(0, new ComposFileGoo(composFile));
+          List<MemberGoo> members = new List<MemberGoo>();
+          foreach (IMember mem in composFile.Members)
+            members.Add(new MemberGoo(mem));
+          DA.SetDataList(0, members);
         }
       }
     }

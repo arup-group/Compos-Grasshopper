@@ -112,7 +112,6 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-
       string dim = (this.Dimensions.Count > 1) ? string.Join(" : ", this.Dimensions.Select(x => x.ToString()).ToArray()) : this.Dimensions[0].ToString();
       string mat = this.Material.ToString();
       string reinf = "";

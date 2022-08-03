@@ -65,6 +65,22 @@ namespace ComposAPI
       return this.File.Analyse(this.Name);
     }
 
+    public bool Design()
+    {
+      if (this.Beam.Sections.Count > 1)
+        throw new Exception("Unable to design member with more than one section");
+
+      if (this.File.Design(this.Name) == 0)
+      {
+        BeamSection newSection = new BeamSection(this.File.BeamSectDesc(this.Name));
+        this.Beam.Sections[0] = newSection;
+        this.File = new ComposFile(new List<IMember>() { this });
+        this.Analyse();
+        return true;
+      }
+      return false;
+    }
+
     public short CodeSatisfied()
     {
       return this.File.CodeSatisfied(this.Name);
@@ -155,5 +171,10 @@ namespace ComposAPI
       return coaString;
     }
     #endregion
+
+    public override string ToString()
+    {
+      return this.Name;
+    }
   }
 }

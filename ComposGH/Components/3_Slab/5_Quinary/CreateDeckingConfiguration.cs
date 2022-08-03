@@ -35,8 +35,8 @@ namespace ComposGH.Components
       string unitAbbreviation = string.Concat(angle.ToString().Where(char.IsLetter));
 
       pManager.AddAngleParameter("Angle", "Angle", "Decking angle", GH_ParamAccess.item, Math.PI/2);
-      pManager.AddBooleanParameter("Discontinaus", "Con", "Is decking discontinous (default = true)", GH_ParamAccess.item, false);
-      pManager.AddBooleanParameter("Welded", "Wd", "Is decking welded onto steel beam(default = false)", GH_ParamAccess.item, false);
+      pManager.AddBooleanParameter("Discontinaus", "Con", "Is decking discontinous (default = true)", GH_ParamAccess.item, true);
+      pManager.AddBooleanParameter("Welded", "Wd", "Is decking welded onto steel beam (default = false)", GH_ParamAccess.item, false);
     }
     protected override void BeforeSolveInstance()
     {

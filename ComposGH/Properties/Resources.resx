@@ -127,6 +127,21 @@
   <data name="BeamSection" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\BeamSection.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="BeamSizeLimits" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\BeamSizeLimits.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CatalogueID" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\CatalogueID.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CodeReqMet" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\CodeReqMet.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CodeReqNotAvailable" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\CodeReqNotAvailable.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CodeReqNotMet" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\CodeReqNotMet.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="ComposLogo128" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\ComposLogo128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -199,14 +214,29 @@
   <data name="DeckingParam" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\DeckingParam.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="DeflectionLimit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\DeflectionLimit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="DesignCodeParameter" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\DesignCodeParameter.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DesignCriteria" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\DesignCriteria.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DesignCriteriaParam" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\DesignCriteriaParam.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DesignMember" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\DesignMember.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="EC4SafetyFactors" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\EC4SafetyFactors.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ERatio" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\ERatio.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FrequencyLimit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\FrequencyLimit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LinearLoad" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\LinearLoad.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

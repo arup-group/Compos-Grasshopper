@@ -22,7 +22,7 @@ namespace ComposGH.Components
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 
-    //protected override System.Drawing.Bitmap Icon => Properties.Resources.CreepShrinkageParams;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.DesignCriteria;
     #endregion
 
     #region Custom UI
