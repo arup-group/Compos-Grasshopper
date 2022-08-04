@@ -52,7 +52,7 @@ steps:
     MSBUILDDISABLENODEREUSE: 1
 
 - powershell: |
-    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
+    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposTests\bin\x64\Release\net6.0\ComposAPITests.dll
   displayName: dotnet test
 
 - task: PublishCodeCoverageResults@1
@@ -79,6 +79,7 @@ steps:
     .\yak version
     cd Release
     ..\yak spec
+    Add-Content manifest.yml 'icon: ComposIcon.png'
     ..\yak build --platform win
     $yakCurrentVersName = Get-ChildItem -Path . -Filter "*.yak"
     $yakRh7Name =  $yakCurrentVersName -Replace "rh6_27", "rh7_0"

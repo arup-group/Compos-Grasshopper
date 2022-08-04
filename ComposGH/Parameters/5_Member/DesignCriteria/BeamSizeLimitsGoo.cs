@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Types;
+﻿using Grasshopper.Kernel.Types;
 using ComposAPI;
 
 namespace ComposGH.Parameters
@@ -10,33 +6,33 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class ComposFileGoo : GH_Goo<IComposFile>
+  public class BeamSizeLimitsGoo : GH_Goo<IBeamSizeLimits>
   {
     #region constructors
-    public ComposFileGoo()
+    public BeamSizeLimitsGoo()
     {
-      this.Value = new ComposFile();
+      this.Value = new BeamSizeLimits();
     }
-    public ComposFileGoo(IComposFile item)
+    public BeamSizeLimitsGoo(IBeamSizeLimits item)
     {
       if (item == null)
-        item = new ComposFile();
-      this.Value = item; //.Duplicate() as IStud;
+        item = new BeamSizeLimits();
+      this.Value = item; //.Duplicate() as SafetyFactors;
     }
 
     public override IGH_Goo Duplicate()
     {
       return DuplicateGoo();
     }
-    public ComposFileGoo DuplicateGoo()
+    public BeamSizeLimitsGoo DuplicateGoo()
     {
-      return new ComposFileGoo(Value == null ? new ComposFile() : Value);
+      return new BeamSizeLimitsGoo(Value == null ? new BeamSizeLimits() : Value);
     }
     #endregion
 
     #region properties
-    public override bool IsValid => (this.Value == null) ? false : true;
-    public override string TypeName => "File";
+     public override bool IsValid => (this.Value == null) ? false : true;
+    public override string TypeName => "BeamSizeLimits";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot
     {
@@ -61,14 +57,14 @@ namespace ComposGH.Parameters
       // This function is called when Grasshopper needs to convert this 
       // instance of our custom class into some other type Q.            
 
-      //if (typeof(Q).IsAssignableFrom(typeof(Stud)))
-      //{
-      //  if (Value == null)
-      //    target = default;
-      //  else
-      //    target = (Q)(object)Value;
-      //  return true;
-      //}
+      if (typeof(Q).IsAssignableFrom(typeof(BeamSizeLimits)))
+      {
+        if (Value == null)
+          target = default;
+        else
+          target = (Q)(object)Value;
+        return true;
+      }
 
       target = default;
       return false;
@@ -80,12 +76,12 @@ namespace ComposGH.Parameters
 
       if (source == null) { return false; }
 
-      ////Cast from GsaMaterial
-      //if (typeof(Stud).IsAssignableFrom(source.GetType()))
-      //{
-      //  Value = (Stud)source;
-      //  return true;
-      //}
+      //Cast from GsaMaterial
+      if (typeof(BeamSizeLimits).IsAssignableFrom(source.GetType()))
+      {
+        Value = (BeamSizeLimits)source;
+        return true;
+      }
 
       return false;
     }

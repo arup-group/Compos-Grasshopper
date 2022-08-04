@@ -3,7 +3,7 @@
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5274EA0F-5CF8-4F74-ACE6-A273F4196522}</ProjectGuid>
@@ -156,6 +156,11 @@
     <Compile Include="Components\GH_OasysComponent.cs" />
     <Compile Include="Components\GH_OasysTaskCapableComponent.cs" />
     <Compile Include="Components\8_Design\1_Primary\DesignMember.cs" />
+    <Compile Include="Components\8_Design\2_Secondary\CreateDesignCriteria.cs" />
+    <Compile Include="Components\8_Design\3_Tertiary\SectionCatalogues.cs" />
+    <Compile Include="Components\8_Design\3_Tertiary\CreateFrequencyLimits.cs" />
+    <Compile Include="Components\8_Design\3_Tertiary\CreateBeamSizeLimits.cs" />
+    <Compile Include="Components\8_Design\3_Tertiary\CreateDeflectionLimit.cs" />
     <Compile Include="ComposGHInfo.cs" />
     <Compile Include="Helpers\DeSerialization.cs" />
     <Compile Include="Helpers\GhRibbonLayout.cs" />
@@ -188,6 +193,10 @@
     <Compile Include="Parameters\2_Studs\StudSpecGoo.cs" />
     <Compile Include="Parameters\2_Studs\StudSpacingGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\SafetyFactorsENGoo.cs" />
+    <Compile Include="Parameters\5_Member\DesignCriteria\FrequencyLimitsGoo.cs" />
+    <Compile Include="Parameters\5_Member\DesignCriteria\DeflectionLimitGoo.cs" />
+    <Compile Include="Parameters\5_Member\DesignCriteria\BeamSizeLimitsGoo.cs" />
+    <Compile Include="Parameters\5_Member\DesignCriteria\DesignCriteriaGoo.cs" />
     <Compile Include="Parameters\5_Member\MemberGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\CreepShrinkageEC4ParamGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\SafetyFactorsGoo.cs" />
@@ -270,8 +279,6 @@
     <Folder Include="Components\6_Analysis\3_Tertiary\" />
     <Folder Include="Components\6_Analysis\4_Quarternary\" />
     <Folder Include="Components\6_Analysis\5_Quinary\" />
-    <Folder Include="Components\8_Design\2_Secondary\" />
-    <Folder Include="Components\8_Design\3_Tertiary\" />
     <Folder Include="Components\8_Design\4_Quarternary\" />
     <Folder Include="Components\8_Design\5_Quinary\" />
   </ItemGroup>
@@ -471,6 +478,36 @@
   <ItemGroup>
     <None Include="Properties\Icons\StandardENSteelMaterial.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\BeamSizeLimits.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CatalogueID.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\DeflectionLimit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\DesignCriteria.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\DesignCriteriaParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\FrequencyLimit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\DesignMember.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CodeReqMet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CodeReqNotAvailable.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CodeReqNotMet.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -480,7 +517,8 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>Copy "$(TargetPath)" "$(TargetDir)Compos.gha"</PostBuildEvent>
+    <PostBuildEvent>Copy "$(TargetPath)" "$(TargetDir)Compos.gha"
+Copy "$(ProjectDir)\Properties\Icons\ComposLogo64.png" "$(TargetDir)ComposIcon.png"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <FallbackCulture>en-US</FallbackCulture>

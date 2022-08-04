@@ -133,13 +133,13 @@ namespace ComposAPI
     {
       string str = "";
       if (this.AbsoluteDeflection != Length.Zero)
-        str += "δ:" + this.AbsoluteDeflection.ToUnit(Units.LengthUnitResult).ToString("f0").Replace(" ", string.Empty);
+        str += "δ:" + this.AbsoluteDeflection.ToUnit(Units.LengthUnitResult).ToString("f0").Replace(" ", string.Empty) + ", ";
 
       if (this.SpanOverDeflectionRatio != Ratio.Zero)
       {
         str += "δ:1/" + this.SpanOverDeflectionRatio.DecimalFractions.ToString("f0").Replace(" ", string.Empty);
       }
-      return str;
+      return str.TrimEnd(' ').TrimEnd(',');
     }
     #endregion
   }

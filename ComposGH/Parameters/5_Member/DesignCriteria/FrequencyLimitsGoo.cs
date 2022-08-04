@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Types;
+﻿using Grasshopper.Kernel.Types;
 using ComposAPI;
 
 namespace ComposGH.Parameters
@@ -10,33 +6,33 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class ComposFileGoo : GH_Goo<IComposFile>
+  public class FrequencyLimitsGoo : GH_Goo<IFrequencyLimits>
   {
     #region constructors
-    public ComposFileGoo()
+    public FrequencyLimitsGoo()
     {
-      this.Value = new ComposFile();
+      this.Value = new FrequencyLimits();
     }
-    public ComposFileGoo(IComposFile item)
+    public FrequencyLimitsGoo(IFrequencyLimits item)
     {
       if (item == null)
-        item = new ComposFile();
-      this.Value = item; //.Duplicate() as IStud;
+        item = new FrequencyLimits();
+      this.Value = item; //.Duplicate() as SafetyFactors;
     }
 
     public override IGH_Goo Duplicate()
     {
       return DuplicateGoo();
     }
-    public ComposFileGoo DuplicateGoo()
+    public FrequencyLimitsGoo DuplicateGoo()
     {
-      return new ComposFileGoo(Value == null ? new ComposFile() : Value);
+      return new FrequencyLimitsGoo(Value == null ? new FrequencyLimits() : Value);
     }
     #endregion
 
     #region properties
-    public override bool IsValid => (this.Value == null) ? false : true;
-    public override string TypeName => "File";
+     public override bool IsValid => (this.Value == null) ? false : true;
+    public override string TypeName => "FrequencyLimits";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot
     {
@@ -61,14 +57,14 @@ namespace ComposGH.Parameters
       // This function is called when Grasshopper needs to convert this 
       // instance of our custom class into some other type Q.            
 
-      //if (typeof(Q).IsAssignableFrom(typeof(Stud)))
-      //{
-      //  if (Value == null)
-      //    target = default;
-      //  else
-      //    target = (Q)(object)Value;
-      //  return true;
-      //}
+      if (typeof(Q).IsAssignableFrom(typeof(FrequencyLimits)))
+      {
+        if (Value == null)
+          target = default;
+        else
+          target = (Q)(object)Value;
+        return true;
+      }
 
       target = default;
       return false;
@@ -80,12 +76,12 @@ namespace ComposGH.Parameters
 
       if (source == null) { return false; }
 
-      ////Cast from GsaMaterial
-      //if (typeof(Stud).IsAssignableFrom(source.GetType()))
-      //{
-      //  Value = (Stud)source;
-      //  return true;
-      //}
+      //Cast from GsaMaterial
+      if (typeof(FrequencyLimits).IsAssignableFrom(source.GetType()))
+      {
+        Value = (FrequencyLimits)source;
+        return true;
+      }
 
       return false;
     }

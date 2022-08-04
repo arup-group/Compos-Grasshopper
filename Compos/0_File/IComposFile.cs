@@ -4,6 +4,7 @@ namespace ComposAPI
 {
   public interface IComposFile
   {
+    IList<IMember> Members { get; }
     //string FileName { get; }
 
     void AddMember(IMember member);
@@ -12,6 +13,7 @@ namespace ComposAPI
     short CodeSatisfied(string memberName);
     //short Design();
     short Design(string memberName);
+    string BeamSectDesc(string memberName);
     IMember GetMember(string name);
     float MaxResult(string memberName, string option, short position);
     short MaxResultPosition(string memberName, string option, short position);

@@ -17,7 +17,7 @@ namespace ComposGH.Components
         : base("Mesh Reinforcement", "MeshR", "Create Compos Slab Reinforcement from a Standard Reinforment Mesh",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
-    { this.Hidden = false; }
+    { this.Hidden = true; }
     public override Guid ComponentGuid => new Guid("17960644-0DFC-4F5D-B17C-45E6FBC3732E");
     public override GH_Exposure Exposure => GH_Exposure.quarternary;
 

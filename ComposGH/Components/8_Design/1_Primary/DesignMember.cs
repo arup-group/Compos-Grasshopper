@@ -26,30 +26,39 @@ namespace ComposGH.Components
     { this.Hidden = true; } // sets the initial state of the component to hidden
     public override GH_Exposure Exposure => GH_Exposure.primary;
 
-    //protected override Bitmap Icon => Properties.Resources.CodeSatisfied;
+    protected override Bitmap Icon => Properties.Resources.DesignMember;
     #endregion
 
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter("Member", "Mem", "Compos member", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Member", "Mem", "Compos Member", GH_ParamAccess.item);
+      pManager.AddGenericParameter("DesignCriteria", "Crt", "Compos Design Criteria", GH_ParamAccess.item);
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Result", "Res", "Result", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Member", "Mem", "Compos Member", GH_ParamAccess.item);
     }
     #endregion
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      MemberGoo goo = (MemberGoo)GetInput.GenericGoo<MemberGoo>(this, DA, 0);
-      IMember member = goo.Value;
-      
-      if (member != null)
+      MemberGoo memGoo = (MemberGoo)GetInput.GenericGoo<MemberGoo>(this, DA, 0);
+      DesignCriteriaGoo critGoo = (DesignCriteriaGoo)GetInput.GenericGoo<DesignCriteriaGoo>(this, DA, 1);
+      Message = "";
+      if (memGoo.Value != null)
       {
-        //member.File.
-        //DA.SetData(0, new GH_Number(status));
+        Member designedMember = (Member)memGoo.Value.Duplicate();
+        designedMember.DesignCriteria = critGoo.Value;
+        if (!designedMember.Design())
+        {
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Failed to design member");
+          return;
+        }
+        string[] profile = designedMember.Beam.Sections[0].SectionDescription.Split(' ');
+        Message = profile[2];
+        DA.SetData(0, new MemberGoo(designedMember));
       }
     }
 

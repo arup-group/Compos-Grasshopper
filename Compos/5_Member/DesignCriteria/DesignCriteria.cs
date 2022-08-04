@@ -17,7 +17,16 @@ namespace ComposAPI
   {
     // beam size
     public IBeamSizeLimits BeamSizeLimits { get; set; } = new BeamSizeLimits();
-    public IList<int> CatalogueSectionTypes { get; set; } = new List<int>();
+    public IList<int> CatalogueSectionTypes
+    {
+      get { return this.m_CatalogueSections; }
+      set
+      {
+        this.m_CatalogueSections = value;
+        this.CheckCatalogueTypeIDs();
+      }
+    }
+    private IList<int> m_CatalogueSections = new List<int>();
     public OptimiseOption OptimiseOption { get; set; } = OptimiseOption.MinimumWeight;
 
     // deflection limits
@@ -36,12 +45,22 @@ namespace ComposAPI
       this.BeamSizeLimits = beamSizeLimits;
       this.OptimiseOption = optimiseOption;
       this.CatalogueSectionTypes = catalogues;
+      this.CheckCatalogueTypeIDs();
       this.ConstructionDeadLoad = constructionDL;
       this.AdditionalDeadLoad = additionalDL;
       this.FinalLiveLoad = finalLL;
       this.TotalLoads = total;
       this.PostConstruction = postConstr;
       this.FrequencyLimits = frequencyLimits;
+    }
+
+    internal void CheckCatalogueTypeIDs()
+    {
+      foreach (int id in this.m_CatalogueSections)
+      {
+        if (!CatalogueSectionType.CatalogueSectionTypes.ContainsKey(id))
+          throw new Exception("Catalogue Section Type of ID: " + id + " does not exist in Compos Catalogue Section Library");
+      }
     }
 
     #region coa interop

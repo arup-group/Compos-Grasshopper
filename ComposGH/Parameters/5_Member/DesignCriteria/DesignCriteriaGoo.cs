@@ -10,17 +10,17 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class DesignCodeGoo : GH_Goo<IDesignCode>
+  public class DesignCriteriaGoo : GH_Goo<IDesignCriteria>
   {
     #region constructors
-    public DesignCodeGoo()
+    public DesignCriteriaGoo()
     {
-      this.Value = new DesignCode();
+      this.Value = new DesignCriteria();
     }
-    public DesignCodeGoo(IDesignCode item)
+    public DesignCriteriaGoo(IDesignCriteria item)
     {
       if (item == null)
-        item = new DesignCode();
+        item = new DesignCriteria();
       this.Value = item; //.Duplicate() as DesignCode;
     }
 
@@ -28,15 +28,15 @@ namespace ComposGH.Parameters
     {
       return DuplicateGoo();
     }
-    public DesignCodeGoo DuplicateGoo()
+    public DesignCriteriaGoo DuplicateGoo()
     {
-      return new DesignCodeGoo(Value == null ? new DesignCode() : Value);// .Duplicate() as DesignCode);
+      return new DesignCriteriaGoo(Value == null ? new DesignCriteria() : Value);// .Duplicate() as DesignCode);
     }
     #endregion
 
     #region properties
-     public override bool IsValid => (this.Value == null) ? false : true;
-    public override string TypeName => "DesignCode";
+    public override bool IsValid => (this.Value == null) ? false : true;
+    public override string TypeName => "DesignCriteria";
     public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
     public override string IsValidWhyNot
     {
@@ -61,7 +61,7 @@ namespace ComposGH.Parameters
       // This function is called when Grasshopper needs to convert this 
       // instance of our custom class into some other type Q.            
 
-      if (typeof(Q).IsAssignableFrom(typeof(DesignCode)))
+      if (typeof(Q).IsAssignableFrom(typeof(DesignCriteria)))
       {
         if (Value == null)
           target = default;
@@ -81,9 +81,9 @@ namespace ComposGH.Parameters
       if (source == null) { return false; }
 
       //Cast from GsaMaterial
-      if (typeof(DesignCode).IsAssignableFrom(source.GetType()))
+      if (typeof(DesignCriteria).IsAssignableFrom(source.GetType()))
       {
-        Value = (DesignCode)source;
+        Value = (DesignCriteria)source;
         return true;
       }
 
@@ -95,23 +95,23 @@ namespace ComposGH.Parameters
   /// <summary>
   /// This class provides a Parameter interface for the CustomGoo type.
   /// </summary>
-  public class DesignCodeParameter : GH_PersistentParam<DesignCodeGoo>
+  public class DesignCriteriaParameter : GH_PersistentParam<DesignCriteriaGoo>
   {
-    public DesignCodeParameter()
-      : base(new GH_InstanceDescription("DesignCode", "Code", "Maintains a collection of Compos Design Code data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+    public DesignCriteriaParameter()
+      : base(new GH_InstanceDescription("DesignCriteria", "Crt", "Maintains a collection of Compos Design Criteria data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
-    public override Guid ComponentGuid => new Guid("fb4d79ea-1c30-4e86-9654-a55ef42fd8e2");
+    public override Guid ComponentGuid => new Guid("48fe6e4a-2d32-415c-8ad9-1e467bdfbd01");
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.DesignCodeParameter;
 
-    protected override GH_GetterResult Prompt_Plural(ref List<DesignCodeGoo> values)
+    protected override GH_GetterResult Prompt_Plural(ref List<DesignCriteriaGoo> values)
     {
       return GH_GetterResult.cancel;
     }
-    protected override GH_GetterResult Prompt_Singular(ref DesignCodeGoo value)
+    protected override GH_GetterResult Prompt_Singular(ref DesignCriteriaGoo value)
     {
       return GH_GetterResult.cancel;
     }

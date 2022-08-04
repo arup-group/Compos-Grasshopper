@@ -50,6 +50,7 @@ namespace ComposGH.Components
         case 0:
           this.CanOpen = true;
           this.Message = "File saved";
+          PostHog.ModelIO("saveCOB", (int)(new FileInfo(this.FileName).Length / 1024));
           return;
         case 1:
           this.Message = "No Compos file is open";
@@ -230,7 +231,7 @@ namespace ComposGH.Components
         {
           if (save)
           {
-            PostHog.ModelIO("saveCOB");
+            SaveFile();
             this.Message = this.FileName;
           }
         }
