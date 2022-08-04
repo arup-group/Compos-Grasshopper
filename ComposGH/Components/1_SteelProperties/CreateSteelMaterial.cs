@@ -18,7 +18,7 @@ namespace ComposGH.Components
     /// <summary>
     /// Component to create a new Material
     /// </summary>
-    public class CreateSteelMaterial : GH_Component, IGH_VariableParameterComponent
+    public class CreateSteelMaterial : GH_OasysComponent, IGH_VariableParameterComponent
     {
         #region Name and Ribbon Layout
         // This region handles how the component in displayed on the ribbon

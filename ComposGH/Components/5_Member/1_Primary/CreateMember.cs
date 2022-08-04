@@ -7,7 +7,7 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateMember : GH_Component
+  public class CreateMember : GH_OasysComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon

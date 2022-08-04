@@ -13,7 +13,7 @@ namespace ComposGH.Components
   /// <summary>
   /// Component to check if a Compos model satisfies the chosen code
   /// </summary>
-  public class CodeSatisfied : GH_Component, IGH_VariableParameterComponent
+  public class CodeSatisfied : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon

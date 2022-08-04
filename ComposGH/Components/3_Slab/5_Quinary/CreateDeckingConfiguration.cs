@@ -9,7 +9,7 @@ using Grasshopper.Kernel.Parameters;
 
 namespace ComposGH.Components
 {
-  public class CreateDeckingConfiguration : GH_Component
+  public class CreateDeckingConfiguration : GH_OasysComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon

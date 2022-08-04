@@ -10,7 +10,7 @@ using ComposGH.Parameters;
 
 namespace ComposGH.Components
 {
-  public class CreateConcreteMaterialEN : GH_Component, IGH_VariableParameterComponent
+  public class CreateConcreteMaterialEN : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
