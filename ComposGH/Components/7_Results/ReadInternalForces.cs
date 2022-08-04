@@ -13,7 +13,7 @@ namespace ComposGH.Components
   /// <summary>
   /// Component to read internal forces from a Compos model
   /// </summary>
-  public class ReadInternalForces : GH_Component, IGH_VariableParameterComponent
+  public class ReadInternalForces : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon

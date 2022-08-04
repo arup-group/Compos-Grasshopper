@@ -9,7 +9,7 @@ using UnitsNet.Units;
 
 namespace ComposGH.Components
 {
-  public class CreateSupport : GH_Component, IGH_VariableParameterComponent
+  public class CreateSupport : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon

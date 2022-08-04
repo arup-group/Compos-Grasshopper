@@ -10,7 +10,7 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateMeshReinforcement : GH_Component, IGH_VariableParameterComponent
+  public class CreateMeshReinforcement : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     public CreateMeshReinforcement()

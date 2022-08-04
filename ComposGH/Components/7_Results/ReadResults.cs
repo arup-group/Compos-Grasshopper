@@ -13,7 +13,7 @@ namespace ComposGH.Components
   /// <summary>
   /// Component to read results from a Compos model
   /// </summary>
-  public class ReadResults : GH_Component, IGH_VariableParameterComponent
+  public class ReadResults : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
