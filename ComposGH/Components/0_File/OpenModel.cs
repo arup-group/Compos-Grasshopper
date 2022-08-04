@@ -163,7 +163,7 @@ namespace ComposGH.Components
             fileName = fileName + ".cob";
 
           IComposFile composFile = ComposFile.Open(fileName);
-          PostHog.ModelIO("openCOB", , (int)(new FileInfo(fileName).Length / 1024));
+          PostHog.ModelIO("openCOB", (int)(new FileInfo(fileName).Length / 1024));
 
           List<MemberGoo> members = new List<MemberGoo>();
           foreach (IMember mem in composFile.Members)
