@@ -80,7 +80,7 @@ namespace ComposAPI
     public Density DryDensity { get; set; } // material density
     public bool UserDensity { get; set; } = false; //	code density or user defined density
     public IERatio ERatio { get; set; } // steel to concrete Young's modulus ratio
-    public double ImposedLoadPercentage { get; set; } // percentage of live load acting long term (as dead load)
+    public Ratio ImposedLoadPercentage { get; set; } // percentage of live load acting long term (as dead load)
     public Strain ShrinkageStrain { get; set; } //	Concrete Shrinkage strain
     public bool UserStrain { get; set; } = false; //	code or user defined shrinkage strain
 
@@ -99,7 +99,7 @@ namespace ComposAPI
     /// <param name="userDensity"></param>
     /// <param name="eRatio"></param>
     /// <param name="imposedLoadPercentage"></param>
-    public ConcreteMaterial(ConcreteGrade grade, WeightType type, Density dryDensity, bool userDensity, IERatio eRatio, double imposedLoadPercentage)
+    public ConcreteMaterial(ConcreteGrade grade, WeightType type, Density dryDensity, bool userDensity, IERatio eRatio, Ratio imposedLoadPercentage)
     {
       this.Grade = grade.ToString();
       this.Type = type;
@@ -107,7 +107,7 @@ namespace ComposAPI
       this.UserDensity = userDensity;
       this.ERatio = eRatio;
       this.ImposedLoadPercentage = imposedLoadPercentage;
-      this.ShrinkageStrain = new Strain(-0.000325, StrainUnit.MilliStrain);
+      this.ShrinkageStrain = new Strain(-0.325, StrainUnit.MilliStrain);
     }
 
     /// <summary>
@@ -121,7 +121,7 @@ namespace ComposAPI
     /// <param name="imposedLoadPercentage"></param>
     /// <param name="shrinkageStrain"></param>
     /// <param name="userStrain"></param>
-    public ConcreteMaterial(ConcreteGradeEN grade, DensityClass densityClass, Density dryDensity, bool userDensity, IERatio eRatio, double imposedLoadPercentage, Strain shrinkageStrain, bool userStrain)
+    public ConcreteMaterial(ConcreteGradeEN grade, DensityClass densityClass, Density dryDensity, bool userDensity, IERatio eRatio, Ratio imposedLoadPercentage, Strain shrinkageStrain, bool userStrain)
     {
       this.Grade = grade.ToString();
       if (this.Grade.StartsWith("L"))
@@ -143,7 +143,7 @@ namespace ComposAPI
     /// <param name="userDensity"></param>
     /// <param name="eRatio"></param>
     /// <param name="imposedLoadPercentage"></param>
-    public ConcreteMaterial(ConcreteGrade grade, Density dryDensity, bool userDensity, IERatio eRatio, double imposedLoadPercentage)
+    public ConcreteMaterial(ConcreteGrade grade, Density dryDensity, bool userDensity, IERatio eRatio, Ratio imposedLoadPercentage)
     {
       this.Grade = grade.ToString();
       this.DryDensity = dryDensity;
@@ -161,7 +161,7 @@ namespace ComposAPI
     /// <param name="userDensity"></param>
     /// <param name="eRatio"></param>
     /// <param name="imposedLoadPercentage"></param>
-    public ConcreteMaterial(ConcreteGrade grade, Density dryDensity, bool userDensity, IERatio eRatio, double imposedLoadPercentage, Strain shrinkageStrain, bool userStrain)
+    public ConcreteMaterial(ConcreteGrade grade, Density dryDensity, bool userDensity, IERatio eRatio, Ratio imposedLoadPercentage, Strain shrinkageStrain, bool userStrain)
     {
       this.Grade = grade.ToString();
       this.DryDensity = dryDensity;
@@ -176,11 +176,13 @@ namespace ComposAPI
     #region coa interop
     internal static IConcreteMaterial FromCoaString(List<string> parameters, ComposUnits units)
     {
+      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+
       ConcreteMaterial material = new ConcreteMaterial();
-      if (parameters[1].Length < 4)
+      if (parameters[2].Length < 4)
       {
         // BS5950 GRADES
-        material.Grade = Enum.Parse(typeof(ConcreteGrade), parameters[1]).ToString();
+        material.Grade = Enum.Parse(typeof(ConcreteGrade), parameters[2]).ToString();
       }
       else
       {
@@ -208,7 +210,7 @@ namespace ComposAPI
 
       material.DryDensity = CoaHelper.ConvertToDensity(parameters[5], units.Density);
 
-      material.ImposedLoadPercentage = CoaHelper.ConvertToDouble(parameters[index]) * 100;
+      material.ImposedLoadPercentage = new Ratio(Convert.ToDouble(parameters[index], noComma), RatioUnit.DecimalFraction);
 
       index++;
       if (parameters[index] == "CODE_E_RATIO")
@@ -225,7 +227,7 @@ namespace ComposAPI
       if (parameters[index] == "USER_STRAIN")
       {
         material.UserStrain = true;
-        material.ShrinkageStrain = CoaHelper.ConvertToStrain(parameters[index + 1], units.Strain);
+        material.ShrinkageStrain = CoaHelper.ConvertToStrain(parameters[index + 1], StrainUnit.Ratio);
       }
 
       return material;
@@ -255,7 +257,7 @@ namespace ComposAPI
         parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00}", this.DryDensity.ToUnit(units.Density).Value));
         parameters.Add(this.Class.ToString().Replace("DC", ""));
       }
-      parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.000000}", this.ImposedLoadPercentage / 100.0));
+      parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.000000}", this.ImposedLoadPercentage.DecimalFractions));
       if (this.ERatio.UserDefined)
       {
         parameters.Add("USER_E_RATIO");
@@ -269,7 +271,7 @@ namespace ComposAPI
       if (this.UserStrain)
       {
         parameters.Add("USER_STRAIN");
-        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.000000000}", this.ShrinkageStrain.ToUnit(units.Strain).Value));
+        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.000000000}", this.ShrinkageStrain.Ratio));
       }
       else
         parameters.Add("CODE_STRAIN");

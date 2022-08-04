@@ -76,7 +76,8 @@ namespace ComposGH.Components
       {
         if (SteelGrade.ToString() == SelectedItems[i])
           return; // return if selected value is same as before
-        ASNZSteelMaterial mat = new ASNZSteelMaterial(SelectedItems[i]);
+        StandardASNZSteelMaterialGrade grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), this.SelectedItems[i]);
+        ASNZSteelMaterial mat = new ASNZSteelMaterial(grade);
         SteelGrade = mat.Grade;
       }
 
@@ -91,7 +92,8 @@ namespace ComposGH.Components
     {
       if (this.SelectedItems[0] != "-")
       {
-        ASNZSteelMaterial mat = new ASNZSteelMaterial(this.SelectedItems[0]);
+        StandardASNZSteelMaterialGrade grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), this.SelectedItems[0]);
+        ASNZSteelMaterial mat = new ASNZSteelMaterial(grade);
         this.SteelGrade = mat.Grade;
       }
 
@@ -131,7 +133,7 @@ namespace ComposGH.Components
         }
         catch (ArgumentException)
         {
-          string text = "Could not parse steel grade. Valid steel grades are ";
+          string text = "Could not parse steel grade. Valid AS/NZS steel grades are ";
           foreach (string g in Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().Select(x => x.ToString()).ToList())
           {
             text += g + ", ";
@@ -139,7 +141,8 @@ namespace ComposGH.Components
           text = text.Remove(text.Length - 2);
           text += ".";
           this.DropDownItems[0] = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().Select(x => x.ToString()).ToList();
-          AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, text);
+          return;
         }
       }
       else if (this.OverrideDropDownItems[0])

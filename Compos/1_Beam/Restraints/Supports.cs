@@ -21,7 +21,7 @@ namespace ComposAPI
   {
     public bool SecondaryMemberIntermediateRestraint { get; set; }
     public bool BothFlangesFreeToRotateOnPlanAtEnds { get; set; }
-    public IList<Length> CustomIntermediateRestraintPositions { get; set; }
+    public IList<IQuantity> CustomIntermediateRestraintPositions { get; set; }
     public IntermediateRestraint IntermediateRestraintPositions
     {
       get 
@@ -43,7 +43,7 @@ namespace ComposAPI
     {
       // empty constructor
     }
-    public Supports(List<Length> customIntermediateRestraintPositions, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds)
+    public Supports(List<IQuantity> customIntermediateRestraintPositions, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds)
     {
       this.CustomIntermediateRestraintPositions = customIntermediateRestraintPositions;
       this.SecondaryMemberIntermediateRestraint = secondaryMemberIntermediateRestraint;
@@ -64,6 +64,28 @@ namespace ComposAPI
       string sec = (this.SecondaryMemberIntermediateRestraint) ? ", SMIR" : "";
       string flange = (this.BothFlangesFreeToRotateOnPlanAtEnds) ? ", FFRE" : "";
       string res = this.IntermediateRestraintPositions.ToString().Replace("__", "-").Replace("_", " ");
+      if (CustomIntermediateRestraintPositions != null)
+      {
+        res = "Custom:{";
+        foreach (IQuantity pos in CustomIntermediateRestraintPositions)
+        {
+          res += " ";
+          if (pos.QuantityInfo.UnitType == typeof(Length))
+          {
+            Length l = (Length)pos;
+            res += l.ToString("g2").Replace(" ", string.Empty);
+          }
+          else
+          {
+            Ratio p = (Ratio)pos;
+            res += p.ToString("g2").Replace(" ", string.Empty);
+          }
+          res += ",";
+        }
+        res = res.TrimEnd(',');
+        res += "}";
+      }  
+      
       return res + sec + flange;
     }
     #endregion

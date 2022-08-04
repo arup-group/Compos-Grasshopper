@@ -28,7 +28,7 @@ namespace ComposGH.Components
       pManager.AddNumberParameter("Creep Coefficient", "CC", "Creep multiplier used for calculating E ratio for long term and shrinkage (see clause 5.4.2.2 of EN 1994-1-1:2004)", GH_ParamAccess.item, 1.4);
       pManager.AddIntegerParameter("Concrete Age at Load [Days]", "CAL", "Age of concrete in days when load applied, used to calculate the creep coefficient ", GH_ParamAccess.item);
       pManager.AddIntegerParameter("Final Concrete Age [Days]", "CAF", "(Optional) Final age of concrete in days, used to calculate the creep coefficient (default = 36500)", GH_ParamAccess.item, 36500);
-      pManager.AddNumberParameter("Relative Humidity", "RH", "(Optional) Relative humidity as fraction (0.5 => 50%), used to calculate the creep coefficient (default = 0.5)", GH_ParamAccess.item, 0.5);
+      pManager.AddNumberParameter("Relative Humidity", "RH", "(Optional) Relative humidity as decimal fraction (0.5 => 50%), used to calculate the creep coefficient (default = 0.5)", GH_ParamAccess.item, 0.5);
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
@@ -39,22 +39,21 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      CreepShrinkageEuroCodeParameters csparams = new CreepShrinkageEuroCodeParameters();
+      CreepShrinkageParametersEN csparams = new CreepShrinkageParametersEN();
       csparams.ConcreteAgeAtLoad = 28;
 
       
       double creepmultiplier = 0;
       int ageLoad = 0;
       int ageFinal = 0;
-      double relhum = 0;
       if (DA.GetData(0, ref creepmultiplier))
         csparams.CreepCoefficient = creepmultiplier;
       if (DA.GetData(1, ref ageLoad))
         csparams.ConcreteAgeAtLoad = ageLoad;
       if (DA.GetData(2, ref ageFinal))
         csparams.FinalConcreteAgeCreep = ageFinal;
-      if (DA.GetData(3, ref relhum))
-        csparams.RelativeHumidity = relhum;
+      if (this.Params.Input[3].Sources.Count > 0)
+        csparams.RelativeHumidity = GetInput.Ratio(this, DA, 3, UnitsNet.Units.RatioUnit.DecimalFraction);
       
       DA.SetData(0, new CreepShrinkageEuroCodeParametersGoo(csparams));
     }

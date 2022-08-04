@@ -105,7 +105,8 @@ namespace ComposGH.Components
       pManager.AddGenericParameter("Const. Live [" + unitAbbreviation + "]", "ll", "Constant live load; construction stage live load which are used for construction stage analysis", GH_ParamAccess.item);
       pManager.AddGenericParameter("Final Dead [" + unitAbbreviation + "]", "DL", "Final Dead Load", GH_ParamAccess.item);
       pManager.AddGenericParameter("Final Live [" + unitAbbreviation + "]", "LL", "Final Live Load", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Pos [" + lengthunitAbbreviation + "]", "Px", "Position on beam where Point Load acts (beam local x-axis)", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Pos [" + lengthunitAbbreviation + "]", "Px", "Position on beam where Point Load acts (beam local x-axis)."
+        + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
@@ -119,7 +120,7 @@ namespace ComposGH.Components
       Force constLive = GetInput.Force(this, DA, 1, ForceUnit);
       Force finalDead = GetInput.Force(this, DA, 2, ForceUnit);
       Force finalLive = GetInput.Force(this, DA, 3, ForceUnit);
-      Length pos = GetInput.Length(this, DA, 4, LengthUnit);
+      IQuantity pos = GetInput.LengthOrRatio(this, DA, 4, LengthUnit);
 
       Load load = new PointLoad(constDead, constLive, finalDead, finalLive, pos);
       DA.SetData(0, new LoadGoo(load));

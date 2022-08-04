@@ -6,17 +6,17 @@ namespace ComposGH.Parameters
   /// <summary>
   /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
   /// </summary>
-  public class EC4SafetyFactorsGoo : GH_Goo<IEC4SafetyFactors>
+  public class SafetyFactorsENGoo : GH_Goo<ISafetyFactorsEN>
   {
     #region constructors
-    public EC4SafetyFactorsGoo()
+    public SafetyFactorsENGoo()
     {
-      this.Value = new EC4SafetyFactors();
+      this.Value = new SafetyFactorsEN();
     }
-    public EC4SafetyFactorsGoo(IEC4SafetyFactors item)
+    public SafetyFactorsENGoo(ISafetyFactorsEN item)
     {
       if (item == null)
-        item = new EC4SafetyFactors();
+        item = new SafetyFactorsEN();
       this.Value = item; //.Duplicate() as SafetyFactors;
     }
 
@@ -24,9 +24,9 @@ namespace ComposGH.Parameters
     {
       return DuplicateGoo();
     }
-    public EC4SafetyFactorsGoo DuplicateGoo()
+    public SafetyFactorsENGoo DuplicateGoo()
     {
-      return new EC4SafetyFactorsGoo(Value == null ? new EC4SafetyFactors() : Value);// .Duplicate() as SafetyFactors);
+      return new SafetyFactorsENGoo(Value == null ? new SafetyFactorsEN() : Value);// .Duplicate() as SafetyFactors);
     }
     #endregion
 
@@ -77,9 +77,9 @@ namespace ComposGH.Parameters
       if (source == null) { return false; }
 
       //Cast from GsaMaterial
-      if (typeof(EC4SafetyFactors).IsAssignableFrom(source.GetType()))
+      if (typeof(SafetyFactorsEN).IsAssignableFrom(source.GetType()))
       {
-        Value = (EC4SafetyFactors)source;
+        Value = (SafetyFactorsEN)source;
         return true;
       }
 

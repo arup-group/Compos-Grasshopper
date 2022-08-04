@@ -86,7 +86,9 @@ namespace ComposAPI
     public string ToCoaString(string name, ComposUnits units)
     {
       string str = this.Material.ToCoaString(name);
-
+      
+      str += "REBAR_LONGITUDINAL" + '\t' + name + '\t' + "PROGRAM_DESIGNED" + '\n';
+      
       if (LayoutMethod == LayoutMethod.Automatic)
       {
         List<string> parameters = new List<string>();

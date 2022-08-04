@@ -43,7 +43,7 @@ namespace ComposAPI.Studs.Tests
 
       // 1 create with constructor and duplicate
       StudGroupSpacing original = TestConstructorStudSpacing(25, 1, 2, 250);
-      StudGroupSpacing duplicate = original.Duplicate() as StudGroupSpacing;
+      StudGroupSpacing duplicate = (StudGroupSpacing)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(25, duplicate.DistanceFromStart.Millimeters);

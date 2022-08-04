@@ -54,11 +54,6 @@ namespace ComposAPI
       this.Grade = grade;
       SetValuesFromStandard();
     }
-    public ASNZSteelMaterial(string grade)
-    {
-      this.Grade = FromString(grade);
-      SetValuesFromStandard();
-    }
     private void SetValuesFromStandard()
     {
       this.E = new Pressure(200, PressureUnit.Gigapascal);
@@ -192,7 +187,7 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    public StandardASNZSteelMaterialGrade FromString(string grade)
+    internal static StandardASNZSteelMaterialGrade FromString(string grade)
     {
       switch (grade)
       {

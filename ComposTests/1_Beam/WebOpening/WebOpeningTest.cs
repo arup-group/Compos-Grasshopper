@@ -26,8 +26,8 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(OpeningType.Rectangular, webOpening.WebOpeningType);
       Assert.Equal(width, webOpening.Width.Millimeters);
       Assert.Equal(height, webOpening.Height.Millimeters);
-      Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.Millimeters);
-      Assert.Equal(positionCentroidFromTop, webOpening.CentroidPosFromTop.Millimeters);
+      Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.As(LengthUnit.Millimeter));
+      Assert.Equal(positionCentroidFromTop, webOpening.CentroidPosFromTop.As(LengthUnit.Millimeter));
       Assert.Equal(Length.Zero, webOpening.Diameter);
       Assert.Null(webOpening.OpeningStiffeners);
     }
@@ -49,8 +49,8 @@ namespace ComposAPI.Beams.Tests
       // 3 check that inputs are set in object's members
       Assert.Equal(OpeningType.Circular, webOpening.WebOpeningType);
       Assert.Equal(diameter, webOpening.Diameter.Millimeters);
-      Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.Millimeters);
-      Assert.Equal(positionCentroidFromTop, webOpening.CentroidPosFromTop.Millimeters);
+      Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.As(LengthUnit.Millimeter));
+      Assert.Equal(positionCentroidFromTop, webOpening.CentroidPosFromTop.As(LengthUnit.Millimeter));
       Assert.Equal(Length.Zero, webOpening.Width);
       Assert.Equal(Length.Zero, webOpening.Height);
       Assert.Null(webOpening.OpeningStiffeners);
@@ -103,8 +103,8 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(OpeningType.Rectangular, webOpening.WebOpeningType);
       Assert.Equal(width, webOpening.Width.Millimeters);
       Assert.Equal(height, webOpening.Height.Millimeters);
-      Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.Millimeters);
-      Assert.Equal(positionCentroidFromTop, webOpening.CentroidPosFromTop.Millimeters);
+      Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.As(LengthUnit.Millimeter));
+      Assert.Equal(positionCentroidFromTop, webOpening.CentroidPosFromTop.As(LengthUnit.Millimeter));
       Assert.Equal(Length.Zero, webOpening.Diameter);
       Assert.NotNull(webOpening.OpeningStiffeners);
 
@@ -132,8 +132,8 @@ namespace ComposAPI.Beams.Tests
       // 3 check that inputs are set in object's members
       Assert.Equal(OpeningType.Circular, webOpening.WebOpeningType);
       Assert.Equal(diameter, webOpening.Diameter.Millimeters);
-      Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.Millimeters);
-      Assert.Equal(positionCentroidFromTop, webOpening.CentroidPosFromTop.Millimeters);
+      Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.As(LengthUnit.Millimeter));
+      Assert.Equal(positionCentroidFromTop, webOpening.CentroidPosFromTop.As(LengthUnit.Millimeter));
       Assert.Equal(Length.Zero, webOpening.Width);
       Assert.Equal(Length.Zero, webOpening.Height);
       Assert.NotNull(webOpening.OpeningStiffeners);
@@ -180,14 +180,14 @@ namespace ComposAPI.Beams.Tests
     {
       // 1 create with constructor and duplicate
       WebOpening original = TestConstructorRectangularWebOpeningWithStiffener(400, 300, 6000, 70);
-      WebOpening duplicate = original.Duplicate() as WebOpening;
+      WebOpening duplicate = (WebOpening)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(OpeningType.Rectangular, duplicate.WebOpeningType);
       Assert.Equal(400, duplicate.Width.Millimeters);
       Assert.Equal(300, duplicate.Height.Millimeters);
-      Assert.Equal(6000, duplicate.CentroidPosFromStart.Millimeters);
-      Assert.Equal(70, duplicate.CentroidPosFromTop.Millimeters);
+      Assert.Equal(6000, duplicate.CentroidPosFromStart.As(LengthUnit.Millimeter));
+      Assert.Equal(70, duplicate.CentroidPosFromTop.As(LengthUnit.Millimeter));
       Assert.Equal(Length.Zero, duplicate.Diameter);
       Assert.NotNull(duplicate.OpeningStiffeners);
       Assert.Equal(25, duplicate.OpeningStiffeners.DistanceFrom.Millimeters);
@@ -208,8 +208,8 @@ namespace ComposAPI.Beams.Tests
       // 4 check that duplicate has set changes
       Assert.Equal(OpeningType.Circular, duplicate.WebOpeningType);
       Assert.Equal(150, duplicate.Diameter.Millimeters);
-      Assert.Equal(4500, duplicate.CentroidPosFromStart.Millimeters);
-      Assert.Equal(250, duplicate.CentroidPosFromTop.Millimeters);
+      Assert.Equal(4500, duplicate.CentroidPosFromStart.As(LengthUnit.Millimeter));
+      Assert.Equal(250, duplicate.CentroidPosFromTop.As(LengthUnit.Millimeter));
       Assert.Equal(Length.Zero, duplicate.Width);
       Assert.Equal(Length.Zero, duplicate.Height);
       Assert.NotNull(duplicate.OpeningStiffeners);
@@ -225,8 +225,8 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(OpeningType.Rectangular, original.WebOpeningType);
       Assert.Equal(400, original.Width.Millimeters);
       Assert.Equal(300, original.Height.Millimeters);
-      Assert.Equal(6000, original.CentroidPosFromStart.Millimeters);
-      Assert.Equal(70, original.CentroidPosFromTop.Millimeters);
+      Assert.Equal(6000, original.CentroidPosFromStart.As(LengthUnit.Millimeter));
+      Assert.Equal(70, original.CentroidPosFromTop.As(LengthUnit.Millimeter));
       Assert.Equal(Length.Zero, original.Diameter);
       Assert.NotNull(original.OpeningStiffeners);
       Assert.Equal(25, original.OpeningStiffeners.DistanceFrom.Millimeters);
@@ -243,15 +243,15 @@ namespace ComposAPI.Beams.Tests
     {
       // 1 create with constructor and duplicate
       WebOpening original = TestConstructorCircularWebOpeningWithStiffener(300, 7000, 150);
-      WebOpening duplicate = original.Duplicate() as WebOpening;
+      WebOpening duplicate = (WebOpening)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(OpeningType.Circular, duplicate.WebOpeningType);
       Assert.Equal(300, duplicate.Diameter.Millimeters);
       Assert.Equal(Length.Zero, duplicate.Width);
       Assert.Equal(Length.Zero, duplicate.Height);
-      Assert.Equal(7000, duplicate.CentroidPosFromStart.Millimeters);
-      Assert.Equal(150, duplicate.CentroidPosFromTop.Millimeters);
+      Assert.Equal(7000, duplicate.CentroidPosFromStart.As(LengthUnit.Millimeter));
+      Assert.Equal(150, duplicate.CentroidPosFromTop.As(LengthUnit.Millimeter));
       Assert.NotNull(duplicate.OpeningStiffeners);
       Assert.Equal(80, duplicate.OpeningStiffeners.DistanceFrom.Millimeters);
       Assert.Equal(17, duplicate.OpeningStiffeners.TopStiffenerWidth.Millimeters);
@@ -288,8 +288,8 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(300, original.Diameter.Millimeters);
       Assert.Equal(Length.Zero, original.Width);
       Assert.Equal(Length.Zero, original.Height);
-      Assert.Equal(7000, original.CentroidPosFromStart.Millimeters);
-      Assert.Equal(150, original.CentroidPosFromTop.Millimeters);
+      Assert.Equal(7000, original.CentroidPosFromStart.As(LengthUnit.Millimeter));
+      Assert.Equal(150, original.CentroidPosFromTop.As(LengthUnit.Millimeter));
       Assert.NotNull(original.OpeningStiffeners);
       Assert.Equal(80, original.OpeningStiffeners.DistanceFrom.Millimeters);
       Assert.Equal(17, original.OpeningStiffeners.TopStiffenerWidth.Millimeters);
@@ -359,6 +359,34 @@ namespace ComposAPI.Beams.Tests
           Assert.Equal(expected_width, webOpening.Diameter.As(units.Section));
           Assert.Equal(expected_startPos, webOpening.CentroidPosFromStart.As(units.Length));
           Assert.Equal(expected_posFromTop, webOpening.CentroidPosFromTop.As(units.Section));
+          break;
+      }
+    }
+
+    [Theory]
+    [InlineData(0.4, 0.3, 20, 50, OpeningType.Rectangular, "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	0.400000	0.300000	20.0000%	50.0000%	STIFFENER_NO\n")]
+    [InlineData(0.4, 0.4, 20, 50, OpeningType.Circular, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	0.400000	0.400000	20.0000%	50.0000%	STIFFENER_NO\n")]
+    public void FromCoaStringNoStiffenerPercentage(double expected_width, double expected_height, double expected_startPos, double expected_posFromTop, OpeningType expected_OpeningType, string coaString)
+    {
+      ComposUnits units = ComposUnits.GetStandardUnits();
+      List<string> parameters = CoaHelper.Split(coaString);
+      IWebOpening webOpening = WebOpening.FromCoaString(parameters, units);
+
+      Assert.Equal(expected_OpeningType, webOpening.WebOpeningType);
+
+      switch (webOpening.WebOpeningType)
+      {
+        case OpeningType.Rectangular:
+          Assert.Equal(expected_width, webOpening.Width.As(units.Section));
+          Assert.Equal(expected_height, webOpening.Height.As(units.Section));
+          Assert.Equal(expected_startPos, webOpening.CentroidPosFromStart.As(RatioUnit.Percent));
+          Assert.Equal(expected_posFromTop, webOpening.CentroidPosFromTop.As(RatioUnit.Percent));
+          break;
+
+        case OpeningType.Circular:
+          Assert.Equal(expected_width, webOpening.Diameter.As(units.Section));
+          Assert.Equal(expected_startPos, webOpening.CentroidPosFromStart.As(RatioUnit.Percent));
+          Assert.Equal(expected_posFromTop, webOpening.CentroidPosFromTop.As(RatioUnit.Percent));
           break;
       }
     }

@@ -7,13 +7,13 @@ namespace ComposAPI.Members.Tests
   public partial class MaterialPartialFactorsTest
   {
     [Fact]
-    public IMaterialPartialFactors ConstructorTest()
+    public IMaterialFactors ConstructorTest()
     {
       // 1 setup input
       // empty constructor creates default (non-EC4) values
 
       // 2 create object instance with constructor
-      IMaterialPartialFactors partialFactors = new MaterialPartialFactors();
+      IMaterialFactors partialFactors = new MaterialFactors();
 
       // 3 check that inputs are set in object's members
       Assert.Equal(1.0, partialFactors.SteelBeam);
@@ -31,7 +31,7 @@ namespace ComposAPI.Members.Tests
     public void ToCoaStringTest()
     {
       // Arrange
-      MaterialPartialFactors materialPartialFactors = new MaterialPartialFactors();
+      MaterialFactors materialPartialFactors = new MaterialFactors();
       materialPartialFactors.SteelBeam = 1.1;
       materialPartialFactors.ConcreteCompression = 1.2;
       materialPartialFactors.ConcreteShear = 1.3;
@@ -56,7 +56,7 @@ namespace ComposAPI.Members.Tests
       List<string> parameters = CoaHelper.Split(coaString);
 
       // Act
-      IMaterialPartialFactors materialPartialFactors = MaterialPartialFactors.FromCoaString(parameters);
+      IMaterialFactors materialPartialFactors = MaterialFactors.FromCoaString(parameters);
 
       double expected_steelBeam = 1.1;
       double expected_concreteCompression = 1.2;
