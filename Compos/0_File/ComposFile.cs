@@ -305,10 +305,13 @@ namespace ComposAPI
       return status;
     }
 
-    private short Initialise()
+    private short Initialise(bool checkGUID = true)
     {
-      if (this.Guid == ComposFile.CurrentGuid)
-        return -1;
+      if (checkGUID)
+      {
+        if (this.Guid == ComposFile.CurrentGuid)
+          return -1;
+      }
 
       ComposFile.ComposCOM.Close();
       ComposFile.CurrentGuid = this.Guid;

@@ -74,8 +74,8 @@ namespace ComposAPI
       {
         BeamSection newSection = new BeamSection(this.File.BeamSectDesc(this.Name));
         this.Beam.Sections[0] = newSection;
-        this.File = new ComposFile(new List<IMember>() { this });
-        this.Analyse();
+        this.Guid = System.Guid.NewGuid().ToString();
+        this.File.AddMember(this);
         return true;
       }
       return false;
