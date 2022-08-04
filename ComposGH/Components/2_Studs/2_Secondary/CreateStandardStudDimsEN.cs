@@ -17,7 +17,9 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("f012d853-af53-45b9-b080-723661b9c2ad");
     public CreateStandardStudDimensionsEN()
-      : base("Standard Stud EN Dimensions", "StdStudDimEN", "Create Standard Stud Dimensions to EN1994-1-1 for a Compos Stud",
+      : base("StandardEN" + StudDimensionsGoo.Name.Replace(" ", string.Empty),
+          "StudDimsEN",
+          "Look up a Standard " + StudDimensionsGoo.Description + " for a " + StudGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -166,7 +168,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Stud Dims", "Sdm", "Compos Shear Stud Dimensions", GH_ParamAccess.item);
+      pManager.AddGenericParameter(StudDimensionsGoo.Name, StudDimensionsGoo.NickName, "EN " + StudDimensionsGoo.Description + " for a " + StudGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 

@@ -5,6 +5,7 @@ using ComposGH.Parameters;
 using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
+using ComposAPI;
 
 namespace ComposGH.Components
 {
@@ -14,7 +15,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public CreateCustomTransverseReinforcementLayout()
-      : base("Custom Transverse Reinforcement Layout", "CustTransRL", "Create Custom Transverse Reinforcement Layout for Compos Transverse Reinforcement",
+      : base("Create" + CustomTransverseReinforcementLayoutGoo.Name.Replace(" ", string.Empty),
+          CustomTransverseReinforcementLayoutGoo.Name.Replace(" ", string.Empty),
+          "Create a " + CustomTransverseReinforcementLayoutGoo.Description + " for a " + TransverseReinforcementGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -85,10 +88,9 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
 
-      pManager.AddGenericParameter("Material", "RMt", "Reinforcement Material", GH_ParamAccess.item);
+      pManager.AddGenericParameter(ReinforcementMaterialGoo.Name, ReinforcementMaterialGoo.NickName, ReinforcementMaterialGoo.Description, GH_ParamAccess.item);
       pManager.AddGenericParameter("Start Pos x [" + unitAbbreviation + "]", "PxS", "Start Position where this Rebar Spacing Groups begins on Beam (beam local x-axis)", GH_ParamAccess.item);
       pManager.AddGenericParameter("End Pos x [" + unitAbbreviation + "]", "PxE", "End Position where this Rebar Spacing Groups begins on Beam (beam local x-axis)", GH_ParamAccess.item);
       pManager.AddGenericParameter("Diameter [" + unitAbbreviation + "]", "Ø", "Transverse rebar diameter", GH_ParamAccess.item);
@@ -98,7 +100,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Reinforcement", "Rb", "Transverse Reinforcement for Compos Slab", GH_ParamAccess.item);
+      pManager.AddGenericParameter(CustomTransverseReinforcementLayoutGoo.Name, CustomTransverseReinforcementLayoutGoo.NickName, CustomTransverseReinforcementLayoutGoo.Description + " for a " + TransverseReinforcementGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -110,7 +112,7 @@ namespace ComposGH.Components
       Length spacing = GetInput.Length(this, DA, 3, LengthUnit);
       Length cov = GetInput.Length(this, DA, 4, LengthUnit);
 
-      DA.SetData(0, new CustomTransverseReinforcementLayoutGoo(new ComposAPI.CustomTransverseReinforcementLayout(start, end, dia, spacing, cov)));
+      DA.SetData(0, new CustomTransverseReinforcementLayoutGoo(new CustomTransverseReinforcementLayout(start, end, dia, spacing, cov)));
     }
 
     #region (de)serialization
@@ -150,8 +152,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
 
       Params.Input[1].Name = "Start Pos x [" + unitAbbreviation + "]";
       Params.Input[2].Name = "End Pos x [" + unitAbbreviation + "]";

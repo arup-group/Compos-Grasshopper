@@ -14,7 +14,9 @@ namespace ComposGH.Components
   {
     #region Name and Ribbon Layout
     public CreateMeshReinforcement()
-        : base("Mesh Reinforcement", "MeshR", "Create Compos Slab Reinforcement from a Standard Reinforment Mesh",
+        : base("Create" + MeshReinforcementGoo.Name.Replace(" ", string.Empty),
+          MeshReinforcementGoo.Name.Replace(" ", string.Empty),
+          "Create a Standard " + MeshReinforcementGoo.Description + " for a " + SlabGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; }
@@ -104,8 +106,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
 
       pManager.AddGenericParameter("Cover [" + unitAbbreviation + "]", "Cov", "Reinforcement cover", GH_ParamAccess.item);
       pManager.AddBooleanParameter("Rotated", "Rot", "If the mesh type is assymetrical, setting 'Rotated' to true will align the stronger direction with the beam's direction", GH_ParamAccess.item, false);
@@ -113,7 +114,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Mesh Reinforcement", "MR", "Mesh Reinforcement for Compos Slab", GH_ParamAccess.item);
+      pManager.AddGenericParameter(MeshReinforcementGoo.Name, MeshReinforcementGoo.NickName, MeshReinforcementGoo.Description + " for a " + SlabGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -165,9 +166,7 @@ namespace ComposGH.Components
 
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
-
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a"); 
       Params.Input[0].Name = "Cover [" + unitAbbreviation + "]";
     }
 

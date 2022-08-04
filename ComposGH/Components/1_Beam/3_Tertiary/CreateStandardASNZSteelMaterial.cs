@@ -16,7 +16,9 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("8656c967-817c-49fe-9297-d863664b714a");
     public CreateStandardASNZSteelMaterial()
-      : base("Standard ASNZ Steel Material", "StdASNZSteelMat", "Create Standard AS/NZS2327:2017 Steel Material for a Compos Beam",
+      : base("StandardASNZ" + SteelMaterialGoo.Name.Replace(" ", string.Empty),
+          "ASNZ" + SteelMaterialGoo.NickName.Replace(" ", string.Empty),
+          "Look up a Standard ASNZ " + SteelMaterialGoo.Description + " for a " + BeamGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -113,7 +115,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("StandardSteelMaterial", "SSM", "Standard Steel Material for a Compos Beam", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Standard " + SteelMaterialGoo.Name, SteelMaterialGoo.NickName, "Standard ASNZ " + SteelMaterialGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 

@@ -16,7 +16,9 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("de792051-ae6a-4249-8699-7ea0cfe8c528");
     public CreateBeamSection()
-      : base("Beam Section", "BeamSection", "Create Beam Section for a Compos Beam",
+      : base("Create" + BeamSectionGoo.Name.Replace(" ", string.Empty),
+          BeamSectionGoo.Name.Replace(" ", string.Empty),
+          "Create a " + BeamSectionGoo.Description + " for a " + BeamGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -86,10 +88,9 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
 
-      pManager.AddGenericParameter("Beam Section", "Bs", "Beam Section or Profile string description like 'CAT IPE IPE200', 'STD I(cm) 20. 19. 8.5 1.27' or 'STD GI 400 300 250 12 25 20'", GH_ParamAccess.item);
+      pManager.AddGenericParameter(BeamSectionGoo.Name, BeamSectionGoo.NickName, BeamSectionGoo.Description + " or an I Profile string description like 'CAT IPE IPE200', 'STD I(cm) 20. 19. 8.5 1.27' or 'STD GI 400 300 250 12 25 20'", GH_ParamAccess.item);
       pManager.AddGenericParameter("Start [" + unitAbbreviation + "]", "Px", "(Optional) Start Position of this profile (beam local x-axis)."
         + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
       pManager.AddBooleanParameter("Taper Next", "Tp", "Taper to next (default = false)", GH_ParamAccess.item, false);
@@ -98,7 +99,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Beam Section", "Bs", "Beam Section for a Compos Beam", GH_ParamAccess.list);
+      pManager.AddGenericParameter(BeamSectionGoo.Name, BeamSectionGoo.NickName, BeamSectionGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.list);
     }
     #endregion
 
@@ -160,8 +161,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
       Params.Input[1].Name = "Start [" + unitAbbreviation + "]";
     }
     #endregion

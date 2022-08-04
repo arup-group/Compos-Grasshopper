@@ -7,14 +7,16 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateEC4SafetyFactors : GH_OasysComponent, IGH_VariableParameterComponent
+  public class CreateSafetyFactorsEN : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("842633ae-4a9c-4483-a606-02f1099fed0f");
-    public CreateEC4SafetyFactors()
-      : base("EC4 Safety Factors", "EC4SF", "Create Compos EC4 Safety Factors",
+    public CreateSafetyFactorsEN()
+      : base("Create" + SafetyFactorsENGoo.Name.Replace(" ", string.Empty),
+          SafetyFactorsENGoo.Name.Replace(" ", string.Empty),
+          "Create a " + SafetyFactorsENGoo.Description + " for a " + DesignCodeGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -110,7 +112,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Safety Factors", "SF", "Compos Safety Factors", GH_ParamAccess.item);
+      pManager.AddGenericParameter(SafetyFactorsENGoo.Name, SafetyFactorsENGoo.NickName, SafetyFactorsENGoo.Description + " for a " + DesignCodeGoo.Description + " (EN)", GH_ParamAccess.item);
     }
     #endregion
 

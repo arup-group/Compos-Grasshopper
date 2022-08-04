@@ -17,7 +17,9 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("4e7a2c23-0504-46d2-8fe1-846bf4ef6a37");
     public WebOpeningStiffener()
-      : base("Web Opening Stiffeners", "Stiffener", "Create Horizontal Web Opening Stiffeners for a Compos Web Opening or Notch",
+      : base("Create" + WebOpeningStiffenersGoo.Name.Replace(" ", string.Empty),
+          WebOpeningStiffenersGoo.Name.Replace(" ", string.Empty),
+          "Create a " + WebOpeningStiffenersGoo.Description + " for a " + WebOpeningGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -110,8 +112,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
 
       pManager.AddBooleanParameter("Both Sides", "BS", "Set to true to apply horizontal stiffeners on both sides of web", GH_ParamAccess.item);
       pManager.AddGenericParameter("Dist. z [" + unitAbbreviation + "]", "Dz", "Vertical distance above/below opening edge to centre of stiffener (beam local z-axis)", GH_ParamAccess.item);
@@ -122,7 +123,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Stiffeners", "WS", "Web Opening Stiffeners for Compos Web Opening or Notch", GH_ParamAccess.item);
+      pManager.AddGenericParameter(WebOpeningStiffenersGoo.Name, WebOpeningStiffenersGoo.NickName, WebOpeningStiffenersGoo.Description + " for a " + WebOpeningGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -207,8 +208,8 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
+
       Params.Input[1].Name = "Dist. z [" + unitAbbreviation + "]";
       Params.Input[2].Name = "Top Width [" + unitAbbreviation + "]";
       Params.Input[3].Name = "Top Thickness [" + unitAbbreviation + "]";

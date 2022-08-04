@@ -15,7 +15,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("3da0ace2-b5a0-4a6a-8bf0-d669800c1f08");
     public CreateSlabDimension()
-      : base("Slab Dimension", "SlabDimension", "Create slab dimension for concrete slab",
+      : base("Create" + SlabDimensionGoo.Name.Replace(" ", string.Empty),
+          SlabDimensionGoo.Name.Replace(" ", string.Empty),
+          "Create a " + SlabDimensionGoo.Description + " for a " + SlabGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -86,8 +88,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
 
       pManager.AddGenericParameter("Start [" + unitAbbreviation + "]", "Px", "(Optional) Start Position of this profile (beam local x-axis)."
         + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
@@ -104,7 +105,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Slab Dimension", "SD", "Slab dimension for a concrete slab", GH_ParamAccess.list);
+      pManager.AddGenericParameter(SlabDimensionGoo.Name, SlabDimensionGoo.NickName, SlabDimensionGoo.Description + " for a " + SlabGoo.Description, GH_ParamAccess.list);
     }
     #endregion
 
@@ -174,8 +175,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity length = new Length(0, this.LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
       this.Params.Input[0].Name = "Start [" + unitAbbreviation + "]";
       this.Params.Input[1].Name = "Overall depth [" + unitAbbreviation + "]";
       this.Params.Input[2].Name = "Available width Left [" + unitAbbreviation + "]";

@@ -17,7 +17,9 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("084fa2ab-d50e-4213-8f44-2affc9f41752");
     public CreateWebOpening()
-      : base("Web Opening", "WebOpen", "Create Web Opening for a Compos Beam",
+      : base("Create" + WebOpeningGoo.Name.Replace(" ", string.Empty),
+          WebOpeningGoo.Name.Replace(" ", string.Empty),
+          "Create a " + WebOpeningGoo.Description + " for a " + BeamGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -105,8 +107,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
 
       pManager.AddGenericParameter("Width [" + unitAbbreviation + "]", "B", "Web Opening Width", GH_ParamAccess.item);
       pManager.AddGenericParameter("Height [" + unitAbbreviation + "]", "H", "Web Opening Height", GH_ParamAccess.item);
@@ -114,12 +115,12 @@ namespace ComposGH.Components
         + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
       pManager.AddGenericParameter("Pos z [" + unitAbbreviation + "]", "Pz", "Position of opening Centroid from Top of Beam (beam local z-axis)."
         + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Stiffeners", "WS", "(Optional) Web Opening Stiffeners", GH_ParamAccess.item);
+      pManager.AddGenericParameter(WebOpeningStiffenersGoo.Name + "(s)", WebOpeningStiffenersGoo.NickName, "(Optional) " + WebOpeningStiffenersGoo.Description, GH_ParamAccess.item);
       pManager[4].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("WebOpening", "WO", "Web Opening for a Compos Beam", GH_ParamAccess.item);
+      pManager.AddGenericParameter(WebOpeningGoo.Name, WebOpeningGoo.NickName, WebOpeningGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -219,8 +220,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
 
       if (OpeningType == WebOpeningShape.Rectangular)
       {

@@ -16,7 +16,9 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("71c87cde-f442-475b-9131-8f2974c42499");
     public CreateSupport()
-      : base("Restraint Support", "Support", "Create Support for a Compos Restraint",
+      : base("Create" + SupportsGoo.Name.Replace(" ", string.Empty), 
+          SupportsGoo.Name.Replace(" ", string.Empty), 
+          "Create a " + SupportsGoo.Description + " for a " + RestraintGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -103,8 +105,7 @@ namespace ComposGH.Components
 
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
 
       pManager.AddBooleanParameter("Sec. mem. interm. res.", "SMIR", "Take secondary member as intermediate restraint (default = true)", GH_ParamAccess.item, true);
       pManager.AddBooleanParameter("Flngs. free rot. ends", "FFRE", "Both flanges are free to rotate on plan at end restraints (default = true)", GH_ParamAccess.item, true);
@@ -119,7 +120,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Support conditions", "Sup", "Support conditions for a Compos Restraint", GH_ParamAccess.item);
+      pManager.AddGenericParameter(SupportsGoo.Name, SupportsGoo.NickName, SupportsGoo.Description + " for a " + RestraintGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -221,8 +222,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
       Params.Input[2].Name = "Restraint Pos [" + unitAbbreviation + "]";
     }
     #endregion

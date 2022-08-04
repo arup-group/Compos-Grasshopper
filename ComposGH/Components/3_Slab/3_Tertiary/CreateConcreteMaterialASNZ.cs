@@ -16,7 +16,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("0f51c6bb-e8cc-4b8a-add2-03b91ed2ca9b");
     public CreateConcreteMaterialASNZ()
-      : base("AS/NZ Concrete Material", "ConcMatASNZ", "Create concrete material (AS/NZ) for concrete slab",
+      : base("ASNZ" + ConcreteMaterialGoo.Name.Replace(" ", string.Empty),
+          "ASNZ" + ConcreteMaterialGoo.NickName.Replace(" ", string.Empty),
+          "Look up a Standard ASNZ " + ConcreteMaterialGoo.Description + " for a " + SlabGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -111,14 +113,12 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity density = new Density(0, this.DensityUnit);
-      string densityUnitAbbreviation = string.Concat(density.ToString().Where(char.IsLetter));
-
+      string densityUnitAbbreviation = new Density(0, this.DensityUnit).ToString("a");
       string strainUnitAbbreviation = Strain.GetAbbreviation(this.StrainUnit);
 
       // optional
       pManager.AddNumberParameter("Dry Density [" + densityUnitAbbreviation + "]", "DD", "(Optional) Dry density", GH_ParamAccess.item);
-      pManager.AddGenericParameter("E Ratios", "ER", "(Optional) Steel/concrete Young´s modulus ratios", GH_ParamAccess.item);
+      pManager.AddGenericParameter(ERatioGoo.Name, ERatioGoo.NickName, "(Optional)" + ERatioGoo.Description, GH_ParamAccess.item);
       pManager.AddNumberParameter("Imposed Load Percentage [-]", "ILP", "(Optional) Percentage of imposed load acting long term as decimal fraction", GH_ParamAccess.item, 0.33);
       pManager.AddNumberParameter("Shrinkage Strain [" + strainUnitAbbreviation + "]", "SS", "(Optional) Shrinkage strain", GH_ParamAccess.item, -0.85);
       pManager.AddGenericParameter("Concrete Grade", "CG", "(Optional) Concrete grade", GH_ParamAccess.item);
@@ -132,7 +132,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Concrete Material", "CMt", "Concrete material for concrete slab", GH_ParamAccess.item);
+      pManager.AddGenericParameter(ConcreteMaterialGoo.Name, ConcreteMaterialGoo.NickName, "ASNZ " + ConcreteMaterialGoo.Description + " for a " + SlabGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -237,12 +237,9 @@ namespace ComposGH.Components
 
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity density = new Density(0, this.DensityUnit);
-      string densityUnitAbbreviation = string.Concat(density.ToString().Where(char.IsLetter));
+      string densityUnitAbbreviation = new Density(0, this.DensityUnit).ToString("a");
+      string strainUnitAbbreviation = Strain.GetAbbreviation(this.StrainUnit);
       this.Params.Input[0].Name = "Density [" + densityUnitAbbreviation + "]";
-
-      IQuantity strain = new Strain(3, this.StrainUnit);
-      string strainUnitAbbreviation = string.Concat(strain.ToString().Where(char.IsLetter));
       this.Params.Input[3].Name = "Strain [" + strainUnitAbbreviation + "]";
     }
     #endregion

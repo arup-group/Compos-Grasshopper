@@ -17,7 +17,7 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("38a7e123-4bdc-4f26-96f0-65ab64ab964e");
     public CataloguesSections()
-      : base("Section Catalogues ID", "Cat", "Get Compos Section Catalogue IDs for Design Criteria",
+      : base("SectionCatID", "Cat", "Get Compos Section Catalogue IDs for a " + DesignCriteriaGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat8())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -88,7 +88,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddIntegerParameter("Catalogue ID", "CID", "Compos Section Catalogue ID for Design Criteria", GH_ParamAccess.list);
+      pManager.AddIntegerParameter("Catalogue ID", "CID", "Compos Section Catalogue ID for a " + DesignCriteriaGoo.Description, GH_ParamAccess.list);
     }
     #endregion
 

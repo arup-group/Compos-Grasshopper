@@ -16,7 +16,9 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("8859723E-D8BD-4AC5-A341-81D1B5708F43");
     public CreateCustomDeck()
-      : base("Custom Decking", "CustDeck", "Create Custom Decking for a Compos Slab",
+      : base("Custom" + DeckingGoo.Name.Replace(" ", string.Empty),
+          DeckingGoo.Name.Replace(" ", string.Empty),
+          "Create a " + DeckingGoo.Description + " for a " + SlabGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -96,10 +98,8 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
-      IQuantity stress = new Pressure(0, StressUnit);
-      string stressunitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
+      string stressunitAbbreviation = new Pressure(0, StressUnit).ToString("a");
 
       pManager.AddGenericParameter("b1 [" + unitAbbreviation + "]", "b1", "Lenght of b1 deck parameter(Deck_Spacing). See the decking picture in helps", GH_ParamAccess.item);
       pManager.AddGenericParameter("b2 [" + unitAbbreviation + "]", "b2", "Lenght of b2 deck parameter(Deck_UpperWidth). See the decking picture in helps", GH_ParamAccess.item);
@@ -109,12 +109,12 @@ namespace ComposGH.Components
       pManager.AddGenericParameter("Depth [" + unitAbbreviation + "]", "D", "Depth of a deck. See the decking picture in helps", GH_ParamAccess.item);
       pManager.AddGenericParameter("Thickness [" + unitAbbreviation + "]", "Th", "Thickness of a deck sheet. See the decking picture in helps", GH_ParamAccess.item);
       pManager.AddGenericParameter("Strength [" + stressunitAbbreviation + "]", "fu", "characteristic strength of Steel Deck", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Deck Config", "DC", "Compos Deck Configuration", GH_ParamAccess.item);
+      pManager.AddGenericParameter(DeckingConfigurationGoo.Name, DeckingConfigurationGoo.NickName, "(Optional)" + DeckingConfigurationGoo.Description, GH_ParamAccess.item);
       pManager[8].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Decking", "Dk", "Compos Decking", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Custom " + DeckingGoo.Name, DeckingGoo.NickName, "Custom " + DeckingGoo.Description + " for a " + SlabGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -170,11 +170,8 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
-
-      IQuantity stress = new Pressure(0, StressUnit);
-      string stressunitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
+      string stressunitAbbreviation = new Pressure(0, StressUnit).ToString("a");
 
       Params.Input[0].Name = "b1 [" + unitAbbreviation + "]";
       Params.Input[1].Name = "b2 [" + unitAbbreviation + "]";
@@ -184,7 +181,6 @@ namespace ComposGH.Components
       Params.Input[5].Name = "Depth [" + unitAbbreviation + "]";
       Params.Input[6].Name = "Thickness [" + unitAbbreviation + "]";
       Params.Input[7].Name = "Strength [" + stressunitAbbreviation + "]";
-
     }
     #endregion
   }

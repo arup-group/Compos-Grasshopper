@@ -12,7 +12,9 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("82c87cde-f442-475b-9131-8f2974c42499");
     public CreateRestraint()
-      : base("Restraints", "Restraints", "Create Restraints for a Compos Beam",
+      : base("Create" + RestraintGoo.Name.Replace(" ", string.Empty), 
+          RestraintGoo.Name.Replace(" ", string.Empty), 
+          "Create a " + RestraintGoo.Description + " for a " + BeamGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -26,14 +28,14 @@ namespace ComposGH.Components
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       pManager.AddBooleanParameter("Top flng. lat. res. constr.stg.", "TFLR", "Top flange laterally restrained continuously at construction stage (default = true)", GH_ParamAccess.item, true);
-      pManager.AddGenericParameter("Construction Stage Support", "sup", "Support(s) at construction stage", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Final Stage Support", "SUP", "(Optional) Support(s) at final stage", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Construction Stage " + SupportsGoo.Name, SupportsGoo.NickName.ToLower(), "Construction stage " + SupportsGoo.Description, GH_ParamAccess.item);
+      pManager.AddGenericParameter("Final Stage " + SupportsGoo.Name, SupportsGoo.NickName.ToUpper(), "(Optional) Final stage " + SupportsGoo.Description, GH_ParamAccess.item);
       pManager[0].Optional = true;
       pManager[2].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Restraint", "Res", "Restraint for a Compos Beam", GH_ParamAccess.item);
+      pManager.AddGenericParameter(RestraintGoo.Name, RestraintGoo.NickName, RestraintGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 

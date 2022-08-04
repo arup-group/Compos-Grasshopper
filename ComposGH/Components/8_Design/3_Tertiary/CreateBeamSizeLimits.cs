@@ -15,7 +15,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("a1c37716-886d-4816-afa3-ef0b9ab42f79");
     public CreateBeamSizeLimits()
-      : base("BeamSizeLimit", "BLm", "Create Compos Beam Size Limits for Design Criteria",
+      : base("Create" + BeamSizeLimitsGoo.Name.Replace(" ", string.Empty),
+          BeamSizeLimitsGoo.Name.Replace(" ", string.Empty),
+          "Create a " + BeamSizeLimitsGoo.Description + " for a " + DesignCriteriaGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat8())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -93,7 +95,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Beam Size Limit", "BLm", "Compos Beam Size Limit for Design Criteria", GH_ParamAccess.item);
+      pManager.AddGenericParameter(BeamSizeLimitsGoo.Name, BeamSizeLimitsGoo.NickName, BeamSizeLimitsGoo.Description + " for a " + DesignCriteriaGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 

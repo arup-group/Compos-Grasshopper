@@ -16,7 +16,9 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("467bb1c3-ea5e-4c63-a012-d088158fb173");
     public CreateStudSpecEN()
-      : base("Stud EN Specification", "StudSpecEN", "Create Stud Specification to EN1994-1-1 for a Compos Stud",
+      : base("StandardEN" + StudSpecificationGoo.Name.Replace(" ", string.Empty),
+          "StudSpecsEN",
+          "Look up a Standard EN " + StudSpecificationGoo.Description + " for a " + StudGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -88,8 +90,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
 
       pManager.AddGenericParameter("No Stud Zone Start [" + unitAbbreviation + "]",
           "NSZS", "Length of zone without shear studs at the start of the beam (default = 0)", GH_ParamAccess.item);
@@ -108,7 +109,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Stud Spec", "Spc", "Compos Shear Stud Specification", GH_ParamAccess.item);
+      pManager.AddGenericParameter(StudSpecificationGoo.Name, StudSpecificationGoo.NickName, "EN " + StudSpecificationGoo.Description + " for a " + StudGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -171,8 +172,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
       Params.Input[0].Name = "No Stud Zone Start [" + unitAbbreviation + "]";
       Params.Input[1].Name = "No Stud Zone End [" + unitAbbreviation + "]";
       Params.Input[2].Name = "Rebar Pos [" + unitAbbreviation + "]";

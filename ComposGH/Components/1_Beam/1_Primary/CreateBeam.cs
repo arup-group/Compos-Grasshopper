@@ -18,7 +18,9 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("060641e49fc648eb8d7699f2d6697111");
     public CreateBeam()
-      : base("Create Beam", "Beam", "Create a Compos Steel Beam",
+      : base("Create"+ BeamGoo.Name.Replace(" ", string.Empty), 
+          BeamGoo.Name.Replace(" ", string.Empty), 
+          "Create a " + BeamGoo.Description + " for a " + MemberGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = false; } // sets the initial state of the component to display
@@ -88,19 +90,18 @@ namespace ComposGH.Components
 
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
 
       pManager.AddCurveParameter("Line [" + unitAbbreviation + "]", "L", "Line drawn to selected units to create Compos Beam from", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Restraint", "Res", "Compos Restraint", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Material", "SMt", "Compos Steel Material", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Beam Sections", "Bs", "Compos Beam Sections or Profile string descriptions like 'CAT IPE IPE200', 'STD I(cm) 20. 19. 8.5 1.27' or 'STD GI 400 300 250 12 25 20'", GH_ParamAccess.list);
-      pManager.AddGenericParameter("WebOpening", "WO", "Compos Web Openings or Notches", GH_ParamAccess.list);
+      pManager.AddGenericParameter(RestraintGoo.Name, RestraintGoo.NickName, RestraintGoo.Description, GH_ParamAccess.item);
+      pManager.AddGenericParameter(SteelMaterialGoo.Name, SteelMaterialGoo.NickName, SteelMaterialGoo.Description, GH_ParamAccess.item);
+      pManager.AddGenericParameter(BeamSectionGoo.Name + "(s)", BeamSectionGoo.NickName, BeamSectionGoo.Description + " or an I Profile string descriptions like 'CAT IPE IPE200', 'STD I(cm) 20. 19. 8.5 1.27' or 'STD GI 400 300 250 12 25 20'", GH_ParamAccess.list);
+      pManager.AddGenericParameter(WebOpeningGoo.Name, WebOpeningGoo.NickName, WebOpeningGoo.Description, GH_ParamAccess.list);
       pManager[4].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Beam", "Bm", "Compos Steel Beam", GH_ParamAccess.item);
+      pManager.AddGenericParameter(BeamGoo.Name, BeamGoo.NickName, BeamGoo.Description + " for a " + MemberGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -178,9 +179,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
-
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
       Params.Input[0].Name = "Line [" + unitAbbreviation + "]";
     }
     #endregion
