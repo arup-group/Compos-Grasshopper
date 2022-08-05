@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "Creep & Shrinkage";
     public static string NickName => "CSP";
-    public static string Description => "Compos Creep and Shrinkage Parameters.";
+    public static string Description => "Compos Creep and Shrinkage Parameters";
     public CreepShrinkageParametersGoo(ICreepShrinkageParameters item) : base(item) { }
     public override IGH_Goo Duplicate() => new CreepShrinkageParametersGoo(this.Value);
   }

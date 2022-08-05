@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "Reinforcement Layout";
     public static string NickName => "RfL";
-    public static string Description => "Compos Custom Transverse Reinforcement Layout.";
+    public static string Description => "Compos Custom Transverse Reinforcement Layout";
     public CustomTransverseReinforcementLayoutGoo(ICustomTransverseReinforcementLayout item) : base(item) { }
     public override IGH_Goo Duplicate() => new CustomTransverseReinforcementLayoutGoo(this.Value);
   }

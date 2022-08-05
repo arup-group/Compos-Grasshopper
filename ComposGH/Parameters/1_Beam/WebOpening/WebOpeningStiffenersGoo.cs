@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "Stiffener";
     public static string NickName => "WOS";
-    public static string Description => "Compos Web Opening Stiffener.";
+    public static string Description => "Compos Web Opening Stiffener";
     public WebOpeningStiffenersGoo(IWebOpeningStiffeners item) : base(item) { }
     public override IGH_Goo Duplicate() => new WebOpeningStiffenersGoo(this.Value);
   }

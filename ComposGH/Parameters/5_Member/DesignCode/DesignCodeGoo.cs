@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "Design Code";
     public static string NickName => "DC";
-    public static string Description => "Compos Design Code.";
+    public static string Description => "Compos Design Code";
     public DesignCodeGoo(IDesignCode item) : base(item) { }
     public override IGH_Goo Duplicate() => new DesignCodeGoo(this.Value);
   }

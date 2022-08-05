@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "Beam Size Limits";
     public static string NickName => "BLm";
-    public static string Description => "Compos Beam Size Limit Criteria.";
+    public static string Description => "Compos Beam Size Limit Criteria";
     public BeamSizeLimitsGoo(IBeamSizeLimits item) : base(item) { }
     public override IGH_Goo Duplicate() => new BeamSizeLimitsGoo(this.Value);
   }

@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "Web Opening";
     public static string NickName => "WO";
-    public static string Description => "Compos Web Opening or Notch.";
+    public static string Description => "Compos Web Opening or Notch";
     public WebOpeningGoo(IWebOpening item) : base(item) { }
     public override IGH_Goo Duplicate() => new WebOpeningGoo(this.Value);
   }

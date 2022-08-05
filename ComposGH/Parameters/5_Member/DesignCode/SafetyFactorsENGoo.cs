@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "EN Safety Factors";
     public static string NickName => "SEN";
-    public static string Description => "Compos Material and Load Safety Factors to EN1994-1-1.";
+    public static string Description => "Compos Material and Load Safety Factors to EN1994-1-1";
     public SafetyFactorsENGoo(ISafetyFactorsEN item) : base(item) { }
     public override IGH_Goo Duplicate() => new SafetyFactorsENGoo(this.Value);
   }

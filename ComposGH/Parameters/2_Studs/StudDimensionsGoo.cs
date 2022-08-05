@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "Stud Dimension";
     public static string NickName => "StD";
-    public static string Description => "Compos Shear Stud Dimensions.";
+    public static string Description => "Compos Shear Stud Dimensions";
     public StudDimensionsGoo(IStudDimensions item) : base(item) { }
     public override IGH_Goo Duplicate() => new StudDimensionsGoo(this.Value);
   }

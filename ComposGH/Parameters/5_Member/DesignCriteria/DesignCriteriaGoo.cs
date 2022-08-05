@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "Design Criteria";
     public static string NickName => "Crt";
-    public static string Description => "Compos Design Criteria.";
+    public static string Description => "Compos Design Criteria";
     public DesignCriteriaGoo(IDesignCriteria item) : base(item) { }
     public override IGH_Goo Duplicate() => new DesignCriteriaGoo(this.Value);
   }

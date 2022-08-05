@@ -23,7 +23,7 @@ namespace ComposGH.Parameters
 
     public static string Name => "Beam";
     public static string NickName => "Bm";
-    public static string Description => "Compos Steel Beam.";
+    public static string Description => "Compos Steel Beam";
 
     #region constructors
     public BeamGoo(LineCurve line, LengthUnit lengthUnit, IRestraint restraint, ISteelMaterial material, List<IBeamSection> beamSections, List<IWebOpening> webOpenings = null)

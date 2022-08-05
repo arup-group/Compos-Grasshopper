@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "Stud Spacing";
     public static string NickName => "Spa";
-    public static string Description => "Compos Custom Shear Stud Spacing.";
+    public static string Description => "Compos Custom Shear Stud Spacing";
     public StudGroupSpacingGoo(IStudGroupSpacing item) : base(item) { }
     public override IGH_Goo Duplicate() => new StudGroupSpacingGoo(this.Value);
   }

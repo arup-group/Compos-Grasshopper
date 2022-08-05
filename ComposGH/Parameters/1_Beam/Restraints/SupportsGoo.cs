@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "Supports";
     public static string NickName => "Sup";
-    public static string Description => "Compos Support conditions.";
+    public static string Description => "Compos Support conditions";
     public SupportsGoo(ISupports item) : base(item) { }
     public override IGH_Goo Duplicate() => new SupportsGoo(this.Value);
   }

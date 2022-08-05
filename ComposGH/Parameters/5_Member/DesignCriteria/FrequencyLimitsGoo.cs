@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "Frequency Limits";
     public static string NickName => "fLm";
-    public static string Description => "Compos Frequency Limit Criteria.";
+    public static string Description => "Compos Frequency Limit Criteria";
     public FrequencyLimitsGoo(IFrequencyLimits item) : base(item) { }
     public override IGH_Goo Duplicate() => new FrequencyLimitsGoo(this.Value);
   }

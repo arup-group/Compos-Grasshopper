@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "Compos File";
     public static string NickName => ".cob";
-    public static string Description => "Compos File containing one or more Members.";
+    public static string Description => "Compos File containing one or more Members";
     public ComposFileGoo(IComposFile item) : base(item) { }
     public override IGH_Goo Duplicate() => new ComposFileGoo(this.Value);
   }

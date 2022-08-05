@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "Deflection Limits";
     public static string NickName => "DLm";
-    public static string Description => "Compos Deflection Limit Criteria.";
+    public static string Description => "Compos Deflection Limit Criteria";
     public DeflectionLimitGoo(IDeflectionLimit item) : base(item) { }
     public override IGH_Goo Duplicate() => new DeflectionLimitGoo(this.Value);
   }

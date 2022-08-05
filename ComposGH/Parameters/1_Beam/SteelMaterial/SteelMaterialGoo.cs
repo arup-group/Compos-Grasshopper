@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "Steel Material";
     public static string NickName => "SMt";
-    public static string Description => "Compos Steel Material.";
+    public static string Description => "Compos Steel Material";
     public SteelMaterialGoo(ISteelMaterial item) : base(item) { }
     public override IGH_Goo Duplicate() => new SteelMaterialGoo(this.Value);
   }

@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "Decking";
     public static string NickName => "Dec";
-    public static string Description => "Compos Steel Decking.";
+    public static string Description => "Compos Steel Decking";
     public DeckingGoo(IDecking item) : base(item) { }
     public override IGH_Goo Duplicate() => new DeckingGoo(this.Value);
   }

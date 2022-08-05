@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "Transverse Reinforcement";
     public static string NickName => "RfT";
-    public static string Description => "Compos Transverse Reinforcement.";
+    public static string Description => "Compos Transverse Reinforcement";
     public TransverseReinforcementGoo(ITransverseReinforcement item) : base(item) { }
     public override IGH_Goo Duplicate() => new TransverseReinforcementGoo(this.Value);
   }

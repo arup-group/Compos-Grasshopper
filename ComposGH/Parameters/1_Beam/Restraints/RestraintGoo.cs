@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "Restraints";
     public static string NickName => "Res";
-    public static string Description => "Compos Restraints.";
+    public static string Description => "Compos Restraints";
     public RestraintGoo(IRestraint item) : base(item) { }
     public override IGH_Goo Duplicate() => new RestraintGoo(this.Value);
   }

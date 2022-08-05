@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "Slab";
     public static string NickName => "Sla";
-    public static string Description => "Compos Concrete Slab.";
+    public static string Description => "Compos Concrete Slab";
     public SlabGoo(ISlab item) : base(item) { }
     public override IGH_Goo Duplicate() => new SlabGoo(this.Value);
   }

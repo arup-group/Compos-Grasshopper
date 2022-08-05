@@ -10,7 +10,7 @@ namespace ComposGH.Parameters
   {
     public static string Name => "Concrete Material";
     public static string NickName => "CMt";
-    public static string Description => "Compos Concrete Material.";
+    public static string Description => "Compos Concrete Material";
     public ConcreteMaterialGoo(IConcreteMaterial item) : base(item) { }
     public override IGH_Goo Duplicate() => new ConcreteMaterialGoo(this.Value);
   }
