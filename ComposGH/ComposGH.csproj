@@ -104,6 +104,7 @@
     <Compile Include="Components\1_Beam\3_Tertiary\CreateStandardSteelMaterial.cs" />
     <Compile Include="Components\1_Beam\3_Tertiary\CreateCustomSteelMaterial.cs" />
     <Compile Include="Components\1_Beam\2_Secondary\CreateSupport.cs" />
+    <Compile Include="Components\1_Beam\4_Quarternary\BeamSectionProperties.cs" />
     <Compile Include="Components\1_Beam\4_Quarternary\CreateBeamSection.cs" />
     <Compile Include="Components\3_Slab\1_Primary\CreateSlab.cs" />
     <Compile Include="Components\3_Slab\2_Secondary\CreateSlabDimension.cs" />
@@ -512,6 +513,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\CodeReqNotMet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\ProfileProperties.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

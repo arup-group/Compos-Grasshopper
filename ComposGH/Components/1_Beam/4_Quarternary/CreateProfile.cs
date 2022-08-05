@@ -1103,7 +1103,7 @@ namespace ComposGH.Components
           Params.Input[i].Optional = false;
 
           i++;
-          Params.Input[i].NickName = "Web";
+          Params.Input[i].NickName = "t";
           Params.Input[i].Name = "Web Thickness [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The web thickness of the beam.";
           Params.Input[i].Access = GH_ParamAccess.item;
@@ -1189,14 +1189,14 @@ namespace ComposGH.Components
           Params.Input[i].Optional = false;
 
           i++;
-          Params.Input[i].NickName = "Tw";
+          Params.Input[i].NickName = "t";
           Params.Input[i].Name = "Web Thk [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The web thickness of the angle profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
-          Params.Input[i].NickName = "Tf";
+          Params.Input[i].NickName = "T";
           Params.Input[i].Name = "Flange Thk [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The flange thickness of the angle profile.";
           Params.Input[i].Access = GH_ParamAccess.item;

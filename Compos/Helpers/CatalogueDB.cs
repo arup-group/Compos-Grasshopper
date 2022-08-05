@@ -56,7 +56,8 @@ namespace ComposAPI.Helpers
         NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
 
         foreach (string val in vals)
-          values.Add(Convert.ToDouble(val, noComma));
+          if (val != "")
+            values.Add(Convert.ToDouble(val, noComma));
       }
       return values;
     }

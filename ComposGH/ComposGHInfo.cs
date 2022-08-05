@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using ComposAPI;
 using ComposGH.Helpers;
+using System.Reflection;
 
 namespace ComposGH
 {
@@ -38,8 +39,17 @@ namespace ComposGH
       var target = EnvironmentVariableTarget.Process;
       Environment.SetEnvironmentVariable(name, value, target);
 
-      // ### use the API and trigger a license check if possible
+      // ### Load SQLite
+      try
+      {
+        Assembly ass2 = Assembly.LoadFile(InstallPath + "\\System.Data.SQLite.dll");
+      }
+      catch (Exception)
+      {
+      }
 
+      // ### use the API and trigger a license check if possible
+      // TO-DO
 
       // ### Create Ribbon Category name and icon ###
       Grasshopper.Instances.ComponentServer.AddCategorySymbolName("Compos", 'C');
