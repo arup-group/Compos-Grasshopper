@@ -27,10 +27,10 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddNumberParameter("Creep Coefficient", "CC", "Creep multiplier used for calculating E ratio for long term and shrinkage (see clause 5.4.2.2 of EN 1994-1-1:2004)", GH_ParamAccess.item, 1.4);
-      pManager.AddIntegerParameter("Concrete Age at Load [Days]", "CAL", "Age of concrete in days when load applied, used to calculate the creep coefficient ", GH_ParamAccess.item);
-      pManager.AddIntegerParameter("Final Concrete Age [Days]", "CAF", "(Optional) Final age of concrete in days, used to calculate the creep coefficient (default = 36500)", GH_ParamAccess.item, 36500);
-      pManager.AddNumberParameter("Relative Humidity", "RH", "(Optional) Relative humidity as decimal fraction (0.5 => 50%), used to calculate the creep coefficient (default = 0.5)", GH_ParamAccess.item, 0.5);
+      pManager.AddNumberParameter("Creep Coefficient", "CC", "Creep multiplier used for calculating E ratio for long term and shrinkage (see clause 5.4.2.2 of EN 1994-1-1:2004)", GH_ParamAccess.item);
+      pManager.AddIntegerParameter("Concrete Age at Load [Days]", "CAL", "Age of concrete in days when load applied, used to calculate the creep coefficient", GH_ParamAccess.item);
+      pManager.AddIntegerParameter("Final Concrete Age [Days]", "CAF", "(Optional) Final age of concrete in days, used to calculate the creep coefficient (default = 36500)", GH_ParamAccess.item);
+      pManager.AddNumberParameter("Relative Humidity", "RH", "(Optional) Relative humidity as decimal fraction (0.5 => 50%), used to calculate the creep coefficient (default = 0.5)", GH_ParamAccess.item);
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
@@ -42,8 +42,6 @@ namespace ComposGH.Components
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       CreepShrinkageParametersEN csparams = new CreepShrinkageParametersEN();
-      csparams.ConcreteAgeAtLoad = 28;
-
       
       double creepmultiplier = 0;
       int ageLoad = 0;

@@ -302,12 +302,12 @@ namespace ComposGH.Components
           ec4.DesignOption = this.DesignOptions;
           ec4.CodeOptions = this.EC4CodeOptions;
 
-          CreepShrinkageParametersEN shrink = (CreepShrinkageParametersEN)GetInput.GenericGoo<CreepShrinkageParametersGoo>(this, DA, 1);
+          CreepShrinkageParametersGoo shrink = (CreepShrinkageParametersGoo)GetInput.GenericGoo<CreepShrinkageParametersGoo>(this, DA, 1);
           if (shrink != null)
-            ec4.CodeOptions.ShortTerm = shrink;
-          CreepShrinkageParametersEN longt = (CreepShrinkageParametersEN)GetInput.GenericGoo<CreepShrinkageParametersGoo>(this, DA, 2);
+            ec4.CodeOptions.ShortTerm = shrink.Value;
+          CreepShrinkageParametersGoo longt = (CreepShrinkageParametersGoo)GetInput.GenericGoo<CreepShrinkageParametersGoo>(this, DA, 2);
           if (longt != null)
-            ec4.CodeOptions.LongTerm = longt;
+            ec4.CodeOptions.LongTerm = longt.Value;
 
           if (ec4safetyFactors != null)
             ec4.SafetyFactors = ec4safetyFactors;
