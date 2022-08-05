@@ -109,9 +109,9 @@ namespace ComposGH.Components
 
       pManager.AddBooleanParameter("Sec. mem. interm. res.", "SMIR", "Take secondary member as intermediate restraint (default = true)", GH_ParamAccess.item, true);
       pManager.AddBooleanParameter("Flngs. free rot. ends", "FFRE", "Both flanges are free to rotate on plan at end restraints (default = true)", GH_ParamAccess.item, true);
-      pManager.AddGenericParameter("Restraint Pos [" + unitAbbreviation + "]", "RPxs", "(Optional) Custom defined intermediate restraints Positions along the beam (beam x-axis)."
-        + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Int. Support", "ISup", "(Optional) Intermediate support", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Restraint Pos [" + unitAbbreviation + "]", "RPxs", "(Optional) List of customly defined intermediate restraint positions along the beam (beam x-axis)."
+        + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set positions as percentage (-0.5 => 50%)", GH_ParamAccess.item);
+      pManager.AddTextParameter("Int. Support", "ISup", "(Optional) Intermediate support as a text string.", GH_ParamAccess.item);
 
       pManager[0].Optional = true;
       pManager[1].Optional = true;
@@ -149,20 +149,21 @@ namespace ComposGH.Components
         }
         catch (ArgumentException)
         {
-          string text = "Could not parse intermediate restraint. Valid options are ";
-          foreach (string g in Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>().Select(x => x.ToString()).ToList())
-          {
-            text += g + ", ";
-          }
-          text = text.Remove(text.Length - 2);
-          text += ".";
-          this.DropDownItems[0] = Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>().Select(x => x.ToString()).ToList();
+          string text = "Could not parse intermediate restraint. Valid options are (click to copy to clipboard):";
           AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
+          List<string> options = new List<string>();
+          foreach (string g in Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
+            .Select(x => x.ToString().Replace("__", "-").Replace("_", " ")).ToList())
+            AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, g);
+          this.DropDownItems[0] = Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
+            .Select(x => x.ToString().Replace("__", "-").Replace("_", " ")).ToList();
         }
       }
       else if (this.OverrideDropDownItems[0])
       {
-        this.DropDownItems[0] = Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>().Select(x => x.ToString()).ToList();
+        this.DropDownItems[0] = Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
+            .Select(x => x.ToString().Replace("__", "-").Replace("_", " ")).ToList();
+        this.SelectedItems[0] = RestraintType.ToString().Replace("__", "-").Replace("_", " ");
         this.OverrideDropDownItems[0] = false;
       }
 

@@ -72,7 +72,7 @@ namespace ComposAPI
             if (this.ConstructionStageSupports == null)
               this.ConstructionStageSupports = new Supports();
             this.ConstructionStageSupports = new Supports(intermediateRestraint,
-                this.ConstructionStageSupports.SecondaryMemberIntermediateRestraint, this.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+                this.ConstructionStageSupports.SecondaryMemberAsIntermediateRestraint, this.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
           }
           else if (parameters[2] == "USER_DEFINED")
           {
@@ -93,7 +93,7 @@ namespace ComposAPI
               positions.Add(new Length(Convert.ToDouble(parameters[5], noComma), units.Length));
 
             this.ConstructionStageSupports = new Supports(positions,
-                this.ConstructionStageSupports.SecondaryMemberIntermediateRestraint, this.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+                this.ConstructionStageSupports.SecondaryMemberAsIntermediateRestraint, this.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
           }
           break;
 
@@ -109,9 +109,9 @@ namespace ComposAPI
             this.ConstructionStageSupports = new Supports();
           Supports construction1 = this.ConstructionStageSupports as Supports;
           if (parameters[2] == "SEC_BEAM_AS_REST")
-            construction1.SecondaryMemberIntermediateRestraint = true;
+            construction1.SecondaryMemberAsIntermediateRestraint = true;
           else if (parameters[2] == "2ND_BEAM_NOT_AS_REST")
-            construction1.SecondaryMemberIntermediateRestraint = false;
+            construction1.SecondaryMemberAsIntermediateRestraint = false;
           this.ConstructionStageSupports = construction1;
           break;
 
@@ -151,7 +151,7 @@ namespace ComposAPI
             if (this.FinalStageSupports == null)
               this.FinalStageSupports = new Supports();
             this.FinalStageSupports = new Supports(intermediateRestraint,
-                this.FinalStageSupports.SecondaryMemberIntermediateRestraint, this.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+                this.FinalStageSupports.SecondaryMemberAsIntermediateRestraint, this.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
           }
           else if (parameters[2] == "USER_DEFINED")
           {
@@ -169,7 +169,7 @@ namespace ComposAPI
               positions.Add(new Length(Convert.ToDouble(parameters[5], noComma), units.Length));
 
             this.FinalStageSupports = new Supports(positions,
-                this.FinalStageSupports.SecondaryMemberIntermediateRestraint, this.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+                this.FinalStageSupports.SecondaryMemberAsIntermediateRestraint, this.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
           }
           break;
 
@@ -185,9 +185,9 @@ namespace ComposAPI
             this.FinalStageSupports = new Supports();
           Supports final1 = this.FinalStageSupports as Supports;
           if (parameters[2] == "SEC_BEAM_AS_REST")
-            final1.SecondaryMemberIntermediateRestraint = true;
+            final1.SecondaryMemberAsIntermediateRestraint = true;
           else if (parameters[2] == "2ND_BEAM_NOT_AS_REST")
-            final1.SecondaryMemberIntermediateRestraint = false;
+            final1.SecondaryMemberAsIntermediateRestraint = false;
           this.FinalStageSupports = final1;
           break;
 
@@ -282,7 +282,7 @@ namespace ComposAPI
 
         //RESTRAINT_2ND_BEAM	MEMBER-1	2ND_BEAM_NOT_AS_REST
         //RESTRAINT_2ND_BEAM	MEMBER-1	SEC_BEAM_AS_REST
-        if (this.ConstructionStageSupports.SecondaryMemberIntermediateRestraint)
+        if (this.ConstructionStageSupports.SecondaryMemberAsIntermediateRestraint)
           str += "RESTRAINT_2ND_BEAM" + '\t' + name + '\t' + "SEC_BEAM_AS_REST" + '\n';
         else
           str += "RESTRAINT_2ND_BEAM" + '\t' + name + '\t' + "2ND_BEAM_NOT_AS_REST" + '\n';
@@ -368,7 +368,7 @@ namespace ComposAPI
         str += "FINAL_RESTRAINT_NOSTUD" + '\t' + name + '\t' + "NOSTUD_ZONE_LATERAL_FREE" + '\n';
 
         //FINAL_RESTRAINT_2ND_BEAM	MEMBER-1	SEC_BEAM_AS_REST
-        if (this.FinalStageSupports.SecondaryMemberIntermediateRestraint)
+        if (this.FinalStageSupports.SecondaryMemberAsIntermediateRestraint)
           str += "FINAL_RESTRAINT_2ND_BEAM" + '\t' + name + '\t' + "SEC_BEAM_AS_REST" + '\n';
         else
           str += "FINAL_RESTRAINT_2ND_BEAM" + '\t' + name + '\t' + "2ND_BEAM_NOT_AS_REST" + '\n';

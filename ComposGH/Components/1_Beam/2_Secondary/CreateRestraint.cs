@@ -30,7 +30,7 @@ namespace ComposGH.Components
       pManager.AddBooleanParameter("Top flng. lat. res. constr.stg.", "TFLR", "Top flange laterally restrained continuously at construction stage (default = true)", GH_ParamAccess.item, true);
       pManager.AddGenericParameter("Construction Stage " + SupportsGoo.Name, SupportsGoo.NickName.ToLower(), "Construction stage " + SupportsGoo.Description, GH_ParamAccess.item);
       pManager.AddGenericParameter("Final Stage " + SupportsGoo.Name, SupportsGoo.NickName.ToUpper(), "(Optional) Final stage " + SupportsGoo.Description, GH_ParamAccess.item);
-      pManager[0].Optional = true;
+      pManager[1].Optional = true;
       pManager[2].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
@@ -43,22 +43,33 @@ namespace ComposGH.Components
     {
       bool tflr = true;
       DA.GetData(0, ref tflr);
+      ISupports construction;
+      IRestraint res;
 
-      SupportsGoo construction = (SupportsGoo)GetInput.GenericGoo<SupportsGoo>(this, DA, 1);
-      if (construction == null) { return; } // return here on non-optional inputs
+      if (this.Params.Input[1].Sources.Count > 0)
+      {
+        SupportsGoo constructionGoo = (SupportsGoo)GetInput.GenericGoo<SupportsGoo>(this, DA, 1);
+        construction = constructionGoo.Value;
+
+        if (this.Params.Input[0].Sources.Count > 0)
+        {
+          AddRuntimeMessage(tflr ? GH_RuntimeMessageLevel.Warning : GH_RuntimeMessageLevel.Remark, "When setting Construction Stage supports it is assumed Top Flange is not laterally restrained");
+        }
+        tflr = false;
+      }
+      else
+        construction = new Supports();
 
       if (this.Params.Input[2].Sources.Count > 0)
       {
         SupportsGoo final = (SupportsGoo)GetInput.GenericGoo<SupportsGoo>(this, DA, 2);
         if (final == null) { return; }
-        IRestraint res = new Restraint(tflr, construction.Value, final.Value);
-        DA.SetData(0, new RestraintGoo(res));
+        res = new Restraint(tflr, construction, final.Value);
       }
       else
-      {
-        IRestraint res = new Restraint(tflr, construction.Value);
-        DA.SetData(0, new RestraintGoo(res));
-      }
+        res = new Restraint(tflr, construction);
+
+      DA.SetData(0, new RestraintGoo(res));
     }
   }
 }
