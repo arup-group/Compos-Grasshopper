@@ -7,6 +7,7 @@ using UnitsNet.GH;
 using UnitsNet;
 using UnitsNet.Units;
 using Oasys.Units;
+using System.Globalization;
 
 namespace ComposGH.Components
 {
@@ -36,6 +37,17 @@ namespace ComposGH.Components
         {
           // create new quantity from default units
           unitNumber = new GH_UnitNumber(new Density(val, densityUnit));
+        }
+        // try cast to string
+        else if (GH_Convert.ToString(gh_typ.Value, out string txt, GH_Conversion.Both))
+        {
+          if (UnitsNet.Density.TryParse(txt, out Density quantity))
+            unitNumber = new GH_UnitNumber(quantity);
+          else
+          {
+            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber");
+            return UnitsNet.Density.Zero;
+          }
         }
         else
         {
@@ -77,6 +89,17 @@ namespace ComposGH.Components
         {
           // create new quantity from default units
           unitNumber = new GH_UnitNumber(new Frequency(val, frequencyUnit));
+        }
+        // try cast to string
+        else if (GH_Convert.ToString(gh_typ.Value, out string txt, GH_Conversion.Both))
+        {
+          if (UnitsNet.Frequency.TryParse(txt, out Frequency quantity))
+            unitNumber = new GH_UnitNumber(quantity);
+          else
+          {
+            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber");
+            return UnitsNet.Frequency.Zero;
+          }
         }
         else
         {
@@ -176,6 +199,24 @@ namespace ComposGH.Components
           else
             unitNumber = new GH_UnitNumber(new Length(val, docLengthUnit));
         }
+        // try cast to text
+        else if (GH_Convert.ToString(gh_typ.Value, out string txt, GH_Conversion.Both))
+        {
+          if (txt.EndsWith("%"))
+          {
+            NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+            unitNumber = new GH_UnitNumber(new Ratio(Convert.ToDouble(txt.Replace("%", string.Empty).Replace(" ", string.Empty), noComma), RatioUnit.Percent));
+          }
+          else if (UnitsNet.Length.TryParse(txt, out UnitsNet.Length parsed))
+            unitNumber = new GH_UnitNumber(parsed);
+          else if (UnitsNet.Length.TryParseFeetInches(txt, out UnitsNet.Length parsedFeetInches))
+            unitNumber = new GH_UnitNumber(parsedFeetInches);
+          else
+          {
+            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber");
+            return UnitsNet.Length.Zero;
+          }
+        }
         else
         {
           owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber");
@@ -226,6 +267,24 @@ namespace ComposGH.Components
             else
               lengths.Add(new Length(val, docLengthUnit));
           }
+          // try cast to text
+          else if (GH_Convert.ToString(gh_typs[i].Value, out string txt, GH_Conversion.Both))
+          {
+            if (txt.EndsWith("%"))
+            {
+              NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+              lengths.Add(new Ratio(Convert.ToDouble(txt.Replace("%", string.Empty).Replace(" ", string.Empty), noComma), RatioUnit.Percent));
+            }
+            else if (UnitsNet.Length.TryParse(txt, out UnitsNet.Length parsed))
+              lengths.Add(parsed);
+            else if (UnitsNet.Length.TryParseFeetInches(txt, out UnitsNet.Length parsedFeetInches))
+              lengths.Add(parsedFeetInches);
+            else
+            {
+              owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to UnitNumber");
+              continue;
+            }
+          }
           else
           {
             owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to UnitNumber");
@@ -270,6 +329,19 @@ namespace ComposGH.Components
             // create new quantity from default units
             lengths.Add(new Length(val, docLengthUnit));
           }
+          // try cast to text
+          else if (GH_Convert.ToString(gh_typs[i].Value, out string txt, GH_Conversion.Both))
+          {
+            if (UnitsNet.Length.TryParse(txt, out UnitsNet.Length parsed))
+              lengths.Add(parsed);
+            else if (UnitsNet.Length.TryParseFeetInches(txt, out UnitsNet.Length parsedFeetInches))
+              lengths.Add(parsedFeetInches);
+            else
+            {
+              owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to UnitNumber");
+              continue;
+            }
+          }
           else
           {
             owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Unable to convert " + owner.Params.Input[inputid].NickName + " (item " + i + ") to UnitNumber");
@@ -311,6 +383,17 @@ namespace ComposGH.Components
           // create new quantity from default units
           inStress = new GH_UnitNumber(new Pressure(val, stressUnit));
           stressFib = (Pressure)inStress.Value;
+        }
+        // try cast to string
+        else if (GH_Convert.ToString(gh_typ.Value, out string txt, GH_Conversion.Both))
+        {
+          if (UnitsNet.Pressure.TryParse(txt, out Pressure quantity))
+            return quantity;
+          else
+          {
+            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber");
+            return Pressure.Zero;
+          }
         }
         else
         {
@@ -354,6 +437,21 @@ namespace ComposGH.Components
           // create new quantity from default units
           inRatio = new GH_UnitNumber(new Ratio(val, ratioUnit));
           ratio = (Ratio)inRatio.Value;
+        }
+        // try cast to string
+        else if (GH_Convert.ToString(gh_typ.Value, out string txt, GH_Conversion.Both))
+        {
+          if (txt.EndsWith("%"))
+          {
+            NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+            ratio = new Ratio(Convert.ToDouble(txt.Replace("%", string.Empty).Replace(" ", string.Empty), noComma), RatioUnit.Percent);
+          }
+          else
+          {
+            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber of Ratio");
+            inRatio = new GH_UnitNumber(new Ratio(0, ratioUnit));
+            ratio = (Ratio)inRatio.Value;
+          }
         }
         else
         {
@@ -399,6 +497,18 @@ namespace ComposGH.Components
           inStrain = new GH_UnitNumber(new Strain(val, strainUnit));
           strainFib = (Strain)inStrain.Value;
         }
+        // try cast to string
+        // awaiting bug fix in Oasys Units to be able to parse unit from string
+        //else if (GH_Convert.ToString(gh_typ.Value, out string txt, GH_Conversion.Both))
+        //{
+        //  if (Oasys.Units.Strain.TryParse(txt, out Strain quantity))
+        //    return quantity;
+        //  else
+        //  {
+        //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber");
+        //    return Oasys.Units.Strain.Zero;
+        //  }
+        //}
         else
         {
           owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber of Strain");
@@ -441,6 +551,17 @@ namespace ComposGH.Components
           inStrain = new GH_UnitNumber(new Curvature(val, curvatureUnit));
           crvature = (Curvature)inStrain.Value;
         }
+        // try cast to string
+        //else if (GH_Convert.ToString(gh_typ.Value, out string txt, GH_Conversion.Both))
+        //{
+        //  if (Oasys.Units.Curvature.TryParse(txt, out Curvature quantity))
+        //    return quantity;
+        //  else
+        //  {
+        //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber");
+        //    return Oasys.Units.Curvature.Zero;
+        //  }
+        //}
         else
         {
           owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber of Curvature");
@@ -482,6 +603,17 @@ namespace ComposGH.Components
           // create new quantity from default units
           inForce = new GH_UnitNumber(new Force(val, forceUnit));
           force = (Force)inForce.Value;
+        }
+        // try cast from string
+        else if (GH_Convert.ToString(gh_typ.Value, out string txt, GH_Conversion.Both))
+        {
+          if (UnitsNet.Force.TryParse(txt, out Force quantity))
+            return quantity;
+          else
+          {
+            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber");
+            return UnitsNet.Force.Zero;
+          }
         }
         else
         {
@@ -525,6 +657,17 @@ namespace ComposGH.Components
           inMoment = new GH_UnitNumber(new Moment(val, momentUnit));
           moment = (Moment)inMoment.Value;
         }
+        // try cast from string
+        //else if (GH_Convert.ToString(gh_typ.Value, out string txt, GH_Conversion.Both))
+        //{
+        //  if (Oasys.Units.Moment.TryParse(txt, out Moment quantity))
+        //    return quantity;
+        //  else
+        //  {
+        //    owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber");
+        //    return Oasys.Units.Moment.Zero;
+        //  }
+        //}
         else
         {
           owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber of Moment");
@@ -567,6 +710,17 @@ namespace ComposGH.Components
           inForce = new GH_UnitNumber(new ForcePerLength(val, forceUnit));
           force = (ForcePerLength)inForce.Value;
         }
+        // try cast from string
+        else if (GH_Convert.ToString(gh_typ.Value, out string txt, GH_Conversion.Both))
+        {
+          if (UnitsNet.ForcePerLength.TryParse(txt, out ForcePerLength quantity))
+            return quantity;
+          else
+          {
+            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber");
+            return UnitsNet.ForcePerLength.Zero;
+          }
+        }
         else
         {
           owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber of ForcePerLength");
@@ -604,6 +758,16 @@ namespace ComposGH.Components
         {
           // create new quantity from default units
           a1 = new GH_UnitNumber(new Angle(val, angleUnit));
+        }// try cast from string
+        else if (GH_Convert.ToString(gh_typ.Value, out string txt, GH_Conversion.Both))
+        {
+          if (UnitsNet.Angle.TryParse(txt, out Angle quantity))
+            return quantity;
+          else
+          {
+            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber");
+            return UnitsNet.Angle.Zero;
+          }
         }
         else
         {
