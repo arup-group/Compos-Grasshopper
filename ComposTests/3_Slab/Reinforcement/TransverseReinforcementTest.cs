@@ -58,20 +58,20 @@ namespace ComposAPI.Slabs.Tests
 
       Assert.Equal(expected_grade, transverseReinforcement.Material.Grade);
       Assert.Equal(LayoutMethod.Custom, transverseReinforcement.LayoutMethod);
-      Assert.Equal(0, transverseReinforcement.CustomReinforcementLayouts[0].DistanceFromStart.Value);
-      Assert.Equal(1, transverseReinforcement.CustomReinforcementLayouts[0].DistanceFromEnd.Value);
+      Assert.Equal(0, transverseReinforcement.CustomReinforcementLayouts[0].StartPosition.Value);
+      Assert.Equal(1, transverseReinforcement.CustomReinforcementLayouts[0].EndPosition.Value);
       Assert.Equal(8, transverseReinforcement.CustomReinforcementLayouts[0].Diameter.Value);
       Assert.Equal(100, transverseReinforcement.CustomReinforcementLayouts[0].Spacing.Value);
       Assert.Equal(35, transverseReinforcement.CustomReinforcementLayouts[0].Cover.Value);
 
-      Assert.Equal(0, transverseReinforcement.CustomReinforcementLayouts[1].DistanceFromStart.Value);
-      Assert.Equal(1, transverseReinforcement.CustomReinforcementLayouts[1].DistanceFromEnd.Value);
+      Assert.Equal(0, transverseReinforcement.CustomReinforcementLayouts[1].StartPosition.Value);
+      Assert.Equal(1, transverseReinforcement.CustomReinforcementLayouts[1].EndPosition.Value);
       Assert.Equal(8, transverseReinforcement.CustomReinforcementLayouts[1].Diameter.Value);
       Assert.Equal(100, transverseReinforcement.CustomReinforcementLayouts[1].Spacing.Value);
       Assert.Equal(35, transverseReinforcement.CustomReinforcementLayouts[1].Cover.Value);
 
-      Assert.Equal(0, transverseReinforcement.CustomReinforcementLayouts[2].DistanceFromStart.Value);
-      Assert.Equal(1, transverseReinforcement.CustomReinforcementLayouts[2].DistanceFromEnd.Value);
+      Assert.Equal(0, transverseReinforcement.CustomReinforcementLayouts[2].StartPosition.Value);
+      Assert.Equal(1, transverseReinforcement.CustomReinforcementLayouts[2].EndPosition.Value);
       Assert.Equal(8, transverseReinforcement.CustomReinforcementLayouts[2].Diameter.Value);
       Assert.Equal(100, transverseReinforcement.CustomReinforcementLayouts[2].Spacing.Value);
       Assert.Equal(35, transverseReinforcement.CustomReinforcementLayouts[2].Cover.Value);

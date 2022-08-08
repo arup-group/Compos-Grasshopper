@@ -4,8 +4,8 @@ namespace ComposAPI
 {
   public interface ICustomTransverseReinforcementLayout
   {
-    Length DistanceFromStart { get; }
-    Length DistanceFromEnd { get; }
+    IQuantity StartPosition { get; }
+    IQuantity EndPosition { get; }
     Length Diameter { get; }
     Length Spacing { get; }
     Length Cover { get; }
