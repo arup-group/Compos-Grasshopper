@@ -60,7 +60,7 @@ namespace ComposAPI
     public enum WeightType
     {
       Normal,
-      Light
+      LightWeight
     }
 
     public enum DensityClass
@@ -125,7 +125,7 @@ namespace ComposAPI
     {
       this.Grade = grade.ToString();
       if (this.Grade.StartsWith("L"))
-        this.Type = WeightType.Light;
+        this.Type = WeightType.LightWeight;
       this.Class = densityClass;
       this.DryDensity = dryDensity;
       this.UserDensity = userDensity;
@@ -192,7 +192,7 @@ namespace ComposAPI
       if (parameters[3] == "NORMAL")
         material.Type = WeightType.Normal;
       else
-        material.Type = WeightType.Light;
+        material.Type = WeightType.LightWeight;
 
       int index;
       if (parameters[4] == "USER_DENSITY")
@@ -284,7 +284,7 @@ namespace ComposAPI
     public override string ToString()
     {
       string str = this.Grade.ToString().Replace("_", "/");
-      str += " " + this.Type + ", D: " + this.DryDensity;
+      str += " " + this.Type + ", D: " + this.DryDensity.As(Units.DensityUnit).ToString().Replace(" ", string.Empty);
       return str;
     }
     #endregion

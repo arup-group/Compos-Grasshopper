@@ -176,7 +176,7 @@ namespace ComposGH.Components
         userDensity = true;
       }
       else
-        if (this.Type == ConcreteMaterial.WeightType.Light)
+        if (this.Type == ConcreteMaterial.WeightType.LightWeight)
         dryDensity = new Density(1800, DensityUnit.KilogramPerCubicMeter);
 
       Ratio imposedLoadPercentage = GetInput.Ratio(this, DA, 2, RatioUnit.DecimalFraction);
