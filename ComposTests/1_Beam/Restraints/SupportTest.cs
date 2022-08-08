@@ -34,17 +34,35 @@ namespace ComposAPI.Beams.Tests
     {
       LengthUnit unit = LengthUnit.Millimeter;
       List<IQuantity> customIntermediateRestraintPositions = new List<IQuantity>();
-      customIntermediateRestraintPositions.Add(new Length(val1, unit));
-      customIntermediateRestraintPositions.Add(new Length(val2, unit));
-      customIntermediateRestraintPositions.Add(new Length(val3, unit));
+      if (val1 < 0)
+        customIntermediateRestraintPositions.Add(new Ratio(val1 * -1, RatioUnit.DecimalFraction));
+      else
+        customIntermediateRestraintPositions.Add(new Length(val1, unit));
+      if (val2 < 0)
+        customIntermediateRestraintPositions.Add(new Ratio(val2 * -1, RatioUnit.DecimalFraction));
+      else
+        customIntermediateRestraintPositions.Add(new Length(val2, unit));
+      if (val3 < 0)
+        customIntermediateRestraintPositions.Add(new Ratio(val3 * -1, RatioUnit.DecimalFraction));
+      else
+        customIntermediateRestraintPositions.Add(new Length(val3, unit));
 
       // 2 create object instance with constructor
       Supports sup = new Supports(customIntermediateRestraintPositions, secondaryMemberIntermediateRestraint, bothFlangesFreeToRotateOnPlanAtEnds);
 
       // 3 check that inputs are set in object's members
-      Assert.Equal(val1, sup.CustomIntermediateRestraintPositions[0].As(LengthUnit.Millimeter));
-      Assert.Equal(val2, sup.CustomIntermediateRestraintPositions[1].As(LengthUnit.Millimeter));
-      Assert.Equal(val3, sup.CustomIntermediateRestraintPositions[2].As(LengthUnit.Millimeter));
+      if (val1 < 0)
+        Assert.Equal(val1 * -1, sup.CustomIntermediateRestraintPositions[0].As(RatioUnit.DecimalFraction));
+      else
+        Assert.Equal(val1, sup.CustomIntermediateRestraintPositions[0].As(LengthUnit.Millimeter));
+      if (val2 < 0)
+        Assert.Equal(val2 * -1, sup.CustomIntermediateRestraintPositions[1].As(RatioUnit.DecimalFraction));
+      else
+        Assert.Equal(val2, sup.CustomIntermediateRestraintPositions[1].As(LengthUnit.Millimeter));
+      if (val3 < 0)
+        Assert.Equal(val3 * -1, sup.CustomIntermediateRestraintPositions[2].As(RatioUnit.DecimalFraction));
+      else
+        Assert.Equal(val3, sup.CustomIntermediateRestraintPositions[2].As(LengthUnit.Millimeter));
       Assert.Equal(secondaryMemberIntermediateRestraint, sup.SecondaryMemberAsIntermediateRestraint);
       Assert.Equal(bothFlangesFreeToRotateOnPlanAtEnds, sup.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.Equal(IntermediateRestraint.Custom, sup.IntermediateRestraintPositions);
