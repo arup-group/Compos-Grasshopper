@@ -245,7 +245,10 @@ namespace ComposAPI
       parameters.Add(CoaIdentifier.SlabConcreteMaterial);
       parameters.Add(name);
       parameters.Add(this.Grade.Replace("_", "/"));
-      parameters.Add(this.Type.ToString().ToUpper());
+      if (this.Type == WeightType.Normal)
+        parameters.Add("NORMAL");
+      else
+        parameters.Add("LIGHT");
       if (this.UserDensity)
       {
         parameters.Add("USER_DENSITY");
