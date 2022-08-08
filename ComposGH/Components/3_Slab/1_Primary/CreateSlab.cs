@@ -51,6 +51,11 @@ namespace ComposGH.Components
       List<SlabDimensionGoo> dimensions = GetInput.GenericGooList<SlabDimensionGoo>(this, DA, 1);
       if (dimensions == null) { return; } // return here on non-optional inputs
 
+      if (dimensions.Count > 1) 
+      {
+        AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "There is currently a bug in ComposAPI preventing more than one SlabDimension to be written to a compos file."); 
+      }
+
       TransverseReinforcementGoo transverseReinforcement = (TransverseReinforcementGoo)GetInput.GenericGoo<TransverseReinforcementGoo>(this, DA, 2);
       if (transverseReinforcement == null) { return; } // return here on non-optional inputs
 

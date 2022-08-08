@@ -9,7 +9,7 @@ namespace ComposGH.Parameters
   public class SlabDimensionGoo : GH_OasysGoo<ISlabDimension>
   {
     public static string Name => "Slab Dimension";
-    public static string NickName => "SlD";
+    public static string NickName => "SDm";
     public static string Description => "Compos Slab Dimensions";
     public SlabDimensionGoo(ISlabDimension item) : base(item) { }
     public override IGH_Goo Duplicate() => new SlabDimensionGoo(this.Value);
