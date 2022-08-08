@@ -13,6 +13,7 @@ namespace ComposAPI
 {
   public class ComposFile : IComposFile
   {
+    public const string Version = "0.0.3"; // can move to ComposGH after we get rid off the com interface :~i
     internal static IAutomation ComposCOM { get; } = new Automation();
     internal static string CurrentGuid { get; set; } = "";
 
@@ -404,9 +405,7 @@ namespace ComposAPI
         Mass = Units.MassUnit,
       };
 
-      string version = "0.1"; // ??
-
-      string coaString = "! This file was originally written by ComposGH version " + version + " on " + DateTime.Now.ToString("dddd, dd MMMM yyyy HH:MM:ss") + "\n";
+      string coaString = "! This file was originally written by ComposGH version " + ComposFile.Version + " on " + DateTime.Now.ToString("dddd, dd MMMM yyyy HH:MM:ss") + "\n";
       coaString += "!\n";
       coaString += "! Notes:\n";
       coaString += "! 1 All data in this file will be interpreted as being in user units\n";

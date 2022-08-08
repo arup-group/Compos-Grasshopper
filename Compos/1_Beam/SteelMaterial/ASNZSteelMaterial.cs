@@ -40,6 +40,7 @@ namespace ComposAPI
     Gr300_AS3679_1_Hollow,
     Gr250_AS3679_1_Hollow
   }
+
   public class ASNZSteelMaterial : SteelMaterial
   {
     public new StandardASNZSteelMaterialGrade Grade { get; set; } // standard material grade
