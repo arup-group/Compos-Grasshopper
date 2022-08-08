@@ -1,4 +1,5 @@
 ﻿using ComposAPI.Helpers;
+using ComposAPI.Tests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,7 +72,7 @@ namespace ComposAPI.Slabs.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(35)]
-    public void ConstructorTest1(double cover)
+    public MeshReinforcement ConstructorTest1(double cover)
     {
       ComposUnits units = ComposUnits.GetStandardUnits();
 
@@ -82,6 +83,22 @@ namespace ComposAPI.Slabs.Tests
       Assert.Equal(cover, mesh.Cover.Value);
       Assert.Equal(ReinforcementMeshType.A393, mesh.MeshType);
       Assert.False(mesh.Rotated);
+
+      return mesh;
+    }
+
+    [Fact]
+    public void DuplicateTest()
+    {
+      // 1 create with constructor and duplicate
+      MeshReinforcement original = ConstructorTest1(30);
+      MeshReinforcement duplicate = (MeshReinforcement)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     // 1 setup inputs

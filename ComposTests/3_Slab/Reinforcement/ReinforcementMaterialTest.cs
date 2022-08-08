@@ -1,4 +1,5 @@
 ﻿using ComposAPI.Helpers;
+using ComposAPI.Tests;
 using System.Collections.Generic;
 using UnitsNet;
 using UnitsNet.Units;
@@ -66,7 +67,7 @@ namespace ComposAPI.Slabs.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(500)]
-    public void ConstructorTest1(double fy)
+    public ReinforcementMaterial ConstructorTest1(double fy)
     {
       ComposUnits units = ComposUnits.GetStandardUnits();
 
@@ -76,6 +77,21 @@ namespace ComposAPI.Slabs.Tests
       // 3 check that inputs are set in object's members
       Assert.Equal(fy, material.Fy.Value);
       Assert.True(material.UserDefined);
+
+      return material;
+    }
+    [Fact]
+    public void DuplicateTest()
+    {
+      // 1 create with constructor and duplicate
+      ReinforcementMaterial original = ConstructorTest1(30);
+      ReinforcementMaterial duplicate = (ReinforcementMaterial)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     // 1 setup inputs
