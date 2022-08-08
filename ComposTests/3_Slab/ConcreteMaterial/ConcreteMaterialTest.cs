@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ComposAPI.Helpers;
+using ComposAPI.Tests;
 using Oasys.Units;
 using UnitsNet;
 using UnitsNet.Units;
@@ -24,6 +25,20 @@ namespace ComposAPI.Slabs.Tests
 
   public class ConcreteMaterialTest
   {
+    [Fact]
+    public void DuplicateStdTest()
+    {
+      // 1 create with constructor and duplicate
+      ConcreteMaterial original = (ConcreteMaterial)ConcreteMaterialMother.CreateConcreteMaterial();
+      ConcreteMaterial duplicate = (ConcreteMaterial)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
     [Theory]
     [InlineData(ConcreteGrade.C35, WeightType.Normal, 2400, false, 0, 0, 0, 0, false, 33, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C35	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // BS Normal
     [InlineData(ConcreteGrade.C50, WeightType.LightWeight, 2200, true, 0, 0, 0, 0, false, 33, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C50	LIGHT	USER_DENSITY	2200.00	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // BS User Density

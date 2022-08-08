@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ComposAPI.Helpers;
+using ComposAPI.Tests;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
@@ -43,7 +44,7 @@ namespace ComposAPI.Slabs.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(0, 1, 8, 100, 35)]
-    public void ConstructorTes(double distanceFromStart, double distanceFromEnd, double diameter, double spacing, double cover)
+    public CustomTransverseReinforcementLayout ConstructorTest(double distanceFromStart, double distanceFromEnd, double diameter, double spacing, double cover)
     {
       ComposUnits units = ComposUnits.GetStandardUnits();
    
@@ -56,6 +57,22 @@ namespace ComposAPI.Slabs.Tests
       Assert.Equal(diameter, layout.Diameter.Value);
       Assert.Equal(spacing, layout.Spacing.Value);
       Assert.Equal(cover, layout.Cover.Value);
+
+      return layout;
+    }
+
+    [Fact]
+    public void DuplicateTest()
+    {
+      // 1 create with constructor and duplicate
+      CustomTransverseReinforcementLayout original = ConstructorTest(0, 1, 8, 100, 35);
+      CustomTransverseReinforcementLayout duplicate = (CustomTransverseReinforcementLayout)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
   }
 }
