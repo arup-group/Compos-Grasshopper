@@ -160,5 +160,19 @@ namespace ComposAPI.Beams.Tests
       // 3 check that the memory pointer is not the same
       Assert.NotSame(original, duplicate);
     }
+
+    [Fact]
+    public void DuplicateSupportCustomTest()
+    {
+      // 1 create with constructor and duplicate
+      Supports original = TestSupportConstructorCustom(-0, 4000, -1, false, true);
+      Supports duplicate = (Supports)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
   }
 }

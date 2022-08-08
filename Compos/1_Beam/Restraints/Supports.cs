@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposAPI
 {
@@ -70,7 +71,7 @@ namespace ComposAPI
         foreach (IQuantity pos in CustomIntermediateRestraintPositions)
         {
           res += " ";
-          if (pos.QuantityInfo.UnitType == typeof(Length))
+          if (pos.QuantityInfo.UnitType == typeof(LengthUnit))
           {
             Length l = (Length)pos;
             res += l.ToString("g2").Replace(" ", string.Empty);
