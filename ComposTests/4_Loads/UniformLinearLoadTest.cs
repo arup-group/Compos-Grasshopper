@@ -3,6 +3,7 @@ using Xunit;
 using UnitsNet;
 using UnitsNet.Units;
 using static ComposAPI.Load;
+using ComposAPI.Tests;
 
 namespace ComposAPI.Loads.Tests
 {
@@ -29,6 +30,19 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(LoadDistribution.Line, load.Distribution);
 
       return load;
+    }
+    [Fact]
+    public void DuplicateUniLineTest()
+    {
+      // 1 create with constructor and duplicate
+      Load original = TestUniformAreaLoadConstructor(1, 1.5, 3, 5);
+      Load duplicate = (Load)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     [Fact]
