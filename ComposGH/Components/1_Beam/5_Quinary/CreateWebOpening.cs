@@ -115,7 +115,7 @@ namespace ComposGH.Components
         + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
       pManager.AddGenericParameter("Pos z [" + unitAbbreviation + "]", "Pz", "Position of opening Centroid from Top of Beam (beam local z-axis)."
         + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
-      pManager.AddGenericParameter(WebOpeningStiffenersGoo.Name + "(s)", WebOpeningStiffenersGoo.NickName, "(Optional) " + WebOpeningStiffenersGoo.Description, GH_ParamAccess.item);
+      pManager.AddGenericParameter(WebOpeningStiffenersGoo.Name, WebOpeningStiffenersGoo.NickName, "(Optional) " + WebOpeningStiffenersGoo.Description, GH_ParamAccess.item);
       pManager[4].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
@@ -245,9 +245,9 @@ namespace ComposGH.Components
         Params.Input[i].Description = "Position of opening Centroid from Top of Beam (beam local z-axis)";
         Params.Input[i].Optional = false;
         i++;
-        Params.Input[i].Name = "Stiffeners";
-        Params.Input[i].NickName = "WS";
-        Params.Input[i].Description = "(Optional) Web Opening Stiffeners";
+        Params.Input[i].Name = WebOpeningStiffenersGoo.Name + "(s)";
+        Params.Input[i].NickName = WebOpeningStiffenersGoo.NickName;
+        Params.Input[i].Description = "(Optional) " + WebOpeningStiffenersGoo.Description;
         Params.Input[i].Optional = true;
       }
       if (OpeningType == WebOpeningShape.Circular)
@@ -268,9 +268,9 @@ namespace ComposGH.Components
         Params.Input[i].Description = "Position of opening Centroid from Top of Beam (beam local z-axis)";
         Params.Input[i].Optional = false;
         i++;
-        Params.Input[i].Name = "Stiffeners";
-        Params.Input[i].NickName = "WS";
-        Params.Input[i].Description = "(Optional) Web Opening Stiffeners";
+        Params.Input[i].Name = WebOpeningStiffenersGoo.Name + "(s)";
+        Params.Input[i].NickName = WebOpeningStiffenersGoo.NickName;
+        Params.Input[i].Description = "(Optional) " + WebOpeningStiffenersGoo.Description;
         Params.Input[i].Optional = true;
       }
     }
