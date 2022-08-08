@@ -63,8 +63,8 @@ namespace ComposAPI
     {
       CustomTransverseReinforcementLayout layout = new CustomTransverseReinforcementLayout();
 
-      layout.StartPosition = CoaHelper.ConvertToLength(parameters[3], units.Length);
-      layout.EndPosition = CoaHelper.ConvertToLength(parameters[4], units.Length);
+      layout.StartPosition = CoaHelper.ConvertToLengthOrRatio(parameters[3], units.Length);
+      layout.EndPosition = CoaHelper.ConvertToLengthOrRatio(parameters[4], units.Length);
       layout.Diameter = CoaHelper.ConvertToLength(parameters[5], units.Length);
       layout.Spacing = CoaHelper.ConvertToLength(parameters[6], units.Length);
       layout.Cover = CoaHelper.ConvertToLength(parameters[7], units.Length);
@@ -78,8 +78,24 @@ namespace ComposAPI
       parameters.Add(CoaIdentifier.RebarTransverse);
       parameters.Add(name);
       parameters.Add("USER_DEFINED");
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(units.Length).Value, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.EndPosition.ToUnit(units.Length).Value, 6));
+      if (this.StartPosition.QuantityInfo.UnitType == typeof(RatioUnit))
+      {
+        // start position in percent
+        Ratio p = (Ratio)this.StartPosition;
+        // percentage in coa string for beam section is a negative decimal fraction!
+        parameters.Add(CoaHelper.FormatSignificantFigures(p.As(RatioUnit.DecimalFraction) * -1, p.DecimalFractions == 1 ? 5 : 6));
+      }
+      else
+        parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(units.Length).Value, 6));
+      if (this.EndPosition.QuantityInfo.UnitType == typeof(RatioUnit))
+      {
+        // start position in percent
+        Ratio p = (Ratio)this.EndPosition;
+        // percentage in coa string for beam section is a negative decimal fraction!
+        parameters.Add(CoaHelper.FormatSignificantFigures(p.As(RatioUnit.DecimalFraction) * -1, p.DecimalFractions == 1 ? 5 : 6));
+      }
+      else
+        parameters.Add(CoaHelper.FormatSignificantFigures(this.EndPosition.ToUnit(units.Length).Value, 6));
       parameters.Add(CoaHelper.FormatSignificantFigures(this.Diameter.ToUnit(units.Length).Value, 6));
       parameters.Add(CoaHelper.FormatSignificantFigures(this.Spacing.ToUnit(units.Length).Value, 6));
       parameters.Add(CoaHelper.FormatSignificantFigures(this.Cover.ToUnit(units.Length).Value, 6));
