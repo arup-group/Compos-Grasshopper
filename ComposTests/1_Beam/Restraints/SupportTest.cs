@@ -2,6 +2,7 @@
 using UnitsNet;
 using UnitsNet.Units;
 using System.Collections.Generic;
+using ComposAPI.Tests;
 
 namespace ComposAPI.Beams.Tests
 {
@@ -78,6 +79,7 @@ namespace ComposAPI.Beams.Tests
       Supports duplicate = (Supports)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
+      Assert.Equal(original.ToString(), duplicate.ToString());
       Assert.Equal(IntermediateRestraint.None, duplicate.IntermediateRestraintPositions);
       Assert.True(duplicate.SecondaryMemberAsIntermediateRestraint);
       Assert.False(duplicate.BothFlangesFreeToRotateOnPlanAtEnds);
@@ -143,6 +145,20 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(1, original.CustomIntermediateRestraintPositions[0].As(LengthUnit.Millimeter));
       Assert.Equal(2, original.CustomIntermediateRestraintPositions[1].As(LengthUnit.Millimeter));
       Assert.Equal(3, original.CustomIntermediateRestraintPositions[2].As(LengthUnit.Millimeter));
+    }
+
+    [Fact]
+    public void DuplicateSupportTest()
+    {
+      // 1 create with constructor and duplicate
+      Supports original = TestSupportConstructor(IntermediateRestraint.None, true, false);
+      Supports duplicate = (Supports)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
   }
 }

@@ -15,6 +15,8 @@ namespace ComposAPI.Tests
   {
     public static bool IsEqual(object objA, object objB)
     {
+      Assert.Equal(objA.ToString(), objB.ToString());
+      
       Type typeA = objA.GetType();
       Type typeB = objB.GetType();
 

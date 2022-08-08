@@ -7,6 +7,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
 using ComposAPITests.Helpers;
+using ComposAPI.Tests;
 
 namespace ComposAPI.Beams.Tests
 {
@@ -128,6 +129,20 @@ namespace ComposAPI.Beams.Tests
 
       // Assert
       ObjectExtension.Equals(expectedBeam, beam);
+    }
+
+    [Fact]
+    public void DuplicateTest()
+    {
+      // 1 create with constructor and duplicate
+      Beam original = BeamMother.Example1Beam();
+      Beam duplicate = (Beam)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
   }
 }

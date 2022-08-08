@@ -1,6 +1,7 @@
 ﻿using Xunit;
 using UnitsNet;
 using UnitsNet.Units;
+using ComposAPI.Tests;
 
 namespace ComposAPI.Studs.Tests
 {
@@ -32,6 +33,19 @@ namespace ComposAPI.Studs.Tests
 
       return studSpec;
     }
+    [Fact]
+    public void DuplicateEC4Test()
+    {
+      // 1 create with constructor and duplicate
+      StudSpecification original = TestConstructorStudSpecEC4(50, 100, 10, true, false);
+      StudSpecification duplicate = (StudSpecification)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
 
     // 1 setup inputs
     [Theory]
@@ -53,6 +67,19 @@ namespace ComposAPI.Studs.Tests
 
       return studSpec;
     }
+    [Fact]
+    public void DuplicateBS5950Test()
+    {
+      // 1 create with constructor and duplicate
+      StudSpecification original = TestConstructorStudSpecBS5950(true, 100, 10);
+      StudSpecification duplicate = (StudSpecification)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
 
     // 1 setup inputs
     [Theory]
@@ -73,6 +100,19 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(StudSpecType.Other, studSpec.SpecType);
 
       return studSpec;
+    }
+    [Fact]
+    public void DuplicateStudSpecTest()
+    {
+      // 1 create with constructor and duplicate
+      StudSpecification original = TestConstructorStudSpec(50, 100, true);
+      StudSpecification duplicate = (StudSpecification)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     [Fact]

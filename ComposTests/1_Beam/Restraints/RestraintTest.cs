@@ -3,6 +3,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using System.Collections.Generic;
 using ComposAPI.Helpers;
+using ComposAPI.Tests;
 
 namespace ComposAPI.Beams.Tests
 {
@@ -50,13 +51,14 @@ namespace ComposAPI.Beams.Tests
     }
 
     [Fact]
-    public void DuplicateTest()
+    public void DuplicateTest1()
     {
       // 1 create with constructor and duplicate
       Restraint original = TestConstructor();
       Restraint duplicate = (Restraint)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
+      Assert.Equal(original.ToString(), duplicate.ToString());
       Assert.True(duplicate.TopFlangeRestrained);
       Assert.Equal(IntermediateRestraint.Mid__Span, duplicate.ConstructionStageSupports.IntermediateRestraintPositions);
       Assert.False(duplicate.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
@@ -139,6 +141,20 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(IntermediateRestraint.None, original.FinalStageSupports.IntermediateRestraintPositions);
       Assert.True(original.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.True(original.FinalStageSupports.SecondaryMemberAsIntermediateRestraint);
+    }
+
+    [Fact]
+    public void DuplicateTest()
+    {
+      // 1 create with constructor and duplicate
+      Restraint original = TestConstructorNoFinalSupports();
+      Restraint duplicate = (Restraint)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     [Theory]

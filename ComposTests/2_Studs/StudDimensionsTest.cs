@@ -1,6 +1,7 @@
 ﻿using Xunit;
 using UnitsNet;
 using UnitsNet.Units;
+using ComposAPI.Tests;
 
 namespace ComposAPI.Studs.Tests
 {
@@ -78,6 +79,20 @@ namespace ComposAPI.Studs.Tests
       return studDims;
     }
 
+    [Fact]
+    public void DuplicateStandardSizeForceTest()
+    {
+      // 1 create with constructor and duplicate
+      StudDimensions original = TestConstructorStudDimensionsStandardSizeForce(StandardStudSize.D13mmH65mm, 90, 13, 65);
+      StudDimensions duplicate = (StudDimensions)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
     // 1 setup inputs
     [Theory]
     [InlineData(StandardStudSize.D13mmH65mm, 400, 13, 65)]
@@ -106,6 +121,20 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(Force.Zero, studDims.CharacterStrength);
 
       return studDims;
+    }
+
+    [Fact]
+    public void DuplicateStandardSizeStressTest()
+    {
+      // 1 create with constructor and duplicate
+      StudDimensions original = TestConstructorStudDimensionsStandardSizeStress(StandardStudSize.D13mmH65mm, 400, 13, 65);
+      StudDimensions duplicate = (StudDimensions)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     // 1 setup inputs
@@ -137,6 +166,20 @@ namespace ComposAPI.Studs.Tests
       return studDims;
     }
 
+    [Fact]
+    public void DuplicateStandardSizeStandardGradeTest()
+    {
+      // 1 create with constructor and duplicate
+      StudDimensions original = TestConstructorStudDimensionsStandardSizeStandardGrade(StandardStudSize.D13mmH65mm, StandardStudGrade.SD1_EN13918, 400, 13, 65);
+      StudDimensions duplicate = (StudDimensions)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
     // 1 setup inputs
     [Theory]
     [InlineData(13, 65, StandardStudGrade.SD1_EN13918, 400)]
@@ -157,6 +200,19 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(Force.Zero, studDims.CharacterStrength);
 
       return studDims;
+    }
+    [Fact]
+    public void DuplicateCustomSizeStandardGradeTest()
+    {
+      // 1 create with constructor and duplicate
+      StudDimensions original = TestConstructorStudDimensionsCustomSizeStandardGrade(13, 65, StandardStudGrade.SD1_EN13918, 400);
+      StudDimensions duplicate = (StudDimensions)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     [Fact]
@@ -226,5 +282,7 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(Pressure.Zero, original.Fu);
       Assert.Equal(90, original.CharacterStrength.Kilonewtons);
     }
+
+    
   }
 }

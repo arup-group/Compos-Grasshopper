@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ComposAPI.Tests;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnitsNet;
@@ -107,6 +108,20 @@ namespace ComposAPI.Beams.Tests
           Assert.True(material.isCustom);
           break;
       }
+    }
+
+    [Fact]
+    public void DuplicateTest()
+    {
+      // 1 create with constructor and duplicate
+      SteelMaterial original = new SteelMaterial();
+      SteelMaterial duplicate = (SteelMaterial)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     [Theory]
