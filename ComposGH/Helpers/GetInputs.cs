@@ -118,6 +118,19 @@ namespace ComposGH.Components
           // create new quantity from default units
           unitNumber = new GH_UnitNumber(new Length(val, docLengthUnit));
         }
+        // try cast to text
+        else if (GH_Convert.ToString(gh_typ.Value, out string txt, GH_Conversion.Both))
+        {
+          if (UnitsNet.Length.TryParse(txt, out UnitsNet.Length parsed))
+            unitNumber = new GH_UnitNumber(parsed);
+          else if (UnitsNet.Length.TryParseFeetInches(txt, out UnitsNet.Length parsedFeetInches))
+            unitNumber = new GH_UnitNumber(parsedFeetInches);
+          else
+          {
+            owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber");
+            return UnitsNet.Length.Zero;
+          }
+        }
         else
         {
           owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " to UnitNumber");

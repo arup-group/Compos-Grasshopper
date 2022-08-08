@@ -43,9 +43,15 @@ namespace ComposAPI
 
     public CustomTransverseReinforcementLayout() { }
 
-    public CustomTransverseReinforcementLayout(Length distanceFromStart, Length distanceFromEnd, Length diameter, Length spacing, Length cover)
+    public CustomTransverseReinforcementLayout(IQuantity distanceFromStart, IQuantity distanceFromEnd, Length diameter, Length spacing, Length cover)
     {
+      if (distanceFromStart.QuantityInfo.UnitType != typeof(LengthUnit)
+          & distanceFromStart.QuantityInfo.UnitType != typeof(RatioUnit))
+        throw new ArgumentException("Start Position must be either Length or Ratio");
       this.StartPosition = distanceFromStart;
+      if (distanceFromEnd.QuantityInfo.UnitType != typeof(LengthUnit)
+          & distanceFromEnd.QuantityInfo.UnitType != typeof(RatioUnit))
+        throw new ArgumentException("End Position must be either Length or Ratio");
       this.EndPosition = distanceFromEnd;
       this.Diameter = diameter;
       this.Spacing = spacing;
@@ -89,33 +95,33 @@ namespace ComposAPI
       if (this.StartPosition.QuantityInfo.UnitType == typeof(LengthUnit))
       {
         Length l = (Length)this.StartPosition;
-        start = ", Px:" + l.ToString("g2").Replace(" ", string.Empty);
+        start = l.ToString("g2").Replace(" ", string.Empty);
       }
       else
       {
         Ratio p = (Ratio)this.StartPosition;
-        start = ", Px:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
+        start = p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
       }
 
       string end = "";
       if (this.EndPosition.QuantityInfo.UnitType == typeof(LengthUnit))
       {
         Length l = (Length)this.EndPosition;
-        end = ", Px:" + l.ToString("g2").Replace(" ", string.Empty);
+        end = l.ToString("g2").Replace(" ", string.Empty);
       }
       else
       {
         Ratio p = (Ratio)this.EndPosition;
-        end = ", Px:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
+        end = p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
       }
 
       string startend = start + "->" + end;
 
-      string dia = "Ø" + this.Diameter.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
-      string spacing = "/" + this.Spacing.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
-      string cov = ", c:" + this.Cover.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
+      string dia = "Ø" + this.Diameter.ToString("f0").Replace(" ", string.Empty);
+      string spacing = "/" + this.Spacing.ToString("f0").Replace(" ", string.Empty);
+      string cov = ", c:" + this.Cover.ToString("f0").Replace(" ", string.Empty);
       string diaspacingcov = dia + spacing + cov;
-      string joined = string.Join(" ", new List<string>() { startend, diaspacingcov });
+      string joined = string.Join(", ", new List<string>() { startend, diaspacingcov });
       return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');
     }
     #endregion

@@ -90,9 +90,10 @@ namespace ComposGH.Components
     {
       string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
 
-      pManager.AddGenericParameter(ReinforcementMaterialGoo.Name, ReinforcementMaterialGoo.NickName, ReinforcementMaterialGoo.Description, GH_ParamAccess.item);
-      pManager.AddGenericParameter("Start Pos x [" + unitAbbreviation + "]", "PxS", "Start Position where this Rebar Spacing Groups begins on Beam (beam local x-axis)", GH_ParamAccess.item);
-      pManager.AddGenericParameter("End Pos x [" + unitAbbreviation + "]", "PxE", "End Position where this Rebar Spacing Groups begins on Beam (beam local x-axis)", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Start Pos x [" + unitAbbreviation + "]", "PxS", "Start Position where this Rebar Spacing Groups begins on Beam (beam local x-axis)" 
+        + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set positions as percentage (-0.5 => 50%)", GH_ParamAccess.item);
+      pManager.AddGenericParameter("End Pos x [" + unitAbbreviation + "]", "PxE", "End Position where this Rebar Spacing Groups begins on Beam (beam local x-axis)"
+        + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set positions as percentage (-0.5 => 50 %)", GH_ParamAccess.item);
       pManager.AddGenericParameter("Diameter [" + unitAbbreviation + "]", "Ø", "Transverse rebar diameter", GH_ParamAccess.item);
       pManager.AddGenericParameter("Spacing [" + unitAbbreviation + "]", "S", "The centre/centre distance between rebars in this group (along beam local x-axis)", GH_ParamAccess.item);
       pManager.AddGenericParameter("Cover [" + unitAbbreviation + "]", "Cov", "Reinforcement cover", GH_ParamAccess.item);
@@ -106,8 +107,8 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Length start = GetInput.Length(this, DA, 0, LengthUnit);
-      Length end = GetInput.Length(this, DA, 1, LengthUnit);
+      IQuantity start = GetInput.LengthOrRatio(this, DA, 0, LengthUnit);
+      IQuantity end = GetInput.LengthOrRatio(this, DA, 1, LengthUnit);
       Length dia = GetInput.Length(this, DA, 2, LengthUnit);
       Length spacing = GetInput.Length(this, DA, 3, LengthUnit);
       Length cov = GetInput.Length(this, DA, 4, LengthUnit);
@@ -153,12 +154,12 @@ namespace ComposGH.Components
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
       string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
-
-      Params.Input[1].Name = "Start Pos x [" + unitAbbreviation + "]";
-      Params.Input[2].Name = "End Pos x [" + unitAbbreviation + "]";
-      Params.Input[3].Name = "Diameter [" + unitAbbreviation + "]";
-      Params.Input[4].Name = "Spacing [" + unitAbbreviation + "]";
-      Params.Input[5].Name = "Cover [" + unitAbbreviation + "]";
+      int i = 0;
+      Params.Input[i++].Name = "Start Pos x [" + unitAbbreviation + "]";
+      Params.Input[i++].Name = "End Pos x [" + unitAbbreviation + "]";
+      Params.Input[i++].Name = "Diameter [" + unitAbbreviation + "]";
+      Params.Input[i++].Name = "Spacing [" + unitAbbreviation + "]";
+      Params.Input[i++].Name = "Cover [" + unitAbbreviation + "]";
     }
     #endregion
   }
