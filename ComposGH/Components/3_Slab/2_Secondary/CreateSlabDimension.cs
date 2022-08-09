@@ -9,7 +9,7 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateSlabDimension : GH_Component, IGH_VariableParameterComponent
+  public class CreateSlabDimension : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
@@ -89,7 +89,8 @@ namespace ComposGH.Components
       IQuantity length = new Length(0, LengthUnit);
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
-      pManager.AddGenericParameter("Start [" + unitAbbreviation + "]", "Px", "(Optional) Start Position of this profile (beam local x-axis)", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Start [" + unitAbbreviation + "]", "Px", "(Optional) Start Position of this profile (beam local x-axis)."
+        + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
       pManager.AddNumberParameter("Depth [" + unitAbbreviation + "]", "D", "Overall depth", GH_ParamAccess.item);
       pManager.AddNumberParameter("Width Left [" + unitAbbreviation + "]", "WL", "Available width left", GH_ParamAccess.item);
       pManager.AddNumberParameter("Width Right [" + unitAbbreviation + "]", "WR", "Available width right", GH_ParamAccess.item);

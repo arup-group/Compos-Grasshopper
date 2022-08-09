@@ -50,7 +50,7 @@ namespace ComposAPI.Slabs.Tests
     [InlineData("REBAR_MATERIAL	MEMBER-1	STANDARD	500C\n", Code.EN1994_1_1_2004, RebarGrade.EN_500C, false, 5E+8)]
     [InlineData("REBAR_MATERIAL	MEMBER-1	STANDARD	250\n", Code.HKSUOS_2011, RebarGrade.HK_250, false, 2.5E+8)]
     [InlineData("REBAR_MATERIAL	MEMBER-1	STANDARD	460\n", Code.HKSUOS_2011, RebarGrade.HK_460, false, 4.6E+8)]
-    [InlineData("REBAR_MATERIAL	MEMBER-1	USER_DEFINED	4.00000e+008\n", null, RebarGrade.AS_D500E, true, 4E+8)]
+    [InlineData("REBAR_MATERIAL	MEMBER-1	USER_DEFINED	4.00000e+008\n", Code.AS_NZS2327_2017, RebarGrade.AS_D500E, true, 4E+8)]
     public void FromCoaStringTest(string coaString, Code code, RebarGrade expected_grade, bool expected_userDefined, double expected_fy)
     {
       List<string> parameters = CoaHelper.Split(coaString);

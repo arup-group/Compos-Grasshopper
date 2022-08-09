@@ -20,7 +20,7 @@ namespace ComposAPI
     internal static int counter;
 
     public string Guid { get; set; } = System.Guid.NewGuid().ToString();
-    internal IList<IMember> Members = new List<IMember>();
+    public IList<IMember> Members { get; } = new List<IMember>();
     internal bool IsAnalysed { get; set; } = false;
     internal bool IsDesigned { get; set; } = false;
 
@@ -137,6 +137,11 @@ namespace ComposAPI
     public short Design(string memberName)
     {
       return ComposFile.ComposCOM.Design(memberName);
+    }
+
+    public string BeamSectDesc(string memberName)
+    {
+      return ComposFile.ComposCOM.BeamSectDesc(memberName);
     }
 
     public IMember GetMember(string name)
@@ -300,10 +305,13 @@ namespace ComposAPI
       return status;
     }
 
-    private short Initialise()
+    private short Initialise(bool checkGUID = true)
     {
-      if (this.Guid == ComposFile.CurrentGuid)
-        return -1;
+      if (checkGUID)
+      {
+        if (this.Guid == ComposFile.CurrentGuid)
+          return -1;
+      }
 
       ComposFile.ComposCOM.Close();
       ComposFile.CurrentGuid = this.Guid;
@@ -379,6 +387,7 @@ namespace ComposAPI
         string name = member.Name;
         member.DesignCode = DesignCode.FromCoaString(coaString, name, units);
         Code code = member.DesignCode.Code;
+        member.DesignCriteria = DesignCriteria.FromCoaString(coaString, name, units);
 
         member.Beam = Beam.FromCoaString(coaString, name, units);
         member.Stud = Stud.FromCoaString(coaString, name, code, units);

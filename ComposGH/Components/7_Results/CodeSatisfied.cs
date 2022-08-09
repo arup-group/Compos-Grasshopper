@@ -13,7 +13,7 @@ namespace ComposGH.Components
   /// <summary>
   /// Component to check if a Compos model satisfies the chosen code
   /// </summary>
-  public class CodeSatisfied : GH_Component, IGH_VariableParameterComponent
+  public class CodeSatisfied : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
@@ -26,7 +26,6 @@ namespace ComposGH.Components
     { this.Hidden = true; } // sets the initial state of the component to hidden
     public override GH_Exposure Exposure => GH_Exposure.primary;
 
-    //protected override Bitmap Icon => Properties.Resources.CodeSatisfied;
     #endregion
 
     #region Input and output
@@ -55,20 +54,22 @@ namespace ComposGH.Components
           member = (IMember)goo.Value;
           this.Message = "";
         }
+        base.DestroyIconCache();
       }
       if (member != null)
       {
-        int status = member.CodeSatisfied();
-        switch (status)
+        Status = member.CodeSatisfied();
+        switch (Status)
         {
           case 0:
             this.Message = "all code requirements are met";
             break;
           case 1:
             this.Message = "except the natural frequency is lower than that required, other code requirements are met";
+            AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "The natural frequency is lower than that required");
             break;
           case 2:
-            this.Message = "one or more code requirements are not metf";
+            this.Message = "one or more code requirements are not met";
             break;
           case 3:
             this.Message = "the given member name is not valid";
@@ -76,9 +77,21 @@ namespace ComposGH.Components
           case 4:
             this.Message = "there is no results for the given named member";
             break;
-
         }
-        DA.SetData(0, new GH_Number(status));
+        DA.SetData(0, new GH_Number(Status));
+      }
+    }
+    int Status = 4;
+    protected override Bitmap Icon
+    {
+      get
+      {
+        if (Status < 2)
+          return Properties.Resources.CodeReqMet;
+        else if (Status == 2)
+          return Properties.Resources.CodeReqNotMet;
+        else
+          return Properties.Resources.CodeReqNotAvailable;
       }
     }
 

@@ -10,7 +10,7 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class WebOpeningStiffener : GH_Component, IGH_VariableParameterComponent
+  public class WebOpeningStiffener : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon

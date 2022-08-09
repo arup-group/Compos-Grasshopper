@@ -11,13 +11,13 @@ namespace ComposGH.Parameters
     #region constructors
     public CreepShrinkageEuroCodeParametersGoo()
     {
-      this.Value = new CreepShrinkageEuroCodeParameters();
+      this.Value = new CreepShrinkageParametersEN();
     }
 
     public CreepShrinkageEuroCodeParametersGoo(ICreepShrinkageParameters item)
     {
       if (item == null)
-        item = new CreepShrinkageEuroCodeParameters();
+        item = new CreepShrinkageParametersEN();
       this.Value = item; //.Duplicate() as ICreepShrinkageParameters;
     }
 
@@ -28,7 +28,7 @@ namespace ComposGH.Parameters
 
     public CreepShrinkageEuroCodeParametersGoo DuplicateGoo()
     {
-      return new CreepShrinkageEuroCodeParametersGoo(Value == null ? new CreepShrinkageEuroCodeParameters() : Value);// .Duplicate() as ICreepShrinkageParameters);
+      return new CreepShrinkageEuroCodeParametersGoo(Value == null ? new CreepShrinkageParametersEN() : Value);// .Duplicate() as ICreepShrinkageParameters);
     }
     #endregion
 

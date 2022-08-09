@@ -19,6 +19,7 @@ namespace ComposAPI
     public ISlab Slab { get; set; }
     public IList<ILoad> Loads { get; set; }
     public IDesignCode DesignCode { get; set; }
+    public IDesignCriteria DesignCriteria { get; set; } = null;
     private IComposFile File { get; set; }
 
     public string Name { get; set; }
@@ -33,7 +34,7 @@ namespace ComposAPI
       this.File = new ComposFile(new List<IMember>() { this });
     }
 
-    public Member(string name, IDesignCode designCode, IBeam beam, IStud stud, ISlab slab, IList<ILoad> loads) : this()
+    public Member(string name, IDesignCode designCode, IBeam beam, IStud stud, ISlab slab, IList<ILoad> loads, IDesignCriteria designCriteria = null) : this()
     {
       this.Name = name;
       this.DesignCode = designCode;
@@ -41,9 +42,10 @@ namespace ComposAPI
       this.Stud = stud;
       this.Slab = slab;
       this.Loads = loads;
+      this.DesignCriteria = designCriteria;
     }
 
-    public Member(string name, string gridRef, string note, IDesignCode designCode, IBeam beam, IStud stud, ISlab slab, IList<ILoad> loads) : this()
+    public Member(string name, string gridRef, string note, IDesignCode designCode, IBeam beam, IStud stud, ISlab slab, IList<ILoad> loads, IDesignCriteria designCriteria = null) : this()
     {
       this.Name = name;
       this.GridReference = gridRef;
@@ -53,6 +55,7 @@ namespace ComposAPI
       this.Stud = stud;
       this.Slab = slab;
       this.Loads = loads;
+      this.DesignCriteria = designCriteria;
     }
     #endregion
 
@@ -60,6 +63,22 @@ namespace ComposAPI
     public short Analyse()
     {
       return this.File.Analyse(this.Name);
+    }
+
+    public bool Design()
+    {
+      if (this.Beam.Sections.Count > 1)
+        throw new Exception("Unable to design member with more than one section");
+
+      if (this.File.Design(this.Name) == 0)
+      {
+        BeamSection newSection = new BeamSection(this.File.BeamSectDesc(this.Name));
+        this.Beam.Sections[0] = newSection;
+        this.Guid = System.Guid.NewGuid().ToString();
+        this.File.AddMember(this);
+        return true;
+      }
+      return false;
     }
 
     public short CodeSatisfied()
@@ -137,6 +156,8 @@ namespace ComposAPI
       string coaString = CoaHelper.CreateString(parameters);
 
       coaString += this.DesignCode.ToCoaString(this.Name);
+      if (this.DesignCriteria != null)
+        coaString += this.DesignCriteria.ToCoaString(this.Name, units);
 
       coaString += this.Beam.ToCoaString(this.Name, this.DesignCode.Code, units);
       coaString += this.Slab.ToCoaString(this.Name, units);
@@ -150,5 +171,10 @@ namespace ComposAPI
       return coaString;
     }
     #endregion
+
+    public override string ToString()
+    {
+      return this.Name;
+    }
   }
 }

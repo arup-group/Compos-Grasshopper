@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using ComposAPI;
+using ComposGH.Helpers;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
@@ -12,7 +13,7 @@ namespace ComposGH.Components
   /// <summary>
   /// Component to save to a compos data file
   /// </summary>
-  public class SaveModel : GH_Component, IGH_VariableParameterComponent
+  public class SaveModel : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
@@ -49,6 +50,7 @@ namespace ComposGH.Components
         case 0:
           this.CanOpen = true;
           this.Message = "File saved";
+          PostHog.ModelIO("saveCOB", (int)(new FileInfo(this.FileName).Length / 1024));
           return;
         case 1:
           this.Message = "No Compos file is open";
@@ -228,7 +230,10 @@ namespace ComposGH.Components
         if (DA.GetData(1, ref save))
         {
           if (save)
+          {
+            SaveFile();
             this.Message = this.FileName;
+          }
         }
 
         DA.SetData(0, new ComposFileGoo(this.ComposFile));

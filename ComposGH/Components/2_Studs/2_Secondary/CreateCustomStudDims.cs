@@ -9,7 +9,7 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateCustomStudDimensions : GH_Component, IGH_VariableParameterComponent
+  public class CreateCustomStudDimensions : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon

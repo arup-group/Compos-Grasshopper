@@ -17,12 +17,6 @@ namespace ComposAPI
     AS_NZS2327_2017 = 5
   }
 
-  public enum NationalAnnex
-  {
-    Generic,
-    United_Kingdom
-  }
-
   /// <summary>
   /// Use this class to create a DesignCode. Use inheriting <see cref="EN1994"/> or <see cref="ASNZS2327"/> specifically for those codes respectively.
   /// </summary>
@@ -36,17 +30,18 @@ namespace ComposAPI
 
     public DesignCode(Code designcode)
     {
-      this.Code = designcode;
       if (designcode == Code.EN1994_1_1_2004)
         throw new Exception("Must use the EN1994 class to create a EN 1994-1-1:2004 DesignCode");
       if (designcode == Code.AS_NZS2327_2017)
         throw new Exception("Must use the ASNZS2327 class to create a AS/NZS2327:2017 DesignCode");
+      this.Code = designcode;
     }
 
     #region coa interop
-    internal static DesignCode FromCoaString(string coaString, string name, ComposUnits units)
+    internal static IDesignCode FromCoaString(string coaString, string name, ComposUnits units)
     {
       DesignCode designCode = new DesignCode();
+      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
 
       List<string> lines = CoaHelper.SplitAndStripLines(coaString);
       foreach (string line in lines)
@@ -70,21 +65,38 @@ namespace ComposAPI
               case CoaIdentifier.DesignCode.BS_Superseded:
                 designCode = new DesignCode(Code.BS5950_3_1_1990_Superseded);
                 break;
+
               case CoaIdentifier.DesignCode.BS:
                 designCode = new DesignCode(Code.BS5950_3_1_1990_A1_2010);
                 break;
+
               case CoaIdentifier.DesignCode.EN:
                 designCode = new EN1994();
+                EN1994 enCode = (EN1994)designCode;
+                enCode.SafetyFactors = SafetyFactorsEN.FromCoaString(coaString, name);
                 break;
+
               case CoaIdentifier.DesignCode.HKSUOS2005:
                 designCode = new DesignCode(Code.HKSUOS_2005);
                 break;
+
               case CoaIdentifier.DesignCode.HKSUOS2011:
                 designCode = new DesignCode(Code.HKSUOS_2011);
                 break;
+
               case CoaIdentifier.DesignCode.ASNZ:
                 designCode = new ASNZS2327();
+                // because the coa string for "DESIGN_OPTION" includes two values in the end
+                // only for ASNZ code creep multipliers this is included here
+                CodeOptionsASNZ codeOptionsASNZ = new CodeOptionsASNZ();
+                CreepShrinkageParametersASNZ longterm = new CreepShrinkageParametersASNZ() { CreepCoefficient = Convert.ToDouble(parameters[8], noComma) };
+                codeOptionsASNZ.LongTerm = longterm;
+                CreepShrinkageParametersASNZ shrinkage = new CreepShrinkageParametersASNZ() { CreepCoefficient = Convert.ToDouble(parameters[9], noComma) };
+                codeOptionsASNZ.ShortTerm = shrinkage;
+                ASNZS2327 aSNZS = (ASNZS2327)designCode;
+                aSNZS.CodeOptions = codeOptionsASNZ;
                 break;
+
               default:
                 designCode = null;
                 break;
@@ -98,26 +110,36 @@ namespace ComposAPI
 
             designCode.DesignOption = designOption;
 
-            if (designCode.Code == Code.AS_NZS2327_2017)
-            {
-              NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-              CodeOptions codeOptions = new CodeOptions();
-              CreepShrinkageParameters longterm = new CreepShrinkageParameters() { CreepCoefficient = Convert.ToDouble(parameters[8], noComma) };
-              codeOptions.LongTerm = longterm;
-              CreepShrinkageParameters shrinkage = new CreepShrinkageParameters() { CreepCoefficient = Convert.ToDouble(parameters[9], noComma) };
-              codeOptions.ShortTerm = shrinkage;
-              ASNZS2327 aSNZS = (ASNZS2327)designCode;
-              aSNZS.CodeOptions = codeOptions;
-              return aSNZS;
-            }
+            break;
+          
+          case (CoaIdentifier.EC4DesignOption):
+            EN1994 en = (EN1994)designCode;
+            en.CodeOptions = CodeOptionsEN.FromCoaString(parameters);
+            if (parameters[5].ToUpper() == "UNITED KINGDOM")
+              en.NationalAnnex = NationalAnnex.United_Kingdom;
+            else
+              en.NationalAnnex = NationalAnnex.Generic;
+            designCode = en;
             break;
 
           case (CoaIdentifier.SafetyFactorLoad):
-            designCode.SafetyFactors.LoadFactors = LoadFactors.FromCoaString(parameters);
+            if (designCode.Code == Code.EN1994_1_1_2004) { break; } // safety factor for EN handele in switch case for DesignCode above
+            else
+            {
+              SafetyFactors sf_load = (SafetyFactors)designCode.SafetyFactors;
+              sf_load.LoadFactors = (LoadFactors)LoadFactors.FromCoaString(parameters);
+              designCode.SafetyFactors = sf_load;
+            }
             break;
 
           case (CoaIdentifier.SafetyFactorMaterial):
-            designCode.SafetyFactors.LoadFactors = LoadFactors.FromCoaString(parameters);
+            if (designCode.Code == Code.EN1994_1_1_2004) { break; } // safety factor for EN handele in switch case for DesignCode above
+            else
+            {
+              SafetyFactors sf_mat = (SafetyFactors)designCode.SafetyFactors;
+              sf_mat.MaterialFactors = MaterialFactors.FromCoaString(parameters);
+              designCode.SafetyFactors = sf_mat;
+            }
             break;
 
           default:
@@ -168,6 +190,8 @@ namespace ComposAPI
 
       if (this.Code == Code.AS_NZS2327_2017)
       {
+        // because the coa string for "DESIGN_OPTION" includes two values in the end
+        // only for ASNZ code creep multipliers this is included here
         ASNZS2327 aSNZS = (ASNZS2327)this;
         str += CoaHelper.FormatSignificantFigures(aSNZS.CodeOptions.LongTerm.CreepCoefficient, 6) + '\t';
         str += CoaHelper.FormatSignificantFigures(aSNZS.CodeOptions.ShortTerm.CreepCoefficient, 6) + '\n';
@@ -205,43 +229,5 @@ namespace ComposAPI
       return "";
     }
     #endregion
-  }
-
-  /// <summary>
-  /// <see cref="DesignCode"/> inherit class specific to EN 1994-1-1:2004
-  /// </summary>
-  public class EN1994 : DesignCode
-  {
-    public NationalAnnex NationalAnnex { get; set; } = NationalAnnex.Generic;
-    public EC4Options CodeOptions { get; set; } = new EC4Options();
-    public new IEC4SafetyFactors SafetyFactors { get; set; } = new EC4SafetyFactors();
-
-    public EN1994()
-    {
-      this.Code = Code.EN1994_1_1_2004;
-    }
-
-    #region coa interop
-    public override string ToCoaString(string name)
-    {
-      string str = base.ToCoaString(name);
-      str += this.CodeOptions.ToCoaString(name, this.Code, this.NationalAnnex);
-      str += this.SafetyFactors.ToCoaString(name);
-      return str;
-    }
-    #endregion
-  }
-
-  /// <summary>
-  /// <see cref="DesignCode"/> inherit class specific to AS/NZS2327:2017
-  /// </summary>
-  public class ASNZS2327 : DesignCode
-  {
-    public CodeOptions CodeOptions { get; set; } = new CodeOptions();
-
-    public ASNZS2327()
-    {
-      this.Code = Code.AS_NZS2327_2017;
-    }
   }
 }

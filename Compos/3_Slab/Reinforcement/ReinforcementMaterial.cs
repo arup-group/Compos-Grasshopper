@@ -104,7 +104,7 @@ namespace ComposAPI
       if (this.UserDefined)
       {
         parameters.Add("USER_DEFINED");
-        parameters.Add(CoaHelper.FormatSignificantFigures(this.Fy.ToUnit(PressureUnit.NewtonPerSquareMeter).Value, 6, true));
+        parameters.Add(CoaHelper.FormatSignificantFigures(this.Fy.ToUnit(PressureUnit.NewtonPerSquareMeter).Value, 6));
       }
       else
       {

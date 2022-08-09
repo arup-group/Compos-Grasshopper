@@ -10,7 +10,7 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateWebOpening : GH_Component, IGH_VariableParameterComponent
+  public class CreateWebOpening : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
@@ -110,8 +110,10 @@ namespace ComposGH.Components
 
       pManager.AddGenericParameter("Width [" + unitAbbreviation + "]", "B", "Web Opening Width", GH_ParamAccess.item);
       pManager.AddGenericParameter("Height [" + unitAbbreviation + "]", "H", "Web Opening Height", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Pos x [" + unitAbbreviation + "]", "Px", "Position of opening Centroid from Start of Beam (beam local x-axis)", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Pos z [" + unitAbbreviation + "]", "Pz", "Position of opening Centroid from Top of Beam (beam local z-axis)", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Pos x [" + unitAbbreviation + "]", "Px", "Position of opening Centroid from Start of Beam (beam local x-axis)."
+        + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Pos z [" + unitAbbreviation + "]", "Pz", "Position of opening Centroid from Top of Beam (beam local z-axis)."
+        + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
       pManager.AddGenericParameter("Stiffeners", "WS", "(Optional) Web Opening Stiffeners", GH_ParamAccess.item);
       pManager[4].Optional = true;
     }
@@ -125,8 +127,11 @@ namespace ComposGH.Components
     {
       Length width_dia = GetInput.Length(this, DA, 0, LengthUnit);
       Length height = (OpeningType == WebOpeningShape.Rectangular) ? GetInput.Length(this, DA, 1, LengthUnit) : Length.Zero;
-      Length x = GetInput.Length(this, DA, (OpeningType == WebOpeningShape.Rectangular) ? 2 : 1, LengthUnit);
-      Length z = GetInput.Length(this, DA, (OpeningType == WebOpeningShape.Rectangular) ? 3 : 2, LengthUnit);
+      
+      IQuantity x = GetInput.LengthOrRatio(this, DA, (OpeningType == WebOpeningShape.Rectangular) ? 2 : 1, LengthUnit);
+      
+      IQuantity z = GetInput.LengthOrRatio(this, DA, (OpeningType == WebOpeningShape.Rectangular) ? 3 : 2, LengthUnit);
+      
       WebOpeningStiffenersGoo stiff = (WebOpeningStiffenersGoo)GetInput.GenericGoo<WebOpeningStiffenersGoo>(this, DA, (OpeningType == WebOpeningShape.Rectangular) ? 4 : 3);
 
       switch (OpeningType)
