@@ -1,4 +1,4 @@
-name: Push AdSecGH NuGet
+name: Push ComposGH NuGet
 
 # On run when release is published
 on:
