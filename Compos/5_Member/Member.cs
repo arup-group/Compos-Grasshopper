@@ -12,8 +12,6 @@ namespace ComposAPI
 {
   public class Member : IMember
   {
-    public string Guid { get; set; } = System.Guid.NewGuid().ToString();
-
     public IBeam Beam { get; set; }
     public IStud Stud { get; set; }
     public ISlab Slab { get; set; }
@@ -74,7 +72,6 @@ namespace ComposAPI
       {
         BeamSection newSection = new BeamSection(this.File.BeamSectDesc(this.Name));
         this.Beam.Sections[0] = newSection;
-        this.Guid = System.Guid.NewGuid().ToString();
         this.File.AddMember(this);
         return true;
       }
