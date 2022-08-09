@@ -6,6 +6,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
 using ComposAPI;
+using Oasys.Units;
 
 namespace ComposGH.Components
 {
@@ -129,8 +130,8 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = new Pressure(0, ForcePerAreaUnit).ToString("a");
-      string lengthunitAbbreviation = new Length(0, LengthUnit).ToString("a");
+      string unitAbbreviation = Pressure.GetAbbreviation(ForcePerAreaUnit);
+      string lengthunitAbbreviation = Length.GetAbbreviation(LengthUnit);
       pManager.AddGenericParameter("Const. Dead 1 [" + unitAbbreviation + "]", "dl1", "Start Constant dead load; construction stage dead load which are used for construction stage analysis", GH_ParamAccess.item);
       pManager.AddGenericParameter("Const. Live 1 [" + unitAbbreviation + "]", "ll1", "Start Constant live load; construction stage live load which are used for construction stage analysis", GH_ParamAccess.item);
       pManager.AddGenericParameter("Final Dead 1 [" + unitAbbreviation + "]", "DL1", "Start Final Dead Load", GH_ParamAccess.item);
