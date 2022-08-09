@@ -17,7 +17,7 @@ using Grasshopper.Kernel.Parameters;
 
 namespace ComposGH.Components
 {
-    public class WebOpenings : GH_Component, IGH_VariableParameterComponent
+    public class WebOpenings : GH_OasysComponent, IGH_VariableParameterComponent
     {
         #region Name and Ribbon Layout
         // This region handles how the component in displayed on the ribbon

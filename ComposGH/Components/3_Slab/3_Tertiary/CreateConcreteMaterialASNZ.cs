@@ -10,7 +10,7 @@ using ComposGH.Parameters;
 
 namespace ComposGH.Components
 {
-  public class CreateConcreteMaterialASNZ : GH_Component, IGH_VariableParameterComponent
+  public class CreateConcreteMaterialASNZ : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
@@ -119,8 +119,8 @@ namespace ComposGH.Components
       // optional
       pManager.AddNumberParameter("Dry Density [" + densityUnitAbbreviation + "]", "DD", "(Optional) Dry density", GH_ParamAccess.item);
       pManager.AddGenericParameter("E Ratios", "ER", "(Optional) Steel/concrete Young´s modulus ratios", GH_ParamAccess.item);
-      pManager.AddNumberParameter("Imposed Load Percentage [%]", "ILP", "(Optional) Percentage of imposed load acting long term", GH_ParamAccess.item, 33);
-      pManager.AddNumberParameter("Shrinkage Strain [" + strainUnitAbbreviation + "]", "SS", "(Optional) Shrinkage strain", GH_ParamAccess.item, -0.00085);
+      pManager.AddNumberParameter("Imposed Load Percentage [-]", "ILP", "(Optional) Percentage of imposed load acting long term as decimal fraction", GH_ParamAccess.item, 0.33);
+      pManager.AddNumberParameter("Shrinkage Strain [" + strainUnitAbbreviation + "]", "SS", "(Optional) Shrinkage strain", GH_ParamAccess.item, -0.85);
       pManager.AddGenericParameter("Concrete Grade", "CG", "(Optional) Concrete grade", GH_ParamAccess.item);
 
       pManager[0].Optional = true;
@@ -152,7 +152,7 @@ namespace ComposGH.Components
         }
         catch (ArgumentException)
         {
-          string text = "Could not parse concrete grade. Valid concrete grades are ";
+          string text = "Could not parse concrete grade. Valid AS/NZS concrete grades are ";
           foreach (string g in Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList())
           {
             text += g + ", ";
@@ -160,7 +160,8 @@ namespace ComposGH.Components
           text = text.Remove(text.Length - 2);
           text += ".";
           this.DropDownItems[0] = Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList();
-          AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, text);
+          return;
         }
       }
       else if (this.OverrideDropDownItems[0])
@@ -177,12 +178,11 @@ namespace ComposGH.Components
         userDensity = true;
       }
 
-      double imposedLoadPercentage = 33;
-      DA.GetData(2, ref imposedLoadPercentage);
+      Ratio imposedLoadPercentage = GetInput.Ratio(this, DA, 2, RatioUnit.DecimalFraction);
 
       ERatioGoo eRatio = (ERatioGoo)GetInput.GenericGoo<ERatioGoo>(this, DA, 1);
 
-      Strain shrinkageStrain = new Strain(-0.0005, StrainUnit.MilliStrain);
+      Strain shrinkageStrain = new Strain(-0.5, StrainUnit.MilliStrain);
       bool userStrain = false;
       if (this.Params.Input[3].Sources.Count > 0)
       {

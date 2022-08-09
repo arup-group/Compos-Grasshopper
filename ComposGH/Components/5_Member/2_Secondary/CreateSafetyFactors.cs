@@ -6,7 +6,7 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateSafetyFactors : GH_Component
+  public class CreateSafetyFactors : GH_OasysComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
@@ -70,7 +70,7 @@ namespace ComposGH.Components
         lf = null;
       }
 
-      MaterialPartialFactors mf = new MaterialPartialFactors();
+      MaterialFactors mf = new MaterialFactors();
       double steel = 0;
       double conc_comp = 0;
       double conc_shear = 0;

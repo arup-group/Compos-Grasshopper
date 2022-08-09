@@ -7,7 +7,7 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateEC4SafetyFactors : GH_Component, IGH_VariableParameterComponent
+  public class CreateEC4SafetyFactors : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
@@ -116,7 +116,6 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      LoadFactors loadFactors = new LoadFactors();
       LoadCombinationFactors combinationFactors = new LoadCombinationFactors();
       double cxi = 0;
       double cpsi0 = 0;
@@ -131,17 +130,17 @@ namespace ComposGH.Components
       if (DA.GetData(1, ref cpsi0))
         combinationFactors.ConstantPsi = cpsi0;
       if (DA.GetData(2, ref cgammaG))
-        loadFactors.ConstantDead = cgammaG;
+        combinationFactors.Constantgamma_G = cgammaG;
       if (DA.GetData(3, ref cgammaQ))
-        loadFactors.ConstantLive = cgammaQ;
+        combinationFactors.Constantgamma_Q = cgammaQ;
       if (DA.GetData(4, ref fxi))
         combinationFactors.FinalXi = fxi;
       if (DA.GetData(5, ref fpsi0))
         combinationFactors.FinalPsi = fpsi0;
       if (DA.GetData(6, ref fgammaG))
-        loadFactors.FinalDead = fgammaG;
+        combinationFactors.Finalgamma_G = fgammaG;
       if (DA.GetData(7, ref fgammaQ))
-        loadFactors.FinalLive = fgammaQ;
+        combinationFactors.Finalgamma_Q = fgammaQ;
       if (this.Params.Input[0].Sources.Count == 0
         & this.Params.Input[1].Sources.Count == 0
         & this.Params.Input[2].Sources.Count == 0
@@ -163,7 +162,7 @@ namespace ComposGH.Components
         SelectedItems[0] = "Custom";
       }
 
-      EC4MaterialPartialFactors mf = new EC4MaterialPartialFactors();
+      MaterialPartialFactors mf = new MaterialPartialFactors();
       double gM0 = 0;
       double gM1 = 0;
       double gM2 = 0;
@@ -199,19 +198,18 @@ namespace ComposGH.Components
         mf = null;
       }
 
-      EC4SafetyFactors safetyFactors = new EC4SafetyFactors();
+      SafetyFactorsEN safetyFactors = new SafetyFactorsEN();
       if (combinationFactors == null)
         safetyFactors.LoadCombinationFactors.LoadCombination = this.LoadCombinationType;
       else
         safetyFactors.LoadCombinationFactors.LoadCombination = LoadCombination.Custom;
 
-      safetyFactors.LoadFactors = loadFactors;
       safetyFactors.LoadCombinationFactors = combinationFactors;
 
       if (mf != null)
         safetyFactors.MaterialFactors = mf;
 
-      DA.SetData(0, new EC4SafetyFactorsGoo(safetyFactors));
+      DA.SetData(0, new SafetyFactorsENGoo(safetyFactors));
     }
 
     #region (de)serialization

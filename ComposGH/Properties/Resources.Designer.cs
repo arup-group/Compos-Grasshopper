@@ -93,6 +93,56 @@ namespace ComposGH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap BeamSizeLimits {
+            get {
+                object obj = ResourceManager.GetObject("BeamSizeLimits", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CatalogueID {
+            get {
+                object obj = ResourceManager.GetObject("CatalogueID", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CodeReqMet {
+            get {
+                object obj = ResourceManager.GetObject("CodeReqMet", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CodeReqNotAvailable {
+            get {
+                object obj = ResourceManager.GetObject("CodeReqNotAvailable", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CodeReqNotMet {
+            get {
+                object obj = ResourceManager.GetObject("CodeReqNotMet", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ComposLogo128 {
             get {
                 object obj = ResourceManager.GetObject("ComposLogo128", resourceCulture);
@@ -333,9 +383,49 @@ namespace ComposGH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap DeflectionLimit {
+            get {
+                object obj = ResourceManager.GetObject("DeflectionLimit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap DesignCodeParameter {
             get {
                 object obj = ResourceManager.GetObject("DesignCodeParameter", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DesignCriteria {
+            get {
+                object obj = ResourceManager.GetObject("DesignCriteria", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DesignCriteriaParam {
+            get {
+                object obj = ResourceManager.GetObject("DesignCriteriaParam", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DesignMember {
+            get {
+                object obj = ResourceManager.GetObject("DesignMember", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -356,6 +446,16 @@ namespace ComposGH.Properties {
         internal static System.Drawing.Bitmap ERatio {
             get {
                 object obj = ResourceManager.GetObject("ERatio", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FrequencyLimit {
+            get {
+                object obj = ResourceManager.GetObject("FrequencyLimit", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -546,6 +646,16 @@ namespace ComposGH.Properties {
         internal static System.Drawing.Bitmap StandardDecking {
             get {
                 object obj = ResourceManager.GetObject("StandardDecking", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StandardENSteelMaterial {
+            get {
+                object obj = ResourceManager.GetObject("StandardENSteelMaterial", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

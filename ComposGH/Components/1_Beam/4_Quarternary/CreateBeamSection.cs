@@ -9,7 +9,7 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateBeamSection : GH_Component, IGH_VariableParameterComponent
+  public class CreateBeamSection : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
@@ -90,7 +90,8 @@ namespace ComposGH.Components
       string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
 
       pManager.AddGenericParameter("Beam Section", "Bs", "Beam Section or Profile string description like 'CAT IPE IPE200', 'STD I(cm) 20. 19. 8.5 1.27' or 'STD GI 400 300 250 12 25 20'", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Start [" + unitAbbreviation + "]", "Px", "(Optional) Start Position of this profile (beam local x-axis)", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Start [" + unitAbbreviation + "]", "Px", "(Optional) Start Position of this profile (beam local x-axis)."
+        + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
       pManager.AddBooleanParameter("Taper Next", "Tp", "Taper to next (default = false)", GH_ParamAccess.item, false);
       pManager[1].Optional = true;
       pManager[2].Optional = true;
@@ -104,7 +105,10 @@ namespace ComposGH.Components
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       string profile = GetInput.BeamSection(this, DA, 0, false);
-      Length start = GetInput.Length(this, DA, 1, LengthUnit, true);
+
+      IQuantity start = new Ratio(0, RatioUnit.Percent);
+      if (this.Params.Input[1].Sources.Count > 0)
+       start = GetInput.LengthOrRatio(this, DA, 1, LengthUnit);
 
       bool taper = false;
       if (DA.GetData(2, ref taper))

@@ -82,7 +82,7 @@ namespace ComposAPI.Studs.Tests
 
       // 1 create with constructor and duplicate
       StudSpecification original = TestConstructorStudSpecEC4(25, 75, 15, false, true);
-      StudSpecification duplicate = original.Duplicate() as StudSpecification;
+      StudSpecification duplicate = (StudSpecification)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(25, duplicate.NoStudZoneStart.Millimeters);
@@ -123,7 +123,7 @@ namespace ComposAPI.Studs.Tests
 
       // 1 create with new constructor and duplicate
       StudSpecification original = TestConstructorStudSpecBS5950(false, 25, 75);
-      StudSpecification duplicate = original.Duplicate() as StudSpecification;
+      StudSpecification duplicate = (StudSpecification)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(25, duplicate.NoStudZoneStart.Millimeters);
@@ -157,7 +157,7 @@ namespace ComposAPI.Studs.Tests
 
       // 1 create with new constructor and duplicate
       StudSpecification original = TestConstructorStudSpec(19, 20, true);
-      StudSpecification duplicate = original.Duplicate() as StudSpecification;
+      StudSpecification duplicate = (StudSpecification)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(19, duplicate.NoStudZoneStart.Millimeters);

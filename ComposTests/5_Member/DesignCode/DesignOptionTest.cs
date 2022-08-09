@@ -29,7 +29,7 @@ namespace ComposAPI.Members.Tests
     {
       // 1 create with constructor and duplicate
       DesignOption original = new DesignOption();
-      DesignOption duplicate = original.Duplicate() as DesignOption;
+      DesignOption duplicate = (DesignOption)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.True(duplicate.ProppedDuringConstruction);

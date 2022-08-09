@@ -11,7 +11,7 @@ namespace ComposAPI
   {
     // Setting out
     bool TaperedToNext { get; }
-    Length StartPosition { get; }
+    IQuantity StartPosition { get; }
     // Dimensions
     Length Depth { get; }
     Length TopFlangeWidth { get; }

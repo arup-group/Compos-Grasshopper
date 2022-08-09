@@ -60,6 +60,14 @@
 
     internal const string EC4LoadCombinationFactors = "EC4_LOAD_COMB_FACTORS";
 
+    internal class DesignCriteria
+    {
+      internal const string DeflectionLimit = "CRITERIA_DEF_LIMIT";
+      internal const string BeamSizeLimit = "CRITERIA_BEAM_SIZE_LIMIT";
+      internal const string OptimiseOption = "CRITERIA_OPTIMISE_OPTION";
+      internal const string SectionType = "CRITERIA_SECTION_TYPE";
+      internal const string Frequency = "CRITERIA_FREQUENCY";
+    }
     internal class DesignCode
     {
       internal const string ASNZ = "AS/NZS2327:2017";

@@ -9,14 +9,14 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateCustomSteelMaterial : GH_Component, IGH_VariableParameterComponent
+  public class CreateCustomSteelMaterial : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("2C3C07F4-C395-4747-A111-D5A67B250104");
     public CreateCustomSteelMaterial()
-      : base("Steel Material", "SteelMat", "Create Standard Steel Material for a Compos Beam",
+      : base("Custom Steel Material", "CustomSteelMat", "Create Custom Steel Material for a Compos Beam",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden

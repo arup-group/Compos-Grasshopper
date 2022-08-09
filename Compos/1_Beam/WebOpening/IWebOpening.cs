@@ -11,8 +11,8 @@ namespace ComposAPI
     Length Width { get; }
     Length Height { get; }
     Length Diameter { get; }
-    Length CentroidPosFromStart { get; }
-    Length CentroidPosFromTop { get; }
+    IQuantity CentroidPosFromStart { get; }
+    IQuantity CentroidPosFromTop { get; }
     IWebOpeningStiffeners OpeningStiffeners { get; }
 
     string ToCoaString(string name, ComposUnits units);

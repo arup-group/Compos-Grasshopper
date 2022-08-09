@@ -5,11 +5,11 @@ using ComposGH.Parameters;
 using System.Linq;
 using Grasshopper.Kernel.Parameters;
 using ComposAPI;
-using static ComposAPI.EC4Options;
+using static ComposAPI.CodeOptionsEN;
 
 namespace ComposGH.Components
 {
-  public class CreateDesignCode : GH_Component, IGH_VariableParameterComponent
+  public class CreateDesignCode : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
@@ -68,8 +68,8 @@ namespace ComposGH.Components
     private NationalAnnex NA = NationalAnnex.Generic;
 
     private DesignOption DesignOptions = new DesignOption();
-    private CodeOptions CodeOptions = new CodeOptions();
-    private EC4Options EC4CodeOptions = new EC4Options();
+    private CodeOptionsASNZ CodeOptions = new CodeOptionsASNZ();
+    private CodeOptionsEN EC4CodeOptions = new CodeOptionsEN();
 
     public override void CreateAttributes()
     {
@@ -257,7 +257,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Design Code", "DC", "Compos Design Code", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Design Code", "Co", "Compos Design Code", GH_ParamAccess.item);
     }
     #endregion
 
@@ -265,11 +265,11 @@ namespace ComposGH.Components
     {
       SafetyFactorsGoo safetyFactorsGoo = null;
       ISafetyFactors safetyFactors = null;
-      EC4SafetyFactorsGoo ec4safetyFactorsGoo = null;
-      IEC4SafetyFactors ec4safetyFactors = null;
+      SafetyFactorsENGoo ec4safetyFactorsGoo = null;
+      ISafetyFactorsEN ec4safetyFactors = null;
       if (this.Code == Code.EN1994_1_1_2004)
       {
-        ec4safetyFactorsGoo = (EC4SafetyFactorsGoo)GetInput.GenericGoo<EC4SafetyFactorsGoo>(this, DA, 0);
+        ec4safetyFactorsGoo = (SafetyFactorsENGoo)GetInput.GenericGoo<SafetyFactorsENGoo>(this, DA, 0);
         ec4safetyFactors = (ec4safetyFactorsGoo == null) ? null : ec4safetyFactorsGoo.Value;
       }
       else
@@ -300,10 +300,10 @@ namespace ComposGH.Components
           ec4.DesignOption = this.DesignOptions;
           ec4.CodeOptions = this.EC4CodeOptions;
 
-          CreepShrinkageEuroCodeParameters shrink = (CreepShrinkageEuroCodeParameters)GetInput.GenericGoo<CreepShrinkageEuroCodeParametersGoo>(this, DA, 1);
+          CreepShrinkageParametersEN shrink = (CreepShrinkageParametersEN)GetInput.GenericGoo<CreepShrinkageEuroCodeParametersGoo>(this, DA, 1);
           if (shrink != null)
             ec4.CodeOptions.ShortTerm = shrink;
-          CreepShrinkageEuroCodeParameters longt = (CreepShrinkageEuroCodeParameters)GetInput.GenericGoo<CreepShrinkageEuroCodeParametersGoo>(this, DA, 2);
+          CreepShrinkageParametersEN longt = (CreepShrinkageParametersEN)GetInput.GenericGoo<CreepShrinkageEuroCodeParametersGoo>(this, DA, 2);
           if (longt != null)
             ec4.CodeOptions.LongTerm = longt;
 

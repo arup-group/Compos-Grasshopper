@@ -39,7 +39,7 @@ steps:
     }
   displayName: 'Install Compos'
   failOnStderr: true
-  
+
 - task: VSBuild@1
   displayName: 'Building project in $(configuration)'
   inputs:
@@ -52,11 +52,8 @@ steps:
     MSBUILDDISABLENODEREUSE: 1
 
 - powershell: |
-    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
-    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results .\ComposGHTests\bin\Release\net48\ComposGHTests.dll
-    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results .\IntegrationTests\bin\Release\net48\IntegrationTests.dll
-#    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results .\ConverterTests\bin\Release\net6.0\ConverterTests.dll
-  displayName: dotnet tests
+    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposTests\bin\x64\Release\net6.0\ComposAPITests.dll
+  displayName: dotnet test
 
 - task: PublishCodeCoverageResults@1
   inputs:
@@ -64,11 +61,17 @@ steps:
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/results/**/coverage.cobertura.xml'
     pathToSources: '$(System.DefaultWorkingDirectory)'
 
+#    $coverage_file = (Resolve-Path $(System.DefaultWorkingDirectory)/results\*.trx).Path
 - powershell: |
-    codecov -t $env:CODECOV_TOKEN -f ComposTests\coverage.json -F unittests
+    $coverage_file = (Resolve-Path $(System.DefaultWorkingDirectory)/results/*/coverage.cobertura.xml).Path
+    echo $coverage_file
+    Copy-Item $coverage_file $(System.DefaultWorkingDirectory)\results\coverage.xml
+    ls $(System.DefaultWorkingDirectory)\results\
+    codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage.xml --flags unittests
   env:
     CODECOV_TOKEN: $(CODECOV_TOKEN)
   displayName: Upload Code Coverage to codecovio
+  failOnStderr: true
 
 - powershell: |
     cd ComposGH\bin\x64
@@ -76,6 +79,7 @@ steps:
     .\yak version
     cd Release
     ..\yak spec
+    Add-Content manifest.yml 'icon: ComposIcon.png'
     ..\yak build --platform win
     $yakCurrentVersName = Get-ChildItem -Path . -Filter "*.yak"
     $yakRh7Name =  $yakCurrentVersName -Replace "rh6_27", "rh7_0"
