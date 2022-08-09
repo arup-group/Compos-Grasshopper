@@ -45,13 +45,7 @@ namespace ComposAPI
 
     public CustomTransverseReinforcementLayout(IQuantity distanceFromStart, IQuantity distanceFromEnd, Length diameter, Length spacing, Length cover)
     {
-      if (distanceFromStart.QuantityInfo.UnitType != typeof(LengthUnit)
-          & distanceFromStart.QuantityInfo.UnitType != typeof(RatioUnit))
-        throw new ArgumentException("Start Position must be either Length or Ratio");
       this.StartPosition = distanceFromStart;
-      if (distanceFromEnd.QuantityInfo.UnitType != typeof(LengthUnit)
-          & distanceFromEnd.QuantityInfo.UnitType != typeof(RatioUnit))
-        throw new ArgumentException("End Position must be either Length or Ratio");
       this.EndPosition = distanceFromEnd;
       this.Diameter = diameter;
       this.Spacing = spacing;
