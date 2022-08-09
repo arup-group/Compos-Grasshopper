@@ -3,7 +3,8 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-trigger: none
+trigger:
+- main
 
 variables:
   - group: s3PushInstallers
@@ -129,3 +130,25 @@ steps:
     versionEnvVar: 'dotSeparatedTag'
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'), ne(variables.TAG_EXISTS, 'true'))
   displayName: Package NuGet
+
+- task: GitHubRelease@1
+  inputs:
+    gitHubConnection: 'github.com_peterjgrainger'
+    repositoryName: 'arup-group/Compos-Grasshopper'
+    action: 'edit'
+    target: '$(Build.SourceVersion)'
+    tag: '$(dotSeparatedTag)'
+    title: 'ComposGH version $(dotSeparatedTag)'
+    releaseNotesSource: 'inline'
+    releaseNotesInline: |
+      Created from commit https://github.com/arup-group/Compos-Grasshopper/commit/$(Build.SourceVersion)
+    assets: |
+      $(System.DefaultWorkingDirectory)/**/*.yak
+      $(Build.ArtifactStagingDirectory)/**/*.nupkg
+      $(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg
+    assetUploadMode: 'replace'
+    isDraft: true
+    isPreRelease: true
+    addChangeLog: false
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'), ne(variables.TAG_EXISTS, 'true'))
+  displayName: 'Publishing assets to Github'
