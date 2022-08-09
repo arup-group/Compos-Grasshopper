@@ -17,7 +17,7 @@ namespace ComposAPI
     public IStudSpecification Specification { get; set; }
     // Stud Spacing
     public IList<IStudGroupSpacing> CustomSpacing { get; set; } = null;
-    public double Interaction { get; set; }
+    public double Interaction { get; set; } = double.NaN;
     public double MinSavingMultipleZones { get; set; }
     public bool CheckStudSpacing { get; set; }
 
@@ -487,6 +487,7 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
+      if (Dimensions == null) { return "Invalid Stud (dimensions not set)"; }
       string size = this.Dimensions.Diameter.As(Units.LengthUnitSection).ToString("f0") + "/" + this.Dimensions.Height.ToUnit(Units.LengthUnitSection).ToString("f0");
       return size.Replace(" ", string.Empty);
     }
