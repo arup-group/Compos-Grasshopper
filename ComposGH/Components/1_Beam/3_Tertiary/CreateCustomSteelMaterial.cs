@@ -28,6 +28,68 @@ namespace ComposGH.Components
     protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateCustomSteelMaterial;
     #endregion
 
+    #region Input and output
+    protected override void RegisterInputParams(GH_InputParamManager pManager)
+    {
+      string stressunitAbbreviation = Pressure.GetAbbreviation(this.StressUnit);
+      string densityunitAbbreviation = Density.GetAbbreviation(this.DensityUnit);
+
+      pManager.AddGenericParameter("Strength [" + stressunitAbbreviation + "]", "fy", "Steel Yield Strength", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Young's Modulus [" + stressunitAbbreviation + "]", "E", "Steel Young's Modulus", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Density [" + densityunitAbbreviation + "]", "ρ", "Steel Density", GH_ParamAccess.item);
+      pManager.AddBooleanParameter("Reduction Factor", "RF", "Apply reduction factor for plastic moment capacity, EC4 (6.2.1.2 (2))", GH_ParamAccess.item, false);
+      pManager.AddGenericParameter("Grade", "G", "(Optional) Weld Grade", GH_ParamAccess.item);
+
+      pManager[4].Optional = true;
+    }
+    protected override void RegisterOutputParams(GH_OutputParamManager pManager)
+    {
+      pManager.AddGenericParameter("Custom " + SteelMaterialGoo.Name, SteelMaterialGoo.NickName, "Custom " + SteelMaterialGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.item);
+    }
+    #endregion
+
+    protected override void SolveInstance(IGH_DataAccess DA)
+    {
+      // override steel grade?
+      if (this.Params.Input[4].Sources.Count > 0)
+      {
+        string grade = "";
+        DA.GetData(4, ref grade);
+        try
+        {
+          this.Grade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), grade);
+          this.DropdownItems[0] = new List<string>();
+          this.SelectedItems[0] = "-";
+          this.OverrideDropDownItems[0] = true;
+        }
+        catch (ArgumentException)
+        {
+          string text = "Could not parse steel grade. Valid steel grades are ";
+          foreach (string g in Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList())
+          {
+            text += g + ", ";
+          }
+          text = text.Remove(text.Length - 2);
+          text += ".";
+          this.DropdownItems[0] = Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList();
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
+        }
+      }
+      else if (this.OverrideDropDownItems[0])
+      {
+        this.DropdownItems[0] = Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList();
+        this.OverrideDropDownItems[0] = false;
+      }
+
+      bool redFact = new bool();
+
+      if (DA.GetData(3, ref redFact))
+        if (redFact)
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Note that reduction factor only applies for EC4 DesignCode");
+
+      DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(GetInput.Stress(this, DA, 0, this.StressUnit), GetInput.Stress(this, DA, 1, this.StressUnit), GetInput.Density(this, DA, 2, this.DensityUnit), this.Grade, true, redFact)));
+    }
+
     #region Custom UI
     List<bool> OverrideDropDownItems;
     private PressureUnit StressUnit = Units.StressUnit;
@@ -92,116 +154,15 @@ namespace ComposGH.Components
 
       base.UpdateUIFromSelectedItems();
     }
-    #endregion
-
-    #region Input and output
-    protected override void RegisterInputParams(GH_InputParamManager pManager)
+    public override void VariableParameterMaintenance()
     {
-      string stressunitAbbreviation = new Pressure(0, StressUnit).ToString("a");
-      string densityunitAbbreviation = new Density(0, DensityUnit).ToString("a");
-
-      pManager.AddGenericParameter("Strength [" + stressunitAbbreviation + "]", "fy", "Steel Yield Strength", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Young's Modulus [" + stressunitAbbreviation + "]", "E", "Steel Young's Modulus", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Density [" + densityunitAbbreviation + "]", "ρ", "Steel Density", GH_ParamAccess.item);
-      pManager.AddBooleanParameter("Reduction Factor", "RF", "Apply reduction factor for plastic moment capacity, EC4 (6.2.1.2 (2))", GH_ParamAccess.item, false);
-      pManager.AddGenericParameter("Grade", "G", "(Optional) Weld Grade", GH_ParamAccess.item);
-
-      pManager[4].Optional = true;
-    }
-    protected override void RegisterOutputParams(GH_OutputParamManager pManager)
-    {
-      pManager.AddGenericParameter("Custom " + SteelMaterialGoo.Name, SteelMaterialGoo.NickName, "Custom " + SteelMaterialGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.item);
-    }
-    #endregion
-
-    protected override void SolveInstance(IGH_DataAccess DA)
-    {
-      // override steel grade?
-      if (this.Params.Input[4].Sources.Count > 0)
-      {
-        string grade = "";
-        DA.GetData(4, ref grade);
-        try
-        {
-          this.Grade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), grade);
-          this.DropdownItems[0] = new List<string>();
-          this.SelectedItems[0] = "-";
-          this.OverrideDropDownItems[0] = true;
-        }
-        catch (ArgumentException)
-        {
-          string text = "Could not parse steel grade. Valid steel grades are ";
-          foreach (string g in Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList())
-          {
-            text += g + ", ";
-          }
-          text = text.Remove(text.Length - 2);
-          text += ".";
-          this.DropdownItems[0] = Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList();
-          AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
-        }
-      }
-      else if (this.OverrideDropDownItems[0])
-      {
-        this.DropdownItems[0] = Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList();
-        this.OverrideDropDownItems[0] = false;
-      }
-
-      bool redFact = new bool();
-
-      if (DA.GetData(3, ref redFact))
-        if (redFact)
-          AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Note that reduction factor only applies for EC4 DesignCode");
-
-      DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(GetInput.Stress(this, DA, 0, StressUnit), GetInput.Stress(this, DA, 1, StressUnit), GetInput.Density(this, DA, 2, DensityUnit), Grade, true, redFact)));
-    }
-
-    #region (de)serialization
-    public override bool Write(GH_IO.Serialization.GH_IWriter writer)
-    {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, this.DropdownItems, SelectedItems, SpacerDescriptions);
-      return base.Write(writer);
-    }
-    public override bool Read(GH_IO.Serialization.GH_IReader reader)
-    {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref this.DropdownItems, ref SelectedItems, ref SpacerDescriptions);
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref this.DropdownItems, ref SelectedItems, ref SpacerDescriptions);
-
-      UpdateUIFromSelectedItems();
-
-      First = false;
-
-      return base.Read(reader);
-    }
-    #endregion
-
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
-    {
-      return null;
-    }
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
-      string stressunitAbbreviation = new Pressure(0, StressUnit).ToString("a");
-      string densityunitAbbreviation = new Density(0, DensityUnit).ToString("a");
+      string stressunitAbbreviation = Pressure.GetAbbreviation(this.StressUnit);
+      string densityunitAbbreviation = Density.GetAbbreviation(this.DensityUnit);
 
       Params.Input[0].Name = "Strength [" + stressunitAbbreviation + "]";
       Params.Input[1].Name = "Young's Modulus [" + stressunitAbbreviation + "]";
       Params.Input[2].Name = "Density [" + densityunitAbbreviation + "]";
     }
     #endregion
-
   }
 }
