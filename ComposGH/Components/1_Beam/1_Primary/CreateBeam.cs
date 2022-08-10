@@ -33,7 +33,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
 
       pManager.AddCurveParameter("Line [" + unitAbbreviation + "]", "L", "Line drawn to selected units to create Compos Beam from", GH_ParamAccess.item);
       pManager.AddGenericParameter(RestraintGoo.Name, RestraintGoo.NickName, RestraintGoo.Description, GH_ParamAccess.item);
@@ -69,11 +69,11 @@ namespace ComposGH.Components
             if (this.Params.Input[4].Sources.Count > 0)
             {
               List<WebOpeningGoo> webOpenings = GetInput.GenericGooList<WebOpeningGoo>(this, DA, 4);
-              DA.SetData(0, new BeamGoo(new LineCurve(ln), LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value as IBeamSection).ToList(), webOpenings.Select(x => x.Value as IWebOpening).ToList()));
+              DA.SetData(0, new BeamGoo(new LineCurve(ln), this.LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value as IBeamSection).ToList(), webOpenings.Select(x => x.Value as IWebOpening).ToList()));
             }
             else
             {
-              DA.SetData(0, new BeamGoo(new LineCurve(ln), LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value as IBeamSection).ToList()));
+              DA.SetData(0, new BeamGoo(new LineCurve(ln), this.LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value as IBeamSection).ToList()));
             }
           }
           catch (Exception e)
@@ -90,33 +90,33 @@ namespace ComposGH.Components
 
     internal override void InitialiseDropdowns()
     {
-      SpacerDescriptions = new List<string>(new string[] { "Unit" });
+      this.SpacerDescriptions = new List<string>(new string[] { "Unit" });
 
-      DropdownItems = new List<List<string>>() { Units.FilteredLengthUnits };
-      SelectedItems = new List<string>() { LengthUnit.ToString() };
+      this.DropdownItems = new List<List<string>>() { Units.FilteredLengthUnits };
+      this.SelectedItems = new List<string>() { this.LengthUnit.ToString() };
 
-      IsInitialised = true;
+      this.IsInitialised = true;
     }
 
     internal override void SetSelected(int i, int j)
     {
-      SelectedItems[i] = DropdownItems[i][j];
+      this.SelectedItems[i] = this.DropdownItems[i][j];
 
-      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
+      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
 
       base.UpdateUI();
     }
 
     internal override void UpdateUIFromSelectedItems()
     {
-      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[0]);
+      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[0]);
 
       base.UpdateUIFromSelectedItems();
     }
 
     public override void VariableParameterMaintenance()
     {
-      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
       Params.Input[0].Name = "Line [" + unitAbbreviation + "]";
     }
     #endregion

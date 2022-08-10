@@ -109,38 +109,38 @@ namespace ComposGH.Components
     private LengthUnit LengthUnit = Units.LengthUnitGeometry;
     internal override void InitialiseDropdowns()
     {
-      SpacerDescriptions = new List<string>(new string[]
+      this.SpacerDescriptions = new List<string>(new string[]
         {
           "Intermediate Sup.",
           "Unit"
         });
 
-      DropdownItems = new List<List<string>>();
-      SelectedItems = new List<string>();
+      this.DropdownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
 
       // type
-      DropdownItems.Add(Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
+      this.DropdownItems.Add(Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
           .Select(x => x.ToString().Replace("__", "-").Replace("_", " ")).ToList());
-      DropdownItems[0].RemoveAt(DropdownItems[0].Count - 1);
-      SelectedItems.Add(DropdownItems[0][0]);
+      this.DropdownItems[0].RemoveAt(this.DropdownItems[0].Count - 1);
+      this.SelectedItems.Add(this.DropdownItems[0][0]);
 
       // length
-      DropdownItems.Add(Units.FilteredLengthUnits);
-      SelectedItems.Add(LengthUnit.ToString());
+      this.DropdownItems.Add(Units.FilteredLengthUnits);
+      this.SelectedItems.Add(LengthUnit.ToString());
 
-      OverrideDropDownItems = new List<bool>() { false, false };
-      IsInitialised = true;
+      this.OverrideDropDownItems = new List<bool>() { false, false };
+      this.IsInitialised = true;
     }
 
     internal override void SetSelected(int i, int j)
     {
       // change selected item
-      SelectedItems[i] = DropdownItems[i][j];
+      this.SelectedItems[i] = DropdownItems[i][j];
 
       if (i == 0)
         this.ParseRestraintType(this.SelectedItems[0]);
       if (i == 1)
-        LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
+        this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
 
       base.UpdateUI();
     }
@@ -164,7 +164,7 @@ namespace ComposGH.Components
 
     public override void VariableParameterMaintenance()
     {
-      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
       Params.Input[2].Name = "Restraint Pos [" + unitAbbreviation + "]";
     }
     #endregion

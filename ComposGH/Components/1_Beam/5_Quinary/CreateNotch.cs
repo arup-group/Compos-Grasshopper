@@ -29,7 +29,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
 
       pManager.AddGenericParameter("Width [" + unitAbbreviation + "]", "B", "Web Opening Width", GH_ParamAccess.item);
       pManager.AddGenericParameter("Height [" + unitAbbreviation + "]", "H", "Web Opening Height", GH_ParamAccess.item);
@@ -85,23 +85,23 @@ namespace ComposGH.Components
 
     internal override void InitialiseDropdowns()
     {
-      SpacerDescriptions = new List<string>(new string[]
+      this.SpacerDescriptions = new List<string>(new string[]
         {
           "Position",
           "Unit"
         });
 
-      DropdownItems = new List<List<string>>();
-      SelectedItems = new List<string>();
+      this.DropdownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
 
       // type
-      DropdownItems.Add(Enum.GetValues(typeof(notch_types)).Cast<notch_types>()
+      this.DropdownItems.Add(Enum.GetValues(typeof(notch_types)).Cast<notch_types>()
           .Select(x => x.ToString().Replace('_', ' ')).ToList());
-      SelectedItems.Add(notch_types.Both_ends.ToString().Replace('_', ' '));
+      this.SelectedItems.Add(notch_types.Both_ends.ToString().Replace('_', ' '));
 
       // length
-      DropdownItems.Add(Units.FilteredLengthUnits);
-      SelectedItems.Add(LengthUnit.ToString());
+      this.DropdownItems.Add(Units.FilteredLengthUnits);
+      this.SelectedItems.Add(LengthUnit.ToString());
 
       IsInitialised = true;
     }
@@ -109,17 +109,17 @@ namespace ComposGH.Components
     internal override void SetSelected(int i, int j)
     {
       // change selected item
-      SelectedItems[i] = DropdownItems[i][j];
+      this.SelectedItems[i] = this.DropdownItems[i][j];
 
       if (i == 0)
       {
-        if (SelectedItems[i] == OpeningType.ToString().Replace('_', ' '))
+        if (this.SelectedItems[i] == this.OpeningType.ToString().Replace('_', ' '))
           return;
-        OpeningType = (notch_types)Enum.Parse(typeof(notch_types), SelectedItems[i].Replace(' ', '_'));
+        this.OpeningType = (notch_types)Enum.Parse(typeof(notch_types), this.SelectedItems[i].Replace(' ', '_'));
       }
       else if (i == 1) // change is made to length unit
       {
-        LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
+        this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
       }
 
       base.UpdateUI();
@@ -127,20 +127,20 @@ namespace ComposGH.Components
 
     internal override void UpdateUIFromSelectedItems()
     {
-      OpeningType = (notch_types)Enum.Parse(typeof(notch_types), SelectedItems[0].Replace(' ', '_'));
-      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[1]);
+      this.OpeningType = (notch_types)Enum.Parse(typeof(notch_types), this.SelectedItems[0].Replace(' ', '_'));
+      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
     }
 
     public override void VariableParameterMaintenance()
     {
-      if (OpeningType == notch_types.Both_ends)
+      if (this.OpeningType == notch_types.Both_ends)
         Params.Output[0].Access = GH_ParamAccess.list;
       else
         Params.Output[0].Access = GH_ParamAccess.item;
 
-      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
       Params.Input[0].Name = "Width [" + unitAbbreviation + "]";
       Params.Input[1].Name = "Height [" + unitAbbreviation + "]";
     }
