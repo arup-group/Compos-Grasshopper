@@ -106,7 +106,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string stressUnitAbbreviation = new Pressure(0, StressUnit).ToString("a");
+      string stressUnitAbbreviation = Pressure.GetAbbreviation(this.StressUnit);
       pManager.AddGenericParameter("Strength [" + stressUnitAbbreviation + "]", "fu", "(Optional) Custom Characteristic Steel Strength", GH_ParamAccess.item);
       pManager[0].Optional = true;
     }
@@ -164,7 +164,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      string stressUnitAbbreviation = new Pressure(0, StressUnit).ToString("a");
+      string stressUnitAbbreviation = Pressure.GetAbbreviation(this.StressUnit);
       Params.Input[0].Name = "Strength [" + stressUnitAbbreviation + "]";
     }
     #endregion

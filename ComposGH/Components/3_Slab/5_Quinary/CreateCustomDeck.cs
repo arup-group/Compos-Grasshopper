@@ -99,7 +99,7 @@ namespace ComposGH.Components
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
-      string stressunitAbbreviation = new Pressure(0, StressUnit).ToString("a");
+      string stressunitAbbreviation = Pressure.GetAbbreviation(this.StressUnit);
 
       pManager.AddGenericParameter("b1 [" + unitAbbreviation + "]", "b1", "Lenght of b1 deck parameter(Deck_Spacing). See the decking picture in helps", GH_ParamAccess.item);
       pManager.AddGenericParameter("b2 [" + unitAbbreviation + "]", "b2", "Lenght of b2 deck parameter(Deck_UpperWidth). See the decking picture in helps", GH_ParamAccess.item);
@@ -171,7 +171,7 @@ namespace ComposGH.Components
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
       string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
-      string stressunitAbbreviation = new Pressure(0, StressUnit).ToString("a");
+      string stressunitAbbreviation = Pressure.GetAbbreviation(this.StressUnit);
 
       Params.Input[0].Name = "b1 [" + unitAbbreviation + "]";
       Params.Input[1].Name = "b2 [" + unitAbbreviation + "]";
