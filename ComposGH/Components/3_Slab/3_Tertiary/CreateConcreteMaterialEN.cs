@@ -151,7 +151,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string densityUnitAbbreviation = new Density(0, this.DensityUnit).ToString("a");
+      string densityUnitAbbreviation = Density.GetAbbreviation(this.DensityUnit);
       string strainUnitAbbreviation = Strain.GetAbbreviation(this.StrainUnit);
 
       // optional
@@ -323,7 +323,7 @@ namespace ComposGH.Components
 
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      string densityUnitAbbreviation = new Density(0, this.DensityUnit).ToString("a");
+      string densityUnitAbbreviation = Density.GetAbbreviation(this.DensityUnit);
       string strainUnitAbbreviation = Strain.GetAbbreviation(this.StrainUnit);
       this.Params.Input[0].Name = "Density [" + densityUnitAbbreviation + "]";
       this.Params.Input[3].Name = "Strain [" + strainUnitAbbreviation + "]";
