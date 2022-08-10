@@ -9,7 +9,7 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateStandardStudDimensions : GH_OasysComponent, IGH_VariableParameterComponent
+  public class CreateStandardStudDimensions : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
@@ -28,76 +28,9 @@ namespace ComposGH.Components
     protected override System.Drawing.Bitmap Icon => Properties.Resources.StandardStudDims;
     #endregion
 
-    #region Custom UI
-    //This region overrides the typical component layout
-
-    // list of lists with all dropdown lists conctent
-    List<List<string>> DropDownItems;
-    // list of selected items
-    List<string> SelectedItems;
-    // list of descriptions 
-    List<string> SpacerDescriptions = new List<string>(new string[]
-    {
-            "Standard Size",
-    });
-    private bool First = true;
-    private StandardStudSize StdSize = ComposAPI.StandardStudSize.D19mmH100mm;
-
-    public override void CreateAttributes()
-    {
-      if (First)
-      {
-        DropDownItems = new List<List<string>>();
-        SelectedItems = new List<string>();
-
-        // spacing
-        DropDownItems.Add(Enum.GetValues(typeof(StandardStudSize)).Cast<StandardStudSize>()
-            .Select(x => x.ToString()).ToList());
-        for (int i = 0; i < DropDownItems[0].Count; i++)
-          DropDownItems[0][i] = DropDownItems[0][i].Replace("D", "Ø").Replace("mmH", "/");
-
-        SelectedItems.Add(StdSize.ToString().Replace("D", "Ø").Replace("mmH", "/"));
-
-        First = false;
-      }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropDownItems, SelectedItems, SpacerDescriptions);
-    }
-    public void SetSelected(int i, int j)
-    {
-      // change selected item
-      this.SelectedItems[i] = this.DropDownItems[i][j];
-
-      if (i == 0) // change is made to size
-      {
-        string sz = SelectedItems[i].Replace("Ø", "D").Replace("/", "mmH");
-        StdSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), sz);
-      }
-
-      // update name of inputs (to display unit on sliders)
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-
-    private void UpdateUIFromSelectedItems()
-    {
-      string sz = SelectedItems[0].Replace("Ø", "D").Replace("/", "mmH");
-      StdSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), sz);
-
-      CreateAttributes();
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-    #endregion
-
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
-    {
-      
-    }
+    { }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
       pManager.AddGenericParameter(StudDimensionsGoo.Name, StudDimensionsGoo.NickName, StudDimensionsGoo.Description + " for a " + StudGoo.Description, GH_ParamAccess.item);
@@ -106,47 +39,49 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      DA.SetData(0, new StudDimensionsGoo(new StudDimensions(StdSize)));
+      DA.SetData(0, new StudDimensionsGoo(new StudDimensions(this.StdSize)));
     }
 
-    #region (de)serialization
-    public override bool Write(GH_IO.Serialization.GH_IWriter writer)
-    {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropDownItems, SelectedItems, SpacerDescriptions);
-      return base.Write(writer);
-    }
-    public override bool Read(GH_IO.Serialization.GH_IReader reader)
-    {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropDownItems, ref SelectedItems, ref SpacerDescriptions);
+    #region Custom UI
+    private StandardStudSize StdSize = StandardStudSize.D19mmH100mm;
 
-      UpdateUIFromSelectedItems();
+    internal override void InitialiseDropdowns()
+    {
+      this.SpacerDescriptions = new List<string>(new string[] { "Standard Size" });
 
-      First = false;
+      this.DropDownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
 
-      return base.Read(reader);
-    }
-    #endregion
+      // spacing
+      this.DropDownItems.Add(Enum.GetValues(typeof(StandardStudSize)).Cast<StandardStudSize>()
+          .Select(x => x.ToString()).ToList());
+      for (int i = 0; i < DropDownItems[0].Count; i++)
+        this.DropDownItems[0][i] = DropDownItems[0][i].Replace("D", "Ø").Replace("mmH", "/");
 
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
+      this.SelectedItems.Add(this.StdSize.ToString().Replace("D", "Ø").Replace("mmH", "/"));
+
+      this.IsInitialised = true;
     }
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
+
+    internal override void SetSelected(int i, int j)
     {
-      return false;
+      this.SelectedItems[i] = this.DropDownItems[i][j];
+
+      if (i == 0) // change is made to size
+      {
+        string sz = this.SelectedItems[i].Replace("Ø", "D").Replace("/", "mmH");
+        this.StdSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), sz);
+      }
+
+      base.UpdateUI();
     }
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
+
+    internal override void UpdateUIFromSelectedItems()
     {
-      return null;
-    }
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
-      
+      string sz = this.SelectedItems[0].Replace("Ø", "D").Replace("/", "mmH");
+      this.StdSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), sz);
+
+      base.UpdateUIFromSelectedItems();
     }
     #endregion
   }
