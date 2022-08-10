@@ -87,7 +87,7 @@ namespace ComposGH.Components
     {
       // change selected item
       this.SelectedItems[i] = this.DropDownItems[i][j];
-      if (LengthUnit.ToString() == SelectedItems[i])
+      if (this.LengthUnit.ToString() == this.SelectedItems[i])
         return;
 
       this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
