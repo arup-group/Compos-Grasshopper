@@ -9,7 +9,7 @@ using static ComposAPI.CodeOptionsEN;
 
 namespace ComposGH.Components
 {
-  public class CreateDesignCode : GH_OasysComponent, IGH_VariableParameterComponent
+  public class CreateDesignCode : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
@@ -26,224 +26,6 @@ namespace ComposGH.Components
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateDesignCode;
-    #endregion
-
-    #region Custom UI
-    // This region overrides the typical component layout
-
-    // list of lists with all dropdown lists conctent
-    List<List<string>> DropDownItems;
-    // list of selected items
-    List<string> SelectedItems;
-    // list of descriptions 
-    List<string> SpacerDescriptions = new List<string>(new string[]
-    {
-      "Code",
-      "National Annex",
-      "Cement Type",
-      "Settings"
-    });
-    List<string> DesignCodePretty = new List<string>(new string[]
-    {
-      "BS5950-3.1:1990 (superseded)",
-      "BS5950-3.1:1990+A1:2010",
-      "EN1994-1-1:2004",
-      "HKSUOS:2005",
-      "HKSUOS:2011",
-      "AS/NZS2327:2017"
-    });
-    List<bool> Checkboxes = new List<bool>();
-    List<string> CheckboxNames = new List<string>(new string[]
-    {
-      "Beam propped during construction",
-      "Include steel beam weight",
-      "Include thin-flange sections",
-      "Include concrete slab weight",
-      "Consider shear deflection",
-      "Consider shrinkage deflection",
-      "Ignore shrinkage def. if L/d < 20",
-      "Use approx. modular ratios"
-    });
-
-    private bool First = true;
-    private Code Code = Code.EN1994_1_1_2004;
-    private NationalAnnex NA = NationalAnnex.Generic;
-
-    private DesignOption DesignOptions = new DesignOption();
-    private CodeOptionsASNZ CodeOptions = new CodeOptionsASNZ();
-    private CodeOptionsEN EC4CodeOptions = new CodeOptionsEN();
-
-    public override void CreateAttributes()
-    {
-      if (this.First)
-      {
-        this.DropDownItems = new List<List<string>>();
-        this.SelectedItems = new List<string>();
-
-        // code
-        this.DropDownItems.Add(this.DesignCodePretty);
-        this.SelectedItems.Add(this.DesignCodePretty[2]); //EC4 default
-
-        // national annex
-        this.DropDownItems.Add(Enum.GetValues(typeof(NationalAnnex)).Cast<NationalAnnex>()
-            .Select(x => x.ToString().Replace("_", " ")).ToList());
-        this.SelectedItems.Add(this.DropDownItems[1][0]); // Generic default
-
-        // cement type
-        this.DropDownItems.Add(Enum.GetValues(typeof(CementClass)).Cast<CementClass>()
-            .Select(x => "Cement class " + x.ToString()).ToList());
-        this.SelectedItems.Add("Cement class " + this.EC4CodeOptions.CementType.ToString()); // Class N default
-
-        this.Checkboxes = new List<bool>();
-        this.Checkboxes.Add(this.DesignOptions.ProppedDuringConstruction);
-        this.Checkboxes.Add(this.DesignOptions.InclSteelBeamWeight);
-        this.Checkboxes.Add(this.DesignOptions.InclThinFlangeSections);
-        this.Checkboxes.Add(this.DesignOptions.InclConcreteSlabWeight);
-        this.Checkboxes.Add(this.DesignOptions.ConsiderShearDeflection);
-        this.Checkboxes.Add(this.EC4CodeOptions.ConsiderShrinkageDeflection);
-        this.Checkboxes.Add(this.EC4CodeOptions.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
-        this.Checkboxes.Add(this.EC4CodeOptions.ApproxModularRatios);
-
-        First = false;
-      }
-      m_attributes = new UI.MultiDropDownCheckBoxesComponentUI(this, SetSelected, this.DropDownItems, this.SelectedItems, CheckBoxToggles, this.Checkboxes, this.CheckboxNames, this.SpacerDescriptions);
-    }
-
-    public void SetSelected(int i, int j)
-    {
-      // change selected item
-      this.SelectedItems[i] = this.DropDownItems[i][j];
-
-      if (i == 0)
-      {
-        for (int k = 0; k < this.DesignCodePretty.Count; k++)
-        {
-          if (this.SelectedItems[i] == this.DesignCodePretty[k])
-          {
-            if (this.Code == (Code)k)
-              return;
-
-            this.Code = (Code)k;
-          }
-        }
-        switch (this.Code)
-        {
-          case Code.BS5950_3_1_1990_Superseded:
-          case Code.BS5950_3_1_1990_A1_2010:
-          case Code.HKSUOS_2005:
-          case Code.HKSUOS_2011:
-            // change dropdown content
-            while (DropDownItems.Count > 1)
-              DropDownItems.RemoveAt(1);
-            while (SelectedItems.Count > 1)
-              SelectedItems.RemoveAt(1);
-            while (Checkboxes.Count > 5)
-              Checkboxes.RemoveAt(5);
-            while (CheckboxNames.Count > 5)
-              CheckboxNames.RemoveAt(5);
-
-            break;
-
-          case Code.EN1994_1_1_2004:
-            // change dropdown content
-            while (this.DropDownItems.Count > 1)
-              this.DropDownItems.RemoveAt(1);
-            while (SelectedItems.Count > 1)
-              this.SelectedItems.RemoveAt(1);
-            // national annex
-            this.DropDownItems.Add(Enum.GetValues(typeof(NationalAnnex)).Cast<NationalAnnex>()
-                .Select(x => x.ToString().Replace("_", " ")).ToList());
-            this.SelectedItems.Add(NA.ToString().Replace("_", " "));
-            // cement type
-            this.DropDownItems.Add(Enum.GetValues(typeof(CementClass)).Cast<CementClass>()
-                .Select(x => "Cement class " + x.ToString()).ToList());
-            this.SelectedItems.Add("Cement class " + this.EC4CodeOptions.CementType.ToString());
-
-            while (this.Checkboxes.Count > 5)
-              this.Checkboxes.RemoveAt(5);
-            while (this.CheckboxNames.Count > 5)
-              this.CheckboxNames.RemoveAt(5);
-            this.Checkboxes.Add(this.EC4CodeOptions.ConsiderShrinkageDeflection);
-            this.Checkboxes.Add(this.EC4CodeOptions.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
-            this.Checkboxes.Add(this.EC4CodeOptions.ApproxModularRatios);
-            this.CheckboxNames.Add("Consider shrinkage deflection");
-            this.CheckboxNames.Add("Ignore shrinkage def. if L/d < 20");
-            this.CheckboxNames.Add("Use approx. modular ratios");
-
-            break;
-
-          case Code.AS_NZS2327_2017:
-            // change dropdown content
-            while (this.DropDownItems.Count > 1)
-              this.DropDownItems.RemoveAt(1);
-            while (this.SelectedItems.Count > 1)
-              this.SelectedItems.RemoveAt(1);
-            while (this.Checkboxes.Count > 5)
-              this.Checkboxes.RemoveAt(5);
-            while (this.CheckboxNames.Count > 5)
-              this.CheckboxNames.RemoveAt(5);
-
-            // removed due to Compos ignoring that setting
-            //this.Checkboxes.Add(this.CodeOptions.ConsiderShrinkageDeflection);
-            //this.CheckboxNames.Add("Consider shrinkage deflection");
-
-            break;
-
-          default:
-            break;
-        }
-      }
-      if (i == 1)
-        this.NA = (NationalAnnex)Enum.Parse(typeof(NationalAnnex), this.SelectedItems[i].Replace(" ", "_"));
-      if (i == 2)
-        this.EC4CodeOptions.CementType = (CementClass)Enum.Parse(typeof(CementClass), this.SelectedItems[i].Last().ToString());
-
-      // update name of inputs (to display unit on sliders)
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      this.Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-
-    private void CheckBoxToggles(List<bool> newcheckboxes)
-    {
-      for (int i = 0; i < this.Checkboxes.Count; i++)
-        this.Checkboxes[i] = newcheckboxes[i];
-      this.DesignOptions.ProppedDuringConstruction = this.Checkboxes[0];
-      this.DesignOptions.InclSteelBeamWeight = this.Checkboxes[1];
-      this.DesignOptions.InclThinFlangeSections = this.Checkboxes[2];
-      this.DesignOptions.InclConcreteSlabWeight = this.Checkboxes[3];
-      this.DesignOptions.ConsiderShearDeflection = this.Checkboxes[4];
-      // removed due to Compos ignoring that setting
-      //if (this.Checkboxes.Count == 6)
-      //  this.CodeOptions.ConsiderShrinkageDeflection = this.Checkboxes[5];
-      if (this.Checkboxes.Count == 8)
-      {
-        this.EC4CodeOptions.ConsiderShrinkageDeflection = this.Checkboxes[5];
-        this.EC4CodeOptions.IgnoreShrinkageDeflectionForLowLengthToDepthRatios = this.Checkboxes[6];
-        this.EC4CodeOptions.ApproxModularRatios = this.Checkboxes[7];
-      }
-    }
-
-    private void UpdateUIFromSelectedItems()
-    {
-      for (int i = 0; i < this.DesignCodePretty.Count; i++)
-      {
-        if (this.SelectedItems[0] == this.DesignCodePretty[i])
-          this.Code = (Code)i;
-      }
-      if (this.Code == Code.EN1994_1_1_2004)
-      {
-        this.NA = (NationalAnnex)Enum.Parse(typeof(NationalAnnex), this.SelectedItems[1].Replace(" ", "_"));
-        this.EC4CodeOptions.CementType = (CementClass)Enum.Parse(typeof(CementClass), this.SelectedItems[2].Last().ToString());
-      }
-
-      CreateAttributes();
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      this.Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
     #endregion
 
     #region Input and output
@@ -338,6 +120,242 @@ namespace ComposGH.Components
     }
 
     #region update input params
+    
+    #endregion
+
+
+
+    #region Custom UI
+    List<string> DesignCodePretty = new List<string>(new string[]
+    {
+      "BS5950-3.1:1990 (superseded)",
+      "BS5950-3.1:1990+A1:2010",
+      "EN1994-1-1:2004",
+      "HKSUOS:2005",
+      "HKSUOS:2011",
+      "AS/NZS2327:2017"
+    });
+    List<bool> Checkboxes = new List<bool>();
+    List<string> CheckboxNames = new List<string>(new string[]
+    {
+      "Beam propped during construction",
+      "Include steel beam weight",
+      "Include thin-flange sections",
+      "Include concrete slab weight",
+      "Consider shear deflection",
+      "Consider shrinkage deflection",
+      "Ignore shrinkage def. if L/d < 20",
+      "Use approx. modular ratios"
+    });
+    private Code Code = Code.EN1994_1_1_2004;
+    private NationalAnnex NA = NationalAnnex.Generic;
+    private DesignOption DesignOptions = new DesignOption();
+    private CodeOptionsASNZ CodeOptions = new CodeOptionsASNZ();
+    private CodeOptionsEN EC4CodeOptions = new CodeOptionsEN();
+
+    public override void CreateAttributes()
+    {
+      if (!this.IsInitialised)
+        this.InitialiseDropdowns();
+
+      m_attributes = new UI.MultiDropDownCheckBoxesComponentUI(this, SetSelected, this.DropDownItems, this.SelectedItems, CheckBoxToggles, this.Checkboxes, this.CheckboxNames, this.SpacerDescriptions);
+    }
+
+    internal override void InitialiseDropdowns()
+    {
+      this.SpacerDescriptions = new List<string>(new string[] {
+        "Code",
+        "National Annex",
+        "Cement Type",
+        "Settings" });
+
+      this.DropDownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
+
+      // code
+      this.DropDownItems.Add(this.DesignCodePretty);
+      this.SelectedItems.Add(this.DesignCodePretty[2]); //EC4 default
+
+      // national annex
+      this.DropDownItems.Add(Enum.GetValues(typeof(NationalAnnex)).Cast<NationalAnnex>()
+          .Select(x => x.ToString().Replace("_", " ")).ToList());
+      this.SelectedItems.Add(this.DropDownItems[1][0]); // Generic default
+
+      // cement type
+      this.DropDownItems.Add(Enum.GetValues(typeof(CementClass)).Cast<CementClass>()
+          .Select(x => "Cement class " + x.ToString()).ToList());
+      this.SelectedItems.Add("Cement class " + this.EC4CodeOptions.CementType.ToString()); // Class N default
+
+      this.Checkboxes = new List<bool>();
+      this.Checkboxes.Add(this.DesignOptions.ProppedDuringConstruction);
+      this.Checkboxes.Add(this.DesignOptions.InclSteelBeamWeight);
+      this.Checkboxes.Add(this.DesignOptions.InclThinFlangeSections);
+      this.Checkboxes.Add(this.DesignOptions.InclConcreteSlabWeight);
+      this.Checkboxes.Add(this.DesignOptions.ConsiderShearDeflection);
+      this.Checkboxes.Add(this.EC4CodeOptions.ConsiderShrinkageDeflection);
+      this.Checkboxes.Add(this.EC4CodeOptions.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
+      this.Checkboxes.Add(this.EC4CodeOptions.ApproxModularRatios);
+
+      this.IsInitialised = true;
+    }
+
+    internal override void SetSelected(int i, int j)
+    {
+      this.SelectedItems[i] = this.DropDownItems[i][j];
+
+      if (i == 0)
+      {
+        for (int k = 0; k < this.DesignCodePretty.Count; k++)
+        {
+          if (this.SelectedItems[i] == this.DesignCodePretty[k])
+          {
+            if (this.Code == (Code)k)
+              return;
+
+            this.Code = (Code)k;
+          }
+        }
+        switch (this.Code)
+        {
+          case Code.BS5950_3_1_1990_Superseded:
+          case Code.BS5950_3_1_1990_A1_2010:
+          case Code.HKSUOS_2005:
+          case Code.HKSUOS_2011:
+            // change dropdown content
+            while (DropDownItems.Count > 1)
+              DropDownItems.RemoveAt(1);
+            while (SelectedItems.Count > 1)
+              SelectedItems.RemoveAt(1);
+            while (Checkboxes.Count > 5)
+              Checkboxes.RemoveAt(5);
+            while (CheckboxNames.Count > 5)
+              CheckboxNames.RemoveAt(5);
+
+            break;
+
+          case Code.EN1994_1_1_2004:
+            // change dropdown content
+            while (this.DropDownItems.Count > 1)
+              this.DropDownItems.RemoveAt(1);
+            while (SelectedItems.Count > 1)
+              this.SelectedItems.RemoveAt(1);
+            // national annex
+            this.DropDownItems.Add(Enum.GetValues(typeof(NationalAnnex)).Cast<NationalAnnex>()
+                .Select(x => x.ToString().Replace("_", " ")).ToList());
+            this.SelectedItems.Add(NA.ToString().Replace("_", " "));
+            // cement type
+            this.DropDownItems.Add(Enum.GetValues(typeof(CementClass)).Cast<CementClass>()
+                .Select(x => "Cement class " + x.ToString()).ToList());
+            this.SelectedItems.Add("Cement class " + this.EC4CodeOptions.CementType.ToString());
+
+            while (this.Checkboxes.Count > 5)
+              this.Checkboxes.RemoveAt(5);
+            while (this.CheckboxNames.Count > 5)
+              this.CheckboxNames.RemoveAt(5);
+            this.Checkboxes.Add(this.EC4CodeOptions.ConsiderShrinkageDeflection);
+            this.Checkboxes.Add(this.EC4CodeOptions.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
+            this.Checkboxes.Add(this.EC4CodeOptions.ApproxModularRatios);
+            this.CheckboxNames.Add("Consider shrinkage deflection");
+            this.CheckboxNames.Add("Ignore shrinkage def. if L/d < 20");
+            this.CheckboxNames.Add("Use approx. modular ratios");
+
+            break;
+
+          case Code.AS_NZS2327_2017:
+            // change dropdown content
+            while (this.DropDownItems.Count > 1)
+              this.DropDownItems.RemoveAt(1);
+            while (this.SelectedItems.Count > 1)
+              this.SelectedItems.RemoveAt(1);
+            while (this.Checkboxes.Count > 5)
+              this.Checkboxes.RemoveAt(5);
+            while (this.CheckboxNames.Count > 5)
+              this.CheckboxNames.RemoveAt(5);
+
+            // removed due to Compos ignoring that setting
+            //this.Checkboxes.Add(this.CodeOptions.ConsiderShrinkageDeflection);
+            //this.CheckboxNames.Add("Consider shrinkage deflection");
+            break;
+
+          default:
+            break;
+        }
+      }
+      if (i == 1)
+        this.NA = (NationalAnnex)Enum.Parse(typeof(NationalAnnex), this.SelectedItems[i].Replace(" ", "_"));
+      if (i == 2)
+        this.EC4CodeOptions.CementType = (CementClass)Enum.Parse(typeof(CementClass), this.SelectedItems[i].Last().ToString());
+
+      base.UpdateUI();
+    }
+
+    
+
+    internal override void UpdateUIFromSelectedItems()
+    {
+      for (int i = 0; i < this.DesignCodePretty.Count; i++)
+      {
+        if (this.SelectedItems[0] == this.DesignCodePretty[i])
+          this.Code = (Code)i;
+      }
+      if (this.Code == Code.EN1994_1_1_2004)
+      {
+        this.NA = (NationalAnnex)Enum.Parse(typeof(NationalAnnex), this.SelectedItems[1].Replace(" ", "_"));
+        this.EC4CodeOptions.CementType = (CementClass)Enum.Parse(typeof(CementClass), this.SelectedItems[2].Last().ToString());
+      }
+
+      base.UpdateUIFromSelectedItems();
+    }
+    public override void VariableParameterMaintenance()
+    {
+      switch (this.Code)
+      {
+        case Code.EN1994_1_1_2004:
+          Params.Input[1].Name = CreepShrinkageParametersGoo.Name + " Short Term";
+          Params.Input[1].NickName = CreepShrinkageParametersGoo.NickName.ToLower();
+          Params.Input[1].Description = "(Optional) Short Term " + CreepShrinkageParametersGoo.Description + ". If no input, the default code values will be used";
+          Params.Input[1].Optional = true;
+          Params.Input[2].Name = CreepShrinkageParametersGoo.Name + " Long Term";
+          Params.Input[2].NickName = CreepShrinkageParametersGoo.NickName.ToUpper();
+          Params.Input[2].Description = "(Optional) Long Term " + CreepShrinkageParametersGoo.Description + ". If no input, the default code values will be used";
+          Params.Input[2].Optional = true;
+          break;
+        case Code.AS_NZS2327_2017:
+          Params.Input[1].Name = "Shrinkage";
+          Params.Input[1].NickName = "Shr";
+          Params.Input[1].Description = "(Optional) Shrinkage multiplier. If no input, the default ASNZ code values will be used";
+          Params.Input[1].Optional = true;
+          Params.Input[2].Name = "Long Creep Coeff.";
+          Params.Input[2].NickName = "CC";
+          Params.Input[2].Description = "(Optional) Long Term Creep Coefficient. If no input, the default ASNZ code values will be used";
+          Params.Input[2].Optional = true;
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    private void CheckBoxToggles(List<bool> newcheckboxes)
+    {
+      for (int i = 0; i < this.Checkboxes.Count; i++)
+        this.Checkboxes[i] = newcheckboxes[i];
+      this.DesignOptions.ProppedDuringConstruction = this.Checkboxes[0];
+      this.DesignOptions.InclSteelBeamWeight = this.Checkboxes[1];
+      this.DesignOptions.InclThinFlangeSections = this.Checkboxes[2];
+      this.DesignOptions.InclConcreteSlabWeight = this.Checkboxes[3];
+      this.DesignOptions.ConsiderShearDeflection = this.Checkboxes[4];
+      // removed due to Compos ignoring that setting
+      //if (this.Checkboxes.Count == 6)
+      //  this.CodeOptions.ConsiderShrinkageDeflection = this.Checkboxes[5];
+      if (this.Checkboxes.Count == 8)
+      {
+        this.EC4CodeOptions.ConsiderShrinkageDeflection = this.Checkboxes[5];
+        this.EC4CodeOptions.IgnoreShrinkageDeflectionForLowLengthToDepthRatios = this.Checkboxes[6];
+        this.EC4CodeOptions.ApproxModularRatios = this.Checkboxes[7];
+      }
+    }
+
     private void ModeChangeClicked()
     {
       RecordUndoEvent("Changed Parameters");
@@ -378,11 +396,10 @@ namespace ComposGH.Components
     }
     #endregion
 
+
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, this.DropDownItems, this.SelectedItems, this.SpacerDescriptions);
-
       // checkbox bool list
       writer.SetInt32("checkboxCount", this.Checkboxes.Count);
       for (int i = 0; i < this.Checkboxes.Count; i++)
@@ -397,8 +414,6 @@ namespace ComposGH.Components
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref this.DropDownItems, ref this.SelectedItems, ref this.SpacerDescriptions);
-
       // bool list
       int checkboxCount = reader.GetInt32("checkboxCount");
       this.Checkboxes = new List<bool>();
@@ -411,63 +426,7 @@ namespace ComposGH.Components
       for (int i = 0; i < namesCount; i++)
         this.CheckboxNames.Add(reader.GetString("checkboxname" + i));
 
-      UpdateUIFromSelectedItems();
-
-      this.First = false;
-
       return base.Read(reader);
-    }
-    #endregion
-
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
-    {
-      return null;
-    }
-
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
-      switch (this.Code)
-      {
-        case Code.EN1994_1_1_2004:
-          Params.Input[1].Name = CreepShrinkageParametersGoo.Name + " Short Term";
-          Params.Input[1].NickName = CreepShrinkageParametersGoo.NickName.ToLower();
-          Params.Input[1].Description = "(Optional) Short Term " + CreepShrinkageParametersGoo.Description + ". If no input, the default code values will be used";
-          Params.Input[1].Optional = true;
-          Params.Input[2].Name = CreepShrinkageParametersGoo.Name + " Long Term";
-          Params.Input[2].NickName = CreepShrinkageParametersGoo.NickName.ToUpper();
-          Params.Input[2].Description = "(Optional) Long Term " + CreepShrinkageParametersGoo.Description + ". If no input, the default code values will be used";
-          Params.Input[2].Optional = true;
-          break;
-        case Code.AS_NZS2327_2017:
-          Params.Input[1].Name = "Shrinkage";
-          Params.Input[1].NickName = "Shr";
-          Params.Input[1].Description = "(Optional) Shrinkage multiplier. If no input, the default ASNZ code values will be used";
-          Params.Input[1].Optional = true;
-          Params.Input[2].Name = "Long Creep Coeff.";
-          Params.Input[2].NickName = "CC";
-          Params.Input[2].Description = "(Optional) Long Term Creep Coefficient. If no input, the default ASNZ code values will be used";
-          Params.Input[2].Optional = true;
-          break;
-
-        default:
-          break;
-      }
     }
     #endregion
   }
