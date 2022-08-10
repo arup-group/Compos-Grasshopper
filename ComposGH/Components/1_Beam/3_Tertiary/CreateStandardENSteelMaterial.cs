@@ -28,61 +28,6 @@ namespace ComposGH.Components
     protected override System.Drawing.Bitmap Icon => Properties.Resources.StandardENSteelMaterial;
     #endregion
 
-    #region Custom UI
-    List<bool> OverrideDropDownItems;
-
-    private bool First = true;
-    private StandardSteelGrade SteelGrade = StandardSteelGrade.S235;
-    internal override void InitialiseDropdowns()
-    {
-      this.SpacerDescriptions = new List<string>(new string[] { "Grade" });
-
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
-
-      // SteelType
-      this.DropDownItems.Add(Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList());
-      this.DropDownItems[0].RemoveAt(3); // remove S450
-      this.SelectedItems.Add(this.SteelGrade.ToString());
-
-      this.OverrideDropDownItems = new List<bool>() { false };
-
-      this.IsInitialised = true;
-    }
-
-    internal override void SetSelected(int i, int j)
-    {
-      // change selected item
-      this.SelectedItems[i] = this.DropDownItems[i][j];
-
-      if (i == 0)  // change is made to code 
-      {
-        if (this.SteelGrade.ToString() == SelectedItems[i])
-          return; // return if selected value is same as before
-
-        SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), SelectedItems[i]);
-      }
-
-      // update name of inputs (to display unit on sliders)
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-
-    private void UpdateUIFromSelectedItems()
-    {
-      if (this.SelectedItems[0] != "-")
-        this.SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), this.SelectedItems[0]);
-
-      CreateAttributes();
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-    #endregion
-
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
@@ -138,45 +83,49 @@ namespace ComposGH.Components
       DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(SteelGrade, Code.EN1994_1_1_2004)));
     }
 
-    #region (de)serialization
-    public override bool Write(GH_IO.Serialization.GH_IWriter writer)
+    #region Custom UI
+    List<bool> OverrideDropDownItems;
+    private StandardSteelGrade SteelGrade = StandardSteelGrade.S235;
+    internal override void InitialiseDropdowns()
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropDownItems, SelectedItems, SpacerDescriptions);
-      return base.Write(writer);
+      this.SpacerDescriptions = new List<string>(new string[] { "Grade" });
+
+      this.DropDownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
+
+      // SteelType
+      this.DropDownItems.Add(Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList());
+      this.DropDownItems[0].RemoveAt(3); // remove S450
+      this.SelectedItems.Add(this.SteelGrade.ToString());
+
+      this.OverrideDropDownItems = new List<bool>() { false };
+
+      this.IsInitialised = true;
     }
-    public override bool Read(GH_IO.Serialization.GH_IReader reader)
+
+    internal override void SetSelected(int i, int j)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropDownItems, ref SelectedItems, ref SpacerDescriptions);
+      // change selected item
+      this.SelectedItems[i] = this.DropDownItems[i][j];
 
-      UpdateUIFromSelectedItems();
+      if (i == 0)  // change is made to code 
+      {
+        if (this.SteelGrade.ToString() == this.SelectedItems[i])
+          return; // return if selected value is same as before
 
-      First = false;
+        this.SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), SelectedItems[i]);
+      }
 
-      return base.Read(reader);
+      base.UpdateUI();
+    }
+
+    internal override void UpdateUIFromSelectedItems()
+    {
+      if (this.SelectedItems[0] != "-")
+        this.SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), this.SelectedItems[0]);
+
+      base.UpdateUIFromSelectedItems();
     }
     #endregion
-
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
-    {
-      return null;
-    }
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
-    }
-    #endregion
-
   }
 }
