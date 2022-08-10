@@ -9,7 +9,7 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateCatalogueDeck : GH_OasysComponent, IGH_VariableParameterComponent
+  public class CreateCatalogueDeck : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     public CreateCatalogueDeck()
@@ -23,102 +23,6 @@ namespace ComposGH.Components
     public override GH_Exposure Exposure => GH_Exposure.quinary;
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.StandardDecking;
-    #endregion
-
-    #region Custom UI
-    //This region overrides the typical component layout
-
-    // list of lists with all dropdown lists content
-    List<List<string>> DropDownItems;
-    // list of selected items
-    List<string> SelectedItems;
-    // list of descriptions 
-    List<string> SpacerDescriptions = new List<string>(new string[]
-    {
-      "Type",
-      "Decking",
-      "Steel Type"
-    });
-    private bool First = true;
-    string Catalogue = null;
-    string Profile = null;
-    private DeckingSteelGrade SteelGrade = DeckingSteelGrade.S350;
-    // Catalogues
-    List<string> CatalogueNames = SqlReader.GetDeckCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"));
-
-    // Sections
-    List<string> SectionList = null;
-
-    public override void CreateAttributes()
-    {
-      if (First)
-      {
-        DropDownItems = new List<List<string>>();
-        SelectedItems = new List<string>();
-
-        // catalogue
-        DropDownItems.Add(CatalogueNames);
-        SelectedItems.Add(CatalogueNames[0]);
-        Catalogue = SelectedItems[0];
-
-        // decking
-        SectionList = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), Catalogue);
-        DropDownItems.Add(SectionList);
-        SelectedItems.Add(SectionList[0]);
-        Profile = SelectedItems[1];
-
-        // steel
-        DropDownItems.Add(Enum.GetValues(typeof(DeckingSteelGrade)).Cast<DeckingSteelGrade>().Select(x => x.ToString()).ToList());
-        SelectedItems.Add(SteelGrade.ToString());
-
-        First = false;
-      }
-
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropDownItems, SelectedItems, SpacerDescriptions);
-    }
-
-    public void SetSelected(int i, int j)
-    {
-      // change selected item
-      this.SelectedItems[i] = this.DropDownItems[i][j];
-
-      if (i == 0)  // change is made to code 
-      {
-        // update selected section to be all
-        Catalogue = SelectedItems[0];
-        DropDownItems[1] = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), Catalogue);
-      }
-
-      if (i == 1)
-      {
-        // update displayed selected
-        Profile = SelectedItems[1];
-      }
-
-      if(i ==2)
-      {
-        SteelGrade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), SelectedItems[i]);
-      }
-
-        (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-
-    private void UpdateUIFromSelectedItems()
-    {
-      SectionList = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), Catalogue);
-      Catalogue = SelectedItems[0];
-      Profile = SelectedItems[1];
-      SteelGrade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), SelectedItems[2]);
-
-      CreateAttributes();
-      ExpireSolution(true);
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
     #endregion
 
     #region Input and output
@@ -145,45 +49,70 @@ namespace ComposGH.Components
       DA.SetData(0, new DeckingGoo(new CatalogueDecking(Catalogue, Profile, SteelGrade, new DeckingConfiguration())));
     }
 
-    #region (de)serialization
-    public override bool Write(GH_IO.Serialization.GH_IWriter writer)
+    #region Custom UI
+    string Catalogue = null;
+    string Profile = null;
+    private DeckingSteelGrade SteelGrade = DeckingSteelGrade.S350;
+    List<string> CatalogueNames = SqlReader.GetDeckCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"));
+    List<string> SectionList = null;
+
+    internal override void InitialiseDropdowns()
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropDownItems, SelectedItems, SpacerDescriptions);
-      return base.Write(writer);
-    }
-    public override bool Read(GH_IO.Serialization.GH_IReader reader)
-    {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropDownItems, ref SelectedItems, ref SpacerDescriptions);
-      UpdateUIFromSelectedItems();
-      First = false;
-      return base.Read(reader);
+      this.SpacerDescriptions = new List<string>(new string[] {
+        "Type",
+        "Decking",
+        "Steel Type" });
+
+      this.DropDownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
+
+      // catalogue
+      this.DropDownItems.Add(this.CatalogueNames);
+      this.SelectedItems.Add(this.CatalogueNames[0]);
+      this.Catalogue = this.SelectedItems[0];
+
+      // decking
+      this.SectionList = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
+      this.DropDownItems.Add(this.SectionList);
+      this.SelectedItems.Add(this.SectionList[0]);
+      this.Profile = this.SelectedItems[1];
+
+      // steel
+      this.DropDownItems.Add(Enum.GetValues(typeof(DeckingSteelGrade)).Cast<DeckingSteelGrade>().Select(x => x.ToString()).ToList());
+      this.SelectedItems.Add(SteelGrade.ToString());
+
+      this.IsInitialised = true;
     }
 
+    internal override void SetSelected(int i, int j)
+    {
+      this.SelectedItems[i] = this.DropDownItems[i][j];
+
+      if (i == 0)  // change is made to code 
+      {
+        // update selected section to be all
+        this.Catalogue = SelectedItems[0];
+        this.DropDownItems[1] = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
+      }
+
+      if (i == 1)
+        this.Profile = this.SelectedItems[1];
+
+      if (i == 2)
+        this.SteelGrade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), this.SelectedItems[i]);
+
+      base.UpdateUI();
+    }
+
+    private void UpdateUIFromSelectedItems()
+    {
+      this.SectionList = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
+      this.Catalogue = this.SelectedItems[0];
+      this.Profile = this.SelectedItems[1];
+      this.SteelGrade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), this.SelectedItems[2]);
+
+      base.UpdateUIFromSelectedItems();
+    }
     #endregion
-
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
-    {
-      return null;
-    }
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
-      //empty
-    }
-
   }
-  #endregion
 }
