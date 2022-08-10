@@ -43,10 +43,10 @@ namespace ComposGH.Components
       {
         DeckingConfigurationGoo dconf = (DeckingConfigurationGoo)GetInput.GenericGoo<DeckingConfigurationGoo>(this, DA, 0);
         if (dconf == null) { return; }
-        DA.SetData(0, new DeckingGoo(new CatalogueDecking(Catalogue, Profile, SteelGrade, dconf.Value)));
+        DA.SetData(0, new DeckingGoo(new CatalogueDecking(this.Catalogue, this.Profile, this.SteelGrade, dconf.Value)));
       }
-
-      DA.SetData(0, new DeckingGoo(new CatalogueDecking(Catalogue, Profile, SteelGrade, new DeckingConfiguration())));
+      else
+        DA.SetData(0, new DeckingGoo(new CatalogueDecking(this.Catalogue, this.Profile, this.SteelGrade, new DeckingConfiguration())));
     }
 
     #region Custom UI
@@ -104,7 +104,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    private void UpdateUIFromSelectedItems()
+    internal override void UpdateUIFromSelectedItems()
     {
       this.SectionList = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
       this.Catalogue = this.SelectedItems[0];
