@@ -9,7 +9,7 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreatePointLoad : GH_OasysComponent, IGH_VariableParameterComponent
+  public class CreatePointLoad : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
@@ -24,74 +24,6 @@ namespace ComposGH.Components
     public override GH_Exposure Exposure => GH_Exposure.primary;
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.PointLoad;
-    #endregion
-
-    #region Custom UI
-    //This region overrides the typical component layout
-
-    // list of lists with all dropdown lists conctent
-    List<List<string>> DropDownItems;
-    // list of selected items
-    List<string> SelectedItems;
-    // list of descriptions 
-
-    List<string> SpacerDescriptions = new List<string>(new string[]
-    {
-      "Force Unit",
-      "Length Unit"
-    });
-
-    private bool First = true;
-    private ForceUnit ForceUnit = Units.ForceUnit;
-    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
-
-    public override void CreateAttributes()
-    {
-      if (First)
-      {
-        DropDownItems = new List<List<string>>();
-        SelectedItems = new List<string>();
-
-        // force unit
-        DropDownItems.Add(Units.FilteredForceUnits);
-        SelectedItems.Add(ForceUnit.ToString());
-
-        // length
-        DropDownItems.Add(Units.FilteredLengthUnits);
-        SelectedItems.Add(LengthUnit.ToString());
-
-        First = false;
-      }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropDownItems, SelectedItems, SpacerDescriptions);
-    }
-    public void SetSelected(int i, int j)
-    {
-      // change selected item
-      this.SelectedItems[i] = this.DropDownItems[i][j];
-
-      if (i == 0)
-        ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), SelectedItems[i]);
-      if (i == 1)
-        LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
-
-      // update name of inputs (to display unit on sliders)
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-
-    private void UpdateUIFromSelectedItems()
-    {
-      ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), SelectedItems[0]);
-      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[1]);
-
-      CreateAttributes();
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
     #endregion
 
     #region Input and output
@@ -124,44 +56,51 @@ namespace ComposGH.Components
       DA.SetData(0, new LoadGoo(load));
     }
 
-    #region (de)serialization
-    public override bool Write(GH_IO.Serialization.GH_IWriter writer)
-    {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropDownItems, SelectedItems, SpacerDescriptions);
-      return base.Write(writer);
-    }
-    public override bool Read(GH_IO.Serialization.GH_IReader reader)
-    {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropDownItems, ref SelectedItems, ref SpacerDescriptions);
+    #region Custom UI
+    private ForceUnit ForceUnit = Units.ForceUnit;
+    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
 
-      UpdateUIFromSelectedItems();
+    internal override void InitialiseDropdowns()
+    {
+      this.SpacerDescriptions = new List<string>(new string[] { "Force Unit", "Length Unit" });
 
-      First = false;
+      this.DropDownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
 
-      return base.Read(reader);
-    }
-    #endregion
+      // force unit
+      this.DropDownItems.Add(Units.FilteredForceUnits);
+      this.SelectedItems.Add(this.ForceUnit.ToString());
 
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
+      // length
+      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.SelectedItems.Add(this.LengthUnit.ToString());
+
+      this.IsInitialised = true;
     }
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
+
+    internal override void SetSelected(int i, int j)
     {
-      return false;
+      this.SelectedItems[i] = this.DropDownItems[i][j];
+
+      if (i == 0)
+        this.ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), this.SelectedItems[i]);
+      if (i == 1)
+        this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+
+      base.UpdateUI();
     }
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
+
+    internal override void UpdateUIFromSelectedItems()
     {
-      return null;
+      this.ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), this.SelectedItems[0]);
+      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[1]);
+
+      base.UpdateUIFromSelectedItems();
     }
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
+    
+    public override void VariableParameterMaintenance()
     {
-      return false;
-    }
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
-      string unitAbbreviation = Force.GetAbbreviation(ForceUnit);
+      string unitAbbreviation = Force.GetAbbreviation(this.ForceUnit);
       string lengthunitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
       int i = 0;
       Params.Input[i++].Name = "Const. Dead [" + unitAbbreviation + "]";
