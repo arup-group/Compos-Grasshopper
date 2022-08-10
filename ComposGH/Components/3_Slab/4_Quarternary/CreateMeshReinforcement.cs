@@ -29,7 +29,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
 
       pManager.AddGenericParameter("Cover [" + unitAbbreviation + "]", "Cov", "Reinforcement cover", GH_ParamAccess.item);
       pManager.AddBooleanParameter("Rotated", "Rot", "If the mesh type is assymetrical, setting 'Rotated' to true will align the stronger direction with the beam's direction", GH_ParamAccess.item, false);
@@ -101,7 +101,7 @@ namespace ComposGH.Components
 
     public override void VariableParameterMaintenance()
     {
-      string unitAbbreviation = Length.GetAbbreviation(LengthUnit); 
+      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit); 
       Params.Input[0].Name = "Cover [" + unitAbbreviation + "]";
     }
     #endregion

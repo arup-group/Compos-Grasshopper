@@ -30,7 +30,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
 
       pManager.AddGenericParameter("Start [" + unitAbbreviation + "]", "Px", "(Optional) Start Position of this profile (beam local x-axis)."
         + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
@@ -118,7 +118,7 @@ namespace ComposGH.Components
 
     public override void VariableParameterMaintenance()
     {
-      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
       this.Params.Input[0].Name = "Start [" + unitAbbreviation + "]";
       this.Params.Input[1].Name = "Overall depth [" + unitAbbreviation + "]";
       this.Params.Input[2].Name = "Available width Left [" + unitAbbreviation + "]";

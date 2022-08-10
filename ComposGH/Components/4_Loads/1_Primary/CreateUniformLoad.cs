@@ -119,7 +119,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = new Pressure(0, ForcePerAreaUnit).ToString("a");
+      string unitAbbreviation = Pressure.GetAbbreviation(this.ForcePerAreaUnit);
       pManager.AddGenericParameter("Const. Dead [" + unitAbbreviation + "]", "dl", "Constant dead load; construction stage dead load which are used for construction stage analysis", GH_ParamAccess.item);
       pManager.AddGenericParameter("Const. Live [" + unitAbbreviation + "]", "ll", "Constant live load; construction stage live load which are used for construction stage analysis", GH_ParamAccess.item);
       pManager.AddGenericParameter("Final Dead [" + unitAbbreviation + "]", "DL", "Final Dead Load", GH_ParamAccess.item);
@@ -196,7 +196,7 @@ namespace ComposGH.Components
       if (DistributionType == LoadDistribution.Line)
         unitAbbreviation = ForcePerLength.GetAbbreviation(this.ForcePerLengthUnit);
       else
-        unitAbbreviation = new Pressure(0, ForcePerAreaUnit).ToString("a");
+        unitAbbreviation = Pressure.GetAbbreviation(this.ForcePerAreaUnit);
       int i = 0;
       Params.Input[i++].Name = "Const. Dead [" + unitAbbreviation + "]";
       Params.Input[i++].Name = "Const. Live [" + unitAbbreviation + "]";

@@ -95,7 +95,7 @@ namespace ComposGH.Components
       #region other
       if (_mode == FoldMode.Other)
       {
-        string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
+        string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
 
         //IProfile profile = null;
         string unit = "(" + unitAbbreviation + ") ";
@@ -484,7 +484,7 @@ namespace ComposGH.Components
       }
       else
       {
-        string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
+        string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
 
         int i = 0;
         // angle

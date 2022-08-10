@@ -98,7 +98,7 @@ namespace ComposGH.Components
 
     public override void VariableParameterMaintenance()
     {
-      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
       int i = 0;
       Params.Output[i++].Name = "Depth [" + unitAbbreviation + "]";
       Params.Output[i++].Name = "TopWidth [" + unitAbbreviation + "]";

@@ -98,7 +98,7 @@ namespace ComposGH.Components
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       string unitAbbreviation = Force.GetAbbreviation(ForceUnit);
-      string lengthunitAbbreviation = Length.GetAbbreviation(LengthUnit);
+      string lengthunitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
       pManager.AddGenericParameter("Const. Dead [" + unitAbbreviation + "]", "dl", "Constant dead load; construction stage dead load which are used for construction stage analysis", GH_ParamAccess.item);
       pManager.AddGenericParameter("Const. Live [" + unitAbbreviation + "]", "ll", "Constant live load; construction stage live load which are used for construction stage analysis", GH_ParamAccess.item);
       pManager.AddGenericParameter("Final Dead [" + unitAbbreviation + "]", "DL", "Final Dead Load", GH_ParamAccess.item);
@@ -162,7 +162,7 @@ namespace ComposGH.Components
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
       string unitAbbreviation = Force.GetAbbreviation(ForceUnit);
-      string lengthunitAbbreviation = Length.GetAbbreviation(LengthUnit);
+      string lengthunitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
       int i = 0;
       Params.Input[i++].Name = "Const. Dead [" + unitAbbreviation + "]";
       Params.Input[i++].Name = "Const. Live [" + unitAbbreviation + "]";

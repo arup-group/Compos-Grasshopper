@@ -146,7 +146,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
       string stressunitAbbreviation = Pressure.GetAbbreviation(this.StressUnit);
 
       Params.Input[0].Name = "b1 [" + unitAbbreviation + "]";

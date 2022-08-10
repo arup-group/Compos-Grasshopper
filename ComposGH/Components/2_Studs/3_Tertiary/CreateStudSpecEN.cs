@@ -31,7 +31,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
 
       pManager.AddGenericParameter("No Stud Zone Start [" + unitAbbreviation + "]",
           "NSZS", "Length of zone without shear studs at the start of the beam (default = 0)", GH_ParamAccess.item);
@@ -114,7 +114,7 @@ namespace ComposGH.Components
 
     public override void VariableParameterMaintenance()
     {
-      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
       Params.Input[0].Name = "No Stud Zone Start [" + unitAbbreviation + "]";
       Params.Input[1].Name = "No Stud Zone End [" + unitAbbreviation + "]";
       Params.Input[2].Name = "Rebar Pos [" + unitAbbreviation + "]";

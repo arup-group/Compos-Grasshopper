@@ -229,7 +229,7 @@ namespace ComposGH.Components
       if (DistributionType == LoadDistribution.Line)
         unitAbbreviation = ForcePerLength.GetAbbreviation(this.ForcePerLengthUnit);
       else
-        unitAbbreviation = new Pressure(0, ForcePerAreaUnit).ToString("a");
+        unitAbbreviation = Pressure.GetAbbreviation(this.ForcePerAreaUnit);
       string lengthunitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
 
       int i = 0;
