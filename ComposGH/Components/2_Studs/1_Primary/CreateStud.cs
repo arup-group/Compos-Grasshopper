@@ -15,7 +15,9 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("1451E11C-69D0-47D3-8730-FCA80E838E25");
     public CreateStud()
-      : base("Create Stud", "Stud", "Create a Compos Shear Stud",
+      : base("Create" + StudGoo.Name.Replace(" ", string.Empty),
+          StudGoo.Name.Replace(" ", string.Empty),
+          "Create a " + StudGoo.Description + " for a " + MemberGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -95,15 +97,15 @@ namespace ComposGH.Components
 
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter("Stud Dims", "Sdm", "Compos Shear Stud Dimensions", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Stud Spec", "Spc", "Compos Shear Stud Specification", GH_ParamAccess.item);
+      pManager.AddGenericParameter(StudDimensionsGoo.Name, StudDimensionsGoo.NickName, StudDimensionsGoo.Description, GH_ParamAccess.item);
+      pManager.AddGenericParameter(StudSpecificationGoo.Name, StudSpecificationGoo.NickName, StudSpecificationGoo.Description, GH_ParamAccess.item);
       pManager.AddNumberParameter("Min Saving", "Msm", "Fraction for Minimum Saving for using Multiple Zones (Default = 0.2 (20%))", GH_ParamAccess.item, 0.2);
       pManager[2].Optional = true;
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Stud", "Stu", "Compos Shear Stud", GH_ParamAccess.item);
+      pManager.AddGenericParameter(StudGoo.Name, StudGoo.NickName, StudGoo.Description + " for a " + MemberGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -239,9 +241,9 @@ namespace ComposGH.Components
           break;
 
         case StudSpacingType.Custom:
-          Params.Input[2].Name = "Stud Spacings";
-          Params.Input[2].NickName = "Spa";
-          Params.Input[2].Description = "List of Custom Compos Shear Stud Spacing";
+          Params.Input[2].Name = StudGroupSpacingGoo.Name + "(s)";
+          Params.Input[2].NickName = StudGroupSpacingGoo.NickName;
+          Params.Input[2].Description = "(Optional) " + StudGroupSpacingGoo.Description;
           Params.Input[2].Access = GH_ParamAccess.list;
           Params.Input[3].Name = "Check Spacing";
           Params.Input[3].NickName = "Chk";

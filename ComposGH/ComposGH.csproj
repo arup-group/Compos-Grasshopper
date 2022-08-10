@@ -95,8 +95,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\0_File\OpenModel.cs" />
-    <Compile Include="Components\0_File\SaveModel.cs" />
+    <Compile Include="Components\0_File\OpenComposFile.cs" />
+    <Compile Include="Components\0_File\SaveComposFile.cs" />
     <Compile Include="Components\1_Beam\1_Primary\CreateBeam.cs" />
     <Compile Include="Components\1_Beam\2_Secondary\CreateRestraint.cs" />
     <Compile Include="Components\1_Beam\3_Tertiary\CreateStandardENSteelMaterial.cs" />
@@ -104,6 +104,7 @@
     <Compile Include="Components\1_Beam\3_Tertiary\CreateStandardSteelMaterial.cs" />
     <Compile Include="Components\1_Beam\3_Tertiary\CreateCustomSteelMaterial.cs" />
     <Compile Include="Components\1_Beam\2_Secondary\CreateSupport.cs" />
+    <Compile Include="Components\1_Beam\4_Quarternary\BeamSectionProperties.cs" />
     <Compile Include="Components\1_Beam\4_Quarternary\CreateBeamSection.cs" />
     <Compile Include="Components\3_Slab\1_Primary\CreateSlab.cs" />
     <Compile Include="Components\3_Slab\2_Secondary\CreateSlabDimension.cs" />
@@ -139,7 +140,7 @@
     <Compile Include="Components\3_Slab\3_Tertiary\CreateConcreteMaterialBS.cs" />
     <Compile Include="Components\5_Member\1_Primary\CreateMember.cs" />
     <Compile Include="Components\5_Member\2_Secondary\CreateDesignCode.cs" />
-    <Compile Include="Components\5_Member\2_Secondary\CreateEC4SafetyFactors.cs" />
+    <Compile Include="Components\5_Member\2_Secondary\CreateSafetyFactorsEN.cs" />
     <Compile Include="Components\5_Member\2_Secondary\CreateCreepShrinkageParams.cs" />
     <Compile Include="Components\5_Member\2_Secondary\CreateSafetyFactors.cs" />
     <Compile Include="Components\7_Results\ReadClassResults.cs" />
@@ -171,18 +172,23 @@
     <Compile Include="Helpers\_SqlReaderValues.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
     <Compile Include="Parameters\0_File\ComposFileGoo.cs" />
+    <Compile Include="Parameters\1_Beam\ComposBeamParameter.cs" />
     <Compile Include="Parameters\1_Beam\BeamGeometryGoo.cs" />
+    <Compile Include="Parameters\1_Beam\WebOpening\ComposWebOpeningParameter.cs" />
+    <Compile Include="Parameters\2_Studs\ComposStudParameter.cs" />
     <Compile Include="Parameters\2_Studs\StudGoo.cs" />
     <Compile Include="Parameters\3_Slab\ConcreteMaterial\ConcreteMaterialGoo.cs" />
     <Compile Include="Parameters\3_Slab\ConcreteMaterial\ERatioGoo.cs" />
+    <Compile Include="Parameters\3_Slab\Decking\ComposDeckingParameter.cs" />
     <Compile Include="Parameters\3_Slab\Reinforcement\MeshReinforcementGoo.cs" />
     <Compile Include="Parameters\3_Slab\Reinforcement\TransverseReinforcementGoo.cs" />
+    <Compile Include="Parameters\3_Slab\ComposSlabParameter.cs" />
     <Compile Include="Parameters\3_Slab\SlabGoo.cs" />
     <Compile Include="Parameters\3_Slab\SlabDimension\SlabDimensionGoo.cs" />
     <Compile Include="Parameters\1_Beam\Restraints\RestraintGoo.cs" />
     <Compile Include="Parameters\3_Slab\Reinforcement\CustomTransverseReinforcementLayoutGoo.cs" />
+    <Compile Include="Parameters\4_Loads\ComposLoadParameter.cs" />
     <Compile Include="Parameters\4_Loads\LoadGoo.cs" />
-    <Compile Include="Parameters\3_Slab\Reinforcement\ReinforcementGoo.cs" />
     <Compile Include="Parameters\3_Slab\Reinforcement\ReinforcementMaterialGoo.cs" />
     <Compile Include="Parameters\1_Beam\SteelMaterial\SteelMaterialGoo.cs" />
     <Compile Include="Parameters\1_Beam\WebOpening\WebOpeningGoo.cs" />
@@ -191,20 +197,20 @@
     <Compile Include="Parameters\1_Beam\Restraints\SupportsGoo.cs" />
     <Compile Include="Parameters\1_Beam\WebOpening\WebOpeningStiffenersGoo.cs" />
     <Compile Include="Parameters\2_Studs\StudSpecGoo.cs" />
-    <Compile Include="Parameters\2_Studs\StudSpacingGoo.cs" />
+    <Compile Include="Parameters\2_Studs\StudGroupSpacingGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\SafetyFactorsENGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCriteria\FrequencyLimitsGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCriteria\DeflectionLimitGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCriteria\BeamSizeLimitsGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCriteria\DesignCriteriaGoo.cs" />
     <Compile Include="Parameters\5_Member\MemberGoo.cs" />
-    <Compile Include="Parameters\5_Member\DesignCode\CreepShrinkageEC4ParamGoo.cs" />
+    <Compile Include="Parameters\5_Member\DesignCode\CreepShrinkageParametersGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\SafetyFactorsGoo.cs" />
-    <Compile Include="Parameters\5_Member\DesignCode\DesignOptionsGoo.cs" />
-    <Compile Include="Parameters\5_Member\DesignCode\CodeOptionsGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\DesignCodeGoo.cs" />
     <Compile Include="Parameters\3_Slab\Decking\DeckingConfigurationGoo.cs" />
-    <Compile Include="Parameters\GH_UnitNumber.cs" />
+    <Compile Include="Parameters\GH_OasysGeoGoo.cs" />
+    <Compile Include="Parameters\GH_OasysGoo.cs" />
+    <Compile Include="Parameters\99_Other\GH_UnitNumber.cs" />
     <Compile Include="Parameters\_Units.cs" />
     <Compile Include="Parameters\3_Slab\Decking\DeckingGoo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -507,6 +513,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\CodeReqNotMet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\ProfileProperties.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

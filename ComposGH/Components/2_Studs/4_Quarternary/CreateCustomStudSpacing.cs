@@ -16,7 +16,9 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("49328e6d-eebe-405c-b58c-060b8bdc1bef");
     public CreateCustomStudSpacing()
-      : base("Custom Stud Spacing", "CustStudSpac", "Create Custom Stud Spacing for a Compos Stud",
+      : base("Custom" + StudGroupSpacingGoo.Name.Replace(" ", string.Empty),
+          StudGroupSpacingGoo.Name.Replace(" ", string.Empty),
+          "Create a Custom " + StudGroupSpacingGoo.Description + " for a " + StudGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -88,8 +90,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
 
       pManager.AddGenericParameter("Pos x [" + unitAbbreviation + "]", "Px", "Start Position where this Stud Spacing Groups begins on Beam (beam local x-axis)", GH_ParamAccess.item);
       pManager.AddIntegerParameter("Rows", "R", "Number of rows (across the top flange)", GH_ParamAccess.item);
@@ -98,7 +99,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Stud Spacing", "Spa", "Custom Compos Shear Stud Spacing", GH_ParamAccess.item);
+      pManager.AddGenericParameter(StudGroupSpacingGoo.Name, StudGroupSpacingGoo.NickName, StudGroupSpacingGoo.Description + " for a " + StudGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -151,9 +152,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
-
+      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
       Params.Input[0].Name = "Pos x [" + unitAbbreviation + "]";
       Params.Input[3].Name = "Spacing [" + unitAbbreviation + "]";
     }

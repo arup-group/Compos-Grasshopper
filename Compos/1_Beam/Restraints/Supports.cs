@@ -19,8 +19,8 @@ namespace ComposAPI
   /// </summary>
   public class Supports : ISupports
   {
-    public bool SecondaryMemberIntermediateRestraint { get; set; }
-    public bool BothFlangesFreeToRotateOnPlanAtEnds { get; set; }
+    public bool SecondaryMemberAsIntermediateRestraint { get; set; } = true;
+    public bool BothFlangesFreeToRotateOnPlanAtEnds { get; set; } = false;
     public IList<IQuantity> CustomIntermediateRestraintPositions { get; set; }
     public IntermediateRestraint IntermediateRestraintPositions
     {
@@ -46,14 +46,14 @@ namespace ComposAPI
     public Supports(List<IQuantity> customIntermediateRestraintPositions, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds)
     {
       this.CustomIntermediateRestraintPositions = customIntermediateRestraintPositions;
-      this.SecondaryMemberIntermediateRestraint = secondaryMemberIntermediateRestraint;
+      this.SecondaryMemberAsIntermediateRestraint = secondaryMemberIntermediateRestraint;
       this.BothFlangesFreeToRotateOnPlanAtEnds = bothFlangesFreeToRotateOnPlanAtEnds;
       this.IntermediateRestraintPositions = IntermediateRestraint.Custom;
     }
     public Supports(IntermediateRestraint intermediateRestraintPositions, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds)
     {
       this.IntermediateRestraintPositions = intermediateRestraintPositions;
-      this.SecondaryMemberIntermediateRestraint = secondaryMemberIntermediateRestraint;
+      this.SecondaryMemberAsIntermediateRestraint = secondaryMemberIntermediateRestraint;
       this.BothFlangesFreeToRotateOnPlanAtEnds = bothFlangesFreeToRotateOnPlanAtEnds;
     }
     #endregion
@@ -61,7 +61,7 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      string sec = (this.SecondaryMemberIntermediateRestraint) ? ", SMIR" : "";
+      string sec = (this.SecondaryMemberAsIntermediateRestraint) ? ", SMIR" : "";
       string flange = (this.BothFlangesFreeToRotateOnPlanAtEnds) ? ", FFRE" : "";
       string res = this.IntermediateRestraintPositions.ToString().Replace("__", "-").Replace("_", " ");
       if (CustomIntermediateRestraintPositions != null)

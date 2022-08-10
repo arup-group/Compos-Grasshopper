@@ -15,7 +15,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("2ca1b0d6-44a2-441f-bf4b-8367d98d90a8");
     public CreateConcreteMaterialBS()
-      : base("BS Concrete Material", "ConcMatBS", "Create concrete material to British Standard (BS) for concrete slab",
+      : base("BS" + ConcreteMaterialGoo.Name.Replace(" ", string.Empty),
+          "BS" + ConcreteMaterialGoo.NickName.Replace(" ", string.Empty),
+          "Look up a Standard BS " + ConcreteMaterialGoo.Description + " for a " + SlabGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -112,12 +114,11 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity density = new Density(0, this.DensityUnit);
-      string densityUnitAbbreviation = string.Concat(density.ToString().Where(char.IsLetter));
+      string densityUnitAbbreviation = new Density(0, this.DensityUnit).ToString("a");
 
       // optional
       pManager.AddNumberParameter("Dry Density [" + densityUnitAbbreviation + "]", "DD", "(Optional) Dry density", GH_ParamAccess.item);
-      pManager.AddGenericParameter("E Ratios", "ER", "(Optional) Steel/concrete Young´s modulus ratios", GH_ParamAccess.item);
+      pManager.AddGenericParameter(ERatioGoo.Name, ERatioGoo.NickName, "(Optional)" + ERatioGoo.Description, GH_ParamAccess.item);
       pManager.AddNumberParameter("Imposed Load Percentage [-]", "ILP", "(Optional) Percentage of imposed load acting long term as decimal fraction", GH_ParamAccess.item, 0.33);
       pManager.AddGenericParameter("Concrete Grade", "CG", "(Optional) Concrete grade", GH_ParamAccess.item);
 
@@ -129,7 +130,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Concrete Material", "CMt", "Concrete material for concrete slab", GH_ParamAccess.item);
+      pManager.AddGenericParameter(ConcreteMaterialGoo.Name, ConcreteMaterialGoo.NickName, "BS " + ConcreteMaterialGoo.Description + " for a " + SlabGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -175,7 +176,7 @@ namespace ComposGH.Components
         userDensity = true;
       }
       else
-        if (this.Type == ConcreteMaterial.WeightType.Light)
+        if (this.Type == ConcreteMaterial.WeightType.LightWeight)
         dryDensity = new Density(1800, DensityUnit.KilogramPerCubicMeter);
 
       Ratio imposedLoadPercentage = GetInput.Ratio(this, DA, 2, RatioUnit.DecimalFraction);
@@ -229,8 +230,7 @@ namespace ComposGH.Components
 
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity density = new Density(0, this.DensityUnit);
-      string densityUnitAbbreviation = string.Concat(density.ToString().Where(char.IsLetter));
+      string densityUnitAbbreviation = new Density(0, this.DensityUnit).ToString("a");
       this.Params.Input[0].Name = "Density [" + densityUnitAbbreviation + "]";
     }
     #endregion

@@ -13,7 +13,9 @@ namespace ComposGH.Components
   {
     #region Name and Ribbon Layout
     public CreateCatalogueDeck()
-        : base("Standard Decking", "StdDeck", "Create Standard Decking for Compos Slab",
+        : base("Catalogue" + DeckingGoo.Name.Replace(" ", string.Empty),
+          DeckingGoo.Name.Replace(" ", string.Empty),
+          "Look up a Catalogue " + DeckingGoo.Description + " for a " + SlabGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; }
@@ -122,12 +124,12 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter("Deck Config", "DC", "Compos Deck Configuration", GH_ParamAccess.item);
+      pManager.AddGenericParameter(DeckingConfigurationGoo.Name, DeckingConfigurationGoo.NickName, DeckingConfigurationGoo.Description, GH_ParamAccess.item);
       pManager[0].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Catalogue Decking", "Dk", "Compos Decking", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Catalogue " + DeckingGoo.Name, DeckingGoo.NickName, "Standard Catalogue " + DeckingGoo.Description + " for a " + SlabGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 

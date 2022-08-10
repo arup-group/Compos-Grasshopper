@@ -6,6 +6,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using System.Linq;
 using ComposAPI;
+using Oasys.Units;
 
 namespace ComposGH.Components
 {
@@ -16,8 +17,8 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("7dfed0d2-3ad1-49e6-a8d8-d5a5fd851a64");
     public CreateTriLinearLoad()
-      : base("Create Tri-Linear Load", "TriLinearLoad", "Create a tri-linearly varying distributed Compos Load starting from left end of the beam and ending at the right." +
-          Environment.NewLine + "The two peak load points can be defined at any positions along the span Compos Load",
+      : base("CreateTriLinearLoad", "TriLinearLoad", "Create a tri-linearly varying distributed Compos Load starting from left end of the beam and ending at the right." +
+          Environment.NewLine + "The two peak load points can be defined at any positions along the span.",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat4())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -129,10 +130,8 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity force = new Pressure(0, ForcePerAreaUnit);
-      string unitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
-      IQuantity length = new Length(0, LengthUnit);
-      string lengthunitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = Pressure.GetAbbreviation(ForcePerAreaUnit);
+      string lengthunitAbbreviation = Length.GetAbbreviation(LengthUnit);
       pManager.AddGenericParameter("Const. Dead 1 [" + unitAbbreviation + "]", "dl1", "Start Constant dead load; construction stage dead load which are used for construction stage analysis", GH_ParamAccess.item);
       pManager.AddGenericParameter("Const. Live 1 [" + unitAbbreviation + "]", "ll1", "Start Constant live load; construction stage live load which are used for construction stage analysis", GH_ParamAccess.item);
       pManager.AddGenericParameter("Final Dead 1 [" + unitAbbreviation + "]", "DL1", "Start Final Dead Load", GH_ParamAccess.item);
@@ -148,7 +147,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Load", "Ld", "Compos Point Load", GH_ParamAccess.item);
+      pManager.AddGenericParameter(LoadGoo.Name, LoadGoo.NickName, LoadGoo.Description + " for a " + MemberGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -226,19 +225,12 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      string unitAbbreviation = "";
+      string unitAbbreviation;
       if (DistributionType == LoadDistribution.Line)
-      {
-        IQuantity force = new ForcePerLength(0, ForcePerLengthUnit);
-        unitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
-      }
+        unitAbbreviation = new ForcePerLength(0, ForcePerLengthUnit).ToString("a");
       else
-      {
-        IQuantity force = new Pressure(0, ForcePerAreaUnit);
-        unitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
-      }
-      IQuantity length = new Length(0, LengthUnit);
-      string lengthunitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+        unitAbbreviation = new Pressure(0, ForcePerAreaUnit).ToString("a");
+      string lengthunitAbbreviation = new Length(0, LengthUnit).ToString("a");
 
       int i = 0;
       Params.Input[i++].Name = "Const. Dead 1 [" + unitAbbreviation + "]";

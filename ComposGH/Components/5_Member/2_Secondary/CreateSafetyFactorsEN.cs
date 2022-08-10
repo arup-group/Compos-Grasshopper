@@ -7,14 +7,16 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateEC4SafetyFactors : GH_OasysComponent, IGH_VariableParameterComponent
+  public class CreateSafetyFactorsEN : GH_OasysComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("842633ae-4a9c-4483-a606-02f1099fed0f");
-    public CreateEC4SafetyFactors()
-      : base("EC4 Safety Factors", "EC4SF", "Create Compos EC4 Safety Factors",
+    public CreateSafetyFactorsEN()
+      : base("Create" + SafetyFactorsENGoo.Name.Replace(" ", string.Empty),
+          SafetyFactorsENGoo.Name.Replace(" ", string.Empty),
+          "Create a " + SafetyFactorsENGoo.Description + " for a " + DesignCodeGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -76,7 +78,7 @@ namespace ComposGH.Components
 
     private void UpdateUIFromSelectedItems()
     {
-      LoadCombinationType = (LoadCombination)Enum.Parse(typeof(StudSpacingType), SelectedItems[0].Replace(" or ", "__").Replace(".", "_"));
+      LoadCombinationType = (LoadCombination)Enum.Parse(typeof(LoadCombination), SelectedItems[0].Replace(" or ", "__").Replace(".", "_"));
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -89,14 +91,14 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddNumberParameter("Const. ξ-factor", "ξ", "EC0 reduction factor at construction stage (dead/permenant load)", GH_ParamAccess.item, 1.0);
-      pManager.AddNumberParameter("Const. Combination factor", "Ψ0", "Factor for construction stage combination value of a variable action", GH_ParamAccess.item, 1.0);
-      pManager.AddNumberParameter("Const. Permanent load factor", "γG", "Partial factor for permanent loads at construction stage", GH_ParamAccess.item, 1.35);
-      pManager.AddNumberParameter("Const. Variable load factor", "γQ", "Partial factor for variable loads at construction stage", GH_ParamAccess.item, 1.5);
-      pManager.AddNumberParameter("Final ξ-factor", "ξ", "EC0 reduction factor at final stage (dead/permenant load)", GH_ParamAccess.item, 1.0);
-      pManager.AddNumberParameter("Final Combination factor", "Ψ0", "Factor for final stage combination value of a variable action", GH_ParamAccess.item, 1.0);
-      pManager.AddNumberParameter("Final Permanent load factor", "γG", "Partial factor for permanent loads at final stage", GH_ParamAccess.item, 1.35);
-      pManager.AddNumberParameter("Final Variable load factor", "γQ", "Partial factor for variable loads at final stage", GH_ParamAccess.item, 1.5);
+      pManager.AddNumberParameter("Const. ξ-factor", "Cξ", "EC0 reduction factor at construction stage (dead/permenant load)", GH_ParamAccess.item, 1.0);
+      pManager.AddNumberParameter("Const. Combination factor", "CΨ0", "Factor for construction stage combination value of a variable action", GH_ParamAccess.item, 1.0);
+      pManager.AddNumberParameter("Const. Permanent load factor", "CγG", "Partial factor for permanent loads at construction stage", GH_ParamAccess.item, 1.35);
+      pManager.AddNumberParameter("Const. Variable load factor", "CγQ", "Partial factor for variable loads at construction stage", GH_ParamAccess.item, 1.5);
+      pManager.AddNumberParameter("Final ξ-factor", "Fξ", "EC0 reduction factor at final stage (dead/permenant load)", GH_ParamAccess.item, 1.0);
+      pManager.AddNumberParameter("Final Combination factor", "FΨ0", "Factor for final stage combination value of a variable action", GH_ParamAccess.item, 1.0);
+      pManager.AddNumberParameter("Final Permanent load factor", "FγG", "Partial factor for permanent loads at final stage", GH_ParamAccess.item, 1.35);
+      pManager.AddNumberParameter("Final Variable load factor", "FγQ", "Partial factor for variable loads at final stage", GH_ParamAccess.item, 1.5);
       pManager.AddNumberParameter("Steel γM0 factor", "γM0", "Steel beam partial factor for resistance of cross-sections whatever the class is", GH_ParamAccess.item, 1.0);
       pManager.AddNumberParameter("Steel γM1 factor", "γM1", "Steel beam partial factor for resistance of members to instability assessed by member checks", GH_ParamAccess.item, 1.5);
       pManager.AddNumberParameter("Steel γM2 factor", "γM2", "Steel beam partial factor for resistance of cross-sections in tension to fracture", GH_ParamAccess.item, 1.25);
@@ -110,7 +112,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Safety Factors", "SF", "Compos Safety Factors", GH_ParamAccess.item);
+      pManager.AddGenericParameter(SafetyFactorsENGoo.Name, SafetyFactorsENGoo.NickName, SafetyFactorsENGoo.Description + " for a " + DesignCodeGoo.Description + " (EN)", GH_ParamAccess.item);
     }
     #endregion
 

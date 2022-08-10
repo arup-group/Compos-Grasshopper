@@ -20,7 +20,7 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("c422ae16-b8c0-4203-86c7-43c3f2917075");
     public DesignMember()
-      : base("Design Member", "Design", "Design (size) the steel beam of a Compos Member",
+      : base("DesignMember", "Design", "Design (size) the Steel Beam of a Compos Member",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat8())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -32,13 +32,13 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter("Member", "Mem", "Compos Member", GH_ParamAccess.item);
-      pManager.AddGenericParameter("DesignCriteria", "Crt", "Compos Design Criteria", GH_ParamAccess.item);
+      pManager.AddGenericParameter(MemberGoo.Name, MemberGoo.NickName, MemberGoo.Description, GH_ParamAccess.item);
+      pManager.AddGenericParameter(DesignCriteriaGoo.Name, DesignCriteriaGoo.NickName, DesignCriteriaGoo.Description, GH_ParamAccess.item);
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Member", "Mem", "Compos Member", GH_ParamAccess.item);
+      pManager.AddGenericParameter(MemberGoo.Name, MemberGoo.NickName, "Designed " + MemberGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 

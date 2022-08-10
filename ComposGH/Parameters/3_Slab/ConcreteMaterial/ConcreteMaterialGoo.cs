@@ -4,83 +4,14 @@ using ComposAPI;
 namespace ComposGH.Parameters
 {
   /// <summary>
-  /// Goo wrapper class, makes sure our custom class can be used in Grasshopper.
+  /// Goo wrapper class, makes sure ComposAPI <see cref="IConcreteMaterial"/> class can be used in Grasshopper.
   /// </summary>
-  public class ConcreteMaterialGoo : GH_Goo<IConcreteMaterial>
+  public class ConcreteMaterialGoo : GH_OasysGoo<IConcreteMaterial>
   {
-    #region constructors
-    public ConcreteMaterialGoo()
-    {
-      this.Value = new ConcreteMaterial();
-    }
-    public ConcreteMaterialGoo(IConcreteMaterial item)
-    {
-      if (item == null)
-        item = new ConcreteMaterial();
-      this.Value = item; //.Duplicate() as ConcreteMaterial;
-    }
-
-    public override IGH_Goo Duplicate()
-    {
-      return DuplicateGoo();
-    }
-    public ConcreteMaterialGoo DuplicateGoo()
-    {
-      return new ConcreteMaterialGoo(this.Value == null ? new ConcreteMaterial() : this.Value);// .Duplicate() as ConcreteMaterial);
-    }
-    #endregion
-
-    #region properties
-     public override bool IsValid => (this.Value == null) ? false : true;
-    public override string TypeName => "Concrete Material";
-    public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
-    public override string IsValidWhyNot
-    {
-      get
-      {
-        if (IsValid) { return string.Empty; }
-        return IsValid.ToString(); // todo: beef this up to be more informative
-      }
-    }
-
-    public override string ToString()
-    {
-      if (this.Value == null)
-        return "Null";
-      else
-        return "Compos " + this.TypeName + " {" + this.Value.ToString() + "}"; ;
-    }
-    #endregion
-
-    #region casting methods
-    public override bool CastTo<Q>(ref Q target)
-    {
-      // This function is called when Grasshopper needs to convert this instance of our custom class into some other type Q.           
-      if (typeof(Q).IsAssignableFrom(typeof(ConcreteMaterial)))
-      {
-        if (this.Value == null)
-          target = default;
-        else
-          target = (Q)(object)this.Value;
-        return true;
-      }
-
-      target = default;
-      return false;
-    }
-    public override bool CastFrom(object source)
-    {
-      // This function is called when Grasshopper needs to convert other data  into our custom class.
-      if (source == null) { return false; }
-
-      if (typeof(ConcreteMaterial).IsAssignableFrom(source.GetType()))
-      {
-        this.Value = (ConcreteMaterial)source;
-        return true;
-      }
-
-      return false;
-    }
-    #endregion
+    public static string Name => "Concrete Material";
+    public static string NickName => "CMt";
+    public static string Description => "Compos Concrete Material";
+    public ConcreteMaterialGoo(IConcreteMaterial item) : base(item) { }
+    public override IGH_Goo Duplicate() => new ConcreteMaterialGoo(this.Value);
   }
 }

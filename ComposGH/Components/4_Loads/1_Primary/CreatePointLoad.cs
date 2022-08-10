@@ -16,7 +16,7 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("4dfed0d2-3ad1-49e6-a8d8-d5a5fd851a64");
     public CreatePointLoad()
-      : base("Create Point Load", "PointLoad", "Create a concentrated point Compos Load",
+      : base("CreatePointLoad", "PointLoad", "Create a concentrated Compos Point Load.",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat4())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -97,10 +97,8 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity force = new Force(0, ForceUnit);
-      string unitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
-      IQuantity length = new Length(0, LengthUnit);
-      string lengthunitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Force(0, ForceUnit).ToString("a");
+      string lengthunitAbbreviation = new Length(0, LengthUnit).ToString("a");
       pManager.AddGenericParameter("Const. Dead [" + unitAbbreviation + "]", "dl", "Constant dead load; construction stage dead load which are used for construction stage analysis", GH_ParamAccess.item);
       pManager.AddGenericParameter("Const. Live [" + unitAbbreviation + "]", "ll", "Constant live load; construction stage live load which are used for construction stage analysis", GH_ParamAccess.item);
       pManager.AddGenericParameter("Final Dead [" + unitAbbreviation + "]", "DL", "Final Dead Load", GH_ParamAccess.item);
@@ -110,7 +108,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Load", "Ld", "Compos Point Load", GH_ParamAccess.item);
+      pManager.AddGenericParameter(LoadGoo.Name, LoadGoo.NickName, LoadGoo.Description + " for a " + MemberGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -163,10 +161,8 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity force = new Force(0, ForceUnit);
-      string unitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
-      IQuantity length = new Length(0, LengthUnit);
-      string lengthunitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = new Force(0, ForceUnit).ToString("a");
+      string lengthunitAbbreviation = new Length(0, LengthUnit).ToString("a");
       int i = 0;
       Params.Input[i++].Name = "Const. Dead [" + unitAbbreviation + "]";
       Params.Input[i++].Name = "Const. Live [" + unitAbbreviation + "]";

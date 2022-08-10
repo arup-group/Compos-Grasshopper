@@ -110,8 +110,11 @@ namespace ComposGH.Helpers
 
             // split text string
             // example: Universal Beams -- 51
+            int type = Int32.Parse(sqlData.Split(new string[] { " -- " }, StringSplitOptions.None)[1]);
+            if (!ComposAPI.Helpers.CatalogueSectionType.CatalogueSectionTypes.ContainsKey(type))
+              continue;
             typeNames.Add(sqlData.Split(new string[] { " -- " }, StringSplitOptions.None)[0]);
-            typeNumber.Add(Int32.Parse(sqlData.Split(new string[] { " -- " }, StringSplitOptions.None)[1]));
+            typeNumber.Add(type);
           }
           db.Close();
         }
@@ -183,8 +186,7 @@ namespace ComposGH.Helpers
           db.Close();
         }
       }
-            section.Insert(0, "All");
-            return section;
+      return section;
     }
 
 

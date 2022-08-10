@@ -15,7 +15,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("f86088eb-6cfa-4e73-99d6-af5d33fafb7f");
     public CreateFrequencyLimits()
-      : base("FrequencyLimit", "fLm", "Create Compos Frequncy Limits for Design Criteria",
+      : base("Create" + FrequencyLimitsGoo.Name.Replace(" ", string.Empty),
+          FrequencyLimitsGoo.Name.Replace(" ", string.Empty),
+          "Create a " + FrequencyLimitsGoo.Description + " for a " + DesignCriteriaGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat8())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -37,7 +39,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Frequency Limit", "fLm", "Compos Frequency Limit for Design Criteria", GH_ParamAccess.item);
+      pManager.AddGenericParameter(FrequencyLimitsGoo.Name, FrequencyLimitsGoo.NickName, FrequencyLimitsGoo.Description + " for a " + DesignCriteriaGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 

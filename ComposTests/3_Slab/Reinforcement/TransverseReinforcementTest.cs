@@ -48,33 +48,48 @@ namespace ComposAPI.Slabs.Tests
       Assert.Equal(LayoutMethod.Automatic, transverseReinforcement.LayoutMethod);
     }
 
-    [Theory]
-    [InlineData("REBAR_MATERIAL	MEMBER-1	STANDARD	500X\nREBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\nREBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\nREBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\n", RebarGrade.BS_500X)]
-    public void FromCoaStringCustomLayoutTest(string coaString, RebarGrade expected_grade)
+    [Fact]
+    public void FromCoaStringCustomLayoutTest()
     {
-      List<string> parameters = CoaHelper.Split(coaString);
+      string coaString = "REBAR_MATERIAL	MEMBER-1	STANDARD	500X\nREBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\nREBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\nREBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\n";
 
       ITransverseReinforcement transverseReinforcement = TransverseReinforcement.FromCoaString(coaString, "MEMBER-1", Code.BS5950_3_1_1990_A1_2010, ComposUnits.GetStandardUnits());
 
-      Assert.Equal(expected_grade, transverseReinforcement.Material.Grade);
+      Assert.Equal(RebarGrade.BS_500X, transverseReinforcement.Material.Grade);
       Assert.Equal(LayoutMethod.Custom, transverseReinforcement.LayoutMethod);
-      Assert.Equal(0, transverseReinforcement.CustomReinforcementLayouts[0].DistanceFromStart.Value);
-      Assert.Equal(1, transverseReinforcement.CustomReinforcementLayouts[0].DistanceFromEnd.Value);
+      Assert.Equal(0, transverseReinforcement.CustomReinforcementLayouts[0].StartPosition.Value);
+      Assert.Equal(1, transverseReinforcement.CustomReinforcementLayouts[0].EndPosition.Value);
       Assert.Equal(8, transverseReinforcement.CustomReinforcementLayouts[0].Diameter.Value);
       Assert.Equal(100, transverseReinforcement.CustomReinforcementLayouts[0].Spacing.Value);
       Assert.Equal(35, transverseReinforcement.CustomReinforcementLayouts[0].Cover.Value);
 
-      Assert.Equal(0, transverseReinforcement.CustomReinforcementLayouts[1].DistanceFromStart.Value);
-      Assert.Equal(1, transverseReinforcement.CustomReinforcementLayouts[1].DistanceFromEnd.Value);
+      Assert.Equal(0, transverseReinforcement.CustomReinforcementLayouts[1].StartPosition.Value);
+      Assert.Equal(1, transverseReinforcement.CustomReinforcementLayouts[1].EndPosition.Value);
       Assert.Equal(8, transverseReinforcement.CustomReinforcementLayouts[1].Diameter.Value);
       Assert.Equal(100, transverseReinforcement.CustomReinforcementLayouts[1].Spacing.Value);
       Assert.Equal(35, transverseReinforcement.CustomReinforcementLayouts[1].Cover.Value);
 
-      Assert.Equal(0, transverseReinforcement.CustomReinforcementLayouts[2].DistanceFromStart.Value);
-      Assert.Equal(1, transverseReinforcement.CustomReinforcementLayouts[2].DistanceFromEnd.Value);
+      Assert.Equal(0, transverseReinforcement.CustomReinforcementLayouts[2].StartPosition.Value);
+      Assert.Equal(1, transverseReinforcement.CustomReinforcementLayouts[2].EndPosition.Value);
       Assert.Equal(8, transverseReinforcement.CustomReinforcementLayouts[2].Diameter.Value);
       Assert.Equal(100, transverseReinforcement.CustomReinforcementLayouts[2].Spacing.Value);
       Assert.Equal(35, transverseReinforcement.CustomReinforcementLayouts[2].Cover.Value);
+    }
+
+    [Fact]
+    public void FromCoaStringCustomLayoutTestPercentage()
+    {
+      string coaString = "REBAR_MATERIAL	MEMBER-2	STANDARD	460T\nREBAR_TRANSVERSE	MEMBER-2	USER_DEFINED	5.00000%	95.0000%	0.00800000	0.250000	0.0350000\n";
+
+      ITransverseReinforcement transverseReinforcement = TransverseReinforcement.FromCoaString(coaString, "MEMBER-2", Code.BS5950_3_1_1990_A1_2010, ComposUnits.GetStandardUnits());
+
+      Assert.Equal(RebarGrade.BS_460T, transverseReinforcement.Material.Grade);
+      Assert.Equal(LayoutMethod.Custom, transverseReinforcement.LayoutMethod);
+      Assert.Equal(5, transverseReinforcement.CustomReinforcementLayouts[0].StartPosition.As(RatioUnit.Percent));
+      Assert.Equal(95, transverseReinforcement.CustomReinforcementLayouts[0].EndPosition.As(RatioUnit.Percent));
+      Assert.Equal(8, transverseReinforcement.CustomReinforcementLayouts[0].Diameter.Millimeters);
+      Assert.Equal(250, transverseReinforcement.CustomReinforcementLayouts[0].Spacing.Millimeters);
+      Assert.Equal(35, transverseReinforcement.CustomReinforcementLayouts[0].Cover.Millimeters);
     }
 
     // 1 setup inputs

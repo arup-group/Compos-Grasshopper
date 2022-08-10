@@ -13,14 +13,14 @@ namespace ComposGH.Components
   /// <summary>
   /// Component to open an existing compos data file
   /// </summary>
-  public class OpenModel : GH_Component, IGH_VariableParameterComponent
+  public class OpenComposFile : GH_Component, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("51e4fa31-a626-45a0-a3f6-70175ebb80e4");
-    public OpenModel()
-      : base("Open Model", "Open", "Open an existing Compos data file",
+    public OpenComposFile()
+      : base("OpenCompos", "Open", "Open an existing Compos .cob file",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat0())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -104,7 +104,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Member(s)", "Mem", "Compos Members contained in the file.", GH_ParamAccess.list);
+      pManager.AddGenericParameter(MemberGoo.Name + "(s)", MemberGoo.NickName, MemberGoo.Description + "s contained in the file.", GH_ParamAccess.list);
     }
     #region IGH_VariableParameterComponent null implementation
     //This sub region handles any changes to the component after it has been placed on the canvas

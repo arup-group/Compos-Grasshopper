@@ -16,7 +16,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("fd361dc8-98bc-4cad-ba15-4da5da3c52bb");
     public CreateConcreteMaterialEN()
-      : base("EN Concrete Material", "ConcMatEN", "Create concrete material to European Standard (EN) for concrete slab",
+      : base("EN" + ConcreteMaterialGoo.Name.Replace(" ", string.Empty),
+          "EN" + ConcreteMaterialGoo.NickName.Replace(" ", string.Empty),
+          "Look up a Standard EN " + ConcreteMaterialGoo.Description + " for a " + SlabGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -37,16 +39,16 @@ namespace ComposGH.Components
     List<string> SpacerDescriptions = new List<string>(new string[]
     {
       "Grade",
-      "Density Class",
       "Density Unit",
       "Strain Unit"
     });
     List<bool> OverrideDropDownItems;
     private bool First = true;
     private ConcreteGradeEN Grade = ConcreteGradeEN.C20_25;
-    private ConcreteMaterial.DensityClass DensityClass = ConcreteMaterial.DensityClass.NOT_APPLY;
+    private ConcreteMaterial.DensityClass DensityClass = ConcreteMaterial.DensityClass.DC801_1000;
     private DensityUnit DensityUnit = Units.DensityUnit;
     private StrainUnit StrainUnit = StrainUnit.MilliStrain;
+    private bool isLightWeight = false;
 
     public override void CreateAttributes()
     {
@@ -57,17 +59,8 @@ namespace ComposGH.Components
 
         // grade
         List<string> concreteGrades = Enum.GetValues(typeof(ConcreteGradeEN)).Cast<ConcreteGradeEN>().Select(x => x.ToString()).ToList();
-        //foreach (string concreteGrade in concreteGrades)
-        //{
-        //  concreteGrade.Replace("_", "/");
-        //}
         this.DropDownItems.Add(concreteGrades);
         this.SelectedItems.Add(this.Grade.ToString());
-
-        // density class
-        List<string> densityClasses = Enum.GetValues(typeof(ConcreteMaterial.DensityClass)).Cast<ConcreteMaterial.DensityClass>().Select(x => x.ToString()).ToList();
-        this.DropDownItems.Add(densityClasses);
-        this.SelectedItems.Add(this.DensityClass.ToString());
 
         // density unit
         this.DropDownItems.Add(Units.FilteredDensityUnits);
@@ -89,10 +82,38 @@ namespace ComposGH.Components
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
       if (i == 0) // change is made to grade
+      {
         this.Grade = (ConcreteGradeEN)Enum.Parse(typeof(ConcreteGradeEN), this.SelectedItems[i]);
+        if (this.Grade.ToString().StartsWith("LC"))
+        {
+          this.isLightWeight = true;
+          if (this.DropDownItems.Count < 4)
+          {
+            // density class
+            List<string> densityClasses = Enum.GetValues(typeof(ConcreteMaterial.DensityClass)).Cast<ConcreteMaterial.DensityClass>().Select(x => x.ToString()).ToList();
+            densityClasses.RemoveAt(0);
+            this.DropDownItems.Insert(1, densityClasses);
+            this.SelectedItems.Insert(1, this.DensityClass.ToString());
+            this.SpacerDescriptions.Insert(1, "Density Class");
+          }
+        }
+        else
+        {
+          this.isLightWeight = false;
+          if (this.DropDownItems.Count > 3)
+          {
+            this.DropDownItems.RemoveAt(1);
+            this.SelectedItems.RemoveAt(1);
+            this.SpacerDescriptions.RemoveAt(1);
+          }
+        }
+      }
 
-      else if (i == 1) // change is made to density class
+      else if (this.isLightWeight & i == 1) // change is made to density class
         this.DensityClass = (ConcreteMaterial.DensityClass)Enum.Parse(typeof(ConcreteMaterial.DensityClass), this.SelectedItems[i]);
+
+      if (!this.isLightWeight)
+        i++; // 
 
       else if (i == 2) // change is made to density unit
         this.DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), this.SelectedItems[i]);
@@ -111,8 +132,12 @@ namespace ComposGH.Components
     {
       if (this.SelectedItems[0] != "-")
         this.Grade = (ConcreteGradeEN)Enum.Parse(typeof(ConcreteGradeEN), this.SelectedItems[0]);
-      this.DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), this.SelectedItems[2]);
-      this.StrainUnit = (StrainUnit)Enum.Parse(typeof(StrainUnit), this.SelectedItems[3]);
+      int i = 1;
+      if (this.isLightWeight)
+        this.DensityClass = (ConcreteMaterial.DensityClass)Enum.Parse(typeof(ConcreteMaterial.DensityClass), this.SelectedItems[i++]);
+      
+      this.DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), this.SelectedItems[i++]);
+      this.StrainUnit = (StrainUnit)Enum.Parse(typeof(StrainUnit), this.SelectedItems[i++]);
 
       CreateAttributes();
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -126,14 +151,12 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity density = new Density(0, this.DensityUnit);
-      string densityUnitAbbreviation = string.Concat(density.ToString().Where(char.IsLetter));
-
+      string densityUnitAbbreviation = new Density(0, this.DensityUnit).ToString("a");
       string strainUnitAbbreviation = Strain.GetAbbreviation(this.StrainUnit);
 
       // optional
       pManager.AddNumberParameter("Dry Density [" + densityUnitAbbreviation + "]", "DD", "(Optional) Dry density", GH_ParamAccess.item);
-      pManager.AddGenericParameter("E Ratios", "ER", "(Optional) Steel/concrete Young´s modulus ratios", GH_ParamAccess.item);
+      pManager.AddGenericParameter(ERatioGoo.Name, ERatioGoo.NickName, "(Optional)" + ERatioGoo.Description, GH_ParamAccess.item);
       pManager.AddNumberParameter("Imposed Load Percentage [-]", "ILP", "(Optional) Percentage of imposed load acting long term as decimal fraction", GH_ParamAccess.item, 0.33);
       pManager.AddNumberParameter("Shrinkage Strain [" + strainUnitAbbreviation + "]", "SS", "(Optional) Shrinkage strain", GH_ParamAccess.item, -0.5);
       pManager.AddGenericParameter("Concrete Grade", "CG", "(Optional) Concrete grade", GH_ParamAccess.item);
@@ -149,7 +172,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Concrete Material", "CMt", "Concrete material for concrete slab", GH_ParamAccess.item);
+      pManager.AddGenericParameter(ConcreteMaterialGoo.Name, ConcreteMaterialGoo.NickName, "EN " + ConcreteMaterialGoo.Description + " for a " + SlabGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -223,6 +246,8 @@ namespace ComposGH.Components
       {
         dryDensity = GetInput.Density(this, DA, 0, this.DensityUnit);
         userDensity = true;
+        if (this.isLightWeight)
+          SelectedItems[1] = "NOT_APPLY";
       }
       else if (this.Grade.ToString().StartsWith("L"))
       {
@@ -246,23 +271,11 @@ namespace ComposGH.Components
         userStrain = true;
       }
 
-      switch (this.Grade)
-      {
-        case (ConcreteGradeEN.C20_25):
-        case (ConcreteGradeEN.C25_30):
-        case (ConcreteGradeEN.C30_37):
-        case (ConcreteGradeEN.C32_40):
-        case (ConcreteGradeEN.C35_45):
-        case (ConcreteGradeEN.C40_50):
-        case (ConcreteGradeEN.C45_55):
-        case (ConcreteGradeEN.C50_60):
-        case (ConcreteGradeEN.C55_67):
-        case (ConcreteGradeEN.C60_75):
-          this.DensityClass = ConcreteMaterial.DensityClass.NOT_APPLY;
-          break;
-      }
+      ConcreteMaterial.DensityClass selectedDensityClass = this.DensityClass;
+      if (!isLightWeight)
+        selectedDensityClass = ConcreteMaterial.DensityClass.NOT_APPLY;
 
-      ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, this.DensityClass, dryDensity, userDensity, (eRatio == null) ? new ERatio() { ShortTerm = 6, LongTerm = 18, Vibration = 5.39 } : eRatio.Value, imposedLoadPercentage, shrinkageStrain, userStrain);
+      ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, selectedDensityClass, dryDensity, userDensity, (eRatio == null) ? new ERatio() { ShortTerm = 6, LongTerm = 18, Vibration = 5.39 } : eRatio.Value, imposedLoadPercentage, shrinkageStrain, userStrain);
 
       DA.SetData(0, new ConcreteMaterialGoo(concreteMaterial));
     }
@@ -271,13 +284,14 @@ namespace ComposGH.Components
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
       Helpers.DeSerialization.writeDropDownComponents(ref writer, this.DropDownItems, this.SelectedItems, this.SpacerDescriptions);
+      writer.SetBoolean("isLightWeight", this.isLightWeight);
       return base.Write(writer);
     }
 
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
       Helpers.DeSerialization.readDropDownComponents(ref reader, ref this.DropDownItems, ref this.SelectedItems, ref this.SpacerDescriptions);
-
+      this.isLightWeight = reader.GetBoolean("isLightWeight");
       UpdateUIFromSelectedItems();
 
       this.First = false;
@@ -309,12 +323,9 @@ namespace ComposGH.Components
 
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity density = new Density(2, this.DensityUnit);
-      string densityUnitAbbreviation = string.Concat(density.ToString().Where(char.IsLetter));
+      string densityUnitAbbreviation = new Density(0, this.DensityUnit).ToString("a");
+      string strainUnitAbbreviation = Strain.GetAbbreviation(this.StrainUnit);
       this.Params.Input[0].Name = "Density [" + densityUnitAbbreviation + "]";
-
-      IQuantity strain = new Strain(3, this.StrainUnit);
-      string strainUnitAbbreviation = string.Concat(strain.ToString().Where(char.IsLetter));
       this.Params.Input[3].Name = "Strain [" + strainUnitAbbreviation + "]";
     }
     #endregion

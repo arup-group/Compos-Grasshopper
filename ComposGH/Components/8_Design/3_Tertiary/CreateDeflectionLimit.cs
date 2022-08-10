@@ -15,7 +15,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("02b54c18-a142-4e9c-a2ad-715a71c962f7");
     public CreateDeflectionLimit()
-      : base("DeflectionLimit", "DLm", "Create Compos Deflection Limit for Design Criteria",
+      : base("Create" + DeflectionLimitGoo.Name.Replace(" ", string.Empty),
+          DeflectionLimitGoo.Name.Replace(" ", string.Empty),
+          "Create a " + DeflectionLimitGoo.Description + " for a " + DesignCriteriaGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat8())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -93,7 +95,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Deflection Limit", "DLm", "Compos Deflection Limit for Design Criteria", GH_ParamAccess.item);
+      pManager.AddGenericParameter(DeflectionLimitGoo.Name, DeflectionLimitGoo.NickName, DeflectionLimitGoo.Description + " for a " + DesignCriteriaGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 

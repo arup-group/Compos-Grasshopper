@@ -22,7 +22,7 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("dd28f981-592c-4c70-9295-740409300472");
     public CreateProfile()
-      : base("Create Profile", "Profile", "Create Profile text-string for Compos Beam",
+      : base("CreateProfile", "Profile", "Create or look up a Profile text-string for a " + BeamGoo.Description + " or a " + BeamSectionGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -417,8 +417,6 @@ namespace ComposGH.Components
 
 
     #region Input and output
-    
-
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       pManager.AddTextParameter("Search", "S", "Text to search from", GH_ParamAccess.item);
@@ -428,7 +426,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Beam Section", "Bs", "Beam Section for a Compos Beam", GH_ParamAccess.item);
+      pManager.AddGenericParameter(BeamSectionGoo.Name, BeamSectionGoo.NickName, BeamSectionGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.item);
     }
     #endregion
     protected override void SolveInstance(IGH_DataAccess DA)
@@ -830,36 +828,35 @@ namespace ComposGH.Components
       }
       else
       {
-        IQuantity quantity = new Length(0, LengthUnit);
-        UnitAbbreviation = string.Concat(quantity.ToString().Where(char.IsLetter));
+        string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
 
         int i = 0;
         // angle
         if (Typ == "IAngleProfile") //(typ.Name.Equals(typeof(IAngleProfile).Name))
         {
           Params.Input[i].NickName = "D";
-          Params.Input[i].Name = "Depth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Depth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The depth of the angle profile (leg in the local z axis).";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "W";
-          Params.Input[i].Name = "Width [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Width [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The width of the angle profile (leg in the local y axis).";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Tw";
-          Params.Input[i].Name = "Web Thk [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Web Thk [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The web thickness of the angle profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Tf";
-          Params.Input[i].Name = "Flange Thk [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Flange Thk [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The flange thickness of the angle profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -871,14 +868,14 @@ namespace ComposGH.Components
         else if (Typ == "IChannelProfile") //(typ.Name.Equals(typeof(IChannelProfile).Name))
         {
           Params.Input[i].NickName = "D";
-          Params.Input[i].Name = "Depth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Depth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The depth of the channel profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "B";
-          Params.Input[i].Name = "Width [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Width [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The width of the flange of the channel profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -892,7 +889,7 @@ namespace ComposGH.Components
 
           i++;
           Params.Input[i].NickName = "Tf";
-          Params.Input[i].Name = "Flange Thk [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Flange Thk [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The flange thickness of the channel profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -903,14 +900,14 @@ namespace ComposGH.Components
         else if (Typ == "ICircleHollowProfile") //(typ.Name.Equals(typeof(ICircleHollowProfile).Name))
         {
           Params.Input[i].NickName = "Ø";
-          Params.Input[i].Name = "Diameter [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Diameter [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The diameter of the hollow circle.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "t";
-          Params.Input[i].Name = "Thickness [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Thickness [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The wall thickness of the hollow circle.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -921,7 +918,7 @@ namespace ComposGH.Components
         else if (Typ == "ICircleProfile") //(typ.Name.Equals(typeof(ICircleProfile).Name))
         {
           Params.Input[i].NickName = "Ø";
-          Params.Input[i].Name = "Diameter [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Diameter [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The diameter of the circle.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -933,28 +930,28 @@ namespace ComposGH.Components
         else if (Typ == "ICruciformSymmetricalProfile") //(typ.Name.Equals(typeof(ICruciformSymmetricalProfile).Name))
         {
           Params.Input[i].NickName = "D";
-          Params.Input[i].Name = "Depth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Depth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The depth (local z axis leg) of the profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "B";
-          Params.Input[i].Name = "Width [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Width [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The width of the flange (local y axis leg) of the cruciform.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Tw";
-          Params.Input[i].Name = "Web Thk [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Web Thk [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The web thickness of the cruciform.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Tf";
-          Params.Input[i].Name = "Flange Thk [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Flange Thk [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The flange thickness of the cruciform.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -965,21 +962,21 @@ namespace ComposGH.Components
         else if (Typ == "IEllipseHollowProfile") //(typ.Name.Equals(typeof(IEllipseHollowProfile).Name))
         {
           Params.Input[i].NickName = "D";
-          Params.Input[i].Name = "Depth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Depth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The depth of the hollow ellipse.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "B";
-          Params.Input[i].Name = "Width [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Width [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The width of the hollow ellipse.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "t";
-          Params.Input[i].Name = "Thickness [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Thickness [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The wall thickness of the hollow ellipse.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -990,14 +987,14 @@ namespace ComposGH.Components
         else if (Typ == "IEllipseProfile") //(typ.Name.Equals(typeof(IEllipseProfile).Name))
         {
           Params.Input[i].NickName = "D";
-          Params.Input[i].Name = "Depth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Depth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The depth of the ellipse.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "B";
-          Params.Input[i].Name = "Width [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Width [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The width of the ellipse.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -1008,28 +1005,28 @@ namespace ComposGH.Components
         else if (Typ == "IGeneralCProfile") //(typ.Name.Equals(typeof(IGeneralCProfile).Name))
         {
           Params.Input[i].NickName = "D";
-          Params.Input[i].Name = "Depth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Depth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The depth of the generic c section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "B";
-          Params.Input[i].Name = "Width [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Width [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The flange width of the generic c section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "L";
-          Params.Input[i].Name = "Lip [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Lip [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The lip of the generic c section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "t";
-          Params.Input[i].Name = "Thickness [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Thickness [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The thickness of the generic c section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -1040,42 +1037,42 @@ namespace ComposGH.Components
         else if (Typ == "IGeneralZProfile") //(typ.Name.Equals(typeof(IGeneralZProfile).Name))
         {
           Params.Input[i].NickName = "D";
-          Params.Input[i].Name = "Depth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Depth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The depth of the generic z section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Bt";
-          Params.Input[i].Name = "TopWidth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "TopWidth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The top flange width of the generic z section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Bb";
-          Params.Input[i].Name = "BottomWidth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "BottomWidth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The bottom flange width of the generic z section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Lt";
-          Params.Input[i].Name = "Top Lip [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Top Lip [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The top lip of the generic z section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Lb";
-          Params.Input[i].Name = "Lip [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Lip [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The top lip of the generic z section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "t";
-          Params.Input[i].Name = "Thickness [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Thickness [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The thickness of the generic z section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -1086,42 +1083,42 @@ namespace ComposGH.Components
         else if (Typ == "IIBeamAsymmetricalProfile") //(typ.Name.Equals(typeof(IIBeamAsymmetricalProfile).Name))
         {
           Params.Input[i].NickName = "D";
-          Params.Input[i].Name = "Depth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Depth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The depth of the profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Bt";
-          Params.Input[i].Name = "TopFlangeWidth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "TopFlangeWidth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The width of the top flange of the beam. Top is relative to the beam local access.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Bb";
-          Params.Input[i].Name = "BottomFlangeWidth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "BottomFlangeWidth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The width of the bottom flange of the beam. Bottom is relative to the beam local access.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
-          Params.Input[i].NickName = "Web";
-          Params.Input[i].Name = "Web Thickness [" + UnitAbbreviation + "]";
+          Params.Input[i].NickName = "t";
+          Params.Input[i].Name = "Web Thickness [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The web thickness of the beam.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Tt";
-          Params.Input[i].Name = "TopFlangeThk [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "TopFlangeThk [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The top flange thickness.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Tb";
-          Params.Input[i].Name = "BottomFlangeThk [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "BottomFlangeThk [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The bpttom flange thickness.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -1133,42 +1130,42 @@ namespace ComposGH.Components
         else if (Typ == "IIBeamCellularProfile") //(typ.Name.Equals(typeof(IIBeamCellularProfile).Name))
         {
           Params.Input[i].NickName = "D";
-          Params.Input[i].Name = "Depth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Depth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The depth of the profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "B";
-          Params.Input[i].Name = "Width [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Width [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The width of the flanges of the beam.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Tw";
-          Params.Input[i].Name = "Web Thk [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Web Thk [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The web thickness of the angle profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Tf";
-          Params.Input[i].Name = "Flange Thk [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Flange Thk [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The flange thickness of the angle profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "O";
-          Params.Input[i].Name = "WebOpening [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "WebOpening [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The size of the web opening.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "P";
-          Params.Input[i].Name = "Pitch [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Pitch [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The pitch (spacing) between the web openings.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -1179,28 +1176,28 @@ namespace ComposGH.Components
         else if (Typ == "IIBeamSymmetricalProfile") //(typ.Name.Equals(typeof(IIBeamSymmetricalProfile).Name))
         {
           Params.Input[i].NickName = "D";
-          Params.Input[i].Name = "Depth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Depth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The depth of the profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "B";
-          Params.Input[i].Name = "Width [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Width [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The width of the flanges of the beam.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
-          Params.Input[i].NickName = "Tw";
-          Params.Input[i].Name = "Web Thk [" + UnitAbbreviation + "]";
+          Params.Input[i].NickName = "t";
+          Params.Input[i].Name = "Web Thk [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The web thickness of the angle profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
-          Params.Input[i].NickName = "Tf";
-          Params.Input[i].Name = "Flange Thk [" + UnitAbbreviation + "]";
+          Params.Input[i].NickName = "T";
+          Params.Input[i].Name = "Flange Thk [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The flange thickness of the angle profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -1212,28 +1209,28 @@ namespace ComposGH.Components
         else if (Typ == "IRectangleHollowProfile") //(typ.Name.Equals(typeof(IRectangleHollowProfile).Name))
         {
           Params.Input[i].NickName = "D";
-          Params.Input[i].Name = "Depth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Depth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The depth of the hollow rectangle.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "B";
-          Params.Input[i].Name = "Width [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Width [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The width of the hollow rectangle.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Tw";
-          Params.Input[i].Name = "Web Thk [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Web Thk [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The side thickness of the hollow rectangle.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Tf";
-          Params.Input[i].Name = "Flange Thk [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Flange Thk [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The top/bottom thickness of the hollow rectangle.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -1244,14 +1241,14 @@ namespace ComposGH.Components
         else if (Typ == "IRectangleProfile") //(typ.Name.Equals(typeof(IRectangleProfile).Name))
         {
           Params.Input[i].NickName = "D";
-          Params.Input[i].Name = "Depth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Depth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "Depth of the rectangle, in local z-axis direction.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "B";
-          Params.Input[i].Name = "Width [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Width [" + unitAbbreviation + "]";
           Params.Input[i].Description = "Width of the rectangle, in loca y-axis direction.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -1262,28 +1259,28 @@ namespace ComposGH.Components
         else if (Typ == "IRectoEllipseProfile") //(typ.Name.Equals(typeof(IRectoEllipseProfile).Name))
         {
           Params.Input[i].NickName = "D";
-          Params.Input[i].Name = "Depth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Depth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The overall depth of the recto-ellipse profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Df";
-          Params.Input[i].Name = "DepthFlat [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "DepthFlat [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The flat length of the profile's overall depth.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "B";
-          Params.Input[i].Name = "Width [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Width [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The overall width of the recto-ellipse profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Bf";
-          Params.Input[i].Name = "WidthFlat [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "WidthFlat [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The flat length of the profile's overall width.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -1294,14 +1291,14 @@ namespace ComposGH.Components
         else if (Typ == "ISecantPileProfile") //(typ.Name.Equals(typeof(ISecantPileProfile).Name))
         {
           Params.Input[i].NickName = "Ø";
-          Params.Input[i].Name = "Diameter [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Diameter [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The diameter of the piles.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "c/c";
-          Params.Input[i].Name = "PileCentres [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "PileCentres [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The centre to centre distance between adjacent piles.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -1326,42 +1323,42 @@ namespace ComposGH.Components
         else if (Typ == "ISheetPileProfile") //(typ.Name.Equals(typeof(ISheetPileProfile).Name))
         {
           Params.Input[i].NickName = "D";
-          Params.Input[i].Name = "Depth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Depth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The depth of the sheet pile section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "B";
-          Params.Input[i].Name = "Width [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Width [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The overall width of the sheet pile section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Bt";
-          Params.Input[i].Name = "TopFlangeWidth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "TopFlangeWidth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The top flange width of the sheet pile section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Bb";
-          Params.Input[i].Name = "BottomFlangeWidth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "BottomFlangeWidth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The bottom flange width of the sheet pile section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Ft";
-          Params.Input[i].Name = "FlangeThickness [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "FlangeThickness [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The flange thickness of the sheet pile section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Wt";
-          Params.Input[i].Name = "WebThickness [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "WebThickness [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The web thickness of the sheet pile section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -1372,14 +1369,14 @@ namespace ComposGH.Components
         else if (Typ == "IStadiumProfile") //(typ.Name.Equals(typeof(IStadiumProfile).Name))
         {
           Params.Input[i].NickName = "D";
-          Params.Input[i].Name = "Depth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Depth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The profile's overall depth considering the side length of the rectangle and the radii of the semicircles on the two ends.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "B";
-          Params.Input[i].Name = "Width [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Width [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The profile's width (diameter of the semicircles).";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -1390,21 +1387,21 @@ namespace ComposGH.Components
         else if (Typ == "ITrapezoidProfile") //(typ.Name.Equals(typeof(ITrapezoidProfile).Name))
         {
           Params.Input[i].NickName = "D";
-          Params.Input[i].Name = "Depth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Depth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The depth in z-axis direction of trapezoidal profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Bt";
-          Params.Input[i].Name = "TopWidth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "TopWidth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The top width of trapezoidal profile. Top is relative to the local z-axis.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Bb";
-          Params.Input[i].Name = "BottomWidth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "BottomWidth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The bottom width of trapezoidal profile. Bottom is relative to the local z-axis.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
@@ -1415,28 +1412,28 @@ namespace ComposGH.Components
         else if (Typ == "ITSectionProfile") //(typ.Name.Equals(typeof(ITSectionProfile).Name))
         {
           Params.Input[i].NickName = "D";
-          Params.Input[i].Name = "Depth [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Depth [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The depth of the T section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "B";
-          Params.Input[i].Name = "Width [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Width [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The width of the T section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Tw";
-          Params.Input[i].Name = "Web Thk [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Web Thk [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The web thickness of the T section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;
 
           i++;
           Params.Input[i].NickName = "Tf";
-          Params.Input[i].Name = "Flange Thk [" + UnitAbbreviation + "]";
+          Params.Input[i].Name = "Flange Thk [" + unitAbbreviation + "]";
           Params.Input[i].Description = "The flange thickness of the T section profile.";
           Params.Input[i].Access = GH_ParamAccess.item;
           Params.Input[i].Optional = false;

@@ -16,7 +16,9 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("f89b420e-a35e-4197-9c64-87504fe02b59");
     public CreateDesignCode()
-      : base("Design Code", "DC", "Create Compos Design Code",
+      : base("Create" + DesignCodeGoo.Name.Replace(" ", string.Empty),
+          DesignCodeGoo.Name.Replace(" ", string.Empty),
+          "Create a " + DesignCodeGoo.Description + " for a " + MemberGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -247,9 +249,9 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter("EC4 Safety Factors", "SF", "(Optional) EC4 Safety Factors", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Creep&Shrinkage Shrinkage", "csp", "(Optional) Creep and Shrinkage parameters for Shrinkage situation. If no input default code values will be used", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Creep&Shrinkage Long Term", "CSP", "(Optional) Creep and Shrinkage parameters Long term situation. If no input default code values will be used", GH_ParamAccess.item);
+      pManager.AddGenericParameter(SafetyFactorsENGoo.Name, SafetyFactorsENGoo.NickName, "(Optional) " + SafetyFactorsENGoo.Description, GH_ParamAccess.item);
+      pManager.AddGenericParameter(CreepShrinkageParametersGoo.Name + " Short Term", CreepShrinkageParametersGoo.NickName.ToLower(), "(Optional) Short Term " + CreepShrinkageParametersGoo.Description + ". If no input, the default code values will be used", GH_ParamAccess.item);
+      pManager.AddGenericParameter(CreepShrinkageParametersGoo.Name + " Long Term", CreepShrinkageParametersGoo.NickName.ToUpper(), "(Optional) Long Term " + CreepShrinkageParametersGoo.Description + ". If no input, the default code values will be used", GH_ParamAccess.item);
 
       for (int i = 0; i < pManager.ParamCount; i++)
         pManager[i].Optional = true;
@@ -257,7 +259,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Design Code", "Co", "Compos Design Code", GH_ParamAccess.item);
+      pManager.AddGenericParameter(DesignCodeGoo.Name, DesignCodeGoo.NickName, DesignCodeGoo.Description + " for a " + MemberGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -300,12 +302,12 @@ namespace ComposGH.Components
           ec4.DesignOption = this.DesignOptions;
           ec4.CodeOptions = this.EC4CodeOptions;
 
-          CreepShrinkageParametersEN shrink = (CreepShrinkageParametersEN)GetInput.GenericGoo<CreepShrinkageEuroCodeParametersGoo>(this, DA, 1);
+          CreepShrinkageParametersGoo shrink = (CreepShrinkageParametersGoo)GetInput.GenericGoo<CreepShrinkageParametersGoo>(this, DA, 1);
           if (shrink != null)
-            ec4.CodeOptions.ShortTerm = shrink;
-          CreepShrinkageParametersEN longt = (CreepShrinkageParametersEN)GetInput.GenericGoo<CreepShrinkageEuroCodeParametersGoo>(this, DA, 2);
+            ec4.CodeOptions.ShortTerm = shrink.Value;
+          CreepShrinkageParametersGoo longt = (CreepShrinkageParametersGoo)GetInput.GenericGoo<CreepShrinkageParametersGoo>(this, DA, 2);
           if (longt != null)
-            ec4.CodeOptions.LongTerm = longt;
+            ec4.CodeOptions.LongTerm = longt.Value;
 
           if (ec4safetyFactors != null)
             ec4.SafetyFactors = ec4safetyFactors;
@@ -443,24 +445,23 @@ namespace ComposGH.Components
       switch (this.Code)
       {
         case Code.EN1994_1_1_2004:
-          Params.Input[1].Name = "Creep&Shrinkage Shrinkage";
-          Params.Input[1].NickName = "csp";
-          Params.Input[1].Description = "(Optional) Creep and Shrinkage parameters for Shrinkage situation. If no input default code values will be used";
+          Params.Input[1].Name = CreepShrinkageParametersGoo.Name + " Short Term";
+          Params.Input[1].NickName = CreepShrinkageParametersGoo.NickName.ToLower();
+          Params.Input[1].Description = "(Optional) Short Term " + CreepShrinkageParametersGoo.Description + ". If no input, the default code values will be used";
           Params.Input[1].Optional = true;
-          Params.Input[2].Name = "Creep&Shrinkage Long Term";
-          Params.Input[2].NickName = "CSP";
-          Params.Input[2].Description = "(Optional) Creep and Shrinkage parameters for Long Term situation. If no input default code values will be used";
+          Params.Input[2].Name = CreepShrinkageParametersGoo.Name + " Long Term";
+          Params.Input[2].NickName = CreepShrinkageParametersGoo.NickName.ToUpper();
+          Params.Input[2].Description = "(Optional) Long Term " + CreepShrinkageParametersGoo.Description + ". If no input, the default code values will be used";
           Params.Input[2].Optional = true;
           break;
-
         case Code.AS_NZS2327_2017:
-          Params.Input[1].Name = "Creep coefficient Shrinkage";
-          Params.Input[1].NickName = "crp";
-          Params.Input[1].Description = "(Optional) Creep coefficient for Shrinkage situation. If no input default code values will be used";
+          Params.Input[1].Name = "Shrinkage";
+          Params.Input[1].NickName = "Shr";
+          Params.Input[1].Description = "(Optional) Shrinkage multiplier. If no input, the default ASNZ code values will be used";
           Params.Input[1].Optional = true;
-          Params.Input[2].Name = "Creep coefficient Long Term";
-          Params.Input[2].NickName = "CRP";
-          Params.Input[2].Description = "(Optional) Creep coefficient for Long Term situation. If no input default code values will be used";
+          Params.Input[2].Name = "Long Creep Coeff.";
+          Params.Input[2].NickName = "CC";
+          Params.Input[2].Description = "(Optional) Long Term Creep Coefficient. If no input, the default ASNZ code values will be used";
           Params.Input[2].Optional = true;
           break;
 

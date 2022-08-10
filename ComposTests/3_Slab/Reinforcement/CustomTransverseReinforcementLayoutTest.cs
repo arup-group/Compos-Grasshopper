@@ -33,8 +33,8 @@ namespace ComposAPI.Slabs.Tests
 
       ICustomTransverseReinforcementLayout customTransverseReinforcementLayout = CustomTransverseReinforcementLayout.FromCoaString(parameters, ComposUnits.GetStandardUnits());
 
-      Assert.Equal(expected_distanceFromStart, customTransverseReinforcementLayout.DistanceFromStart.Value);
-      Assert.Equal(expected_distanceFromEnd, customTransverseReinforcementLayout.DistanceFromEnd.Value);
+      Assert.Equal(expected_distanceFromStart, customTransverseReinforcementLayout.StartPosition.Value);
+      Assert.Equal(expected_distanceFromEnd, customTransverseReinforcementLayout.EndPosition.Value);
       Assert.Equal(expected_diameter, customTransverseReinforcementLayout.Diameter.Value);
       Assert.Equal(expected_spacing, customTransverseReinforcementLayout.Spacing.Value);
       Assert.Equal(expected_cover, customTransverseReinforcementLayout.Cover.Value);
@@ -51,8 +51,8 @@ namespace ComposAPI.Slabs.Tests
       CustomTransverseReinforcementLayout layout = new CustomTransverseReinforcementLayout(new Length(distanceFromStart, units.Length), new Length(distanceFromEnd, units.Length), new Length(diameter, units.Length), new Length(spacing, units.Length), new Length(cover, units.Length));
 
       // 3 check that inputs are set in object's members
-      Assert.Equal(distanceFromStart, layout.DistanceFromStart.Value);
-      Assert.Equal(distanceFromEnd, layout.DistanceFromEnd.Value);
+      Assert.Equal(distanceFromStart, layout.StartPosition.Value);
+      Assert.Equal(distanceFromEnd, layout.EndPosition.Value);
       Assert.Equal(diameter, layout.Diameter.Value);
       Assert.Equal(spacing, layout.Spacing.Value);
       Assert.Equal(cover, layout.Cover.Value);

@@ -16,7 +16,9 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("2C3C07F4-C395-4747-A111-D5A67B250104");
     public CreateCustomSteelMaterial()
-      : base("Custom Steel Material", "CustomSteelMat", "Create Custom Steel Material for a Compos Beam",
+      : base("Custom" + SteelMaterialGoo.Name.Replace(" ", string.Empty),
+          SteelMaterialGoo.Name.Replace(" ", string.Empty), 
+          "Create a Custom " + SteelMaterialGoo.Description + " for a " + BeamGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -55,6 +57,7 @@ namespace ComposGH.Components
 
         // WeldMaterial
         this.DropDownItems.Add(Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList());
+        this.DropDownItems[0].RemoveAt(0);
         SelectedItems.Add(Grade.ToString());
 
         // Stress
@@ -83,16 +86,11 @@ namespace ComposGH.Components
           return; // return if selected value is same as before
 
         Grade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), SelectedItems[i]);
-
       }
       if (i == 1)
-      {
         StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), SelectedItems[i]);
-      }
       if (i == 2)
-      {
         DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), SelectedItems[i]);
-      }
 
       // update name of inputs (to display unit on sliders)
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
@@ -119,23 +117,20 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity stress = new Pressure(0, StressUnit);
-      IQuantity density = new Density(0, DensityUnit);
-
-      string stressunitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
-      string densityunitAbbreviation = string.Concat(density.ToString().Where(char.IsLetter));
+      string stressunitAbbreviation = new Pressure(0, StressUnit).ToString("a");
+      string densityunitAbbreviation = new Density(0, DensityUnit).ToString("a");
 
       pManager.AddGenericParameter("Strength [" + stressunitAbbreviation + "]", "fy", "Steel Yield Strength", GH_ParamAccess.item);
       pManager.AddGenericParameter("Young's Modulus [" + stressunitAbbreviation + "]", "E", "Steel Young's Modulus", GH_ParamAccess.item);
       pManager.AddGenericParameter("Density [" + densityunitAbbreviation + "]", "ρ", "Steel Density", GH_ParamAccess.item);
       pManager.AddBooleanParameter("Reduction Factor", "RF", "Apply reduction factor for plastic moment capacity, EC4 (6.2.1.2 (2))", GH_ParamAccess.item, false);
-      pManager.AddGenericParameter("Grade", "G", "(Optional) Grade", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Grade", "G", "(Optional) Weld Grade", GH_ParamAccess.item);
 
       pManager[4].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("StandardSteelMaterial", "SSM", "Standard Steel Material for a Compos Beam", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Custom " + SteelMaterialGoo.Name, SteelMaterialGoo.NickName, "Custom " + SteelMaterialGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -156,26 +151,27 @@ namespace ComposGH.Components
         catch (ArgumentException)
         {
           string text = "Could not parse steel grade. Valid steel grades are ";
-          foreach (string g in Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList())
+          foreach (string g in Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList())
           {
             text += g + ", ";
           }
           text = text.Remove(text.Length - 2);
           text += ".";
-          this.DropDownItems[0] = Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList();
+          this.DropDownItems[0] = Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList();
           AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
         }
       }
       else if (this.OverrideDropDownItems[0])
       {
-        this.DropDownItems[0] = Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList();
+        this.DropDownItems[0] = Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList();
         this.OverrideDropDownItems[0] = false;
       }
 
       bool redFact = new bool();
 
       if (DA.GetData(3, ref redFact))
-        AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Note that reduction factor only applies for EC4 DesignCode");
+        if (redFact)
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Note that reduction factor only applies for EC4 DesignCode");
 
       DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(GetInput.Stress(this, DA, 0, StressUnit), GetInput.Stress(this, DA, 1, StressUnit), GetInput.Density(this, DA, 2, DensityUnit), Grade, true, redFact)));
     }
@@ -218,11 +214,8 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity stress = new Pressure(0, StressUnit);
-      IQuantity density = new Density(0, DensityUnit);
-
-      string stressunitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
-      string densityunitAbbreviation = string.Concat(density.ToString().Where(char.IsLetter));
+      string stressunitAbbreviation = new Pressure(0, StressUnit).ToString("a");
+      string densityunitAbbreviation = new Density(0, DensityUnit).ToString("a");
 
       Params.Input[0].Name = "Strength [" + stressunitAbbreviation + "]";
       Params.Input[1].Name = "Young's Modulus [" + stressunitAbbreviation + "]";

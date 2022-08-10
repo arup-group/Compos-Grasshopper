@@ -16,7 +16,9 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("E91D37A1-81D4-427D-9910-E8A514466F3C");
     public CreateRebarMaterial()
-      : base("Rebar Material", "RebarMat", "Create Rebar Material for Compos Transverse Reinforcement",
+      : base("Create" + ReinforcementMaterialGoo.Name.Replace(" ", string.Empty),
+          ReinforcementMaterialGoo.Name.Replace(" ", string.Empty),
+          "Create a Standard " + ReinforcementMaterialGoo.Description + " for a " + TransverseReinforcementGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -104,14 +106,13 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity stress = new Pressure(0, StressUnit);
-      string stressUnitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
+      string stressUnitAbbreviation = new Pressure(0, StressUnit).ToString("a");
       pManager.AddGenericParameter("Strength [" + stressUnitAbbreviation + "]", "fu", "(Optional) Custom Characteristic Steel Strength", GH_ParamAccess.item);
       pManager[0].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Material", "RMt", "Reinforcement Material for Transverse Reinforcement", GH_ParamAccess.item);
+      pManager.AddGenericParameter(ReinforcementMaterialGoo.Name, ReinforcementMaterialGoo.NickName, ReinforcementMaterialGoo.Description + " for a " + TransverseReinforcementGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -163,8 +164,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      IQuantity stress = new Pressure(0, StressUnit);
-      string stressUnitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
+      string stressUnitAbbreviation = new Pressure(0, StressUnit).ToString("a");
       Params.Input[0].Name = "Strength [" + stressUnitAbbreviation + "]";
     }
     #endregion
