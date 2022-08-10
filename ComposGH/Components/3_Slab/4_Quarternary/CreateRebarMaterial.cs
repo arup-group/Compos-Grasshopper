@@ -28,8 +28,6 @@ namespace ComposGH.Components
     protected override System.Drawing.Bitmap Icon => Properties.Resources.RebarMaterial;
     #endregion
 
-    
-
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
