@@ -29,48 +29,35 @@ namespace ComposGH.Components
     #endregion
 
     #region Custom UI
-
-    // list of lists with all dropdown lists content
-    List<List<string>> DropDownItems;
-    // list of selected items
-    List<string> SelectedItems;
-    // list of descriptions 
-    List<string> SpacerDescriptions = new List<string>(new string[]
-    {
-            "Grade",
-    });
     List<bool> OverrideDropDownItems;
 
     private bool First = true;
     private StandardSteelGrade SteelGrade = StandardSteelGrade.S235;
-
-    public override void CreateAttributes()
+    internal override void InitialiseDropdowns()
     {
-      if (First)
-      {
-        DropDownItems = new List<List<string>>();
-        SelectedItems = new List<string>();
+      this.SpacerDescriptions = new List<string>(new string[] { "Grade" });
 
-        // SteelType
-        DropDownItems.Add(Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList());
-        DropDownItems[0].RemoveAt(3); // remove S450
-        SelectedItems.Add(SteelGrade.ToString());
+      this.DropDownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
 
-        this.OverrideDropDownItems = new List<bool>() { false };
-        First = false;
-      }
+      // SteelType
+      this.DropDownItems.Add(Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList());
+      this.DropDownItems[0].RemoveAt(3); // remove S450
+      this.SelectedItems.Add(this.SteelGrade.ToString());
 
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropDownItems, SelectedItems, SpacerDescriptions);
+      this.OverrideDropDownItems = new List<bool>() { false };
+
+      this.IsInitialised = true;
     }
 
-    public void SetSelected(int i, int j)
+    internal override void SetSelected(int i, int j)
     {
       // change selected item
-      SelectedItems[i] = DropDownItems[i][j];
+      this.SelectedItems[i] = this.DropDownItems[i][j];
 
       if (i == 0)  // change is made to code 
       {
-        if (SteelGrade.ToString() == SelectedItems[i])
+        if (this.SteelGrade.ToString() == SelectedItems[i])
           return; // return if selected value is same as before
 
         SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), SelectedItems[i]);

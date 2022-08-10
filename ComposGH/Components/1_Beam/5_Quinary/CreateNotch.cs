@@ -85,11 +85,7 @@ namespace ComposGH.Components
 
     internal override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[]
-        {
-          "Position",
-          "Unit"
-        });
+      this.SpacerDescriptions = new List<string>(new string[] { "Position", "Unit" });
 
       this.DropDownItems = new List<List<string>>();
       this.SelectedItems = new List<string>();

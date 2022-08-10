@@ -69,7 +69,7 @@ namespace ComposGH.Components
     public void SetSelected(int i, int j)
     {
       // change selected item
-      SelectedItems[i] = DropDownItems[i][j];
+      this.SelectedItems[i] = this.DropDownItems[i][j];
 
       if (i == 0)
       {

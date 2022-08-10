@@ -60,7 +60,7 @@ namespace ComposGH.Components
     public void SetSelected(int i, int j)
     {
       // change selected item
-      SelectedItems[i] = DropDownItems[i][j];
+      this.SelectedItems[i] = this.DropDownItems[i][j];
 
       // update name of inputs (to display unit on sliders)
       (this as IGH_VariableParameterComponent).VariableParameterMaintenance();

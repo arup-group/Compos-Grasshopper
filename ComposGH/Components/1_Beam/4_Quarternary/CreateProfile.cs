@@ -126,7 +126,7 @@ namespace ComposGH.Components
       else
       {
         // change selected item
-        SelectedItems[i] = DropDownItems[i][j];
+        this.SelectedItems[i] = this.DropDownItems[i][j];
       }
 
       if (SelectedItems[0] == "Catalogue")
