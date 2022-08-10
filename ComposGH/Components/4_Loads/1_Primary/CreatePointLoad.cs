@@ -97,7 +97,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = new Force(0, ForceUnit).ToString("a");
+      string unitAbbreviation = Force.GetAbbreviation(ForceUnit);
       string lengthunitAbbreviation = Length.GetAbbreviation(LengthUnit);
       pManager.AddGenericParameter("Const. Dead [" + unitAbbreviation + "]", "dl", "Constant dead load; construction stage dead load which are used for construction stage analysis", GH_ParamAccess.item);
       pManager.AddGenericParameter("Const. Live [" + unitAbbreviation + "]", "ll", "Constant live load; construction stage live load which are used for construction stage analysis", GH_ParamAccess.item);
@@ -161,7 +161,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      string unitAbbreviation = new Force(0, ForceUnit).ToString("a");
+      string unitAbbreviation = Force.GetAbbreviation(ForceUnit);
       string lengthunitAbbreviation = Length.GetAbbreviation(LengthUnit);
       int i = 0;
       Params.Input[i++].Name = "Const. Dead [" + unitAbbreviation + "]";

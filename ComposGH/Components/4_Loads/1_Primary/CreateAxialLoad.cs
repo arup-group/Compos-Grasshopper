@@ -98,7 +98,7 @@ namespace ComposGH.Components
 
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = new Force(0, ForceUnit).ToString("a");
+      string unitAbbreviation = Force.GetAbbreviation(ForceUnit);
       string lengthunitAbbreviation = Length.GetAbbreviation(LengthUnit);
       pManager.AddGenericParameter("Const. Dead 1 [" + unitAbbreviation + "]", "dl1", "Start Constant dead load; construction stage dead load which are used for construction stage analysis."
         + Environment.NewLine + "Positive axial forces are considered as tensile and negative forces are considered as compressive", GH_ParamAccess.item);
@@ -180,7 +180,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      string unitAbbreviation = new Force(0, ForceUnit).ToString("a");
+      string unitAbbreviation = Force.GetAbbreviation(ForceUnit);
       string lengthunitAbbreviation = Length.GetAbbreviation(LengthUnit);
       int i = 0;
       Params.Input[i++].Name = "Const. Dead 1 [" + unitAbbreviation + "]";
