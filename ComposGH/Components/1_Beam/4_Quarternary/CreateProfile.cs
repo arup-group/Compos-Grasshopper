@@ -828,7 +828,7 @@ namespace ComposGH.Components
       }
       else
       {
-        string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
+        string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
 
         int i = 0;
         // angle

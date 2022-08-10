@@ -95,7 +95,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
       pManager.AddGenericParameter("Depth [" + unitAbbreviation + "]", "D", "Profile Depth", GH_ParamAccess.item);
       pManager.AddGenericParameter("TopWidth [" + unitAbbreviation + "]", "Wt", "Profile's Top Flange Width", GH_ParamAccess.item);
       pManager.AddGenericParameter("BotWidth [" + unitAbbreviation + "]", "Wb", "Profile's Bottom Flange Width", GH_ParamAccess.item);
@@ -158,7 +158,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
       int i = 0;
       Params.Output[i++].Name = "Depth [" + unitAbbreviation + "]";
       Params.Output[i++].Name = "TopWidth [" + unitAbbreviation + "]";

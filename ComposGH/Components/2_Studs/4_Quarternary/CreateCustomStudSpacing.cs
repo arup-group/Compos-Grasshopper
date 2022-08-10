@@ -90,7 +90,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
 
       pManager.AddGenericParameter("Pos x [" + unitAbbreviation + "]", "Px", "Start Position where this Stud Spacing Groups begins on Beam (beam local x-axis)", GH_ParamAccess.item);
       pManager.AddIntegerParameter("Rows", "R", "Number of rows (across the top flange)", GH_ParamAccess.item);
@@ -152,7 +152,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
       Params.Input[0].Name = "Pos x [" + unitAbbreviation + "]";
       Params.Input[3].Name = "Spacing [" + unitAbbreviation + "]";
     }

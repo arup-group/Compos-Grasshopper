@@ -88,7 +88,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
 
       pManager.AddGenericParameter("Start Pos x [" + unitAbbreviation + "]", "PxS", "Start Position where this Rebar Spacing Groups begins on Beam (beam local x-axis)" 
         + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set positions as percentage (-0.5 => 50%)", GH_ParamAccess.item);
@@ -153,7 +153,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
       int i = 0;
       Params.Input[i++].Name = "Start Pos x [" + unitAbbreviation + "]";
       Params.Input[i++].Name = "End Pos x [" + unitAbbreviation + "]";

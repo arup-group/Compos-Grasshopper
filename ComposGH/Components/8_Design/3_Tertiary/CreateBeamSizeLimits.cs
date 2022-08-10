@@ -86,7 +86,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbb = new Length(0, LengthUnit).ToString("a");
+      string unitAbb = Length.GetAbbreviation(LengthUnit);
       pManager.AddGenericParameter("Min Depth [" + unitAbb + "]", "Dmin", "Minimum Depth", GH_ParamAccess.item);
       pManager.AddGenericParameter("Max Depth [" + unitAbb + "]", "Dmax", "Maximum Depth", GH_ParamAccess.item);
       pManager.AddGenericParameter("Min Width [" + unitAbb + "]", "Wmin", "Minimum Width", GH_ParamAccess.item);
@@ -149,7 +149,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      string unitAbb = new Length(0, LengthUnit).ToString("a");
+      string unitAbb = Length.GetAbbreviation(LengthUnit);
       int i = 0;
       Params.Input[i++].Name = "Min Depth [" + unitAbb + "]";
       Params.Input[i++].Name = "Max Depth [" + unitAbb + "]";

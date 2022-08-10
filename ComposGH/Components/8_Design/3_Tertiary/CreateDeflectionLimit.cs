@@ -86,7 +86,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbb = new Length(0, LengthUnit).ToString("a");
+      string unitAbb = Length.GetAbbreviation(LengthUnit);
       pManager.AddGenericParameter("Absolute Deflection [" + unitAbb + "]", "Abs", "Absolute Deflection", GH_ParamAccess.item);
       pManager.AddGenericParameter("Span/Deflection Ratio [L/x]", "L/δ", "Span over Deflection ratio, for instance input '500' for 'L/500'", GH_ParamAccess.item);
       pManager[0].Optional = true;
@@ -156,7 +156,7 @@ namespace ComposGH.Components
     }
     void IGH_VariableParameterComponent.VariableParameterMaintenance()
     {
-      string unitAbb = new Length(0, LengthUnit).ToString("a");
+      string unitAbb = Length.GetAbbreviation(LengthUnit);
       Params.Input[0].Name = "Absolute Deflection [" + unitAbb + "]";
     }
     #endregion

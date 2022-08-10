@@ -230,7 +230,7 @@ namespace ComposGH.Components
         unitAbbreviation = new ForcePerLength(0, ForcePerLengthUnit).ToString("a");
       else
         unitAbbreviation = new Pressure(0, ForcePerAreaUnit).ToString("a");
-      string lengthunitAbbreviation = new Length(0, LengthUnit).ToString("a");
+      string lengthunitAbbreviation = Length.GetAbbreviation(LengthUnit);
 
       int i = 0;
       Params.Input[i++].Name = "Const. Dead 1 [" + unitAbbreviation + "]";
