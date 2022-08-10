@@ -97,7 +97,7 @@ namespace ComposGH.Components
 
       // length
       this.DropDownItems.Add(Units.FilteredLengthUnits);
-      this.SelectedItems.Add(LengthUnit.ToString());
+      this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;
     }
