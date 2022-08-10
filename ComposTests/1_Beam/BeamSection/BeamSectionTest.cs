@@ -6,6 +6,7 @@ using Moq;
 using ComposAPI.Helpers;
 using ComposAPITests.Helpers;
 using System;
+using ComposAPI.Tests;
 
 namespace ComposAPI.Beams.Tests
 {
@@ -102,6 +103,8 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(expTopFlangeThickness, beam.TopFlangeThickness.Millimeters, 3);
       Assert.Equal(expBottomFlangeThickness, beam.BottomFlangeThickness.Millimeters, 3);
 
+      Assert.Equal(profile.Replace(',', '.'), beam.ToString());
+
       return beam;
     }
 
@@ -137,6 +140,8 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(expBottomFlangeThickness, beam.BottomFlangeThickness.Millimeters, 3);
       Assert.Equal(taperToNext, beam.TaperedToNext);
       Assert.Equal(expProfile, beam.SectionDescription);
+
+      Assert.Equal(expProfile.Replace(',', '.'), beam.ToString());
 
       return beam;
     }
@@ -217,6 +222,7 @@ namespace ComposAPI.Beams.Tests
       BeamSection duplicate = (BeamSection)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
+      Assert.Equal(original.ToString(), duplicate.ToString());
       Assert.Equal(400, duplicate.Depth.Millimeters);
       Assert.Equal(300, duplicate.TopFlangeWidth.Millimeters);
       Assert.Equal(300, duplicate.BottomFlangeWidth.Millimeters);
@@ -297,6 +303,20 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(11, original.TopFlangeThickness.Millimeters);
       Assert.Equal(12, original.BottomFlangeThickness.Millimeters);
       Assert.False(original.TaperedToNext);
+    }
+
+    [Fact]
+    public void DuplicateTest()
+    {
+      // 1 create with constructor and duplicate
+      BeamSection original = new BeamSection();
+      BeamSection duplicate = (BeamSection)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
   }
 }

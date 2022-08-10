@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ComposAPI.Tests;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,6 +32,20 @@ namespace ComposAPI.Slabs.Tests
       Assert.Equal(90, configuration.Angle.Value);
       Assert.False(configuration.IsDiscontinous);
       Assert.False(configuration.IsWelded);
+    }
+
+    [Fact]
+    public void DuplicateStdTest()
+    {
+      // 1 create with constructor and duplicate
+      DeckingConfiguration original = DeckingConfigurationMother.CreateDeckingConfiguration();
+      DeckingConfiguration duplicate = (DeckingConfiguration)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     // 1 setup inputs

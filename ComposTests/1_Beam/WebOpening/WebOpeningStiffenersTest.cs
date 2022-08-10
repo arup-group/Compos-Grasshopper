@@ -1,6 +1,7 @@
 ﻿using Xunit;
 using UnitsNet;
 using UnitsNet.Units;
+using ComposAPI.Tests;
 
 namespace ComposAPI.Beams.Tests
 {
@@ -59,6 +60,20 @@ namespace ComposAPI.Beams.Tests
 
       // (optionally return object for other tests)
       return webOpeningStiffeners;
+    }
+
+    [Fact]
+    public void DuplicateStiffenerTest()
+    {
+      // 1 create with constructor and duplicate
+      WebOpeningStiffeners original = TestConstructorStiffenersWebOpening(25, 75, 12, 125, 15, false);
+      WebOpeningStiffeners duplicate = (WebOpeningStiffeners)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     [Fact]

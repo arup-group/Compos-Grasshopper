@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ComposAPI.Tests;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,6 +49,20 @@ namespace ComposAPI.Slabs.Tests
   }
   public class SlabTest
   {
+    [Fact]
+    public void DuplicateTest()
+    {
+      // 1 create with constructor and duplicate
+      Slab original = SlabMother.Example1Slab();
+      Slab duplicate = (Slab)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
     [Fact]
     public void ToCoaStringTest()
     {

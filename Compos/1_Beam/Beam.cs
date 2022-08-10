@@ -136,10 +136,27 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      string profile = (this.Sections.Count > 1) ? string.Join(" : ", this.Sections.Select(x => x.SectionDescription).ToArray()) : this.Sections[0].SectionDescription;
-      string mat = this.Material.ToString();
+      string invalid = "";
+      string profile = "";
+      if (this.Sections.Count == 0)
+      {
+        invalid = "Invalid Beam ";
+        profile = "(no profile set)";
+      }
+      else
+        profile = (this.Sections.Count > 1) ? string.Join(" : ", this.Sections.Select(x => x.SectionDescription).ToArray()) : this.Sections[0].SectionDescription;
+
+      string mat = "";
+      if (this.Material == null)
+      {
+        invalid = "Invalid Beam ";
+        mat = "(no material set)";
+      }
+      else
+        mat = this.Material.ToString();
       string line = "L:" + this.Length.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
-      return line + ", " + profile + ", " + mat;
+
+      return invalid + line + ", " + profile + ", " + mat;
     }
     #endregion
 

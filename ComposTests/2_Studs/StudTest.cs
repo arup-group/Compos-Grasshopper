@@ -54,6 +54,19 @@ namespace ComposAPI.Studs.Tests
 
       return stud;
     }
+    [Fact]
+    public void DuplicateStudCustomSpacingTest()
+    {
+      // 1 create with constructor and duplicate
+      Stud original = TestConstructorStudCustomSpacing();
+      Stud duplicate = (Stud)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
 
     // 1 setup inputs
     [Theory]

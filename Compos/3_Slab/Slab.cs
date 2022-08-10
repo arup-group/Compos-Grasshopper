@@ -112,13 +112,35 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      string dim = (this.Dimensions.Count > 1) ? string.Join(" : ", this.Dimensions.Select(x => x.ToString()).ToArray()) : this.Dimensions[0].ToString();
-      string mat = this.Material.ToString();
+      string invalid = "";
+      string dim = "";
+      if (this.Dimensions.Count == 0)
+      {
+        invalid = "Invalid Slab ";
+        dim = "(no dimensions set)";
+      }
+      else
+        dim = (this.Dimensions.Count > 1) ? string.Join(" : ", this.Dimensions.Select(x => x.ToString()).ToArray()) : this.Dimensions[0].ToString();
+
+      string mat = "";
+      if (this.Material == null)
+      {
+        invalid = "Invalid Slab ";
+        mat = "(no material set)";
+      }
+      else
+        mat = this.Material.ToString();
       string reinf = "";
       if (this.Mesh != null)
         reinf = this.Mesh.ToString() + " / ";
-      reinf += this.Transverse.ToString();
-      return dim + ", " + mat + ", " + reinf;
+      if (this.Transverse == null)
+      {
+        invalid = "Invalid Slab ";
+        reinf = "(no reinforcement set)";
+      }
+      else
+        reinf += this.Transverse.ToString();
+      return invalid + dim + ", " + mat + ", " + reinf;
     }
     #endregion
   }

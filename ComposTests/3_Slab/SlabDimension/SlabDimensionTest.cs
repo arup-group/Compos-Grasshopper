@@ -8,6 +8,7 @@ using UnitsNet.Units;
 using Xunit;
 using ComposAPI;
 using ComposAPI.Helpers;
+using ComposAPI.Tests;
 
 namespace ComposAPI.Slabs.Tests
 {
@@ -22,6 +23,20 @@ namespace ComposAPI.Slabs.Tests
 
   public class SlabDimensionTest
   {
+    [Fact]
+    public void DuplicateStdTest()
+    {
+      // 1 create with constructor and duplicate
+      SlabDimension original = (SlabDimension)SlabDimensionMother.CreateSlabDimension();
+      SlabDimension duplicate = (SlabDimension)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
     [Theory]
     [InlineData(1, 0, 0.15, 1, 1.5, false, 0, 0, false, "SLAB_DIMENSION	MEMBER-1	4	1	0.000000	0.150000	1.00000	1.50000	TAPERED_NO	EFFECTIVE_WIDTH_NO\n")]
     [InlineData(2, 1, 0.25, 1, 1.5, false, 0, 0, false, "SLAB_DIMENSION	MEMBER-1	4	2	1.00000	0.250000	1.00000	1.50000	TAPERED_NO	EFFECTIVE_WIDTH_NO\n")]
