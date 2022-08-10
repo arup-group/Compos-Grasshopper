@@ -59,14 +59,14 @@ namespace ComposGH.Components
       // get default length inputs used for all cases
       Length noStudZoneStart = Length.Zero;
       if (this.Params.Input[0].Sources.Count > 0)
-        noStudZoneStart = GetInput.Length(this, DA, 0, LengthUnit, true);
+        noStudZoneStart = GetInput.Length(this, DA, 0, this.LengthUnit, true);
       Length noStudZoneEnd = Length.Zero;
       if (this.Params.Input[1].Sources.Count > 0)
-        noStudZoneEnd = GetInput.Length(this, DA, 1, LengthUnit, true);
+        noStudZoneEnd = GetInput.Length(this, DA, 1, this.LengthUnit, true);
       // get rebar position
       Length rebarPos = new Length(30, LengthUnit.Millimeter);
       if (this.Params.Input[2].Sources.Count > 0)
-        rebarPos = GetInput.Length(this, DA, 2, LengthUnit, true);
+        rebarPos = GetInput.Length(this, DA, 2, this.LengthUnit, true);
       bool welded = true;
       DA.GetData(3, ref welded);
       bool ncci = false;
