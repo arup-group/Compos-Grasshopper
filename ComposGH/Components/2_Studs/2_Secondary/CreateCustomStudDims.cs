@@ -27,50 +27,7 @@ namespace ComposGH.Components
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.CustomStudDims;
     #endregion
-
-    #region Custom UI
-    private LengthUnit LengthUnit = Units.LengthUnitSection;
-    private ForceUnit ForceUnit = Units.ForceUnit;
-
-    internal override void InitialiseDropdowns()
-    {
-      this.SpacerDescriptions = new List<string>(new string[] { "Length Unit", "Strength Unit" });
-
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
-
-      // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
-      this.SelectedItems.Add(this.LengthUnit.ToString());
-
-      // strength
-      this.DropDownItems.Add(Units.FilteredForceUnits);
-      this.SelectedItems.Add(this.ForceUnit.ToString());
-
-      this.IsInitialised = true;
-    }
     
-    internal override void SetSelected(int i, int j)
-    {
-      this.SelectedItems[i] = this.DropDownItems[i][j];
-
-      if (i == 0) // change is made to length unit
-        this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
-      if (i == 1)
-        this.ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), this.SelectedItems[i]);
-      
-      base.UpdateUI();
-    }
-
-    internal override void UpdateUIFromSelectedItems()
-    {
-      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[0]);
-      this.ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), this.SelectedItems[1]);
-
-      base.UpdateUIFromSelectedItems();
-    }
-    #endregion
-
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
@@ -95,42 +52,49 @@ namespace ComposGH.Components
       DA.SetData(0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthF)));
     }
 
-    #region (de)serialization
-    public override bool Write(GH_IO.Serialization.GH_IWriter writer)
-    {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropDownItems, SelectedItems, SpacerDescriptions);
-      return base.Write(writer);
-    }
-    public override bool Read(GH_IO.Serialization.GH_IReader reader)
-    {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropDownItems, ref SelectedItems, ref SpacerDescriptions);
+    #region Custom UI
+    private LengthUnit LengthUnit = Units.LengthUnitSection;
+    private ForceUnit ForceUnit = Units.ForceUnit;
 
-      UpdateUIFromSelectedItems();
+    internal override void InitialiseDropdowns()
+    {
+      this.SpacerDescriptions = new List<string>(new string[] { "Length Unit", "Strength Unit" });
 
-      First = false;
+      this.DropDownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
 
-      return base.Read(reader);
-    }
-    #endregion
+      // length
+      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.SelectedItems.Add(this.LengthUnit.ToString());
 
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
+      // strength
+      this.DropDownItems.Add(Units.FilteredForceUnits);
+      this.SelectedItems.Add(this.ForceUnit.ToString());
+
+      this.IsInitialised = true;
     }
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
+
+    internal override void SetSelected(int i, int j)
     {
-      return false;
+      this.SelectedItems[i] = this.DropDownItems[i][j];
+
+      if (i == 0) // change is made to length unit
+        this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+      if (i == 1)
+        this.ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), this.SelectedItems[i]);
+
+      base.UpdateUI();
     }
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
+
+    internal override void UpdateUIFromSelectedItems()
     {
-      return null;
+      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[0]);
+      this.ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), this.SelectedItems[1]);
+
+      base.UpdateUIFromSelectedItems();
     }
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
+
+    public override void VariableParameterMaintenance()
     {
       string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
       Params.Input[0].Name = "Diameter [" + unitAbbreviation + "]";
