@@ -33,7 +33,7 @@ namespace ComposGH.Components
     //This region overrides the typical component layout
 
     // list of lists with all dropdown lists conctent
-    List<List<string>> DropdownItems;
+    List<List<string>> DropDownItems;
     // list of selected items
     List<string> SelectedItems;
     // list of descriptions 
@@ -67,29 +67,29 @@ namespace ComposGH.Components
     {
       if (First)
       {
-        DropdownItems = new List<List<string>>();
+        DropDownItems = new List<List<string>>();
         SelectedItems = new List<string>();
 
         // spacing
-        DropdownItems.Add(StandardSize);
+        DropDownItems.Add(StandardSize);
         SelectedItems.Add(StdSize.ToString().Replace("D", "Ø").Replace("mmH", "/"));
 
         // grade
-        DropdownItems.Add(Enum.GetValues(typeof(StandardStudGrade)).Cast<StandardStudGrade>().Select(x => x.ToString()).ToList());
+        DropDownItems.Add(Enum.GetValues(typeof(StandardStudGrade)).Cast<StandardStudGrade>().Select(x => x.ToString()).ToList());
         SelectedItems.Add(StdGrd.ToString());
 
         // strength
-        DropdownItems.Add(Units.FilteredStressUnits);
+        DropDownItems.Add(Units.FilteredStressUnits);
         SelectedItems.Add(StressUnit.ToString());
 
         First = false;
       }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
+      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropDownItems, SelectedItems, SpacerDescriptions);
     }
     public void SetSelected(int i, int j)
     {
       // change selected item
-      SelectedItems[i] = DropdownItems[i][j];
+      SelectedItems[i] = DropDownItems[i][j];
 
       if (i == 0) // change is made to size
       {
@@ -97,18 +97,18 @@ namespace ComposGH.Components
         {
           string sz = SelectedItems[i].Replace("Ø", "D").Replace("/", "mmH");
           StdSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), sz);
-          if (DropdownItems.Count > 3)
+          if (DropDownItems.Count > 3)
           {
             // remove length dropdown
-            DropdownItems.RemoveAt(DropdownItems.Count - 1);
+            DropDownItems.RemoveAt(DropDownItems.Count - 1);
             SelectedItems.RemoveAt(SelectedItems.Count - 1);
             ModeChangeClicked();
           }
         }
-        else if (DropdownItems.Count < 4)
+        else if (DropDownItems.Count < 4)
         {
           // add length dropdown
-          DropdownItems.Add(Units.FilteredLengthUnits);
+          DropDownItems.Add(Units.FilteredLengthUnits);
           SelectedItems.Add(LengthUnit.ToString());
           ModeChangeClicked();
         }
@@ -238,12 +238,12 @@ namespace ComposGH.Components
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
+      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropDownItems, SelectedItems, SpacerDescriptions);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
+      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropDownItems, ref SelectedItems, ref SpacerDescriptions);
 
       UpdateUIFromSelectedItems();
 

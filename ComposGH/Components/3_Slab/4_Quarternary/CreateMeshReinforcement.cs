@@ -30,7 +30,7 @@ namespace ComposGH.Components
     //This region overrides the typical component layout
 
     // list of lists with all dropdown lists content
-    List<List<string>> DropdownItems;
+    List<List<string>> DropDownItems;
     // list of selected items
     List<string> SelectedItems;
     // list of descriptions 
@@ -47,28 +47,28 @@ namespace ComposGH.Components
     {
       if (First)
       {
-        DropdownItems = new List<List<string>>();
+        DropDownItems = new List<List<string>>();
         SelectedItems = new List<string>();
 
         // mesh
-        DropdownItems.Add(Enum.GetValues(typeof(ReinforcementMeshType)).Cast<ReinforcementMeshType>().Select(x => x.ToString()).ToList());
-        DropdownItems[0].RemoveAt(0); //
+        DropDownItems.Add(Enum.GetValues(typeof(ReinforcementMeshType)).Cast<ReinforcementMeshType>().Select(x => x.ToString()).ToList());
+        DropDownItems[0].RemoveAt(0); //
         SelectedItems.Add(mesh.ToString());
 
         // length
-        DropdownItems.Add(Units.FilteredLengthUnits);
+        DropDownItems.Add(Units.FilteredLengthUnits);
         SelectedItems.Add(LengthUnit.ToString());
 
         First = false;
       }
 
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
+      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropDownItems, SelectedItems, SpacerDescriptions);
     }
 
     public void SetSelected(int i, int j)
     {
       // change selected item
-      SelectedItems[i] = DropdownItems[i][j];
+      SelectedItems[i] = DropDownItems[i][j];
 
       if (i == 0)  // change is made to code 
       {
@@ -133,12 +133,12 @@ namespace ComposGH.Components
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
+      DeSerialization.writeDropDownComponents(ref writer, DropDownItems, SelectedItems, SpacerDescriptions);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
+      DeSerialization.readDropDownComponents(ref reader, ref DropDownItems, ref SelectedItems, ref SpacerDescriptions);
       UpdateUIFromSelectedItems();
       First = false;
       return base.Read(reader);

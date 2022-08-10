@@ -32,7 +32,7 @@ namespace ComposGH.Components
     // This region overrides the typical component layout
 
     // list of lists with all dropdown lists conctent
-    List<List<string>> DropdownItems;
+    List<List<string>> DropDownItems;
     // list of selected items
     List<string> SelectedItems;
     // list of descriptions 
@@ -77,20 +77,20 @@ namespace ComposGH.Components
     {
       if (this.First)
       {
-        this.DropdownItems = new List<List<string>>();
+        this.DropDownItems = new List<List<string>>();
         this.SelectedItems = new List<string>();
 
         // code
-        this.DropdownItems.Add(this.DesignCodePretty);
+        this.DropDownItems.Add(this.DesignCodePretty);
         this.SelectedItems.Add(this.DesignCodePretty[2]); //EC4 default
 
         // national annex
-        this.DropdownItems.Add(Enum.GetValues(typeof(NationalAnnex)).Cast<NationalAnnex>()
+        this.DropDownItems.Add(Enum.GetValues(typeof(NationalAnnex)).Cast<NationalAnnex>()
             .Select(x => x.ToString().Replace("_", " ")).ToList());
-        this.SelectedItems.Add(this.DropdownItems[1][0]); // Generic default
+        this.SelectedItems.Add(this.DropDownItems[1][0]); // Generic default
 
         // cement type
-        this.DropdownItems.Add(Enum.GetValues(typeof(CementClass)).Cast<CementClass>()
+        this.DropDownItems.Add(Enum.GetValues(typeof(CementClass)).Cast<CementClass>()
             .Select(x => "Cement class " + x.ToString()).ToList());
         this.SelectedItems.Add("Cement class " + this.EC4CodeOptions.CementType.ToString()); // Class N default
 
@@ -106,13 +106,13 @@ namespace ComposGH.Components
 
         First = false;
       }
-      m_attributes = new UI.MultiDropDownCheckBoxesComponentUI(this, SetSelected, this.DropdownItems, this.SelectedItems, CheckBoxToggles, this.Checkboxes, this.CheckboxNames, this.SpacerDescriptions);
+      m_attributes = new UI.MultiDropDownCheckBoxesComponentUI(this, SetSelected, this.DropDownItems, this.SelectedItems, CheckBoxToggles, this.Checkboxes, this.CheckboxNames, this.SpacerDescriptions);
     }
 
     public void SetSelected(int i, int j)
     {
       // change selected item
-      this.SelectedItems[i] = this.DropdownItems[i][j];
+      this.SelectedItems[i] = this.DropDownItems[i][j];
 
       if (i == 0)
       {
@@ -133,8 +133,8 @@ namespace ComposGH.Components
           case Code.HKSUOS_2005:
           case Code.HKSUOS_2011:
             // change dropdown content
-            while (DropdownItems.Count > 1)
-              DropdownItems.RemoveAt(1);
+            while (DropDownItems.Count > 1)
+              DropDownItems.RemoveAt(1);
             while (SelectedItems.Count > 1)
               SelectedItems.RemoveAt(1);
             while (Checkboxes.Count > 5)
@@ -146,16 +146,16 @@ namespace ComposGH.Components
 
           case Code.EN1994_1_1_2004:
             // change dropdown content
-            while (this.DropdownItems.Count > 1)
-              this.DropdownItems.RemoveAt(1);
+            while (this.DropDownItems.Count > 1)
+              this.DropDownItems.RemoveAt(1);
             while (SelectedItems.Count > 1)
               this.SelectedItems.RemoveAt(1);
             // national annex
-            this.DropdownItems.Add(Enum.GetValues(typeof(NationalAnnex)).Cast<NationalAnnex>()
+            this.DropDownItems.Add(Enum.GetValues(typeof(NationalAnnex)).Cast<NationalAnnex>()
                 .Select(x => x.ToString().Replace("_", " ")).ToList());
             this.SelectedItems.Add(NA.ToString().Replace("_", " "));
             // cement type
-            this.DropdownItems.Add(Enum.GetValues(typeof(CementClass)).Cast<CementClass>()
+            this.DropDownItems.Add(Enum.GetValues(typeof(CementClass)).Cast<CementClass>()
                 .Select(x => "Cement class " + x.ToString()).ToList());
             this.SelectedItems.Add("Cement class " + this.EC4CodeOptions.CementType.ToString());
 
@@ -174,8 +174,8 @@ namespace ComposGH.Components
 
           case Code.AS_NZS2327_2017:
             // change dropdown content
-            while (this.DropdownItems.Count > 1)
-              this.DropdownItems.RemoveAt(1);
+            while (this.DropDownItems.Count > 1)
+              this.DropDownItems.RemoveAt(1);
             while (this.SelectedItems.Count > 1)
               this.SelectedItems.RemoveAt(1);
             while (this.Checkboxes.Count > 5)
@@ -381,7 +381,7 @@ namespace ComposGH.Components
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, this.DropdownItems, this.SelectedItems, this.SpacerDescriptions);
+      Helpers.DeSerialization.writeDropDownComponents(ref writer, this.DropDownItems, this.SelectedItems, this.SpacerDescriptions);
 
       // checkbox bool list
       writer.SetInt32("checkboxCount", this.Checkboxes.Count);
@@ -397,7 +397,7 @@ namespace ComposGH.Components
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref this.DropdownItems, ref this.SelectedItems, ref this.SpacerDescriptions);
+      Helpers.DeSerialization.readDropDownComponents(ref reader, ref this.DropDownItems, ref this.SelectedItems, ref this.SpacerDescriptions);
 
       // bool list
       int checkboxCount = reader.GetInt32("checkboxCount");

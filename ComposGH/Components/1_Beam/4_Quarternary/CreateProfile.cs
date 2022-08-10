@@ -42,7 +42,7 @@ namespace ComposGH.Components
     //This region overrides the typical component layout
 
     // list of lists with all dropdown lists conctent
-    List<List<string>> DropdownItems;
+    List<List<string>> DropDownItems;
     // list of selected items
     List<string> SelectedItems;
     // list of descriptions 
@@ -95,22 +95,22 @@ namespace ComposGH.Components
           SelectedItems = new List<string>();
           SelectedItems.Add("Catalogue");
         }
-        if (DropdownItems == null)
+        if (DropDownItems == null)
         {
           // create a new list of selected items and add the first material type
-          DropdownItems = new List<List<string>>();
-          DropdownItems.Add(ProfileTypes.Keys.ToList());
+          DropDownItems = new List<List<string>>();
+          DropDownItems.Add(ProfileTypes.Keys.ToList());
         }
 
         // length
-        DropdownItems.Add(Units.FilteredLengthUnits);
+        DropDownItems.Add(Units.FilteredLengthUnits);
         SelectedItems.Add(LengthUnit.ToString());
 
         SetSelected(-1, 0);
         first = false;
       }
 
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
+      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropDownItems, SelectedItems, SpacerDescriptions);
     }
 
     public void SetSelected(int i, int j)
@@ -126,7 +126,7 @@ namespace ComposGH.Components
       else
       {
         // change selected item
-        SelectedItems[i] = DropdownItems[i][j];
+        SelectedItems[i] = DropDownItems[i][j];
       }
 
       if (SelectedItems[0] == "Catalogue")
@@ -196,11 +196,11 @@ namespace ComposGH.Components
         }
 
         // update dropdown lists
-        while (DropdownItems.Count > 1)
-          DropdownItems.RemoveAt(1);
+        while (DropDownItems.Count > 1)
+          DropDownItems.RemoveAt(1);
 
         // add catalogues (they will always be the same so no need to rerun sql call)
-        DropdownItems.Add(CatalogueNames);
+        DropDownItems.Add(CatalogueNames);
 
         // type list
         // if second list (i.e. catalogue list) is changed, update types list to account for that catalogue
@@ -253,7 +253,7 @@ namespace ComposGH.Components
           SelectedItems[2] = TypeNames[0];
           SelectedItems[3] = Filteredlist[0];
         }
-        DropdownItems.Add(TypeNames);
+        DropDownItems.Add(TypeNames);
 
         // section list
         // if third list (i.e. types list) is changed, update sections list to account for these section types
@@ -310,7 +310,7 @@ namespace ComposGH.Components
           // update selected section to be all
           SelectedItems[3] = Filteredlist[0];
         }
-        DropdownItems.Add(Filteredlist);
+        DropDownItems.Add(Filteredlist);
 
         // selected profile
         // if fourth list (i.e. section list) is changed, updated the sections list to only be that single profile
@@ -335,11 +335,11 @@ namespace ComposGH.Components
         if (_mode != FoldMode.Other)
         {
           // remove all catalogue dropdowns
-          while (DropdownItems.Count > 1)
-            DropdownItems.RemoveAt(1);
+          while (DropDownItems.Count > 1)
+            DropDownItems.RemoveAt(1);
 
           // add length measure dropdown list
-          DropdownItems.Add(Units.FilteredLengthUnits);
+          DropDownItems.Add(Units.FilteredLengthUnits);
 
           // set selected length
           SelectedItems[1] = LengthUnit.ToString();
@@ -759,7 +759,7 @@ namespace ComposGH.Components
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
+      DeSerialization.writeDropDownComponents(ref writer, DropDownItems, SelectedItems, SpacerDescriptions);
       writer.SetString("mode", _mode.ToString());
       writer.SetString("lengthUnit", LengthUnit.ToString());
       writer.SetBoolean("inclSS", InclSS);
@@ -773,7 +773,7 @@ namespace ComposGH.Components
     {
       first = false;
 
-      DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
+      DeSerialization.readDropDownComponents(ref reader, ref DropDownItems, ref SelectedItems, ref SpacerDescriptions);
 
       _mode = (FoldMode)Enum.Parse(typeof(FoldMode), reader.GetString("mode"));
       LengthUnit = (UnitsNet.Units.LengthUnit)Enum.Parse(typeof(UnitsNet.Units.LengthUnit), reader.GetString("lengthUnit"));

@@ -92,7 +92,7 @@ namespace ComposGH.Components
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Unit" });
 
-      this.DropdownItems = new List<List<string>>() { Units.FilteredLengthUnits };
+      this.DropDownItems = new List<List<string>>() { Units.FilteredLengthUnits };
       this.SelectedItems = new List<string>() { this.LengthUnit.ToString() };
 
       this.IsInitialised = true;
@@ -100,7 +100,7 @@ namespace ComposGH.Components
 
     internal override void SetSelected(int i, int j)
     {
-      this.SelectedItems[i] = this.DropdownItems[i][j];
+      this.SelectedItems[i] = this.DropDownItems[i][j];
 
       this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
 

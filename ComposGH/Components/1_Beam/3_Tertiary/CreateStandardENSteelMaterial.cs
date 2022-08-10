@@ -9,7 +9,7 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateStandardENSteelMaterial : GH_Component, IGH_VariableParameterComponent
+  public class CreateStandardENSteelMaterial : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon

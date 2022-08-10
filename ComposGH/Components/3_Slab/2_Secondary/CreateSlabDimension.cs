@@ -31,7 +31,7 @@ namespace ComposGH.Components
     // This region overrides the typical component layout
 
     // list of lists with all dropdown lists conctent
-    List<List<string>> DropdownItems;
+    List<List<string>> DropDownItems;
     // list of selected items
     List<string> SelectedItems;
     // list of descriptions 
@@ -47,22 +47,22 @@ namespace ComposGH.Components
     {
       if (First)
       {
-        this.DropdownItems = new List<List<string>>();
+        this.DropDownItems = new List<List<string>>();
         this.SelectedItems = new List<string>();
 
         // length
-        this.DropdownItems.Add(Units.FilteredLengthUnits);
+        this.DropDownItems.Add(Units.FilteredLengthUnits);
         this.SelectedItems.Add(this.LengthUnit.ToString());
 
         this.First = false;
       }
-      m_attributes = new UI.MultiDropDownComponentUI(this, this.SetSelected, this.DropdownItems, this.SelectedItems, this.SpacerDescriptions);
+      m_attributes = new UI.MultiDropDownComponentUI(this, this.SetSelected, this.DropDownItems, this.SelectedItems, this.SpacerDescriptions);
     }
 
     public void SetSelected(int i, int j)
     {
       // change selected item
-      this.SelectedItems[i] = this.DropdownItems[i][j];
+      this.SelectedItems[i] = this.DropDownItems[i][j];
 
       this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
 
@@ -141,12 +141,12 @@ namespace ComposGH.Components
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, this.DropdownItems, this.SelectedItems, this.SpacerDescriptions);
+      Helpers.DeSerialization.writeDropDownComponents(ref writer, this.DropDownItems, this.SelectedItems, this.SpacerDescriptions);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref this.DropdownItems, ref this.SelectedItems, ref this.SpacerDescriptions);
+      Helpers.DeSerialization.readDropDownComponents(ref reader, ref this.DropDownItems, ref this.SelectedItems, ref this.SpacerDescriptions);
 
       UpdateUIFromSelectedItems();
 

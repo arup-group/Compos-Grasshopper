@@ -91,25 +91,25 @@ namespace ComposGH.Components
           "Unit"
         });
 
-      this.DropdownItems = new List<List<string>>();
+      this.DropDownItems = new List<List<string>>();
       this.SelectedItems = new List<string>();
 
       // type
-      this.DropdownItems.Add(Enum.GetValues(typeof(notch_types)).Cast<notch_types>()
+      this.DropDownItems.Add(Enum.GetValues(typeof(notch_types)).Cast<notch_types>()
           .Select(x => x.ToString().Replace('_', ' ')).ToList());
       this.SelectedItems.Add(notch_types.Both_ends.ToString().Replace('_', ' '));
 
       // length
-      this.DropdownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(Units.FilteredLengthUnits);
       this.SelectedItems.Add(LengthUnit.ToString());
 
-      IsInitialised = true;
+      this.IsInitialised = true;
     }
 
     internal override void SetSelected(int i, int j)
     {
       // change selected item
-      this.SelectedItems[i] = this.DropdownItems[i][j];
+      this.SelectedItems[i] = this.DropDownItems[i][j];
 
       if (i == 0)
       {

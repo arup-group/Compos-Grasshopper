@@ -12,7 +12,7 @@ namespace ComposGH.Components
     {
     }
 
-    internal List<List<string>> DropdownItems;
+    internal List<List<string>> DropDownItems;
     internal List<string> SelectedItems;
     internal List<string> SpacerDescriptions;
     internal bool IsInitialised = false;
@@ -23,7 +23,7 @@ namespace ComposGH.Components
       if (!this.IsInitialised)
         this.InitialiseDropdowns();
 
-      m_attributes = new UI.MultiDropDownComponentUI(this, this.SetSelected, this.DropdownItems, this.SelectedItems, this.SpacerDescriptions);
+      m_attributes = new UI.MultiDropDownComponentUI(this, this.SetSelected, this.DropDownItems, this.SelectedItems, this.SpacerDescriptions);
     }
 
     internal abstract void InitialiseDropdowns();
@@ -48,13 +48,13 @@ namespace ComposGH.Components
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, this.DropdownItems, this.SelectedItems, this.SpacerDescriptions);
+      Helpers.DeSerialization.writeDropDownComponents(ref writer, this.DropDownItems, this.SelectedItems, this.SpacerDescriptions);
       return base.Write(writer);
     }
 
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref this.DropdownItems, ref this.SelectedItems, ref this.SpacerDescriptions);
+      Helpers.DeSerialization.readDropDownComponents(ref reader, ref this.DropDownItems, ref this.SelectedItems, ref this.SpacerDescriptions);
 
       this.IsInitialised = true;
       this.UpdateUIFromSelectedItems();
@@ -64,7 +64,8 @@ namespace ComposGH.Components
     #endregion
 
     #region IGH_VariableParameterComponent null implementation
-    public abstract void VariableParameterMaintenance();
+    public virtual void VariableParameterMaintenance()
+    { }
 
     bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index) => false;
 

@@ -58,7 +58,7 @@ namespace ComposGH.Components
         try
         {
           this.Grade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), grade);
-          this.DropdownItems[0] = new List<string>();
+          this.DropDownItems[0] = new List<string>();
           this.SelectedItems[0] = "-";
           this.OverrideDropDownItems[0] = true;
         }
@@ -71,13 +71,13 @@ namespace ComposGH.Components
           }
           text = text.Remove(text.Length - 2);
           text += ".";
-          this.DropdownItems[0] = Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList();
+          this.DropDownItems[0] = Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList();
           AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
         }
       }
       else if (this.OverrideDropDownItems[0])
       {
-        this.DropdownItems[0] = Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList();
+        this.DropDownItems[0] = Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList();
         this.OverrideDropDownItems[0] = false;
       }
 
@@ -105,20 +105,20 @@ namespace ComposGH.Components
           "DensityUnit"
         });
 
-      this.DropdownItems = new List<List<string>>();
+      this.DropDownItems = new List<List<string>>();
       this.SelectedItems = new List<string>();
 
       // WeldMaterial
-      this.DropdownItems.Add(Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList());
-      this.DropdownItems[0].RemoveAt(0);
+      this.DropDownItems.Add(Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList());
+      this.DropDownItems[0].RemoveAt(0);
       this.SelectedItems.Add(Grade.ToString());
 
       // Stress
-      this.DropdownItems.Add(Units.FilteredStressUnits);
+      this.DropDownItems.Add(Units.FilteredStressUnits);
       this.SelectedItems.Add(StressUnit.ToString());
 
       // Density
-      this.DropdownItems.Add(Units.FilteredDensityUnits);
+      this.DropDownItems.Add(Units.FilteredDensityUnits);
       this.SelectedItems.Add(DensityUnit.ToString());
 
       this.OverrideDropDownItems = new List<bool>() { false, false, false };
@@ -128,7 +128,7 @@ namespace ComposGH.Components
     internal override void SetSelected(int i, int j)
     {
       // change selected item
-      this.SelectedItems[i] = this.DropdownItems[i][j];
+      this.SelectedItems[i] = this.DropDownItems[i][j];
 
       if (i == 0)  // change is made to code 
       {
