@@ -8,10 +8,83 @@ namespace ComposGH.Parameters
   /// </summary>
   public class ComposFileGoo : GH_OasysGoo<IComposFile>
   {
-    public static string Name => "Compos File";
-    public static string NickName => ".cob";
-    public static string Description => "Compos File containing one or more Members";
-    public ComposFileGoo(IComposFile item) : base(item) { }
-    public override IGH_Goo Duplicate() => new ComposFileGoo(this.Value);
+    #region constructors
+    public ComposFileGoo()
+    {
+      this.Value = new ComposFile();
+    }
+    public ComposFileGoo(IComposFile item)
+    {
+      if (item == null)
+        item = new ComposFile();
+      this.Value = item; //.Duplicate() as IStud;
+    }
+
+    public override IGH_Goo Duplicate()
+    {
+      return DuplicateGoo();
+    }
+    public ComposFileGoo DuplicateGoo()
+    {
+      return new ComposFileGoo(Value == null ? new ComposFile() : Value);
+    }
+    #endregion
+
+    #region properties
+    public override bool IsValid => (this.Value == null) ? false : true;
+    public override string TypeName => "File";
+    public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
+    public override string IsValidWhyNot
+    {
+      get
+      {
+        if (IsValid) { return string.Empty; }
+        return IsValid.ToString(); //Todo: beef this up to be more informative.
+      }
+    }
+    public override string ToString()
+    {
+      if (Value == null)
+        return "Null";
+      else
+        return "Compos " + TypeName + " {" + Value.ToString() + "}"; ;
+    }
+    #endregion
+
+    #region casting methods
+    public override bool CastTo<Q>(ref Q target)
+    {
+      // This function is called when Grasshopper needs to convert this 
+      // instance of our custom class into some other type Q.            
+
+      //if (typeof(Q).IsAssignableFrom(typeof(Stud)))
+      //{
+      //  if (Value == null)
+      //    target = default;
+      //  else
+      //    target = (Q)(object)Value;
+      //  return true;
+      //}
+
+      target = default;
+      return false;
+    }
+    public override bool CastFrom(object source)
+    {
+      // This function is called when Grasshopper needs to convert other data 
+      // into our custom class.
+
+      if (source == null) { return false; }
+
+      ////Cast from GsaMaterial
+      //if (typeof(Stud).IsAssignableFrom(source.GetType()))
+      //{
+      //  Value = (Stud)source;
+      //  return true;
+      //}
+
+      return false;
+    }
+    #endregion
   }
 }
