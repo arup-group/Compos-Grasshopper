@@ -172,7 +172,6 @@
     <Compile Include="Helpers\GetInputs.cs" />
     <Compile Include="Helpers\_SqlReaderValues.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
-    <Compile Include="Parameters\0_File\ComposFileGoo.cs" />
     <Compile Include="Parameters\1_Beam\ComposBeamParameter.cs" />
     <Compile Include="Parameters\1_Beam\BeamGoo.cs" />
     <Compile Include="Parameters\1_Beam\WebOpening\ComposWebOpeningParameter.cs" />
@@ -288,6 +287,7 @@
     <Folder Include="Components\6_Analysis\5_Quinary\" />
     <Folder Include="Components\8_Design\4_Quarternary\" />
     <Folder Include="Components\8_Design\5_Quinary\" />
+    <Folder Include="Parameters\0_File\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\RebarMesh.png" />
