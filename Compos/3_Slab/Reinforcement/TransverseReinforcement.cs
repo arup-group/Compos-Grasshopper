@@ -43,7 +43,7 @@ namespace ComposAPI
       TransverseReinforcement reinforcement = new TransverseReinforcement();
       reinforcement.CustomReinforcementLayouts = new List<ICustomTransverseReinforcementLayout>();
 
-      List<string> lines = CoaHelper.SplitLines(coaString);
+      List<string> lines = CoaHelper.SplitAndStripLines(coaString);
       foreach (string line in lines)
       {
         List<string> parameters = CoaHelper.Split(line);

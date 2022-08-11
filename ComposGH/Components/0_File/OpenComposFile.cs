@@ -169,7 +169,6 @@ namespace ComposGH.Components
           foreach (IMember mem in composFile.GetMembers())
             members.Add(new MemberGoo(mem));
           DA.SetDataList(0, members);
-          DA.SetData(0, new ComposFileGoo(composFile));
         }
       }
     }

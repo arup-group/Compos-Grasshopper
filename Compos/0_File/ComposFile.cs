@@ -320,11 +320,11 @@ namespace ComposAPI
     /// </returns>
     private short Initialise(bool checkGUID = true)
     {
-      //if (checkGUID)
-      //{
-      //  if (this.Guid == ComposFile.CurrentGuid)
-      //    return -1;
-      //}
+      if (checkGUID)
+      {
+        if (this.Guid == ComposFile.CurrentGuid)
+          return -1;
+      }
 
       ComposFile.ComposCOM.Close();
       ComposFile.CurrentGuid = this.Guid;
@@ -375,9 +375,6 @@ namespace ComposAPI
       {
         List<string> parameters = CoaHelper.Split(line);
         string coaIdentifier = parameters[0];
-
-        if (coaIdentifier == "END")
-          return new ComposFile(members);
 
         // ### member ###
         if (coaIdentifier == CoaIdentifier.MemberName)

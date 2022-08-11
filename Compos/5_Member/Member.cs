@@ -25,8 +25,6 @@ namespace ComposAPI
     public string GridReference { get; set; } = "";
     public string Note { get; set; } = "";
 
-    internal IAutomation ComposCOM { get; set; }
-
     #region constructors
     public Member()
     {
