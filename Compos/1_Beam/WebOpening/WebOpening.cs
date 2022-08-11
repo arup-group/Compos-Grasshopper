@@ -67,6 +67,7 @@ namespace ComposAPI
       get { return this.m_CentroidPosFromStart; }
       set
       {
+        if (value == null) return;
         if (value.QuantityInfo.UnitType != typeof(LengthUnit)
           & value.QuantityInfo.UnitType != typeof(RatioUnit))
           throw new ArgumentException("Centroid Position From Start must be either Length or Ratio");
@@ -80,6 +81,7 @@ namespace ComposAPI
       get { return this.m_CentroidPosFromTop; }
       set
       {
+        if (value == null) return;
         if (value.QuantityInfo.UnitType != typeof(LengthUnit)
           & value.QuantityInfo.UnitType != typeof(RatioUnit))
           throw new ArgumentException("Centroid Position From Top must be either Length or Ratio");
