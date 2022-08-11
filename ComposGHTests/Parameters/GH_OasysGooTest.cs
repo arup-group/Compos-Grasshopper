@@ -5,18 +5,22 @@ using Grasshopper.Kernel;
 using Rhino.Geometry;
 using Rhino.Test;
 using Xunit;
+using ComposGHTests.Helpers;
+using System.Linq;
+using System.Collections.Generic;
+using System.Reflection;
 
-namespace SampleGHTests
+namespace ComposGHTests
 {
   public class GH_OasysGooTest : Rhino.Test.GrasshopperFixture
   {
-    //[Fact]
-    //public void ConstructorTest()
-    //{
-    //  IComposFile file = new ComposFile();
-    //  ComposFileGoo goo = new ComposFileGoo(file);
+    [Fact]
+    public void ConstructorTest()
+    {
+      ISupports supports = new Supports();
+      SupportsGoo goo = new SupportsGoo(supports);
 
-    //  Assert.Equal(file, goo.Value);
-    //}
+      ObjectExtensionTest.IsEqual(supports, goo.Value);
+    }
   }
 }

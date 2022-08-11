@@ -1,6 +1,5 @@
 using System;
 using Xunit;
-using Grasshopper.Kernel;
 using Rhino.Geometry;
 
 namespace SampleGHTests
@@ -23,7 +22,7 @@ namespace SampleGHTests
     public void TestCircle()
     {
       foreach (var obj in (fixture.Doc.Objects))
-        if (obj is IGH_Param param)
+        if (obj is Grasshopper.Kernel.IGH_Param param)
           if (param.NickName == "TestCircleOutput")
           {
             param.CollectData();
