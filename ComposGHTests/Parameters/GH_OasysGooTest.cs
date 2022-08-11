@@ -93,13 +93,13 @@ namespace ComposGHTests
 
           hasValue = true;
 
-          // check some member properties have been set correctly
-          Type typeSource = gooValue.GetType();
-          PropertyInfo[] wrappedPropertyInfo = typeSource.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-          foreach (PropertyInfo wrapProperty in wrappedPropertyInfo)
-          {
+          // this could be used to test the content of the wrapped object, if they share any members/fields
+          //Type typeSource = gooValue.GetType();
+          //PropertyInfo[] wrappedPropertyInfo = typeSource.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+          //foreach (PropertyInfo wrapProperty in wrappedPropertyInfo)
+          //{
             
-          }
+          //}
         }
 
         // check the grasshopper tostring method (when you hover over the input/output)
