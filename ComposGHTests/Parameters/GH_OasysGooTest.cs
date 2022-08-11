@@ -7,18 +7,32 @@ using ComposGHTests.Helpers;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
+using Grasshopper.Kernel.Types;
 
 namespace ComposGHTests
 {
   public class GH_OasysGooTest
   {
-    [Fact]
-    public void ConstructorTest()
+    [Theory]
+    [InlineData(typeof(SupportsGoo), typeof(Supports))]
+    [InlineData(typeof(BeamGoo), typeof(Beam))]
+    [InlineData(typeof(StudGoo), typeof(Stud))]
+    public void ConstructorTest(Type gooType, Type wrapType)
     {
-      ISupports supports = new Supports();
-      SupportsGoo goo = new SupportsGoo(supports);
+      // Supports
+      object value = Activator.CreateInstance(wrapType);
+      object[] parameters = { value };
 
-      Duplicates.AreEqual(supports, goo.Value);
+      // GH_OasysGoo<ISupports> 
+      object objectGoo = Activator.CreateInstance(gooType, parameters);
+
+      Type typeSource = objectGoo.GetType();
+      PropertyInfo[] propertyInfo = typeSource.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+      foreach (PropertyInfo property in propertyInfo)
+      {
+        if (property.Name == "Value")
+          Duplicates.AreEqual(value, property);
+      }
     }
   }
 }
