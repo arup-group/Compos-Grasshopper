@@ -174,7 +174,7 @@
     <Compile Include="Helpers\_SqlReader.cs" />
     <Compile Include="Parameters\0_File\ComposFileGoo.cs" />
     <Compile Include="Parameters\1_Beam\ComposBeamParameter.cs" />
-    <Compile Include="Parameters\1_Beam\BeamGeometryGoo.cs" />
+    <Compile Include="Parameters\1_Beam\BeamGoo.cs" />
     <Compile Include="Parameters\1_Beam\WebOpening\ComposWebOpeningParameter.cs" />
     <Compile Include="Parameters\2_Studs\ComposStudParameter.cs" />
     <Compile Include="Parameters\2_Studs\StudGoo.cs" />
