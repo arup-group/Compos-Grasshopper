@@ -233,9 +233,6 @@ namespace ComposGH.Components
             this.Message = this.FileName;
           }
         }
-
-        DA.SetData(0, new ComposFileGoo(this.ComposFile));
-        DA.SetData(1, this.ComposFile.Guid);
       }
     }
   }
