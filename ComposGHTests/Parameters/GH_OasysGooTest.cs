@@ -65,6 +65,13 @@ namespace ComposGHTests
       // Create GH_OasysGoo<API_Object> 
       Object objectGoo = Activator.CreateInstance(gooType, parameters);
 
+      // Trigger the IGH_Goo Duplicate() method
+      IGH_Goo duplicate = ((IGH_Goo)objectGoo).Duplicate();
+      // check that they are equal
+      Duplicates.AreEqual(duplicate, objectGoo);
+      // check that they are not the same object (same pointer in memory)
+      Assert.NotEqual(duplicate, objectGoo);
+
       // we can't cast directly to objectGoo.Value, so we do this instead
       PropertyInfo[] gooPropertyInfo = gooType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
       foreach (PropertyInfo gooProperty in gooPropertyInfo)
@@ -74,6 +81,8 @@ namespace ComposGHTests
           Object gooValue = gooProperty.GetValue(objectGoo, null);
           // here check that the value in the goo object is a duplicate of the original object
           Duplicates.AreEqual(value, gooValue);
+          // check that they are not the same object (same pointer in memory)
+          Assert.NotEqual(value, gooValue);
 
           // check some member properties have been set correctly
           Type typeSource = gooValue.GetType();
