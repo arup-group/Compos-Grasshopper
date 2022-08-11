@@ -4,6 +4,8 @@ using UnitsNet;
 using UnitsNet.Units;
 using static ComposAPI.Load;
 using ComposAPI.Tests;
+using ComposGHTests.Helpers;
+
 
 namespace ComposAPI.Loads.Tests
 {
@@ -46,7 +48,7 @@ namespace ComposAPI.Loads.Tests
       Load duplicate = (Load)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
-      ObjectExtensionTest.IsEqual(original, duplicate);
+      Duplicates.AreEqual(original, duplicate);
 
       // 3 check that the memory pointer is not the same
       Assert.NotSame(original, duplicate);

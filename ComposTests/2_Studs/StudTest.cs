@@ -3,6 +3,7 @@ using ComposAPI.Tests;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
+using ComposGHTests.Helpers;
 
 namespace ComposAPI.Studs.Tests
 {
@@ -62,7 +63,7 @@ namespace ComposAPI.Studs.Tests
       Stud duplicate = (Stud)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
-      ObjectExtensionTest.IsEqual(original, duplicate);
+      Duplicates.AreEqual(original, duplicate);
 
       // 3 check that the memory pointer is not the same
       Assert.NotSame(original, duplicate);
@@ -185,7 +186,7 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(double.NaN, duplicate.Interaction);
       Assert.Equal(double.NaN, duplicate.MinSavingMultipleZones);
 
-      ObjectExtensionTest.IsEqual(original, duplicate);
+      Duplicates.AreEqual(original, duplicate);
 
       // 3 make some changes to duplicate
       IStudDimensions dimensions = new StudDimensions(StandardStudSize.D25mmH100mm, StandardStudGrade.SD3_EN13918);

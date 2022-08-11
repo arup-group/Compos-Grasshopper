@@ -46,6 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ComposGHTests\ComposGHTests.csproj" />
     <ProjectReference Include="..\Compos\ComposAPI.csproj" />
   </ItemGroup>
 

@@ -9,6 +9,8 @@ using Xunit;
 using ComposAPI;
 using ComposAPI.Helpers;
 using ComposAPI.Tests;
+using ComposGHTests.Helpers;
+
 
 namespace ComposAPI.Slabs.Tests
 {
@@ -31,7 +33,7 @@ namespace ComposAPI.Slabs.Tests
       SlabDimension duplicate = (SlabDimension)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
-      ObjectExtensionTest.IsEqual(original, duplicate);
+      Duplicates.AreEqual(original, duplicate);
 
       // 3 check that the memory pointer is not the same
       Assert.NotSame(original, duplicate);

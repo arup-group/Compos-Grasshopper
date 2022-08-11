@@ -5,6 +5,8 @@ using System.Linq;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
+using ComposGHTests.Helpers;
+
 
 namespace ComposAPI.Beams.Tests
 {
@@ -89,7 +91,7 @@ namespace ComposAPI.Beams.Tests
       StandardASNZSteelMaterialGrade duplicate = (StandardASNZSteelMaterialGrade)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
-      ObjectExtensionTest.IsEqual(original, duplicate);
+      Duplicates.AreEqual(original, duplicate);
 
       // 3 check that the memory pointer is not the same
       Assert.NotSame(original, duplicate);

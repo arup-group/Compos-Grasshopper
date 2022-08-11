@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using UnitsNet;
 using Xunit;
+using ComposGHTests.Helpers;
+
 
 namespace ComposAPI.Members.Tests
 {
@@ -48,7 +50,7 @@ namespace ComposAPI.Members.Tests
     //  Member duplicate = (Member)original.Duplicate(); 
 
     //  // 2 check that duplicate has duplicated values
-    //  ObjectExtensionTest.IsEqual(original, duplicate, true); // exclude testing GUIDs are equal
+    //  Duplicates.IsEqual(original, duplicate, true); // exclude testing GUIDs are equal
 
     //  // 3 check that the memory pointer is not the same
     //  Assert.NotSame(original, duplicate);

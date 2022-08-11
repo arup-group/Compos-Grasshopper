@@ -2,6 +2,8 @@ using ComposAPI.Helpers;
 using ComposAPI.Tests;
 using System.Collections.Generic;
 using Xunit;
+using ComposGHTests.Helpers;
+
 
 namespace ComposAPI.Members.Tests
 {
@@ -37,7 +39,7 @@ namespace ComposAPI.Members.Tests
       DesignCode duplicate = (DesignCode)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
-      ObjectExtensionTest.IsEqual(original, duplicate);
+      Duplicates.AreEqual(original, duplicate);
 
       // 3 check that the memory pointer is not the same
       Assert.NotSame(original, duplicate);
@@ -102,7 +104,7 @@ namespace ComposAPI.Members.Tests
       DesignCode duplicate = (DesignCode)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
-      ObjectExtensionTest.IsEqual(original, duplicate);
+      Duplicates.AreEqual(original, duplicate);
 
       // 3 check that the memory pointer is not the same
       Assert.NotSame(original, duplicate);
@@ -167,7 +169,7 @@ namespace ComposAPI.Members.Tests
       DesignCode duplicate = (DesignCode)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
-      ObjectExtensionTest.IsEqual(original, duplicate);
+      Duplicates.AreEqual(original, duplicate);
 
       // 3 check that the memory pointer is not the same
       Assert.NotSame(original, duplicate);
@@ -195,7 +197,7 @@ namespace ComposAPI.Members.Tests
       // Act
       IDesignCode actual = EN1994.FromCoaString(coaString, "MEMBER-4", ComposUnits.GetStandardUnits());
       // Assert
-      ObjectExtensionTest.IsEqual(expected_dc, actual);
+      Duplicates.AreEqual(expected_dc, actual);
     }
 
     [Fact]

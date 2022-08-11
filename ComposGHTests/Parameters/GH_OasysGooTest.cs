@@ -18,7 +18,7 @@ namespace ComposGHTests
       ISupports supports = new Supports();
       SupportsGoo goo = new SupportsGoo(supports);
 
-      ObjectExtensionTest.IsEqual(supports, goo.Value);
+      Duplicates.AreEqual(supports, goo.Value);
     }
   }
 }

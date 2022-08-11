@@ -11,9 +11,9 @@ using Xunit;
 
 namespace ComposGHTests.Helpers
 {
-  public class ObjectExtensionTest
+  public class Duplicates
   {
-    public static bool IsEqual(object objA, object objB, bool excludeGuid = false)
+    public static bool AreEqual(object objA, object objB, bool excludeGuid = false)
     {
       if (!(excludeGuid && objA.Equals(typeof(System.Guid))))
         Assert.Equal(objA.ToString(), objB.ToString());
@@ -106,7 +106,7 @@ namespace ComposGHTests.Helpers
                   while (enumeratorA.MoveNext())
                   {
                     Assert.True(enumeratorB.MoveNext());
-                    ObjectExtensionTest.IsEqual(enumeratorA.Current, enumeratorB.Current);
+                    AreEqual(enumeratorA.Current, enumeratorB.Current);
                   }
                 }
               }
@@ -130,7 +130,7 @@ namespace ComposGHTests.Helpers
           else
           // property type is object/complex type, so need to recursively call this method until the end of the tree is reached
           {
-            ObjectExtensionTest.IsEqual(objPropertyValueA, objPropertyValueB, excludeGuid);
+            AreEqual(objPropertyValueA, objPropertyValueB, excludeGuid);
           }
         }
         catch (TargetParameterCountException)
