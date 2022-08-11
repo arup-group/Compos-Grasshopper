@@ -2,8 +2,6 @@
 using ComposAPI;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
-using Rhino.Geometry;
-using Rhino.Test;
 using Xunit;
 using ComposGHTests.Helpers;
 using System.Linq;
@@ -12,7 +10,7 @@ using System.Reflection;
 
 namespace ComposGHTests
 {
-  public class GH_OasysGooTest : Rhino.Test.GrasshopperFixture
+  public class GH_OasysGooTest
   {
     [Fact]
     public void ConstructorTest()
