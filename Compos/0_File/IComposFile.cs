@@ -1,16 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ComposAPI
 {
   public interface IComposFile
   {
-    IList<IMember> Members { get; }
     //string FileName { get; }
+    Guid Guid { get; }
 
     void AddMember(IMember member);
     //short Analyse();
     short Analyse(string memberName);
     short CodeSatisfied(string memberName);
+    IList<IMember> GetMembers();
     //short Design();
     short Design(string memberName);
     string BeamSectDesc(string memberName);

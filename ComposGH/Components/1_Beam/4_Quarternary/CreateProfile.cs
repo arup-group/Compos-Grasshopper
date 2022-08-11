@@ -461,7 +461,7 @@ namespace ComposGH.Components
         Mode2Clicked();
       }
 
-      this.UpdateUIFromSelectedItems();
+      base.UpdateUIFromSelectedItems();
     }
 
     public override void VariableParameterMaintenance()
