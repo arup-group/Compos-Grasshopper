@@ -196,7 +196,7 @@
     <Compile Include="Parameters\1_Beam\BeamSection\BeamSectionGoo.cs" />
     <Compile Include="Parameters\1_Beam\Restraints\SupportsGoo.cs" />
     <Compile Include="Parameters\1_Beam\WebOpening\WebOpeningStiffenersGoo.cs" />
-    <Compile Include="Parameters\2_Studs\StudSpecGoo.cs" />
+    <Compile Include="Parameters\2_Studs\StudSpecificationGoo.cs" />
     <Compile Include="Parameters\2_Studs\StudGroupSpacingGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\SafetyFactorsENGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCriteria\FrequencyLimitsGoo.cs" />

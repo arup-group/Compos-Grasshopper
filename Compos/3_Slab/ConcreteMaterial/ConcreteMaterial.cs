@@ -286,7 +286,11 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      string str = this.Grade.ToString().Replace("_", "/");
+      string str;
+      if (this.Grade == null)
+        str = "(Grade not set)";
+      else
+        str = this.Grade.ToString().Replace("_", "/");
       str += " " + this.Type + ", D: " + this.DryDensity.As(Units.DensityUnit).ToString().Replace(" ", string.Empty);
       return str;
     }
