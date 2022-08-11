@@ -42,7 +42,7 @@ namespace ComposAPI
     #region constructors
     public Supports()
     {
-      // empty constructor
+      this.IntermediateRestraintPositions = IntermediateRestraint.None;
     }
     public Supports(List<IQuantity> customIntermediateRestraintPositions, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds)
     {

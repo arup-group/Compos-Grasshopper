@@ -327,14 +327,23 @@ namespace ComposAPI
     public override string ToString()
     {
       string size = "";
+      
       switch (this.WebOpeningType)
       {
         case OpeningType.Start_notch:
         case OpeningType.End_notch:
         case OpeningType.Rectangular:
-          size = this.Width.As(Height.Unit).ToString("g2") + "x" + this.Height.ToString("f0").Replace(" ", string.Empty);
+          if (this.Width == null || this.Height == null)
+          {
+            return "Invalid Webopening";
+          }
+          size = this.Width.As(Height.Unit).ToString("g2") + "x" + this.Height.ToString("g2").Replace(" ", string.Empty);
           break;
         case OpeningType.Circular:
+          if (this.Diameter == null)
+          {
+            return "Invalid Webopening";
+          }
           size = "Ø" + this.Diameter.ToString("g2").Replace(" ", string.Empty);
           break;
       }
@@ -351,26 +360,41 @@ namespace ComposAPI
         case OpeningType.Rectangular:
         case OpeningType.Circular:
           string x = "";
-          if (this.CentroidPosFromStart.QuantityInfo.UnitType == typeof(LengthUnit))
+          if (this.CentroidPosFromStart == null)
           {
-            Length l = (Length)this.CentroidPosFromStart;
-            x = l.ToString("f2").Replace(" ", string.Empty);
+            return "Invalid Webopening";
           }
           else
           {
-            Ratio p = (Ratio)this.CentroidPosFromStart;
-            x = p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
+            if (this.CentroidPosFromStart.QuantityInfo.UnitType == typeof(LengthUnit))
+            {
+              Length l = (Length)this.CentroidPosFromStart;
+              x = l.ToString("f2").Replace(" ", string.Empty);
+            }
+            else
+            {
+              Ratio p = (Ratio)this.CentroidPosFromStart;
+              x = p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
+            }
           }
+          
           string z = "";
-          if (this.CentroidPosFromTop.QuantityInfo.UnitType == typeof(LengthUnit))
+          if (this.CentroidPosFromStart == null)
           {
-            Length l = (Length)this.CentroidPosFromTop;
-            z = l.ToString("f2").Replace(" ", string.Empty);
+            return "Invalid Webopening";
           }
           else
           {
-            Ratio p = (Ratio)this.CentroidPosFromTop;
-            z = p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
+            if (this.CentroidPosFromTop.QuantityInfo.UnitType == typeof(LengthUnit))
+            {
+              Length l = (Length)this.CentroidPosFromTop;
+              z = l.ToString("g2").Replace(" ", string.Empty);
+            }
+            else
+            {
+              Ratio p = (Ratio)this.CentroidPosFromTop;
+              z = p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
+            }
           }
           typ = ", Pos:(x:" + x + ", z:" + z + ")";
           break;
