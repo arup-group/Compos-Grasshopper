@@ -60,10 +60,10 @@ namespace ComposAPI
     public override string ToString()
     {
       string str = "";
-      str += "Dmin:" + this.MinDepth.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
-      str += ", Dmax:" + this.MaxDepth.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
-      str += ", Wmin:" + this.MinWidth.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
-      str += ", Wmax:" + this.MaxWidth.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
+      str += "Dmin:" + this.MinDepth.ToString("g7").Replace(" ", string.Empty);
+      str += ", Dmax:" + this.MaxDepth.ToString("g7").Replace(" ", string.Empty);
+      str += ", Wmin:" + this.MinWidth.ToString("g7").Replace(" ", string.Empty);
+      str += ", Wmax:" + this.MaxWidth.ToString("g7").Replace(" ", string.Empty);
       return str;
     }
     #endregion
