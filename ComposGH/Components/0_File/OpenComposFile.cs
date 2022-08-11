@@ -166,7 +166,7 @@ namespace ComposGH.Components
           PostHog.ModelIO("openCOB", (int)(new FileInfo(fileName).Length / 1024));
 
           List<MemberGoo> members = new List<MemberGoo>();
-          foreach (IMember mem in composFile.Members)
+          foreach (IMember mem in composFile.GetMembers())
             members.Add(new MemberGoo(mem));
           DA.SetDataList(0, members);
         }

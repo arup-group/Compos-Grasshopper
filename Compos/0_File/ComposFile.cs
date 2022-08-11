@@ -14,13 +14,13 @@ namespace ComposAPI
   public class ComposFile : IComposFile
   {
     internal static IAutomation ComposCOM { get; } = new Automation();
-    internal static System.Guid CurrentGuid { get; set; } = System.Guid.Empty;
+    internal static Guid CurrentGuid { get; set; } = Guid.Empty;
 
     // verbose
     internal static int counter;
 
-    public System.Guid Guid { get; set; } = System.Guid.NewGuid();
-    public IList<IMember> Members { get; internal set; } = new List<IMember>();
+    public Guid Guid { get; set; } = Guid.NewGuid();
+    public IList<IMember> Members = new List<IMember>();
     internal bool IsAnalysed { get; set; } = false;
     internal bool IsDesigned { get; set; } = false;
 
@@ -49,6 +49,11 @@ namespace ComposAPI
     {
       member.Register(this);
       this.Members.Add(member);
+    }
+
+    public IList<IMember> GetMembers()
+    {
+      return this.Members;
     }
 
     /// <summary>
@@ -305,6 +310,14 @@ namespace ComposAPI
       return status;
     }
 
+    /// <summary>
+    /// Open a COB, COA or CSV file. Returns a status, as follows:
+    /// </summary>
+    /// <param name="checkGUID"></param>
+    /// <returns>
+    /// 0 – OK
+    /// 1 – failed to open
+    /// </returns>
     private short Initialise(bool checkGUID = true)
     {
       if (checkGUID)
@@ -362,9 +375,6 @@ namespace ComposAPI
       {
         List<string> parameters = CoaHelper.Split(line);
         string coaIdentifier = parameters[0];
-
-        if (coaIdentifier == "END")
-          return new ComposFile(members);
 
         // ### member ###
         if (coaIdentifier == CoaIdentifier.MemberName)

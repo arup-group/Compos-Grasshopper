@@ -38,13 +38,13 @@ namespace ComposAPI
     {
       Slab slab = new Slab();
 
-      List<string> lines = CoaHelper.SplitLines(coaString);
+      List<string> lines = CoaHelper.SplitAndStripLines(coaString);
       foreach (string line in lines)
       {
         List<string> parameters = CoaHelper.Split(line);
 
         if (parameters[0] == "END")
-          return slab;
+          goto transverse;
 
         if (parameters[0] == CoaIdentifier.UnitData)
           units.FromCoaString(parameters);
@@ -83,6 +83,7 @@ namespace ComposAPI
             break;
         }
       }
+    transverse:
       slab.Transverse = TransverseReinforcement.FromCoaString(coaString, name, code, units);
 
       return slab;

@@ -1,9 +1,9 @@
-﻿using ComposAPI.Tests;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ComposAPI.Tests;
 using UnitsNet;
 using Xunit;
 using ComposGHTests.Helpers;
@@ -40,21 +40,20 @@ namespace ComposAPI.Members.Tests
 
       return member;
     }
-    //[Fact]
-    //public void DuplicateTest()
-    //{
-    //  // 1 create with constructor and duplicate
-    //  Member original = ConstructorTest1("MEMBER-1");
-    // // ### duplicating member results in stack overflow
-    // // ### member.File.Members[0].File.Members[0].File.Members[0].....->
-    //  Member duplicate = (Member)original.Duplicate(); 
 
-    //  // 2 check that duplicate has duplicated values
-    //  Duplicates.IsEqual(original, duplicate, true); // exclude testing GUIDs are equal
+    [Fact]
+    public void DuplicateTest()
+    {
+      // 1 create with constructor and duplicate
+      Member original = ConstructorTest1("MEMBER-1");
+      Member duplicate = (Member)original.Duplicate();
 
-    //  // 3 check that the memory pointer is not the same
-    //  Assert.NotSame(original, duplicate);
-    //}
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate, true); // exclude testing GUIDs are equal
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
 
     // 1 setup inputs
     [Theory]
