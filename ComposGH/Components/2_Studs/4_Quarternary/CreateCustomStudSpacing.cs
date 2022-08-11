@@ -9,7 +9,7 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateCustomStudSpacing : GH_OasysComponent, IGH_VariableParameterComponent
+  public class CreateCustomStudSpacing : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
@@ -28,69 +28,10 @@ namespace ComposGH.Components
     protected override System.Drawing.Bitmap Icon => Properties.Resources.CustomStudSpacing;
     #endregion
 
-    #region Custom UI
-    //This region overrides the typical component layout
-
-    // list of lists with all dropdown lists conctent
-    List<List<string>> DropdownItems;
-    // list of selected items
-    List<string> SelectedItems;
-    // list of descriptions 
-    List<string> SpacerDescriptions = new List<string>(new string[]
-    {
-      "Unit",
-    });
-
-    private bool First = true;
-    private LengthUnit LengthUnit = Units.LengthUnitSection;
-
-    public override void CreateAttributes()
-    {
-      if (First)
-      {
-        DropdownItems = new List<List<string>>();
-        SelectedItems = new List<string>();
-
-        // length
-        DropdownItems.Add(Units.FilteredLengthUnits);
-        SelectedItems.Add(LengthUnit.ToString());
-
-        First = false;
-      }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
-    }
-    public void SetSelected(int i, int j)
-    {
-      // change selected item
-      SelectedItems[i] = DropdownItems[i][j];
-
-
-      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
-
-
-      // update name of inputs (to display unit on sliders)
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-
-    private void UpdateUIFromSelectedItems()
-    {
-      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[0]);
-
-      CreateAttributes();
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-    #endregion
-
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
+      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
 
       pManager.AddGenericParameter("Pos x [" + unitAbbreviation + "]", "Px", "Start Position where this Stud Spacing Groups begins on Beam (beam local x-axis)", GH_ParamAccess.item);
       pManager.AddIntegerParameter("Rows", "R", "Number of rows (across the top flange)", GH_ParamAccess.item);
@@ -105,54 +46,55 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Length start = GetInput.Length(this, DA, 0, LengthUnit);
+      Length start = GetInput.Length(this, DA, 0, this.LengthUnit);
       int rows = 1;
       DA.GetData(1, ref rows);
       int lines = 1;
       DA.GetData(2, ref lines);
-      Length spacing = GetInput.Length(this, DA, 3, LengthUnit);
+      Length spacing = GetInput.Length(this, DA, 3, this.LengthUnit);
 
       DA.SetData(0, new StudGroupSpacingGoo(new StudGroupSpacing(start, rows, lines, spacing)));
     }
 
-    #region (de)serialization
-    public override bool Write(GH_IO.Serialization.GH_IWriter writer)
-    {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
-      return base.Write(writer);
-    }
-    public override bool Read(GH_IO.Serialization.GH_IReader reader)
-    {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
+    #region Custom UI
+    private LengthUnit LengthUnit = Units.LengthUnitSection;
 
-      UpdateUIFromSelectedItems();
+    internal override void InitialiseDropdowns()
+    {
+      this.SpacerDescriptions = new List<string>(new string[] { "Unit" });
 
-      First = false;
+      this.DropDownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
 
-      return base.Read(reader);
-    }
-    #endregion
+      // length
+      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.SelectedItems.Add(this.LengthUnit.ToString());
 
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
+      this.IsInitialised = true;
     }
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
+
+    internal override void SetSelected(int i, int j)
     {
-      return false;
+      // change selected item
+      this.SelectedItems[i] = this.DropDownItems[i][j];
+      if (this.LengthUnit.ToString() == this.SelectedItems[i])
+        return;
+
+      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+
+      base.UpdateUI();
     }
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
+
+    internal override void UpdateUIFromSelectedItems()
     {
-      return null;
+      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[0]);
+
+      base.UpdateUIFromSelectedItems();
     }
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
+
+    public override void VariableParameterMaintenance()
     {
-      return false;
-    }
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
-      string unitAbbreviation = new Length(0, LengthUnit).ToString("a");
+      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
       Params.Input[0].Name = "Pos x [" + unitAbbreviation + "]";
       Params.Input[3].Name = "Spacing [" + unitAbbreviation + "]";
     }

@@ -154,6 +154,7 @@
     <Compile Include="Components\7_Results\ReadBeamResults.cs" />
     <Compile Include="Components\7_Results\ReadInternalForces.cs" />
     <Compile Include="Components\7_Results\ReadResults.cs" />
+    <Compile Include="Components\GH_OasysVariableComponent.cs" />
     <Compile Include="Components\GH_OasysComponent.cs" />
     <Compile Include="Components\GH_OasysTaskCapableComponent.cs" />
     <Compile Include="Components\8_Design\1_Primary\DesignMember.cs" />

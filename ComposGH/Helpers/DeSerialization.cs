@@ -4,19 +4,19 @@ namespace ComposGH.Helpers
 {
   internal class DeSerialization
   {
-    internal static GH_IO.Serialization.GH_IWriter writeDropDownComponents(ref GH_IO.Serialization.GH_IWriter writer, List<List<string>> dropdownitems, List<string> selecteditems, List<string> spacerDescriptions)
+    internal static GH_IO.Serialization.GH_IWriter writeDropDownComponents(ref GH_IO.Serialization.GH_IWriter writer, List<List<string>> DropDownItems, List<string> selecteditems, List<string> spacerDescriptions)
     {
       // to save the dropdownlist content, spacer list and selection list 
       // loop through the lists and save number of lists as well
       bool dropdown = false;
-      if (dropdownitems != null)
+      if (DropDownItems != null)
       {
-        writer.SetInt32("dropdownCount", dropdownitems.Count);
-        for (int i = 0; i < dropdownitems.Count; i++)
+        writer.SetInt32("dropdownCount", DropDownItems.Count);
+        for (int i = 0; i < DropDownItems.Count; i++)
         {
-          writer.SetInt32("dropdowncontentsCount" + i, dropdownitems[i].Count);
-          for (int j = 0; j < dropdownitems[i].Count; j++)
-            writer.SetString("dropdowncontents" + i + j, dropdownitems[i][j]);
+          writer.SetInt32("dropdowncontentsCount" + i, DropDownItems[i].Count);
+          for (int j = 0; j < DropDownItems[i].Count; j++)
+            writer.SetString("dropdowncontents" + i + j, DropDownItems[i][j]);
         }
         dropdown = true;
       }
@@ -47,20 +47,20 @@ namespace ComposGH.Helpers
       return writer;
     }
 
-    internal static void readDropDownComponents(ref GH_IO.Serialization.GH_IReader reader, ref List<List<string>> dropdownitems, ref List<string> selecteditems, ref List<string> spacerDescriptions)
+    internal static void readDropDownComponents(ref GH_IO.Serialization.GH_IReader reader, ref List<List<string>> DropDownItems, ref List<string> selecteditems, ref List<string> spacerDescriptions)
     {
       // dropdown content list
       if (reader.GetBoolean("dropdown"))
       {
         int dropdownCount = reader.GetInt32("dropdownCount");
-        dropdownitems = new List<List<string>>();
+        DropDownItems = new List<List<string>>();
         for (int i = 0; i < dropdownCount; i++)
         {
           int dropdowncontentsCount = reader.GetInt32("dropdowncontentsCount" + i);
           List<string> tempcontent = new List<string>();
           for (int j = 0; j < dropdowncontentsCount; j++)
             tempcontent.Add(reader.GetString("dropdowncontents" + i + j));
-          dropdownitems.Add(tempcontent);
+          DropDownItems.Add(tempcontent);
         }
       }
 

@@ -33,7 +33,7 @@ namespace ComposGH.Components
     // This region overrides the typical component layout
 
     // list of lists with all dropdown lists conctent
-    List<List<string>> DropdownItems;
+    List<List<string>> DropDownItems;
     // list of selected items
     List<string> SelectedItems;
     // list of descriptions 
@@ -49,21 +49,21 @@ namespace ComposGH.Components
     {
       if (this.First)
       {
-        this.DropdownItems = new List<List<string>>();
+        this.DropDownItems = new List<List<string>>();
         this.SelectedItems = new List<string>();
 
-        this.DropdownItems.Add(Enum.GetValues(typeof(BeamResultOption)).Cast<BeamResultOption>().Select(x => x.ToString()).ToList());
+        this.DropDownItems.Add(Enum.GetValues(typeof(BeamResultOption)).Cast<BeamResultOption>().Select(x => x.ToString()).ToList());
         this.SelectedItems.Add(this.Option.ToString());
 
         this.First = false;
       }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, this.DropdownItems, this.SelectedItems, this.SpacerDescriptions);
+      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, this.DropDownItems, this.SelectedItems, this.SpacerDescriptions);
     }
 
     public void SetSelected(int i, int j)
     {
       // change selected item
-      this.SelectedItems[i] = this.DropdownItems[i][j];
+      this.SelectedItems[i] = this.DropDownItems[i][j];
 
       if (i == 0)
       {

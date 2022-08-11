@@ -13,7 +13,7 @@ namespace ComposGH.Components
   /// <summary>
   /// Component to check if a Compos model satisfies the chosen code
   /// </summary>
-  public class DesignMember : GH_Component, IGH_VariableParameterComponent
+  public class DesignMember : GH_OasysComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
@@ -61,31 +61,5 @@ namespace ComposGH.Components
         DA.SetData(0, new MemberGoo(designedMember));
       }
     }
-
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
-    {
-      return null;
-    }
-
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
-    }
-    #endregion
   }
 }

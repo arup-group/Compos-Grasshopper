@@ -7,7 +7,7 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateSafetyFactorsEN : GH_OasysComponent, IGH_VariableParameterComponent
+  public class CreateSafetyFactorsEN : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
@@ -24,68 +24,6 @@ namespace ComposGH.Components
     public override GH_Exposure Exposure => GH_Exposure.secondary;
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.EC4SafetyFactors;
-    #endregion
-
-    #region Custom UI
-    // This region overrides the typical component layout
-
-    // list of lists with all dropdown lists conctent
-    List<List<string>> DropdownItems;
-    // list of selected items
-    List<string> SelectedItems;
-    // list of descriptions 
-    List<string> SpacerDescriptions = new List<string>(new string[]
-    {
-      "Load Combination",
-    });
-
-    private bool First = true;
-    private LoadCombination LoadCombinationType = LoadCombination.Equation6_10;
-
-    public override void CreateAttributes()
-    {
-      if (First)
-      {
-        DropdownItems = new List<List<string>>();
-        SelectedItems = new List<string>();
-
-        // spacing
-        DropdownItems.Add(Enum.GetValues(typeof(LoadCombination)).Cast<LoadCombination>()
-            .Select(x => x.ToString().Replace("__", " or ").Replace("_", ".")).ToList());
-        DropdownItems[0].RemoveAt(2); // remove 'Custom'
-        SelectedItems.Add(LoadCombination.Equation6_10.ToString().Replace("__", " or ").Replace("_", "."));
-
-        First = false;
-      }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
-    }
-    public void SetSelected(int i, int j)
-    {
-      // change selected item
-      SelectedItems[i] = DropdownItems[i][j];
-
-      if (LoadCombinationType.ToString().Replace("__", " or ").Replace("_", ".") == SelectedItems[i])
-        return;
-
-      LoadCombinationType = (LoadCombination)Enum.Parse(typeof(LoadCombination), SelectedItems[i].Replace(" or ", "__").Replace(".", "_"));
-
-      // update name of inputs (to display unit on sliders)
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-
-    private void UpdateUIFromSelectedItems()
-    {
-      LoadCombinationType = (LoadCombination)Enum.Parse(typeof(LoadCombination), SelectedItems[0].Replace(" or ", "__").Replace(".", "_"));
-
-      CreateAttributes();
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
     #endregion
 
     #region Input and output
@@ -157,11 +95,11 @@ namespace ComposGH.Components
           "Load combination factors for the worse of Equation 6.10a and 6.10b will be used (not applicable for storage structures)";
         AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, remark);
         combinationFactors = null;
-        SelectedItems[0] = LoadCombinationType.ToString().Replace("__", " or ").Replace("_", ".");
+        this.SelectedItems[0] = LoadCombinationType.ToString().Replace("__", " or ").Replace("_", ".");
       }
       else
       {
-        SelectedItems[0] = "Custom";
+        this.SelectedItems[0] = "Custom";
       }
 
       MaterialPartialFactors mf = new MaterialPartialFactors();
@@ -214,44 +152,43 @@ namespace ComposGH.Components
       DA.SetData(0, new SafetyFactorsENGoo(safetyFactors));
     }
 
-    #region (de)serialization
-    public override bool Write(GH_IO.Serialization.GH_IWriter writer)
-    {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
-      return base.Write(writer);
-    }
-    public override bool Read(GH_IO.Serialization.GH_IReader reader)
-    {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
+    #region Custom UI
+    private LoadCombination LoadCombinationType = LoadCombination.Equation6_10;
 
-      UpdateUIFromSelectedItems();
+    internal override void InitialiseDropdowns()
+    {
+      this.SpacerDescriptions = new List<string>(new string[] { "Load Combination" });
 
-      First = false;
+      this.DropDownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
 
-      return base.Read(reader);
-    }
-    #endregion
+      // spacing
+      this.DropDownItems.Add(Enum.GetValues(typeof(LoadCombination)).Cast<LoadCombination>()
+          .Select(x => x.ToString().Replace("__", " or ").Replace("_", ".")).ToList());
+      this.DropDownItems[0].RemoveAt(2); // remove 'Custom'
+      this.SelectedItems.Add(LoadCombination.Equation6_10.ToString().Replace("__", " or ").Replace("_", "."));
 
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
+      this.IsInitialised = true;
     }
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
+
+    internal override void SetSelected(int i, int j)
     {
-      return false;
+      // change selected item
+      this.SelectedItems[i] = this.DropDownItems[i][j];
+
+      if (this.LoadCombinationType.ToString().Replace("__", " or ").Replace("_", ".") == this.SelectedItems[i])
+        return;
+
+      this.LoadCombinationType = (LoadCombination)Enum.Parse(typeof(LoadCombination), this.SelectedItems[i].Replace(" or ", "__").Replace(".", "_"));
+
+      base.UpdateUI();
     }
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
+
+    internal override void UpdateUIFromSelectedItems()
     {
-      return null;
-    }
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
-      
+      this.LoadCombinationType = (LoadCombination)Enum.Parse(typeof(LoadCombination), this.SelectedItems[0].Replace(" or ", "__").Replace(".", "_"));
+
+      base.UpdateUIFromSelectedItems();
     }
     #endregion
   }
