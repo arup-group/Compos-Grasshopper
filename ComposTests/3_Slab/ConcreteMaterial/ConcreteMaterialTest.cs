@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ComposAPI.Helpers;
+using ComposAPI.Tests;
 using Oasys.Units;
 using UnitsNet;
 using UnitsNet.Units;
@@ -24,9 +25,23 @@ namespace ComposAPI.Slabs.Tests
 
   public class ConcreteMaterialTest
   {
+    [Fact]
+    public void DuplicateStdTest()
+    {
+      // 1 create with constructor and duplicate
+      ConcreteMaterial original = (ConcreteMaterial)ConcreteMaterialMother.CreateConcreteMaterial();
+      ConcreteMaterial duplicate = (ConcreteMaterial)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
     [Theory]
     [InlineData(ConcreteGrade.C35, WeightType.Normal, 2400, false, 0, 0, 0, 0, false, 33, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C35	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // BS Normal
-    [InlineData(ConcreteGrade.C50, WeightType.Light, 2200, true, 0, 0, 0, 0, false, 33, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C50	LIGHT	USER_DENSITY	2200.00	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // BS User Density
+    [InlineData(ConcreteGrade.C50, WeightType.LightWeight, 2200, true, 0, 0, 0, 0, false, 33, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C50	LIGHT	USER_DENSITY	2200.00	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // BS User Density
     [InlineData(ConcreteGrade.C45, WeightType.Normal, 2400, false, 1, 2, 3, 0, true, 30, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C45	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.300000	USER_E_RATIO	1.00000	2.00000	3.00000	0.000000	CODE_STRAIN\n")] // BS User ERatio
     [InlineData(ConcreteGrade.C35, WeightType.Normal, 2450, false, 0, 0, 0, 0, false, 33, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C35	NORMAL	CODE_DENSITY	2450.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // HKSUOS Normal
     [InlineData(ConcreteGrade.C40, WeightType.Normal, 2400, false, 0, 0, 0, 0, false, 33, "SLAB_CONCRETE_MATERIAL	MEMBER-1	C40	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN\n")] // ASNZ Normal
@@ -127,8 +142,8 @@ namespace ComposAPI.Slabs.Tests
     [Theory]
     [InlineData(ConcreteGrade.C30, WeightType.Normal, DensityClass.NOT_APPLY, 2400, false, 33, -0.000325, false)]
     [InlineData(ConcreteGrade.C30, WeightType.Normal, DensityClass.NOT_APPLY, 2300, true, 33, -0.000325, false)]
-    [InlineData(ConcreteGrade.C30, WeightType.Light, DensityClass.NOT_APPLY, 1800, false, 33, -0.000325, false)]
-    [InlineData(ConcreteGrade.C30, WeightType.Light, DensityClass.NOT_APPLY, 1900, true, 33, -0.000325, false)]
+    [InlineData(ConcreteGrade.C30, WeightType.LightWeight, DensityClass.NOT_APPLY, 1800, false, 33, -0.000325, false)]
+    [InlineData(ConcreteGrade.C30, WeightType.LightWeight, DensityClass.NOT_APPLY, 1900, true, 33, -0.000325, false)]
     public void BritishConstructorTest(ConcreteGrade grade, WeightType type, DensityClass densityClass, double dryDensityValue, bool userDensity, double imposedLoadPercentage, double shrinkageStrainValue, bool userStrain)
     {
       // 2 create object instance with constructor
@@ -154,14 +169,14 @@ namespace ComposAPI.Slabs.Tests
     [InlineData(ConcreteGradeEN.C35_45, WeightType.Normal, DensityClass.NOT_APPLY, 2400, false, 0.33, -0.000325, false)]
     [InlineData(ConcreteGradeEN.C35_45, WeightType.Normal, DensityClass.NOT_APPLY, 2200, true, 0.33, -0.000325, false)]
     [InlineData(ConcreteGradeEN.C35_45, WeightType.Normal, DensityClass.NOT_APPLY, 2400, false, 0.33, -0.0003, true)]
-    [InlineData(ConcreteGradeEN.LC30_33, WeightType.Light, DensityClass.DC801_1000, 1000, false, 0.33, -0.000325, false)]
-    [InlineData(ConcreteGradeEN.LC30_33, WeightType.Light, DensityClass.DC1001_1200, 1200, false, 0.33, -0.000325, false)]
-    [InlineData(ConcreteGradeEN.LC30_33, WeightType.Light, DensityClass.DC1201_1400, 1400, false, 0.33, -0.000325, false)]
-    [InlineData(ConcreteGradeEN.LC30_33, WeightType.Light, DensityClass.DC1401_1600, 1600, false, 0.33, -0.000325, false)]
-    [InlineData(ConcreteGradeEN.LC30_33, WeightType.Light, DensityClass.DC1601_1800, 1800, false, 0.33, -0.000325, false)]
-    [InlineData(ConcreteGradeEN.LC30_33, WeightType.Light, DensityClass.DC1801_2000, 2000, false, 0.33, -0.000325, false)]
-    [InlineData(ConcreteGradeEN.LC30_33, WeightType.Light, DensityClass.DC1801_2000, 1800, true, 0.33, -0.000325, false)]
-    [InlineData(ConcreteGradeEN.LC30_33, WeightType.Light, DensityClass.DC1801_2000, 1800, true, 0.33, -0.0003, true)]
+    [InlineData(ConcreteGradeEN.LC30_33, WeightType.LightWeight, DensityClass.DC801_1000, 1000, false, 0.33, -0.000325, false)]
+    [InlineData(ConcreteGradeEN.LC30_33, WeightType.LightWeight, DensityClass.DC1001_1200, 1200, false, 0.33, -0.000325, false)]
+    [InlineData(ConcreteGradeEN.LC30_33, WeightType.LightWeight, DensityClass.DC1201_1400, 1400, false, 0.33, -0.000325, false)]
+    [InlineData(ConcreteGradeEN.LC30_33, WeightType.LightWeight, DensityClass.DC1401_1600, 1600, false, 0.33, -0.000325, false)]
+    [InlineData(ConcreteGradeEN.LC30_33, WeightType.LightWeight, DensityClass.DC1601_1800, 1800, false, 0.33, -0.000325, false)]
+    [InlineData(ConcreteGradeEN.LC30_33, WeightType.LightWeight, DensityClass.DC1801_2000, 2000, false, 0.33, -0.000325, false)]
+    [InlineData(ConcreteGradeEN.LC30_33, WeightType.LightWeight, DensityClass.DC1801_2000, 1800, true, 0.33, -0.000325, false)]
+    [InlineData(ConcreteGradeEN.LC30_33, WeightType.LightWeight, DensityClass.DC1801_2000, 1800, true, 0.33, -0.0003, true)]
     public void EuropeanConstructorTest(ConcreteGradeEN grade, WeightType type, DensityClass densityClass, double dryDensityValue, bool userDensity, double imposedLoadPercentage, double shrinkageStrainValue, bool userStrain)
     {
       // 2 create object instance with constructor
@@ -260,7 +275,7 @@ namespace ComposAPI.Slabs.Tests
 
       // 3 make some changes to duplicate
       duplicate.Grade = ConcreteGradeEN.LC30_33.ToString();
-      duplicate.Type = WeightType.Light;
+      duplicate.Type = WeightType.LightWeight;
       duplicate.Class = DensityClass.DC1601_1800;
       Density duplicateDensity = new Density(1780, DensityUnit.KilogramPerCubicMeter);
       duplicate.DryDensity = duplicateDensity;
@@ -281,7 +296,7 @@ namespace ComposAPI.Slabs.Tests
 
       // 4 check that duplicate has set changes
       Assert.Equal(ConcreteGradeEN.LC30_33.ToString(), duplicate.Grade);
-      Assert.Equal(WeightType.Light, duplicate.Type);
+      Assert.Equal(WeightType.LightWeight, duplicate.Type);
       Assert.Equal(DensityClass.DC1601_1800, duplicate.Class);
       Assert.Equal(duplicateDensity, duplicate.DryDensity);
       Assert.True(duplicate.UserDensity);

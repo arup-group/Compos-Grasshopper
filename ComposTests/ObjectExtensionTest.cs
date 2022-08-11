@@ -13,8 +13,11 @@ namespace ComposAPI.Tests
 {
   public class ObjectExtensionTest
   {
-    public static bool IsEqual(object objA, object objB)
+    public static bool IsEqual(object objA, object objB, bool excludeGuid = false)
     {
+      if (!(excludeGuid && objA.Equals(typeof(System.Guid))))
+        Assert.Equal(objA.ToString(), objB.ToString());
+      
       Type typeA = objA.GetType();
       Type typeB = objB.GetType();
 
@@ -116,6 +119,8 @@ namespace ComposAPI.Tests
           // check whether property type is value type, enum or string type
           else if (propertyTypeA.IsValueType || propertyTypeA.IsEnum || propertyTypeA.Equals(typeof(System.String)))
           {
+            if (excludeGuid && propertyTypeA.Equals(typeof(System.Guid)))
+              continue;
             Assert.Equal(objPropertyValueA, objPropertyValueB);
           }
           else if (objPropertyValueA == null || objPropertyValueB == null)
@@ -125,7 +130,7 @@ namespace ComposAPI.Tests
           else
           // property type is object/complex type, so need to recursively call this method until the end of the tree is reached
           {
-            ObjectExtensionTest.IsEqual(objPropertyValueA, objPropertyValueB);
+            ObjectExtensionTest.IsEqual(objPropertyValueA, objPropertyValueB, excludeGuid);
           }
         }
         catch (TargetParameterCountException)

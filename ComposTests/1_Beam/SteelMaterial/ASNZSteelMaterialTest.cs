@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ComposAPI.Tests;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnitsNet;
@@ -78,6 +79,20 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(new Density(7850, DensityUnit.KilogramPerCubicMeter), material.Density);
       Assert.Equal(material.fy.Megapascals, fy_expected);
       Assert.Equal(weldGrade_expected, material.WeldGrade);
+    }
+
+    [Fact]
+    public void DuplicateTest()
+    {
+      // 1 create with constructor and duplicate
+      StandardASNZSteelMaterialGrade original = new StandardASNZSteelMaterialGrade();
+      StandardASNZSteelMaterialGrade duplicate = (StandardASNZSteelMaterialGrade)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
   }
 }

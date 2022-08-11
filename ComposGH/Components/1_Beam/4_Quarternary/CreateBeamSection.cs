@@ -9,14 +9,16 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateBeamSection : GH_OasysComponent, IGH_VariableParameterComponent
+  public class CreateBeamSection : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("de792051-ae6a-4249-8699-7ea0cfe8c528");
     public CreateBeamSection()
-      : base("Beam Section", "BeamSection", "Create Beam Section for a Compos Beam",
+      : base("Create" + BeamSectionGoo.Name.Replace(" ", string.Empty),
+          BeamSectionGoo.Name.Replace(" ", string.Empty),
+          "Create a " + BeamSectionGoo.Description + " for a " + BeamGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -26,70 +28,12 @@ namespace ComposGH.Components
     protected override System.Drawing.Bitmap Icon => Properties.Resources.BeamSection;
     #endregion
 
-    #region Custom UI
-    //This region overrides the typical component layout
-
-    // list of lists with all dropdown lists conctent
-    List<List<string>> DropdownItems;
-    // list of selected items
-    List<string> SelectedItems;
-    // list of descriptions 
-    List<string> SpacerDescriptions = new List<string>(new string[]
-    {
-      "Unit"
-    });
-
-    private bool First = true;
-    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
-
-    public override void CreateAttributes()
-    {
-      if (First)
-      {
-        DropdownItems = new List<List<string>>();
-        SelectedItems = new List<string>();
-
-        // length
-        DropdownItems.Add(Units.FilteredLengthUnits);
-        SelectedItems.Add(LengthUnit.ToString());
-
-        First = false;
-      }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
-    }
-    public void SetSelected(int i, int j)
-    {
-      // change selected item
-      SelectedItems[i] = DropdownItems[i][j];
-
-      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
-
-      // update name of inputs (to display unit on sliders)
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-
-    private void UpdateUIFromSelectedItems()
-    {
-      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[0]);
-
-      CreateAttributes();
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-    #endregion
-
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
 
-      pManager.AddGenericParameter("Beam Section", "Bs", "Beam Section or Profile string description like 'CAT IPE IPE200', 'STD I(cm) 20. 19. 8.5 1.27' or 'STD GI 400 300 250 12 25 20'", GH_ParamAccess.item);
+      pManager.AddGenericParameter(BeamSectionGoo.Name, BeamSectionGoo.NickName, BeamSectionGoo.Description + " or an I Profile string description like 'CAT IPE IPE200', 'STD I(cm) 20. 19. 8.5 1.27' or 'STD GI 400 300 250 12 25 20'", GH_ParamAccess.item);
       pManager.AddGenericParameter("Start [" + unitAbbreviation + "]", "Px", "(Optional) Start Position of this profile (beam local x-axis)."
         + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
       pManager.AddBooleanParameter("Taper Next", "Tp", "Taper to next (default = false)", GH_ParamAccess.item, false);
@@ -98,7 +42,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Beam Section", "Bs", "Beam Section for a Compos Beam", GH_ParamAccess.list);
+      pManager.AddGenericParameter(BeamSectionGoo.Name, BeamSectionGoo.NickName, BeamSectionGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.list);
     }
     #endregion
 
@@ -108,7 +52,7 @@ namespace ComposGH.Components
 
       IQuantity start = new Ratio(0, RatioUnit.Percent);
       if (this.Params.Input[1].Sources.Count > 0)
-       start = GetInput.LengthOrRatio(this, DA, 1, LengthUnit);
+       start = GetInput.LengthOrRatio(this, DA, 1, this.LengthUnit);
 
       bool taper = false;
       if (DA.GetData(2, ref taper))
@@ -123,45 +67,43 @@ namespace ComposGH.Components
       DA.SetData(0, new BeamSectionGoo(beamSection));
     }
 
-    #region (de)serialization
-    public override bool Write(GH_IO.Serialization.GH_IWriter writer)
-    {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
-      return base.Write(writer);
-    }
-    public override bool Read(GH_IO.Serialization.GH_IReader reader)
-    {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
+    #region Custom UI
+    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
 
-      UpdateUIFromSelectedItems();
+    internal override void InitialiseDropdowns()
+    {
+      this.SpacerDescriptions = new List<string>(new string[] { "Unit" });
 
-      First = false;
+      this.DropDownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
 
-      return base.Read(reader);
-    }
-    #endregion
+      // length
+      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.SelectedItems.Add(this.LengthUnit.ToString());
 
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
+      this.IsInitialised = true;
     }
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
+
+    internal override void SetSelected(int i, int j)
     {
-      return false;
+      // change selected item
+      this.SelectedItems[i] = this.DropDownItems[i][j];
+
+      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+
+      base.UpdateUI();
     }
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
+
+    internal override void UpdateUIFromSelectedItems()
     {
-      return null;
+      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[0]);
+
+      base.UpdateUIFromSelectedItems();
     }
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
+
+    public override void VariableParameterMaintenance()
     {
-      return false;
-    }
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
       Params.Input[1].Name = "Start [" + unitAbbreviation + "]";
     }
     #endregion

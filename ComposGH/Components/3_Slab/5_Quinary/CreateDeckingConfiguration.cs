@@ -16,7 +16,9 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("85E6A4A4-DD97-4780-A679-B733C4B4FE01");
     public CreateDeckingConfiguration()
-      : base("Deck Config", "DeckConf", "Create Decking configuration for a Compos Slab",
+      : base("Create" + DeckingConfigurationGoo.Name.Replace(" ", string.Empty),
+          DeckingConfigurationGoo.Name.Replace(" ", string.Empty),
+          "Create a " + DeckingConfigurationGoo.Description + " for a " + DeckingGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -52,7 +54,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Deck Config", "DC", "Compos Deck Configuration", GH_ParamAccess.item);
+      pManager.AddGenericParameter(DeckingConfigurationGoo.Name, DeckingConfigurationGoo.NickName, DeckingConfigurationGoo.Description + " for a Custom " + DeckingGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 

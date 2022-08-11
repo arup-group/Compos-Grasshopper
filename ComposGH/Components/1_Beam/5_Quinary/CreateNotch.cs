@@ -9,14 +9,14 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateNotch : GH_OasysComponent, IGH_VariableParameterComponent
+  public class CreateNotch : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("de802051-ae6a-4249-8699-7ea0cfe8c528");
     public CreateNotch()
-      : base("Beam Notch", "Notch", "Create Notch for a Compos Beam",
+      : base("BeamNotch", "Notch", "Create Beam Notch for a " + BeamGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -26,100 +26,19 @@ namespace ComposGH.Components
     protected override System.Drawing.Bitmap Icon => Properties.Resources.Notch;
     #endregion
 
-    #region Custom UI
-    //This region overrides the typical component layout
-
-    // list of lists with all dropdown lists conctent
-    List<List<string>> DropdownItems;
-    // list of selected items
-    List<string> SelectedItems;
-    // list of descriptions 
-    List<string> SpacerDescriptions = new List<string>(new string[]
-    {
-            "Position",
-            "Unit"
-    });
-    private enum notch_types
-    {
-      Both_ends,
-      Start,
-      End
-    }
-
-    private bool First = true;
-    private notch_types OpeningType = notch_types.Both_ends;
-    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
-
-    public override void CreateAttributes()
-    {
-      if (First)
-      {
-        DropdownItems = new List<List<string>>();
-        SelectedItems = new List<string>();
-
-        // type
-        DropdownItems.Add(Enum.GetValues(typeof(notch_types)).Cast<notch_types>()
-            .Select(x => x.ToString().Replace('_', ' ')).ToList());
-        SelectedItems.Add(notch_types.Both_ends.ToString().Replace('_', ' '));
-
-        // length
-        DropdownItems.Add(Units.FilteredLengthUnits);
-        SelectedItems.Add(LengthUnit.ToString());
-
-        First = false;
-      }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
-    }
-    public void SetSelected(int i, int j)
-    {
-      // change selected item
-      SelectedItems[i] = DropdownItems[i][j];
-
-      if (i == 0)
-      {
-        if (SelectedItems[i] == OpeningType.ToString().Replace('_', ' '))
-          return;
-        OpeningType = (notch_types)Enum.Parse(typeof(notch_types), SelectedItems[i].Replace(' ', '_'));
-      }
-      else if (i == 1) // change is made to length unit
-      {
-        LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
-      }
-
-        // update name of inputs (to display unit on sliders)
-        (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-
-    private void UpdateUIFromSelectedItems()
-    {
-      OpeningType = (notch_types)Enum.Parse(typeof(notch_types), SelectedItems[0].Replace(' ', '_'));
-      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[1]);
-
-      CreateAttributes();
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-    #endregion
-
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
 
       pManager.AddGenericParameter("Width [" + unitAbbreviation + "]", "B", "Web Opening Width", GH_ParamAccess.item);
       pManager.AddGenericParameter("Height [" + unitAbbreviation + "]", "H", "Web Opening Height", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Stiffeners", "WS", "(Optional) Web Opening Stiffeners", GH_ParamAccess.item);
+      pManager.AddGenericParameter(WebOpeningStiffenersGoo.Name + "(s)", WebOpeningStiffenersGoo.NickName, "(Optional) " + WebOpeningStiffenersGoo.Description, GH_ParamAccess.item);
       pManager[2].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("WebOpening", "WO", "Notch Web Opening for a Compos Beam", GH_ParamAccess.list);
+      pManager.AddGenericParameter(WebOpeningGoo.Name, WebOpeningGoo.NickName, "Notch " + WebOpeningGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.list);
     }
     #endregion
 
@@ -152,51 +71,72 @@ namespace ComposGH.Components
           break;
       }
     }
+    
+    #region Custom UI
+    private enum notch_types
+    {
+      Both_ends,
+      Start,
+      End
+    }
 
-    #region (de)serialization
-    public override bool Write(GH_IO.Serialization.GH_IWriter writer)
-    {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
-      return base.Write(writer);
-    }
-    public override bool Read(GH_IO.Serialization.GH_IReader reader)
-    {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
+    private notch_types OpeningType = notch_types.Both_ends;
+    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
 
-      UpdateUIFromSelectedItems();
+    internal override void InitialiseDropdowns()
+    {
+      this.SpacerDescriptions = new List<string>(new string[] { "Position", "Unit" });
 
-      First = false;
+      this.DropDownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
 
-      return base.Read(reader);
-    }
-    #endregion
+      // type
+      this.DropDownItems.Add(Enum.GetValues(typeof(notch_types)).Cast<notch_types>()
+          .Select(x => x.ToString().Replace('_', ' ')).ToList());
+      this.SelectedItems.Add(notch_types.Both_ends.ToString().Replace('_', ' '));
 
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
+      // length
+      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.SelectedItems.Add(this.LengthUnit.ToString());
+
+      this.IsInitialised = true;
     }
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
+
+    internal override void SetSelected(int i, int j)
     {
-      return false;
+      // change selected item
+      this.SelectedItems[i] = this.DropDownItems[i][j];
+
+      if (i == 0)
+      {
+        if (this.SelectedItems[i] == this.OpeningType.ToString().Replace('_', ' '))
+          return;
+        this.OpeningType = (notch_types)Enum.Parse(typeof(notch_types), this.SelectedItems[i].Replace(' ', '_'));
+      }
+      else if (i == 1) // change is made to length unit
+      {
+        this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+      }
+
+      base.UpdateUI();
     }
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
+
+    internal override void UpdateUIFromSelectedItems()
     {
-      return null;
+      this.OpeningType = (notch_types)Enum.Parse(typeof(notch_types), this.SelectedItems[0].Replace(' ', '_'));
+      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[1]);
+
+      base.UpdateUIFromSelectedItems();
     }
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
+
+    public override void VariableParameterMaintenance()
     {
-      return false;
-    }
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
-      if (OpeningType == notch_types.Both_ends)
+      if (this.OpeningType == notch_types.Both_ends)
         Params.Output[0].Access = GH_ParamAccess.list;
       else
         Params.Output[0].Access = GH_ParamAccess.item;
 
-      IQuantity length = new Length(0, LengthUnit);
-      string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
       Params.Input[0].Name = "Width [" + unitAbbreviation + "]";
       Params.Input[1].Name = "Height [" + unitAbbreviation + "]";
     }

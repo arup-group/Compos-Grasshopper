@@ -12,7 +12,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("c0df8c23-4aa1-439b-83a1-9b59078284c2");
     public CreateSafetyFactors()
-      : base("Safety Factors", "SF", "Create Compos Safety Factors",
+      : base("Create" + SafetyFactorsGoo.Name.Replace(" ", string.Empty),
+          SafetyFactorsGoo.Name.Replace(" ", string.Empty),
+          "Create a " + SafetyFactorsGoo.Description + " for a " + DesignCodeGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -42,7 +44,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Safety Factors", "SF", "Compos Safety Factors", GH_ParamAccess.item);
+      pManager.AddGenericParameter(SafetyFactorsGoo.Name, SafetyFactorsGoo.NickName, SafetyFactorsGoo.Description + " for a " + DesignCodeGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 

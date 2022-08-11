@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ComposAPI.Tests;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace ComposAPI.Members.Tests
     // 1 setup inputs
     [Theory]
     [InlineData("MEMBER-1")]
-    public void ConstructorTest1(string name)
+    public Member ConstructorTest1(string name)
     {
       // 2 create object instance with constructor
       IBeam beam = new Beam();
@@ -34,7 +35,24 @@ namespace ComposAPI.Members.Tests
       Assert.Equal(slab, member.Slab);
       Assert.Equal(loads, member.Loads);
       Assert.Equal(designCriteria, member.DesignCriteria);
+
+      return member;
     }
+    //[Fact]
+    //public void DuplicateTest()
+    //{
+    //  // 1 create with constructor and duplicate
+    //  Member original = ConstructorTest1("MEMBER-1");
+    // // ### duplicating member results in stack overflow
+    // // ### member.File.Members[0].File.Members[0].File.Members[0].....->
+    //  Member duplicate = (Member)original.Duplicate(); 
+
+    //  // 2 check that duplicate has duplicated values
+    //  ObjectExtensionTest.IsEqual(original, duplicate, true); // exclude testing GUIDs are equal
+
+    //  // 3 check that the memory pointer is not the same
+    //  Assert.NotSame(original, duplicate);
+    //}
 
     // 1 setup inputs
     [Theory]

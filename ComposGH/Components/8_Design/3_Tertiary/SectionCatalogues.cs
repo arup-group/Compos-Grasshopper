@@ -11,13 +11,13 @@ using System.Text.RegularExpressions;
 
 namespace ComposGH.Components
 {
-  public class CataloguesSections : GH_Component, IGH_VariableParameterComponent
+  public class CataloguesSections : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("38a7e123-4bdc-4f26-96f0-65ab64ab964e");
     public CataloguesSections()
-      : base("Section Catalogues ID", "Cat", "Get Compos Section Catalogue IDs for Design Criteria",
+      : base("SectionCatID", "Cat", "Get Compos Section Catalogue IDs for a " + DesignCriteriaGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat8())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -25,58 +25,6 @@ namespace ComposGH.Components
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.CatalogueID;
-    #endregion
-
-    #region Custom UI
-    //This region overrides the typical component layout
-
-    // list of lists with all dropdown lists conctent
-    List<List<string>> DropdownItems;
-    // list of selected items
-    List<string> SelectedItems;
-    // list of descriptions 
-    List<string> SpacerDescriptions = new List<string>(new string[]
-    {
-      "Catalogue",
-    });
-
-    private bool First = true;
-    List<string> Catalogues = ComposAPI.Helpers.CatalogueSectionType.CatalogueSectionTypes.Values.Select(x => x.ToString()).ToList();
-    public override void CreateAttributes()
-    {
-      if (First)
-      {
-        DropdownItems = new List<List<string>>();
-        SelectedItems = new List<string>();
-
-        // length
-        DropdownItems.Add(Catalogues);
-        SelectedItems.Add(DropdownItems[0][4]); // Europe IPEs
-
-        First = false;
-      }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
-    }
-    public void SetSelected(int i, int j)
-    {
-      // change selected item
-      SelectedItems[i] = DropdownItems[i][j];
-
-      // update name of inputs (to display unit on sliders)
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-
-    private void UpdateUIFromSelectedItems()
-    {
-      CreateAttributes();
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
     #endregion
 
     #region Input and output
@@ -88,7 +36,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddIntegerParameter("Catalogue ID", "CID", "Compos Section Catalogue ID for Design Criteria", GH_ParamAccess.list);
+      pManager.AddIntegerParameter("Catalogue ID", "CID", "Compos Section Catalogue ID for a " + DesignCriteriaGoo.Description, GH_ParamAccess.list);
     }
     #endregion
 
@@ -149,43 +97,28 @@ namespace ComposGH.Components
       }
     }
 
-    #region (de)serialization
-    public override bool Write(GH_IO.Serialization.GH_IWriter writer)
-    {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
-      return base.Write(writer);
-    }
-    public override bool Read(GH_IO.Serialization.GH_IReader reader)
-    {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
+    #region Custom UI
+    List<string> Catalogues = ComposAPI.Helpers.CatalogueSectionType.CatalogueSectionTypes.Values.Select(x => x.ToString()).ToList();
 
-      UpdateUIFromSelectedItems();
+    internal override void InitialiseDropdowns()
+    {
+      this.SpacerDescriptions = new List<string>(new string[] { "Catalogue" });
 
-      First = false;
+      this.DropDownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
 
-      return base.Read(reader);
-    }
-    #endregion
+      DropDownItems.Add(Catalogues);
+      SelectedItems.Add(DropDownItems[0][4]); // Europe IPEs
 
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
+      this.IsInitialised = true;
     }
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
+
+    internal override void SetSelected(int i, int j)
     {
-      return false;
-    }
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
-    {
-      return null;
-    }
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
+      // change selected item
+      this.SelectedItems[i] = this.DropDownItems[i][j];
+
+      base.UpdateUI();
     }
     #endregion
   }

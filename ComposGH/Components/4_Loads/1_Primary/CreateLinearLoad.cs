@@ -9,14 +9,14 @@ using UnitsNet.Units;
 
 namespace ComposGH.Components
 {
-  public class CreateLinearLoad : GH_OasysComponent, IGH_VariableParameterComponent
+  public class CreateLinearLoad : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("6dfed0d2-3ad1-49e6-a8d8-d5a5fd851a64");
     public CreateLinearLoad()
-      : base("Create Linear Load", "LinearLoad", "Create a linearly varying distributed Compos Load",
+      : base("CreateLinearLoad", "LinearLoad", "Create a linearly varying distributed Compos Load.",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat4())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -26,100 +26,11 @@ namespace ComposGH.Components
     protected override System.Drawing.Bitmap Icon => Properties.Resources.LinearLoad;
     #endregion
 
-    #region Custom UI
-    //This region overrides the typical component layout
-
-    // list of lists with all dropdown lists conctent
-    List<List<string>> DropdownItems;
-    // list of selected items
-    List<string> SelectedItems;
-    // list of descriptions 
-
-    List<string> SpacerDescriptions = new List<string>(new string[]
-    {
-      "Distribution",
-      "Unit"
-    });
-
-    private bool First = true;
-    private ForcePerLengthUnit ForcePerLengthUnit = Units.ForcePerLengthUnit;
-    private PressureUnit ForcePerAreaUnit = Units.StressUnit;
-    private LoadDistribution DistributionType = LoadDistribution.Area;
-
-    public override void CreateAttributes()
-    {
-      if (First)
-      {
-        DropdownItems = new List<List<string>>();
-        SelectedItems = new List<string>();
-
-        // type
-        DropdownItems.Add(Enum.GetValues(typeof(LoadDistribution)).Cast<LoadDistribution>().Select(x => x.ToString()).ToList()); 
-        SelectedItems.Add(LoadDistribution.Area.ToString());
-
-        // force unit
-        DropdownItems.Add(Units.FilteredForcePerAreaUnits);
-        SelectedItems.Add(ForcePerAreaUnit.ToString());
-
-        First = false;
-      }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
-    }
-    public void SetSelected(int i, int j)
-    {
-      // change selected item
-      SelectedItems[i] = DropdownItems[i][j];
-
-      if (i == 0)
-      {
-        DistributionType = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), SelectedItems[i]);
-        if (DistributionType == LoadDistribution.Line)
-        {
-          DropdownItems[1] = Units.FilteredForcePerLengthUnits;
-          SelectedItems[1] = ForcePerLengthUnit.ToString();
-        }
-        else
-        {
-          DropdownItems[1] = Units.FilteredForcePerAreaUnits;
-          SelectedItems[1] = ForcePerAreaUnit.ToString();
-        }
-      }
-      if (i == 1)
-      {
-        if (DistributionType == LoadDistribution.Line)
-          ForcePerLengthUnit = (ForcePerLengthUnit)Enum.Parse(typeof(ForcePerLengthUnit), SelectedItems[i]);
-        else
-          ForcePerAreaUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), SelectedItems[i]);
-      }
-
-      // update name of inputs (to display unit on sliders)
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-
-    private void UpdateUIFromSelectedItems()
-    {
-      DistributionType = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), SelectedItems[0]);
-      if (DistributionType == LoadDistribution.Line)
-        ForcePerLengthUnit = (ForcePerLengthUnit)Enum.Parse(typeof(ForcePerLengthUnit), SelectedItems[1]);
-      else
-        ForcePerAreaUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), SelectedItems[1]);
-
-      CreateAttributes();
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-    #endregion
-
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity force = new Pressure(0, ForcePerAreaUnit);
-      string unitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
+      string unitAbbreviation = Pressure.GetAbbreviation(this.ForcePerAreaUnit);
+
       pManager.AddGenericParameter("Const. Dead 1 [" + unitAbbreviation + "]", "dl1", "Start Constant dead load; construction stage dead load which are used for construction stage analysis", GH_ParamAccess.item);
       pManager.AddGenericParameter("Const. Live 1 [" + unitAbbreviation + "]", "ll1", "Start Constant live load; construction stage live load which are used for construction stage analysis", GH_ParamAccess.item);
       pManager.AddGenericParameter("Final Dead 1 [" + unitAbbreviation + "]", "DL1", "Start Final Dead Load", GH_ParamAccess.item);
@@ -131,7 +42,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Load", "Ld", "Compos Point Load", GH_ParamAccess.item);
+      pManager.AddGenericParameter(LoadGoo.Name, LoadGoo.NickName, LoadGoo.Description + " for a " + MemberGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -140,28 +51,28 @@ namespace ComposGH.Components
       switch (DistributionType)
       {
         case LoadDistribution.Line:
-          ForcePerLength constDeadL1 = GetInput.ForcePerLength(this, DA, 0, ForcePerLengthUnit);
-          ForcePerLength constLiveL1 = GetInput.ForcePerLength(this, DA, 1, ForcePerLengthUnit);
-          ForcePerLength finalDeadL1 = GetInput.ForcePerLength(this, DA, 2, ForcePerLengthUnit);
-          ForcePerLength finalLiveL1 = GetInput.ForcePerLength(this, DA, 3, ForcePerLengthUnit);
-          ForcePerLength constDeadL2 = GetInput.ForcePerLength(this, DA, 4, ForcePerLengthUnit);
-          ForcePerLength constLiveL2 = GetInput.ForcePerLength(this, DA, 5, ForcePerLengthUnit);
-          ForcePerLength finalDeadL2 = GetInput.ForcePerLength(this, DA, 6, ForcePerLengthUnit);
-          ForcePerLength finalLiveL2 = GetInput.ForcePerLength(this, DA, 7, ForcePerLengthUnit);
+          ForcePerLength constDeadL1 = GetInput.ForcePerLength(this, DA, 0, this.ForcePerLengthUnit);
+          ForcePerLength constLiveL1 = GetInput.ForcePerLength(this, DA, 1, this.ForcePerLengthUnit);
+          ForcePerLength finalDeadL1 = GetInput.ForcePerLength(this, DA, 2, this.ForcePerLengthUnit);
+          ForcePerLength finalLiveL1 = GetInput.ForcePerLength(this, DA, 3, this.ForcePerLengthUnit);
+          ForcePerLength constDeadL2 = GetInput.ForcePerLength(this, DA, 4, this.ForcePerLengthUnit);
+          ForcePerLength constLiveL2 = GetInput.ForcePerLength(this, DA, 5, this.ForcePerLengthUnit);
+          ForcePerLength finalDeadL2 = GetInput.ForcePerLength(this, DA, 6, this.ForcePerLengthUnit);
+          ForcePerLength finalLiveL2 = GetInput.ForcePerLength(this, DA, 7, this.ForcePerLengthUnit);
           Load loadL = new LinearLoad(
             constDeadL1, constLiveL1, finalDeadL1, finalLiveL1, constDeadL2, constLiveL2, finalDeadL2, finalLiveL2);
           DA.SetData(0, new LoadGoo(loadL));
           break;
 
         case LoadDistribution.Area:
-          Pressure constDeadA1 = GetInput.Stress(this, DA, 0, ForcePerAreaUnit);
-          Pressure constLiveA1 = GetInput.Stress(this, DA, 1, ForcePerAreaUnit);
-          Pressure finalDeadA1 = GetInput.Stress(this, DA, 2, ForcePerAreaUnit);
-          Pressure finalLiveA1 = GetInput.Stress(this, DA, 3, ForcePerAreaUnit);
-          Pressure constDeadA2 = GetInput.Stress(this, DA, 4, ForcePerAreaUnit);
-          Pressure constLiveA2 = GetInput.Stress(this, DA, 5, ForcePerAreaUnit);
-          Pressure finalDeadA2 = GetInput.Stress(this, DA, 6, ForcePerAreaUnit);
-          Pressure finalLiveA2 = GetInput.Stress(this, DA, 7, ForcePerAreaUnit);
+          Pressure constDeadA1 = GetInput.Stress(this, DA, 0, this.ForcePerAreaUnit);
+          Pressure constLiveA1 = GetInput.Stress(this, DA, 1, this.ForcePerAreaUnit);
+          Pressure finalDeadA1 = GetInput.Stress(this, DA, 2, this.ForcePerAreaUnit);
+          Pressure finalLiveA1 = GetInput.Stress(this, DA, 3, this.ForcePerAreaUnit);
+          Pressure constDeadA2 = GetInput.Stress(this, DA, 4, this.ForcePerAreaUnit);
+          Pressure constLiveA2 = GetInput.Stress(this, DA, 5, this.ForcePerAreaUnit);
+          Pressure finalDeadA2 = GetInput.Stress(this, DA, 6, this.ForcePerAreaUnit);
+          Pressure finalLiveA2 = GetInput.Stress(this, DA, 7, this.ForcePerAreaUnit);
           Load loadA = new LinearLoad(
             constDeadA1, constLiveA1, finalDeadA1, finalLiveA1, constDeadA2, constLiveA2, finalDeadA2, finalLiveA2);
           DA.SetData(0, new LoadGoo(loadA));
@@ -169,55 +80,78 @@ namespace ComposGH.Components
       }
     }
 
-    #region (de)serialization
-    public override bool Write(GH_IO.Serialization.GH_IWriter writer)
-    {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
-      return base.Write(writer);
-    }
-    public override bool Read(GH_IO.Serialization.GH_IReader reader)
-    {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
+    #region Custom UI
+    private ForcePerLengthUnit ForcePerLengthUnit = Units.ForcePerLengthUnit;
+    private PressureUnit ForcePerAreaUnit = Units.StressUnit;
+    private LoadDistribution DistributionType = LoadDistribution.Area;
 
-      UpdateUIFromSelectedItems();
+    internal override void InitialiseDropdowns()
+    {
+      this.SpacerDescriptions = new List<string>(new string[] { "Distribution", "Unit" });
 
-      First = false;
+      this.DropDownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
 
-      return base.Read(reader);
-    }
-    #endregion
+      // type
+      this.DropDownItems.Add(Enum.GetValues(typeof(LoadDistribution)).Cast<LoadDistribution>().Select(x => x.ToString()).ToList());
+      this.SelectedItems.Add(LoadDistribution.Area.ToString());
 
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
+      // force unit
+      this.DropDownItems.Add(Units.FilteredForcePerAreaUnits);
+      this.SelectedItems.Add(this.ForcePerAreaUnit.ToString());
+
+      this.IsInitialised = true;
     }
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
+
+    internal override void SetSelected(int i, int j)
     {
-      return false;
-    }
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
-    {
-      return null;
-    }
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
-      string unitAbbreviation = "";
-      if (DistributionType == LoadDistribution.Line)
+      this.SelectedItems[i] = this.DropDownItems[i][j];
+
+      if (i == 0)
       {
-        IQuantity force = new ForcePerLength(0, ForcePerLengthUnit);
-        unitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
+        this.DistributionType = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), this.SelectedItems[i]);
+        if (this.DistributionType == LoadDistribution.Line)
+        {
+          this.DropDownItems[1] = Units.FilteredForcePerLengthUnits;
+          this.SelectedItems[1] = this.ForcePerLengthUnit.ToString();
+        }
+        else
+        {
+          this.DropDownItems[1] = Units.FilteredForcePerAreaUnits;
+          this.SelectedItems[1] = this.ForcePerAreaUnit.ToString();
+        }
       }
+      if (i == 1)
+      {
+        if (this.DistributionType == LoadDistribution.Line)
+          this.ForcePerLengthUnit = (ForcePerLengthUnit)Enum.Parse(typeof(ForcePerLengthUnit), this.SelectedItems[i]);
+        else
+          this.ForcePerAreaUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), this.SelectedItems[i]);
+      }
+
+      base.UpdateUI();
+    }
+
+    internal override void UpdateUIFromSelectedItems()
+    {
+      this.DistributionType = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), this.SelectedItems[0]);
+      if (this.DistributionType == LoadDistribution.Line)
+        this.ForcePerLengthUnit = (ForcePerLengthUnit)Enum.Parse(typeof(ForcePerLengthUnit), this.SelectedItems[1]);
       else
-      {
-        IQuantity force = new Pressure(0, ForcePerAreaUnit);
-        unitAbbreviation = string.Concat(force.ToString().Where(char.IsLetter));
-      }
+        this.ForcePerAreaUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), this.SelectedItems[1]);
+
+      base.UpdateUIFromSelectedItems();
+    }
+    public override void VariableParameterMaintenance()
+    {
+      string unitAbbreviation;
+      if (DistributionType == LoadDistribution.Line)
+        unitAbbreviation = ForcePerLength.GetAbbreviation(this.ForcePerLengthUnit);
+      else
+        unitAbbreviation = Pressure.GetAbbreviation(this.ForcePerAreaUnit);
+      
       int i = 0;
+      
       Params.Input[i++].Name = "Const. Dead 1 [" + unitAbbreviation + "]";
       Params.Input[i++].Name = "Const. Live 1 [" + unitAbbreviation + "]";
       Params.Input[i++].Name = "Final Dead 1 [" + unitAbbreviation + "]";

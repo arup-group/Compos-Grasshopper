@@ -9,13 +9,15 @@ using UnitsNet;
 
 namespace ComposGH.Components
 {
-  public class CreateDesignCriteria : GH_Component, IGH_VariableParameterComponent
+  public class CreateDesignCriteria : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("f99fbf92-b4a2-46d7-8b7a-1e3360ba9f00");
     public CreateDesignCriteria()
-      : base("DesignCriteria", "Crt", "Create Compos Design Criteria for a Member",
+      : base("Create" + DesignCriteriaGoo.Name.Replace(" ", string.Empty),
+          DesignCriteriaGoo.Name.Replace(" ", string.Empty),
+          "Create a " + DesignCriteriaGoo.Description + " for a " + MemberGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat8())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -25,80 +27,24 @@ namespace ComposGH.Components
     protected override System.Drawing.Bitmap Icon => Properties.Resources.DesignCriteria;
     #endregion
 
-    #region Custom UI
-    //This region overrides the typical component layout
-
-    // list of lists with all dropdown lists conctent
-    List<List<string>> DropdownItems;
-    // list of selected items
-    List<string> SelectedItems;
-    // list of descriptions 
-    List<string> SpacerDescriptions = new List<string>(new string[]
-    {
-      "Optimise Option",
-    });
-
-    private bool First = true;
-    private OptimiseOption OptOption = OptimiseOption.MinimumWeight;
-    public override void CreateAttributes()
-    {
-      if (First)
-      {
-        DropdownItems = new List<List<string>>();
-        SelectedItems = new List<string>();
-
-        // length
-        DropdownItems.Add(new List<string>() { "Min. Weight", "Min. Height"});
-        SelectedItems.Add(DropdownItems[0][0]);
-
-        First = false;
-      }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
-    }
-    public void SetSelected(int i, int j)
-    {
-      // change selected item
-      SelectedItems[i] = DropdownItems[i][j];
-
-      OptOption = (SelectedItems[0] == "Min. Weight" ? OptimiseOption.MinimumWeight : OptimiseOption.MinimumHeight);
-
-      // update name of inputs (to display unit on sliders)
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-
-    private void UpdateUIFromSelectedItems()
-    {
-      OptOption = (SelectedItems[0] == "Min. Weight" ? OptimiseOption.MinimumWeight : OptimiseOption.MinimumHeight);
-
-      CreateAttributes();
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-    #endregion
-
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter("Beam Size Limit", "BLm", "Compos Beam Size Limit.", GH_ParamAccess.item);
+      pManager.AddGenericParameter(BeamSizeLimitsGoo.Name, BeamSizeLimitsGoo.NickName, BeamSizeLimitsGoo.Description, GH_ParamAccess.item);
       pManager.AddIntegerParameter("Catalogue ID(s)", "CID", "Compos Section Catalogue IDs.", GH_ParamAccess.list);
-      pManager.AddGenericParameter("Constr. Dead Load Lim.", "DLm", "Deflection Limit for Construction Dead Load.", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Additional Load Lim.", "ALm", "Deflection Limit for Additional Dead Load.", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Live Load Lim.", "LLm", "Deflection Limit for Final Live Load.", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Total Load Lim.", "ALm", "Deflection Limit for Total Load.", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Post Constr. Lim.", "PLm", "Deflection Limit for Post Construction Load (Total Load minus Construction Dead Load).", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Frequency Lim.", "fLm", "Frequncy Limit.", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Constr. Dead Load Lim.", "DLm", DeflectionLimitGoo.Description + " for Construction Dead Load.", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Additional Load Lim.", "ALm", DeflectionLimitGoo.Description + " for Additional Dead Load.", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Live Load Lim.", "LLm", DeflectionLimitGoo.Description + " for Final Live Load.", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Total Load Lim.", "ALm", DeflectionLimitGoo.Description + " for Total Load.", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Post Constr. Lim.", "PLm", DeflectionLimitGoo.Description + " for Post Construction Load (Total Load minus Construction Dead Load).", GH_ParamAccess.item);
+      pManager.AddGenericParameter(FrequencyLimitsGoo.Name, FrequencyLimitsGoo.NickName, FrequencyLimitsGoo.Description, GH_ParamAccess.item);
       for (int i = 2; i < pManager.ParamCount; i++)
         pManager[i].Optional = true;
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Design Criteria", "Crt", "Compos Design Criteria for a Member", GH_ParamAccess.item);
+      pManager.AddGenericParameter(DesignCriteriaGoo.Name, DesignCriteriaGoo.NickName, DesignCriteriaGoo.Description + " for a " + MemberGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -170,44 +116,37 @@ namespace ComposGH.Components
       DA.SetData(0, new DesignCriteriaGoo(designCriteria));
     }
 
-    #region (de)serialization
-    public override bool Write(GH_IO.Serialization.GH_IWriter writer)
-    {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
-      return base.Write(writer);
-    }
-    public override bool Read(GH_IO.Serialization.GH_IReader reader)
-    {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
 
-      UpdateUIFromSelectedItems();
+    #region Custom UI
+    private OptimiseOption OptOption = OptimiseOption.MinimumWeight;
 
-      First = false;
+    internal override void InitialiseDropdowns()
+    {
+      this.SpacerDescriptions = new List<string>(new string[] { "Optimise Option" });
 
-      return base.Read(reader);
-    }
-    #endregion
+      this.DropDownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
 
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
+      DropDownItems.Add(new List<string>() { "Min. Weight", "Min. Height" });
+      SelectedItems.Add(DropDownItems[0][0]);
+
+      this.IsInitialised = true;
     }
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
+
+    internal override void SetSelected(int i, int j)
     {
-      return false;
+      this.SelectedItems[i] = this.DropDownItems[i][j];
+
+      this.OptOption = this.SelectedItems[0] == "Min. Weight" ? OptimiseOption.MinimumWeight : OptimiseOption.MinimumHeight;
+
+      base.UpdateUI();
     }
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
+
+    internal override void UpdateUIFromSelectedItems()
     {
-      return null;
-    }
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
-      
+      this.OptOption = this.SelectedItems[0] == "Min. Weight" ? OptimiseOption.MinimumWeight : OptimiseOption.MinimumHeight;
+
+      base.UpdateUIFromSelectedItems();
     }
     #endregion
   }

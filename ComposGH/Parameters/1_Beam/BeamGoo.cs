@@ -21,6 +21,10 @@ namespace ComposGH.Parameters
     public LineCurve Line { get; set; }
     LengthUnit LengthUnit { get; set; }
 
+    public static string Name => "Beam";
+    public static string NickName => "Bm";
+    public static string Description => "Compos Steel Beam";
+
     #region constructors
     public BeamGoo(LineCurve line, LengthUnit lengthUnit, IRestraint restraint, ISteelMaterial material, List<IBeamSection> beamSections, List<IWebOpening> webOpenings = null)
     {
@@ -924,83 +928,5 @@ namespace ComposGH.Parameters
       }
       #endregion
     }
-  }
-
-  /// <summary>
-  /// This class provides a Parameter interface for the CustomGoo type.
-  /// </summary>
-  public class ComposBeamParameter : GH_PersistentGeometryParam<BeamGoo>, IGH_PreviewObject
-  {
-    public ComposBeamParameter()
-      : base(new GH_InstanceDescription("Beam", "Bm", "Maintains a collection of Compos Beam data.", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
-    {
-    }
-
-    public override Guid ComponentGuid => new Guid("dc61e94b-c326-4789-92f2-e0fe3caea4c7");
-
-    public override GH_Exposure Exposure => GH_Exposure.primary;
-
-    protected override Bitmap Icon => Properties.Resources.BeamParam;
-
-    //We do not allow users to pick parameter, 
-    //therefore the following 4 methods disable all this ui.
-    protected override GH_GetterResult Prompt_Plural(ref List<BeamGoo> values)
-    {
-      return GH_GetterResult.cancel;
-    }
-    protected override GH_GetterResult Prompt_Singular(ref BeamGoo value)
-    {
-      return GH_GetterResult.cancel;
-    }
-    protected override System.Windows.Forms.ToolStripMenuItem Menu_CustomSingleValueItem()
-    {
-      System.Windows.Forms.ToolStripMenuItem item = new System.Windows.Forms.ToolStripMenuItem
-      {
-        Text = "Not available",
-        Visible = false
-      };
-      return item;
-    }
-    protected override System.Windows.Forms.ToolStripMenuItem Menu_CustomMultiValueItem()
-    {
-      System.Windows.Forms.ToolStripMenuItem item = new System.Windows.Forms.ToolStripMenuItem
-      {
-        Text = "Not available",
-        Visible = false
-      };
-      return item;
-    }
-
-    #region preview methods
-    public BoundingBox ClippingBox
-    {
-      get
-      {
-        return Preview_ComputeClippingBox();
-      }
-    }
-    public void DrawViewportMeshes(IGH_PreviewArgs args)
-    {
-      //Use a standard method to draw gunk, you don't have to specifically implement this.
-      Preview_DrawMeshes(args);
-    }
-    public void DrawViewportWires(IGH_PreviewArgs args)
-    {
-      //Use a standard method to draw gunk, you don't have to specifically implement this.
-      Preview_DrawWires(args);
-    }
-
-    private bool m_hidden = false;
-    public bool Hidden
-    {
-      get { return m_hidden; }
-      set { m_hidden = value; }
-    }
-    public bool IsPreviewCapable
-    {
-      get { return true; }
-    }
-    #endregion
-
   }
 }

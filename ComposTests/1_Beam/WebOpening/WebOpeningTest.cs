@@ -3,6 +3,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using System.Collections.Generic;
 using ComposAPI.Helpers;
+using ComposAPI.Tests;
 
 namespace ComposAPI.Beams.Tests
 {
@@ -298,6 +299,34 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(12, original.OpeningStiffeners.BottomStiffenerThickness.Millimeters);
       Assert.True(original.OpeningStiffeners.isBothSides);
       Assert.False(original.OpeningStiffeners.isNotch);
+    }
+
+    [Fact]
+    public void DuplicateCircularTest()
+    {
+      // 1 create with constructor and duplicate
+      WebOpening original = TestConstructorCircularWebOpeningWithStiffener(300, 7000, 150);
+      WebOpening duplicate = (WebOpening)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
+    [Fact]
+    public void DuplicateRectangularTest()
+    {
+      // 1 create with constructor and duplicate
+      WebOpening original = TestConstructorRectangularWebOpeningWithStiffener(400, 300, 6000, 70);
+      WebOpening duplicate = (WebOpening)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     [Theory]

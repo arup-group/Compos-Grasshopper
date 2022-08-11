@@ -14,13 +14,13 @@ namespace ComposAPI
   public class ComposFile : IComposFile
   {
     internal static IAutomation ComposCOM { get; } = new Automation();
-    internal static string CurrentGuid { get; set; } = "";
+    internal static System.Guid CurrentGuid { get; set; } = System.Guid.Empty;
 
     // verbose
     internal static int counter;
 
-    public string Guid { get; set; } = System.Guid.NewGuid().ToString();
-    public IList<IMember> Members { get; } = new List<IMember>();
+    public System.Guid Guid { get; set; } = System.Guid.NewGuid();
+    public IList<IMember> Members { get; internal set; } = new List<IMember>();
     internal bool IsAnalysed { get; set; } = false;
     internal bool IsDesigned { get; set; } = false;
 

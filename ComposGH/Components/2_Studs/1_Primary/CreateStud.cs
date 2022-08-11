@@ -8,14 +8,16 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateStud : GH_OasysComponent, IGH_VariableParameterComponent
+  public class CreateStud : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("1451E11C-69D0-47D3-8730-FCA80E838E25");
     public CreateStud()
-      : base("Create Stud", "Stud", "Create a Compos Shear Stud",
+      : base("Create" + StudGoo.Name.Replace(" ", string.Empty),
+          StudGoo.Name.Replace(" ", string.Empty),
+          "Create a " + StudGoo.Description + " for a " + MemberGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -25,85 +27,19 @@ namespace ComposGH.Components
     protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateStud;
     #endregion
 
-    #region Custom UI
-    // This region overrides the typical component layout
-
-    // list of lists with all dropdown lists conctent
-    List<List<string>> DropdownItems;
-    // list of selected items
-    List<string> SelectedItems;
-    // list of descriptions 
-    List<string> SpacerDescriptions = new List<string>(new string[]
-    {
-      "Spacing Type",
-    });
-
-    private bool First = true;
-    private StudSpacingType SpacingType = StudSpacingType.Automatic;
-
-    public override void CreateAttributes()
-    {
-      if (First)
-      {
-        DropdownItems = new List<List<string>>();
-        SelectedItems = new List<string>();
-
-        // spacing
-        DropdownItems.Add(Enum.GetValues(typeof(StudSpacingType)).Cast<StudSpacingType>()
-            .Select(x => x.ToString().Replace("_", " ")).ToList());
-        SelectedItems.Add(StudSpacingType.Automatic.ToString().Replace("_", " "));
-
-        First = false;
-      }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropdownItems, SelectedItems, SpacerDescriptions);
-    }
-    public void SetSelected(int i, int j)
-    {
-      // change selected item
-      SelectedItems[i] = DropdownItems[i][j];
-
-      if (SpacingType.ToString().Replace("_", " ") == SelectedItems[i])
-        return;
-
-      SpacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), SelectedItems[i].Replace(" ", "_"));
-
-      ModeChangeClicked();
-
-      // update name of inputs (to display unit on sliders)
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-
-    private void UpdateUIFromSelectedItems()
-    {
-      SpacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), SelectedItems[0].Replace(" ", "_"));
-
-      ModeChangeClicked();
-
-      CreateAttributes();
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-    
-    #endregion
-
     #region Input and output
 
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter("Stud Dims", "Sdm", "Compos Shear Stud Dimensions", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Stud Spec", "Spc", "Compos Shear Stud Specification", GH_ParamAccess.item);
+      pManager.AddGenericParameter(StudDimensionsGoo.Name, StudDimensionsGoo.NickName, StudDimensionsGoo.Description, GH_ParamAccess.item);
+      pManager.AddGenericParameter(StudSpecificationGoo.Name, StudSpecificationGoo.NickName, StudSpecificationGoo.Description, GH_ParamAccess.item);
       pManager.AddNumberParameter("Min Saving", "Msm", "Fraction for Minimum Saving for using Multiple Zones (Default = 0.2 (20%))", GH_ParamAccess.item, 0.2);
       pManager[2].Optional = true;
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Stud", "Stu", "Compos Shear Stud", GH_ParamAccess.item);
+      pManager.AddGenericParameter(StudGoo.Name, StudGoo.NickName, StudGoo.Description + " for a " + MemberGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -140,12 +76,45 @@ namespace ComposGH.Components
           break;
       }
     }
-    #region update input params
+
+    #region Custom UI
+    private StudSpacingType SpacingType = StudSpacingType.Automatic;
+
+    internal override void InitialiseDropdowns()
+    {
+      this.SpacerDescriptions = new List<string>(new string[] { "Spacing Type" });
+      this.DropDownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
+      // spacing
+      this.DropDownItems.Add(Enum.GetValues(typeof(StudSpacingType)).Cast<StudSpacingType>()
+          .Select(x => x.ToString().Replace("_", " ")).ToList());
+      this.SelectedItems.Add(StudSpacingType.Automatic.ToString().Replace("_", " "));
+      this.IsInitialised = true;
+    }
+
+    internal override void SetSelected(int i, int j)
+    {
+      // change selected item
+      this.SelectedItems[i] = this.DropDownItems[i][j];
+      if (SpacingType.ToString().Replace("_", " ") == this.SelectedItems[i])
+        return;
+      this.SpacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), this.SelectedItems[i].Replace(" ", "_"));
+      this.ModeChangeClicked();
+      base.UpdateUI();
+    }
+
+    internal override void UpdateUIFromSelectedItems()
+    {
+      this.SpacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), this.SelectedItems[0].Replace(" ", "_"));
+      this.ModeChangeClicked();
+      base.UpdateUIFromSelectedItems();
+    }
+
     private void ModeChangeClicked()
     {
       RecordUndoEvent("Changed Parameters");
 
-      switch (SpacingType)
+      switch (this.SpacingType)
       {
         case StudSpacingType.Automatic:
         case StudSpacingType.Min_Num_of_Studs:
@@ -178,46 +147,10 @@ namespace ComposGH.Components
           break;
       }
     }
-    #endregion
 
-    #region (de)serialization
-    public override bool Write(GH_IO.Serialization.GH_IWriter writer)
+    public override void VariableParameterMaintenance()
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropdownItems, SelectedItems, SpacerDescriptions);
-      return base.Write(writer);
-    }
-    public override bool Read(GH_IO.Serialization.GH_IReader reader)
-    {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropdownItems, ref SelectedItems, ref SpacerDescriptions);
-
-      UpdateUIFromSelectedItems();
-
-      First = false;
-
-      return base.Read(reader);
-    }
-    #endregion
-
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
-    {
-      return null;
-    }
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
-      switch (SpacingType)
+      switch (this.SpacingType)
       {
         case StudSpacingType.Automatic:
         case StudSpacingType.Min_Num_of_Studs:
@@ -239,9 +172,9 @@ namespace ComposGH.Components
           break;
 
         case StudSpacingType.Custom:
-          Params.Input[2].Name = "Stud Spacings";
-          Params.Input[2].NickName = "Spa";
-          Params.Input[2].Description = "List of Custom Compos Shear Stud Spacing";
+          Params.Input[2].Name = StudGroupSpacingGoo.Name + "(s)";
+          Params.Input[2].NickName = StudGroupSpacingGoo.NickName;
+          Params.Input[2].Description = "(Optional) " + StudGroupSpacingGoo.Description;
           Params.Input[2].Access = GH_ParamAccess.list;
           Params.Input[3].Name = "Check Spacing";
           Params.Input[3].NickName = "Chk";

@@ -1,3 +1,4 @@
+using ComposAPI.Tests;
 using Moq;
 using System;
 using System.Linq.Expressions;
@@ -25,6 +26,19 @@ namespace ComposAPI.Members.Tests
 
       // (optionally return object for other tests)
       return codeOptions;
+    }
+    [Fact]
+    public void DuplicateASNZTest()
+    {
+      // 1 create with constructor and duplicate
+      CodeOptionsASNZ original = new CodeOptionsASNZ();
+      CodeOptionsASNZ duplicate = (CodeOptionsASNZ)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     [Fact]
@@ -85,6 +99,19 @@ namespace ComposAPI.Members.Tests
 
       // (optionally return object for other tests)
       return codeOptions;
+    }
+    [Fact]
+    public void DuplicateEC4Test()
+    {
+      // 1 create with constructor and duplicate
+      CodeOptionsEN original = new CodeOptionsEN();
+      CodeOptionsEN duplicate = (CodeOptionsEN)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     [Fact]

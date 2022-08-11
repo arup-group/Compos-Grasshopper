@@ -1,6 +1,7 @@
 ﻿using Xunit;
 using UnitsNet;
 using UnitsNet.Units;
+using ComposAPI.Tests;
 
 namespace ComposAPI.Studs.Tests
 {
@@ -26,6 +27,19 @@ namespace ComposAPI.Studs.Tests
 
       // 4 return object as input for overaching class test
       return studSpacing;
+    }
+    [Fact]
+    public void DuplicateTest()
+    {
+      // 1 create with constructor and duplicate
+      StudGroupSpacing original = TestConstructorStudSpacing(50, 1, 2, 150);
+      StudGroupSpacing duplicate = (StudGroupSpacing)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      ObjectExtensionTest.IsEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     [Fact]

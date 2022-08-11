@@ -23,6 +23,8 @@ namespace ComposAPI
         objTarget = objSource;
         return objTarget;
       }
+      if (typeSource == typeof(System.Guid))
+        return System.Guid.NewGuid();
 
       // get all the properties of source object type
       PropertyInfo[] propertyInfo = typeSource.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
@@ -36,7 +38,11 @@ namespace ComposAPI
           Type propertyType = property.PropertyType;
           try
           {
-            objPropertyValue = property.GetValue(objSource, null);
+            // check wether property is an guid - this we do not want to duplicate
+            if (propertyType.Equals(typeof(System.Guid)))
+              objPropertyValue = System.Guid.NewGuid();
+            else
+              objPropertyValue = property.GetValue(objSource, null);
 
             // check wether property is an interface
             if (propertyType.IsInterface)
