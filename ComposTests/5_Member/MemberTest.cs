@@ -45,8 +45,6 @@ namespace ComposAPI.Members.Tests
     {
       // 1 create with constructor and duplicate
       Member original = ConstructorTest1("MEMBER-1");
-      // ### duplicating member results in stack overflow
-      // ### member.File.Members[0].File.Members[0].File.Members[0].....->
       Member duplicate = (Member)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
