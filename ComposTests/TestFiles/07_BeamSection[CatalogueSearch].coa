@@ -1,0 +1,62 @@
+! This file was originally written by Compos version 8.6.0.7 on Tuesday, 17 May 2022 at 09:01:39
+!
+! Notes:
+! 1 All data in this file will be interpreted as being in user units
+!   as defined by UNIT_DATA records. These units remain in force until
+!   another UNIT_DATA record is found.
+!   Length units can be long (LENGTH), short (DISP) or Section (PROP_LENGTH).
+!   In general long length units are used except that.
+!   Section length unit is used for section sizes and
+!   Displacement length unit is used for displacement results.
+!   COMPOS stores all data in SI units.
+! 2 The date specified in the description for catalogue sections is
+!   optional. If omitted then the most recent section in the catalogue
+!   bearing that name will be assumed.
+!
+COMPOS_FILE_VERSION	1
+TITLE					
+UNIT_DATA	FORCE	N	1.00000
+UNIT_DATA	LENGTH	m	1.00000
+UNIT_DATA	DISP	m	1.00000
+UNIT_DATA	SECTION	m	1.00000
+UNIT_DATA	STRESS	N/m²	1.00000
+UNIT_DATA	MASS	kg	1.00000
+MEMBER_TITLE	07_BeamSection[CatalogueSearch]	Latitude_1  Longitude_1	Note
+DESIGN_OPTION	07_BeamSection[CatalogueSearch]	EN1994-1-1:2004	UNPROPPED	BEAM_WEIGHT_YES	SLAB_WEIGHT_YES	SHEAR_DEFORM_NO	THIN_SECTION_NO	2.00000	2.00000
+CRITERIA_DEF_LIMIT	07_BeamSection[CatalogueSearch]	CONSTRUCTION_DEAD_LOAD	SPAN/DEF_RATIO	360.000
+CRITERIA_DEF_LIMIT	07_BeamSection[CatalogueSearch]	FINAL_LIVE_LOAD	SPAN/DEF_RATIO	360.000
+CRITERIA_DEF_LIMIT	07_BeamSection[CatalogueSearch]	TOTAL	SPAN/DEF_RATIO	200.000
+CRITERIA_BEAM_SIZE_LIMIT	07_BeamSection[CatalogueSearch]	0.200000	0.900000	0.000000	1.00000
+CRITERIA_OPTIMISE_OPTION	07_BeamSection[CatalogueSearch]	MINIMUM_WEIGHT
+CRITERIA_SECTION_TYPE	07_BeamSection[CatalogueSearch]	242
+CRITERIA_FREQUENCY	07_BeamSection[CatalogueSearch]	CHECK_NATURAL_FREQUENCY	4.00000	1.00000	0.100000
+BEAM_STEEL_MATERIAL_STD	07_BeamSection[CatalogueSearch]	S355
+BEAM_WELDING_MATERIAL	07_BeamSection[CatalogueSearch]	Grade 42
+BEAM_SPAN_LENGTH	07_BeamSection[CatalogueSearch]	1	9.00000
+BEAM_SECTION_AT_X	07_BeamSection[CatalogueSearch]	1	1	0.000000	CAT BSI-IPE IPEAA80 20170901	TAPERED_NO
+RESTRAINT_POINT	07_BeamSection[CatalogueSearch]	STANDARD	1
+RESTRAINT_TOP_FALNGE	07_BeamSection[CatalogueSearch]	TOP_FLANGE_FIXED
+RESTRAINT_2ND_BEAM	07_BeamSection[CatalogueSearch]	SEC_BEAM_AS_REST
+END_FLANGE_FREE_ROTATE	07_BeamSection[CatalogueSearch]	FREE_TO_ROTATE
+FINAL_RESTRAINT_POINT	07_BeamSection[CatalogueSearch]	STANDARD	0
+FINAL_RESTRAINT_NOSTUD	07_BeamSection[CatalogueSearch]	NOSTUD_ZONE_LATERAL_FIXED
+FINAL_RESTRAINT_2ND_BEAM	07_BeamSection[CatalogueSearch]	SEC_BEAM_AS_REST
+FINAL_END_FLANGE_FREE_ROTATE	07_BeamSection[CatalogueSearch]	FREE_TO_ROTATE
+SLAB_CONCRETE_MATERIAL	07_BeamSection[CatalogueSearch]	C30/37	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN
+SLAB_DIMENSION	07_BeamSection[CatalogueSearch]	1	1	0.000000	0.150000	1.50000	1.50000	TAPERED_YES	EFFECTIVE_WIDTH_NO
+REBAR_WESH	07_BeamSection[CatalogueSearch]	A142	0.0350000	PARALLEL
+REBAR_MATERIAL	07_BeamSection[CatalogueSearch]	STANDARD	500B
+REBAR_TRANSVERSE	07_BeamSection[CatalogueSearch]	PROGRAM_DESIGNED
+DECKING_CATALOGUE	07_BeamSection[CatalogueSearch]	RLD	Ribdeck AL (1.2)	S280	90.0000	DECKING_CONTINUE	JOINT_NOT_WELD
+STUD_DEFINITION	07_BeamSection[CatalogueSearch]	STANDARD	19mm/100mm	WELDED_YES
+STUD_LAYOUT	07_BeamSection[CatalogueSearch]	AUTO_MINIMUM_STUD	0.200000
+STUD_NO_STUD_ZONE	07_BeamSection[CatalogueSearch]	-0.000000	-0.000000
+STUD_EC4_APPLY	07_BeamSection[CatalogueSearch]	YES
+LOAD	07_BeamSection[CatalogueSearch]	Uniform	Line	1000.00	1500.00	3000.00	5000.00	Line	1000.00	1500.00	3000.00	5000.00	3000.00	4500.00	6000.00	5000.00
+FLOOR_RESPONSE	07_BeamSection[CatalogueSearch]	FLOOR_RESPONSE_ANALYSIS_NO
+EC4_DESIGN_OPTION	07_BeamSection[CatalogueSearch]	SHRINKAGE_DEFORM_EC4_YES	IGNORE_SHRINKAGE_DEFORM_NO	APPROXIMATE_E_RATIO_NO	United Kingdom	CLASS_N	1.10000	0.550000	28.0000	1.00000	36500.0	36500.0	50.0000	50.0000
+STUD_NCCI_LIMIT_APPLY	07_BeamSection[CatalogueSearch]	YES
+STUD_EC4_RFT_POS	07_BeamSection[CatalogueSearch]	0.0300000
+EC4_STUD_GRADE	07_BeamSection[CatalogueSearch]	CODE_GRADE_YES	SD1_EN13918
+GROUP	ALL	Default group containing all the members	1	07_BeamSection[CatalogueSearch]
+END
