@@ -45,9 +45,9 @@ namespace ComposAPI
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       int i = 2;
       
-      codeOptionsEN.ConsiderShrinkageDeflection = parameters[i++] == "SHRINKAGE_DEFORM_EC4";
-      codeOptionsEN.IgnoreShrinkageDeflectionForLowLengthToDepthRatios = parameters[i++] == "IGNORE_SHRINKAGE_DEFORM";
-      codeOptionsEN.ApproxModularRatios = parameters[i++] == "APPROXIMATE_E_RATIO";
+      codeOptionsEN.ConsiderShrinkageDeflection = parameters[i++] == "SHRINKAGE_DEFORM_EC4_YES";
+      codeOptionsEN.IgnoreShrinkageDeflectionForLowLengthToDepthRatios = parameters[i++] == "IGNORE_SHRINKAGE_DEFORM_YES";
+      codeOptionsEN.ApproxModularRatios = parameters[i++] == "APPROXIMATE_E_RATIO_YES";
       i++; // national annex not set here.
       switch (parameters[i++].Last())
       {
