@@ -27,7 +27,6 @@ namespace ComposGH.Components
     #endregion
 
     #region Input and output
-
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       string unitAbbreviation = Force.GetAbbreviation(ForceUnit);

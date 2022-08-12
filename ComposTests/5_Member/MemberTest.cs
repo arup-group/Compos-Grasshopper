@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ComposAPI.Tests;
+using ComposGHTests.Helpers;
 using UnitsNet;
 using Xunit;
 
@@ -44,12 +45,10 @@ namespace ComposAPI.Members.Tests
     {
       // 1 create with constructor and duplicate
       Member original = ConstructorTest1("MEMBER-1");
-      // ### duplicating member results in stack overflow
-      // ### member.File.Members[0].File.Members[0].File.Members[0].....->
       Member duplicate = (Member)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
-      ObjectExtensionTest.IsEqual(original, duplicate, true); // exclude testing GUIDs are equal
+      Duplicates.AreEqual(original, duplicate, true); // exclude testing GUIDs are equal
 
       // 3 check that the memory pointer is not the same
       Assert.NotSame(original, duplicate);

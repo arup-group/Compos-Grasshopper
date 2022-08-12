@@ -7,6 +7,8 @@ using ComposAPI.Helpers;
 using ComposAPITests.Helpers;
 using System;
 using ComposAPI.Tests;
+using ComposGHTests.Helpers;
+
 
 namespace ComposAPI.Beams.Tests
 {
@@ -313,7 +315,7 @@ namespace ComposAPI.Beams.Tests
       BeamSection duplicate = (BeamSection)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
-      ObjectExtensionTest.IsEqual(original, duplicate);
+      Duplicates.AreEqual(original, duplicate);
 
       // 3 check that the memory pointer is not the same
       Assert.NotSame(original, duplicate);

@@ -67,6 +67,8 @@ namespace ComposAPI
     {
       if (this.Beam.Sections.Count > 1)
         throw new Exception("Unable to design member with more than one section");
+      if (!this.Beam.Sections[0].isCatalogue)
+        throw new Exception("Unable to design member, the initial section profile must be a catalogue profile");
 
       IComposFile file = FileRegister[this.FileGuid];
       if (file.Design(this.Name) == 0)

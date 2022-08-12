@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
+using ComposGHTests.Helpers;
+
 
 namespace ComposAPI.Members.Tests
 {
@@ -14,7 +16,7 @@ namespace ComposAPI.Members.Tests
     {
       DesignCriteria designCriteria = new DesignCriteria();
 
-      ObjectExtensionTest.IsEqual(new BeamSizeLimits(), designCriteria.BeamSizeLimits);
+      Duplicates.AreEqual(new BeamSizeLimits(), designCriteria.BeamSizeLimits);
       Assert.Equal(OptimiseOption.MinimumWeight, designCriteria.OptimiseOption);
       Assert.Equal(0, designCriteria.CatalogueSectionTypes.Count);
     }
@@ -37,7 +39,7 @@ namespace ComposAPI.Members.Tests
       List<int> catalogues = new List<int>() { 1, 2, 3 };
       DesignCriteria designCriteria = new DesignCriteria(beamSizeLimits, optimiseOption, catalogues);
 
-      ObjectExtensionTest.IsEqual(beamSizeLimits, designCriteria.BeamSizeLimits);
+      Duplicates.AreEqual(beamSizeLimits, designCriteria.BeamSizeLimits);
       Assert.Equal(OptimiseOption.MinimumHeight, designCriteria.OptimiseOption);
       Assert.Equal(3, designCriteria.CatalogueSectionTypes.Count);
       Assert.Null(designCriteria.ConstructionDeadLoad);
@@ -62,15 +64,15 @@ namespace ComposAPI.Members.Tests
       FrequencyLimits frequencyLimits = new FrequencyLimits(5, 90, 15);
       DesignCriteria designCriteria = new DesignCriteria(beamSizeLimits, optimiseOption, catalogues, constructionDL, additionalDL, finalLL, total, postConstr, frequencyLimits);
 
-      ObjectExtensionTest.IsEqual(beamSizeLimits, designCriteria.BeamSizeLimits);
+      Duplicates.AreEqual(beamSizeLimits, designCriteria.BeamSizeLimits);
       Assert.Equal(OptimiseOption.MinimumHeight, designCriteria.OptimiseOption);
       Assert.Equal(4, designCriteria.CatalogueSectionTypes.Count);
-      ObjectExtensionTest.IsEqual(constructionDL, designCriteria.ConstructionDeadLoad);
-      ObjectExtensionTest.IsEqual(additionalDL, designCriteria.AdditionalDeadLoad);
-      ObjectExtensionTest.IsEqual(finalLL, designCriteria.FinalLiveLoad);
-      ObjectExtensionTest.IsEqual(total, designCriteria.TotalLoads);
-      ObjectExtensionTest.IsEqual(postConstr, designCriteria.PostConstruction);
-      ObjectExtensionTest.IsEqual(frequencyLimits, designCriteria.FrequencyLimits);
+      Duplicates.AreEqual(constructionDL, designCriteria.ConstructionDeadLoad);
+      Duplicates.AreEqual(additionalDL, designCriteria.AdditionalDeadLoad);
+      Duplicates.AreEqual(finalLL, designCriteria.FinalLiveLoad);
+      Duplicates.AreEqual(total, designCriteria.TotalLoads);
+      Duplicates.AreEqual(postConstr, designCriteria.PostConstruction);
+      Duplicates.AreEqual(frequencyLimits, designCriteria.FrequencyLimits);
 
       return designCriteria;
     }
@@ -124,7 +126,7 @@ namespace ComposAPI.Members.Tests
       IDesignCriteria designCriteria = DesignCriteria.FromCoaString(coaString, "MEMBER-1", units);
 
       // Assert
-      ObjectExtensionTest.IsEqual(expectedDesignCriteria, designCriteria);
+      Duplicates.AreEqual(expectedDesignCriteria, designCriteria);
     }
 
     [Fact]
@@ -196,7 +198,7 @@ namespace ComposAPI.Members.Tests
       DesignCriteria duplicate = (DesignCriteria)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
-      ObjectExtensionTest.IsEqual(original, duplicate);
+      Duplicates.AreEqual(original, duplicate);
 
       // 3 check that the memory pointer is not the same
       Assert.NotSame(original, duplicate);

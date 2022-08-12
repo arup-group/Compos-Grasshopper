@@ -10,6 +10,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
 using static ComposAPI.ConcreteMaterial;
+using ComposGHTests.Helpers;
 
 namespace ComposAPI.Slabs.Tests
 {
@@ -33,7 +34,7 @@ namespace ComposAPI.Slabs.Tests
       ConcreteMaterial duplicate = (ConcreteMaterial)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
-      ObjectExtensionTest.IsEqual(original, duplicate);
+      Duplicates.AreEqual(original, duplicate);
 
       // 3 check that the memory pointer is not the same
       Assert.NotSame(original, duplicate);

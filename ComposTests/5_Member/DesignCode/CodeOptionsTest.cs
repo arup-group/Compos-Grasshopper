@@ -5,6 +5,8 @@ using System.Linq.Expressions;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
+using ComposGHTests.Helpers;
+
 
 namespace ComposAPI.Members.Tests
 {
@@ -35,7 +37,7 @@ namespace ComposAPI.Members.Tests
       CodeOptionsASNZ duplicate = (CodeOptionsASNZ)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
-      ObjectExtensionTest.IsEqual(original, duplicate);
+      Duplicates.AreEqual(original, duplicate);
 
       // 3 check that the memory pointer is not the same
       Assert.NotSame(original, duplicate);
@@ -108,7 +110,7 @@ namespace ComposAPI.Members.Tests
       CodeOptionsEN duplicate = (CodeOptionsEN)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
-      ObjectExtensionTest.IsEqual(original, duplicate);
+      Duplicates.AreEqual(original, duplicate);
 
       // 3 check that the memory pointer is not the same
       Assert.NotSame(original, duplicate);

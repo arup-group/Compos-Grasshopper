@@ -111,6 +111,7 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
+      if (this.Material == null) { return "Invalid material"; }
       string mat = this.Material.ToString();
       if (this.LayoutMethod == LayoutMethod.Automatic)
       {
