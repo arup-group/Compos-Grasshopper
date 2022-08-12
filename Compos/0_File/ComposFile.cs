@@ -170,7 +170,7 @@ namespace ComposAPI
         return null;
 
       // open temp coa file as ASCII string
-      string coaString = File.ReadAllText(tempCoa, Encoding.BigEndianUnicode);
+      string coaString = File.ReadAllText(tempCoa, Encoding.Default);
       ComposFile file = ComposFile.FromCoaString(coaString);
 
       return file;
@@ -416,20 +416,23 @@ namespace ComposAPI
       return new ComposFile(members);
     }
 
-    public string ToCoaString()
+    public string ToCoaString(ComposUnits units = null)
     {
-      ComposUnits units = new ComposUnits
+      if (units == null)
       {
-        Angle = AngleUnit.Degree,
-        Density = Units.DensityUnit,
-        Force = Units.ForceUnit,
-        Length = Units.LengthUnitGeometry,
-        Displacement = Units.LengthUnitResult,
-        Section = Units.LengthUnitSection,
-        Stress = Units.StressUnit,
-        Strain = Units.StrainUnit,
-        Mass = Units.MassUnit,
-      };
+        units = new ComposUnits
+        {
+          Angle = AngleUnit.Degree,
+          Density = Units.DensityUnit,
+          Force = Units.ForceUnit,
+          Length = Units.LengthUnitGeometry,
+          Displacement = Units.LengthUnitResult,
+          Section = Units.LengthUnitSection,
+          Stress = Units.StressUnit,
+          Strain = Units.StrainUnit,
+          Mass = Units.MassUnit,
+        };
+      }
 
       string version = "0.1"; // ??
 
