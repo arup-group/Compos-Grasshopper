@@ -13,22 +13,20 @@ namespace ComposAPI
 {
   public class ComposFile : IComposFile
   {
-    internal static IAutomation ComposCOM { get; } = new Automation();
-    internal static Guid CurrentGuid { get; set; } = Guid.Empty;
-
-    // verbose
-    internal static int counter;
-
     public Guid Guid { get; set; } = Guid.NewGuid();
-    public IList<IMember> Members = new List<IMember>();
+    public string CalculationHeader { get; set; }
+    public string Initials { get; set; }
+    public string JobNumber { get; set; }
+    public string JobSubTitle { get; set; }
+    public string JobTitle { get; set; }
     internal bool IsAnalysed { get; set; } = false;
     internal bool IsDesigned { get; set; } = false;
 
-    public string JobTitle { get; set; }
-    public string JobSubTitle { get; set; }
-    public string CalculationHeader { get; set; }
-    public string JobNumber { get; set; }
-    public string Initials { get; set; }
+    private static IAutomation ComposCOM { get; set; }
+    private static Guid CurrentGuid { get; set; } = Guid.Empty;
+    private readonly IList<IMember> Members = new List<IMember>();
+    // verbose
+    private static int Counter;
 
     #region constructors
     public ComposFile()
@@ -65,7 +63,7 @@ namespace ComposAPI
     /// </returns>
     internal short Analyse()
     {
-      counter++;
+      Counter++;
 
       short status = 0;
       foreach (Member member in this.Members)
@@ -156,7 +154,12 @@ namespace ComposAPI
 
     public static ComposFile Open(string fileName)
     {
-      ComposFile.ComposCOM.Close();
+      if (ComposFile.ComposCOM != null)
+      {
+        ComposFile.ComposCOM.Close();
+        ComposFile.ComposCOM = null;
+      }
+      ComposFile.ComposCOM = new Automation();
       ComposFile.ComposCOM.Open(fileName);
 
       // save COM object to a temp coa file
@@ -167,7 +170,7 @@ namespace ComposAPI
         return null;
 
       // open temp coa file as ASCII string
-      string coaString = File.ReadAllText(tempCoa, Encoding.UTF7);
+      string coaString = File.ReadAllText(tempCoa, Encoding.BigEndianUnicode);
       ComposFile file = ComposFile.FromCoaString(coaString);
 
       return file;
@@ -326,7 +329,12 @@ namespace ComposAPI
           return -1;
       }
 
-      ComposFile.ComposCOM.Close();
+      short status;
+      if (ComposFile.ComposCOM != null)
+      {
+        ComposFile.ComposCOM.Close();
+        ComposFile.ComposCOM = null;
+      }
       ComposFile.CurrentGuid = this.Guid;
 
       // create coastring from members
@@ -336,7 +344,8 @@ namespace ComposAPI
       string tempCoa = Path.GetTempPath() + this.Guid + ".coa";
       File.WriteAllLines(tempCoa, new string[] { coaString }, Encoding.UTF8);
 
-      short status = ComposFile.ComposCOM.Open(tempCoa);
+      ComposFile.ComposCOM = new Automation();
+      status = ComposFile.ComposCOM.Open(tempCoa);
       this.Analyse();
 
       return status;

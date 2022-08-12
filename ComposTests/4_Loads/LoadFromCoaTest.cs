@@ -41,7 +41,7 @@ namespace ComposAPI.Loads.Tests
 
       // Act
       ComposFile composFile = ComposFile.FromCoaString(coaString);
-      IMember member1 = composFile.Members[0];
+      IMember member1 = composFile.GetMembers()[0];
       IList<ILoad> loads = member1.Loads;
 
       // Assert

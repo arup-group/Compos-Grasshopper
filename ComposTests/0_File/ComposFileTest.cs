@@ -11,32 +11,35 @@ namespace ComposAPI.File.Tests
 {
   public class ComposFileTest
   {
-    [Fact]
-    public void OpenCobTest()
+    static string RelativePath = "..\\..\\..\\..\\TestFiles\\";
+
+    [Theory]
+    [InlineData("*.coa")]
+    [InlineData("*.cob")]
+    public void OpenTest(string searchPattern)
     {
-      string pathName = Path.GetFullPath("..\\..\\..\\TestFiles\\Compos1.cob");
+      string path = Path.GetFullPath(ComposFileTest.RelativePath);
 
-      ComposFile file = ComposFile.Open(pathName);
-
-      IAutomation automation = ComposFile.ComposCOM;
-
-      Assert.NotNull(automation);
-
-      automation.Close();
+      foreach (string fileName in Directory.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly))
+      {
+        ComposFile file = ComposFile.Open(fileName);
+        Assert.NotNull(file);
+      }
     }
 
-    [Fact]
-    public void OpenCoaTest()
+    [Theory]
+    [InlineData("*.coa")]
+    [InlineData("*.cob")]
+    public void AnalyseTest(string searchPattern)
     {
-      string pathName = Path.GetFullPath("..\\..\\..\\TestFiles\\Compos1.coa");
+      string path = Path.GetFullPath(ComposFileTest.RelativePath);
 
-      ComposFile file = ComposFile.Open(pathName);
-
-      IAutomation automation = ComposFile.ComposCOM;
-
-      Assert.NotNull(automation);
-
-      automation.Close();
+      foreach (string fileName in Directory.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly))
+      {
+        ComposFile file = ComposFile.Open(fileName);
+        short status = file.Analyse();
+        Assert.Equal(0, status);
+      }
     }
   }
 }
