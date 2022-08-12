@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ComposAPI.Tests;
+using ComposGHTests.Helpers;
 using UnitsNet;
 using Xunit;
-using ComposGHTests.Helpers;
-
 
 namespace ComposAPI.Members.Tests
 {

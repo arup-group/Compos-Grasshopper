@@ -16,7 +16,7 @@ namespace ComposAPI
   {
     public ISupports ConstructionStageSupports { get; set; }
     public ISupports FinalStageSupports { get; set; }
-    public bool TopFlangeRestrained { get; set; }
+    public bool TopFlangeRestrained { get; set; } = true;
     internal bool finalSupportsSet;
 
     #region constructors
@@ -388,9 +388,15 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
+      if (this.FinalStageSupports == null && this.ConstructionStageSupports == null && this.TopFlangeRestrained)
+        return "Simply supported";
       string top = (TopFlangeRestrained) ? "TFLR, " : "";
-      string con = "Constr.: " + this.ConstructionStageSupports.ToString();
-      string fin = ", Final: None";
+
+      string con = "Constr.: simply supported";
+      if (!this.TopFlangeRestrained && this.ConstructionStageSupports != null)
+        con = "Constr.: " + this.ConstructionStageSupports.ToString();
+      
+      string fin = ", Final: simply supported";
       if (this.FinalStageSupports != null)
         fin = ", Final: " + this.FinalStageSupports.ToString();
       return top + con + fin;

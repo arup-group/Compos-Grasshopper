@@ -15,6 +15,7 @@ namespace ComposAPI
       get { return this.m_StartPosition; }
       set
       {
+        if (value == null) return;
         if (value.QuantityInfo.UnitType != typeof(LengthUnit)
           & value.QuantityInfo.UnitType != typeof(RatioUnit))
           throw new ArgumentException("Start Position must be either Length or Ratio");
@@ -29,6 +30,7 @@ namespace ComposAPI
       get { return this.m_EndPosition; }
       set
       {
+        if (value == null) return;
         if (value.QuantityInfo.UnitType != typeof(LengthUnit)
           & value.QuantityInfo.UnitType != typeof(RatioUnit))
           throw new ArgumentException("Start Position must be either Length or Ratio");
