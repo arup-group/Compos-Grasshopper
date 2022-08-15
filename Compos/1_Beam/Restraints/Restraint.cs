@@ -42,7 +42,7 @@ namespace ComposAPI
 
     #region coa interop
     // not static to update the object 
-    internal Restraint FromCoaString(List<string> parameters, ComposUnits units)
+    internal void FromCoaString(List<string> parameters, ComposUnits units)
     {
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       switch (parameters[0])
@@ -202,7 +202,6 @@ namespace ComposAPI
           this.FinalStageSupports = final2;
           break;
       }
-      return this;
     }
 
     public string ToCoaString(string name, ComposUnits units)
