@@ -459,7 +459,11 @@ namespace ComposAPI
       foreach (IMember member in this.Members)
         coaString += member.ToCoaString(units);
 
-      coaString += "END\n";
+      coaString += "FLOOR_RESPONSE\tMEMBER-1\tFLOOR_RESPONSE_ANALYSIS_NO\n";
+      coaString += "GROUP\tALL\tDefault group containing all the members\t1";
+      foreach(IMember member in this.Members)
+        coaString += "\t" + member.Name;
+      coaString += "\nEND\n";
 
       return coaString;
     }
