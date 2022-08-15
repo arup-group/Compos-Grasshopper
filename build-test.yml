@@ -52,10 +52,23 @@ steps:
   env:
     MSBUILDDISABLENODEREUSE: 1
 
-- powershell: |
-    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposGHTests\bin\x64\Release\net48\ComposGHTests.dll
-    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposTests\bin\x64\Release\net6.0\ComposAPITests.dll
-  displayName: dotnet test
+- task: VSTest@2
+  inputs:
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+      **\*test*.dll
+      !**\*TestAdapter.dll
+      !**\obj\**
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+    codeCoverageEnabled: true
+    testRunTitle: 'compos tests'
+    platform: 'x64'
+    configuration: 'Release'
+
+# - powershell: |
+#     dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposGHTests\bin\x64\Release\net48\ComposGHTests.dll
+#     dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposTests\bin\x64\Release\net6.0\ComposAPITests.dll
+#   displayName: dotnet test
 #    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\IntegrationTests\bin\x64\Release\net48\IntegrationTests.dll
 #    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ConverterTests\bin\x64\Release\net6.0\ConverterTests.dll
 
