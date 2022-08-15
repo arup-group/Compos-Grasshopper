@@ -14,8 +14,6 @@ namespace ComposGHTests
   [Collection("GrasshopperFixture collection")]
   public class GH_OasysGooTest
   {
-
-
     [Theory]
     [InlineData(typeof(BeamSectionGoo), typeof(BeamSection))]
     [InlineData(typeof(RestraintGoo), typeof(Restraint))]
