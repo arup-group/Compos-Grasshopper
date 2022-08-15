@@ -6,10 +6,6 @@ using System.Threading.Tasks;
 
 namespace ComposGHTests.Helpers
 {
-  public class GH_Fixture : GrasshopperFixture
-  {
-    public GH_Fixture() : base() { }
-  }
   public class GrasshopperFixture : IDisposable
   {
     private object _Core = null;

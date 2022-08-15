@@ -11,11 +11,15 @@ using Grasshopper.Kernel.Types;
 
 namespace ComposGHTests
 {
-  public class GH_OasysGooTest : IClassFixture<GH_Fixture>
+  public class GH_OasysGooFixture : GrasshopperFixture
   {
-    GH_Fixture fixture { get; set; }
+    public GH_OasysGooFixture() : base() { }
+  }
+  public class GH_OasysGooTest : IClassFixture<GH_OasysGooFixture>
+  {
+    GH_OasysGooFixture fixture { get; set; }
 
-    public GH_OasysGooTest(GH_Fixture fixture)
+    public GH_OasysGooTest(GH_OasysGooFixture fixture)
     {
       this.fixture = fixture;
     }
