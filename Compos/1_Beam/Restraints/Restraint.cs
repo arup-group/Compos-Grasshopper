@@ -253,7 +253,7 @@ namespace ComposAPI
               parameters.Add("3");
               break;
             default:
-              throw new Exception("Unknown intermediate restriant type for construction stage support");
+              throw new Exception("Unknown intermediate restraint type for construction stage support");
           }
           str += CoaHelper.CreateString(parameters);
         }
