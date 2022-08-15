@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
+using ComposAPI;
 
 namespace ComposGHTests
 {
@@ -22,6 +21,9 @@ namespace ComposGHTests
       // and members which may reference Rhino assemblies, as that may cause those
       // assemblies to be loaded before this is called.
       RhinoInside.Resolver.Initialize();
+
+      // setup headless units
+      ComposGH.Units.SetupUnitsDuringLoad(true);
     }
     public GrasshopperFixture()
     {
