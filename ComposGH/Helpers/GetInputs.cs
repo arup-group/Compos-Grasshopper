@@ -270,14 +270,14 @@ namespace ComposGH.Components
           // try cast to text
           else if (GH_Convert.ToString(gh_typs[i].Value, out string txt, GH_Conversion.Both))
           {
+            NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
             if (txt.EndsWith("%"))
             {
-              NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
               lengths.Add(new Ratio(Convert.ToDouble(txt.Replace("%", string.Empty).Replace(" ", string.Empty), noComma), RatioUnit.Percent));
             }
-            else if (UnitsNet.Length.TryParse(txt, out UnitsNet.Length parsed))
+            else if (UnitsNet.Length.TryParse(txt, noComma, out UnitsNet.Length parsed))
               lengths.Add(parsed);
-            else if (UnitsNet.Length.TryParseFeetInches(txt, out UnitsNet.Length parsedFeetInches))
+            else if (UnitsNet.Length.TryParseFeetInches(txt, out UnitsNet.Length parsedFeetInches, noComma))
               lengths.Add(parsedFeetInches);
             else
             {

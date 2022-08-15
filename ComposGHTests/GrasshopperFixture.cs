@@ -21,13 +21,13 @@ namespace ComposGHTests
       // and members which may reference Rhino assemblies, as that may cause those
       // assemblies to be loaded before this is called.
       RhinoInside.Resolver.Initialize();
-
-      // setup headless units
-      ComposGH.Units.SetupUnitsDuringLoad(true);
     }
     public GrasshopperFixture()
     {
       InitializeCore();
+
+      // setup headless units
+      ComposGH.Units.SetupUnitsDuringLoad(true);
     }
 
     protected virtual void Dispose(bool disposing)

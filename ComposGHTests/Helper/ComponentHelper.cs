@@ -5,6 +5,7 @@ using Grasshopper;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
 using Grasshopper.Kernel.Types;
+using System.Collections.Generic;
 
 namespace ComposGHTests.Helpers
 {
@@ -38,6 +39,15 @@ namespace ComposGHTests.Helpers
       var input = new Param_GenericObject();
       input.CreateAttributes();
       input.PersistentData.Append(new GH_ObjectWrapper(generic_input));
+      component.Params.Input[index].AddSource(input);
+    }
+    public static void SetInput(GH_Component component, List<object> generic_input, int index = 0)
+    {
+      var input = new Param_GenericObject();
+      input.CreateAttributes();
+      input.Access = GH_ParamAccess.list;
+      foreach (object obj in generic_input)
+        input.PersistentData.Append(new GH_ObjectWrapper(obj));
       component.Params.Input[index].AddSource(input);
     }
 
