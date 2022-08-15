@@ -11,19 +11,9 @@ using Grasshopper.Kernel.Types;
 
 namespace ComposGHTests
 {
-  public class SupportComponentFixture : GrasshopperFixture
-  {
-    public SupportComponentFixture() : base() { }
-  }
-  public class SupportComponentTests : IClassFixture<SupportComponentFixture>
-  {
-    SupportComponentFixture fixture { get; set; }
-
-    public SupportComponentTests(SupportComponentFixture fixture)
-    {
-      this.fixture = fixture;
-    }
-
+  [Collection("GrasshopperFixture collection")]
+  public class SupportComponentTests
+  { 
     [Fact]
     public void CreateSupportComponentTest()
     {

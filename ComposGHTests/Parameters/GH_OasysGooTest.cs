@@ -11,19 +11,11 @@ using Grasshopper.Kernel.Types;
 
 namespace ComposGHTests
 {
-  public class GH_OasysGooFixture : GrasshopperFixture
+  [Collection("GrasshopperFixture collection")]
+  public class GH_OasysGooTest
   {
-    public GH_OasysGooFixture() : base() { }
-  }
-  public class GH_OasysGooTest : IClassFixture<GH_OasysGooFixture>
-  {
-    GH_OasysGooFixture fixture { get; set; }
 
-    public GH_OasysGooTest(GH_OasysGooFixture fixture)
-    {
-      this.fixture = fixture;
-    }
-    
+
     [Theory]
     [InlineData(typeof(BeamSectionGoo), typeof(BeamSection))]
     [InlineData(typeof(RestraintGoo), typeof(Restraint))]

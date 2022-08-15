@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit;
 
-namespace ComposGHTests.Helpers
+namespace ComposGHTests
 {
   public class GrasshopperFixture : IDisposable
   {
@@ -13,7 +14,6 @@ namespace ComposGHTests.Helpers
     private object _DocIO { get; set; }
     private object _Doc { get; set; }
     private bool _isDisposed;
-    protected string FilePath { get; private set; }
 
     static GrasshopperFixture()
     {
@@ -84,35 +84,6 @@ namespace ComposGHTests.Helpers
       }
     }
 
-    public Grasshopper.Kernel.GH_Document Doc
-    {
-      get
-      {
-        if (null == _Doc && null != FilePath)
-          _Doc = LoadGrasshopperDoc(FilePath);
-        return _Doc as Grasshopper.Kernel.GH_Document;
-      }
-    }
-
-    public Grasshopper.Kernel.GH_Document LoadGrasshopperDoc(string filePath)
-    {
-      if (null != _Doc)
-        return Doc;
-      if (!DocIO.Open(filePath))
-        throw new InvalidOperationException("File Loading Failed");
-      else
-      {
-        var doc = DocIO.Document;
-        _Doc = doc;
-
-        // Documents are typically only enabled when they are loaded
-        // into the Grasshopper canvas. In this case we -may- want to
-        // make sure our document is enabled before using it.
-        doc.Enabled = true;
-      }
-      return Doc;
-    }
-
     void InitializeCore()
     {
       _Core = new Rhino.Runtime.InProcess.RhinoCore();
@@ -144,6 +115,11 @@ namespace ComposGHTests.Helpers
     }
   }
 
+  [CollectionDefinition("GrasshopperFixture collection")]
+  public class GrasshopperCollection : ICollectionFixture<GrasshopperFixture>
+  {
+    // This class has no code, and is never created. Its purpose is simply
+    // to be the place to apply [CollectionDefinition] and all the
+    // ICollectionFixture<> interfaces.
+  }
 }
-
-
