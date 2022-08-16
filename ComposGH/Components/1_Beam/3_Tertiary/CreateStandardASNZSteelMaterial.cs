@@ -49,7 +49,7 @@ namespace ComposGH.Components
         DA.GetData(0, ref grade);
         try
         {
-          this.SteelGrade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), grade);
+          this.SteelGrade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), grade.Replace(" ", "_"));
           this.DropDownItems[0] = new List<string>();
           this.SelectedItems[0] = "-";
           this.OverrideDropDownItems[0] = true;

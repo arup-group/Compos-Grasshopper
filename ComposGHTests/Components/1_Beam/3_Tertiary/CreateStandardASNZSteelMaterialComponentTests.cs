@@ -25,7 +25,7 @@ namespace ComposGHTests
       var comp = new CreateStandardASNZSteelMaterial();
       comp.CreateAttributes();
 
-      string input1 = "Gr250L15_AS3678";
+      string input1 = "Gr250L15 AS3678";
       ComponentTestHelper.SetInput(comp, input1, 0);
 
       SteelMaterialGoo output = (SteelMaterialGoo)ComponentTestHelper.GetOutput(comp);
