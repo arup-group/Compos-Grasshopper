@@ -7,28 +7,12 @@ using ComposGHTests.Helpers;
 namespace ComposGHTests
 {
   [Collection("GrasshopperFixture collection")]
-  public class CreateCustomSteelMaterialComponentTests
+  public class CreateStandardSteelMaterialComponentTests
   {
-    public GH_OasysDropDownComponent CreateCustomSteelMaterialComponentMother()
-    {
-      var comp = new CreateCustomSteelMaterial();
-      comp.CreateAttributes();
-
-      double input1 = 500;
-      double input2 = 205000;
-      double input3 = 7850;
-
-      ComponentTestHelper.SetInput(comp, input1, 0);
-      ComponentTestHelper.SetInput(comp, input2, 1);
-      ComponentTestHelper.SetInput(comp, input3, 2);
-
-      return comp;
-    }
-
     [Fact]
-    public void CreateComponentWithInputsTest1()
+    public void CreateComponentTest()
     {
-      GH_OasysDropDownComponent comp = CreateCustomSteelMaterialComponentMother();
+      var comp = CreateStandardSteelMaterial();
 
       SteelMaterialGoo output = (SteelMaterialGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(500, output.Value.fy.Value);

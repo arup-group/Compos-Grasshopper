@@ -1,7 +1,4 @@
-﻿using System;
-using Rhino.Geometry;
-using Rhino;
-using Grasshopper;
+﻿using Rhino.Geometry;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
 using Grasshopper.Kernel.Types;

@@ -1,18 +1,10 @@
-﻿using System;
-using ComposAPI;
+﻿using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Components;
-using Grasshopper.Kernel;
 using Xunit;
 using ComposGHTests.Helpers;
-using System.Linq;
 using System.Collections.Generic;
-using System.Reflection;
-using Grasshopper.Kernel.Types;
-using static Rhino.Render.RenderEnvironment;
 using UnitsNet;
-using System.IO;
-using System.Xml.Linq;
 
 namespace ComposGHTests
 {
