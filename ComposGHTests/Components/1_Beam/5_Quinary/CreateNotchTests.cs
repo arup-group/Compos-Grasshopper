@@ -27,7 +27,6 @@ namespace ComposGHTests
     public void CreateComponentWithInputsTest1()
     {
       var comp = CreateNotchComponentMother();
-      comp.CreateAttributes();
 
       comp.SetSelected(1, 0); // change the dropdown to mm
 
@@ -45,7 +44,6 @@ namespace ComposGHTests
     public void CreateComponentWithInputsTest2()
     {
       var comp = CreateNotchComponentMother();
-      comp.CreateAttributes();
 
       comp.SetSelected(0, 1); // change the dropdown to Start
       comp.SetSelected(1, 1); // change the dropdown to cm
@@ -60,7 +58,6 @@ namespace ComposGHTests
     public void CreateComponentWithInputsTest3()
     {
       var comp = CreateNotchComponentMother();
-      comp.CreateAttributes();
 
       comp.SetSelected(0, 2); // change the dropdown to End
       comp.SetSelected(1, 2); // change the dropdown to m
