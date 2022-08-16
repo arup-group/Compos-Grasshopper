@@ -170,7 +170,7 @@ namespace ComposAPI
         return null;
 
       // open temp coa file as ASCII string
-      string coaString = File.ReadAllText(tempCoa, Encoding.Default);
+      string coaString = File.ReadAllText(tempCoa, Encoding.BigEndianUnicode);
       ComposFile file = ComposFile.FromCoaString(coaString);
 
       return file;
@@ -342,7 +342,7 @@ namespace ComposAPI
 
       // save coa string to a temp to coa file (ASCII format)
       string tempCoa = Path.GetTempPath() + this.Guid + ".coa";
-      File.WriteAllLines(tempCoa, new string[] { coaString }, Encoding.UTF8);
+      File.WriteAllLines(tempCoa, new string[] { coaString }, Encoding.BigEndianUnicode);
 
       ComposFile.ComposCOM = new Automation();
       status = ComposFile.ComposCOM.Open(tempCoa);
@@ -461,7 +461,7 @@ namespace ComposAPI
 
       coaString += "FLOOR_RESPONSE\tMEMBER-1\tFLOOR_RESPONSE_ANALYSIS_NO\n";
       coaString += "GROUP\tALL\tDefault group containing all the members\t1";
-      foreach(IMember member in this.Members)
+      foreach (IMember member in this.Members)
         coaString += "\t" + member.Name;
       coaString += "\nEND\n";
 
