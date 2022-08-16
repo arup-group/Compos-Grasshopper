@@ -22,11 +22,10 @@ namespace ComposGHTests
     [Fact]
     public void CreateDefaultSupportComponentTest()
     {
-      // create the component
       var comp = new CreateSupport();
       comp.CreateAttributes();
 
-      SupportsGoo output = (SupportsGoo)Component.GetOutput(comp);
+      SupportsGoo output = (SupportsGoo)ComponentTestHelper.GetOutput(comp);
       Assert.True(output.Value.SecondaryMemberAsIntermediateRestraint);
       Assert.True(output.Value.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.Null(output.Value.CustomIntermediateRestraintPositions);
@@ -37,20 +36,19 @@ namespace ComposGHTests
     public void DeserialiseDefaultSupportComponentTest()
     {
       GH_OasysDropDownComponent comp = new CreateSupport();
-      OasysDropDownComponent.TestDeserialize(comp);
+      OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
       GH_OasysDropDownComponent comp = new CreateSupport();
-      OasysDropDownComponent.ChangeDropDownTest(comp);
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
 
     [Fact]
     public void CreateCustomSupportComponentTest()
     {
-      // create the component
       var comp = new CreateSupport();
       comp.CreateAttributes();
 
@@ -64,11 +62,11 @@ namespace ComposGHTests
         new Length(8.7, UnitsNet.Units.LengthUnit.Meter)
       };
 
-      Component.SetInput(comp, input1, 0);
-      Component.SetInput(comp, input2, 1);
-      Component.SetInput(comp, input3, 2);
+      ComponentTestHelper.SetInput(comp, input1, 0);
+      ComponentTestHelper.SetInput(comp, input2, 1);
+      ComponentTestHelper.SetInput(comp, input3, 2);
 
-      SupportsGoo output = (SupportsGoo)Component.GetOutput(comp);
+      SupportsGoo output = (SupportsGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(input1, output.Value.SecondaryMemberAsIntermediateRestraint);
       Assert.Equal(input2, output.Value.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.Equal(quantities, output.Value.CustomIntermediateRestraintPositions);

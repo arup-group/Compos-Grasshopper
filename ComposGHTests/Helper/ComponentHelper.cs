@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace ComposGHTests.Helpers
 {
-  public class Component
+  public class ComponentTestHelper
   {
     public static void SetInput(GH_Component component, string text_input, int index = 0)
     {

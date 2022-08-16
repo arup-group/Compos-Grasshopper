@@ -11,7 +11,7 @@ using Xunit;
 
 namespace ComposGHTests.Helpers
 {
-  public class OasysDropDownComponent
+  public class OasysDropDownComponentTestHelper
   {
     public static void TestDeserialize(GH_OasysDropDownComponent comp)
     {
@@ -37,9 +37,14 @@ namespace ComposGHTests.Helpers
 
     public static void ChangeDropDownTest(GH_OasysDropDownComponent comp)
     {
+      Assert.True(comp.IsInitialised);
+      Assert.Equal(comp.DropDownItems.Count, comp.SpacerDescriptions.Count);
+      Assert.Equal(comp.DropDownItems.Count, comp.SelectedItems.Count);
+
       for (int i = 0; i < comp.DropDownItems.Count; i++)
       {
         comp.SetSelected(0, i);
+
         for (int j = 0; j < comp.DropDownItems[i].Count; j++)
         {
           comp.SetSelected(i, j);
