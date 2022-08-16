@@ -1,0 +1,92 @@
+﻿using ComposAPI;
+using ComposGH.Parameters;
+using ComposGH.Components;
+using Xunit;
+using ComposGHTests.Helpers;
+using Rhino.Geometry;
+using UnitsNet;
+using UnitsNet.Units;
+using System.Collections.Generic;
+
+namespace ComposGHTests
+{
+  [Collection("GrasshopperFixture collection")]
+  public class CreateBeamComponentTests
+  {
+    public static GH_OasysDropDownComponent CreateBeamComponentMother()
+    {
+      var comp = new CreateBeam();
+      comp.CreateAttributes();
+
+      Point3d start = new Point3d(0, 0, 0);
+      Point3d end = new Point3d(0, 9, 0);
+      Line input1 = new Line(start, end);
+
+      RestraintGoo input2 = new RestraintGoo(new Restraint());
+
+      SteelMaterialGoo input3 = new SteelMaterialGoo(new SteelMaterial(StandardSteelGrade.S355, Code.EN1994_1_1_2004));
+
+      BeamSectionGoo input4 = new BeamSectionGoo(new BeamSection("CAT IPE IPE200"));
+
+      ComponentTestHelper.SetInput(comp, input1, 0);
+      ComponentTestHelper.SetInput(comp, input2, 1);
+      ComponentTestHelper.SetInput(comp, input3, 2);
+      ComponentTestHelper.SetInput(comp, input4, 3);
+
+      return comp;
+    }
+
+    [Fact]
+    public void CreateComponentWithInputsTest()
+    {
+      var comp = CreateBeamComponentMother();
+
+      RestraintGoo expectedRestraint = new RestraintGoo(new Restraint());
+
+      SteelMaterialGoo expectedMaterial = new SteelMaterialGoo(new SteelMaterial(StandardSteelGrade.S355, Code.EN1994_1_1_2004));
+
+      BeamSectionGoo expectetBeamSection = new BeamSectionGoo(new BeamSection("CAT IPE IPE200"));
+
+      BeamGoo output = (BeamGoo)ComponentTestHelper.GetOutput(comp);
+      Duplicates.AreEqual(expectedRestraint.Value, output.Value.Restraint);
+      Duplicates.AreEqual(expectedMaterial.Value, output.Value.Material);
+      Duplicates.AreEqual(expectetBeamSection.Value, output.Value.Sections[0]);
+    }
+
+    [Fact]
+    public void CreateComponentWithInputsTest2()
+    {
+      var comp = CreateBeamComponentMother();
+
+      BeamSection beamSection = new BeamSection("CAT IPE IPE400");
+      beamSection.StartPosition = new Ratio(50, RatioUnit.Percent);
+      BeamSectionGoo input4_2 = new BeamSectionGoo(beamSection);
+      ComponentTestHelper.SetInput(comp, input4_2, 3);
+
+      WebOpeningGoo input5_1 = (WebOpeningGoo)ComponentTestHelper.GetOutput(CreateNotchTests.CreateNotchComponentMother());
+      ComponentTestHelper.SetInput(comp, input5_1, 4);
+
+      WebOpeningGoo input5_2 = (WebOpeningGoo)ComponentTestHelper.GetOutput(CreateWebOpeningTests.CreateWebOpeningComponentMother());
+      ComponentTestHelper.SetInput(comp, input5_2, 4);
+
+      BeamGoo output = (BeamGoo)ComponentTestHelper.GetOutput(comp);
+      Duplicates.AreEqual(input4_2.Value, output.Value.Sections[1]);
+      Duplicates.AreEqual(input5_1.Value, output.Value.WebOpenings[0]);
+      Duplicates.AreEqual(input5_2.Value, output.Value.WebOpenings[1]);
+    }
+
+    [Fact]
+    public void DeserializeTest()
+    {
+      GH_OasysDropDownComponent comp = CreateBeamComponentMother();
+      OasysDropDownComponentTestHelper.TestDeserialize(comp);
+    }
+
+    [Fact]
+    public void ChangeDropDownTest()
+    {
+      GH_OasysDropDownComponent comp = CreateBeamComponentMother();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+  }
+}

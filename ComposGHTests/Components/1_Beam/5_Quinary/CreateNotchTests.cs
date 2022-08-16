@@ -11,7 +11,7 @@ namespace ComposGHTests
   [Collection("GrasshopperFixture collection")]
   public class CreateNotchTests
   {
-    public GH_OasysDropDownComponent CreateNotchComponentMother()
+    public static GH_OasysDropDownComponent CreateNotchComponentMother()
     {
       var comp = new CreateNotch();
       comp.CreateAttributes();

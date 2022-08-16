@@ -11,7 +11,7 @@ namespace ComposGHTests
   [Collection("GrasshopperFixture collection")]
   public class CreateWebOpeningTests
   {
-    public GH_OasysDropDownComponent CreateWebOpeningComponentMother()
+    public static GH_OasysDropDownComponent CreateWebOpeningComponentMother()
     {
       var comp = new CreateWebOpening();
       comp.CreateAttributes();
@@ -53,6 +53,23 @@ namespace ComposGHTests
       Assert.Equal(0.5, output.Value.CentroidPosFromStart.As(UnitsNet.Units.RatioUnit.DecimalFraction));
       Assert.Equal(150, output.Value.CentroidPosFromTop.As(UnitsNet.Units.LengthUnit.Centimeter));
       Assert.Equal(OpeningType.Circular, output.Value.WebOpeningType);
+    }
+
+    [Fact]
+    public void CreateComponentWithInputsTest3()
+    {
+      var comp = CreateWebOpeningComponentMother();
+
+      comp.SetSelected(1, 4); // change the dropdown to ft
+      WebOpeningStiffenersGoo input5 = (WebOpeningStiffenersGoo)ComponentTestHelper.GetOutput(CreateWebOpeningStiffenerTests.CreateWebOpeningStiffenerComponentMother());
+      ComponentTestHelper.SetInput(comp, input5, 4);
+
+      WebOpeningGoo output = (WebOpeningGoo)ComponentTestHelper.GetOutput(comp);
+      Assert.Equal(400, output.Value.Width.Feet);
+      Assert.Equal(300, output.Value.Height.Feet);
+      Assert.Equal(0.5, output.Value.CentroidPosFromStart.As(UnitsNet.Units.RatioUnit.DecimalFraction));
+      Assert.Equal(150, output.Value.CentroidPosFromTop.As(UnitsNet.Units.LengthUnit.Foot));
+      Assert.Equal(OpeningType.Rectangular, output.Value.WebOpeningType);
     }
 
     [Fact]

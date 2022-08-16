@@ -13,7 +13,7 @@ namespace ComposGHTests
   [Collection("GrasshopperFixture collection")]
   public class CreateWebOpeningStiffenerTests
   {
-    public GH_OasysDropDownComponent CreateWebOpeningStiffenerComponentMother()
+    public static GH_OasysDropDownComponent CreateWebOpeningStiffenerComponentMother()
     {
       var comp = new CreateWebOpeningStiffener();
       comp.CreateAttributes();

@@ -80,9 +80,9 @@ namespace ComposGHTests.Helpers
       component.Params.Input[index].AddSource(input);
     }
 
-    public static object GetOutput(GH_Component component, int index = 0, int branch = 0, int item = 0)
+    public static object GetOutput(GH_Component component, int index = 0, int branch = 0, int item = 0, bool forceUpdate = false)
     {
-      if (component.Params.Output[index].VolatileDataCount == 0)
+      if (forceUpdate || component.Params.Output[index].VolatileDataCount == 0)
       {
         component.ExpireSolution(true);
         component.Params.Output[index].CollectData();

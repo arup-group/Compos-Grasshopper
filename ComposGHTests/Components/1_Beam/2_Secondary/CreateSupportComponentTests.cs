@@ -25,20 +25,6 @@ namespace ComposGHTests
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
-      GH_OasysDropDownComponent comp = new CreateSupport();
-      OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      GH_OasysDropDownComponent comp = new CreateSupport();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
-    }
-
-    [Fact]
     public void CreateComponentWithInputsTest()
     {
       var comp = new CreateSupport();
@@ -63,6 +49,20 @@ namespace ComposGHTests
       Assert.Equal(input2, output.Value.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.Equal(quantities, output.Value.CustomIntermediateRestraintPositions);
       Assert.Equal(IntermediateRestraint.Custom, output.Value.IntermediateRestraintPositions);
+    }
+
+    [Fact]
+    public void DeserializeTest()
+    {
+      GH_OasysDropDownComponent comp = new CreateSupport();
+      OasysDropDownComponentTestHelper.TestDeserialize(comp);
+    }
+
+    [Fact]
+    public void ChangeDropDownTest()
+    {
+      GH_OasysDropDownComponent comp = new CreateSupport();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

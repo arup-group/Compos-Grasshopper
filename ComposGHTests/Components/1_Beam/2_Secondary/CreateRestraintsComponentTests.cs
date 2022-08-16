@@ -3,12 +3,13 @@ using ComposGH.Parameters;
 using ComposGH.Components;
 using Xunit;
 using ComposGHTests.Helpers;
+using Rhino.Geometry;
 
 namespace ComposGHTests
 {
   [Collection("GrasshopperFixture collection")]
   public class CreateRestraintComponentTests
-  { 
+  {
     [Fact]
     public void CreateComponentTest()
     {
@@ -29,7 +30,6 @@ namespace ComposGHTests
 
       bool input1 = false;
       SupportsGoo input2 = new SupportsGoo(new Supports());
-      SupportsGoo input3 = new SupportsGoo(new Supports(IntermediateRestraint.None, false, false));
 
       ComponentTestHelper.SetInput(comp, input1, 0);
       ComponentTestHelper.SetInput(comp, input2, 1);

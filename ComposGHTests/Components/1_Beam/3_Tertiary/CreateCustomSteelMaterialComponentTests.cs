@@ -9,7 +9,7 @@ namespace ComposGHTests
   [Collection("GrasshopperFixture collection")]
   public class CreateCustomSteelMaterialComponentTests
   {
-    public GH_OasysDropDownComponent CreateCustomSteelMaterialComponentMother()
+    public static GH_OasysDropDownComponent CreateCustomSteelMaterialComponentMother()
     {
       var comp = new CreateCustomSteelMaterial();
       comp.CreateAttributes();
