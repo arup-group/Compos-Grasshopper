@@ -37,25 +37,15 @@ namespace ComposGHTests
     public void DeserialiseDefaultSupportComponentTest()
     {
       GH_OasysDropDownComponent comp = new CreateSupport();
-      DeSerialize.TestDeserialize(comp);
+      OasysDropDownComponent.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
       GH_OasysDropDownComponent comp = new CreateSupport();
-
-      for (int i = 0; i < comp.DropDownItems.Count; i++)
-      {
-        comp.SetSelected(0, i);
-        for (int j = 0; j < comp.DropDownItems[i].Count; j++)
-        {
-          comp.SetSelected(i, j);
-        }
-      }
-      Assert.True(true);
+      OasysDropDownComponent.ChangeDropDownTest(comp);
     }
-
 
     [Fact]
     public void CreateCustomSupportComponentTest()

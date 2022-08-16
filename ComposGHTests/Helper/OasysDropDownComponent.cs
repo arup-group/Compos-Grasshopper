@@ -11,9 +11,9 @@ using Xunit;
 
 namespace ComposGHTests.Helpers
 {
-  public class DeSerialize
+  public class OasysDropDownComponent
   {
-    public static void TestDeserialize(GH_Component comp)
+    public static void TestDeserialize(GH_OasysDropDownComponent comp)
     {
       comp.CreateAttributes();
 
@@ -33,6 +33,19 @@ namespace ComposGHTests.Helpers
       GH_DocumentIO deserialize = new GH_DocumentIO();
       Assert.True(deserialize.Open(pathFileName));
       Duplicates.AreEqual(serialize.Document.Objects[0], deserialize.Document.Objects[0], true);
+    }
+
+    public static void ChangeDropDownTest(GH_OasysDropDownComponent comp)
+    {
+      for (int i = 0; i < comp.DropDownItems.Count; i++)
+      {
+        comp.SetSelected(0, i);
+        for (int j = 0; j < comp.DropDownItems[i].Count; j++)
+        {
+          comp.SetSelected(i, j);
+          Assert.Equal(comp.SelectedItems[i], comp.DropDownItems[i][j]);
+        }
+      }
     }
   }
 }
