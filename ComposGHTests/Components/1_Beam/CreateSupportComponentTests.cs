@@ -17,10 +17,10 @@ using System.Xml.Linq;
 namespace ComposGHTests
 {
   [Collection("GrasshopperFixture collection")]
-  public class SupportComponentTests
+  public class CreateSupportComponentTests
   { 
     [Fact]
-    public void CreateDefaultSupportComponentTest()
+    public void CreateComponentTest()
     {
       var comp = new CreateSupport();
       comp.CreateAttributes();
@@ -33,7 +33,7 @@ namespace ComposGHTests
     }
 
     [Fact]
-    public void DeserialiseDefaultSupportComponentTest()
+    public void DeserializeTest()
     {
       GH_OasysDropDownComponent comp = new CreateSupport();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
@@ -47,7 +47,7 @@ namespace ComposGHTests
     }
 
     [Fact]
-    public void CreateCustomSupportComponentTest()
+    public void CreateComponentWithInputsTest()
     {
       var comp = new CreateSupport();
       comp.CreateAttributes();

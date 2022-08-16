@@ -134,7 +134,6 @@ namespace ComposGH.Components
 
     internal override void SetSelected(int i, int j)
     {
-      // change selected item
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
       if (i == 0)
