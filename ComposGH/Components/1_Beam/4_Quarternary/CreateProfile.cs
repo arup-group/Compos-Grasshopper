@@ -1374,7 +1374,7 @@ namespace ComposGH.Components
       CatalogueIndex = reader.GetInt32("catalogueIndex");
       TypeIndex = reader.GetInt32("typeIndex");
       Search = reader.GetString("search");
-
+      comingFromSave = true;
       return base.Read(reader);
     }
     bool comingFromSave = false;
