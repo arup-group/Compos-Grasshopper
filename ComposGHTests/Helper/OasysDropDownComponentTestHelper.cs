@@ -1,6 +1,7 @@
 ﻿using ComposGH.Components;
 using Grasshopper.Kernel;
 using System;
+using System.ComponentModel;
 using System.IO;
 using Xunit;
 
@@ -8,7 +9,7 @@ namespace ComposGHTests.Helpers
 {
   public class OasysDropDownComponentTestHelper
   {
-    public static void TestDeserialize(GH_OasysDropDownComponent comp)
+    public static void TestDeserialize(GH_OasysDropDownComponent comp, string customIdentifier = "")
     {
       comp.CreateAttributes();
 
@@ -17,17 +18,26 @@ namespace ComposGHTests.Helpers
 
       GH_DocumentIO serialize = new GH_DocumentIO();
       serialize.Document = doc;
-      serialize.Document.Objects[0].Attributes.PerformLayout();
+      GH_Component originalComponent = (GH_Component)serialize.Document.Objects[0];
+      originalComponent.Attributes.PerformLayout();
+      originalComponent.ExpireSolution(true);
+      originalComponent.Params.Output[0].CollectData();
 
       string path = Path.Combine(Environment.CurrentDirectory, "GH-Test-Files");
       Directory.CreateDirectory(path);
       Type myType = comp.GetType();
-      string pathFileName = Path.Combine(path, myType.Name) + ".gh";
+      string pathFileName = Path.Combine(path, myType.Name) + customIdentifier +".gh";
       Assert.True(serialize.SaveQuiet(pathFileName));
 
       GH_DocumentIO deserialize = new GH_DocumentIO();
       Assert.True(deserialize.Open(pathFileName));
-      Duplicates.AreEqual(serialize.Document.Objects[0], deserialize.Document.Objects[0], true);
+
+      GH_Component deserializedComponent = (GH_Component)deserialize.Document.Objects[0];
+      deserializedComponent.Attributes.PerformLayout();
+      deserializedComponent.ExpireSolution(true);
+      deserializedComponent.Params.Output[0].CollectData();
+
+      Duplicates.AreEqual(originalComponent, deserializedComponent, true);
     }
 
     public static void ChangeDropDownTest(GH_OasysDropDownComponent comp)
