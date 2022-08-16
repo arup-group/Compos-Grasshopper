@@ -53,6 +53,7 @@ namespace ComposGHTests.Helpers
         for (int j = 0; j < comp.DropDownItems[i].Count; j++)
         {
           comp.SetSelected(i, j);
+          TestDeserialize(comp);
           Assert.Equal(comp.SelectedItems[i], comp.DropDownItems[i][j]);
         }
       }
