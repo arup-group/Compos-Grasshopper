@@ -20,7 +20,7 @@ namespace ComposGHTests
     }
 
     [Fact]
-    public void CreateComponentWithInputsTest2()
+    public void CreateComponentWithInputsTest()
     {
       var comp = new CreateStandardASNZSteelMaterial();
       comp.CreateAttributes();

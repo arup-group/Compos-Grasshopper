@@ -7,12 +7,12 @@ using ComposGHTests.Helpers;
 namespace ComposGHTests
 {
   [Collection("GrasshopperFixture collection")]
-  public class CreateStandardSteelMaterialComponentTests
+  public class CreateStandardENSteelMaterialComponentTests
   {
     [Fact]
     public void CreateComponentTest()
     {
-      var comp = new CreateStandardSteelMaterial();
+      var comp = new CreateStandardENSteelMaterial();
       comp.CreateAttributes();
 
       SteelMaterialGoo output = (SteelMaterialGoo)ComponentTestHelper.GetOutput(comp);
@@ -22,27 +22,27 @@ namespace ComposGHTests
     [Fact]
     public void CreateComponentWithInputsTest()
     {
-      var comp = new CreateStandardSteelMaterial();
+      var comp = new CreateStandardENSteelMaterial();
       comp.CreateAttributes();
 
-      string input1 = "S275";
+      string input1 = "355";
       ComponentTestHelper.SetInput(comp, input1, 0);
-      
+
       SteelMaterialGoo output = (SteelMaterialGoo)ComponentTestHelper.GetOutput(comp);
-      Assert.Equal(StandardSteelGrade.S275, output.Value.Grade);
+      Assert.Equal(StandardSteelGrade.S355, output.Value.Grade);
     }
 
     [Fact]
     public void DeserializeTest()
     {
-      var comp = new CreateStandardSteelMaterial();
+      var comp = new CreateStandardENSteelMaterial();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = new CreateStandardSteelMaterial();
+      var comp = new CreateStandardENSteelMaterial();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
