@@ -117,7 +117,7 @@
     <Compile Include="Components\2_Studs\2_Secondary\CreateStandardStudDimsEN.cs" />
     <Compile Include="Components\2_Studs\3_Tertiary\CreateStudSpecBS.cs" />
     <Compile Include="Components\2_Studs\3_Tertiary\CreateStudSpecEN.cs" />
-    <Compile Include="Components\2_Studs\3_Tertiary\CreateStudSpec.cs" />
+    <Compile Include="Components\2_Studs\3_Tertiary\CreateStudSpecAZNZHK.cs" />
     <Compile Include="Components\2_Studs\2_Secondary\CreateStandardStudDims.cs" />
     <Compile Include="Components\2_Studs\1_Primary\CreateStud.cs" />
     <Compile Include="Components\3_Slab\5_Quinary\CreateDeckingConfiguration.cs" />
