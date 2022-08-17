@@ -25,7 +25,6 @@ namespace ComposGHTests
     {
       var comp = CreateDeckingConfigurationMother();
 
-
       DeckingConfigurationGoo output = (DeckingConfigurationGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(Math.PI / 2, output.Value.Angle.Radians);
       Assert.True(output.Value.IsDiscontinous);
