@@ -29,7 +29,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter("Material", "RMt", "Reinforcement Material", GH_ParamAccess.item);
+      pManager.AddGenericParameter(ReinforcementMaterialGoo.Name, ReinforcementMaterialGoo.NickName, ReinforcementMaterialGoo.Description, GH_ParamAccess.item);
       pManager.AddGenericParameter(CustomTransverseReinforcementLayoutGoo.Name + "(s)", CustomTransverseReinforcementLayoutGoo.NickName, "(Optional) " + CustomTransverseReinforcementLayoutGoo.Description + " for a " + TransverseReinforcementGoo.Description + " - if left empty, Compos will create the layout automatically", GH_ParamAccess.list);
       pManager[1].Optional = true;
     }

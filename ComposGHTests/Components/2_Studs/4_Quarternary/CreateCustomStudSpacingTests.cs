@@ -24,7 +24,7 @@ namespace ComposGHTests
     }
 
     [Fact]
-    public void CreateComponentWithInputsTest1()
+    public void CreateComponentWithInputsTest()
     {
       var comp = CreateCustomStudSpacingMother();
 

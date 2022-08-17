@@ -51,7 +51,6 @@
     <Folder Include="Components\3_Slab\1_Primary\" />
     <Folder Include="Components\3_Slab\2_Secondary\" />
     <Folder Include="Components\3_Slab\3_Tertiary\" />
-    <Folder Include="Components\3_Slab\4_Quarternary\" />
     <Folder Include="Components\4_Loads\1_Primary\" />
     <Folder Include="Components\5_Member\1_Primary\" />
     <Folder Include="Components\5_Member\2_Secondary\" />
