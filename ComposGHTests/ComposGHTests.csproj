@@ -48,7 +48,6 @@
 
   <ItemGroup>
     <Folder Include="Components\0_File\" />
-    <Folder Include="Components\2_Studs\1_Primary\" />
     <Folder Include="Components\3_Slab\1_Primary\" />
     <Folder Include="Components\3_Slab\2_Secondary\" />
     <Folder Include="Components\3_Slab\3_Tertiary\" />
