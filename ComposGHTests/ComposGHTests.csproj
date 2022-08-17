@@ -48,10 +48,18 @@
 
   <ItemGroup>
     <Folder Include="Components\0_File\" />
-    <Folder Include="Components\2_Studs\" />
-    <Folder Include="Components\3_Slab\" />
-    <Folder Include="Components\4_Loads\" />
-    <Folder Include="Components\5_Member\" />
+    <Folder Include="Components\2_Studs\1_Primary\" />
+    <Folder Include="Components\2_Studs\2_Secondary\" />
+    <Folder Include="Components\2_Studs\3_Tertiary\" />
+    <Folder Include="Components\2_Studs\4_Quarternary\" />
+    <Folder Include="Components\3_Slab\1_Primary\" />
+    <Folder Include="Components\3_Slab\2_Secondary\" />
+    <Folder Include="Components\3_Slab\3_Tertiary\" />
+    <Folder Include="Components\3_Slab\4_Quarternary\" />
+    <Folder Include="Components\3_Slab\5_Quinary\" />
+    <Folder Include="Components\4_Loads\1_Primary\" />
+    <Folder Include="Components\5_Member\1_Primary\" />
+    <Folder Include="Components\5_Member\2_Secondary\" />
     <Folder Include="Components\6_Analysis\" />
     <Folder Include="Components\7_Results\" />
     <Folder Include="Components\8_Design\" />
