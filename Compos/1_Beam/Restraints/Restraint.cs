@@ -85,7 +85,7 @@ namespace ComposAPI
             List<IQuantity> positions = new List<IQuantity>();
             if (this.ConstructionStageSupports == null)
               this.ConstructionStageSupports = new Supports();
-            if (this.ConstructionStageSupports.CustomIntermediateRestraintPositions != null & this.ConstructionStageSupports.CustomIntermediateRestraintPositions.Count != 0)
+            if (this.ConstructionStageSupports.CustomIntermediateRestraintPositions != null && this.ConstructionStageSupports.CustomIntermediateRestraintPositions.Count != 0)
               positions = this.ConstructionStageSupports.CustomIntermediateRestraintPositions.ToList();
             if (parameters[5].EndsWith("%"))
               positions.Add(new Ratio(Convert.ToDouble(parameters[5].Replace("%", string.Empty), noComma), RatioUnit.Percent));
