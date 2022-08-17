@@ -40,6 +40,7 @@ namespace ComposAPI
     Gr300_AS3679_1_Hollow,
     Gr250_AS3679_1_Hollow
   }
+
   public class ASNZSteelMaterial : SteelMaterial
   {
     public new StandardASNZSteelMaterialGrade Grade { get; set; } // standard material grade
@@ -49,16 +50,101 @@ namespace ComposAPI
     {
       // empty constructor
     }
+
     public ASNZSteelMaterial(StandardASNZSteelMaterialGrade grade)
     {
-      this.Grade = grade;
-      SetValuesFromStandard();
+      this.SetValuesFromStandard(grade);
     }
-    private void SetValuesFromStandard()
+    #endregion
+
+    #region coa interop
+    internal static StandardASNZSteelMaterialGrade FromString(string grade)
+    {
+      switch (grade)
+      {
+        case "C450(AS1163)":
+          return StandardASNZSteelMaterialGrade.C450_AS1163;
+        case "C350(AS1163)":
+          return StandardASNZSteelMaterialGrade.C350_AS1163;
+        case "C250(AS1163)":
+          return StandardASNZSteelMaterialGrade.C250_AS1163;
+        case "HA400(AS1594)":
+          return StandardASNZSteelMaterialGrade.HA400_AS1594;
+        case "HA3(AS1594)":
+          return StandardASNZSteelMaterialGrade.HA3_AS1594;
+        case "HW350(AS1594)":
+          return StandardASNZSteelMaterialGrade.HW350_AS1594;
+        case "HA350(AS1594)":
+          return StandardASNZSteelMaterialGrade.HA350_AS1594;
+        case "HA300/1(AS1594)":
+          return StandardASNZSteelMaterialGrade.HA300_1_AS1594;
+        case "HA/HU300(AS1594)":
+          return StandardASNZSteelMaterialGrade.HA_HU300_AS1594;
+        case "HA/HU250(AS1594)":
+          return StandardASNZSteelMaterialGrade.HA_HU250_AS1594;
+        case "HA200(AS1594)":
+          return StandardASNZSteelMaterialGrade.HA200_AS1594;
+        case "HA4N(AS1594)":
+          return StandardASNZSteelMaterialGrade.HA4N_AS1594;
+        case "XF400(AS1594)":
+          return StandardASNZSteelMaterialGrade.XF400_AS1594;
+        case "XF300(AS1594)":
+          return StandardASNZSteelMaterialGrade.XF300_AS1594;
+        case "450(AS3678)":
+          return StandardASNZSteelMaterialGrade.Gr450_AS3678;
+        case "400(AS3678)":
+          return StandardASNZSteelMaterialGrade.Gr400_AS3678;
+        case "350(AS3678)":
+          return StandardASNZSteelMaterialGrade.Gr350_AS3678;
+        case "WR350(AS3678)":
+          return StandardASNZSteelMaterialGrade.WR350_AS3678;
+        case "300(AS3678)":
+          return StandardASNZSteelMaterialGrade.Gr300_AS3678;
+        case "250(AS3678)":
+          return StandardASNZSteelMaterialGrade.Gr250_AS3678;
+        case "250L15(AS3678)":
+          return StandardASNZSteelMaterialGrade.Gr250L15_AS3678;
+        case "200(AS3678)":
+          return StandardASNZSteelMaterialGrade.Gr200_AS3678;
+        case "400(AS3679.1 Flats)":
+          return StandardASNZSteelMaterialGrade.Gr400_AS3679_1_Flats;
+        case "350(AS3679.1 Flats)":
+          return StandardASNZSteelMaterialGrade.Gr350_AS3679_1_Flats;
+        case "300(AS3679.1 Flats)":
+          return StandardASNZSteelMaterialGrade.Gr300_AS3679_1_Flats;
+        case "250(AS3679.1 Flats)":
+          return StandardASNZSteelMaterialGrade.Gr250_AS3679_1_Flats;
+        case "400(AS3679.1 Hollow)":
+          return StandardASNZSteelMaterialGrade.Gr400_AS3679_1_Hollow;
+        case "350(AS3679.1 Hollow)":
+          return StandardASNZSteelMaterialGrade.Gr350_AS3679_1_Hollow;
+        case "300(AS3679.1 Hollow)":
+          return StandardASNZSteelMaterialGrade.Gr300_AS3679_1_Hollow;
+        case "250(AS3679.1 Hollow)":
+          return StandardASNZSteelMaterialGrade.Gr250_AS3679_1_Hollow;
+        default:
+          throw new Exception("unknown grade");
+      }
+    }
+    public override string ToCoaString(string name, Code code, ComposUnits units)
+    {
+      List<string> steelParameters = new List<string>();
+      steelParameters.Add("BEAM_STEEL_MATERIAL_STD");
+      steelParameters.Add(name);
+      steelParameters.Add(this.ToString());
+
+      return CoaHelper.CreateString(steelParameters);
+    }
+    #endregion
+
+    #region methods
+    internal void SetValuesFromStandard(StandardASNZSteelMaterialGrade grade)
     {
       this.E = new Pressure(200, PressureUnit.Gigapascal);
       this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
-      switch (this.Grade)
+      this.Grade = grade;
+
+      switch (grade)
       {
         case StandardASNZSteelMaterialGrade.C450_AS1163:
           this.fy = new Pressure(450, PressureUnit.Megapascal);
@@ -184,89 +270,7 @@ namespace ComposAPI
           throw new Exception("unknown grade");
       }
     }
-    #endregion
 
-    #region coa interop
-    internal static StandardASNZSteelMaterialGrade FromString(string grade)
-    {
-      switch (grade)
-      {
-        case "C450(AS1163)":
-          return StandardASNZSteelMaterialGrade.C450_AS1163;
-        case "C350(AS1163)":
-          return StandardASNZSteelMaterialGrade.C350_AS1163;
-        case "C250(AS1163)":
-          return StandardASNZSteelMaterialGrade.C250_AS1163;
-        case "HA400(AS1594)":
-          return StandardASNZSteelMaterialGrade.HA400_AS1594;
-        case "HA3(AS1594)":
-          return StandardASNZSteelMaterialGrade.HA3_AS1594;
-        case "HW350(AS1594)":
-          return StandardASNZSteelMaterialGrade.HW350_AS1594;
-        case "HA350(AS1594)":
-          return StandardASNZSteelMaterialGrade.HA350_AS1594;
-        case "HA300/1(AS1594)":
-          return StandardASNZSteelMaterialGrade.HA300_1_AS1594;
-        case "HA/HU300(AS1594)":
-          return StandardASNZSteelMaterialGrade.HA_HU300_AS1594;
-        case "HA/HU250(AS1594)":
-          return StandardASNZSteelMaterialGrade.HA_HU250_AS1594;
-        case "HA200(AS1594)":
-          return StandardASNZSteelMaterialGrade.HA200_AS1594;
-        case "HA4N(AS1594)":
-          return StandardASNZSteelMaterialGrade.HA4N_AS1594;
-        case "XF400(AS1594)":
-          return StandardASNZSteelMaterialGrade.XF400_AS1594;
-        case "XF300(AS1594)":
-          return StandardASNZSteelMaterialGrade.XF300_AS1594;
-        case "450(AS3678)":
-          return StandardASNZSteelMaterialGrade.Gr450_AS3678;
-        case "400(AS3678)":
-          return StandardASNZSteelMaterialGrade.Gr400_AS3678;
-        case "350(AS3678)":
-          return StandardASNZSteelMaterialGrade.Gr350_AS3678;
-        case "WR350(AS3678)":
-          return StandardASNZSteelMaterialGrade.WR350_AS3678;
-        case "300(AS3678)":
-          return StandardASNZSteelMaterialGrade.Gr300_AS3678;
-        case "250(AS3678)":
-          return StandardASNZSteelMaterialGrade.Gr250_AS3678;
-        case "250L15(AS3678)":
-          return StandardASNZSteelMaterialGrade.Gr250L15_AS3678;
-        case "200(AS3678)":
-          return StandardASNZSteelMaterialGrade.Gr200_AS3678;
-        case "400(AS3679.1 Flats)":
-          return StandardASNZSteelMaterialGrade.Gr400_AS3679_1_Flats;
-        case "350(AS3679.1 Flats)":
-          return StandardASNZSteelMaterialGrade.Gr350_AS3679_1_Flats;
-        case "300(AS3679.1 Flats)":
-          return StandardASNZSteelMaterialGrade.Gr300_AS3679_1_Flats;
-        case "250(AS3679.1 Flats)":
-          return StandardASNZSteelMaterialGrade.Gr250_AS3679_1_Flats;
-        case "400(AS3679.1 Hollow)":
-          return StandardASNZSteelMaterialGrade.Gr400_AS3679_1_Hollow;
-        case "350(AS3679.1 Hollow)":
-          return StandardASNZSteelMaterialGrade.Gr350_AS3679_1_Hollow;
-        case "300(AS3679.1 Hollow)":
-          return StandardASNZSteelMaterialGrade.Gr300_AS3679_1_Hollow;
-        case "250(AS3679.1 Hollow)":
-          return StandardASNZSteelMaterialGrade.Gr250_AS3679_1_Hollow;
-        default:
-          throw new Exception("unknown grade");
-      }
-    }
-    public override string ToCoaString(string name, Code code, ComposUnits units)
-    {
-      List<string> steelParameters = new List<string>();
-      steelParameters.Add("BEAM_STEEL_MATERIAL_STD");
-      steelParameters.Add(name);
-      steelParameters.Add(this.ToString());
-
-      return CoaHelper.CreateString(steelParameters); 
-    }
-    #endregion
-
-    #region methods
     public override string ToString()
     {
       switch (this.Grade)

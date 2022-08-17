@@ -42,7 +42,7 @@ namespace ComposAPI.Beams.Tests
     public void FromCoaStringTest1(string coaStringSteelMaterial, string coaStringWeldGrade, double expected_fy, double expected_E, double expected_density, bool expected_isCustom, WeldMaterialGrade expected_weldGrade, bool expected_reductionFacorMpl)
     {
       List<string> parameters = CoaHelper.Split(coaStringSteelMaterial);
-      ISteelMaterial steelMaterial = SteelMaterial.FromCoaString(parameters, ComposUnits.GetStandardUnits());
+      ISteelMaterial steelMaterial = SteelMaterial.FromCoaString(parameters, ComposUnits.GetStandardUnits(), Code.EN1994_1_1_2004);
 
       WeldMaterialGrade weldGrade = SteelMaterial.WeldGradeFromCoa(CoaHelper.Split(coaStringWeldGrade));
 
@@ -60,7 +60,7 @@ namespace ComposAPI.Beams.Tests
     public void FromCoaStringTest2(string coaStringSteelMaterial, string coaStringWeldGrade, StandardSteelGrade expected_steelMaterialGrade)
     {
       List<string> parameters = CoaHelper.Split(coaStringSteelMaterial);
-      ISteelMaterial steelMaterial = SteelMaterial.FromCoaString(parameters, ComposUnits.GetStandardUnits());
+      ISteelMaterial steelMaterial = SteelMaterial.FromCoaString(parameters, ComposUnits.GetStandardUnits(), Code.EN1994_1_1_2004);
 
       WeldMaterialGrade weldGrade = SteelMaterial.WeldGradeFromCoa(CoaHelper.Split(coaStringWeldGrade));
 
@@ -175,7 +175,7 @@ namespace ComposAPI.Beams.Tests
         string coaString = steelMaterialExpected.ToCoaString("MEMBER-1", code, units);
         List<string> materialStrings = coaString.Split('\n').ToList()[0].Split('\t').ToList();
         List<string> weldStrings = coaString.Split('\n').ToList()[1].Split('\t').ToList();
-        SteelMaterial materialFromCoa = (SteelMaterial)SteelMaterial.FromCoaString(materialStrings, units);
+        SteelMaterial materialFromCoa = (SteelMaterial)SteelMaterial.FromCoaString(materialStrings, units, Code.EN1994_1_1_2004);
         materialFromCoa.WeldGrade = SteelMaterial.WeldGradeFromCoa(weldStrings);
 
         Assert.Equal(steelMaterialExpected.E, materialFromCoa.E);

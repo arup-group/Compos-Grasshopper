@@ -220,7 +220,7 @@ namespace ComposAPI
       }
       else
       {
-        material.ERatio = new ERatio(CoaHelper.ConvertToDouble(parameters[9]), CoaHelper.ConvertToDouble(parameters[10]), CoaHelper.ConvertToDouble(parameters[11]), CoaHelper.ConvertToDouble(parameters[12]));
+        material.ERatio = new ERatio(CoaHelper.ConvertToDouble(parameters[8]), CoaHelper.ConvertToDouble(parameters[9]), CoaHelper.ConvertToDouble(parameters[10]), CoaHelper.ConvertToDouble(parameters[11]));
         index = index + 5;
       }
 

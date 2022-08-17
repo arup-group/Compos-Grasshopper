@@ -410,7 +410,7 @@ namespace ComposAPI
         Code code = member.DesignCode.Code;
         member.DesignCriteria = DesignCriteria.FromCoaString(coaString, name, units);
 
-        member.Beam = Beam.FromCoaString(coaString, name, units);
+        member.Beam = Beam.FromCoaString(coaString, name, units, code);
         member.Stud = Stud.FromCoaString(coaString, name, code, units);
         member.Slab = Slab.FromCoaString(coaString, name, code, units);
         member.Loads = Load.FromCoaString(coaString, name, units);

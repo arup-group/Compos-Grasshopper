@@ -17,7 +17,6 @@ namespace ComposAPI.File.Tests
 
     [Theory]
     [InlineData("*.coa")]
-    //[InlineData("*.cob")]
     public void AnalyseTest(string searchPattern)
     {
       string path = Path.GetFullPath(ComposFileTest.RelativePath);
@@ -52,7 +51,6 @@ namespace ComposAPI.File.Tests
       {
         ComposFile file = ComposFile.Open(fileName);
         short status = file.CodeSatisfied(memberName);
-        //status = file.Analyse();
         Assert.Equal(expextedStatus, status);
       }
     }
@@ -60,7 +58,6 @@ namespace ComposAPI.File.Tests
 
     [Theory]
     [InlineData("*.coa")]
-    //[InlineData("*.cob")]
     public void DesignTest(string searchPattern)
     {
       string path = Path.GetFullPath(ComposFileTest.RelativePath);
@@ -96,7 +93,7 @@ namespace ComposAPI.File.Tests
 
 
     [Theory]
-    [InlineData("Compos1.coa")]
+    [InlineData("*.coa")]
     public void FromAndToCoaStringTest(string searchPattern)
     {
       string path = Path.GetFullPath(ComposFileTest.RelativePath);
@@ -111,15 +108,19 @@ namespace ComposAPI.File.Tests
         units.Section = LengthUnit.Millimeter;
         string actualCoaString = file.ToCoaString(units);
 
-        int i = 0;
-        List<string> actualLines = CoaHelper.SplitAndStripLines(actualCoaString);
-        foreach (string expectedLine in CoaHelper.SplitAndStripLines(expectedCoaString))
-        {
-          Assert.Equal(expectedLine.Replace("\r", ""), actualLines[i]);
-          i++;
-        }
+        ComposFileTest.Compare(expectedCoaString, actualCoaString);
       }
     }
 
+    internal static void Compare(string expectedCoaString, string actualCoaString)
+    {
+      List<string> expectedLines = CoaHelper.SplitAndStripLines(expectedCoaString);
+      List<string> actualLines = CoaHelper.SplitAndStripLines(actualCoaString);
+
+      foreach (string expectedLine in expectedLines)
+      {
+        Assert.Contains(expectedLine, actualLines);
+      }
+    }
   }
 }

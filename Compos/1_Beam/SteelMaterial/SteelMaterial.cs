@@ -56,10 +56,10 @@ namespace ComposAPI
     public SteelMaterial(StandardSteelGrade grade, Code code)
     {
       bool EN = (code == Code.EN1994_1_1_2004);
-      SetValuesFromStandard(grade, EN);
+      this.SetValuesFromStandard(grade, EN);
     }
 
-    private void SetValuesFromStandard(StandardSteelGrade grade, bool EN)
+    internal void SetValuesFromStandard(StandardSteelGrade grade, bool EN)
     {
       this.E = new Pressure(EN ? 210 : 205, PressureUnit.Gigapascal);
       this.Density = new Density(7850, DensityUnit.KilogramPerCubicMeter);
@@ -100,18 +100,32 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal static ISteelMaterial FromCoaString(List<string> parameters, ComposUnits units)
+    internal static ISteelMaterial FromCoaString(List<string> parameters, ComposUnits units, Code code)
     {
-      SteelMaterial material = new SteelMaterial();
+      SteelMaterial material;
+      if (code != Code.AS_NZS2327_2017)
+        material = new SteelMaterial();
+      else
+        material = new ASNZSteelMaterial();
 
       switch (parameters[0])
       {
         case (CoaIdentifier.BeamSteelMaterialStandard):
           string grade = parameters[2];
-          bool EN = grade.EndsWith(" (EN)");
-          if (EN)
-            grade = grade.Replace(" (EN)", string.Empty);
-          material.SetValuesFromStandard((StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), grade), EN);
+
+          if (code == Code.AS_NZS2327_2017)
+          {
+            StandardASNZSteelMaterialGrade standardASNZSteelMaterialGrade = ASNZSteelMaterial.FromString(grade);
+            ((ASNZSteelMaterial)material).SetValuesFromStandard(standardASNZSteelMaterialGrade);
+          }
+          else
+          {
+            bool EN = grade.EndsWith(" (EN)");
+            if (EN)
+              grade = grade.Replace(" (EN)", string.Empty);
+            StandardSteelGrade standardSteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), grade);
+            material.SetValuesFromStandard(standardSteelGrade, EN);
+          }
           break;
 
         case (CoaIdentifier.BeamSteelMaterialUser):
