@@ -288,19 +288,24 @@ namespace ComposAPI
       {
         //STUD_LAYOUT	MEMBER-1	USER_DEFINED	2	1	0.000000	2	1	0.0570000	0.0950000	0.150000	CHECK_SPACE_NO
         //STUD_LAYOUT MEMBER-1 USER_DEFINED 2 2 8.000000 3 2 0.0570000 0.0950000 0.250000 CHECK_SPACE_NO
+        //
         //STUD_LAYOUT	MEMBER-1	USER_DEFINED	1	1	0.000000	2	1	76.0000	95.0000	150.000	CHECK_SPACE_NO
         for (int i = 0; i < this.CustomSpacing.Count; i++)
         {
           str += CoaIdentifier.StudGroupSpacings.StudLayout + '\t' + name + '\t';
           str += CoaIdentifier.StudGroupSpacings.StudLayoutCustom + '\t';
           str += this.CustomSpacing.Count.ToString() + '\t' + (i + 1).ToString() + '\t';
-          str += CoaHelper.FormatSignificantFigures(this.CustomSpacing[i].DistanceFromStart.ToUnit(units.Length).Value, 6) + '\t';
+          
+          str += CoaHelper.FormatSignificantFigures(this.CustomSpacing[i].DistanceFromStart, units.Length, 6) + '\t';
+          
           str += this.CustomSpacing[i].NumberOfRows.ToString() + '\t';
           str += this.CustomSpacing[i].NumberOfLines.ToString() + '\t';
+          
           // these next two values are documented as row-spacing:	spacing of the rows and line-spacing: spacing of the lines but cannot be set anywhere in Compos?? - first is 76mm except for ASNZ code where it is 57mm, second is always 95mm
           double rowSpacing = (designCode == Code.AS_NZS2327_2017) ? 0.057 : 0.076;
           str += CoaHelper.FormatSignificantFigures(new Length(rowSpacing, LengthUnit.Meter).ToUnit(units.Length).Value, 6) + '\t';
           str += CoaHelper.FormatSignificantFigures(new Length(0.095, LengthUnit.Meter).ToUnit(units.Length).Value, 6) + '\t';
+          
           str += CoaHelper.FormatSignificantFigures(this.CustomSpacing[i].Spacing.ToUnit(units.Length).Value, 6) + '\t';
           str += (this.CheckStudSpacing) ? CoaIdentifier.StudGroupSpacings.StudLayoutCheckCustom : "CHECK_SPACE_NO";
           str += '\n';
