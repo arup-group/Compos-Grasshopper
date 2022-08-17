@@ -1,7 +1,6 @@
 ﻿using ComposGH.Components;
 using Grasshopper.Kernel;
 using System;
-using System.ComponentModel;
 using System.IO;
 using Xunit;
 

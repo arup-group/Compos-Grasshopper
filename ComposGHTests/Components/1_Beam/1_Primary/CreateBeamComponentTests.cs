@@ -6,7 +6,6 @@ using ComposGHTests.Helpers;
 using Rhino.Geometry;
 using UnitsNet;
 using UnitsNet.Units;
-using System.Collections.Generic;
 
 namespace ComposGHTests
 {
