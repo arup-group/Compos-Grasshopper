@@ -5,7 +5,7 @@ using ComposGHTests.Helpers;
 using System;
 using Grasshopper.Kernel.Parameters;
 
-namespace ComposGHTests
+namespace ComposGHTests.Slab
 {
   [Collection("GrasshopperFixture collection")]
   public class CreateDeckingConfigurationTests

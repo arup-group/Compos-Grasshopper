@@ -7,7 +7,7 @@ using Rhino.Geometry;
 using UnitsNet;
 using UnitsNet.Units;
 
-namespace ComposGHTests
+namespace ComposGHTests.Beam
 {
   [Collection("GrasshopperFixture collection")]
   public class CreateBeamComponentTests

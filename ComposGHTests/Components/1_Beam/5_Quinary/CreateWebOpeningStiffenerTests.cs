@@ -5,7 +5,7 @@ using ComposGHTests.Helpers;
 using Grasshopper.Kernel.Types;
 using Grasshopper.Kernel.Parameters;
 
-namespace ComposGHTests
+namespace ComposGHTests.Beam
 {
   [Collection("GrasshopperFixture collection")]
   public class CreateWebOpeningStiffenerTests

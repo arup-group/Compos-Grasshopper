@@ -4,7 +4,7 @@ using ComposGHTests.Helpers;
 using UnitsNet.GH;
 using Grasshopper.Kernel.Types;
 
-namespace ComposGHTests
+namespace ComposGHTests.Beam
 {
   [Collection("GrasshopperFixture collection")]
   public class BeamSectionPropertiesTests

@@ -4,7 +4,7 @@ using Xunit;
 using ComposGHTests.Helpers;
 using UnitsNet.Units;
 
-namespace ComposGHTests
+namespace ComposGHTests.Stud
 {
   [Collection("GrasshopperFixture collection")]
   public class CreateCustomStudSpacingTests

@@ -3,7 +3,7 @@ using ComposGH.Components;
 using Xunit;
 using ComposGHTests.Helpers;
 
-namespace ComposGHTests
+namespace ComposGHTests.Stud
 {
   [Collection("GrasshopperFixture collection")]
   public class CreateStandardStudDimsENTests

@@ -5,7 +5,7 @@ using ComposGHTests.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
-namespace ComposGHTests
+namespace ComposGHTests.Stud
 {
   [Collection("GrasshopperFixture collection")]
   public class CreateStudSpecENTests

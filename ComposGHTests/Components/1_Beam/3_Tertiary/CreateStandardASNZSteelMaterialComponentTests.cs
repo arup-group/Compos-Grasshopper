@@ -4,7 +4,7 @@ using ComposGH.Components;
 using Xunit;
 using ComposGHTests.Helpers;
 
-namespace ComposGHTests
+namespace ComposGHTests.Beam
 {
   [Collection("GrasshopperFixture collection")]
   public class CreateStandardASNZSteelMaterialComponentTests

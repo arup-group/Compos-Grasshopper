@@ -6,7 +6,7 @@ using ComposGHTests.Helpers;
 using System.Collections.Generic;
 using UnitsNet;
 
-namespace ComposGHTests
+namespace ComposGHTests.Beam
 {
   [Collection("GrasshopperFixture collection")]
   public class CreateSupportComponentTests

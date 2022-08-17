@@ -5,7 +5,7 @@ using Xunit;
 using ComposGHTests.Helpers;
 using UnitsNet.Units;
 
-namespace ComposGHTests
+namespace ComposGHTests.Slab
 {
   [Collection("GrasshopperFixture collection")]
   public class CreateCustomTransverseReinforcementLayoutTests

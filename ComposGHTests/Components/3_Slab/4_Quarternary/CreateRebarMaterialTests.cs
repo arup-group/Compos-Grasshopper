@@ -5,7 +5,7 @@ using ComposGHTests.Helpers;
 using UnitsNet.Units;
 using ComposAPI;
 
-namespace ComposGHTests
+namespace ComposGHTests.Slab
 {
   [Collection("GrasshopperFixture collection")]
   public class CreateRebarMaterialTests

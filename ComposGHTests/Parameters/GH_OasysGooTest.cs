@@ -6,7 +6,7 @@ using ComposGHTests.Helpers;
 using System.Reflection;
 using Grasshopper.Kernel.Types;
 
-namespace ComposGHTests
+namespace ComposGHTests.Parameters
 {
   [Collection("GrasshopperFixture collection")]
   public class GH_OasysGooTest
@@ -19,7 +19,7 @@ namespace ComposGHTests
     [InlineData(typeof(WebOpeningGoo), typeof(WebOpening))]
     [InlineData(typeof(WebOpeningStiffenersGoo), typeof(WebOpeningStiffeners))]
     [InlineData(typeof(StudDimensionsGoo), typeof(StudDimensions))]
-    [InlineData(typeof(StudGoo), typeof(Stud))]
+    [InlineData(typeof(StudGoo), typeof(ComposAPI.Stud))]
     [InlineData(typeof(StudGroupSpacingGoo), typeof(StudGroupSpacing))]
     [InlineData(typeof(StudSpecificationGoo), typeof(StudSpecification))]
     [InlineData(typeof(ConcreteMaterialGoo), typeof(ConcreteMaterial))]
@@ -31,7 +31,7 @@ namespace ComposGHTests
     [InlineData(typeof(ReinforcementMaterialGoo), typeof(ReinforcementMaterial))]
     [InlineData(typeof(TransverseReinforcementGoo), typeof(TransverseReinforcement))]
     [InlineData(typeof(SlabDimensionGoo), typeof(SlabDimension))]
-    [InlineData(typeof(SlabGoo), typeof(Slab))]
+    [InlineData(typeof(SlabGoo), typeof(ComposAPI.Slab))]
     [InlineData(typeof(LoadGoo), typeof(Load))]
     [InlineData(typeof(CreepShrinkageParametersGoo), typeof(CreepShrinkageParametersEN))]
     [InlineData(typeof(CreepShrinkageParametersGoo), typeof(CreepShrinkageParametersASNZ))]
