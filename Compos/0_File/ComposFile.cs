@@ -160,17 +160,18 @@ namespace ComposAPI
         ComposFile.ComposCOM = null;
       }
       ComposFile.ComposCOM = new Automation();
-      ComposFile.ComposCOM.Open(fileName);
+      int status = ComposFile.ComposCOM.Open(fileName);
+      if (status == 1)
+        return null;
 
       // save COM object to a temp coa file
       string tempCoa = Path.GetTempPath() + System.Guid.NewGuid().ToString() + ".coa";
-      int status = ComposFile.ComposCOM.SaveAs(tempCoa);
-
+      status = ComposFile.ComposCOM.SaveAs(tempCoa);
       if (status == 1)
         return null;
 
       // open temp coa file as ASCII string
-      string coaString = File.ReadAllText(tempCoa, Encoding.BigEndianUnicode);
+      string coaString = File.ReadAllText(tempCoa, Encoding.Default);
       ComposFile file = ComposFile.FromCoaString(coaString);
 
       return file;
@@ -304,9 +305,9 @@ namespace ComposAPI
     {
       Initialise();
 
-      // save to .cob with COM object
-      if (!fileName.EndsWith(".cob"))
-        fileName = fileName + ".cob";
+      // save to .coa with COM object
+      if (!fileName.EndsWith(".coa"))
+        fileName = fileName + ".coa";
 
       int status = ComposFile.ComposCOM.SaveAs(fileName);
 
@@ -342,7 +343,7 @@ namespace ComposAPI
 
       // save coa string to a temp to coa file (ASCII format)
       string tempCoa = Path.GetTempPath() + this.Guid + ".coa";
-      File.WriteAllLines(tempCoa, new string[] { coaString }, Encoding.BigEndianUnicode);
+      File.WriteAllLines(tempCoa, new string[] { coaString }, Encoding.Default);
 
       ComposFile.ComposCOM = new Automation();
       status = ComposFile.ComposCOM.Open(tempCoa);
@@ -355,7 +356,8 @@ namespace ComposAPI
     {
       string str = "";
       foreach (IMember member in Members)
-        str += member.ToString();
+        str += member.ToString() + " ";
+      str.TrimEnd(' ');
       return str;
     }
 
@@ -413,6 +415,9 @@ namespace ComposAPI
         member.Slab = Slab.FromCoaString(coaString, name, code, units);
         member.Loads = Load.FromCoaString(coaString, name, units);
       }
+      if (members.Count < 0)
+        return null;
+
       return new ComposFile(members);
     }
 

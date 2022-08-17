@@ -17,13 +17,16 @@ namespace ComposAPI.File.Tests
 
     [Theory]
     [InlineData("*.coa")]
-    [InlineData("*.cob")]
+    //[InlineData("*.cob")]
     public void AnalyseTest(string searchPattern)
     {
       string path = Path.GetFullPath(ComposFileTest.RelativePath);
 
       foreach (string fileName in Directory.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly))
       {
+        string coaString = System.IO.File.ReadAllText(fileName, Encoding.UTF8);
+        System.IO.File.WriteAllLines(fileName, new string[] { coaString }, Encoding.Default);
+
         ComposFile file = ComposFile.Open(fileName);
         short status = file.Analyse();
         Assert.Equal(0, status);
@@ -41,17 +44,23 @@ namespace ComposAPI.File.Tests
 
     [Theory]
     [InlineData("Compos1.coa", "MEMBER-1", 0)]
-    public void CodeSatisfiedTest(string fileName, string memberName, int expextedStatus)
+    public void CodeSatisfiedTest(string searchPattern, string memberName, int expextedStatus)
     {
-      ComposFile file = ComposFile.Open(Path.GetFullPath(ComposFileTest.RelativePath + fileName));
-      short status = file.CodeSatisfied(memberName);
-      Assert.Equal(expextedStatus, status);
+      string path = Path.GetFullPath(ComposFileTest.RelativePath);
+
+      foreach (string fileName in Directory.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly))
+      {
+        ComposFile file = ComposFile.Open(fileName);
+        short status = file.CodeSatisfied(memberName);
+        //status = file.Analyse();
+        Assert.Equal(expextedStatus, status);
+      }
     }
 
 
     [Theory]
     [InlineData("*.coa")]
-    [InlineData("*.cob")]
+    //[InlineData("*.cob")]
     public void DesignTest(string searchPattern)
     {
       string path = Path.GetFullPath(ComposFileTest.RelativePath);
@@ -110,11 +119,6 @@ namespace ComposAPI.File.Tests
           i++;
         }
       }
-    }
-
-    private static string StripLines(string s, int n)
-    {
-      return String.Join("\n", s.Split('\n').Skip(n));
     }
   }
 }
