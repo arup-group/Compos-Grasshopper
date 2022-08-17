@@ -243,8 +243,8 @@ namespace ComposAPI
 
           case (CoaIdentifier.StudSpecifications.StudNoZone):
             //STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000
-            stud.Specification.NoStudZoneStart = new Length(Convert.ToDouble(parameters[2], noComma), units.Length);
-            stud.Specification.NoStudZoneEnd = new Length(Convert.ToDouble(parameters[3], noComma), units.Length);
+            stud.Specification.NoStudZoneStart = CoaHelper.ConvertToLengthOrRatio(parameters[2], units.Length);
+            stud.Specification.NoStudZoneEnd = CoaHelper.ConvertToLengthOrRatio(parameters[3], units.Length);
             break;
 
           case (CoaIdentifier.StudSpecifications.StudReinfPos):
@@ -343,8 +343,8 @@ namespace ComposAPI
       // ### No Stud Zone / STUD_NO_STUD_ZONE ###
       // STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000
       str += CoaIdentifier.StudSpecifications.StudNoZone + '\t' + name + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.Specification.NoStudZoneStart.ToUnit(units.Length).Value, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.Specification.NoStudZoneEnd.ToUnit(units.Length).Value, 6) + '\n';
+      str += CoaHelper.FormatSignificantFigures(this.Specification.NoStudZoneStart, units.Length, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(this.Specification.NoStudZoneEnd, units.Length, 6) + '\n';
 
       // ### Other code-dependent specs ###
       switch (this.Specification.SpecType)

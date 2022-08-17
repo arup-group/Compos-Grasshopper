@@ -9,16 +9,16 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateStudSpec : GH_OasysDropDownComponent
+  public class CreateStudSpecAZNZHK : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("1ef0e7f8-bd0a-4a10-b6ed-009745062628");
-    public CreateStudSpec()
+    public CreateStudSpecAZNZHK()
       : base("Create" + StudSpecificationGoo.Name.Replace(" ", string.Empty),
           StudSpecificationGoo.Name.Replace(" ", string.Empty),
-          "Create a " + StudSpecificationGoo.Description + " for a " + StudGoo.Description,
+          "Create a " + StudSpecificationGoo.Description + " applicable for AS/NZ or HK codes, for a " + StudGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -34,32 +34,31 @@ namespace ComposGH.Components
       string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
 
       pManager.AddGenericParameter("No Stud Zone Start [" + unitAbbreviation + "]",
-          "NSZS", "Length of zone without shear studs at the start of the beam (default = 0)", GH_ParamAccess.item);
+          "NSZS", "Length of zone without shear studs at the start of the beam (default = 0)"
+        + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
       pManager.AddGenericParameter("No Stud Zone End [" + unitAbbreviation + "]",
-          "NSZE", "Length of zone without shear studs at the end of the beam (default = 0)", GH_ParamAccess.item);
+          "NSZE", "Length of zone without shear studs at the end of the beam (default = 0)"
+        + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
       pManager.AddBooleanParameter("Welded", "Wld", "Welded through profiled steel sheeting", GH_ParamAccess.item, true);
-      pManager.AddBooleanParameter("NCCI Limits", "NCCI", "Use NCCI limits on minimum percentage of interaction if applicable. " +
-          "(Imposed load criteria will not be verified)", GH_ParamAccess.item, false);
       pManager[0].Optional = true;
       pManager[1].Optional = true;
       pManager[2].Optional = true;
-      pManager[3].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(StudSpecificationGoo.Name, StudSpecificationGoo.NickName, StudSpecificationGoo.Description + " for a " + StudGoo.Description, GH_ParamAccess.item);
+      pManager.AddGenericParameter(StudSpecificationGoo.Name, StudSpecificationGoo.NickName, StudSpecificationGoo.Description + " applicable for AS/NZ or HK codes, for a " + StudGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       // get default length inputs used for all cases
-      Length noStudZoneStart = Length.Zero;
+      IQuantity noStudZoneStart = Length.Zero;
       if (this.Params.Input[0].Sources.Count > 0)
-        noStudZoneStart = GetInput.Length(this, DA, 0, LengthUnit, true);
-      Length noStudZoneEnd = Length.Zero;
+        noStudZoneStart = GetInput.LengthOrRatio(this, DA, 0, LengthUnit, true);
+      IQuantity noStudZoneEnd = Length.Zero;
       if (this.Params.Input[1].Sources.Count > 0)
-        noStudZoneEnd = GetInput.Length(this, DA, 1, LengthUnit, true);
+        noStudZoneEnd = GetInput.LengthOrRatio(this, DA, 1, LengthUnit, true);
 
       bool welded = true;
       DA.GetData(2, ref welded);

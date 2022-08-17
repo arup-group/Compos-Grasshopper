@@ -208,8 +208,8 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(Force.Zero, duplicate.Dimensions.CharacterStrength);
       // specification
       Assert.NotNull(duplicate.Specification);
-      Assert.Equal(25, duplicate.Specification.NoStudZoneStart.Centimeters);
-      Assert.Equal(35, duplicate.Specification.NoStudZoneEnd.Centimeters);
+      Assert.Equal(25, duplicate.Specification.NoStudZoneStart.As(LengthUnit.Centimeter));
+      Assert.Equal(35, duplicate.Specification.NoStudZoneEnd.As(LengthUnit.Centimeter));
       Assert.False(duplicate.Specification.Welding);
       // spacings
       Assert.NotNull(duplicate.CustomSpacing);

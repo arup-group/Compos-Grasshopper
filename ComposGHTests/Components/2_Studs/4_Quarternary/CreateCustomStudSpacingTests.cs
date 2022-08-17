@@ -3,6 +3,7 @@ using ComposGH.Parameters;
 using ComposGH.Components;
 using Xunit;
 using ComposGHTests.Helpers;
+using UnitsNet.Units;
 
 namespace ComposGHTests
 {
@@ -31,7 +32,7 @@ namespace ComposGHTests
       comp.SetSelected(0, 0); // change the dropdown to mm
 
       StudGroupSpacingGoo output = (StudGroupSpacingGoo)ComponentTestHelper.GetOutput(comp);
-      Assert.Equal(50, output.Value.DistanceFromStart.As(UnitsNet.Units.RatioUnit.Percent));
+      Assert.Equal(50, output.Value.DistanceFromStart.As(RatioUnit.Percent));
       Assert.Equal(15, output.Value.NumberOfRows);
       Assert.Equal(2, output.Value.NumberOfLines);
       Assert.Equal(150, output.Value.Spacing.Millimeters);

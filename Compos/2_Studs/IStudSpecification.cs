@@ -11,8 +11,8 @@ namespace ComposAPI
     bool Welding { get; set; }
     bool NCCI { get; set; }
     bool EC4_Limit { get; set; }
-    Length NoStudZoneStart { get; set; }
-    Length NoStudZoneEnd { get; set; }
+    IQuantity NoStudZoneStart { get; set; }
+    IQuantity NoStudZoneEnd { get; set; }
     Length ReinforcementPosition { get; set; }
     StudSpecType SpecType { get; set; }
   }
