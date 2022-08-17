@@ -32,8 +32,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      IQuantity stress = new Pressure(0, StressUnit);
-      string stressUnitAbbreviation = string.Concat(stress.ToString().Where(char.IsLetter));
+      string stressUnitAbbreviation = Pressure.GetAbbreviation(StressUnit);
 
       pManager.AddGenericParameter("Grade [" + stressUnitAbbreviation + "]", "fu", "(Optional) Custom Stud Steel Grade", GH_ParamAccess.item);
       pManager[0].Optional = true;
@@ -88,15 +87,14 @@ namespace ComposGH.Components
     private PressureUnit StressUnit = Units.StressUnit;
     private LengthUnit LengthUnit = Units.LengthUnitSection;
     private StandardStudGrade StdGrd = StandardStudGrade.SD1_EN13918;
-    private StandardStudSize StdSize = ComposAPI.StandardStudSize.D19mmH100mm;
+    private StandardStudSize StdSize = StandardStudSize.D19mmH100mm;
 
     internal override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] {
             "Standard Size",
             "Grade",
-            "Force Unit",
-            "Length Unit" });
+            "Force Unit" });
 
       this.DropDownItems = new List<List<string>>();
       this.SelectedItems = new List<string>();
@@ -131,6 +129,7 @@ namespace ComposGH.Components
             // remove length dropdown
             this.DropDownItems.RemoveAt(this.DropDownItems.Count - 1);
             this.SelectedItems.RemoveAt(this.SelectedItems.Count - 1);
+            this.SpacerDescriptions.RemoveAt(this.SpacerDescriptions.Count - 1);
             this.ModeChangeClicked();
           }
         }
@@ -139,6 +138,7 @@ namespace ComposGH.Components
           // add length dropdown
           this.DropDownItems.Add(Units.FilteredLengthUnits);
           this.SelectedItems.Add(this.LengthUnit.ToString());
+          this.SpacerDescriptions.Add("Length Unit");
           this.ModeChangeClicked();
         }
       }
@@ -211,8 +211,7 @@ namespace ComposGH.Components
 
       if (SelectedItems[0] == StandardSizes[0]) // custom size
       {
-        IQuantity length = new Length(0, LengthUnit);
-        string unitAbbreviation = string.Concat(length.ToString().Where(char.IsLetter));
+        string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
 
         Params.Input[0].Name = "Diameter [" + unitAbbreviation + "]";
         Params.Input[0].NickName = "Ø";
