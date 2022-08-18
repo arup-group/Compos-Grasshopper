@@ -52,7 +52,7 @@ STUD_DEFINITION	14_ConcreteMaterial[BSCustom]	STANDARD	19mm/100mm	WELDED_YES
 STUD_LAYOUT	14_ConcreteMaterial[BSCustom]	AUTO_MINIMUM_STUD	0.200000
 STUD_NO_STUD_ZONE	14_ConcreteMaterial[BSCustom]	0.000000	0.000000
 STUD_EC4_APPLY	14_ConcreteMaterial[BSCustom]	YES
-LOAD	14_ConcreteMaterial[BSCustom]	Uniform	Line	1000.00	1500.00	3000.00	5000.00	Line	1000.00	1500.00	3000.00	5000.00	3000.00	4500.00	6000.00	5000.00
+LOAD	14_ConcreteMaterial[BSCustom]	Uniform	Line	1000.00	1500.00	3000.00	5000.00
 FLOOR_RESPONSE	14_ConcreteMaterial[BSCustom]	FLOOR_RESPONSE_ANALYSIS_NO
 GROUP	ALL	Default group containing all the members	1	14_ConcreteMaterial[BSCustom]
 END

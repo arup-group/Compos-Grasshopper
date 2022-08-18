@@ -52,7 +52,7 @@ STUD_DEFINITION	12_ConcreteMaterial[HongKong]	STANDARD	19mm/100mm	WELDED_YES
 STUD_LAYOUT	12_ConcreteMaterial[HongKong]	AUTO_MINIMUM_STUD	0.200000
 STUD_NO_STUD_ZONE	12_ConcreteMaterial[HongKong]	0.000000	0.000000
 STUD_EC4_APPLY	12_ConcreteMaterial[HongKong]	YES
-LOAD	12_ConcreteMaterial[HongKong]	Uniform	Line	1000.00	1500.00	3000.00	5000.00	Line	1000.00	1500.00	3000.00	5000.00	3000.00	4500.00	6000.00	5000.00
+LOAD	12_ConcreteMaterial[HongKong]	Uniform	Line	1000.00	1500.00	3000.00	5000.00
 FLOOR_RESPONSE	12_ConcreteMaterial[HongKong]	FLOOR_RESPONSE_ANALYSIS_NO
 GROUP	ALL	Default group containing all the members	1	12_ConcreteMaterial[HongKong]
 END
