@@ -33,7 +33,8 @@ namespace ComposGH.Components
     {
       string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
 
-      pManager.AddGenericParameter("Pos x [" + unitAbbreviation + "]", "Px", "Start Position where this Stud Spacing Groups begins on Beam (beam local x-axis)", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Pos x [" + unitAbbreviation + "]", "Px", "Start Position where this Stud Spacing Groups begins on Beam (beam local x-axis)"
+        + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
       pManager.AddIntegerParameter("Rows", "R", "Number of rows (across the top flange)", GH_ParamAccess.item);
       pManager.AddIntegerParameter("Lines", "L", "Number of lines (along the length of the beam", GH_ParamAccess.item);
       pManager.AddGenericParameter("Spacing [" + unitAbbreviation + "]", "S", "Spacing of studs in this group (distance between each line)", GH_ParamAccess.item);
@@ -46,7 +47,7 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Length start = GetInput.Length(this, DA, 0, this.LengthUnit);
+      IQuantity start = GetInput.LengthOrRatio(this, DA, 0, this.LengthUnit);
       int rows = 1;
       DA.GetData(1, ref rows);
       int lines = 1;

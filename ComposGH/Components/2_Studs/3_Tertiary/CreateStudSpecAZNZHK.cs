@@ -9,23 +9,23 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class CreateStudSpecBS : GH_OasysDropDownComponent
+  public class CreateStudSpecAZNZHK : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
-    public override Guid ComponentGuid => new Guid("418590eb-52b0-455b-96e7-36df966d328f");
-    public CreateStudSpecBS()
-      : base("StandardBS" + StudSpecificationGoo.Name.Replace(" ", string.Empty),
-          "StudSpecsBS",
-          "Look up a Standard BS " + StudSpecificationGoo.Description + " for a " + StudGoo.Description,
+    public override Guid ComponentGuid => new Guid("1ef0e7f8-bd0a-4a10-b6ed-009745062628");
+    public CreateStudSpecAZNZHK()
+      : base("Create" + StudSpecificationGoo.Name.Replace(" ", string.Empty),
+          StudSpecificationGoo.Name.Replace(" ", string.Empty),
+          "Create a " + StudSpecificationGoo.Description + " applicable for AS/NZ or HK codes, for a " + StudGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
     { this.Hidden = true; } // sets the initial state of the component to hidden
 
-    public override GH_Exposure Exposure => GH_Exposure.tertiary | GH_Exposure.obscure;
+    public override GH_Exposure Exposure => GH_Exposure.tertiary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.StandardStudSpecsBS;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.StandardStudSpecs;
     #endregion
 
     #region Input and output
@@ -39,14 +39,14 @@ namespace ComposGH.Components
       pManager.AddGenericParameter("No Stud Zone End [" + unitAbbreviation + "]",
           "NSZE", "Length of zone without shear studs at the end of the beam (default = 0)"
         + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
-      pManager.AddBooleanParameter("EC4 Limit", "Lim", "Use 'Eurocode 4'limit on minimum percentage of shear interaction if it is worse than BS5950", GH_ParamAccess.item, true);
+      pManager.AddBooleanParameter("Welded", "Wld", "Welded through profiled steel sheeting", GH_ParamAccess.item, true);
       pManager[0].Optional = true;
       pManager[1].Optional = true;
       pManager[2].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(StudSpecificationGoo.Name, StudSpecificationGoo.NickName, "BS " + StudSpecificationGoo.Description + " for a " + StudGoo.Description, GH_ParamAccess.item);
+      pManager.AddGenericParameter(StudSpecificationGoo.Name, StudSpecificationGoo.NickName, StudSpecificationGoo.Description + " applicable for AS/NZ or HK codes, for a " + StudGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -60,12 +60,12 @@ namespace ComposGH.Components
       if (this.Params.Input[1].Sources.Count > 0)
         noStudZoneEnd = GetInput.LengthOrRatio(this, DA, 1, LengthUnit, true);
 
-      bool ec4 = true;
-      DA.GetData(2, ref ec4);
+      bool welded = true;
+      DA.GetData(2, ref welded);
 
-      StudSpecification specBS = new StudSpecification(
-          ec4, noStudZoneStart, noStudZoneEnd);
-      DA.SetData(0, new StudSpecificationGoo(specBS));
+      StudSpecification specOther = new StudSpecification(
+          noStudZoneStart, noStudZoneEnd, welded);
+      DA.SetData(0, new StudSpecificationGoo(specOther));
     }
 
     #region Custom UI
@@ -84,7 +84,6 @@ namespace ComposGH.Components
 
       this.IsInitialised = true;
     }
-
     internal override void SetSelected(int i, int j)
     {
       // change selected item
@@ -103,7 +102,7 @@ namespace ComposGH.Components
 
       base.UpdateUIFromSelectedItems();
     }
-     public override void VariableParameterMaintenance()
+    public override void VariableParameterMaintenance()
     {
       string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
       Params.Input[0].Name = "No Stud Zone Start [" + unitAbbreviation + "]";

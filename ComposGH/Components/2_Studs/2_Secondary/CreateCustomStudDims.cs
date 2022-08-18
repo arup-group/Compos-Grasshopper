@@ -90,7 +90,6 @@ namespace ComposGH.Components
     {
       this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[0]);
       this.ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), this.SelectedItems[1]);
-
       base.UpdateUIFromSelectedItems();
     }
 
