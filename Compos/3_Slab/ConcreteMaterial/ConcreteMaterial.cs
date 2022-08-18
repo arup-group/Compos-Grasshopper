@@ -264,17 +264,17 @@ namespace ComposAPI
       if (this.ERatio.UserDefined)
       {
         parameters.Add("USER_E_RATIO");
-        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00000}", this.ERatio.ShortTerm));
-        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00000}", this.ERatio.LongTerm));
-        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00000}", this.ERatio.Vibration));
-        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.000000}", this.ERatio.Shrinkage));
+        parameters.Add(CoaHelper.FormatSignificantFigures(this.ERatio.ShortTerm, 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(this.ERatio.LongTerm, 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(this.ERatio.Vibration, 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(this.ERatio.Shrinkage, 6));
       }
       else
         parameters.Add("CODE_E_RATIO");
       if (this.UserStrain)
       {
         parameters.Add("USER_STRAIN");
-        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.000000000}", this.ShrinkageStrain.Ratio));
+        parameters.Add(CoaHelper.FormatSignificantFigures(this.ShrinkageStrain.Ratio, 6));
       }
       else
         parameters.Add("CODE_STRAIN");
