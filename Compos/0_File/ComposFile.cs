@@ -456,13 +456,15 @@ namespace ComposAPI
       coaString += "!\n";
       coaString += "COMPOS_FILE_VERSION\t1\n";
       coaString += "TITLE\t" + this.JobTitle + "\t" + this.JobSubTitle + "\t" + this.CalculationHeader + "\t" + this.JobNumber + "\t" + this.Initials + "\n";
-
+      
       coaString += this.Units.ToCoaString();
 
       foreach (IMember member in this.Members)
+      {
         coaString += member.ToCoaString(this.Units);
+        coaString += "FLOOR_RESPONSE\t" + member.Name + "\tFLOOR_RESPONSE_ANALYSIS_NO\n";
+      }
 
-      coaString += "FLOOR_RESPONSE\tMEMBER-1\tFLOOR_RESPONSE_ANALYSIS_NO\n";
       coaString += "GROUP\tALL\tDefault group containing all the members\t1";
       foreach (IMember member in this.Members)
         coaString += "\t" + member.Name;
