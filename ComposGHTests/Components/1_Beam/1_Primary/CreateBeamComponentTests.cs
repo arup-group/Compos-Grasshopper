@@ -62,10 +62,10 @@ namespace ComposGHTests.Beam
       BeamSectionGoo input4_2 = new BeamSectionGoo(beamSection);
       ComponentTestHelper.SetInput(comp, input4_2, 3);
 
-      WebOpeningGoo input5_1 = (WebOpeningGoo)ComponentTestHelper.GetOutput(CreateNotchTests.CreateNotchComponentMother());
+      WebOpeningGoo input5_1 = (WebOpeningGoo)ComponentTestHelper.GetOutput(CreateNotchComponentTests.CreateNotchComponentMother());
       ComponentTestHelper.SetInput(comp, input5_1, 4);
 
-      WebOpeningGoo input5_2 = (WebOpeningGoo)ComponentTestHelper.GetOutput(CreateWebOpeningTests.CreateWebOpeningComponentMother());
+      WebOpeningGoo input5_2 = (WebOpeningGoo)ComponentTestHelper.GetOutput(CreateWebOpeningComponentTests.CreateWebOpeningComponentMother());
       ComponentTestHelper.SetInput(comp, input5_2, 4);
 
       BeamGoo output = (BeamGoo)ComponentTestHelper.GetOutput(comp);
