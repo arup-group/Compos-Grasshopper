@@ -15,6 +15,8 @@ namespace ComposGHTests.Load
       var comp = new CreateLinearLoad();
       comp.CreateAttributes();
 
+      comp.SetSelected(0, 1); // change dropdown to kN
+
       for (int i = 0; i < comp.Params.Input.Count; i++)
         ComponentTestHelper.SetInput(comp, (i + 1) * 1, i);
 

@@ -18,14 +18,14 @@ namespace ComposGHTests.Beam
       comp.CreateAttributes();
 
       Point3d start = new Point3d(0, 0, 0);
-      Point3d end = new Point3d(0, 9, 0);
+      Point3d end = new Point3d(0, 7, 0);
       Line input1 = new Line(start, end);
 
       RestraintGoo input2 = new RestraintGoo(new Restraint());
 
       SteelMaterialGoo input3 = new SteelMaterialGoo(new SteelMaterial(StandardSteelGrade.S355, Code.EN1994_1_1_2004));
 
-      BeamSectionGoo input4 = new BeamSectionGoo(new BeamSection("CAT IPE IPE200"));
+      BeamSectionGoo input4 = new BeamSectionGoo(new BeamSection("CAT HE HE500.B"));
 
       ComponentTestHelper.SetInput(comp, input1, 0);
       ComponentTestHelper.SetInput(comp, input2, 1);
@@ -44,7 +44,7 @@ namespace ComposGHTests.Beam
 
       SteelMaterialGoo expectedMaterial = new SteelMaterialGoo(new SteelMaterial(StandardSteelGrade.S355, Code.EN1994_1_1_2004));
 
-      BeamSectionGoo expectetBeamSection = new BeamSectionGoo(new BeamSection("CAT IPE IPE200"));
+      BeamSectionGoo expectetBeamSection = new BeamSectionGoo(new BeamSection("CAT HE HE500.B"));
 
       BeamGoo output = (BeamGoo)ComponentTestHelper.GetOutput(comp);
       Duplicates.AreEqual(expectedRestraint.Value, output.Value.Restraint);

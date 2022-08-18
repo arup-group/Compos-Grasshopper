@@ -12,7 +12,9 @@ namespace ComposGHTests.Slab
     {
       var comp = new CreateSlabDimension();
       comp.CreateAttributes();
-
+      
+      comp.SetSelected(0, 0); // change dropdown to mm
+      
       ComponentTestHelper.SetInput(comp, 130, 1);
       ComponentTestHelper.SetInput(comp, 1700, 2);
       ComponentTestHelper.SetInput(comp, 1200, 3);

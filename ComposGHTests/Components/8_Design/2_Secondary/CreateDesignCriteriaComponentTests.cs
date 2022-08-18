@@ -17,7 +17,7 @@ namespace ComposGHTests.Design
       BeamSizeLimitsGoo input1 = (BeamSizeLimitsGoo)ComponentTestHelper.GetOutput(CreateBeamSizeLimitsComponentTests.CreateBeamSizeLimitsMother());
 
       ComponentTestHelper.SetInput(comp, input1, 0);
-      ComponentTestHelper.SetInput(comp, 26, 1);
+      ComponentTestHelper.SetInput(comp, 27, 1);
 
       return comp;
     }
@@ -32,7 +32,7 @@ namespace ComposGHTests.Design
       BeamSizeLimitsGoo expected_input1 = (BeamSizeLimitsGoo)ComponentTestHelper.GetOutput(CreateBeamSizeLimitsComponentTests.CreateBeamSizeLimitsMother());
 
       Duplicates.AreEqual(expected_input1.Value, output.Value.BeamSizeLimits);
-      Assert.Equal(26, output.Value.CatalogueSectionTypes[0]);
+      Assert.Equal(27, output.Value.CatalogueSectionTypes[0]);
       Assert.Equal(OptimiseOption.MinimumWeight, output.Value.OptimiseOption);
     }
 
@@ -43,7 +43,7 @@ namespace ComposGHTests.Design
 
       comp.SetSelected(0, 1); // change dropdown to min height
 
-      ComponentTestHelper.SetInput(comp, 27, 1);
+      ComponentTestHelper.SetInput(comp, 26, 1);
 
       DeflectionLimitGoo expectedInput2 = (DeflectionLimitGoo)ComponentTestHelper.GetOutput(CreateDeflectionLimitComponentTests.CreateDeflectionLimitMother());
       ComponentTestHelper.SetInput(comp, expectedInput2, 2);
@@ -58,7 +58,7 @@ namespace ComposGHTests.Design
       DesignCriteriaGoo output = (DesignCriteriaGoo)ComponentTestHelper.GetOutput(comp);
 
       Assert.Equal(OptimiseOption.MinimumHeight, output.Value.OptimiseOption);
-      Assert.Equal(27, output.Value.CatalogueSectionTypes[1]);
+      Assert.Equal(26, output.Value.CatalogueSectionTypes[1]);
 
       Duplicates.AreEqual(expectedInput2.Value, output.Value.ConstructionDeadLoad);
       Duplicates.AreEqual(expectedInput2.Value, output.Value.AdditionalDeadLoad);

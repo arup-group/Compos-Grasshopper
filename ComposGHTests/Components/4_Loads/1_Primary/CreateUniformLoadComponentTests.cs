@@ -15,6 +15,8 @@ namespace ComposGHTests.Load
       var comp = new CreateUniformLoad();
       comp.CreateAttributes();
 
+      comp.SetSelected(1, 5); // change dropdown to kN/m2
+
       for (int i = 0; i < comp.Params.Input.Count; i++)
         ComponentTestHelper.SetInput(comp, (i + 1) * 1, i);
 
