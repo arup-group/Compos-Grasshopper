@@ -183,8 +183,8 @@ namespace ComposAPI
       weldingParameters.Add("BEAM_WELDING_MATERIAL");
       weldingParameters.Add(name);
       weldingParameters.Add(this.WeldGrade.ToString().Replace('_', ' '));
-
       coaString += CoaHelper.CreateString(weldingParameters);
+
       return coaString;
     }
     #endregion

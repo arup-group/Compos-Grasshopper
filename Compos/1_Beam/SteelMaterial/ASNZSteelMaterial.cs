@@ -132,8 +132,15 @@ namespace ComposAPI
       steelParameters.Add("BEAM_STEEL_MATERIAL_STD");
       steelParameters.Add(name);
       steelParameters.Add(this.ToString());
+      string coaString = CoaHelper.CreateString(steelParameters);
 
-      return CoaHelper.CreateString(steelParameters);
+      List<string> weldingParameters = new List<string>();
+      weldingParameters.Add("BEAM_WELDING_MATERIAL");
+      weldingParameters.Add(name);
+      weldingParameters.Add(this.WeldGrade.ToString().Replace('_', ' '));
+      coaString += CoaHelper.CreateString(weldingParameters);
+
+      return coaString;
     }
     #endregion
 
