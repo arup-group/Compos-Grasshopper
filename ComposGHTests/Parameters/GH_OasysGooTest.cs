@@ -32,7 +32,7 @@ namespace ComposGHTests.Parameters
     [InlineData(typeof(TransverseReinforcementGoo), typeof(TransverseReinforcement))]
     [InlineData(typeof(SlabDimensionGoo), typeof(SlabDimension))]
     [InlineData(typeof(SlabGoo), typeof(ComposAPI.Slab))]
-    [InlineData(typeof(LoadGoo), typeof(Load))]
+    [InlineData(typeof(LoadGoo), typeof(ComposAPI.Load))]
     [InlineData(typeof(CreepShrinkageParametersGoo), typeof(CreepShrinkageParametersEN))]
     [InlineData(typeof(CreepShrinkageParametersGoo), typeof(CreepShrinkageParametersASNZ))]
     [InlineData(typeof(DesignCodeGoo), typeof(DesignCode))]

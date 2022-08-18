@@ -38,9 +38,9 @@ namespace ComposGH.Components
       pManager.AddNumberParameter("Final Permanent load factor", "FγG", "Partial factor for permanent loads at final stage", GH_ParamAccess.item, 1.35);
       pManager.AddNumberParameter("Final Variable load factor", "FγQ", "Partial factor for variable loads at final stage", GH_ParamAccess.item, 1.5);
       pManager.AddNumberParameter("Steel γM0 factor", "γM0", "Steel beam partial factor for resistance of cross-sections whatever the class is", GH_ParamAccess.item, 1.0);
-      pManager.AddNumberParameter("Steel γM1 factor", "γM1", "Steel beam partial factor for resistance of members to instability assessed by member checks", GH_ParamAccess.item, 1.5);
+      pManager.AddNumberParameter("Steel γM1 factor", "γM1", "Steel beam partial factor for resistance of members to instability assessed by member checks", GH_ParamAccess.item, 1.0);
       pManager.AddNumberParameter("Steel γM2 factor", "γM2", "Steel beam partial factor for resistance of cross-sections in tension to fracture", GH_ParamAccess.item, 1.25);
-      pManager.AddNumberParameter("Concrete γC factor", "γC", "Concrete material partial factor", GH_ParamAccess.item, 1.0);
+      pManager.AddNumberParameter("Concrete γC factor", "γC", "Concrete material partial factor", GH_ParamAccess.item, 1.5);
       pManager.AddNumberParameter("Decking γ-factor", "γDeck", "Material Partial Safety Factor for Metal Decking", GH_ParamAccess.item, 1.0);
       pManager.AddNumberParameter("Shear Stud safety factor", "γvs", "Material Partial Safety Factor for Shear Studs", GH_ParamAccess.item, 1.25);
       pManager.AddNumberParameter("Shear Stud safety factor", "γS", "Material Partial Safety Factor for Reinforcement", GH_ParamAccess.item, 1.15);
@@ -94,7 +94,6 @@ namespace ComposGH.Components
           "Load combination factors following Equation 6.10 will be used" :
           "Load combination factors for the worse of Equation 6.10a and 6.10b will be used (not applicable for storage structures)";
         AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, remark);
-        combinationFactors = null;
         this.SelectedItems[0] = LoadCombinationType.ToString().Replace("__", " or ").Replace("_", ".");
       }
       else
@@ -135,7 +134,6 @@ namespace ComposGH.Components
         & this.Params.Input[14].Sources.Count == 0)
       {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Default Material Partial Safety Factor values from EN1994-1-1 will be used");
-        mf = null;
       }
 
       SafetyFactorsEN safetyFactors = new SafetyFactorsEN();
