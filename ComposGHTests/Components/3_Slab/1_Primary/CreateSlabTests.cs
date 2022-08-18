@@ -34,15 +34,14 @@ namespace ComposGHTests.Slab
       var comp = CreateSlabMother();
       SlabGoo output = (SlabGoo)ComponentTestHelper.GetOutput(comp);
 
-      ConcreteMaterialGoo input1 = (ConcreteMaterialGoo)ComponentTestHelper.GetOutput(CreateConcreteMaterialENTests.CreateConcreteMaterialENMother());
-      Duplicates.AreEqual(input1.Value, output.Value.Material);
+      ConcreteMaterialGoo expexted_input1 = (ConcreteMaterialGoo)ComponentTestHelper.GetOutput(CreateConcreteMaterialENTests.CreateConcreteMaterialENMother());
+      Duplicates.AreEqual(expexted_input1.Value, output.Value.Material);
 
-      SlabDimensionGoo input2 = (SlabDimensionGoo)ComponentTestHelper.GetOutput(CreateSlabDimensionTests.CreateSlabDimensionMother());
-      ComponentTestHelper.SetInput(comp, input2, 1);
-      Duplicates.AreEqual(input2.Value, output.Value.Dimensions[0]);
+      SlabDimensionGoo expexted_input2 = (SlabDimensionGoo)ComponentTestHelper.GetOutput(CreateSlabDimensionTests.CreateSlabDimensionMother());
+      Duplicates.AreEqual(expexted_input2.Value, output.Value.Dimensions[0]);
 
-      TransverseReinforcementGoo input3 = (TransverseReinforcementGoo)ComponentTestHelper.GetOutput(CreateTransverseReinforcementTests.CreateTransverseReinforcementMother());
-      Duplicates.AreEqual(input3.Value, output.Value.Transverse);
+      TransverseReinforcementGoo expexted_input3 = (TransverseReinforcementGoo)ComponentTestHelper.GetOutput(CreateTransverseReinforcementTests.CreateTransverseReinforcementMother());
+      Duplicates.AreEqual(expexted_input3.Value, output.Value.Transverse);
     }
 
     [Fact]
@@ -59,6 +58,20 @@ namespace ComposGHTests.Slab
       SlabGoo output = (SlabGoo)ComponentTestHelper.GetOutput(comp);
       Duplicates.AreEqual(input4.Value, output.Value.Mesh);
       Duplicates.AreEqual(input5.Value, output.Value.Decking);
+    }
+
+
+    [Fact]
+    public void CreateComponentWithInputs3()
+    {
+      var comp = CreateSlabMother();
+
+      SlabDimensionGoo input2_2 = (SlabDimensionGoo)ComponentTestHelper.GetOutput(CreateSlabDimensionTests.CreateSlabDimensionMother());
+      ComponentTestHelper.SetInput(comp, input2_2, 1);
+
+      SlabGoo output = (SlabGoo)ComponentTestHelper.GetOutput(comp);
+
+      Assert.Equal(2, output.Value.Dimensions.Count);
     }
   }
 }

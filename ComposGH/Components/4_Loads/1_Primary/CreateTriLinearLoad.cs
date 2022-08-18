@@ -78,10 +78,10 @@ namespace ComposGH.Components
           Pressure constLiveA1 = GetInput.Stress(this, DA, 1, this.ForcePerAreaUnit);
           Pressure finalDeadA1 = GetInput.Stress(this, DA, 2, this.ForcePerAreaUnit);
           Pressure finalLiveA1 = GetInput.Stress(this, DA, 3, this.ForcePerAreaUnit);
-          Pressure constDeadA2 = GetInput.Stress(this, DA, 4, this.ForcePerAreaUnit);
-          Pressure constLiveA2 = GetInput.Stress(this, DA, 5, this.ForcePerAreaUnit);
-          Pressure finalDeadA2 = GetInput.Stress(this, DA, 6, this.ForcePerAreaUnit);
-          Pressure finalLiveA2 = GetInput.Stress(this, DA, 7, this.ForcePerAreaUnit);
+          Pressure constDeadA2 = GetInput.Stress(this, DA, 5, this.ForcePerAreaUnit);
+          Pressure constLiveA2 = GetInput.Stress(this, DA, 6, this.ForcePerAreaUnit);
+          Pressure finalDeadA2 = GetInput.Stress(this, DA, 7, this.ForcePerAreaUnit);
+          Pressure finalLiveA2 = GetInput.Stress(this, DA, 8, this.ForcePerAreaUnit);
           Load loadA = new TriLinearLoad(
             constDeadA1, constLiveA1, finalDeadA1, finalLiveA1, pos1, constDeadA2, constLiveA2, finalDeadA2, finalLiveA2, pos2);
           DA.SetData(0, new LoadGoo(loadA));

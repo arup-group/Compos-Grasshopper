@@ -47,7 +47,7 @@ namespace ComposGHTests.Helpers
 
       for (int i = 0; i < comp.DropDownItems.Count; i++)
       {
-        comp.SetSelected(0, i);
+        comp.SetSelected(i, 0);
 
         for (int j = 0; j < comp.DropDownItems[i].Count; j++)
         {
