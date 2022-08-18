@@ -30,7 +30,7 @@ CRITERIA_BEAM_SIZE_LIMIT	15_Reinforcement[CustomRebarLayout]	0.200000	0.900000	0
 CRITERIA_OPTIMISE_OPTION	15_Reinforcement[CustomRebarLayout]	MINIMUM_WEIGHT
 CRITERIA_SECTION_TYPE	15_Reinforcement[CustomRebarLayout]	242
 CRITERIA_FREQUENCY	15_Reinforcement[CustomRebarLayout]	CHECK_NATURAL_FREQUENCY	4.00000	1.00000	0.100000
-BEAM_STEEL_MATERIAL_STD	15_Reinforcement[CustomRebarLayout]	S355
+BEAM_STEEL_MATERIAL_STD	15_Reinforcement[CustomRebarLayout]	S355 (EN)
 BEAM_WELDING_MATERIAL	15_Reinforcement[CustomRebarLayout]	Grade 42
 BEAM_SPAN_LENGTH	15_Reinforcement[CustomRebarLayout]	1	9.00000
 BEAM_SECTION_AT_X	15_Reinforcement[CustomRebarLayout]	1	1	0.000000	STD I 600. 200. 15. 25.	TAPERED_YES
