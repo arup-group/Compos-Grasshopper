@@ -416,7 +416,10 @@ namespace ComposAPI
       if (members.Count < 0)
         return null;
 
-      return new ComposFile(members);
+      ComposFile file = new ComposFile(members);
+      file.Units = units;
+
+      return file;
     }
 
     public string ToCoaString()
@@ -456,7 +459,7 @@ namespace ComposAPI
       coaString += "!\n";
       coaString += "COMPOS_FILE_VERSION\t1\n";
       coaString += "TITLE\t" + this.JobTitle + "\t" + this.JobSubTitle + "\t" + this.CalculationHeader + "\t" + this.JobNumber + "\t" + this.Initials + "\n";
-      
+
       coaString += this.Units.ToCoaString();
 
       foreach (IMember member in this.Members)
