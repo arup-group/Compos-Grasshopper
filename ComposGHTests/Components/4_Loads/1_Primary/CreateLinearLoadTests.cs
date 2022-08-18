@@ -8,7 +8,7 @@ using ComposAPI;
 using UnitsNet.Units;
 using UnitsNet;
 
-namespace ComposGHTests.Slab
+namespace ComposGHTests.Load
 {
   [Collection("GrasshopperFixture collection")]
   public class CreateLinearLoadTests

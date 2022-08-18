@@ -7,7 +7,7 @@ using Grasshopper.Kernel.Parameters;
 using ComposAPI;
 using UnitsNet.Units;
 
-namespace ComposGHTests.Slab
+namespace ComposGHTests.Load
 {
   [Collection("GrasshopperFixture collection")]
   public class CreateAxialLoadTests
