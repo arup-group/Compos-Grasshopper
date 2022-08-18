@@ -21,9 +21,6 @@ namespace ComposAPI.File.Tests
 
       foreach (string fileName in Directory.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly))
       {
-        string coaString = System.IO.File.ReadAllText(fileName, Encoding.UTF8);
-        System.IO.File.WriteAllLines(fileName, new string[] { coaString }, Encoding.Default);
-
         ComposFile file = ComposFile.Open(fileName);
         short status = file.Analyse();
         Assert.Equal(0, status);
@@ -110,7 +107,8 @@ namespace ComposAPI.File.Tests
 
       foreach (string expectedLine in expectedLines)
       {
-        Assert.Contains(expectedLine, actualLines);
+        if (expectedLine != "")
+          Assert.Contains(expectedLine, actualLines);
       }
     }
   }
