@@ -31,10 +31,14 @@ namespace ComposGH.Components
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       string unitAbb = Length.GetAbbreviation(this.LengthUnit);
-      pManager.AddGenericParameter("Min Depth [" + unitAbb + "]", "Dmin", "Minimum Depth", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Max Depth [" + unitAbb + "]", "Dmax", "Maximum Depth", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Min Width [" + unitAbb + "]", "Wmin", "Minimum Width", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Max Width [" + unitAbb + "]", "Wmax", "Maximum Width", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Min Depth [" + unitAbb + "]", "Dmin", "(Optional) Minimum Depth (default ≥ 20 cm)", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Max Depth [" + unitAbb + "]", "Dmax", "(Optional) Maximum Depth  (default ≤ 100 cm)", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Min Width [" + unitAbb + "]", "Wmin", "(Optional) Minimum Width  (default ≥ 10 cm)", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Max Width [" + unitAbb + "]", "Wmax", "(Optional) Maximum Width  (default ≤ 50 cm)", GH_ParamAccess.item);
+      pManager[0].Optional = true;
+      pManager[1].Optional = true;
+      pManager[2].Optional = true;
+      pManager[3].Optional = true;
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
@@ -45,12 +49,28 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
+      Length minDepth = new Length(20, LengthUnit.Centimeter);
+      if (this.Params.Input[0].Sources.Count > 0)
+        minDepth = GetInput.Length(this, DA, 0, this.LengthUnit);
+
+      Length maxDepth = new Length(100, LengthUnit.Centimeter);
+      if (this.Params.Input[1].Sources.Count > 0)
+        maxDepth = GetInput.Length(this, DA, 1, this.LengthUnit);
+
+      Length minWidth = new Length(10, LengthUnit.Centimeter);
+      if (this.Params.Input[2].Sources.Count > 0)
+        minWidth = GetInput.Length(this, DA, 2, this.LengthUnit);
+
+      Length maxWidth = new Length(50, LengthUnit.Centimeter);
+      if (this.Params.Input[3].Sources.Count > 0)
+        maxWidth = GetInput.Length(this, DA, 3, this.LengthUnit);
+
       BeamSizeLimits beamSizeLimits = new BeamSizeLimits()
       {
-        MinDepth = GetInput.Length(this, DA, 0, this.LengthUnit),
-        MaxDepth = GetInput.Length(this, DA, 1, this.LengthUnit),
-        MinWidth = GetInput.Length(this, DA, 2, this.LengthUnit),
-        MaxWidth = GetInput.Length(this, DA, 3, this.LengthUnit)
+        MinDepth = minDepth,
+        MaxDepth = maxDepth,
+        MinWidth = minWidth,
+        MaxWidth = maxWidth
       };
 
       DA.SetData(0, new BeamSizeLimitsGoo(beamSizeLimits));

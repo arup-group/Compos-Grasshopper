@@ -159,7 +159,7 @@
     <Compile Include="Components\GH_OasysTaskCapableComponent.cs" />
     <Compile Include="Components\8_Design\1_Primary\DesignMember.cs" />
     <Compile Include="Components\8_Design\2_Secondary\CreateDesignCriteria.cs" />
-    <Compile Include="Components\8_Design\3_Tertiary\SectionCatalogues.cs" />
+    <Compile Include="Components\8_Design\3_Tertiary\CataloguesSections.cs" />
     <Compile Include="Components\8_Design\3_Tertiary\CreateFrequencyLimits.cs" />
     <Compile Include="Components\8_Design\3_Tertiary\CreateBeamSizeLimits.cs" />
     <Compile Include="Components\8_Design\3_Tertiary\CreateDeflectionLimit.cs" />
