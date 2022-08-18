@@ -291,7 +291,7 @@ namespace ComposAPI
         str = "(Grade not set)";
       else
         str = this.Grade.ToString().Replace("_", "/");
-      str += " " + this.Type + ", D: " + this.DryDensity.As(Units.DensityUnit).ToString().Replace(" ", string.Empty);
+      str += " " + this.Type + ", D: " + this.DryDensity.As(UnitsHelper.DensityUnit).ToString().Replace(" ", string.Empty);
       return str;
     }
     #endregion

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Compos_8_6;
 using ComposAPI.Helpers;
 using UnitsNet.Units;
 using Xunit;
@@ -13,7 +11,7 @@ namespace ComposAPI.File.Tests
 {
   public class ComposFileTest
   {
-    static string RelativePath = "..\\..\\..\\..\\TestFiles\\";
+    static readonly string RelativePath = "..\\..\\..\\..\\TestFiles\\";
 
     [Theory]
     [InlineData("*.coa")]
@@ -55,7 +53,6 @@ namespace ComposAPI.File.Tests
       }
     }
 
-
     [Theory]
     [InlineData("*.coa")]
     public void DesignTest(string searchPattern)
@@ -88,10 +85,6 @@ namespace ComposAPI.File.Tests
       Assert.Equal("STD I 600. 200. 15. 25.", status);
     }
 
-
-
-
-
     [Theory]
     [InlineData("*.coa")]
     public void FromAndToCoaStringTest(string searchPattern)
@@ -104,9 +97,7 @@ namespace ComposAPI.File.Tests
 
         ComposFile file = ComposFile.FromCoaString(expectedCoaString);
 
-        ComposUnits units = ComposUnits.GetStandardUnits();
-        units.Section = LengthUnit.Millimeter;
-        string actualCoaString = file.ToCoaString(units);
+        string actualCoaString = file.ToCoaString();
 
         ComposFileTest.Compare(expectedCoaString, actualCoaString);
       }

@@ -140,7 +140,7 @@ namespace ComposAPI
         if (p != Ratio.Zero)
           noStudEnd = "NoStudEnd:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
       }
-      string rebarPos = (this.ReinforcementPosition.Value == 0) ? "" : "RbP:" + this.ReinforcementPosition.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
+      string rebarPos = (this.ReinforcementPosition.Value == 0) ? "" : "RbP:" + this.ReinforcementPosition.ToUnit(UnitsHelper.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
       string welding = (this.Welding == true) ? "Welded" : "";
       string ncci = (this.NCCI == true) ? "NCCI Limit" : "";
       string ec4 = (this.EC4_Limit == true) ? "EC4 Limit" : "";

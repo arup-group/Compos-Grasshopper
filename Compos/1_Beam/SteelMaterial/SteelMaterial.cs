@@ -205,9 +205,9 @@ namespace ComposAPI
       else
       {
         isCust = "Cust.";
-        f = fy.ToUnit(Units.StressUnit).ToString("f0");
-        e = E.ToUnit(Units.StressUnit).ToString("f0");
-        ro = Density.ToUnit(Units.DensityUnit).ToString("f0");
+        f = fy.ToUnit(UnitsHelper.StressUnit).ToString("f0");
+        e = E.ToUnit(UnitsHelper.StressUnit).ToString("f0");
+        ro = Density.ToUnit(UnitsHelper.DensityUnit).ToString("f0");
 
         return (isCust.Replace(" ", string.Empty) + ", " + f.Replace(" ", string.Empty) + ", " + e.Replace(" ", string.Empty) + ", " + ro.Replace(" ", string.Empty));
       }

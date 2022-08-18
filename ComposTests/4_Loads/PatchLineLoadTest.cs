@@ -5,6 +5,7 @@ using UnitsNet.Units;
 using static ComposAPI.Load;
 using ComposAPI.Tests;
 using ComposGHTests.Helpers;
+using ComposAPI.Helpers;
 
 namespace ComposAPI.Loads.Tests
 {
@@ -117,7 +118,7 @@ namespace ComposAPI.Loads.Tests
       ComposUnits units = ComposUnits.GetStandardUnits();
       units.Force = forceUnit;
       units.Length = lengthUnit;
-      ForcePerLengthUnit forcePerLengthUnit = Units.GetForcePerLengthUnit(forceUnit, lengthUnit);
+      ForcePerLengthUnit forcePerLengthUnit = UnitsHelper.GetForcePerLengthUnit(forceUnit, lengthUnit);
 
       // Arrange
       string coaString = "LOAD	MEMBER-1	Patch	Line	2.00000	3.00000	4.50000	6.00000	7.00000	3.00000	4.50000	6.00000	7.00000	8.90000\n";
@@ -151,7 +152,7 @@ namespace ComposAPI.Loads.Tests
       ComposUnits units = ComposUnits.GetStandardUnits();
       units.Force = forceUnit;
       units.Length = lengthUnit;
-      ForcePerLengthUnit forcePerLengthUnit = Units.GetForcePerLengthUnit(forceUnit, lengthUnit);
+      ForcePerLengthUnit forcePerLengthUnit = UnitsHelper.GetForcePerLengthUnit(forceUnit, lengthUnit);
 
       // Arrange
       string coaString = "LOAD	MEMBER-1	Patch	Line	2.00000	3.00000	4.50000	6.00000	7.00000%	3.00000	4.50000	6.00000	7.00000	8.90000%\n";

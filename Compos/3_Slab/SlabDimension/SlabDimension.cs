@@ -142,7 +142,7 @@ namespace ComposAPI
       {
         Length l = (Length)this.StartPosition;
         if (l != Length.Zero)
-          start = ", s:" + l.ToUnit(Units.LengthUnitGeometry).ToString("g2").Replace(" ", string.Empty);
+          start = ", s:" + l.ToUnit(UnitsHelper.LengthUnitGeometry).ToString("g2").Replace(" ", string.Empty);
       }
       else
       {
@@ -155,10 +155,10 @@ namespace ComposAPI
       if (this.TaperedToNext)
         tapered = ", Tapered";
 
-      string d = "d:" + this.OverallDepth.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
-      string w = ", w:" + new Length(this.AvailableWidthLeft.As(Units.LengthUnitGeometry) + this.AvailableWidthRight.As(Units.LengthUnitGeometry), Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
+      string d = "d:" + this.OverallDepth.ToUnit(UnitsHelper.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
+      string w = ", w:" + new Length(this.AvailableWidthLeft.As(UnitsHelper.LengthUnitGeometry) + this.AvailableWidthRight.As(UnitsHelper.LengthUnitGeometry), UnitsHelper.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
       if (this.UserEffectiveWidth)
-        w = ", weff:" + new Length(this.EffectiveWidthLeft.As(Units.LengthUnitGeometry) + this.EffectiveWidthRight.As(Units.LengthUnitGeometry), Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
+        w = ", weff:" + new Length(this.EffectiveWidthLeft.As(UnitsHelper.LengthUnitGeometry) + this.EffectiveWidthRight.As(UnitsHelper.LengthUnitGeometry), UnitsHelper.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
       return d + w + start + tapered;
     }
     #endregion

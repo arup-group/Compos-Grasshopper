@@ -493,7 +493,7 @@ namespace ComposAPI
     public override string ToString()
     {
       if (Dimensions == null) { return "Invalid Stud (dimensions not set)"; }
-      string size = this.Dimensions.Diameter.As(Units.LengthUnitSection).ToString("f0") + "/" + this.Dimensions.Height.ToUnit(Units.LengthUnitSection).ToString("f0");
+      string size = this.Dimensions.Diameter.As(UnitsHelper.LengthUnitSection).ToString("f0") + "/" + this.Dimensions.Height.ToUnit(UnitsHelper.LengthUnitSection).ToString("f0");
       return size.Replace(" ", string.Empty);
     }
 
