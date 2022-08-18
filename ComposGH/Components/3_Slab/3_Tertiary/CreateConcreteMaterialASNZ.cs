@@ -100,7 +100,7 @@ namespace ComposGH.Components
 
       ERatioGoo eRatio = (ERatioGoo)GetInput.GenericGoo<ERatioGoo>(this, DA, 1);
 
-      Strain shrinkageStrain = new Strain(-0.5, StrainUnit.MilliStrain);
+      Strain shrinkageStrain = new Strain(-0.85, StrainUnit.MilliStrain);
       bool userStrain = false;
       if (this.Params.Input[3].Sources.Count > 0)
       {

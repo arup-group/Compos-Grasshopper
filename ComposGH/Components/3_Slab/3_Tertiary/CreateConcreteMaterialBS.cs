@@ -92,8 +92,10 @@ namespace ComposGH.Components
         userDensity = true;
       }
       else
+      {
         if (this.Type == ConcreteMaterial.WeightType.LightWeight)
-        dryDensity = new Density(1800, DensityUnit.KilogramPerCubicMeter);
+          dryDensity = new Density(1800, DensityUnit.KilogramPerCubicMeter);
+      }
 
       Ratio imposedLoadPercentage = GetInput.Ratio(this, DA, 2, RatioUnit.DecimalFraction);
 
@@ -107,7 +109,6 @@ namespace ComposGH.Components
 
     #region Custom UI
     List<bool> OverrideDropDownItems;
-    private bool First = true;
     private ConcreteGrade Grade = ConcreteGrade.C25;
     private ConcreteMaterial.WeightType Type = ConcreteMaterial.WeightType.Normal;
     private DensityUnit DensityUnit = Units.DensityUnit;
