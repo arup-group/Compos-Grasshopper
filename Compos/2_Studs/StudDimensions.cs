@@ -37,34 +37,14 @@ namespace ComposAPI
   {
     public Length Diameter { get; set; } // diameter of stud
     public Length Height { get; set; } // welded height of stud
-    public Pressure Fu
-    {
-      // this is used to store the standard grade????
-      get { return this.m_fu; }
-      set
-      {
-        this.m_fu = value;
-        //this.m_strength = Force.Zero;
-      }
-    }
-    public Force CharacterStrength // characteristic strength of stud
-    {
-      get { return this.m_strength; }
-      set
-      {
-        this.m_strength = value;
-        //this.m_fu = Pressure.Zero;
-        this.IsStandardGrade = false;
-      }
-    }
-    public bool IsStandardSize { get; set; }
-    public bool IsStandardGrade { get; set; }
-    private Force m_strength { get; set; }
-    private Pressure m_fu { get; set; }
+    public Pressure Fu { get; set; }
+    public Force CharacterStrength { get; set; } // characteristic strength of stud
+    public bool IsStandard { get; set; }
+    public bool IsStandardENGrade { get; set; }
 
     public void SetSizeFromStandard(StandardStudSize size)
     {
-      this.IsStandardSize = true;
+      this.IsStandard = true;
       switch (size)
       {
         case StandardStudSize.D13mmH65mm:
@@ -116,7 +96,7 @@ namespace ComposAPI
 
     public void SetGradeFromStandard(StandardStudGrade standardGrade)
     {
-      this.IsStandardGrade = true;
+      this.IsStandardENGrade = true;
       switch (standardGrade)
       {
         case StandardStudGrade.SD1_EN13918:
@@ -204,7 +184,7 @@ namespace ComposAPI
     {
       this.SetSizeFromStandard(size);
       this.SetGradeFromStandard(standardGrade);
-      this.IsStandardGrade = true;
+      this.IsStandardENGrade = true;
     }
 
     /// <summary>
@@ -228,7 +208,7 @@ namespace ComposAPI
       string h = this.Height.ToString("g5");
       string f = (this.Fu.Value == 0) ? this.CharacterStrength.ToString("g5") : Fu.ToString("g5");
 
-      return "Ø" + dia.Replace(" ", string.Empty) + "/" + h.Replace(" ", string.Empty) + ((this.IsStandardSize) ? "" : ", f:" + f.Replace(" ", string.Empty));
+      return "Ø" + dia.Replace(" ", string.Empty) + "/" + h.Replace(" ", string.Empty) + ((this.IsStandard) ? "" : ", f:" + f.Replace(" ", string.Empty));
     }
     #endregion
   }
