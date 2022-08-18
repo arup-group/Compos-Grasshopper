@@ -215,13 +215,13 @@ namespace ComposAPI
       index++;
       if (parameters[index] == "CODE_E_RATIO")
       {
-        index++;
         material.ERatio = new ERatio();
+        index++;
       }
       else
       {
-        material.ERatio = new ERatio(CoaHelper.ConvertToDouble(parameters[8]), CoaHelper.ConvertToDouble(parameters[9]), CoaHelper.ConvertToDouble(parameters[10]), CoaHelper.ConvertToDouble(parameters[11]));
-        index = index + 5;
+        material.ERatio = new ERatio(CoaHelper.ConvertToDouble(parameters[index + 1]), CoaHelper.ConvertToDouble(parameters[index + 2]), CoaHelper.ConvertToDouble(parameters[index + 3]), CoaHelper.ConvertToDouble(parameters[index + 4]));
+        index += 5;
       }
 
       if (parameters[index] == "USER_STRAIN")
