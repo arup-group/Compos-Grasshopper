@@ -1,9 +1,7 @@
-﻿using ComposAPI;
-using ComposGH.Parameters;
+﻿using ComposGH.Parameters;
 using ComposGH.Components;
 using Xunit;
 using ComposGHTests.Helpers;
-using UnitsNet.Units;
 
 namespace ComposGHTests.Slab
 {

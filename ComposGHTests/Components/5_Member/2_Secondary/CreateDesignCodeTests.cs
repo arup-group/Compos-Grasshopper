@@ -2,12 +2,7 @@
 using ComposGH.Components;
 using Xunit;
 using ComposGHTests.Helpers;
-using System;
-using Grasshopper.Kernel.Parameters;
 using ComposAPI;
-using UnitsNet.Units;
-using UnitsNet;
-using ComposGHTests.Slab;
 
 namespace ComposGHTests.Member
 {
