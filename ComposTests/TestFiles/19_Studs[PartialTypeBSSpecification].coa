@@ -34,7 +34,7 @@ BEAM_STEEL_MATERIAL_STD	19_Studs[PartialTypeBSSpecification]	S355 (EN)
 BEAM_WELDING_MATERIAL	19_Studs[PartialTypeBSSpecification]	Grade 42
 BEAM_SPAN_LENGTH	19_Studs[PartialTypeBSSpecification]	1	9.00000
 BEAM_SECTION_AT_X	19_Studs[PartialTypeBSSpecification]	1	1	0.000000	STD I 600. 200. 15. 25.	TAPERED_YES
-RESTRAINT_POINT	19_Studs[PartialTypeBSSpecification]	STANDARD	1
+RESTRAINT_POINT	19_Studs[PartialTypeBSSpecification]	STANDARD	0
 RESTRAINT_TOP_FALNGE	19_Studs[PartialTypeBSSpecification]	TOP_FLANGE_FIXED
 RESTRAINT_2ND_BEAM	19_Studs[PartialTypeBSSpecification]	SEC_BEAM_AS_REST
 END_FLANGE_FREE_ROTATE	19_Studs[PartialTypeBSSpecification]	FREE_TO_ROTATE
