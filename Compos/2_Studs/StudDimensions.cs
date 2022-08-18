@@ -222,9 +222,9 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      string dia = Diameter.As(Units.LengthUnitSection).ToString("f0");
-      string h = Height.ToUnit(Units.LengthUnitSection).ToString("f0");
-      string f = (Fu.Value == 0) ? CharacterStrength.ToUnit(Units.ForceUnit).ToString("f0") : Fu.ToUnit(Units.StressUnit).ToString("f0");
+      string dia = this.Diameter.As(this.Height.Unit).ToString("g5");
+      string h = this.Height.ToString("g5");
+      string f = (this.Fu.Value == 0) ? this.CharacterStrength.ToString("g5") : Fu.ToString("g5");
       
       return "Ø" + dia.Replace(" ", string.Empty) + "/" + h.Replace(" ", string.Empty) + ((this.IsStandard) ? "" : ", f:" + f.Replace(" ", string.Empty));
     }

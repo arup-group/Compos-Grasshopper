@@ -7,7 +7,7 @@ namespace ComposAPI
   /// </summary>
   public interface IStudGroupSpacing
   {
-    Length DistanceFromStart { get; }
+    IQuantity DistanceFromStart { get; }
     int NumberOfRows { get; }
     int NumberOfLines { get; }
     Length Spacing { get; }
