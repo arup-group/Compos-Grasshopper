@@ -39,10 +39,11 @@ namespace ComposGHTests.Helpers
       Duplicates.AreEqual(originalComponent, deserializedComponent, true);
     }
 
-    public static void ChangeDropDownTest(GH_OasysDropDownComponent comp)
+    public static void ChangeDropDownTest(GH_OasysDropDownComponent comp, bool ignoreSpacerDescriptionsCount = false)
     {
       Assert.True(comp.IsInitialised);
-      Assert.Equal(comp.DropDownItems.Count, comp.SpacerDescriptions.Count);
+      if (!ignoreSpacerDescriptionsCount)
+        Assert.Equal(comp.DropDownItems.Count, comp.SpacerDescriptions.Count);
       Assert.Equal(comp.DropDownItems.Count, comp.SelectedItems.Count);
 
       for (int i = 0; i < comp.DropDownItems.Count; i++)

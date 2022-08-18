@@ -140,9 +140,9 @@
     <Compile Include="Components\3_Slab\3_Tertiary\CreateConcreteMaterialBS.cs" />
     <Compile Include="Components\5_Member\1_Primary\CreateMember.cs" />
     <Compile Include="Components\5_Member\2_Secondary\CreateDesignCode.cs" />
-    <Compile Include="Components\5_Member\2_Secondary\CreateSafetyFactorsEN.cs" />
-    <Compile Include="Components\5_Member\2_Secondary\CreateCreepShrinkageParams.cs" />
-    <Compile Include="Components\5_Member\2_Secondary\CreateSafetyFactors.cs" />
+    <Compile Include="Components\5_Member\3_Tertiary\CreateSafetyFactorsEN.cs" />
+    <Compile Include="Components\5_Member\3_Tertiary\CreateCreepShrinkageParams.cs" />
+    <Compile Include="Components\5_Member\3_Tertiary\CreateSafetyFactors.cs" />
     <Compile Include="Components\7_Results\ReadClassResults.cs" />
     <Compile Include="Components\7_Results\ReadStresses.cs" />
     <Compile Include="Components\7_Results\ReadStudResults.cs" />
@@ -277,9 +277,6 @@
     <None Include="Properties\Icons\ComposLogo128.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\5_Member\3_Tertiary\" />
-    <Folder Include="Components\5_Member\4_Quarternary\" />
-    <Folder Include="Components\5_Member\5_Quinary\" />
     <Folder Include="Components\6_Analysis\1_Primary\" />
     <Folder Include="Components\6_Analysis\2_Secondary\" />
     <Folder Include="Components\6_Analysis\3_Tertiary\" />

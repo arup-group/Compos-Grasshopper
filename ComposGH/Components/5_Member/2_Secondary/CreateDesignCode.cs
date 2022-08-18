@@ -76,6 +76,9 @@ namespace ComposGH.Components
             otherCodes.SafetyFactors = safetyFactors;
 
           DA.SetData(0, new DesignCodeGoo(otherCodes));
+          if (this.Code == Code.BS5950_3_1_1990_Superseded || this.Code == Code.BS5950_3_1_1990_A1_2010)
+            if (this.DesignOptions.ProppedDuringConstruction == true)
+              AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Propped construction is defined that is not covered by BS5950: Part 3.1 - 2010, see Clause 5.5.2 of BS5950: Part 3.1 - 2010 for details.");
           break;
 
         case Code.EN1994_1_1_2004:
@@ -230,7 +233,6 @@ namespace ComposGH.Components
               Checkboxes.RemoveAt(5);
             while (CheckboxNames.Count > 5)
               CheckboxNames.RemoveAt(5);
-
             break;
 
           case Code.EN1994_1_1_2004:
@@ -285,6 +287,8 @@ namespace ComposGH.Components
         this.NA = (NationalAnnex)Enum.Parse(typeof(NationalAnnex), this.SelectedItems[i].Replace(" ", "_"));
       if (i == 2)
         this.EC4CodeOptions.CementType = (CementClass)Enum.Parse(typeof(CementClass), this.SelectedItems[i].Last().ToString());
+
+      ModeChangeClicked();
 
       base.UpdateUI();
     }
