@@ -62,17 +62,20 @@ namespace ComposAPI
           break;
       }
       
-      CreepShrinkageParametersEN lt = new CreepShrinkageParametersEN();
-      CreepShrinkageParametersEN st = new CreepShrinkageParametersEN();
+      CreepShrinkageParametersEN longTerm = new CreepShrinkageParametersEN();
+      CreepShrinkageParametersEN shortTerm = new CreepShrinkageParametersEN();
 
-      lt.CreepCoefficient = Convert.ToDouble(parameters[i++], noComma);
-      st.CreepCoefficient = Convert.ToDouble(parameters[i++], noComma);
-      lt.ConcreteAgeAtLoad = (int)Math.Round(Convert.ToDouble(parameters[i++], noComma));
-      st.ConcreteAgeAtLoad = (int)Math.Round(Convert.ToDouble(parameters[i++], noComma));
-      lt.FinalConcreteAgeCreep = (int)Math.Round(Convert.ToDouble(parameters[i++], noComma));
-      st.FinalConcreteAgeCreep = (int)Math.Round(Convert.ToDouble(parameters[i++], noComma));
-      lt.RelativeHumidity = new Ratio(Convert.ToDouble(parameters[i++], noComma), RatioUnit.Percent);
-      st.RelativeHumidity = new Ratio(Convert.ToDouble(parameters[i++], noComma), RatioUnit.Percent);
+      longTerm.CreepCoefficient = Convert.ToDouble(parameters[i++], noComma);
+      shortTerm.CreepCoefficient = Convert.ToDouble(parameters[i++], noComma);
+      longTerm.ConcreteAgeAtLoad = (int)Math.Round(Convert.ToDouble(parameters[i++], noComma));
+      shortTerm.ConcreteAgeAtLoad = (int)Math.Round(Convert.ToDouble(parameters[i++], noComma));
+      longTerm.FinalConcreteAgeCreep = (int)Math.Round(Convert.ToDouble(parameters[i++], noComma));
+      shortTerm.FinalConcreteAgeCreep = (int)Math.Round(Convert.ToDouble(parameters[i++], noComma));
+      longTerm.RelativeHumidity = new Ratio(Convert.ToDouble(parameters[i++], noComma), RatioUnit.Percent);
+      shortTerm.RelativeHumidity = new Ratio(Convert.ToDouble(parameters[i++], noComma), RatioUnit.Percent);
+
+      codeOptionsEN.LongTerm = longTerm;
+      codeOptionsEN.ShortTerm = shortTerm;
 
       return codeOptionsEN;
     }
