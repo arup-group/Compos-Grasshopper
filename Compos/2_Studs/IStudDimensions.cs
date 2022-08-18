@@ -11,7 +11,8 @@ namespace ComposAPI
     Length Height { get; set; }
     Force CharacterStrength { get; set; }
     Pressure Fu { get; set; }
-    bool IsStandard { get; set; }
+    bool IsStandardSize { get; set; }
+    bool IsStandardGrade { get; set; }
 
     void SetGradeFromStandard(StandardStudGrade standardGrade);
     void SetSizeFromStandard(StandardStudSize size);

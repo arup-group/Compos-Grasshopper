@@ -166,13 +166,14 @@ namespace ComposAPI
                   stud.Dimensions.CharacterStrength = new Force(97.9845, ForceUnit.Kilonewton);
                   break;
               }
-              stud.Dimensions.IsStandard = true;
+              stud.Dimensions.IsStandardSize = true;
             }
             else if (parameters[2] == CoaIdentifier.StudDimensions.StudDimensionCustom)
             {
               stud.Dimensions.Diameter = new Length(Convert.ToDouble(parameters[3], noComma), units.Section);
               stud.Dimensions.Height = new Length(Convert.ToDouble(parameters[4], noComma), units.Section);
               stud.Dimensions.CharacterStrength = new Force(Convert.ToDouble(parameters[5], noComma), units.Force);
+              stud.Dimensions.IsStandardSize = false;
             }
             bool isWelded = parameters.Last() == "WELDED_YES";
             stud.Specification.Welding = isWelded;
@@ -192,7 +193,7 @@ namespace ComposAPI
             {
               StandardStudGrade standardGrade = (StandardStudGrade)Enum.Parse(typeof(StandardStudGrade), parameters[3]);
               stud.Dimensions.SetGradeFromStandard(standardGrade);
-              stud.Dimensions.IsStandard = true;
+              stud.Dimensions.IsStandardGrade = true;
             }
             else if (parameters[2] == CoaIdentifier.StudDimensions.StudGradeEC4Custom)
             {
@@ -270,7 +271,7 @@ namespace ComposAPI
       string str = CoaIdentifier.StudDimensions.StudDefinition + '\t' + name + '\t';
 
       string studSize = this.GetStandardSize(this.Dimensions);
-      if (!this.Dimensions.IsStandard)
+      if (!this.Dimensions.IsStandardSize)
       {
         studSize = CoaIdentifier.StudDimensions.StudDimensionCustom + '\t';
         studSize += CoaHelper.FormatSignificantFigures(this.Dimensions.Diameter.ToUnit(units.Section).Value, 6) + '\t';
