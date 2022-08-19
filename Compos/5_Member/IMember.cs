@@ -20,6 +20,7 @@ namespace ComposAPI
 
     short Analyse();
     short CodeSatisfied();
+    string GetCodeSatisfiedMessage();
     float MaxResult(string option, short position);
     short MaxResultPosition(string option, short position);
     float MinResult(string option, short position);

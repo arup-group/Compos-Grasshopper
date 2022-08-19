@@ -117,6 +117,7 @@ namespace ComposAPI
     /// </returns>
     internal short Design()
     {
+      this.Initialise();
       short status = 0;
       foreach (Member member in this.Members)
       {
@@ -137,6 +138,7 @@ namespace ComposAPI
     /// </returns>
     public short Design(string memberName)
     {
+      this.Initialise();
       return ComposFile.ComposCOM.Design(memberName);
     }
 

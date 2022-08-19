@@ -27,11 +27,10 @@ namespace ComposGHTests.Stud
     public void CreateComponentTest()
     {
       var comp = CreateStudMother();
-      comp.SetSelected(0, 0); // change the dropdown to Automatic
       
       StudGoo output = (StudGoo)ComponentTestHelper.GetOutput(comp);
       
-      Assert.Equal(StudSpacingType.Automatic, output.Value.StudSpacingType);
+      Assert.Equal(StudSpacingType.Min_Num_of_Studs, output.Value.StudSpacingType);
       
       StudDimensionsGoo input1 = (StudDimensionsGoo)ComponentTestHelper.GetOutput(CreateStandardStudDimsComponentTests.CreateStandardStudDimsMother());
       ComponentTestHelper.SetInput(comp, input1, 0);

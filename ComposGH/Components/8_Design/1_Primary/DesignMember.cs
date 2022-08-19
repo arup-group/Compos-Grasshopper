@@ -46,18 +46,25 @@ namespace ComposGH.Components
     {
       MemberGoo memGoo = (MemberGoo)GetInput.GenericGoo<MemberGoo>(this, DA, 0);
       DesignCriteriaGoo critGoo = (DesignCriteriaGoo)GetInput.GenericGoo<DesignCriteriaGoo>(this, DA, 1);
-      Message = "";
+      this.Message = "";
       if (memGoo.Value != null)
       {
         Member designedMember = (Member)memGoo.Value.Duplicate();
         designedMember.DesignCriteria = critGoo.Value;
+        this.Message = designedMember.GetCodeSatisfiedMessage();
         if (!designedMember.Design())
         {
           AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Failed to design member");
           return;
         }
-        string[] profile = designedMember.Beam.Sections[0].SectionDescription.Split(' ');
-        Message = profile[2];
+        string[] oldProfile = memGoo.Value.Beam.Sections[0].SectionDescription.Split(' ');
+        string[] newProfile = designedMember.Beam.Sections[0].SectionDescription.Split(' ');
+        if (newProfile[2] == oldProfile[2])
+        {
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Failed to design member");
+          return;
+        }
+        this.Message = newProfile[2];
         DA.SetData(0, new MemberGoo(designedMember));
       }
     }

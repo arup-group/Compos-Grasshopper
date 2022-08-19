@@ -58,26 +58,10 @@ namespace ComposGH.Components
       }
       if (member != null)
       {
-        Status = member.CodeSatisfied();
-        switch (Status)
-        {
-          case 0:
-            this.Message = "all code requirements are met";
-            break;
-          case 1:
-            this.Message = "except the natural frequency is lower than that required, other code requirements are met";
+        this.Message = member.GetCodeSatisfiedMessage();
+        this.Status = member.CodeSatisfied();
+        if(this.Status == 1)
             AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "The natural frequency is lower than that required");
-            break;
-          case 2:
-            this.Message = "one or more code requirements are not met";
-            break;
-          case 3:
-            this.Message = "the given member name is not valid";
-            break;
-          case 4:
-            this.Message = "there is no results for the given named member";
-            break;
-        }
         DA.SetData(0, new GH_Number(Status));
       }
     }

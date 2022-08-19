@@ -86,6 +86,25 @@ namespace ComposAPI
       return FileRegister[this.FileGuid].CodeSatisfied(this.Name);
     }
 
+    public string GetCodeSatisfiedMessage()
+    {
+      int status = this.CodeSatisfied();
+      switch (status)
+      {
+        case 0:
+          return "all code requirements are met";
+        case 1:
+          return "except the natural frequency is lower than that required, other code requirements are met";
+        case 2:
+          return "one or more code requirements are not met";
+        case 3:
+          return "the given member name is not valid";
+        case 4:
+        default:
+          return "there is no results for the given named member";
+      }
+    }
+
     public float MaxResult(string option, short position)
     {
       return FileRegister[this.FileGuid].MaxResult(this.Name, option, position);
