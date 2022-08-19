@@ -60,7 +60,7 @@ namespace ComposGH
       menuLoad.CreateMainMenuItem();
 
       // ### Setup units ###
-      Units.SetupUnits();
+      Units.SetupUnitsDuringLoad();
 
       PostHog.PluginLoaded();
 

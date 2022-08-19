@@ -38,96 +38,38 @@ namespace ComposGH
             LengthUnit.Foot.ToString()
         };
 
-    public static Length Tolerance
-    {
-      get { return m_tolerance; }
-      set { m_tolerance = value; }
-    }
-    private static Length m_tolerance = new Length(0.0001, LengthUnit.Meter);
-
-    public static int SignificantDigits
-    {
-      get { return BitConverter.GetBytes(decimal.GetBits((decimal)m_tolerance.As(LengthUnitGeometry))[3])[2]; ; }
-    }
-
     public static LengthUnit LengthUnitGeometry
     {
       get
       {
-        if (m_units == null || useRhinoLengthGeometryUnit)
-        {
+        if (useRhinoLengthGeometryUnit)
           m_length_geometry = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
-        }
-        else
-        {
-          m_length_geometry = m_units.BaseUnits.Length;
-        }
         return m_length_geometry;
       }
       set
       {
         useRhinoLengthGeometryUnit = false;
         m_length_geometry = value;
-        // update unit system
-        BaseUnits units = new BaseUnits(
-            m_length_geometry,
-            m_units.BaseUnits.Mass, m_units.BaseUnits.Time, m_units.BaseUnits.Current, m_units.BaseUnits.Temperature, m_units.BaseUnits.Amount, m_units.BaseUnits.LuminousIntensity);
-        m_units = new UnitsNet.UnitSystem(units);
       }
     }
-    public static void UseRhinoLengthUnitGeometry()
-    {
-      useRhinoLengthGeometryUnit = false;
-      m_length_geometry = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
-    }
-    private static LengthUnit m_length_geometry;
+    private static LengthUnit m_length_geometry = LengthUnit.Meter;
     internal static bool useRhinoLengthGeometryUnit;
 
     public static LengthUnit LengthUnitSection
     {
       get
       {
-        if (useRhinoLengthSectionUnit)
-        {
-          m_length_section = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
-        }
         return m_length_section;
       }
       set
       {
-        useRhinoLengthSectionUnit = false;
         m_length_section = value;
       }
     }
-    public static void UseRhinoLengthUnitSection()
-    {
-      useRhinoLengthSectionUnit = false;
-      m_length_section = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
-    }
-    private static LengthUnit m_length_section;
-    internal static bool useRhinoLengthSectionUnit;
-    internal static AreaMomentOfInertiaUnit SectionAreaMomentOfInertiaUnit
-    {
-      get
-      {
-        switch (LengthUnitSection)
-        {
-          case LengthUnit.Millimeter:
-            return AreaMomentOfInertiaUnit.MillimeterToTheFourth;
-          case LengthUnit.Centimeter:
-            return AreaMomentOfInertiaUnit.CentimeterToTheFourth;
-          case LengthUnit.Meter:
-            return AreaMomentOfInertiaUnit.MeterToTheFourth;
-          case LengthUnit.Foot:
-            return AreaMomentOfInertiaUnit.FootToTheFourth;
-          case LengthUnit.Inch:
-            return AreaMomentOfInertiaUnit.InchToTheFourth;
-          default:
-            return AreaMomentOfInertiaUnit.Undefined;
-        }
-      }
-    }
-    internal static AreaMomentOfInertiaUnit GetSectionAreaMomentOfInertiaUnit(LengthUnit unit)
+    private static LengthUnit m_length_section = LengthUnit.Centimeter;
+
+    internal static AreaMomentOfInertiaUnit SectionAreaMomentOfInertiaUnit = GetAreaMomentOfInertiaUnit(LengthUnitSection);
+    internal static AreaMomentOfInertiaUnit GetAreaMomentOfInertiaUnit(LengthUnit unit)
     {
       switch (unit)
       {
@@ -141,160 +83,336 @@ namespace ComposGH
           return AreaMomentOfInertiaUnit.FootToTheFourth;
         case LengthUnit.Inch:
           return AreaMomentOfInertiaUnit.InchToTheFourth;
-        default:
-          return AreaMomentOfInertiaUnit.Undefined;
       }
+      // fallback:
+      BaseUnits baseUnits = new BaseUnits(unit, SI.Mass, SI.Time, SI.Current, SI.Temperature, SI.Amount, SI.LuminousIntensity);
+      UnitsNet.UnitSystem unitSystem = new UnitsNet.UnitSystem(baseUnits);
+      return new AreaMomentOfInertia(1, unitSystem).Unit;
     }
-    internal static AreaUnit SectionAreaUnit
+
+    internal static AreaUnit SectionAreaUnit = GetAreaUnit(LengthUnitSection);
+    internal static AreaUnit GetAreaUnit(LengthUnit unit)
+    {
+      switch (unit)
+      {
+        case LengthUnit.Millimeter:
+          return AreaUnit.SquareMillimeter;
+        case LengthUnit.Centimeter:
+          return AreaUnit.SquareCentimeter;
+        case LengthUnit.Meter:
+          return AreaUnit.SquareMeter;
+        case LengthUnit.Foot:
+          return AreaUnit.SquareFoot;
+        case LengthUnit.Inch:
+          return AreaUnit.SquareInch;
+      }
+      // fallback:
+      BaseUnits baseUnits = new BaseUnits(unit, SI.Mass, SI.Time, SI.Current, SI.Temperature, SI.Amount, SI.LuminousIntensity);
+      UnitsNet.UnitSystem unitSystem = new UnitsNet.UnitSystem(baseUnits);
+      return new Area(1, unitSystem).Unit;
+    }
+
+    public static VolumePerLengthUnit VolumePerLengthUnit
     {
       get
       {
-        Length len = new Length(1, LengthUnitSection);
-        Area unitArea = len * len;
-        return unitArea.Unit;
+        switch (m_length_section)
+        {
+          case LengthUnit.Yard:
+          case LengthUnit.Inch:
+          case LengthUnit.Foot:
+            return VolumePerLengthUnit.CubicYardPerFoot;
+          default:
+            return VolumePerLengthUnit.CubicMeterPerMeter;
+        }
       }
     }
-
+    internal static VolumePerLengthUnit GetVolumePerLengthUnit(LengthUnit unit)
+    {
+      switch (unit)
+      {
+        case LengthUnit.Millimeter:
+        case LengthUnit.Centimeter:
+        case LengthUnit.Meter:
+          return VolumePerLengthUnit.CubicMeterPerMeter;
+        case LengthUnit.Foot:
+        case LengthUnit.Inch:
+          return VolumePerLengthUnit.CubicYardPerFoot;
+      }
+      // fallback:
+      BaseUnits baseUnits = new BaseUnits(unit, SI.Mass, SI.Time, SI.Current, SI.Temperature, SI.Amount, SI.LuminousIntensity);
+      UnitsNet.UnitSystem unitSystem = new UnitsNet.UnitSystem(baseUnits);
+      return new VolumePerLength(1, unitSystem).Unit;
+    }
     public static LengthUnit LengthUnitResult
     {
       get
       {
-        if (useRhinoLengthResultUnit)
-        {
-          m_length_result = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
-        }
         return m_length_result;
       }
       set
       {
-        useRhinoLengthResultUnit = false;
         m_length_result = value;
       }
     }
-    public static void UseRhinoLengthUnitResult()
-    {
-      useRhinoLengthResultUnit = false;
-      m_length_result = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
-    }
-    private static LengthUnit m_length_result;
-    internal static bool useRhinoLengthResultUnit;
+    private static LengthUnit m_length_result = LengthUnit.Millimeter;
 
     #endregion
 
     #region force
     public static ForceUnit ForceUnit
     {
-      get { return m_force; }
+      get
+      {
+        return m_force;
+      }
       set { m_force = value; }
     }
     private static ForceUnit m_force = ForceUnit.Kilonewton;
     internal static List<string> FilteredForceUnits = new List<string>()
-        {
-            ForceUnit.Newton.ToString(),
-            ForceUnit.Kilonewton.ToString(),
-            ForceUnit.Meganewton.ToString(),
-            ForceUnit.PoundForce.ToString(),
-            ForceUnit.KilopoundForce.ToString(),
-            ForceUnit.TonneForce.ToString()
-        };
+    {
+      ForceUnit.Newton.ToString(),
+      ForceUnit.Kilonewton.ToString(),
+      ForceUnit.Meganewton.ToString(),
+      ForceUnit.PoundForce.ToString(),
+      ForceUnit.KilopoundForce.ToString(),
+      ForceUnit.TonneForce.ToString()
+    };
 
     public static ForcePerLengthUnit ForcePerLengthUnit
     {
       get
       {
+        switch (m_force)
+        {
+          case ForceUnit.Newton:
+            switch (m_length_geometry)
+            {
+              case LengthUnit.Millimeter:
+                return ForcePerLengthUnit.NewtonPerMillimeter;
+              case LengthUnit.Centimeter:
+                return ForcePerLengthUnit.NewtonPerCentimeter;
+              case LengthUnit.Meter:
+                return ForcePerLengthUnit.NewtonPerMeter;
+            }
+            break;
+          case ForceUnit.Kilonewton:
+            switch (m_length_geometry)
+            {
+              case LengthUnit.Millimeter:
+                return ForcePerLengthUnit.KilonewtonPerMillimeter;
+              case LengthUnit.Centimeter:
+                return ForcePerLengthUnit.KilonewtonPerCentimeter;
+              case LengthUnit.Meter:
+                return ForcePerLengthUnit.KilonewtonPerMeter;
+            }
+            break;
+          case ForceUnit.Meganewton:
+            switch (m_length_geometry)
+            {
+              case LengthUnit.Millimeter:
+                return ForcePerLengthUnit.MeganewtonPerMillimeter;
+              case LengthUnit.Centimeter:
+                return ForcePerLengthUnit.MeganewtonPerCentimeter;
+              case LengthUnit.Meter:
+                return ForcePerLengthUnit.MeganewtonPerMeter;
+            }
+            break;
+          case ForceUnit.KilopoundForce:
+            switch (m_length_geometry)
+            {
+              case LengthUnit.Inch:
+                return ForcePerLengthUnit.KilopoundForcePerInch;
+              case LengthUnit.Foot:
+                return ForcePerLengthUnit.KilopoundForcePerFoot;
+            }
+            break;
+          case ForceUnit.PoundForce:
+            switch (m_length_geometry)
+            {
+              case LengthUnit.Inch:
+                return ForcePerLengthUnit.PoundForcePerInch;
+              case LengthUnit.Foot:
+                return ForcePerLengthUnit.PoundForcePerFoot;
+            }
+            break;
+        }
+
         Force force = Force.From(1, ForceUnit);
         Length length = Length.From(1, LengthUnitGeometry);
         ForcePerLength kNperM = force / length;
+
         return kNperM.Unit;
       }
     }
 
     internal static List<string> FilteredForcePerLengthUnits = new List<string>()
-        {
-            ForcePerLengthUnit.NewtonPerMillimeter.ToString(),
-            ForcePerLengthUnit.NewtonPerCentimeter.ToString(),
-            ForcePerLengthUnit.NewtonPerMeter.ToString(),
+    {
+      ForcePerLengthUnit.NewtonPerMillimeter.ToString(),
+      ForcePerLengthUnit.NewtonPerCentimeter.ToString(),
+      ForcePerLengthUnit.NewtonPerMeter.ToString(),
 
-            ForcePerLengthUnit.KilonewtonPerMillimeter.ToString(),
-            ForcePerLengthUnit.KilonewtonPerCentimeter.ToString(),
-            ForcePerLengthUnit.KilonewtonPerMeter.ToString(),
+      ForcePerLengthUnit.KilonewtonPerMillimeter.ToString(),
+      ForcePerLengthUnit.KilonewtonPerCentimeter.ToString(),
+      ForcePerLengthUnit.KilonewtonPerMeter.ToString(),
 
-            ForcePerLengthUnit.TonneForcePerCentimeter.ToString(),
-            ForcePerLengthUnit.TonneForcePerMeter.ToString(),
-            ForcePerLengthUnit.TonneForcePerMillimeter.ToString(),
+      ForcePerLengthUnit.TonneForcePerCentimeter.ToString(),
+      ForcePerLengthUnit.TonneForcePerMeter.ToString(),
+      ForcePerLengthUnit.TonneForcePerMillimeter.ToString(),
 
-            ForcePerLengthUnit.MeganewtonPerMeter.ToString(),
+      ForcePerLengthUnit.MeganewtonPerMeter.ToString(),
 
-            ForcePerLengthUnit.PoundForcePerInch.ToString(),
-            ForcePerLengthUnit.PoundForcePerFoot.ToString(),
-            ForcePerLengthUnit.PoundForcePerYard.ToString(),
+      ForcePerLengthUnit.PoundForcePerInch.ToString(),
+      ForcePerLengthUnit.PoundForcePerFoot.ToString(),
+      ForcePerLengthUnit.PoundForcePerYard.ToString(),
 
-            ForcePerLengthUnit.KilopoundForcePerInch.ToString(),
-            ForcePerLengthUnit.KilopoundForcePerFoot.ToString()
-        };
+      ForcePerLengthUnit.KilopoundForcePerInch.ToString(),
+      ForcePerLengthUnit.KilopoundForcePerFoot.ToString()
+    };
     #endregion
 
     #region moment
     public static MomentUnit MomentUnit
     {
-      get { return m_moment; }
+      get
+      {
+        return m_moment;
+      }
       set { m_moment = value; }
     }
     private static MomentUnit m_moment = MomentUnit.KilonewtonMeter;
-    internal static List<string> FilteredMomentUnits = Enum.GetNames(typeof(MomentUnit)).ToList();
+
+    internal static List<string> FilteredMomentUnits = Enum.GetNames(typeof(MomentUnit)).Skip(1).ToList();
     #endregion
 
     #region stress
     public static PressureUnit StressUnit
     {
-      get { return m_stress; }
+      get
+      {
+        return m_stress;
+      }
       set { m_stress = value; }
     }
     private static PressureUnit m_stress = PressureUnit.Megapascal;
+
     internal static List<string> FilteredStressUnits = new List<string>()
-        {
-            PressureUnit.Pascal.ToString(),
-            PressureUnit.Kilopascal.ToString(),
-            PressureUnit.Megapascal.ToString(),
-            PressureUnit.Gigapascal.ToString(),
-            PressureUnit.NewtonPerSquareMillimeter.ToString(),
-            PressureUnit.NewtonPerSquareMeter.ToString(),
-            PressureUnit.PoundForcePerSquareInch.ToString(),
-            PressureUnit.PoundForcePerSquareFoot.ToString(),
-            PressureUnit.KilopoundForcePerSquareInch.ToString(),
-        };
+    {
+      PressureUnit.Pascal.ToString(),
+      PressureUnit.Kilopascal.ToString(),
+      PressureUnit.Megapascal.ToString(),
+      PressureUnit.Gigapascal.ToString(),
+      PressureUnit.NewtonPerSquareMillimeter.ToString(),
+      PressureUnit.NewtonPerSquareMeter.ToString(),
+      PressureUnit.PoundForcePerSquareInch.ToString(),
+      PressureUnit.PoundForcePerSquareFoot.ToString(),
+      PressureUnit.KilopoundForcePerSquareInch.ToString()
+    };
     internal static List<string> FilteredForcePerAreaUnits = new List<string>()
-        {
-            PressureUnit.NewtonPerSquareMillimeter.ToString(),
-            PressureUnit.NewtonPerSquareCentimeter.ToString(),
-            PressureUnit.NewtonPerSquareMeter.ToString(),
-            PressureUnit.KilonewtonPerSquareCentimeter.ToString(),
-            PressureUnit.KilonewtonPerSquareMillimeter.ToString(),
-            PressureUnit.KilonewtonPerSquareMeter.ToString(),
-            PressureUnit.PoundForcePerSquareInch.ToString(),
-            PressureUnit.PoundForcePerSquareFoot.ToString(),
-            PressureUnit.KilopoundForcePerSquareInch.ToString(),
-        };
+    {
+      PressureUnit.NewtonPerSquareMillimeter.ToString(),
+      PressureUnit.NewtonPerSquareCentimeter.ToString(),
+      PressureUnit.NewtonPerSquareMeter.ToString(),
+      PressureUnit.KilonewtonPerSquareCentimeter.ToString(),
+      PressureUnit.KilonewtonPerSquareMillimeter.ToString(),
+      PressureUnit.KilonewtonPerSquareMeter.ToString(),
+      PressureUnit.PoundForcePerSquareInch.ToString(),
+      PressureUnit.PoundForcePerSquareFoot.ToString(),
+      PressureUnit.KilopoundForcePerSquareInch.ToString(),
+    };
+    #endregion
+
+    #region strain
+    public static StrainUnit StrainUnit
+    {
+      get
+      {
+        return m_strain;
+      }
+      set { m_strain = value; }
+    }
+    private static StrainUnit m_strain = StrainUnit.MilliStrain;
+
+    internal static List<string> FilteredStrainUnits = new List<string>()
+    {
+      StrainUnit.Ratio.ToString(),
+      StrainUnit.Percent.ToString(),
+      StrainUnit.MilliStrain.ToString(),
+      StrainUnit.MicroStrain.ToString()
+    };
+    #endregion
+
+    #region axial stiffness
+    public static AxialStiffnessUnit AxialStiffnessUnit
+    {
+      get
+      {
+        return m_axialstiffness;
+      }
+      set { m_axialstiffness = value; }
+    }
+    private static AxialStiffnessUnit m_axialstiffness = AxialStiffnessUnit.Kilonewton;
+
+    internal static List<string> FilteredAxialStiffnessUnits = Enum.GetNames(typeof(AxialStiffnessUnit)).Skip(1).ToList();
+    #endregion
+
+    #region bending stiffness
+    public static BendingStiffnessUnit BendingStiffnessUnit
+    {
+      get
+      {
+        return m_bendingstiffness;
+      }
+      set { m_bendingstiffness = value; }
+    }
+    private static BendingStiffnessUnit m_bendingstiffness = BendingStiffnessUnit.KilonewtonSquareMeter;
+
+    internal static List<string> FilteredBendingStiffnessUnits = Enum.GetNames(typeof(BendingStiffnessUnit)).Skip(1).ToList();
+    #endregion
+
+    #region curvature
+    public static CurvatureUnit CurvatureUnit
+    {
+      get
+      {
+        return m_curvature;
+      }
+      set { m_curvature = value; }
+    }
+    private static CurvatureUnit m_curvature = (CurvatureUnit)Enum.Parse(typeof(CurvatureUnit), "Per" + LengthUnitGeometry.ToString());
+
+    internal static List<string> FilteredCurvatureUnits = new List<string>()
+    {
+      CurvatureUnit.PerMillimeter.ToString(),
+      CurvatureUnit.PerCentimeter.ToString(),
+      CurvatureUnit.PerMeter.ToString(),
+      CurvatureUnit.PerInch.ToString(),
+      CurvatureUnit.PerFoot.ToString()
+    };
     #endregion
 
     #region mass
     public static MassUnit MassUnit
     {
-      get { return m_mass; }
+      get
+      {
+        return m_mass;
+      }
       set { m_mass = value; }
     }
     private static MassUnit m_mass = MassUnit.Tonne;
+
     internal static List<string> FilteredMassUnits = new List<string>()
-        {
-            MassUnit.Gram.ToString(),
-            MassUnit.Kilogram.ToString(),
-            MassUnit.Tonne.ToString(),
-            MassUnit.Kilotonne.ToString(),
-            MassUnit.Pound.ToString(),
-            MassUnit.Kilopound.ToString(),
-            MassUnit.LongTon.ToString(),
-            MassUnit.Slug.ToString()
-        };
+    {
+      MassUnit.Gram.ToString(),
+      MassUnit.Kilogram.ToString(),
+      MassUnit.Tonne.ToString(),
+      MassUnit.Kilotonne.ToString(),
+      MassUnit.Pound.ToString(),
+      MassUnit.Kilopound.ToString(),
+      MassUnit.LongTon.ToString(),
+      MassUnit.Slug.ToString()
+    };
     #endregion
 
     #region density
@@ -311,82 +429,232 @@ namespace ComposGH
       }
     }
     internal static List<string> FilteredDensityUnits = new List<string>()
+    {
+      DensityUnit.GramPerCubicMillimeter.ToString(),
+      DensityUnit.GramPerCubicCentimeter.ToString(),
+      DensityUnit.GramPerCubicMeter.ToString(),
+      DensityUnit.KilogramPerCubicMillimeter.ToString(),
+      DensityUnit.KilogramPerCubicCentimeter.ToString(),
+      DensityUnit.KilogramPerCubicMeter.ToString(),
+      DensityUnit.TonnePerCubicMillimeter.ToString(),
+      DensityUnit.TonnePerCubicCentimeter.ToString(),
+      DensityUnit.TonnePerCubicMeter.ToString(),
+      DensityUnit.PoundPerCubicFoot.ToString(),
+      DensityUnit.PoundPerCubicInch.ToString(),
+      DensityUnit.KilopoundPerCubicFoot.ToString(),
+      DensityUnit.KilopoundPerCubicInch.ToString(),
+    };
+    public static LinearDensityUnit LinearDensityUnit
+    {
+      get
+      {
+        switch (m_mass)
         {
-            DensityUnit.GramPerCubicMillimeter.ToString(),
-            DensityUnit.GramPerCubicCentimeter.ToString(),
-            DensityUnit.GramPerCubicMeter.ToString(),
-            DensityUnit.KilogramPerCubicMillimeter.ToString(),
-            DensityUnit.KilogramPerCubicCentimeter.ToString(),
-            DensityUnit.KilogramPerCubicMeter.ToString(),
-            DensityUnit.TonnePerCubicMillimeter.ToString(),
-            DensityUnit.TonnePerCubicCentimeter.ToString(),
-            DensityUnit.TonnePerCubicMeter.ToString(),
-            DensityUnit.PoundPerCubicFoot.ToString(),
-            DensityUnit.PoundPerCubicInch.ToString(),
-            DensityUnit.KilopoundPerCubicFoot.ToString(),
-            DensityUnit.KilopoundPerCubicInch.ToString(),
-        };
+          case MassUnit.Kilogram:
+            switch (m_length_geometry)
+            {
+              case LengthUnit.Millimeter:
+                return LinearDensityUnit.KilogramPerMillimeter;
+              case LengthUnit.Centimeter:
+                return LinearDensityUnit.KilogramPerCentimeter;
+              case LengthUnit.Meter:
+                return LinearDensityUnit.KilogramPerMeter;
+            }
+            break;
+          case MassUnit.Pound:
+            switch (m_length_geometry)
+            {
+              case LengthUnit.Foot:
+                return LinearDensityUnit.PoundPerFoot;
+              case LengthUnit.Inch:
+                return LinearDensityUnit.PoundPerInch;
+            }
+            break;
+        }
+        return LinearDensityUnit.KilogramPerMeter;
+      }
+    }
+    internal static List<string> FilteredLinearDensityUnitUnits = new List<string>()
+    {
+      LinearDensityUnit.KilogramPerMillimeter.ToString(),
+      LinearDensityUnit.KilogramPerCentimeter.ToString(),
+      LinearDensityUnit.KilogramPerMeter.ToString(),
+      LinearDensityUnit.PoundPerFoot.ToString(),
+      LinearDensityUnit.PoundPerInch.ToString(),
+    };
     #endregion
 
-    #region strain
-    public static StrainUnit StrainUnit
+    #region temperature
+    public static TemperatureUnit TemperatureUnit
     {
-      get { return m_strain; }
-      set { m_strain = value; }
+      get
+      {
+        return m_temperature;
+      }
+      set { m_temperature = value; }
     }
-    private static StrainUnit m_strain = StrainUnit.MilliStrain;
-    internal static List<string> FilteredStrainUnits = new List<string>()
+    private static TemperatureUnit m_temperature = TemperatureUnit.DegreeCelsius;
+
+    internal static List<string> FilteredTemperatureUnits = new List<string>()
+    {
+      TemperatureUnit.DegreeCelsius.ToString(),
+      TemperatureUnit.Kelvin.ToString(),
+      TemperatureUnit.DegreeFahrenheit.ToString(),
+    };
+
+    internal static CoefficientOfThermalExpansionUnit CoefficientOfThermalExpansionUnit
+    {
+      get
+      {
+        switch (TemperatureUnit)
         {
-            StrainUnit.Ratio.ToString(),
-            StrainUnit.Percent.ToString(),
-            StrainUnit.MilliStrain.ToString(),
-            StrainUnit.MicroStrain.ToString()
-        };
+          case TemperatureUnit.DegreeCelsius:
+            return CoefficientOfThermalExpansionUnit.InverseDegreeCelsius;
+          case TemperatureUnit.Kelvin:
+            return CoefficientOfThermalExpansionUnit.InverseKelvin;
+          case TemperatureUnit.DegreeFahrenheit:
+            return CoefficientOfThermalExpansionUnit.InverseDegreeFahrenheit;
+          default:
+            return CoefficientOfThermalExpansionUnit.Undefined;
+        }
+      }
+    }
     #endregion
 
-    #region unit system
-    public static UnitsNet.UnitSystem UnitSystem
+    #region velocity
+    public static SpeedUnit VelocityUnit
     {
-      get { return m_units; }
-      set { m_units = value; }
+      get
+      {
+        return m_velocity;
+      }
+      set { m_velocity = value; }
     }
-    private static UnitsNet.UnitSystem m_units;
+    private static SpeedUnit m_velocity = SpeedUnit.MeterPerSecond;
+
+    internal static List<string> FilteredVelocityUnits = new List<string>()
+    {
+      SpeedUnit.MillimeterPerSecond.ToString(),
+      SpeedUnit.CentimeterPerSecond.ToString(),
+      SpeedUnit.MeterPerSecond.ToString(),
+      SpeedUnit.FootPerSecond.ToString(),
+      SpeedUnit.InchPerSecond.ToString(),
+      SpeedUnit.KilometerPerHour.ToString(),
+      SpeedUnit.MilePerHour.ToString(),
+    };
     #endregion
+
+    #region acceleration
+    public static AccelerationUnit AccelerationUnit
+    {
+      get
+      {
+        return m_acceleration;
+      }
+      set { m_acceleration = value; }
+    }
+    private static AccelerationUnit m_acceleration = AccelerationUnit.MeterPerSecondSquared;
+
+    internal static List<string> FilteredAccelerationUnits = new List<string>()
+    {
+      AccelerationUnit.MillimeterPerSecondSquared.ToString(),
+      AccelerationUnit.CentimeterPerSecondSquared.ToString(),
+      AccelerationUnit.MeterPerSecondSquared.ToString(),
+      AccelerationUnit.KilometerPerSecondSquared.ToString(),
+      AccelerationUnit.FootPerSecondSquared.ToString(),
+      AccelerationUnit.InchPerSecondSquared.ToString(),
+    };
+    #endregion
+
+    #region energy
+    public static EnergyUnit EnergyUnit
+    {
+      get
+      {
+        return m_energy;
+      }
+      set { m_energy = value; }
+    }
+    private static EnergyUnit m_energy = EnergyUnit.Megajoule;
+
+    internal static List<string> FilteredEnergyUnits = new List<string>()
+    {
+      EnergyUnit.Joule.ToString(),
+      EnergyUnit.Kilojoule.ToString(),
+      EnergyUnit.Megajoule.ToString(),
+      EnergyUnit.Gigajoule.ToString(),
+      EnergyUnit.KilowattHour.ToString(),
+      EnergyUnit.FootPound.ToString(),
+      EnergyUnit.Calorie.ToString(),
+      EnergyUnit.BritishThermalUnit.ToString(),
+    };
+    #endregion
+
+    #region time
+    internal static List<string> FilteredTimeUnits = new List<string>()
+    {
+      DurationUnit.Millisecond.ToString(),
+      DurationUnit.Second.ToString(),
+      DurationUnit.Minute.ToString(),
+      DurationUnit.Hour.ToString(),
+      DurationUnit.Day.ToString(),
+    };
+    public static DurationUnit TimeShortUnit
+    {
+      get
+      {
+        return m_time_short;
+      }
+      set { m_time_short = value; }
+    }
+    private static DurationUnit m_time_short = DurationUnit.Second;
+    public static DurationUnit TimeMediumUnit
+    {
+      get
+      {
+        return m_time_medium;
+      }
+      set { m_time_medium = value; }
+    }
+    private static DurationUnit m_time_medium = DurationUnit.Minute;
+    public static DurationUnit TimeLongUnit
+    {
+      get
+      {
+        return m_time_long;
+      }
+      set { m_time_long = value; }
+    }
+    private static DurationUnit m_time_long = DurationUnit.Day;
+
+    #endregion
+
+    private static BaseUnits SI = UnitsNet.UnitSystem.SI.BaseUnits;
 
     #region methods
-    internal static void SetupUnits()
+
+    public static void SetupUnitsDuringLoad(bool headless = false)
     {
       bool settingsExist = ReadSettings();
       if (!settingsExist)
       {
         // get rhino document length unit
-        m_length_geometry = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
+        if (headless)
+          m_length_geometry = LengthUnit.Meter;
+        else
+          m_length_geometry = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
         m_length_section = LengthUnit.Centimeter;
         m_length_result = LengthUnit.Millimeter;
 
         SaveSettings();
       }
-      // get SI units
-      UnitsNet.UnitSystem si = UnitsNet.UnitSystem.SI;
-
-      BaseUnits units = new BaseUnits(
-          m_length_geometry,
-          si.BaseUnits.Mass, si.BaseUnits.Time, si.BaseUnits.Current, si.BaseUnits.Temperature, si.BaseUnits.Amount, si.BaseUnits.LuminousIntensity);
-      m_units = new UnitsNet.UnitSystem(units);
-
     }
     internal static void SaveSettings()
     {
       Grasshopper.Instances.Settings.SetValue("ComposLengthUnitGeometry", LengthUnitGeometry.ToString());
       Grasshopper.Instances.Settings.SetValue("ComposUseRhinoLengthGeometryUnit", useRhinoLengthGeometryUnit);
-
       Grasshopper.Instances.Settings.SetValue("ComposLengthUnitSection", LengthUnitSection.ToString());
-      Grasshopper.Instances.Settings.SetValue("ComposUseRhinoLengthSectionUnit", useRhinoLengthSectionUnit);
-
       Grasshopper.Instances.Settings.SetValue("ComposLengthUnitResult", LengthUnitResult.ToString());
-      Grasshopper.Instances.Settings.SetValue("ComposUseRhinoLengthResultUnit", useRhinoLengthResultUnit);
-
-      Grasshopper.Instances.Settings.SetValue("ComposTolerance", Tolerance.As(LengthUnitGeometry));
 
       Grasshopper.Instances.Settings.SetValue("ComposForceUnit", ForceUnit.ToString());
       Grasshopper.Instances.Settings.SetValue("ComposMomentUnit", MomentUnit.ToString());
@@ -405,10 +673,8 @@ namespace ComposGH
       useRhinoLengthGeometryUnit = Grasshopper.Instances.Settings.GetValue("ComposUseRhinoLengthGeometryUnit", false);
 
       string lengthSection = Grasshopper.Instances.Settings.GetValue("ComposLengthUnitSection", string.Empty);
-      useRhinoLengthSectionUnit = Grasshopper.Instances.Settings.GetValue("ComposUseRhinoLengthSectionUnit", false);
 
       string lengthResult = Grasshopper.Instances.Settings.GetValue("ComposLengthUnitResult", string.Empty);
-      useRhinoLengthResultUnit = Grasshopper.Instances.Settings.GetValue("ComposUseRhinoLengthResultUnit", false);
 
       double tolerance = Grasshopper.Instances.Settings.GetValue("ComposTolerance", double.NaN);
 
@@ -428,25 +694,8 @@ namespace ComposGH
         m_length_geometry = (LengthUnit)Enum.Parse(typeof(LengthUnit), lengthGeometry);
       }
 
-      if (useRhinoLengthSectionUnit)
-      {
-        m_length_section = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
-      }
-      else
-      {
-        m_length_section = (LengthUnit)Enum.Parse(typeof(LengthUnit), lengthSection);
-      }
-
-      if (useRhinoLengthResultUnit)
-      {
-        m_length_result = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
-      }
-      else
-      {
-        m_length_result = (LengthUnit)Enum.Parse(typeof(LengthUnit), lengthResult);
-      }
-
-      m_tolerance = Length.From(tolerance, m_length_geometry);
+      m_length_section = (LengthUnit)Enum.Parse(typeof(LengthUnit), lengthSection);
+      m_length_result = (LengthUnit)Enum.Parse(typeof(LengthUnit), lengthResult);
 
       m_force = (ForceUnit)Enum.Parse(typeof(ForceUnit), force);
       m_moment = (MomentUnit)Enum.Parse(typeof(MomentUnit), moment);

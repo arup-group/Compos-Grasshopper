@@ -28,8 +28,6 @@ namespace ComposGH.Components
     protected override System.Drawing.Bitmap Icon => Properties.Resources.CustomRebarLayout;
     #endregion
 
-    
-
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
@@ -42,7 +40,6 @@ namespace ComposGH.Components
       pManager.AddGenericParameter("Diameter [" + unitAbbreviation + "]", "Ø", "Transverse rebar diameter", GH_ParamAccess.item);
       pManager.AddGenericParameter("Spacing [" + unitAbbreviation + "]", "S", "The centre/centre distance between rebars in this group (along beam local x-axis)", GH_ParamAccess.item);
       pManager.AddGenericParameter("Cover [" + unitAbbreviation + "]", "Cov", "Reinforcement cover", GH_ParamAccess.item);
-
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {

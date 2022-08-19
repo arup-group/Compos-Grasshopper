@@ -1,30 +1,16 @@
 ﻿using System;
 using ComposAPI;
 using ComposGH.Parameters;
-using Grasshopper.Kernel;
 using Xunit;
 using ComposGHTests.Helpers;
-using System.Linq;
-using System.Collections.Generic;
 using System.Reflection;
 using Grasshopper.Kernel.Types;
 
-namespace ComposGHTests
+namespace ComposGHTests.Parameters
 {
-  public class PrimitiveFixture : GrasshopperFixture
+  [Collection("GrasshopperFixture collection")]
+  public class GH_OasysGooTest
   {
-    public PrimitiveFixture() : base("Primitives.gh") { }
-  }
-
-  public class GH_OasysGooTest : IClassFixture<PrimitiveFixture>
-  {
-    PrimitiveFixture fixture { get; set; }
-
-    public GH_OasysGooTest(PrimitiveFixture fixture)
-    {
-      this.fixture = fixture;
-    }
-    
     [Theory]
     [InlineData(typeof(BeamSectionGoo), typeof(BeamSection))]
     [InlineData(typeof(RestraintGoo), typeof(Restraint))]
@@ -33,7 +19,7 @@ namespace ComposGHTests
     [InlineData(typeof(WebOpeningGoo), typeof(WebOpening))]
     [InlineData(typeof(WebOpeningStiffenersGoo), typeof(WebOpeningStiffeners))]
     [InlineData(typeof(StudDimensionsGoo), typeof(StudDimensions))]
-    [InlineData(typeof(StudGoo), typeof(Stud))]
+    [InlineData(typeof(StudGoo), typeof(ComposAPI.Stud))]
     [InlineData(typeof(StudGroupSpacingGoo), typeof(StudGroupSpacing))]
     [InlineData(typeof(StudSpecificationGoo), typeof(StudSpecification))]
     [InlineData(typeof(ConcreteMaterialGoo), typeof(ConcreteMaterial))]
@@ -45,8 +31,8 @@ namespace ComposGHTests
     [InlineData(typeof(ReinforcementMaterialGoo), typeof(ReinforcementMaterial))]
     [InlineData(typeof(TransverseReinforcementGoo), typeof(TransverseReinforcement))]
     [InlineData(typeof(SlabDimensionGoo), typeof(SlabDimension))]
-    [InlineData(typeof(SlabGoo), typeof(Slab))]
-    [InlineData(typeof(LoadGoo), typeof(Load))]
+    [InlineData(typeof(SlabGoo), typeof(ComposAPI.Slab))]
+    [InlineData(typeof(LoadGoo), typeof(ComposAPI.Load))]
     [InlineData(typeof(CreepShrinkageParametersGoo), typeof(CreepShrinkageParametersEN))]
     [InlineData(typeof(CreepShrinkageParametersGoo), typeof(CreepShrinkageParametersASNZ))]
     [InlineData(typeof(DesignCodeGoo), typeof(DesignCode))]

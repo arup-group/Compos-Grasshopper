@@ -49,7 +49,7 @@ namespace ComposGH.Components
         DA.GetData(0, ref grade);
         try
         {
-          this.SteelGrade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), grade);
+          this.SteelGrade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), grade.Replace(" ", "_"));
           this.DropDownItems[0] = new List<string>();
           this.SelectedItems[0] = "-";
           this.OverrideDropDownItems[0] = true;
@@ -90,14 +90,9 @@ namespace ComposGH.Components
 
       // SteelType
       List<StandardASNZSteelMaterialGrade> grades = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().ToList();
-      List<string> gradeStrings = new List<string>();
-      foreach (StandardASNZSteelMaterialGrade grade in grades)
-      {
-        ASNZSteelMaterial mat = new ASNZSteelMaterial(grade);
-        gradeStrings.Add(mat.ToString());
-      }
-      this.DropDownItems.Add(gradeStrings);
-      this.SelectedItems.Add(gradeStrings[0]);
+      
+      this.DropDownItems.Add(grades.Select(x => x.ToString().Replace("_", " ")).ToList());
+      this.SelectedItems.Add(DropDownItems[0][0]);
 
       this.OverrideDropDownItems = new List<bool>() { false };
 
@@ -111,11 +106,10 @@ namespace ComposGH.Components
 
       if (i == 0)  // change is made to code 
       {
-        if (this.SteelGrade.ToString() == this.SelectedItems[i])
+        if (this.SteelGrade.ToString().Replace("_", " ") == this.SelectedItems[i])
           return; // return if selected value is same as before
-        StandardASNZSteelMaterialGrade grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), this.SelectedItems[i]);
-        ASNZSteelMaterial mat = new ASNZSteelMaterial(grade);
-        this.SteelGrade = mat.Grade;
+        StandardASNZSteelMaterialGrade grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), this.SelectedItems[i].Replace(" ", "_"));
+        this.SteelGrade = grade;
       }
 
       base.UpdateUI();
@@ -125,9 +119,8 @@ namespace ComposGH.Components
     {
       if (this.SelectedItems[0] != "-")
       {
-        StandardASNZSteelMaterialGrade grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), this.SelectedItems[0]);
-        ASNZSteelMaterial mat = new ASNZSteelMaterial(grade);
-        this.SteelGrade = mat.Grade;
+        StandardASNZSteelMaterialGrade grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), this.SelectedItems[0].Replace(" ", "_"));
+        this.SteelGrade = grade;
       }
 
       base.UpdateUIFromSelectedItems();
