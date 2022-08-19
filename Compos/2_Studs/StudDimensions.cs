@@ -37,28 +37,10 @@ namespace ComposAPI
   {
     public Length Diameter { get; set; } // diameter of stud
     public Length Height { get; set; } // welded height of stud
-    public Pressure Fu
-    {
-      get { return this.m_fu; }
-      set
-      {
-        this.m_fu = value;
-        this.m_strength = Force.Zero;
-      }
-    }
-    public Force CharacterStrength // characteristic strength of stud
-    {
-      get { return this.m_strength; }
-      set
-      {
-        this.m_strength = value;
-        this.m_fu = Pressure.Zero;
-        this.IsStandard = false;
-      }
-    }
+    public Pressure Fu { get; set; }
+    public Force CharacterStrength { get; set; } // characteristic strength of stud
     public bool IsStandard { get; set; }
-    private Force m_strength { get; set; }
-    private Pressure m_fu { get; set; }
+    public bool IsStandardENGrade { get; set; }
 
     public void SetSizeFromStandard(StandardStudSize size)
     {
@@ -114,6 +96,7 @@ namespace ComposAPI
 
     public void SetGradeFromStandard(StandardStudGrade standardGrade)
     {
+      this.IsStandardENGrade = true;
       switch (standardGrade)
       {
         case StandardStudGrade.SD1_EN13918:
@@ -126,7 +109,6 @@ namespace ComposAPI
           this.Fu = new Pressure(500, PressureUnit.NewtonPerSquareMillimeter);
           break;
       }
-      this.IsStandard = true;
     }
 
     #region constructors
@@ -202,7 +184,7 @@ namespace ComposAPI
     {
       this.SetSizeFromStandard(size);
       this.SetGradeFromStandard(standardGrade);
-      this.IsStandard = true;
+      this.IsStandardENGrade = true;
     }
 
     /// <summary>
@@ -222,10 +204,10 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      string dia = Diameter.As(Units.LengthUnitSection).ToString("f0");
-      string h = Height.ToUnit(Units.LengthUnitSection).ToString("f0");
-      string f = (Fu.Value == 0) ? CharacterStrength.ToUnit(Units.ForceUnit).ToString("f0") : Fu.ToUnit(Units.StressUnit).ToString("f0");
-      
+      string dia = this.Diameter.As(this.Height.Unit).ToString("g5");
+      string h = this.Height.ToString("g5");
+      string f = (this.Fu.Value == 0) ? this.CharacterStrength.ToString("g5") : Fu.ToString("g5");
+
       return "Ø" + dia.Replace(" ", string.Empty) + "/" + h.Replace(" ", string.Empty) + ((this.IsStandard) ? "" : ", f:" + f.Replace(" ", string.Empty));
     }
     #endregion

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ComposAPI.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnitsNet;
@@ -62,11 +63,11 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      string start = (this.DistanceFrom.Value == 0) ? "" : "d:" + this.DistanceFrom.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
-      string top = (this.TopStiffenerWidth.Value == 0) ? "" : "Top:" + this.TopStiffenerWidth.As(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty)
-          + "x" + this.TopStiffenerThickness.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
-      string bottom = (this.BottomStiffenerWidth.Value == 0) ? "" : "Bottom:" + this.BottomStiffenerWidth.As(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty)
-          + "x" + this.BottomStiffenerThickness.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
+      string start = (this.DistanceFrom.Value == 0) ? "" : "d:" + this.DistanceFrom.ToUnit(UnitsHelper.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
+      string top = (this.TopStiffenerWidth.Value == 0) ? "" : "Top:" + this.TopStiffenerWidth.As(UnitsHelper.LengthUnitSection).ToString("f0").Replace(" ", string.Empty)
+          + "x" + this.TopStiffenerThickness.ToUnit(UnitsHelper.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
+      string bottom = (this.BottomStiffenerWidth.Value == 0) ? "" : "Bottom:" + this.BottomStiffenerWidth.As(UnitsHelper.LengthUnitSection).ToString("f0").Replace(" ", string.Empty)
+          + "x" + this.BottomStiffenerThickness.ToUnit(UnitsHelper.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
 
       return string.Join(", ", start, top, bottom).Trim(' ').TrimEnd(',');
     }

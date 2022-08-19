@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ComposAPI.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -20,7 +21,20 @@ namespace ComposAPI
   /// </summary>
   public class StudGroupSpacing : IStudGroupSpacing
   {
-    public Length DistanceFromStart { get; set; }
+    public IQuantity DistanceFromStart
+    {
+      get { return this.m_StartPosition; }
+      set
+      {
+        if (value == null) return;
+        if (value.QuantityInfo.UnitType != typeof(LengthUnit)
+          & value.QuantityInfo.UnitType != typeof(RatioUnit))
+          throw new ArgumentException("Start Position must be either Length or Ratio");
+        else
+          this.m_StartPosition = value;
+      }
+    }
+    private IQuantity m_StartPosition = Length.Zero;
     public int NumberOfRows { get; set; } = 2;
     public int NumberOfLines { get; set; } = 1;
     public Length Spacing { get; set; }
@@ -31,7 +45,7 @@ namespace ComposAPI
       // empty constructor
     }
 
-    public StudGroupSpacing(Length distanceFromStart, int numberOfRows, int numberOfLines, Length spacing)
+    public StudGroupSpacing(IQuantity distanceFromStart, int numberOfRows, int numberOfLines, Length spacing)
     {
       this.DistanceFromStart = distanceFromStart;
       if (numberOfRows < 1)
@@ -53,7 +67,7 @@ namespace ComposAPI
       StudGroupSpacing groupSpacing = new StudGroupSpacing();
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
 
-      groupSpacing.DistanceFromStart = new Length(Convert.ToDouble(parameters[5], noComma), units.Length);
+      groupSpacing.DistanceFromStart = CoaHelper.ConvertToLengthOrRatio(parameters[5], units.Length);
       groupSpacing.NumberOfRows = Convert.ToInt32(parameters[6], noComma);
       groupSpacing.NumberOfLines = Convert.ToInt32(parameters[7], noComma);
       groupSpacing.Spacing = new Length(Convert.ToDouble(parameters[10], noComma), units.Length);
@@ -64,10 +78,22 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      string start = (this.DistanceFromStart.Value == 0) ? "" : "From:" + this.DistanceFromStart.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
+      string start = "";
+      if (this.DistanceFromStart.QuantityInfo.UnitType == typeof(LengthUnit))
+      {
+        Length l = (Length)this.DistanceFromStart;
+        if (l != Length.Zero)
+          start = "From:" + l.ToString("g2").Replace(" ", string.Empty);
+      }
+      else
+      {
+        Ratio p = (Ratio)this.DistanceFromStart;
+        if (p != Ratio.Zero)
+          start = "From:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
+      }
       string rows = NumberOfRows + "R";
       string lines = NumberOfLines + "L";
-      string spacing = "@" + this.Spacing.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
+      string spacing = "@" + this.Spacing.ToUnit(UnitsHelper.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
 
       string joined = string.Join(" ", new List<string>() { start, rows, lines, spacing });
       return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');

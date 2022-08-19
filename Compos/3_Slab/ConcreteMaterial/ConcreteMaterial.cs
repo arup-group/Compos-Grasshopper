@@ -215,13 +215,13 @@ namespace ComposAPI
       index++;
       if (parameters[index] == "CODE_E_RATIO")
       {
-        index++;
         material.ERatio = new ERatio();
+        index++;
       }
       else
       {
-        material.ERatio = new ERatio(CoaHelper.ConvertToDouble(parameters[9]), CoaHelper.ConvertToDouble(parameters[10]), CoaHelper.ConvertToDouble(parameters[11]), CoaHelper.ConvertToDouble(parameters[12]));
-        index = index + 5;
+        material.ERatio = new ERatio(CoaHelper.ConvertToDouble(parameters[index + 1]), CoaHelper.ConvertToDouble(parameters[index + 2]), CoaHelper.ConvertToDouble(parameters[index + 3]), CoaHelper.ConvertToDouble(parameters[index + 4]));
+        index += 5;
       }
 
       if (parameters[index] == "USER_STRAIN")
@@ -264,17 +264,17 @@ namespace ComposAPI
       if (this.ERatio.UserDefined)
       {
         parameters.Add("USER_E_RATIO");
-        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00000}", this.ERatio.ShortTerm));
-        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00000}", this.ERatio.LongTerm));
-        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00000}", this.ERatio.Vibration));
-        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.000000}", this.ERatio.Shrinkage));
+        parameters.Add(CoaHelper.FormatSignificantFigures(this.ERatio.ShortTerm, 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(this.ERatio.LongTerm, 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(this.ERatio.Vibration, 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(this.ERatio.Shrinkage, 6));
       }
       else
         parameters.Add("CODE_E_RATIO");
       if (this.UserStrain)
       {
         parameters.Add("USER_STRAIN");
-        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.000000000}", this.ShrinkageStrain.Ratio));
+        parameters.Add(CoaHelper.FormatSignificantFigures(this.ShrinkageStrain.Ratio, 6));
       }
       else
         parameters.Add("CODE_STRAIN");
@@ -291,7 +291,7 @@ namespace ComposAPI
         str = "(Grade not set)";
       else
         str = this.Grade.ToString().Replace("_", "/");
-      str += " " + this.Type + ", D: " + this.DryDensity.As(Units.DensityUnit).ToString().Replace(" ", string.Empty);
+      str += " " + this.Type + ", D: " + this.DryDensity.As(UnitsHelper.DensityUnit).ToString().Replace(" ", string.Empty);
       return str;
     }
     #endregion

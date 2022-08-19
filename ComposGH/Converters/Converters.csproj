@@ -39,6 +39,15 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="licenses\.NET Runtime" />
+    <None Include="licenses\EntityFramework" />
+    <None Include="licenses\GraphQL.Client" />
+    <None Include="licenses\Newtonsoft" />
+    <None Include="licenses\Piwik.Tracker" />
+    <None Include="licenses\Sentry" />
+    <None Include="licenses\Speckle" />
+    <None Include="licenses\System.Reactive" />
+    <None Include="licenses\UnitsNet" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

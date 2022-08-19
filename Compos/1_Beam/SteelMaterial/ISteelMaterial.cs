@@ -11,7 +11,7 @@ namespace ComposAPI
     Pressure fy { get; }
     Pressure E { get; }
     Density Density { get; }
-    bool isCustom { get; }
+    bool IsCustom { get; }
     bool ReductionFactorMpl { get; }
     StandardSteelGrade Grade { get; }
     WeldMaterialGrade WeldGrade { get; }

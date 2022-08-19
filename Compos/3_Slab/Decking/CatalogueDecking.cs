@@ -85,7 +85,8 @@ namespace ComposAPI
       if (this.DeckingConfiguration.IsDiscontinous)
         parameters.Add("DECKING_JOINTED");
       else
-        parameters.Add("DECKING_CONTINUED");
+        // different to documenation and DECKING_USER!
+        parameters.Add("DECKING_CONTINUE");
 
       if (this.DeckingConfiguration.IsWelded)
         parameters.Add("JOINT_WELDED");

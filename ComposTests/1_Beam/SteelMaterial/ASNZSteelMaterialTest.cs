@@ -2,19 +2,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ComposAPI.Helpers;
+using ComposGHTests.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
-using ComposGHTests.Helpers;
-
 
 namespace ComposAPI.Beams.Tests
 {
   public partial class ASNZSteelMaterialTest
   {
     [Theory]
-    [InlineData(StandardASNZSteelMaterialGrade.C450_AS1163, "BEAM_STEEL_MATERIAL_STD	MEMBER-1	C450(AS1163)\n")]
-    [InlineData(StandardASNZSteelMaterialGrade.C250_AS1163, "BEAM_STEEL_MATERIAL_STD	MEMBER-1	C250(AS1163)\n")]
+    [InlineData(StandardASNZSteelMaterialGrade.C450_AS1163, "BEAM_STEEL_MATERIAL_STD	MEMBER-1	C450(AS1163)\nBEAM_WELDING_MATERIAL\tMEMBER-1\tGrade 35\n")]
+    [InlineData(StandardASNZSteelMaterialGrade.C250_AS1163, "BEAM_STEEL_MATERIAL_STD	MEMBER-1	C250(AS1163)\nBEAM_WELDING_MATERIAL\tMEMBER-1\tGrade 42\n")]
     public void ToCoaStringTest(StandardASNZSteelMaterialGrade steelMaterialGrade, string expected_coaString)
     {
       SteelMaterial steelMaterial = new ASNZSteelMaterial(steelMaterialGrade);
@@ -32,8 +32,10 @@ namespace ComposAPI.Beams.Tests
       {
         ASNZSteelMaterial steelMaterial = new ASNZSteelMaterial(grade);
         string coaString = steelMaterial.ToCoaString("MEMBER-1", Code.AS_NZS2327_2017, ComposUnits.GetStandardUnits());
-        List<string> parts = coaString.Split('\t').ToList();
-        string gradeString = parts.Last().Replace("\n", string.Empty);
+
+        string line = CoaHelper.SplitAndStripLines(coaString)[0];
+        List<string> parameters = line.Split('\t').ToList();
+        string gradeString = parameters.Last().Replace("\n", string.Empty);
         StandardASNZSteelMaterialGrade gradeFromString = ASNZSteelMaterial.FromString(gradeString);
         Assert.Equal(steelMaterial.Grade, gradeFromString);
       }
