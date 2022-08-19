@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Grasshopper.Kernel;
 using ComposGH.Helpers;
+using Newtonsoft.Json;
 
 namespace ComposGH.Components
 {
@@ -25,6 +26,15 @@ namespace ComposGH.Components
 
       m_attributes = new UI.MultiDropDownComponentUI(this, this.SetSelected, this.DropDownItems, this.SelectedItems, this.SpacerDescriptions);
     }
+
+    protected override void ExpireDownStreamObjects()
+    {
+      //foreach
+      //this.Params.Output[0].VolatileData.
+      if (UpdateOutput)
+        base.ExpireDownStreamObjects();
+    }
+    internal bool UpdateOutput = true; 
 
     internal abstract void InitialiseDropdowns();
 
