@@ -18,8 +18,6 @@ namespace ComposAPI
     public string JobSubTitle { get; set; }
     public string JobTitle { get; set; }
     public ComposUnits Units { get; set; }
-    internal bool IsAnalysed { get; set; } = false;
-    internal bool IsDesigned { get; set; } = false;
     private static IAutomation ComposCOM { get; set; }
     private static Guid CurrentGuid { get; set; } = Guid.Empty;
     private readonly IList<IMember> Members = new List<IMember>();
@@ -61,7 +59,7 @@ namespace ComposAPI
     /// </returns>
     internal short Analyse()
     {
-      Counter++;
+      ComposFile.Counter++;
 
       short status = 0;
       foreach (Member member in this.Members)
@@ -69,7 +67,6 @@ namespace ComposAPI
         if (this.Analyse(member.Name) == 1)
           status = 1;
       }
-      this.IsAnalysed = true;
       return status;
     }
 
@@ -124,7 +121,6 @@ namespace ComposAPI
         if (this.Design(member.Name) == 1)
           status = 1;
       }
-      this.IsDesigned = true;
       return status;
     }
 
@@ -371,6 +367,14 @@ namespace ComposAPI
     {
       this.Initialise();
       return ComposFile.ComposCOM.UtilisationFactor(memberName, option.ToString());
+    }
+
+    /// <summary>
+    /// Triggers an update of the Compos model.
+    /// </summary>
+    public void Update()
+    {
+      ComposFile.CurrentGuid = Guid.Empty;
     }
     #endregion
 

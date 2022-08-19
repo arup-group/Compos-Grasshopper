@@ -12,7 +12,7 @@ variables:
   - name: configuration
     value: Release
 
-pool: 'dev'
+pool: 'vs17_2'
 
 steps:
 - task: NuGetToolInstaller@1
@@ -52,25 +52,12 @@ steps:
   env:
     MSBUILDDISABLENODEREUSE: 1
 
-- task: VSTest@2
-  inputs:
-    testSelector: 'testAssemblies'
-    testAssemblyVer2: |
-      **\*test*.dll
-      !**\*TestAdapter.dll
-      !**\obj\**
-    searchFolder: '$(System.DefaultWorkingDirectory)'
-    codeCoverageEnabled: true
-    testRunTitle: 'compos tests'
-    platform: 'x64'
-    configuration: 'Release'
-
-# - powershell: |
-#     dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposGHTests\bin\x64\Release\net48\ComposGHTests.dll
-#     dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposTests\bin\x64\Release\net6.0\ComposAPITests.dll
-#   displayName: dotnet test
+- powershell: |
+    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposTests\bin\x64\Release\net6.0\ComposAPITests.dll
+#    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposGHTests\bin\x64\Release\net48\ComposGHTests.dll
 #    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\IntegrationTests\bin\x64\Release\net48\IntegrationTests.dll
 #    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ConverterTests\bin\x64\Release\net6.0\ConverterTests.dll
+  displayName: dotnet test
 
 - task: PublishCodeCoverageResults@1
   inputs:
@@ -135,7 +122,7 @@ steps:
     $yakRh7Name =  $yakCurrentVersName -Replace "rh6_27", "rh7_0"
     Rename-Item -Path $yakCurrentVersName -NewName $yakRh7Name
     ..\yak build --platform win
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'), ne(variables.TAG_EXISTS, 'true'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables.TAG_EXISTS, 'true'))
   displayName: Package yak
 
 - task: NuGetCommand@2
@@ -144,7 +131,7 @@ steps:
     packagesToPack: 'ComposGH/*.csproj'
     versioningScheme: 'byEnvVar'
     versionEnvVar: 'dotSeparatedTag'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'), ne(variables.TAG_EXISTS, 'true'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables.TAG_EXISTS, 'true'))
   displayName: Package NuGet
 
 - task: GitHubRelease@1
@@ -166,5 +153,5 @@ steps:
     isDraft: true
     isPreRelease: true
     addChangeLog: false
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'), ne(variables.TAG_EXISTS, 'true'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables.TAG_EXISTS, 'true'))
   displayName: 'Publishing assets to Github'
