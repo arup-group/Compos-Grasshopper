@@ -159,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="licenses\UnitsNet" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="6_Analysis\" />
