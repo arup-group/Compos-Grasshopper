@@ -10,13 +10,13 @@ using ComposAPI;
 
 namespace ComposGH.Components
 {
-  public class WebOpeningStiffener : GH_OasysDropDownComponent
+  public class CreateWebOpeningStiffener : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("4e7a2c23-0504-46d2-8fe1-846bf4ef6a37");
-    public WebOpeningStiffener()
+    public CreateWebOpeningStiffener()
       : base("Create" + WebOpeningStiffenersGoo.Name.Replace(" ", string.Empty),
           WebOpeningStiffenersGoo.Name.Replace(" ", string.Empty),
           "Create a " + WebOpeningStiffenersGoo.Description + " for a " + WebOpeningGoo.Description,

@@ -117,7 +117,7 @@
     <Compile Include="Components\2_Studs\2_Secondary\CreateStandardStudDimsEN.cs" />
     <Compile Include="Components\2_Studs\3_Tertiary\CreateStudSpecBS.cs" />
     <Compile Include="Components\2_Studs\3_Tertiary\CreateStudSpecEN.cs" />
-    <Compile Include="Components\2_Studs\3_Tertiary\CreateStudSpec.cs" />
+    <Compile Include="Components\2_Studs\3_Tertiary\CreateStudSpecAZNZHK.cs" />
     <Compile Include="Components\2_Studs\2_Secondary\CreateStandardStudDims.cs" />
     <Compile Include="Components\2_Studs\1_Primary\CreateStud.cs" />
     <Compile Include="Components\3_Slab\5_Quinary\CreateDeckingConfiguration.cs" />
@@ -140,9 +140,9 @@
     <Compile Include="Components\3_Slab\3_Tertiary\CreateConcreteMaterialBS.cs" />
     <Compile Include="Components\5_Member\1_Primary\CreateMember.cs" />
     <Compile Include="Components\5_Member\2_Secondary\CreateDesignCode.cs" />
-    <Compile Include="Components\5_Member\2_Secondary\CreateSafetyFactorsEN.cs" />
-    <Compile Include="Components\5_Member\2_Secondary\CreateCreepShrinkageParams.cs" />
-    <Compile Include="Components\5_Member\2_Secondary\CreateSafetyFactors.cs" />
+    <Compile Include="Components\5_Member\3_Tertiary\CreateSafetyFactorsEN.cs" />
+    <Compile Include="Components\5_Member\3_Tertiary\CreateCreepShrinkageParams.cs" />
+    <Compile Include="Components\5_Member\3_Tertiary\CreateSafetyFactors.cs" />
     <Compile Include="Components\7_Results\ReadClassResults.cs" />
     <Compile Include="Components\7_Results\ReadStresses.cs" />
     <Compile Include="Components\7_Results\ReadStudResults.cs" />
@@ -159,7 +159,7 @@
     <Compile Include="Components\GH_OasysTaskCapableComponent.cs" />
     <Compile Include="Components\8_Design\1_Primary\DesignMember.cs" />
     <Compile Include="Components\8_Design\2_Secondary\CreateDesignCriteria.cs" />
-    <Compile Include="Components\8_Design\3_Tertiary\SectionCatalogues.cs" />
+    <Compile Include="Components\8_Design\3_Tertiary\CataloguesSections.cs" />
     <Compile Include="Components\8_Design\3_Tertiary\CreateFrequencyLimits.cs" />
     <Compile Include="Components\8_Design\3_Tertiary\CreateBeamSizeLimits.cs" />
     <Compile Include="Components\8_Design\3_Tertiary\CreateDeflectionLimit.cs" />
@@ -280,9 +280,6 @@
     <None Include="Properties\Icons\ComposLogo128.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\5_Member\3_Tertiary\" />
-    <Folder Include="Components\5_Member\4_Quarternary\" />
-    <Folder Include="Components\5_Member\5_Quinary\" />
     <Folder Include="Components\6_Analysis\1_Primary\" />
     <Folder Include="Components\6_Analysis\2_Secondary\" />
     <Folder Include="Components\6_Analysis\3_Tertiary\" />

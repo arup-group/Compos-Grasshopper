@@ -65,6 +65,7 @@ namespace ComposGH.Components
         DA.GetData(4, ref grade);
         try
         {
+          grade = grade.Replace(" ", "_").Replace("/", "_"); // C30/37 -> C30_37
           this.Grade = (ConcreteGradeEN)Enum.Parse(typeof(ConcreteGradeEN), grade);
           this.DropDownItems[0] = new List<string>();
           this.SelectedItems[0] = "-";

@@ -19,7 +19,7 @@ namespace ComposGH.Components
             Ribbon.SubCategoryName.Cat5())
     { this.Hidden = true; } // sets the initial state of the component to hidden
 
-    public override GH_Exposure Exposure => GH_Exposure.secondary;
+    public override GH_Exposure Exposure => GH_Exposure.tertiary;
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.SafetyFactors;
     #endregion
@@ -69,7 +69,6 @@ namespace ComposGH.Components
         & this.Params.Input[3].Sources.Count == 0)
       {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Default Load Factor values from BS5950-1.1:1990+A1:2010");
-        lf = null;
       }
 
       MaterialFactors mf = new MaterialFactors();
@@ -101,7 +100,6 @@ namespace ComposGH.Components
         & this.Params.Input[9].Sources.Count == 0)
       {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Default Material Partial Safety Factor values from BS5950-1.1:1990+A1:2010");
-        mf = null;
       }
       SafetyFactors sf = new SafetyFactors() { LoadFactors = lf, MaterialFactors = mf };
       DA.SetData(0, new SafetyFactorsGoo(sf));
