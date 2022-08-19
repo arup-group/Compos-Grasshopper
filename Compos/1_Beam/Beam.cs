@@ -38,7 +38,7 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal static IBeam FromCoaString(string coaString, string name, ComposUnits units)
+    internal static IBeam FromCoaString(string coaString, string name, ComposUnits units, Code code)
     {
       Beam beam = new Beam();
 
@@ -78,7 +78,7 @@ namespace ComposAPI
 
           case (CoaIdentifier.BeamSteelMaterialStandard):
           case (CoaIdentifier.BeamSteelMaterialUser):
-            beam.Material = SteelMaterial.FromCoaString(parameters, units);
+            beam.Material = SteelMaterial.FromCoaString(parameters, units, code);
             break;
           case (CoaIdentifier.BeamWeldingMaterial):
             SteelMaterial steelMaterial = (SteelMaterial)beam.Material;
@@ -154,7 +154,7 @@ namespace ComposAPI
       }
       else
         mat = this.Material.ToString();
-      string line = "L:" + this.Length.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
+      string line = "L:" + this.Length.ToUnit(UnitsHelper.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
 
       return invalid + line + ", " + profile + ", " + mat;
     }

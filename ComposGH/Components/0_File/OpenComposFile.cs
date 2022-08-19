@@ -20,7 +20,7 @@ namespace ComposGH.Components
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("51e4fa31-a626-45a0-a3f6-70175ebb80e4");
     public OpenComposFile()
-      : base("OpenCompos", "Open", "Open an existing Compos .cob file",
+      : base("OpenCompos", "Open", "Open an existing Compos .coa file",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat0())
     { this.Hidden = true; } // sets the initial state of the component to hidden
@@ -38,7 +38,7 @@ namespace ComposGH.Components
     }
     public void OpenFile()
     {
-      var fdi = new Rhino.UI.OpenFileDialog { Filter = "Compos Files(*.cob)|*.cob|All files (*.*)|*.*" };
+      var fdi = new Rhino.UI.OpenFileDialog { Filter = "Compos Files(*.coa)|*.coa|All files (*.*)|*.*" };
       var res = fdi.ShowOpenDialog();
       if (res) // == DialogResult.OK)
       {
@@ -159,11 +159,11 @@ namespace ComposGH.Components
           if (GH_Convert.ToString(gh_typ, out tempfile, GH_Conversion.Both))
             fileName = tempfile;
 
-          if (!fileName.EndsWith(".cob"))
-            fileName = fileName + ".cob";
+          if (!fileName.EndsWith(".coa"))
+            fileName = fileName + ".coa";
 
           IComposFile composFile = ComposFile.Open(fileName);
-          PostHog.ModelIO("openCOB", (int)(new FileInfo(fileName).Length / 1024));
+          PostHog.ModelIO("openCOA", (int)(new FileInfo(fileName).Length / 1024));
 
           List<MemberGoo> members = new List<MemberGoo>();
           foreach (IMember mem in composFile.GetMembers())

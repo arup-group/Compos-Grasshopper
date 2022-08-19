@@ -107,7 +107,7 @@ namespace ComposAPI
           }
           catch (TargetParameterCountException)
           {
-            propertyType = property.PropertyType;
+
           }
         }
       }

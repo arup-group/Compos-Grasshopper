@@ -53,7 +53,7 @@ namespace ComposGH.Parameters
         #endregion
 
         /// <summary>
-        /// This method will save cob as a temp file and reopen it,  
+        /// This method will save .coa as a temp file and reopen it,  
         /// </summary>
         /// <returns>Return opened model with new GUID</returns>
         public ComposModel Clone()
@@ -61,7 +61,7 @@ namespace ComposGH.Parameters
             ComposModel clone = new ComposModel();
 
             // workaround duplicate model
-            string tempfilename = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Oasys") + "Compos-Grasshopper_temp_.cob";
+            string tempfilename = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Oasys") + "Compos-Grasshopper_temp_.coa";
             m_model.SaveAs(tempfilename);
             clone.Model.Open(tempfilename);
 

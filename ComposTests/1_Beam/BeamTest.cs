@@ -127,7 +127,7 @@ namespace ComposAPI.Beams.Tests
       Beam expectedBeam = BeamMother.Example1Beam();
 
       // Act
-      Beam beam = (Beam)Beam.FromCoaString(BeamMother.Example1CoaString(), "MEMBER-1", ComposUnits.GetStandardUnits());
+      Beam beam = (Beam)Beam.FromCoaString(BeamMother.Example1CoaString(), "MEMBER-1", ComposUnits.GetStandardUnits(), Code.EN1994_1_1_2004);
 
       // Assert
       ObjectExtension.Equals(expectedBeam, beam);

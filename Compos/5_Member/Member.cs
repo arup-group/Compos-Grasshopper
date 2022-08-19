@@ -178,7 +178,7 @@ namespace ComposAPI
 
     public override string ToString()
     {
-      return this.Name;
+      return this.Name + " - Beam:" + this.Beam.ToString() + ", Stud: " + this.Stud.ToString() + ", Slab: " + this.Slab.ToString();
     }
   }
 }

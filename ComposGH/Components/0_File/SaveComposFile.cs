@@ -67,7 +67,7 @@ namespace ComposGH.Components
 
     public void SaveAsFile()
     {
-      var fdi = new Rhino.UI.SaveFileDialog { Filter = "Compos File (*.cob)|*.cob|All files (*.*)|*.*" };
+      var fdi = new Rhino.UI.SaveFileDialog { Filter = "Compos File (*.coa)|*.coa|All files (*.*)|*.*" };
       var res = fdi.ShowSaveDialog();
       if (res) // == DialogResult.OK)
       {
