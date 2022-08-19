@@ -38,15 +38,15 @@ namespace ComposGHTests.Design
       Assert.Single(comp.RuntimeMessages(Grasshopper.Kernel.GH_RuntimeMessageLevel.Error));
       //"Failed to design member"
 
-      MemberGoo input1 = (MemberGoo)ComponentTestHelper.GetOutput(CreateMemberComponentTests.CreateMemberMother());
+      //MemberGoo input1 = (MemberGoo)ComponentTestHelper.GetOutput(CreateMemberComponentTests.CreateMemberMother());
 
-      ComposFile composFile = new ComposFile(new List<IMember>() { input1.Value });
+      //ComposFile composFile = new ComposFile(new List<IMember>() { input1.Value });
 
-      string path = Path.Combine(Environment.CurrentDirectory, "GH-Test-Files");
-      Directory.CreateDirectory(path);
-      Type myType = comp.GetType();
-      string pathFileName = Path.Combine(path, myType.Name) + ".cob";
-      composFile.SaveAs(pathFileName);
+      //string path = Path.Combine(Environment.CurrentDirectory, "GH-Test-Files");
+      //Directory.CreateDirectory(path);
+      //Type myType = comp.GetType();
+      //string pathFileName = Path.Combine(path, myType.Name) + ".cob";
+      //composFile.SaveAs(pathFileName);
     }
   }
 }
