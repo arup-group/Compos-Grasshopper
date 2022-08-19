@@ -34,9 +34,11 @@ namespace ComposGH.Components
       string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
 
       pManager.AddGenericParameter("No Stud Zone Start [" + unitAbbreviation + "]",
-          "NSZS", "Length of zone without shear studs at the start of the beam (default = 0)", GH_ParamAccess.item);
+          "NSZS", "Length of zone without shear studs at the start of the beam (default = 0)"
+        + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
       pManager.AddGenericParameter("No Stud Zone End [" + unitAbbreviation + "]",
-          "NSZE", "Length of zone without shear studs at the end of the beam (default = 0)", GH_ParamAccess.item);
+          "NSZE", "Length of zone without shear studs at the end of the beam (default = 0)"
+        + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
       pManager.AddBooleanParameter("EC4 Limit", "Lim", "Use 'Eurocode 4'limit on minimum percentage of shear interaction if it is worse than BS5950", GH_ParamAccess.item, true);
       pManager[0].Optional = true;
       pManager[1].Optional = true;
@@ -51,12 +53,12 @@ namespace ComposGH.Components
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       // get default length inputs used for all cases
-      Length noStudZoneStart = Length.Zero;
+      IQuantity noStudZoneStart = Length.Zero;
       if (this.Params.Input[0].Sources.Count > 0)
-        noStudZoneStart = GetInput.Length(this, DA, 0, this.LengthUnit, true);
-      Length noStudZoneEnd = Length.Zero;
+        noStudZoneStart = GetInput.LengthOrRatio(this, DA, 0, LengthUnit, true);
+      IQuantity noStudZoneEnd = Length.Zero;
       if (this.Params.Input[1].Sources.Count > 0)
-        noStudZoneEnd = GetInput.Length(this, DA, 1, this.LengthUnit, true);
+        noStudZoneEnd = GetInput.LengthOrRatio(this, DA, 1, LengthUnit, true);
 
       bool ec4 = true;
       DA.GetData(2, ref ec4);

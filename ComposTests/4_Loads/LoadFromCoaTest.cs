@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using Xunit;
+using ComposAPI.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
+using Xunit;
 using static ComposAPI.Load;
 
 namespace ComposAPI.Loads.Tests
@@ -36,12 +37,12 @@ namespace ComposAPI.Loads.Tests
 
       ForceUnit forceUnit = ForceUnit.Kilonewton;
       LengthUnit lengthUnit = LengthUnit.Meter;
-      ForcePerLengthUnit forcePerLengthUnit = Units.GetForcePerLengthUnit(forceUnit, lengthUnit);
-      PressureUnit forcePerAreaUnit = Units.GetForcePerAreaUnit(forceUnit, lengthUnit);
+      ForcePerLengthUnit forcePerLengthUnit = UnitsHelper.GetForcePerLengthUnit(forceUnit, lengthUnit);
+      PressureUnit forcePerAreaUnit = UnitsHelper.GetForcePerAreaUnit(forceUnit, lengthUnit);
 
       // Act
       ComposFile composFile = ComposFile.FromCoaString(coaString);
-      IMember member1 = composFile.Members[0];
+      IMember member1 = composFile.GetMembers()[0];
       IList<ILoad> loads = member1.Loads;
 
       // Assert

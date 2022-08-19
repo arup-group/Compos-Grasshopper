@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Xunit;
+using ComposAPI.Helpers;
+using ComposGHTests.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
+using Xunit;
 using static ComposAPI.Load;
-using ComposAPI.Tests;
-using ComposGHTests.Helpers;
 
 
 namespace ComposAPI.Loads.Tests
@@ -67,7 +67,7 @@ namespace ComposAPI.Loads.Tests
       ComposUnits units = ComposUnits.GetStandardUnits();
       units.Force = forceUnit;
       units.Length = lengthUnit;
-      ForcePerLengthUnit forcePerLengthUnit = Units.GetForcePerLengthUnit(forceUnit, lengthUnit);
+      ForcePerLengthUnit forcePerLengthUnit = UnitsHelper.GetForcePerLengthUnit(forceUnit, lengthUnit);
 
       // Arrange
       string coaString = "LOAD	MEMBER-1	Uniform	Line	1.00000	2.00000	3.00000	4.50000	Line	1.00000	2.00000	3.00000	4.50000	3.00000	4.50000	6.00000	5.00000\n";

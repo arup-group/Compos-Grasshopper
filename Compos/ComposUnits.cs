@@ -29,14 +29,14 @@ namespace ComposAPI
       ComposUnits units = new ComposUnits
       {
         Angle = AngleUnit.Degree,
-        Density = Units.DensityUnit,
-        Force = Units.ForceUnit,
-        Length = Units.LengthUnitGeometry,
-        Section = Units.LengthUnitSection,
-        Displacement = Units.LengthUnitResult,
-        Stress = Units.StressUnit,
-        Strain = Units.StrainUnit,
-        Mass = Units.MassUnit
+        Density = UnitsHelper.DensityUnit,
+        Force = UnitsHelper.ForceUnit,
+        Length = UnitsHelper.LengthUnitGeometry,
+        Section = UnitsHelper.LengthUnitSection,
+        Displacement = UnitsHelper.LengthUnitResult,
+        Stress = UnitsHelper.StressUnit,
+        Strain = UnitsHelper.StrainUnit,
+        Mass = UnitsHelper.MassUnit
       };
       return units;
     }

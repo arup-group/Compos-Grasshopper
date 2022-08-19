@@ -42,7 +42,7 @@ namespace ComposAPI
 
     #region coa interop
     // not static to update the object 
-    internal Restraint FromCoaString(List<string> parameters, ComposUnits units)
+    internal void FromCoaString(List<string> parameters, ComposUnits units)
     {
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       switch (parameters[0])
@@ -85,7 +85,7 @@ namespace ComposAPI
             List<IQuantity> positions = new List<IQuantity>();
             if (this.ConstructionStageSupports == null)
               this.ConstructionStageSupports = new Supports();
-            if (this.ConstructionStageSupports.CustomIntermediateRestraintPositions != null & this.ConstructionStageSupports.CustomIntermediateRestraintPositions.Count != 0)
+            if (this.ConstructionStageSupports.CustomIntermediateRestraintPositions != null && this.ConstructionStageSupports.CustomIntermediateRestraintPositions.Count != 0)
               positions = this.ConstructionStageSupports.CustomIntermediateRestraintPositions.ToList();
             if (parameters[5].EndsWith("%"))
               positions.Add(new Ratio(Convert.ToDouble(parameters[5].Replace("%", string.Empty), noComma), RatioUnit.Percent));
@@ -202,7 +202,6 @@ namespace ComposAPI
           this.FinalStageSupports = final2;
           break;
       }
-      return this;
     }
 
     public string ToCoaString(string name, ComposUnits units)
@@ -254,7 +253,7 @@ namespace ComposAPI
               parameters.Add("3");
               break;
             default:
-              throw new Exception("Unknown intermediate restriant type for construction stage support");
+              throw new Exception("Unknown intermediate restraint type for construction stage support");
           }
           str += CoaHelper.CreateString(parameters);
         }

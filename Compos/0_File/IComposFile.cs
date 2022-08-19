@@ -5,7 +5,6 @@ namespace ComposAPI
 {
   public interface IComposFile
   {
-    //string FileName { get; }
     Guid Guid { get; }
 
     void AddMember(IMember member);
@@ -26,7 +25,6 @@ namespace ComposAPI
     short NumTranRebar(string memberName);
     float Result(string memberName, string option, short position);
     int SaveAs(string fileName);
-    string ToCoaString();
     float TranRebarProp(string memberName, TransverseRebarOption option, short rebarnum);
     float UtilisationFactor(string memberName, UtilisationFactorOption option);
   }

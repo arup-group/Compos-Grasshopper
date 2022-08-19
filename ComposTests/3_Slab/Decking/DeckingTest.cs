@@ -19,8 +19,8 @@ namespace ComposAPI.Slabs.Tests
     [Theory]
     [InlineData("RLD", "Ribdeck AL (0.9)", DeckingSteelGrade.S280, 90, true, true, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck AL (0.9)	S280	90.0000	DECKING_JOINTED	JOINT_WELDED\n")]
     [InlineData("RLD", "Ribdeck AL (1.0)", DeckingSteelGrade.S280, 91, true, false, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck AL (1.0)	S280	91.0000	DECKING_JOINTED	JOINT_NOT_WELD\n")]
-    [InlineData("RLD", "Ribdeck AL (1.2)", DeckingSteelGrade.S350, 92, false, true, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck AL (1.2)	S350	92.0000	DECKING_CONTINUED	JOINT_WELDED\n")]
-    [InlineData("RLD", "Ribdeck E60 (0.9)", DeckingSteelGrade.S350, 93, false, false, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck E60 (0.9)	S350	93.0000	DECKING_CONTINUED	JOINT_NOT_WELD\n")]
+    [InlineData("RLD", "Ribdeck AL (1.2)", DeckingSteelGrade.S350, 92, false, true, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck AL (1.2)	S350	92.0000	DECKING_CONTINUE	JOINT_WELDED\n")]
+    [InlineData("RLD", "Ribdeck E60 (0.9)", DeckingSteelGrade.S350, 93, false, false, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck E60 (0.9)	S350	93.0000	DECKING_CONTINUE	JOINT_NOT_WELD\n")]
     public void CatalogueDeckingToCoaStringTest(string catalogue, string profile, DeckingSteelGrade deckingSteelGrade, double angle, bool isDiscontinous, bool isWelded, string expected_coaString)
     {
       Decking decking = new CatalogueDecking(catalogue, profile, deckingSteelGrade, new DeckingConfiguration(new Angle(angle, AngleUnit.Degree), isDiscontinous, isWelded));

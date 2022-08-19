@@ -22,7 +22,7 @@ namespace ComposAPI
     Grade_42,
     Grade_50
   }
-  
+
 
   /// <summary>
   /// Steel Material for a <see cref="Beam"/>. Contains information about strength, density and Young's Modulus, as well as grade.
@@ -32,7 +32,7 @@ namespace ComposAPI
     public Pressure fy { get; set; } //	characteristic strength
     public Pressure E { get; set; } //	Young's modulus
     public Density Density { get; set; } //	material density
-    public bool isCustom { get; set; } 
+    public bool IsCustom { get; set; }
     public bool ReductionFactorMpl { get; set; } //	Apply Reduction factor to the plastic moment capacity for S420 (EN) and S460 (EN) GRADES
     public StandardSteelGrade Grade { get; set; } // standard material grade
     public WeldMaterialGrade WeldGrade { get; set; } // welding material grade
@@ -48,7 +48,7 @@ namespace ComposAPI
       this.fy = fy;
       this.E = E;
       this.Density = density;
-      this.isCustom = isCustom;
+      this.IsCustom = isCustom;
       this.WeldGrade = weldGrade;
       this.ReductionFactorMpl = reductionFacorMpl;
     }
@@ -56,15 +56,15 @@ namespace ComposAPI
     public SteelMaterial(StandardSteelGrade grade, Code code)
     {
       bool EN = (code == Code.EN1994_1_1_2004);
-      SetValuesFromStandard(grade, EN);
+      this.SetValuesFromStandard(grade, EN);
     }
 
-    private void SetValuesFromStandard(StandardSteelGrade grade, bool EN)
+    internal void SetValuesFromStandard(StandardSteelGrade grade, bool EN)
     {
       this.E = new Pressure(EN ? 210 : 205, PressureUnit.Gigapascal);
       this.Density = new Density(7850, DensityUnit.KilogramPerCubicMeter);
       this.Grade = grade;
-      this.isCustom = false;
+      this.IsCustom = false;
 
       switch (grade)
       {
@@ -100,26 +100,40 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal static ISteelMaterial FromCoaString(List<string> parameters, ComposUnits units)
+    internal static ISteelMaterial FromCoaString(List<string> parameters, ComposUnits units, Code code)
     {
-      SteelMaterial material = new SteelMaterial();
+      SteelMaterial material;
+      if (code != Code.AS_NZS2327_2017)
+        material = new SteelMaterial();
+      else
+        material = new ASNZSteelMaterial();
 
       switch (parameters[0])
       {
         case (CoaIdentifier.BeamSteelMaterialStandard):
           string grade = parameters[2];
-          bool EN = grade.EndsWith(" (EN)");
-          if (EN)
-            grade = grade.Replace(" (EN)", string.Empty);
-          material.SetValuesFromStandard((StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), grade), EN);
+
+          if (code == Code.AS_NZS2327_2017)
+          {
+            StandardASNZSteelMaterialGrade standardASNZSteelMaterialGrade = ASNZSteelMaterial.FromString(grade);
+            ((ASNZSteelMaterial)material).SetValuesFromStandard(standardASNZSteelMaterialGrade);
+          }
+          else
+          {
+            bool EN = grade.EndsWith(" (EN)");
+            if (EN)
+              grade = grade.Replace(" (EN)", string.Empty);
+            StandardSteelGrade standardSteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), grade);
+            material.SetValuesFromStandard(standardSteelGrade, EN);
+          }
           break;
 
         case (CoaIdentifier.BeamSteelMaterialUser):
-          material.isCustom = true;
+          material.IsCustom = true;
           material.fy = new Pressure(Convert.ToDouble(parameters[2]), units.Stress);
           material.E = new Pressure(Convert.ToDouble(parameters[3]), units.Stress);
           material.Density = new Density(Convert.ToDouble(parameters[4]), units.Density);
-          if (parameters[5] == "TRUE")
+          if (parameters.Count > 5 && parameters[5] == "TRUE")
             material.ReductionFactorMpl = true;
           else
             material.ReductionFactorMpl = false;
@@ -138,7 +152,7 @@ namespace ComposAPI
     public virtual string ToCoaString(string name, Code code, ComposUnits units)
     {
       List<string> steelParameters = new List<string>();
-      if (this.isCustom)
+      if (this.IsCustom)
       {
         steelParameters.Add("BEAM_STEEL_MATERIAL_USER");
         steelParameters.Add(name);
@@ -146,12 +160,13 @@ namespace ComposAPI
         steelParameters.Add(CoaHelper.FormatSignificantFigures(this.E.ToUnit(units.Stress).Value, 6));
         steelParameters.Add(CoaHelper.FormatSignificantFigures(this.Density.ToUnit(units.Density).Value, 6));
 
-        // this seems not to be working!
-
-        //if (this.ReductionFactorMpl)
-        //  steelParameters.Add("TRUE");
-        //else
-        //  steelParameters.Add("FALSE");
+        if (code == Code.EN1994_1_1_2004)
+        {
+          if (this.ReductionFactorMpl)
+            steelParameters.Add("TRUE");
+          else
+            steelParameters.Add("FALSE");
+        }
       }
       else
       {
@@ -168,8 +183,8 @@ namespace ComposAPI
       weldingParameters.Add("BEAM_WELDING_MATERIAL");
       weldingParameters.Add(name);
       weldingParameters.Add(this.WeldGrade.ToString().Replace('_', ' '));
-
       coaString += CoaHelper.CreateString(weldingParameters);
+
       return coaString;
     }
     #endregion
@@ -183,16 +198,16 @@ namespace ComposAPI
       string ro = string.Empty;
       //string wMat = (WeldGrade == WeldMaterialGrade.None) ? "" : WeldGrade.ToString();
 
-      if (isCustom == false)
+      if (IsCustom == false)
       {
         return this.Grade.ToString();
       }
       else
       {
         isCust = "Cust.";
-        f = fy.ToUnit(Units.StressUnit).ToString("f0");
-        e = E.ToUnit(Units.StressUnit).ToString("f0");
-        ro = Density.ToUnit(Units.DensityUnit).ToString("f0");
+        f = fy.ToUnit(UnitsHelper.StressUnit).ToString("f0");
+        e = E.ToUnit(UnitsHelper.StressUnit).ToString("f0");
+        ro = Density.ToUnit(UnitsHelper.DensityUnit).ToString("f0");
 
         return (isCust.Replace(" ", string.Empty) + ", " + f.Replace(" ", string.Empty) + ", " + e.Replace(" ", string.Empty) + ", " + ro.Replace(" ", string.Empty));
       }

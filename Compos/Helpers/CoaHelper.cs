@@ -158,7 +158,7 @@ namespace ComposAPI.Helpers
 
     internal static List<string> SplitLines(string coaString)
     {
-      List<string> lines = coaString.Split('\n').ToList();
+      List<string> lines = coaString.Replace("\r", "").Split('\n').ToList();
 
       // remove last line if empty
       if (lines[lines.Count - 1] == "")

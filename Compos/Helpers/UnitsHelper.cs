@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using UnitsNet;
 using UnitsNet.Units;
 
-namespace ComposAPI
+namespace ComposAPI.Helpers
 {
   /// <summary>
   /// Get or Set global units in this static class
   /// </summary>
-  public static class Units
+  public static class UnitsHelper
   {
     public enum ComposUnits
     {
