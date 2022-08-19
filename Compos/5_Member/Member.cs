@@ -75,7 +75,7 @@ namespace ComposAPI
       {
         BeamSection newSection = new BeamSection(file.BeamSectDesc(this.Name));
         this.Beam.Sections[0] = newSection;
-        file.AddMember(this);
+        file.Update();
         return true;
       }
       return false;

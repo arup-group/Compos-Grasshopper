@@ -27,5 +27,6 @@ namespace ComposAPI
     int SaveAs(string fileName);
     float TranRebarProp(string memberName, TransverseRebarOption option, short rebarnum);
     float UtilisationFactor(string memberName, UtilisationFactorOption option);
+    void Update();
   }
 }
