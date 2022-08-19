@@ -12,7 +12,7 @@ variables:
   - name: configuration
     value: Release
 
-pool: 'dev'
+pool: 'vs17_2'
 
 steps:
 - task: NuGetToolInstaller@1
