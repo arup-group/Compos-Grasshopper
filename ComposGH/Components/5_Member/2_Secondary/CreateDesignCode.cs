@@ -293,8 +293,6 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    
-
     internal override void UpdateUIFromSelectedItems()
     {
       for (int i = 0; i < this.DesignCodePretty.Count; i++)
@@ -342,7 +340,7 @@ namespace ComposGH.Components
 
     private void CheckBoxToggles(List<bool> newcheckboxes)
     {
-      for (int i = 0; i < this.Checkboxes.Count; i++)
+      for (int i = 0; i < newcheckboxes.Count; i++)
         this.Checkboxes[i] = newcheckboxes[i];
       this.DesignOptions.ProppedDuringConstruction = this.Checkboxes[0];
       this.DesignOptions.InclSteelBeamWeight = this.Checkboxes[1];
@@ -420,15 +418,17 @@ namespace ComposGH.Components
     {
       // bool list
       int checkboxCount = reader.GetInt32("checkboxCount");
-      this.Checkboxes = new List<bool>();
+      List<bool> newcheckboxes = new List<bool>();
       for (int i = 0; i < checkboxCount; i++)
-        this.Checkboxes.Add(reader.GetBoolean("checkbox" + i));
+        newcheckboxes.Add(reader.GetBoolean("checkbox" + i));
 
       // checkbox names
       int namesCount = reader.GetInt32("checkboxnamesCount");
       this.CheckboxNames = new List<string>();
       for (int i = 0; i < namesCount; i++)
         this.CheckboxNames.Add(reader.GetString("checkboxname" + i));
+
+      CheckBoxToggles(newcheckboxes);
 
       return base.Read(reader);
     }
