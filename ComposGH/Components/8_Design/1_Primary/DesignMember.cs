@@ -51,17 +51,12 @@ namespace ComposGH.Components
       {
         Member designedMember = (Member)memGoo.Value.Duplicate();
         designedMember.DesignCriteria = critGoo.Value;
+        this.Message = designedMember.GetCodeSatisfiedMessage();
         if (!designedMember.Design())
         {
           AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Failed to design member");
           return;
         }
-        //short status = designedMember.CodeSatisfied();
-        //if(status > 2)
-        //{
-        //  AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Failed to design member");
-        //  return;
-        //}
         string[] oldProfile = memGoo.Value.Beam.Sections[0].SectionDescription.Split(' ');
         string[] newProfile = designedMember.Beam.Sections[0].SectionDescription.Split(' ');
         if (newProfile[2] == oldProfile[2])
