@@ -78,7 +78,7 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    private StudSpacingType SpacingType = StudSpacingType.Automatic;
+    private StudSpacingType SpacingType = StudSpacingType.Min_Num_of_Studs;
 
     internal override void InitialiseDropdowns()
     {
