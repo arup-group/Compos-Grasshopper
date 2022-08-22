@@ -1,6 +1,7 @@
 ﻿using ComposAPI.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -107,7 +108,7 @@ namespace ComposAPI
         material = new SteelMaterial();
       else
         material = new ASNZSteelMaterial();
-
+      
       switch (parameters[0])
       {
         case (CoaIdentifier.BeamSteelMaterialStandard):
@@ -130,9 +131,9 @@ namespace ComposAPI
 
         case (CoaIdentifier.BeamSteelMaterialUser):
           material.IsCustom = true;
-          material.fy = new Pressure(Convert.ToDouble(parameters[2]), units.Stress);
-          material.E = new Pressure(Convert.ToDouble(parameters[3]), units.Stress);
-          material.Density = new Density(Convert.ToDouble(parameters[4]), units.Density);
+          material.fy = CoaHelper.ConvertToStress(parameters[2], units.Stress);
+          material.E = CoaHelper.ConvertToStress(parameters[3], units.Stress);
+          material.Density = CoaHelper.ConvertToDensity(parameters[4], units.Density);
           if (parameters.Count > 5 && parameters[5] == "TRUE")
             material.ReductionFactorMpl = true;
           else
