@@ -1,9 +1,10 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Grasshopper.Kernel;
 using ComposGH.Helpers;
 using Newtonsoft.Json;
+using static System.Resources.ResXFileRef;
+using UnitsNet.Serialization.JsonNet;
 
 namespace ComposGH.Components
 {
@@ -29,12 +30,11 @@ namespace ComposGH.Components
 
     protected override void ExpireDownStreamObjects()
     {
-      //foreach
-      //this.Params.Output[0].VolatileData.
       if (UpdateOutput)
         base.ExpireDownStreamObjects();
     }
-    internal bool UpdateOutput = true; 
+    internal bool UpdateOutput = true;
+    internal List<int> existing_outputs_serialized = new List<int>() { 0 };
 
     internal abstract void InitialiseDropdowns();
 

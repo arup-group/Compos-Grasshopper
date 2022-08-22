@@ -95,6 +95,7 @@
     </Reference>
     <Reference Include="UnitsNet.Serialization.JsonNet, Version=4.0.0.0, Culture=neutral, PublicKeyToken=f8601875a1f041da, processorArchitecture=MSIL">
       <HintPath>..\packages\UnitsNet.Serialization.JsonNet.4.3.0\lib\net40\UnitsNet.Serialization.JsonNet.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +172,7 @@
     <Compile Include="Helpers\GhRibbonLayout.cs" />
     <Compile Include="Helpers\LoadMainMenu.cs" />
     <Compile Include="Helpers\PostHog.cs" />
+    <Compile Include="Helpers\SetOutput.cs" />
     <Compile Include="Helpers\_ComposResultsHelper.cs" />
     <Compile Include="Helpers\GetInputs.cs" />
     <Compile Include="Helpers\_SqlReaderValues.cs" />

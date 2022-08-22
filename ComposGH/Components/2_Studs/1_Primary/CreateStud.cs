@@ -63,7 +63,7 @@ namespace ComposGH.Components
           DA.GetData(2, ref minSav);
           output = new StudGoo(
               new Stud(studDimensions.Value, studSpec.Value, minSav, SpacingType));
-          DA.SetData(0, output);
+          SetOutput.GenericGoo(this, DA, 0, output);
           break;
 
         case StudSpacingType.Partial_Interaction:
@@ -72,7 +72,7 @@ namespace ComposGH.Components
           DA.GetData(3, ref interaction);
           output = new StudGoo(
               new Stud(studDimensions.Value, studSpec.Value, minSav, interaction));
-          DA.SetData(0, output);
+          SetOutput.GenericGoo(this, DA, 0, output);
           break;
 
         case StudSpacingType.Custom:
@@ -81,30 +81,11 @@ namespace ComposGH.Components
           DA.GetData(3, ref check);
           output = new StudGoo(
               new Stud(studDimensions.Value, studSpec.Value, (spacings == null) ? null : spacings.Select(x => x.Value as IStudGroupSpacing).ToList(), check));
-          DA.SetData(0, output);
+          SetOutput.GenericGoo(this, DA, 0, output);
           break;
       }
-
-      UnitsNetIQuantityJsonConverter converter = new UnitsNetIQuantityJsonConverter();
-      UnitsNetIComparableJsonConverter c2;
-      UnitsNetJsonConverter c3;
-
-      Formatting formatting = Formatting.None;
-      JsonSerializerSettings settings = new JsonSerializerSettings();
-
-      Length foo = new Length(2, LengthUnit.Meter);
-      string ser = Newtonsoft.Json.JsonConvert.SerializeObject(foo, converter);
-
-      int outputs_serialized = JsonConvert.SerializeObject(output, converter).GetHashCode();
-      if (existing_outputs_serialized != outputs_serialized)
-      {
-        base.UpdateOutput = true;
-        existing_outputs_serialized = outputs_serialized;
-      }
-      else
-        base.UpdateOutput = false;
     }
-    private int existing_outputs_serialized = 0;
+    
     #region Custom UI
     private StudSpacingType SpacingType = StudSpacingType.Min_Num_of_Studs;
 
@@ -116,7 +97,7 @@ namespace ComposGH.Components
       // spacing
       this.DropDownItems.Add(Enum.GetValues(typeof(StudSpacingType)).Cast<StudSpacingType>()
           .Select(x => x.ToString().Replace("_", " ")).ToList());
-      this.SelectedItems.Add(StudSpacingType.Automatic.ToString().Replace("_", " "));
+      this.SelectedItems.Add(SpacingType.ToString().Replace("_", " "));
       this.IsInitialised = true;
     }
 
