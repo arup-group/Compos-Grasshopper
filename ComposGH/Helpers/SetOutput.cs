@@ -1,14 +1,7 @@
-﻿using ComposGH.Components;
-using Grasshopper;
+﻿using Grasshopper;
 using Grasshopper.Kernel;
-using Grasshopper.Kernel.Data;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnitsNet.Serialization.JsonNet;
 
 namespace ComposGH.Components
@@ -16,7 +9,7 @@ namespace ComposGH.Components
   class SetOutput
   {
     private static UnitsNetIQuantityJsonConverter converter = new UnitsNetIQuantityJsonConverter();
-    internal static void GenericGoo(GH_OasysDropDownComponent owner, IGH_DataAccess DA, int inputid, object data)
+    internal static void Item(GH_OasysDropDownComponent owner, IGH_DataAccess DA, int inputid, object data)
     {
       DA.SetData(inputid, data);
       int outputs_serialized = JsonConvert.SerializeObject(data, converter).GetHashCode();
@@ -29,7 +22,7 @@ namespace ComposGH.Components
       else
         owner.UpdateOutput = false;
     }
-    internal static void GenericGoo(GH_OasysDropDownComponent owner, IGH_DataAccess DA, int inputid, List<object> data)
+    internal static void List<T>(GH_OasysDropDownComponent owner, IGH_DataAccess DA, int inputid, List<T> data)
     {
       DA.SetDataList(inputid, data);
       for (int i = 0; i < data.Count; i++)
@@ -50,13 +43,13 @@ namespace ComposGH.Components
       }
     }
 
-    internal static void GenericGoo(GH_OasysDropDownComponent owner, IGH_DataAccess DA, int inputid, DataTree<object> dataTree)
+    internal static void Tree<T>(GH_OasysDropDownComponent owner, IGH_DataAccess DA, int inputid, DataTree<T> dataTree)
     {
       DA.SetDataTree(inputid, dataTree);
       int counter = 0;
       for (int p = 0; p < dataTree.Paths.Count; p++)
       {
-        List<object> data = dataTree.Branch(dataTree.Paths[p]);
+        List<T> data = dataTree.Branch(dataTree.Paths[p]);
         for (int i = counter; i < data.Count - counter; i++)
         {
           int outputs_serialized = JsonConvert.SerializeObject(data, converter).GetHashCode();

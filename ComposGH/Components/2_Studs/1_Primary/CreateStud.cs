@@ -63,7 +63,7 @@ namespace ComposGH.Components
           DA.GetData(2, ref minSav);
           output = new StudGoo(
               new Stud(studDimensions.Value, studSpec.Value, minSav, SpacingType));
-          SetOutput.GenericGoo(this, DA, 0, output);
+          SetOutput.Item(this, DA, 0, output);
           break;
 
         case StudSpacingType.Partial_Interaction:
@@ -72,7 +72,7 @@ namespace ComposGH.Components
           DA.GetData(3, ref interaction);
           output = new StudGoo(
               new Stud(studDimensions.Value, studSpec.Value, minSav, interaction));
-          SetOutput.GenericGoo(this, DA, 0, output);
+          SetOutput.Item(this, DA, 0, output);
           break;
 
         case StudSpacingType.Custom:
@@ -81,7 +81,7 @@ namespace ComposGH.Components
           DA.GetData(3, ref check);
           output = new StudGoo(
               new Stud(studDimensions.Value, studSpec.Value, (spacings == null) ? null : spacings.Select(x => x.Value as IStudGroupSpacing).ToList(), check));
-          SetOutput.GenericGoo(this, DA, 0, output);
+          SetOutput.Item(this, DA, 0, output);
           break;
       }
     }

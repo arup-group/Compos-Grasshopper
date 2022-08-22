@@ -56,18 +56,18 @@ namespace ComposGH.Components
       switch (OpeningType)
       {
         case notch_types.Start:
-          DA.SetData(0, new WebOpeningGoo(new WebOpening(width, height, NotchPosition.Start, (stiff == null) ? null : stiff.Value)));
+          SetOutput.Item(this, DA, 0, new WebOpeningGoo(new WebOpening(width, height, NotchPosition.Start, stiff?.Value)));
           break;
 
         case notch_types.End:
-          DA.SetData(0, new WebOpeningGoo(new WebOpening(width, height, NotchPosition.End, (stiff == null) ? null : stiff.Value)));
+          SetOutput.Item(this, DA, 0, new WebOpeningGoo(new WebOpening(width, height, NotchPosition.End, stiff?.Value)));
           break;
 
         case notch_types.Both_ends:
           List<WebOpeningGoo> both = new List<WebOpeningGoo>();
           both.Add(new WebOpeningGoo(new WebOpening(width, height, NotchPosition.Start, (stiff == null) ? null : stiff.Value)));
           both.Add(new WebOpeningGoo(new WebOpening(width, height, NotchPosition.End, (stiff == null) ? null : stiff.Value)));
-          DA.SetDataList(0, both);
+          SetOutput.List(this, DA, 0, both);
           break;
       }
     }
