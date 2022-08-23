@@ -61,27 +61,24 @@ namespace ComposGH.Components
         case StudSpacingType.Automatic:
         case StudSpacingType.Min_Num_of_Studs:
           DA.GetData(2, ref minSav);
-          output = new StudGoo(
-              new Stud(studDimensions.Value, studSpec.Value, minSav, SpacingType));
-          SetOutput.Item(this, DA, 0, output);
+          SetOutput.Item(this, DA, 0, new StudGoo(
+              new Stud(studDimensions.Value, studSpec.Value, minSav, SpacingType)));
           break;
 
         case StudSpacingType.Partial_Interaction:
           DA.GetData(2, ref minSav);
           double interaction = 0.85;
           DA.GetData(3, ref interaction);
-          output = new StudGoo(
-              new Stud(studDimensions.Value, studSpec.Value, minSav, interaction));
-          SetOutput.Item(this, DA, 0, output);
+          SetOutput.Item(this, DA, 0, new StudGoo(
+              new Stud(studDimensions.Value, studSpec.Value, minSav, interaction)));
           break;
 
         case StudSpacingType.Custom:
           List<StudGroupSpacingGoo> spacings = GetInput.GenericGooList<StudGroupSpacingGoo>(this, DA, 2);
           bool check = false;
           DA.GetData(3, ref check);
-          output = new StudGoo(
-              new Stud(studDimensions.Value, studSpec.Value, (spacings == null) ? null : spacings.Select(x => x.Value as IStudGroupSpacing).ToList(), check));
-          SetOutput.Item(this, DA, 0, output);
+          SetOutput.Item(this, DA, 0, new StudGoo(
+              new Stud(studDimensions.Value, studSpec.Value, spacings?.Select(x => x.Value as IStudGroupSpacing).ToList(), check)));
           break;
       }
     }

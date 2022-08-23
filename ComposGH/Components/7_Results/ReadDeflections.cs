@@ -66,7 +66,7 @@ namespace ComposGH.Components
           result.Add(new GH_Number(member.Result(this.Option.ToString(), Convert.ToInt16(pos))));
         }
 
-        DA.SetDataList(0, result);
+        SetOutput.List(this, DA, 0, result);
       }
     }
 

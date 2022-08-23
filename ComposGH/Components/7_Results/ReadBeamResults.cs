@@ -13,7 +13,7 @@ namespace ComposGH.Components
   /// <summary>
   /// Component to read beam results from a Compos model
   /// </summary>
-  public class ReadBeamResults : GH_OasysDropDownComponent, IGH_VariableParameterComponent
+  public class ReadBeamResults : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
@@ -66,7 +66,7 @@ namespace ComposGH.Components
           result.Add(new GH_Number(member.Result(this.Option.ToString(), Convert.ToInt16(pos))));
         }
 
-        DA.SetDataList(0, result);
+        SetOutput.List(this, DA, 0, result);
       }
     }
 

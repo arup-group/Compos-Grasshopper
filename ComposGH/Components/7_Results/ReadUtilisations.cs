@@ -58,7 +58,7 @@ namespace ComposGH.Components
       }
       if (member != null)
       {
-        DA.SetData(0, new GH_Number(member.UtilisationFactor(this.Option)));
+        SetOutput.Item(this, DA, 0, new GH_Number(member.UtilisationFactor(this.Option)));
       }
     }
 

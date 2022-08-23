@@ -74,7 +74,7 @@ namespace ComposGH.Components
         this.OverrideDropDownItems[0] = false;
       }
 
-      DA.SetData(0, new SteelMaterialGoo(new ASNZSteelMaterial(SteelGrade)));
+      SetOutput.Item(this, DA, 0, new SteelMaterialGoo(new ASNZSteelMaterial(SteelGrade)));
     }
 
     #region Custom UI

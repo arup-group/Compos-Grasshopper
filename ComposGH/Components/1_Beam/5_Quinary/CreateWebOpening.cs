@@ -68,11 +68,11 @@ namespace ComposGH.Components
       switch (this.OpeningType)
       {
         case WebOpeningShape.Rectangular:
-          DA.SetData(0, new WebOpeningGoo(new WebOpening(width_dia, height, x, z, (stiff == null) ? null : stiff.Value)));
+          SetOutput.Item(this, DA, 0, new WebOpeningGoo(new WebOpening(width_dia, height, x, z, (stiff == null) ? null : stiff.Value)));
           break;
 
         case WebOpeningShape.Circular:
-          DA.SetData(0, new WebOpeningGoo(new WebOpening(width_dia, x, z, (stiff == null) ? null : stiff.Value)));
+          SetOutput.Item(this, DA, 0, new WebOpeningGoo(new WebOpening(width_dia, x, z, (stiff == null) ? null : stiff.Value)));
           break;
       }
     }

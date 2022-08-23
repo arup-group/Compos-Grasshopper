@@ -94,12 +94,12 @@ namespace ComposGH.Components
         List<IQuantity> restrs = GetInput.LengthsOrRatios(this, DA, 2, LengthUnit);
         SelectedItems[0] = "Custom";
         Supports sup = new Supports(restrs, smir, ffre);
-        DA.SetData(0, new SupportsGoo(sup));
+        SetOutput.Item(this, DA, 0, new SupportsGoo(sup));
       }
       else
       {
         Supports sup = new Supports(RestraintType, smir, ffre);
-        DA.SetData(0, new SupportsGoo(sup));
+        SetOutput.Item(this, DA, 0, new SupportsGoo(sup));
       }
     }
 

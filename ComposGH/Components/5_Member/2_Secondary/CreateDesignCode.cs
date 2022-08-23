@@ -97,7 +97,7 @@ namespace ComposGH.Components
           if (ec4safetyFactors != null)
             ec4.SafetyFactors = ec4safetyFactors;
 
-          DA.SetData(0, new DesignCodeGoo(ec4));
+          SetOutput.Item(this, DA, 0, new DesignCodeGoo(ec4));
           break;
 
         case Code.AS_NZS2327_2017:
@@ -114,7 +114,7 @@ namespace ComposGH.Components
           if (safetyFactors != null)
             asnz.SafetyFactors = safetyFactors;
 
-          DA.SetData(0, new DesignCodeGoo(asnz));
+          SetOutput.Item(this, DA, 0, new DesignCodeGoo(asnz));
           break;
 
         default:

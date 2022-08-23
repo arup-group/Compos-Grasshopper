@@ -53,7 +53,7 @@ namespace ComposGH.Components
       IQuantity pos = GetInput.LengthOrRatio(this, DA, 4, this.LengthUnit);
 
       Load load = new PointLoad(constDead, constLive, finalDead, finalLive, pos);
-      DA.SetData(0, new LoadGoo(load));
+      SetOutput.Item(this, DA, 0, new LoadGoo(load));
     }
 
     #region Custom UI

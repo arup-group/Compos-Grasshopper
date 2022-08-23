@@ -64,7 +64,7 @@ namespace ComposGH.Components
       BeamSection beamSection = new BeamSection(profile);
       beamSection.StartPosition = start;
       beamSection.TaperedToNext = taper;
-      DA.SetData(0, new BeamSectionGoo(beamSection));
+      SetOutput.Item(this, DA, 0, new BeamSectionGoo(beamSection));
     }
 
     #region Custom UI

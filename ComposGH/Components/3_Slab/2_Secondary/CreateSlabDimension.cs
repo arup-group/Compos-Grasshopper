@@ -77,7 +77,7 @@ namespace ComposGH.Components
       else
          slabDimension = new SlabDimension(start, overallDepth, availableWidthLeft, availableWidthRight, taperedToNext);
 
-      DA.SetData(0, new SlabDimensionGoo(slabDimension));
+      SetOutput.Item(this, DA, 0, new SlabDimensionGoo(slabDimension));
     }
 
     #region Custom UI

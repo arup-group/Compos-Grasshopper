@@ -68,7 +68,7 @@ namespace ComposGH.Components
           ForcePerLength finalLiveL2 = GetInput.ForcePerLength(this, DA, 8, this.ForcePerLengthUnit);
           Load loadL = new PatchLoad(
             constDeadL1, constLiveL1, finalDeadL1, finalLiveL1, pos1, constDeadL2, constLiveL2, finalDeadL2, finalLiveL2, pos2);
-          DA.SetData(0, new LoadGoo(loadL));
+          SetOutput.Item(this, DA, 0, new LoadGoo(loadL));
           break;
 
         case LoadDistribution.Area:
@@ -82,7 +82,7 @@ namespace ComposGH.Components
           Pressure finalLiveA2 = GetInput.Stress(this, DA, 8, this.ForcePerAreaUnit);
           Load loadA = new PatchLoad(
             constDeadA1, constLiveA1, finalDeadA1, finalLiveA1, pos1, constDeadA2, constLiveA2, finalDeadA2, finalLiveA2, pos2);
-          DA.SetData(0, new LoadGoo(loadA));
+          SetOutput.Item(this, DA, 0, new LoadGoo(loadA));
           break;
       }
     }

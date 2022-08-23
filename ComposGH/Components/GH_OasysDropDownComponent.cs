@@ -34,7 +34,7 @@ namespace ComposGH.Components
         base.ExpireDownStreamObjects();
     }
     internal bool UpdateOutput = true;
-    internal List<int> existing_outputs_serialized = new List<int>() { 0 };
+    internal Dictionary<int, List<int>> ExistingOutputsSerialized = new Dictionary<int, List<int>>() { { 0, new List<int>() { 0 } } }; // new dictionary with key = 0 (inputid) and list of serialized ints with initial one item = 0
 
     internal abstract void InitialiseDropdowns();
 

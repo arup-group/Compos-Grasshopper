@@ -54,7 +54,7 @@ namespace ComposGH.Components
       DA.GetData(2, ref lines);
       Length spacing = GetInput.Length(this, DA, 3, this.LengthUnit);
 
-      DA.SetData(0, new StudGroupSpacingGoo(new StudGroupSpacing(start, rows, lines, spacing)));
+      SetOutput.Item(this, DA, 0, new StudGroupSpacingGoo(new StudGroupSpacing(start, rows, lines, spacing)));
     }
 
     #region Custom UI

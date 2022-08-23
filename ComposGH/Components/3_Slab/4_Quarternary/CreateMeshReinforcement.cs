@@ -49,7 +49,7 @@ namespace ComposGH.Components
 
       bool rotated = false;
       DA.GetData(1, ref rotated);
-      DA.SetData(0, new MeshReinforcementGoo(new MeshReinforcement(cov, Mesh, rotated)));
+      SetOutput.Item(this, DA, 0, new MeshReinforcementGoo(new MeshReinforcement(cov, Mesh, rotated)));
     }
 
     #region Custom UI

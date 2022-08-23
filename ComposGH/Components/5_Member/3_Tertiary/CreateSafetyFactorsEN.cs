@@ -147,7 +147,7 @@ namespace ComposGH.Components
       if (mf != null)
         safetyFactors.MaterialFactors = mf;
 
-      DA.SetData(0, new SafetyFactorsENGoo(safetyFactors));
+      SetOutput.Item(this, DA, 0, new SafetyFactorsENGoo(safetyFactors));
     }
 
     #region Custom UI

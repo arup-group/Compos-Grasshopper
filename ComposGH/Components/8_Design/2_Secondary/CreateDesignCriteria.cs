@@ -113,7 +113,7 @@ namespace ComposGH.Components
         designCriteria.FrequencyLimits = dlGoo.Value;
       }
 
-      DA.SetData(0, new DesignCriteriaGoo(designCriteria));
+      SetOutput.Item(this, DA, 0, new DesignCriteriaGoo(designCriteria));
     }
 
 

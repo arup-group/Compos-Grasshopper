@@ -64,7 +64,7 @@ namespace ComposGH.Components
           result.Add(new GH_Number(member.TranRebarProp(this.Option, Convert.ToInt16(num))));
         }
 
-        DA.SetDataList(0, result);
+        SetOutput.List(this, DA, 0, result);
       }
     }
 

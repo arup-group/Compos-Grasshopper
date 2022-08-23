@@ -73,7 +73,7 @@ namespace ComposGH.Components
         MaxWidth = maxWidth
       };
 
-      DA.SetData(0, new BeamSizeLimitsGoo(beamSizeLimits));
+      SetOutput.Item(this, DA, 0, new BeamSizeLimitsGoo(beamSizeLimits));
     }
 
     #region Custom UI
