@@ -10,7 +10,8 @@ using ComposAPI.Helpers;
 
 namespace ComposAPI.Beams.Tests
 {
-  public partial class SteelMaterialTest
+  [Collection("ComposAPI Fixture collection")]
+  public class SteelMaterialTest
   {
     [Theory]
     [InlineData(1000, 2000, 3000, true, WeldMaterialGrade.Grade_42, false, Code.BS5950_3_1_1990_A1_2010, "BEAM_STEEL_MATERIAL_USER	MEMBER-1	1000.00	2000.00	3000.00\nBEAM_WELDING_MATERIAL	MEMBER-1	Grade 42\n")]

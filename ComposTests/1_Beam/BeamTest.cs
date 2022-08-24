@@ -82,6 +82,8 @@ namespace ComposAPI.Beams.Tests
       return new Beam(new Length(9, LengthUnit.Meter), restraint, steelMaterial, sections, webOpenings);
     }
   }
+
+  [Collection("ComposAPI Fixture collection")]
   public class BeamTest
   {
     // 1 setup inputs

@@ -10,7 +10,8 @@ using Xunit;
 
 namespace ComposAPI.Beams.Tests
 {
-  public partial class ASNZSteelMaterialTest
+  [Collection("ComposAPI Fixture collection")]
+  public class ASNZSteelMaterialTest
   {
     [Theory]
     [InlineData(StandardASNZSteelMaterialGrade.C450_AS1163, "BEAM_STEEL_MATERIAL_STD	MEMBER-1	C450(AS1163)\nBEAM_WELDING_MATERIAL\tMEMBER-1\tGrade 35\n")]

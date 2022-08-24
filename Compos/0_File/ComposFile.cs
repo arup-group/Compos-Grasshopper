@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ using UnitsNet.Units;
 
 namespace ComposAPI
 {
-  public class ComposFile : IComposFile
+  public class ComposFile : IComposFile, IDisposable
   {
     public Guid Guid { get; set; } = Guid.NewGuid();
     public string CalculationHeader { get; set; }
@@ -85,7 +86,14 @@ namespace ComposAPI
 
     public static short Close()
     {
-      return ComposFile.ComposCOM.Close();
+      short status = ComposFile.ComposCOM.Close();
+      ComposFile.ComposCOM = null;
+      return status;
+    }
+
+    public void Dispose()
+    {
+      Close();
     }
 
     /// <summary>

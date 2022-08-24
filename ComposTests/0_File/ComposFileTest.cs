@@ -4,11 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using ComposAPI.Helpers;
+using ComposAPI.Tests;
 using UnitsNet.Units;
 using Xunit;
 
 namespace ComposAPI.File.Tests
 {
+  [Collection("ComposAPI Fixture collection")]
   public class ComposFileTest
   {
     static readonly string RelativePath = "..\\..\\..\\..\\TestFiles\\";

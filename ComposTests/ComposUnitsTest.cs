@@ -11,6 +11,7 @@ using Xunit;
 
 namespace ComposAPI.Tests
 {
+  [Collection("ComposAPI Fixture collection")]
   public class ComposUnitsTest
   {
     [Theory]

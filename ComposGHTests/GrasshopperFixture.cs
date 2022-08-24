@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ComposAPI;
+using System;
+using System.Diagnostics;
 using Xunit;
 
 namespace ComposGHTests
@@ -55,7 +57,16 @@ namespace ComposGHTests
     {
       // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
       Dispose(disposing: true);
+      StopCompos();
       GC.SuppressFinalize(this);
+    }
+
+    public void StopCompos()
+    {
+      ComposFile.Close();
+      Process[] ps = Process.GetProcessesByName("Compos");
+      foreach (Process p in ps)
+        p.Kill();
     }
 
     public Rhino.Runtime.InProcess.RhinoCore Core
