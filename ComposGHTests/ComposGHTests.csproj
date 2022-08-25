@@ -53,4 +53,8 @@
     <Folder Include="Components\7_Results\" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="Copy &quot;$(TargetDir)ComposGH.dll&quot; &quot;$(TargetDir)Compos.gha&quot;" />
+  </Target>
+
 </Project>

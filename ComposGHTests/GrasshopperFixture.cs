@@ -1,6 +1,7 @@
 ﻿using ComposAPI;
 using System;
 using System.Diagnostics;
+using System.IO;
 using Xunit;
 
 namespace ComposGHTests
@@ -12,7 +13,8 @@ namespace ComposGHTests
     private object _DocIO { get; set; }
     private object _Doc { get; set; }
     private bool _isDisposed;
-
+    private static string _linkFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Grasshopper", "Libraries");
+    private static string _linkFileName = "ComposGhTests.ghlink";
     static GrasshopperFixture()
     {
       // This MUST be included in a static constructor to ensure that no Rhino DLLs
@@ -23,10 +25,19 @@ namespace ComposGHTests
     }
     public GrasshopperFixture()
     {
+      AddPluginToGH();
+
       InitializeCore();
 
       // setup headless units
       ComposGH.Units.SetupUnitsDuringLoad(true);
+    }
+
+    public void AddPluginToGH()
+    {
+      StreamWriter writer = File.CreateText(Path.Combine(_linkFilePath, _linkFileName));
+      writer.Write(Environment.CurrentDirectory);
+      writer.Close();
     }
 
     protected virtual void Dispose(bool disposing)
@@ -59,14 +70,22 @@ namespace ComposGHTests
       Dispose(disposing: true);
       StopCompos();
       GC.SuppressFinalize(this);
+      File.Delete(Path.Combine(_linkFilePath, _linkFileName));
     }
 
     public void StopCompos()
     {
-      ComposFile.Close();
-      Process[] ps = Process.GetProcessesByName("Compos");
-      foreach (Process p in ps)
-        p.Kill();
+      try
+      {
+        ComposFile.Close();
+        Process[] ps = Process.GetProcessesByName("Compos");
+        foreach (Process p in ps)
+          p.Kill();
+      }
+      catch (Exception)
+      {
+        // Compos was already closed by Grasshopper
+      }
     }
 
     public Rhino.Runtime.InProcess.RhinoCore Core
