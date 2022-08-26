@@ -1,7 +1,9 @@
 ﻿using ComposAPI;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using Grasshopper.Kernel;
 using Xunit;
 
 namespace ComposGHTests
@@ -35,6 +37,7 @@ namespace ComposGHTests
 
     public void AddPluginToGH()
     {
+      Directory.CreateDirectory(_linkFilePath);
       StreamWriter writer = File.CreateText(Path.Combine(_linkFilePath, _linkFileName));
       writer.Write(Environment.CurrentDirectory);
       writer.Close();
