@@ -39,7 +39,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Result", "Res", "Stud results", GH_ParamAccess.list);
+      pManager.AddGenericParameter("GetResult", "Res", "Stud results", GH_ParamAccess.list);
     }
     #endregion
 
@@ -63,7 +63,7 @@ namespace ComposGH.Components
         List<GH_Number> result = new List<GH_Number>();
         for (short pos = 0; pos < member.NumIntermediatePos(); pos++)
         {
-          result.Add(new GH_Number(member.Result(this.Option.ToString(), Convert.ToInt16(pos))));
+          result.Add(new GH_Number(member.GetResult(this.Option.ToString(), Convert.ToInt16(pos))));
         }
 
         SetOutput.List(this, DA, 0, result);

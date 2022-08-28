@@ -6,7 +6,6 @@ namespace ComposAPI
   public interface IComposFile
   {
     Guid Guid { get; }
-
     void AddMember(IMember member);
     //short Analyse();
     short Analyse(string memberName);

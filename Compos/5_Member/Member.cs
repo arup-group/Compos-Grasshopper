@@ -19,12 +19,13 @@ namespace ComposAPI
     public IList<ILoad> Loads { get; set; }
     public IDesignCode DesignCode { get; set; }
     public IDesignCriteria DesignCriteria { get; set; } = null;
+    public IResult Result { get; } = null;
     private Guid FileGuid;
 
     public string Name { get; set; }
     public string GridReference { get; set; } = "";
     public string Note { get; set; } = "";
-
+    
     #region constructors
     public Member()
     {
@@ -81,6 +82,16 @@ namespace ComposAPI
       return false;
     }
 
+    public void Register(IComposFile file)
+    {
+      this.FileGuid = file.Guid;
+      if (FileRegister.ContainsKey(file.Guid))
+        FileRegister.Remove(file.Guid);
+      FileRegister.Add(file.Guid, file);
+    }
+
+    #endregion
+    #region results
     public short CodeSatisfied()
     {
       return FileRegister[this.FileGuid].CodeSatisfied(this.Name);
@@ -105,55 +116,46 @@ namespace ComposAPI
       }
     }
 
-    public float MaxResult(string option, short position)
+    internal float MaxResult(string option, short position)
     {
       return FileRegister[this.FileGuid].MaxResult(this.Name, option, position);
     }
 
-    public short MaxResultPosition(string option, short position)
+    internal short MaxResultPosition(string option, short position)
     {
       return FileRegister[this.FileGuid].MaxResultPosition(this.Name, option, position);
     }
 
-    public float MinResult(string option, short position)
+    internal float MinResult(string option, short position)
     {
       return FileRegister[this.FileGuid].MinResult(this.Name, option, position);
     }
 
-    public short MinResultPosition(string option, short position)
+    internal short MinResultPosition(string option, short position)
     {
       return FileRegister[this.FileGuid].MinResultPosition(this.Name, option, position);
     }
 
-    public short NumIntermediatePos()
+    internal short NumIntermediatePos()
     {
       return FileRegister[this.FileGuid].NumIntermediatePos(this.Name);
     }
 
-    public short NumTranRebar()
+    internal short NumTranRebar()
     {
       return FileRegister[this.FileGuid].NumTranRebar(this.Name);
     }
-
-    public void Register(IComposFile file)
-    {
-      this.FileGuid = file.Guid;
-      if (FileRegister.ContainsKey(file.Guid))
-        FileRegister.Remove(file.Guid);
-      FileRegister.Add(file.Guid, file);
-    }
-
-    public float Result(string option, short position)
+    internal float GetResult(string option, short position)
     {
       return FileRegister[this.FileGuid].Result(this.Name, option, position);
     }
 
-    public float TranRebarProp(TransverseRebarOption option, short rebarnum)
+    internal float TranRebarProp(TransverseRebarOption option, short rebarnum)
     {
       return FileRegister[this.FileGuid].TranRebarProp(this.Name, option, rebarnum);
     }
 
-    public float UtilisationFactor(UtilisationFactorOption option)
+    internal float UtilisationFactor(UtilisationFactorOption option)
     {
       return FileRegister[this.FileGuid].UtilisationFactor(this.Name, option);
     }

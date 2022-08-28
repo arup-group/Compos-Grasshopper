@@ -8,64 +8,22 @@ namespace ComposAPI
 {
   public class Result : IResult
   {
-    public float MaxResult(string option, short position)
+    internal Result(Member member)
     {
-      throw new NotImplementedException();
+      this.m_Member = member;
     }
+    private Member m_Member;
 
-    public short MaxResultPosition(string option, short position)
+    public IInternalForceResult InternalForces
     {
-      throw new NotImplementedException();
+      get
+      {
+        if (m_ForcesAndMoments == null)
+          m_ForcesAndMoments = new InternalForceResult(m_Member);
+        return m_ForcesAndMoments;
+      }
     }
-
-    public string MemberName(int index)
-    {
-      throw new NotImplementedException();
-    }
-
-    public float MinResult(string option, short position)
-    {
-      throw new NotImplementedException();
-    }
-
-    public short MinResultPosition(string option, short position)
-    {
-      throw new NotImplementedException();
-    }
-
-    public short NumIntermediatePos()
-    {
-      throw new NotImplementedException();
-    }
-
-    public short NumTranRebar()
-    {
-      throw new NotImplementedException();
-    }
-
-    public int SaveAs(string fileName)
-    {
-      throw new NotImplementedException();
-    }
-
-    public string ToCoaString()
-    {
-      throw new NotImplementedException();
-    }
-
-    public float TranRebarProp(TransverseRebarOption option, short rebarnum)
-    {
-      throw new NotImplementedException();
-    }
-
-    public float UtilisationFactor(UtilisationFactorOption option)
-    {
-      throw new NotImplementedException();
-    }
-
-    float IResult.Result(string option, short position)
-    {
-      throw new NotImplementedException();
-    }
+    private InternalForceResult m_ForcesAndMoments;
+    
   }
 }
