@@ -120,5 +120,11 @@ namespace ComposAPI
     /// Area of composite section for vibration
     /// </summary>
     List<Area> AreaVibration { get; }
+
+
+    /// <summary>
+    /// Natural frequency for composite section
+    /// </summary>
+    Frequency NaturalFrequency { get; }
   }
 }

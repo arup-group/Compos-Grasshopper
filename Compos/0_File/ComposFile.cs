@@ -42,7 +42,7 @@ namespace ComposAPI
     #region methods
     public void AddMember(IMember member)
     {
-      member.Register(this);
+      ((Member)member).Register(this);
       this.Members.Add(member);
     }
 
@@ -290,7 +290,7 @@ namespace ComposAPI
     /// <param name="option"></param>
     /// <param name="rebarnum">rebar number</param>
     /// <returns></returns>
-    public float TranRebarProp(string memberName, TransverseRebarOption option, short rebarnum)
+    internal float TranRebarProp(string memberName, TransverseRebarOption option, short rebarnum)
     {
       this.Initialise();
       return ComposFile.ComposCOM.TranRebarProp(memberName, option.ToString(), rebarnum);
@@ -372,7 +372,7 @@ namespace ComposAPI
     /// <param name="memberName"></param>
     /// <param name="option"></param>
     /// <returns></returns>
-    public float UtilisationFactor(string memberName, UtilisationFactorOption option)
+    internal float UtilisationFactor(string memberName, UtilisationFactorOption option)
     {
       this.Initialise();
       return ComposFile.ComposCOM.UtilisationFactor(memberName, option.ToString());

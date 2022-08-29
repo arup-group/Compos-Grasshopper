@@ -89,7 +89,16 @@ namespace ComposAPI
           this.Section = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
           break;
         case CoaIdentifier.Units.Stress:
-          this.Stress = (PressureUnit)UnitParser.Default.Parse(parameters[2], typeof(PressureUnit));
+          try
+          {
+            this.Stress = (PressureUnit)UnitParser.Default.Parse(parameters[2], typeof(PressureUnit));
+          }
+          catch (Exception)
+          {
+            parameters[2] = parameters[2].Remove(parameters[2].Length - 1);
+            parameters[2] += "²";
+            this.Stress = (PressureUnit)UnitParser.Default.Parse(parameters[2], typeof(PressureUnit));
+          }
           break;
         case CoaIdentifier.Units.Mass:
           this.Mass = (MassUnit)UnitParser.Default.Parse(parameters[2], typeof(MassUnit));

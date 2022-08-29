@@ -9,10 +9,33 @@ using UnitsNet.Units;
 
 namespace ComposAPI
 {
+  internal enum InternalForceOption
+  {
+    ULTI_MOM_CONS, // Construction stage ultimate moment
+    ULTI_MOM_FINA, // Final stage ultimate moment
+    ULTI_SHE_CONS, // Construction stage ultimate shear
+    ULTI_SHE_FINA, // Final stage ultimate shear
+    ULTI_AXIAL_CONS, // Construction stage ultimate axial force
+    ULTI_AXIAL_FINA, // Final stage ultimate axial force
+    WORK_MOM_CONS_DEAD, // Construction stage working dead load moment
+    WORK_MOM_CONS_LIVE, // Construction stage working live load moment
+    WORK_MOM_FINA_ADDI, // Final stage working additional dead load moment
+    WORK_MOM_FINA_LIVE, // Final stage working live load moment
+    WORK_MOM_FINA_SHRI, // Final stage working shrinkage moment
+    WORK_SHE_CONS_DEAD, // Construction stage working dead load shear
+    WORK_SHE_CONS_LIVE, // Construction stage working live load shear
+    WORK_SHE_FINA_ADDI, // Final stage working additional dead load shear
+    WORK_SHE_FINA_LIVE, // Final stage working live load shear
+    WORK_AXIAL_CONS_DEAD, // Construction stage working dead load axial
+    WORK_AXIAL_CONS_LIVE, // Construction stage working live load axial
+    WORK_AXIAL_FINA_ADDI, // Final stage working additional dead load axial
+    WORK_AXIAL_FINA_LIVE, // Final stage working live load axial
+  }
+
   public class InternalForceResult : ResultsBase, IInternalForceResult
   {
     internal Dictionary<InternalForceOption, List<IQuantity>> ResultsCache = new Dictionary<InternalForceOption, List<IQuantity>>();
-    public InternalForceResult(Member member) : base(member)
+    public InternalForceResult(Member member, int numIntermediatePos) : base(member, numIntermediatePos)
     {
     }
 

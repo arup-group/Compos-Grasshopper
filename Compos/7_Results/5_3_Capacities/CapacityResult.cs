@@ -9,10 +9,33 @@ using UnitsNet.Units;
 
 namespace ComposAPI
 {
+  internal enum CapacityOption
+  {
+    CAPA_MOM_ULTI_CONS_HOG, // Hogging moment capacity in Construction stage
+    NEUTRAL_X_ULTI_CONS_HOG, // Neutral axis depth under Hogging moment in Construction stage
+    CAPA_MOM_ULTI_FINA_HOG, // Hogging moment capacity in Final stage
+    NEUTRAL_X_ULTI_FINA_HOG, // Neutral axis depth under Hogging moment in Final stage
+    CAPA_MOM_ULTI_CONS_SAG, // Sagging moment capacity in Construction stage
+    NEUTRAL_X_ULTI_CONS_SAG, // Neutral axis depth under Sagging moment in Construction stage
+    CAPA_MOM_ULTI_FINA_SAG, // Sagging moment capacity in Final stage
+    NEUTRAL_X_ULTI_FINA_SAG, // Neutral axis depth under Sagging moment in Final stage
+    CAPA_SHE_SHEAR, // shear capacity
+    CAPA_SHE_BUCLE, // shear capacity with web buckling
+    CAPA_SHE_PV, // Used shear capacity
+    CAPA_MOM_BEAM_PLAS_HOG, // Assumed plastic Hogging moment capacity in Construction stage
+    NEUTRAL_X_BEAM_PLAS_HOG, // Neutral axis depth under Assumed plastic Hogging moment in Construction stage
+    CAPA_MOM_100_INTER_HOG, // Assumed 100% shear interaction hogging moment capacity in final stage
+    NEUTRAL_X_100_INTER_HOG, // Neutral axis depth under assumed 100% interaction hogging moment in final stage
+    CAPA_MOM_BEAM_PLAS_SAG, // Assumed plastic Sagging moment capacity in Construction stage
+    NEUTRAL_X_BEAM_PLAS_SAG, // Neutral axis depth under Assumed plastic Sagging moment in Construction stage
+    CAPA_MOM_100_INTER_SAG, // Assumed 100% shear interaction sagging moment capacity in final stage
+    NEUTRAL_X_100_INTER_SAG, // Neutral axis depth under assumed 100% interaction sagging moment in final stage
+  }
+
   public class CapacityResult : ResultsBase, ICapacityResult
   {
     internal Dictionary<CapacityOption, List<IQuantity>> ResultsCache = new Dictionary<CapacityOption, List<IQuantity>>();
-    public CapacityResult(Member member) : base(member)
+    public CapacityResult(Member member, int numIntermediatePos) : base(member, numIntermediatePos)
     {
     }
 

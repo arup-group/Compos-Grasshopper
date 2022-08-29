@@ -23,7 +23,7 @@ namespace ComposAPI
     short CodeSatisfied();
     string GetCodeSatisfiedMessage();
     
-    void Register(IComposFile file);
+    //void Register(ComposFile file);
     
   }
 }

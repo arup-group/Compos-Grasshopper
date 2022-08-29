@@ -9,10 +9,26 @@ using UnitsNet.Units;
 
 namespace ComposAPI
 {
+  internal enum StudResultOption
+  {
+    STUD_CONCRTE_FORCE, // Actual stud capacity
+    STUD_NUM_LEFT_PROV, // Actual number of studs provided from left end
+    STUD_NUM_RIGHT_PROV, // Actual number of studs provided from right end
+    STUD_NUM_LEFT_USED, // Used number of studs provided from left end
+    STUD_NUM_RIGHT_USED, // Used number of studs provided from right end
+    STUD_CONCRTE_FORCE_100, // Required stud capacity for 100% shear interaction
+    STUD_CONCRTE_FORCE_REQ, // Required stud capacity for given moment
+    STUD_INTERACT_REQ, // Required shear interaction for given moment
+    STUD_ONE_CAPACITY, // One shear stud capacity
+    STUD_PERCENT_INTERACTION, // Actual shear interaction
+    STUD_CAPACITY_LEFT, // Actual shear capacity from left end
+    STUD_CAPACITY_RIGHT, // Actual shear capacity from right end
+  }
+
   public class StudResult : ResultsBase, IStudResult
   {
     internal Dictionary<StudResultOption, List<IQuantity>> ResultsCache = new Dictionary<StudResultOption, List<IQuantity>>();
-    public StudResult(Member member) : base(member)
+    public StudResult(Member member, int numIntermediatePos) : base(member, numIntermediatePos)
     {
     }
 

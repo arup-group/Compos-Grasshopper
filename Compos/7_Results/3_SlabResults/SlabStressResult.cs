@@ -12,7 +12,7 @@ namespace ComposAPI
   public class SlabStressResult : ResultsBase, ISlabStressResult
   {
     internal Dictionary<StressOption, List<IQuantity>> ResultsCache = new Dictionary<StressOption, List<IQuantity>>();
-    public SlabStressResult(Member member) : base(member)
+    public SlabStressResult(Member member, int numIntermediatePos) : base(member, numIntermediatePos)
     {
     }
 

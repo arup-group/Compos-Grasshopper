@@ -12,14 +12,24 @@ namespace ComposAPI
 {
   public class Member : IMember
   {
-    internal static Dictionary<Guid, IComposFile> FileRegister = new Dictionary<Guid, IComposFile>();
+    internal static Dictionary<Guid, ComposFile> FileRegister = new Dictionary<Guid, ComposFile>();
     public IBeam Beam { get; set; }
     public IStud Stud { get; set; }
     public ISlab Slab { get; set; }
     public IList<ILoad> Loads { get; set; }
     public IDesignCode DesignCode { get; set; }
     public IDesignCriteria DesignCriteria { get; set; } = null;
-    public IResult Result { get; } = null;
+
+    public IResult Result
+    {
+      get
+      {
+        if (m_result == null)
+          m_result = new Result(this);
+        return m_result;
+      }
+    } 
+    private Result m_result = null;
     private Guid FileGuid;
 
     public string Name { get; set; }
@@ -71,7 +81,7 @@ namespace ComposAPI
       if (!this.Beam.Sections[0].isCatalogue)
         throw new Exception("Unable to design member, the initial section profile must be a catalogue profile");
 
-      IComposFile file = FileRegister[this.FileGuid];
+      ComposFile file = FileRegister[this.FileGuid];
       if (file.Design(this.Name) == 0)
       {
         BeamSection newSection = new BeamSection(file.BeamSectDesc(this.Name));
@@ -82,7 +92,7 @@ namespace ComposAPI
       return false;
     }
 
-    public void Register(IComposFile file)
+    public void Register(ComposFile file)
     {
       this.FileGuid = file.Guid;
       if (FileRegister.ContainsKey(file.Guid))

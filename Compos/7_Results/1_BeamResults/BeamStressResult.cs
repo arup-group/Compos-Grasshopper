@@ -12,7 +12,7 @@ namespace ComposAPI
   public class BeamStressResult : ResultsBase, IBeamStressResult
   {
     internal Dictionary<StressOption, List<Pressure>> ResultsCache = new Dictionary<StressOption, List<Pressure>>();
-    public BeamStressResult(Member member) : base(member)
+    public BeamStressResult(Member member, int numIntermediatePos) : base(member, numIntermediatePos)
     {
     }
 

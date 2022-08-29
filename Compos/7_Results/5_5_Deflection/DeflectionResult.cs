@@ -9,10 +9,21 @@ using UnitsNet.Units;
 
 namespace ComposAPI
 {
+  internal enum DeflectionOption
+  {
+    DEFL_CONS_DEAD_LOAD, // Deflection due to Construction dead loads
+    DEFL_ADDI_DEAD_LOAD, // Deflection due to additional dead loads
+    DEFL_FINA_LIVE_LOAD, // Deflection due to Final stage live loads
+    DEFL_SHRINK, // Deflection due to shrinkage of concrete
+    DEFL_POST_CONS, // Deflection due to post Construction loads
+    DEFL_FINA_TOTAL, // Total Deflection
+    MODAL_SHAPE, // Mode shape
+  }
+
   public class DeflectionResult : ResultsBase, IDeflectionResult
   {
-    internal Dictionary<InternalForceOption, List<Length>> ResultsCache = new Dictionary<InternalForceOption, List<Length>>();
-    public DeflectionResult(Member member) : base(member)
+    internal Dictionary<DeflectionOption, List<Length>> ResultsCache = new Dictionary<DeflectionOption, List<Length>>();
+    public DeflectionResult(Member member, int numIntermediatePos) : base(member, numIntermediatePos)
     {
     }
 
@@ -24,7 +35,7 @@ namespace ComposAPI
     {
       get
       {
-        InternalForceOption resultType = InternalForceOption.ULTI_AXIAL_CONS;
+        DeflectionOption resultType = DeflectionOption.DEFL_CONS_DEAD_LOAD;
         if (!ResultsCache.ContainsKey(resultType))
           GetResults(resultType);
         return ResultsCache[resultType];
@@ -39,7 +50,7 @@ namespace ComposAPI
     {
       get
       {
-        InternalForceOption resultType = InternalForceOption.ULTI_AXIAL_CONS;
+        DeflectionOption resultType = DeflectionOption.DEFL_ADDI_DEAD_LOAD;
         if (!ResultsCache.ContainsKey(resultType))
           GetResults(resultType);
         return ResultsCache[resultType];
@@ -54,7 +65,7 @@ namespace ComposAPI
     {
       get
       {
-        InternalForceOption resultType = InternalForceOption.ULTI_AXIAL_CONS;
+        DeflectionOption resultType = DeflectionOption.DEFL_FINA_LIVE_LOAD;
         if (!ResultsCache.ContainsKey(resultType))
           GetResults(resultType);
         return ResultsCache[resultType];
@@ -69,7 +80,7 @@ namespace ComposAPI
     {
       get
       {
-        InternalForceOption resultType = InternalForceOption.ULTI_AXIAL_CONS;
+        DeflectionOption resultType = DeflectionOption.DEFL_SHRINK;
         if (!ResultsCache.ContainsKey(resultType))
           GetResults(resultType);
         return ResultsCache[resultType];
@@ -84,7 +95,7 @@ namespace ComposAPI
     {
       get
       {
-        InternalForceOption resultType = InternalForceOption.ULTI_AXIAL_CONS;
+        DeflectionOption resultType = DeflectionOption.DEFL_POST_CONS;
         if (!ResultsCache.ContainsKey(resultType))
           GetResults(resultType);
         return ResultsCache[resultType];
@@ -99,7 +110,7 @@ namespace ComposAPI
     {
       get
       {
-        InternalForceOption resultType = InternalForceOption.ULTI_AXIAL_CONS;
+        DeflectionOption resultType = DeflectionOption.DEFL_FINA_TOTAL;
         if (!ResultsCache.ContainsKey(resultType))
           GetResults(resultType);
         return ResultsCache[resultType];
@@ -114,7 +125,7 @@ namespace ComposAPI
     {
       get
       {
-        InternalForceOption resultType = InternalForceOption.ULTI_AXIAL_CONS;
+        DeflectionOption resultType = DeflectionOption.MODAL_SHAPE;
         if (!ResultsCache.ContainsKey(resultType))
           GetResults(resultType);
         return ResultsCache[resultType];
@@ -122,7 +133,7 @@ namespace ComposAPI
     }
 
 
-    private void GetResults(InternalForceOption resultType)
+    private void GetResults(DeflectionOption resultType)
     {
       List<Length> results = new List<Length>();
       for (short pos = 0; pos < this.NumIntermediatePos; pos++)

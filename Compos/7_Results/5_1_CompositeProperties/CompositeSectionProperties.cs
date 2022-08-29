@@ -9,10 +9,34 @@ using UnitsNet.Units;
 
 namespace ComposAPI
 {
+  internal enum BeamResultOption
+  {
+    GIRDER_WELD_THICK_T, // Welding thickness at top
+    GIRDER_WELD_THICK_B, // Welding thickness at bottom
+    I_STEEL_BEAM, // moment of Inertia of steel beam
+    X_STEEL_BEAM, // Neutral axis depth of steel beam
+    AREA_STEEL_BEAM, // Area of steel beam
+    I_LONG_TERM, // moment of Inertia of beam for long term loading
+    X_LONG_TERM, // Neutral axis depth of beam for long term loading
+    AREA_LONG_TERM, // Area of beam for long term loading
+    I_SHORT_TERM, // moment of Inertia of beam for short term loading
+    X_SHORT_TERM, // Neutral axis depth of beam for short term loading
+    AREA_SHORT_TERM, // Area of beam for short term loading
+    I_SHRINK, // moment of Inertia of beam for shrinkage
+    X_SHRINK, // Neutral axis depth of beam for shrinkage
+    AREA_SHRINK, // Area of beam for shrinkage
+    I_EFFECTIVE, // Effective moment of Inertia of beam
+    X_EFFECTIVE, // Neutral axis depth of beam under combined loading
+    AREA_EFFECT, // Effective Area of beam
+    I_VIBRATION, // moment of Inertia of beam for vibration
+    X_VIBRATION, // Neutral axis depth of beam for vibration
+    AREA_VIBRATION, // Area of beam for vibration
+  }
+
   public class CompositeSectionProperties : ResultsBase, ICompositeSectionProperties
   {
     internal Dictionary<Enum, List<IQuantity>> ResultsCache = new Dictionary<Enum, List<IQuantity>>();
-    public CompositeSectionProperties(Member member) : base(member)
+    public CompositeSectionProperties(Member member, int numIntermediatePos) : base(member, numIntermediatePos)
     {
     }
 
@@ -323,7 +347,20 @@ namespace ComposAPI
         return ResultsCache[resultType].Select(x => (Area)x).ToList();
       }
     }
- 
+
+    /// <summary>
+    /// Natural frequency for composite section
+    /// </summary>
+    public Frequency NaturalFrequency
+    {
+      get
+      {
+        if (m_frequency == Frequency.Zero)
+          m_frequency = new Frequency(this.Member.UtilisationFactor(UtilisationFactorOption.NaturalFrequency), FrequencyUnit.Hertz);
+        return m_frequency;
+      }
+    }
+    private Frequency m_frequency = Frequency.Zero;
 
     private void GetResults(BeamResultOption resultType)
     {
