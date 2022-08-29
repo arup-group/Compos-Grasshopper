@@ -142,7 +142,7 @@ namespace ComposAPI
     /// <summary>
     /// Construction stage ultimate shear
     /// </summary>
-    public List<Force> ShearULSConstructionStage
+    public List<Force> ShearULSConstruction
     {
       get
       {
@@ -227,7 +227,7 @@ namespace ComposAPI
     /// <summary>
     /// Construction stage ultimate shear
     /// </summary>
-    public List<Force> AxialULSConstructionStage
+    public List<Force> AxialULSConstruction
     {
       get
       {

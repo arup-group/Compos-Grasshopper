@@ -58,7 +58,7 @@ namespace ComposAPI
     /// <summary>
     /// Construction stage ultimate shear
     /// </summary>
-    List<Force> ShearULSConstructionStage { get; }
+    List<Force> ShearULSConstruction { get; }
 
 
     /// <summary>
@@ -95,7 +95,7 @@ namespace ComposAPI
     /// <summary>
     /// Construction stage ultimate shear
     /// </summary>
-    List<Force> AxialULSConstructionStage { get; }
+    List<Force> AxialULSConstruction { get; }
 
 
     /// <summary>
