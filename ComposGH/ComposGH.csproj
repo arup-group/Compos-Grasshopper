@@ -147,6 +147,7 @@
     <Compile Include="Components\5_Member\3_Tertiary\CreateSafetyFactorsEN.cs" />
     <Compile Include="Components\5_Member\3_Tertiary\CreateCreepShrinkageParams.cs" />
     <Compile Include="Components\5_Member\3_Tertiary\CreateSafetyFactors.cs" />
+    <Compile Include="Components\7_Results\1_Primary\Utilisations.cs" />
     <Compile Include="Components\7_Results\1_Primary\CodeSatisfied.cs" />
     <Compile Include="Components\7_Results\3_Tertiary\TransverseRebarResults.cs" />
     <Compile Include="Components\7_Results\3_Tertiary\TransverseRebarLayout.cs" />
@@ -546,6 +547,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\TransverseRebarLayout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\UtilisationHigh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\UtilisationLow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\UtilisationMedium.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\UtilisationOver.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

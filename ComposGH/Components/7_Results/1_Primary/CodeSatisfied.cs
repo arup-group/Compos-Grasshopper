@@ -25,7 +25,6 @@ namespace ComposGH.Components
             Ribbon.SubCategoryName.Cat7())
     { this.Hidden = true; } // sets the initial state of the component to hidden
     public override GH_Exposure Exposure => GH_Exposure.primary;
-
     #endregion
 
     #region Input and output

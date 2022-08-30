@@ -379,6 +379,18 @@
   <data name="Utilisation" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\Utilisation.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="UtilisationHigh" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\UtilisationHigh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UtilisationLow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\UtilisationLow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UtilisationMedium" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\UtilisationMedium.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UtilisationOver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\UtilisationOver.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="WebOpening" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\WebOpening.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
