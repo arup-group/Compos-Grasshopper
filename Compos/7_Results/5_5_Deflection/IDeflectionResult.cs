@@ -46,9 +46,10 @@ namespace ComposAPI
     List<Length> Total { get; }
 
 
-    /// <summary>
-    /// Mode shape
-    /// </summary>
-    List<Length> ModeShape { get; }
+    // bug in COM, ModalShape giving only 0 values
+    ///// <summary>
+    ///// Mode shape
+    ///// </summary>
+    //List<Length> ModalShape { get; }
   }
 }

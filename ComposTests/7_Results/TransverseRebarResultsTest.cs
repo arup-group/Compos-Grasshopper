@@ -20,7 +20,7 @@ namespace ComposAPI.Results.Tests
   public class TransverseRebarResultsTest
   {
     [Fact]
-    public void RebarLengthTests()
+    public void RebarPositionsTest()
     {
       IResult r = ResultsTest.ResultMember.Result;
       ITransverseRebarResult res = r.TransverseRebarResults;
@@ -32,6 +32,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < res.Positions.Count; i++)
         Assert.Equal(expectedDist[i],
           res.Positions[i].Meters, 4);
+    }
+
+    [Fact]
+    public void RebarStartPositionTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ITransverseRebarResult res = r.TransverseRebarResults;
 
       List<double> expectedStart = new List<double>()
       {
@@ -40,7 +47,14 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < res.Positions.Count; i++)
         Assert.Equal(expectedStart[i],
           res.StartPosition[i].Meters, 4);
-      
+    }
+
+    [Fact]
+    public void RebarEndPositionTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ITransverseRebarResult res = r.TransverseRebarResults;
+
       List<double> expectedEnd = new List<double>()
       {
         8.0
@@ -48,6 +62,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < res.Positions.Count; i++)
         Assert.Equal(expectedEnd[i],
           res.EndPosition[i].Meters, 4);
+    }
+
+    [Fact]
+    public void RebarDiameterTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ITransverseRebarResult res = r.TransverseRebarResults;
 
       List<double> expectedDia = new List<double>()
       {
@@ -56,6 +77,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < res.Positions.Count; i++)
         Assert.Equal(expectedDia[i],
           res.Diameter[i].Meters, 4);
+    }
+
+    [Fact]
+    public void RebarSpacingTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ITransverseRebarResult res = r.TransverseRebarResults;
 
       List<double> expectedSpacing = new List<double>()
       {
@@ -64,6 +92,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < res.Positions.Count; i++)
         Assert.Equal(expectedSpacing[i],
           res.Spacing[i].Meters, 4);
+    }
+
+    [Fact]
+    public void RebarAreaTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ITransverseRebarResult res = r.TransverseRebarResults;
 
       List<double> expectedArea = new List<double>()
       {
@@ -72,6 +107,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < res.Positions.Count; i++)
         Assert.Equal(expectedArea[i],
           res.Area[i].SquareMeters, 4);
+    }
+
+    [Fact]
+    public void RebarCoverTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ITransverseRebarResult res = r.TransverseRebarResults;
 
       List<double> expectedCover = new List<double>()
       {
@@ -80,6 +122,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < res.Positions.Count; i++)
         Assert.Equal(expectedCover[i],
           res.Cover[i].Meters, 4);
+    }
+
+    [Fact]
+    public void RebarPerimeterTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ITransverseRebarResult res = r.TransverseRebarResults;
 
       List<double> expectedPerim = new List<double>()
       {
@@ -91,7 +140,7 @@ namespace ComposAPI.Results.Tests
     }
 
     [Fact]
-    public void RebarStringTests()
+    public void RebarStringTest()
     {
       IResult r = ResultsTest.ResultMember.Result;
       ITransverseRebarResult res = r.TransverseRebarResults;
@@ -106,7 +155,7 @@ namespace ComposAPI.Results.Tests
     }
 
     [Fact]
-    public void RebarForceTests()
+    public void RebarShearForceTest()
     {
       IResult r = ResultsTest.ResultMember.Result;
       ITransverseRebarResult res = r.TransverseRebarResults;
@@ -118,6 +167,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < res.Positions.Count; i++)
         Assert.Equal(expectedTransShear[i] / 1000,
           res.TransverseShearForce[i].Kilonewtons, 1);
+    }
+
+    [Fact]
+    public void RebarShearResistanceTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ITransverseRebarResult res = r.TransverseRebarResults;
 
       List<double> expectedTot = new List<double>()
       {
@@ -126,6 +182,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < res.Positions.Count; i++)
         Assert.Equal(expectedTot[i] / 1000,
           res.TotalShearResistance[i].Kilonewtons, 1);
+    }
+
+    [Fact]
+    public void RebarConcreteResistanceTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ITransverseRebarResult res = r.TransverseRebarResults;
 
       List<double> expectedConc = new List<double>()
       {
@@ -134,6 +197,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < res.Positions.Count; i++)
         Assert.Equal(expectedConc[i] / 1000,
           res.ConcreteShearResistance[i].Kilonewtons, 1);
+    }
+
+    [Fact]
+    public void RebarDeckingResistanceTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ITransverseRebarResult res = r.TransverseRebarResults;
 
       List<double> expectedDeck = new List<double>()
       {
@@ -142,6 +212,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < res.Positions.Count; i++)
         Assert.Equal(expectedDeck[i] / 1000,
           res.DeckingShearResistance[i].Kilonewtons, 1);
+    }
+
+    [Fact]
+    public void RebarMeshResistanceTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ITransverseRebarResult res = r.TransverseRebarResults;
 
       List<double> expectedMesh = new List<double>()
       {
@@ -150,6 +227,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < res.Positions.Count; i++)
         Assert.Equal(expectedMesh[i] / 1000,
           res.MeshBarShearResistance[i].Kilonewtons, 1);
+    }
+
+    [Fact]
+    public void RebarRebarResistanceTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ITransverseRebarResult res = r.TransverseRebarResults;
 
       List<double> expectedRebar = new List<double>()
       {
@@ -158,6 +242,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < res.Positions.Count; i++)
         Assert.Equal(expectedRebar[i] / 1000,
           res.RebarShearResistance[i].Kilonewtons, 1);
+    }
+
+    [Fact]
+    public void RebarMaxAllowedShearTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ITransverseRebarResult res = r.TransverseRebarResults;
 
       List<double> expectedMaxAllow = new List<double>()
       {

@@ -117,20 +117,20 @@ namespace ComposAPI
       }
     }
 
-
-    /// <summary>
-    /// Mode shape
-    /// </summary>
-    public List<Length> ModeShape
-    {
-      get
-      {
-        DeflectionOption resultType = DeflectionOption.MODAL_SHAPE;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
-      }
-    }
+    // bug in COM, ModalShape giving only 0 values
+    ///// <summary>
+    ///// Mode shape
+    ///// </summary>
+    //public List<Length> ModalShape
+    //{
+    //  get
+    //  {
+    //    DeflectionOption resultType = DeflectionOption.MODAL_SHAPE;
+    //    if (!ResultsCache.ContainsKey(resultType))
+    //      GetResults(resultType);
+    //    return ResultsCache[resultType];
+    //  }
+    //}
 
 
     private void GetResults(DeflectionOption resultType)

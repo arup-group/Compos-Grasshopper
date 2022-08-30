@@ -19,7 +19,7 @@ namespace ComposAPI.Results.Tests
   public class InternalForceResultsTest
   {
     [Fact]
-    public void MomentResultsTest()
+    public void MomentULSConstructionResultsTest()
     {
       IResult r = ResultsTest.ResultMember.Result;
       IInternalForceResult res = r.InternalForces;
@@ -30,13 +30,20 @@ namespace ComposAPI.Results.Tests
         -62548,
         -100100,
         -112600,
-        -100100, 
+        -100100,
         -62548,
         0.0
       };
       for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedULSCons[i] * Math.Pow(10, -6), 
+        Assert.Equal(expectedULSCons[i] * Math.Pow(10, -6),
           res.MomentULSConstruction[i].NewtonMeters * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void MomentULSResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IInternalForceResult res = r.InternalForces;
 
       List<double> expectedULS = new List<double>()
       {
@@ -51,6 +58,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedULS[i] * Math.Pow(10, -6),
           res.MomentULS[i].NewtonMeters * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void MomentConstructionDeadLoadResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IInternalForceResult res = r.InternalForces;
 
       List<double> expectedConsDL = new List<double>()
       {
@@ -65,6 +79,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedConsDL[i] * Math.Pow(10, -6),
           res.MomentConstructionDeadLoad[i].NewtonMeters * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void MomentConstructionLiveLoadResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IInternalForceResult res = r.InternalForces;
 
       List<double> expectedConsLL = new List<double>()
       {
@@ -79,6 +100,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedConsLL[i] * Math.Pow(10, -6),
           res.MomentConstructionLiveLoad[i].NewtonMeters * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void MomentAddDeadLoadResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IInternalForceResult res = r.InternalForces;
 
       List<double> expectedAddDL = new List<double>()
       {
@@ -93,6 +121,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedAddDL[i] * Math.Pow(10, -6),
           res.MomentFinalAdditionalDeadLoad[i].NewtonMeters * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void MomentLiveLoadResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IInternalForceResult res = r.InternalForces;
 
       List<double> expectedLL = new List<double>()
       {
@@ -107,6 +142,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedLL[i] * Math.Pow(10, -6),
           res.MomentFinalLiveLoad[i].NewtonMeters * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void MomentShrinkageResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IInternalForceResult res = r.InternalForces;
 
       List<double> expectedShrinkage = new List<double>()
       {
@@ -124,7 +166,7 @@ namespace ComposAPI.Results.Tests
     }
 
     [Fact]
-    public void ShearResultsTest()
+    public void ShearULSConstructionResultsTest()
     {
       IResult r = ResultsTest.ResultMember.Result;
       IInternalForceResult res = r.InternalForces;
@@ -142,6 +184,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedULSCons[i] * Math.Pow(10, -6),
           res.ShearULSConstruction[i].Newtons * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void ShearULSResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IInternalForceResult res = r.InternalForces;
 
       List<double> expectedULS = new List<double>()
       {
@@ -156,6 +205,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedULS[i] * Math.Pow(10, -6),
           res.ShearULS[i].Newtons * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void ShearConstructionDeadLoadResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IInternalForceResult res = r.InternalForces;
 
       List<double> expectedConsDL = new List<double>()
       {
@@ -170,6 +226,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedConsDL[i] * Math.Pow(10, -6),
           res.ShearConstructionDeadLoad[i].Newtons * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void ShearConstructionLiveLoadResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IInternalForceResult res = r.InternalForces;
 
       List<double> expectedConsLL = new List<double>()
       {
@@ -184,6 +247,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedConsLL[i] * Math.Pow(10, -6),
           res.ShearConstructionLiveLoad[i].Newtons * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void ShearAddDeadLoadResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IInternalForceResult res = r.InternalForces;
 
       List<double> expectedAddDL = new List<double>()
       {
@@ -198,6 +268,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedAddDL[i] * Math.Pow(10, -6),
           res.ShearFinalAdditionalDeadLoad[i].Newtons * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void ShearLiveLoadResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IInternalForceResult res = r.InternalForces;
 
       List<double> expectedLL = new List<double>()
       {
@@ -215,7 +292,7 @@ namespace ComposAPI.Results.Tests
     }
 
     [Fact]
-    public void AxialResultsTest()
+    public void AxialULSConstructionResultsTest()
     {
       IResult r = ResultsTest.ResultMember.Result;
       IInternalForceResult res = r.InternalForces;
@@ -233,6 +310,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedULSCons[i] * Math.Pow(10, -6),
           res.AxialULSConstruction[i].Newtons * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void AxialULSResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IInternalForceResult res = r.InternalForces;
 
       List<double> expectedULS = new List<double>()
       {
@@ -247,6 +331,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedULS[i] * Math.Pow(10, -6),
           res.AxialULS[i].Newtons * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void AxialConstructionDeadLoadResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IInternalForceResult res = r.InternalForces;
 
       List<double> expectedConsDL = new List<double>()
       {
@@ -261,6 +352,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedConsDL[i] * Math.Pow(10, -6),
           res.AxialConstructionDeadLoad[i].Newtons * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void AxialConstructionLiveLoadResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IInternalForceResult res = r.InternalForces;
 
       List<double> expectedConsLL = new List<double>()
       {
@@ -275,6 +373,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedConsLL[i] * Math.Pow(10, -6),
           res.AxialConstructionLiveLoad[i].Newtons * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void AxialAddDeadLoadResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IInternalForceResult res = r.InternalForces;
 
       List<double> expectedAddDL = new List<double>()
       {
@@ -289,6 +394,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedAddDL[i] * Math.Pow(10, -6),
           res.AxialFinalAdditionalDeadLoad[i].Newtons * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void AxialLiveLoadResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IInternalForceResult res = r.InternalForces;
 
       List<double> expectedLL = new List<double>()
       {

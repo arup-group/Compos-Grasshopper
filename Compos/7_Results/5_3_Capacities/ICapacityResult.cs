@@ -69,7 +69,7 @@ namespace ComposAPI
     /// <summary>
     /// Assumed plastic Sagging moment capacity
     /// </summary>
-    List<Moment> AssumedPlasticMoment { get; }
+    List<Moment> AssumedBeamPlasticMoment { get; }
 
     /// <summary>
     /// Neutral axis depth under Assumed plastic Sagging moment
@@ -89,7 +89,7 @@ namespace ComposAPI
     /// <summary>
     /// Assumed plastic Hogging moment capacity
     /// </summary>
-    List<Moment> AssumedPlasticMomentHogging { get; }
+    List<Moment> AssumedBeamPlasticMomentHogging { get; }
 
     /// <summary>
     /// Neutral axis depth under Assumed plastic Hogging moment

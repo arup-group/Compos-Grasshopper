@@ -44,7 +44,7 @@ namespace ComposAPI
     public string ToCoaString()
     {
       ComposUnits standardUnits = ComposUnits.GetStandardUnits();
-      
+
       Force force = new Force(1.0, this.Force);
       double forceFactor = 1.0 / force.ToUnit(standardUnits.Force).Value;
 
@@ -95,9 +95,9 @@ namespace ComposAPI
           }
           catch (Exception)
           {
-            parameters[2] = parameters[2].Remove(parameters[2].Length - 1);
-            parameters[2] += "²";
-            this.Stress = (PressureUnit)UnitParser.Default.Parse(parameters[2], typeof(PressureUnit));
+            string newStressAbbr = parameters[2].Remove(parameters[2].Length - 1);
+            newStressAbbr += "²";
+            this.Stress = (PressureUnit)UnitParser.Default.Parse(newStressAbbr, typeof(PressureUnit));
           }
           break;
         case CoaIdentifier.Units.Mass:

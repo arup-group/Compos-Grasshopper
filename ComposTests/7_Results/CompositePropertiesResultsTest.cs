@@ -20,7 +20,7 @@ namespace ComposAPI.Results.Tests
   public class CompositePropertiesResultsTest
   {
     [Fact]
-    public void PropertiesTests()
+    public void GirderWeldTHKTOPPropertiesTests()
     {
       IResult r = ResultsTest.ResultMember.Result;
       ICompositeSectionProperties res = r.SectionProperties;
@@ -38,6 +38,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedWeldTHKtop[i],
           res.GirderWeldThicknessTop[i].Meters, 4);
+    }
+
+    [Fact]
+    public void GirderWeldTHKBottomPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedWeldTHKbot = new List<double>()
       {
@@ -52,6 +59,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedWeldTHKbot[i],
           res.GirderWeldThicknessBottom[i].Meters, 4);
+    }
+
+    [Fact]
+    public void SlabWidthLeftPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedslabwidthLeft = new List<double>()
       {
@@ -66,6 +80,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedslabwidthLeft[i],
           res.EffectiveSlabWidthLeft[i].Meters, 4);
+    }
+
+    [Fact]
+    public void SlabWidthRightPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedslabwidthRight = new List<double>()
       {
@@ -80,6 +101,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedslabwidthRight[i],
           res.EffectiveSlabWidthRight[i].Meters, 4);
+    }
+
+    [Fact]
+    public void BeamIPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedBeamI = new List<double>()
       {
@@ -94,6 +122,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedBeamI[i],
           res.BeamMomentOfInertia[i].MetersToTheFourth, 8);
+    }
+
+    [Fact]
+    public void BeamXPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedBeamX = new List<double>()
       {
@@ -108,6 +143,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedBeamX[i],
           res.BeamNeutralAxisPosition[i].Meters, 5);
+    }
+
+    [Fact]
+    public void BeamAreaPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedBeamArea = new List<double>()
       {
@@ -122,6 +164,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedBeamArea[i],
           res.BeamArea[i].SquareMeters, 6);
+    }
+
+    [Fact]
+    public void LongTermIPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedLongTermI = new List<double>()
       {
@@ -136,6 +185,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedLongTermI[i],
           res.MomentOfInertiaLongTerm[i].MetersToTheFourth, 8);
+    }
+
+    [Fact]
+    public void LongTermXPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedexpectedLongTermX = new List<double>()
       {
@@ -150,6 +206,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedexpectedLongTermX[i],
           res.NeutralAxisPositionLongTerm[i].Meters, 5);
+    }
+
+    [Fact]
+    public void LongTermAreaPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedLongTermArea = new List<double>()
       {
@@ -164,6 +227,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedLongTermArea[i],
           res.AreaLongTerm[i].SquareMeters, 6);
+    }
+
+    [Fact]
+    public void ShortTermIPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedShortTermI = new List<double>()
       {
@@ -178,6 +248,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedShortTermI[i],
           res.MomentOfInertiaShortTerm[i].MetersToTheFourth, 8);
+    }
+
+    [Fact]
+    public void ShortTermXPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedexpectedShortTermX = new List<double>()
       {
@@ -192,6 +269,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedexpectedShortTermX[i],
           res.NeutralAxisPositionShortTerm[i].Meters, 5);
+    }
+
+    [Fact]
+    public void ShortTermAreaPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedShortTermArea = new List<double>()
       {
@@ -206,6 +290,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedShortTermArea[i],
           res.AreaShortTerm[i].SquareMeters, 6);
+    }
+
+    [Fact]
+    public void ShrinkageIPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedShrinkageI = new List<double>()
       {
@@ -220,6 +311,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedShrinkageI[i],
           res.MomentOfInertiaShrinkage[i].MetersToTheFourth, 8);
+    }
+
+    [Fact]
+    public void ShrikageXPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedexpectedShrinkageX = new List<double>()
       {
@@ -234,6 +332,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedexpectedShrinkageX[i],
           res.NeutralAxisPositionShrinkage[i].Meters, 5);
+    }
+
+    [Fact]
+    public void ShrinkageAreaPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedShrinkageArea = new List<double>()
       {
@@ -248,6 +353,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedShrinkageArea[i],
           res.AreaShrinkage[i].SquareMeters, 6);
+    }
+
+    [Fact]
+    public void EffectiveIPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedEffI = new List<double>()
       {
@@ -262,6 +374,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedEffI[i],
           res.MomentOfInertiaEffective[i].MetersToTheFourth, 8);
+    }
+
+    [Fact]
+    public void EffectiveXPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedexpectedEffX = new List<double>()
       {
@@ -276,6 +395,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedexpectedEffX[i],
           res.NeutralAxisPositionEffective[i].Meters, 5);
+    }
+
+    [Fact]
+    public void EffectiveAreaPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedEffArea = new List<double>()
       {
@@ -290,6 +416,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedEffArea[i],
           res.AreaEffective[i].SquareMeters, 6);
+    }
+
+    [Fact]
+    public void VibrationIPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedVibrationI = new List<double>()
       {
@@ -304,6 +437,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedVibrationI[i],
           res.MomentOfInertiaVibration[i].MetersToTheFourth, 8);
+    }
+
+    [Fact]
+    public void VibrationXPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedexpectedVibrationX = new List<double>()
       {
@@ -318,6 +458,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedexpectedVibrationX[i],
           res.NeutralAxisPositionVibration[i].Meters, 5);
+    }
+
+    [Fact]
+    public void VibrationAreaPropertiesTests()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      ICompositeSectionProperties res = r.SectionProperties;
 
       List<double> expectedVibrationArea = new List<double>()
       {

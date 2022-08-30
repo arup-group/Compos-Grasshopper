@@ -48,7 +48,8 @@ namespace ComposAPI.Results.Tests
     [Fact]
     public void BeamClassificationTest2()
     {
-      IBeamClassification res = ResultsTest.ResultMember.Result.BeamClassification;
+      IResult r = ResultsTest.ResultMember.Result;
+      IBeamClassification res = r.BeamClassification;
 
       string expectedFlangeConstr = "Semi-compact";
       string expectedWebConstr = "Plastic";
@@ -72,7 +73,7 @@ namespace ComposAPI.Results.Tests
     }
 
     [Fact]
-    public void BeamStressTest()
+    public void BottomFlangeStressConstructionTest()
     {
       IResult r = ResultsTest.ResultMember.Result;
       IBeamStressResult res = r.BeamStresses;
@@ -88,8 +89,15 @@ namespace ComposAPI.Results.Tests
         0.0
       };
       for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedBottomConst[i] * Math.Pow(10, -9), 
+        Assert.Equal(expectedBottomConst[i] * Math.Pow(10, -9),
           res.BottomFlangeConstruction[i].NewtonsPerSquareMeter * Math.Pow(10, -9), 4);
+    }
+
+    [Fact]
+    public void WebStressConstructionTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IBeamStressResult res = r.BeamStresses;
 
       List<double> expectedWebConst = new List<double>()
       {
@@ -102,8 +110,15 @@ namespace ComposAPI.Results.Tests
         0.0
       };
       for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedWebConst[i] * Math.Pow(10, -9), 
+        Assert.Equal(expectedWebConst[i] * Math.Pow(10, -9),
           res.WebConstruction[i].NewtonsPerSquareMeter * Math.Pow(10, -9), 4);
+    }
+
+    [Fact]
+    public void TopFlangeStressConstructionTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IBeamStressResult res = r.BeamStresses;
 
       List<double> expectedTopConst = new List<double>()
       {
@@ -116,8 +131,15 @@ namespace ComposAPI.Results.Tests
         0.0
       };
       for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedTopConst[i] * Math.Pow(10, -9), 
+        Assert.Equal(expectedTopConst[i] * Math.Pow(10, -9),
           res.TopFlangeConstruction[i].NewtonsPerSquareMeter * Math.Pow(10, -9), 4);
+    }
+
+    [Fact]
+    public void BottomFlangeStressAddDLTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IBeamStressResult res = r.BeamStresses;
 
       List<double> expectedBottomAddDL = new List<double>()
       {
@@ -132,7 +154,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedBottomAddDL[i] * Math.Pow(10, -9),
           res.BottomFlangeFinalAdditionalDeadLoad[i].NewtonsPerSquareMeter * Math.Pow(10, -9), 4);
+    }
 
+    [Fact]
+    public void WebStressAddDLTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IBeamStressResult res = r.BeamStresses;
       List<double> expectedWebAddDL = new List<double>()
       {
         0.0,
@@ -146,7 +174,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedWebAddDL[i] * Math.Pow(10, -9),
           res.WebFinalAdditionalDeadLoad[i].NewtonsPerSquareMeter * Math.Pow(10, -9), 4);
+    }
 
+    [Fact]
+    public void TopFlangeStressAddDLTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IBeamStressResult res = r.BeamStresses;
       List<double> expectedTopAddDL = new List<double>()
       {
         0.0,
@@ -160,7 +194,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedTopAddDL[i] * Math.Pow(10, -9),
           res.TopFlangeFinalAdditionalDeadLoad[i].NewtonsPerSquareMeter * Math.Pow(10, -9), 4);
+    }
 
+    [Fact]
+    public void BottomFlangeStressLLTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IBeamStressResult res = r.BeamStresses;
       List<double> expectedBottomLL = new List<double>()
       {
         0.0,
@@ -174,7 +214,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedBottomLL[i] * Math.Pow(10, -9),
           res.BottomFlangeFinalLiveLoad[i].NewtonsPerSquareMeter * Math.Pow(10, -9), 4);
+    }
 
+    [Fact]
+    public void WebStressLLTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IBeamStressResult res = r.BeamStresses;
       List<double> expectedWebLL = new List<double>()
       {
         0.0,
@@ -188,7 +234,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedWebLL[i] * Math.Pow(10, -9),
           res.WebFinalLiveLoad[i].NewtonsPerSquareMeter * Math.Pow(10, -9), 5);
+    }
 
+    [Fact]
+    public void TopFlangeStressLLTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IBeamStressResult res = r.BeamStresses;
       List<double> expectedTopLL = new List<double>()
       {
         0.0,
@@ -202,7 +254,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedTopLL[i] * Math.Pow(10, -9),
           res.TopFlangeFinalLiveLoad[i].NewtonsPerSquareMeter * Math.Pow(10, -9), 5);
+    }
 
+    [Fact]
+    public void BottomFlangeStressShrinkageTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IBeamStressResult res = r.BeamStresses;
       List<double> expectedBottomShrink = new List<double>()
       {
         0.0,
@@ -216,7 +274,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedBottomShrink[i] * Math.Pow(10, -9),
           res.BottomFlangeFinalShrinkage[i].NewtonsPerSquareMeter * Math.Pow(10, -9), 4);
+    }
 
+    [Fact]
+    public void WebStressShrinkageTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IBeamStressResult res = r.BeamStresses;
       List<double> expectedWebShrink = new List<double>()
       {
         0.0,
@@ -230,7 +294,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedWebShrink[i] * Math.Pow(10, -9),
           res.WebFinalShrinkage[i].NewtonsPerSquareMeter * Math.Pow(10, -9), 4);
+    }
 
+    [Fact]
+    public void TopFlangeStressShrinkageTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IBeamStressResult res = r.BeamStresses;
       List<double> expectedTopShrink = new List<double>()
       {
         0.0,
@@ -244,7 +314,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedTopShrink[i] * Math.Pow(10, -9),
           res.TopFlangeFinalShrinkage[i].NewtonsPerSquareMeter * Math.Pow(10, -9), 4);
+    }
 
+    [Fact]
+    public void BottomFlangeStressFinalTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IBeamStressResult res = r.BeamStresses;
       List<double> expectedBottomFinal = new List<double>()
       {
         0.0,
@@ -258,7 +334,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedBottomFinal[i] * Math.Pow(10, -9),
           res.BottomFlangeFinal[i].NewtonsPerSquareMeter * Math.Pow(10, -9), 4);
+    }
 
+    [Fact]
+    public void WebStressFinalTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IBeamStressResult res = r.BeamStresses;
       List<double> expectedWebFinal = new List<double>()
       {
         0.0,
@@ -273,7 +355,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedWebFinal[i] * Math.Pow(10, -9),
           res.WebFinal[i].NewtonsPerSquareMeter * Math.Pow(10, -9), 5);
+    }
 
+    [Fact]
+    public void TopFlangeStressFinalTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IBeamStressResult res = r.BeamStresses;
       List<double> expectedTopFinal = new List<double>()
       {
         0.0,

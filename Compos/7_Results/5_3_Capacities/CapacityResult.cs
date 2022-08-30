@@ -196,7 +196,7 @@ namespace ComposAPI
     /// <summary>
     /// Assumed plastic Sagging moment capacity
     /// </summary>
-    public List<Moment> AssumedPlasticMoment
+    public List<Moment> AssumedBeamPlasticMoment
     {
       get
       {
@@ -252,7 +252,7 @@ namespace ComposAPI
     /// <summary>
     /// Assumed plastic Hogging moment capacity
     /// </summary>
-    public List<Moment> AssumedPlasticMomentHogging
+    public List<Moment> AssumedBeamPlasticMomentHogging
     {
       get
       {

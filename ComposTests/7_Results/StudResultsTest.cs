@@ -19,7 +19,7 @@ namespace ComposAPI.Results.Tests
   public class StudResultsTest
   {
     [Fact]
-    public void StudForceResultsTest()
+    public void StudForceCapacityResultsTest()
     {
       IResult r = ResultsTest.ResultMember.Result;
       IStudResult res = r.StudResults;
@@ -35,8 +35,15 @@ namespace ComposAPI.Results.Tests
         0.0
       };
       for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedActual[i] * Math.Pow(10, -6), 
+        Assert.Equal(expectedActual[i] * Math.Pow(10, -6),
           res.StudCapacity[i].Newtons * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void StudForceRequiredCapacityFullInteractionResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IStudResult res = r.StudResults;
 
       List<double> expectedRequired100 = new List<double>()
       {
@@ -51,6 +58,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedRequired100[i] * Math.Pow(10, -6),
           res.StudCapacityRequiredForFullShearInteraction[i].Newtons * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void StudForceCapacityRequiredResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IStudResult res = r.StudResults;
 
       List<double> expectedRequired = new List<double>()
       {
@@ -65,9 +79,23 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedRequired[i] * Math.Pow(10, -6),
           res.StudCapacityRequired[i].Newtons * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void StudForceSingleCapacityResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IStudResult res = r.StudResults;
 
       Assert.Equal(71500 * Math.Pow(10, -6),
           res.SingleStudCapacity.Newtons * Math.Pow(10, -6), 4);
+    }
+
+    [Fact]
+    public void StudForceCapacityLeftResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IStudResult res = r.StudResults;
 
       List<double> expectedLeft = new List<double>()
       {
@@ -82,6 +110,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedLeft[i] * Math.Pow(10, -6),
           res.StudCapacityLeft[i].Newtons * Math.Pow(10, -6), 3);
+    }
+
+    [Fact]
+    public void StudForceCapacityRightResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IStudResult res = r.StudResults;
 
       List<double> expectedRight = new List<double>()
       {
@@ -99,7 +134,7 @@ namespace ComposAPI.Results.Tests
     }
 
     [Fact]
-    public void StudRatioResultsTest()
+    public void StudRatioInteractionRequiredResultsTest()
     {
       IResult r = ResultsTest.ResultMember.Result;
       IStudResult res = r.StudResults;
@@ -117,6 +152,13 @@ namespace ComposAPI.Results.Tests
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedReqInteract[i],
           res.ShearInteractionRequired[i].Percent, 2);
+    }
+
+    [Fact]
+    public void StudRatioActualInteractionResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IStudResult res = r.StudResults;
 
       List<double> expectedActual = new List<double>()
       {
@@ -134,7 +176,7 @@ namespace ComposAPI.Results.Tests
     }
 
     [Fact]
-    public void StudScalarResultsTest()
+    public void StudScalarLeftResultsTest()
     {
       IResult r = ResultsTest.ResultMember.Result;
       IStudResult res = r.StudResults;
@@ -151,6 +193,13 @@ namespace ComposAPI.Results.Tests
       };
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedStudsLeft[i], res.NumberOfStudsLeft[i]);
+    }
+
+    [Fact]
+    public void StudScalarUsedLeftResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IStudResult res = r.StudResults;
 
       List<int> expectedUsedStudsLeft = new List<int>()
       {
@@ -164,6 +213,13 @@ namespace ComposAPI.Results.Tests
       };
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedUsedStudsLeft[i], res.NumberOfStudsRequiredLeft[i]);
+    }
+
+    [Fact]
+    public void StudScalarRightResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IStudResult res = r.StudResults;
 
       List<int> expectedStudsRight = new List<int>()
       {
@@ -177,6 +233,13 @@ namespace ComposAPI.Results.Tests
       };
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedStudsRight[i], res.NumberOfStudsRight[i]);
+    }
+
+    [Fact]
+    public void StudScalarUsedRightResultsTest()
+    {
+      IResult r = ResultsTest.ResultMember.Result;
+      IStudResult res = r.StudResults;
 
       List<int> expectedUsedStudsRight = new List<int>()
       {
