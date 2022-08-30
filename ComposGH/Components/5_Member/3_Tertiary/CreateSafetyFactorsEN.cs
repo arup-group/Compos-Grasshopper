@@ -29,11 +29,11 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddNumberParameter("Const. ξ-factor", "Cξ", "EC0 reduction factor at construction stage (dead/permenant load)", GH_ParamAccess.item, 1.0);
+      pManager.AddNumberParameter("Const. ξ-factor", "Cξ", "EC0 reduction factor at construction stage (dead/permanent load)", GH_ParamAccess.item, 1.0);
       pManager.AddNumberParameter("Const. Combination factor", "CΨ0", "Factor for construction stage combination value of a variable action", GH_ParamAccess.item, 1.0);
       pManager.AddNumberParameter("Const. Permanent load factor", "CγG", "Partial factor for permanent loads at construction stage", GH_ParamAccess.item, 1.35);
       pManager.AddNumberParameter("Const. Variable load factor", "CγQ", "Partial factor for variable loads at construction stage", GH_ParamAccess.item, 1.5);
-      pManager.AddNumberParameter("Final ξ-factor", "Fξ", "EC0 reduction factor at final stage (dead/permenant load)", GH_ParamAccess.item, 1.0);
+      pManager.AddNumberParameter("Final ξ-factor", "Fξ", "EC0 reduction factor at final stage (dead/permanent load)", GH_ParamAccess.item, 1.0);
       pManager.AddNumberParameter("Final Combination factor", "FΨ0", "Factor for final stage combination value of a variable action", GH_ParamAccess.item, 1.0);
       pManager.AddNumberParameter("Final Permanent load factor", "FγG", "Partial factor for permanent loads at final stage", GH_ParamAccess.item, 1.35);
       pManager.AddNumberParameter("Final Variable load factor", "FγQ", "Partial factor for variable loads at final stage", GH_ParamAccess.item, 1.5);

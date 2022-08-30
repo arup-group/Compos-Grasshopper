@@ -147,17 +147,7 @@
     <Compile Include="Components\5_Member\3_Tertiary\CreateSafetyFactorsEN.cs" />
     <Compile Include="Components\5_Member\3_Tertiary\CreateCreepShrinkageParams.cs" />
     <Compile Include="Components\5_Member\3_Tertiary\CreateSafetyFactors.cs" />
-    <Compile Include="Components\7_Results\ReadClassResults.cs" />
-    <Compile Include="Components\7_Results\ReadStresses.cs" />
-    <Compile Include="Components\7_Results\ReadStudResults.cs" />
-    <Compile Include="Components\7_Results\ReadDeflections.cs" />
-    <Compile Include="Components\7_Results\ReadTransverseRebarProps.cs" />
     <Compile Include="Components\7_Results\CodeSatisfied.cs" />
-    <Compile Include="Components\7_Results\ReadUtilisations.cs" />
-    <Compile Include="Components\7_Results\ReadCapacities.cs" />
-    <Compile Include="Components\7_Results\ReadBeamResults.cs" />
-    <Compile Include="Components\7_Results\ReadInternalForces.cs" />
-    <Compile Include="Components\7_Results\ReadResults.cs" />
     <Compile Include="Components\GH_OasysDropDownComponent.cs" />
     <Compile Include="Components\GH_OasysComponent.cs" />
     <Compile Include="Components\GH_OasysTaskCapableComponent.cs" />
@@ -285,11 +275,6 @@
     <None Include="Properties\Icons\ComposLogo128.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\6_Analysis\1_Primary\" />
-    <Folder Include="Components\6_Analysis\2_Secondary\" />
-    <Folder Include="Components\6_Analysis\3_Tertiary\" />
-    <Folder Include="Components\6_Analysis\4_Quarternary\" />
-    <Folder Include="Components\6_Analysis\5_Quinary\" />
     <Folder Include="Components\8_Design\4_Quarternary\" />
     <Folder Include="Components\8_Design\5_Quinary\" />
     <Folder Include="Parameters\0_File\" />
