@@ -109,7 +109,7 @@ namespace ComposAPI.Results.Tests
       };
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedLeft[i] * Math.Pow(10, -6),
-          res.StudCapacityLeft[i].Newtons * Math.Pow(10, -6), 3);
+          res.StudCapacityStart[i].Newtons * Math.Pow(10, -6), 3);
     }
 
     [Fact]
@@ -130,7 +130,7 @@ namespace ComposAPI.Results.Tests
       };
       for (int i = 0; i < r.Positions.Count; i++)
         Assert.Equal(expectedRight[i] * Math.Pow(10, -6),
-          res.StudCapacityRight[i].Newtons * Math.Pow(10, -6), 3);
+          res.StudCapacityEnd[i].Newtons * Math.Pow(10, -6), 3);
     }
 
     [Fact]
@@ -192,7 +192,7 @@ namespace ComposAPI.Results.Tests
         27
       };
       for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedStudsLeft[i], res.NumberOfStudsLeft[i]);
+        Assert.Equal(expectedStudsLeft[i], res.NumberOfStudsStart[i]);
     }
 
     [Fact]
@@ -212,7 +212,7 @@ namespace ComposAPI.Results.Tests
         27
       };
       for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedUsedStudsLeft[i], res.NumberOfStudsRequiredLeft[i]);
+        Assert.Equal(expectedUsedStudsLeft[i], res.NumberOfStudsRequiredStart[i]);
     }
 
     [Fact]
@@ -232,7 +232,7 @@ namespace ComposAPI.Results.Tests
         0
       };
       for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedStudsRight[i], res.NumberOfStudsRight[i]);
+        Assert.Equal(expectedStudsRight[i], res.NumberOfStudsEnd[i]);
     }
 
     [Fact]
@@ -252,7 +252,7 @@ namespace ComposAPI.Results.Tests
         0
       };
       for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedUsedStudsRight[i], res.NumberOfStudsRequiredRight[i]);
+        Assert.Equal(expectedUsedStudsRight[i], res.NumberOfStudsRequiredEnd[i]);
     }
   }
 }

@@ -91,7 +91,7 @@ namespace ComposAPI
     /// <summary>
     /// Actual shear capacity from left end
     /// </summary>
-    public List<Force> StudCapacityLeft
+    public List<Force> StudCapacityStart
     {
       get
       {
@@ -105,7 +105,7 @@ namespace ComposAPI
     /// <summary>
     /// Actual shear capacity from right end
     /// </summary>
-    public List<Force> StudCapacityRight
+    public List<Force> StudCapacityEnd
     {
       get
       {
@@ -147,7 +147,7 @@ namespace ComposAPI
     /// <summary>
     /// Actual number of studs provided from left end
     /// </summary>
-    public List<int> NumberOfStudsLeft
+    public List<int> NumberOfStudsStart
     {
       get
       {
@@ -160,7 +160,7 @@ namespace ComposAPI
     /// <summary>
     /// Used number of studs provided from left end
     /// </summary>
-    public List<int> NumberOfStudsRequiredLeft
+    public List<int> NumberOfStudsRequiredStart
     {
       get
       {
@@ -174,7 +174,7 @@ namespace ComposAPI
     /// <summary>
     /// Actual number of studs provided from right end
     /// </summary>
-    public List<int> NumberOfStudsRight
+    public List<int> NumberOfStudsEnd
     {
       get
       {
@@ -188,7 +188,7 @@ namespace ComposAPI
     /// <summary>
     /// Used number of studs provided from right end
     /// </summary>
-    public List<int> NumberOfStudsRequiredRight
+    public List<int> NumberOfStudsRequiredEnd
     {
       get
       {

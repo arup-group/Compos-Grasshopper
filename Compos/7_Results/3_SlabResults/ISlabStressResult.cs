@@ -13,43 +13,43 @@ namespace ComposAPI
   {
     #region concrete stress
     /// <summary>
-    /// Maximum stress in concrete slab due to additional dead loads
+    /// Maximum stress in concrete slab due to additional dead loads. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
     List<Pressure> ConcreteStressAdditionalDeadLoad { get; }
 
     /// <summary>
-    /// Maximum stress in concrete slab due to Final stage live dead loads
+    /// Maximum stress in concrete slab due to Final stage live dead loads. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
     List<Pressure> ConcreteStressFinalLiveLoad { get; }
 
     /// <summary>
-    /// Maximum stress in concrete slab due to shrinkage
+    /// Maximum stress in concrete slab due to shrinkage. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
     List<Pressure> ConcreteStressFinalShrinkage { get; }
 
     /// <summary>
-    /// Maximum stress in concrete slab in Final stage
+    /// Maximum stress in concrete slab in Final stage. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
     List<Pressure> ConcreteStressFinal { get; }
     #endregion
     #region concrete strain
     /// <summary>
-    /// Maximum strain in concrete slab due to additional dead loads
+    /// Maximum strain in concrete slab due to additional dead loads. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
     List<Strain> ConcreteStrainAdditionalDeadLoad { get; }
 
     /// <summary>
-    /// Maximum strain in concrete slab due to Final stage live dead loads
+    /// Maximum strain in concrete slab due to Final stage live dead loads. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
     List<Strain> ConcreteStrainFinalLiveLoad { get; }
 
     /// <summary>
-    /// Maximum strain in concrete slab due to shrinkage
+    /// Maximum strain in concrete slab due to shrinkage. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
     List<Strain> ConcreteStrainFinalShrinkage { get; }
 
     /// <summary>
-    /// Maximum strain in concrete slab in Final stage
+    /// Maximum strain in concrete slab in Final stage. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
     List<Strain> ConcreteStrainFinal { get; }
     #endregion

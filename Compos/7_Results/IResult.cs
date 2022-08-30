@@ -25,7 +25,5 @@ namespace ComposAPI
     IStudResult StudResults { get; }
 
     IDeflectionResult Deflections { get; }
-
-    
   }
 }

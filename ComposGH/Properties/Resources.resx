@@ -121,6 +121,9 @@
   <data name="AxialLoad" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\AxialLoad.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="BeamClassification" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\BeamClassification.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="BeamParam" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\BeamParam.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -129,6 +132,12 @@
   </data>
   <data name="BeamSizeLimits" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\BeamSizeLimits.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BeamStressResults" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\BeamStressResults.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CapacityResults" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\CapacityResults.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CatalogueID" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\CatalogueID.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -144,6 +153,9 @@
   </data>
   <data name="ComposLogo128" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\ComposLogo128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ComposLogo64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\ComposLogo64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ConvertUnitNumber" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\ConvertUnitNumber.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -217,6 +229,9 @@
   <data name="DeflectionLimit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\DeflectionLimit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="DeflectionResults" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\DeflectionResults.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="DesignCodeParameter" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\DesignCodeParameter.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -237,6 +252,9 @@
   </data>
   <data name="FrequencyLimit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\FrequencyLimit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="InternalForceResults" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\InternalForceResults.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LinearLoad" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\LinearLoad.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -286,11 +304,17 @@
   <data name="SaveModel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\SaveModel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="SectionProperties" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\SectionProperties.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="SlabDimensions" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\SlabDimensions.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SlabParam" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\SlabParam.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SlabStressResults" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\SlabStressResults.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="StandardASNZSteelMaterial" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\StandardASNZSteelMaterial.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -328,6 +352,15 @@
   <data name="StudParam" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\StudParam.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="StudResults" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\StudResults.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TransverseRebarLayout" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\TransverseRebarLayout.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TransverseRebarResults" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\TransverseRebarResults.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="TransverseReinforcement" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\TransverseReinforcement.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -342,6 +375,9 @@
   </data>
   <data name="Units" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\Units.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Utilisation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\Utilisation.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="WebOpening" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\WebOpening.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

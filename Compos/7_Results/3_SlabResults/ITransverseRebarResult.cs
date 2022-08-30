@@ -22,22 +22,22 @@ namespace ComposAPI
     List<Length> EndPosition { get; }
 
     /// <summary>
-    /// Rebar diameter
+    /// Rebar diameter. Values provided applies between corresponding <see cref="StartPosition"/> and <see cref="EndPosition"/>
     /// </summary>
     List<Length> Diameter { get; }
 
     /// <summary>
-    /// Rebar interval
+    /// Rebar interval. Values provided applies between corresponding <see cref="StartPosition"/> and <see cref="EndPosition"/>
     /// </summary>
     List<Length> Spacing { get; }
 
     /// <summary>
-    /// Rebar cover
+    /// Rebar cover. Values provided applies between corresponding <see cref="StartPosition"/> and <see cref="EndPosition"/>
     /// </summary>
     List<Length> Cover { get; }
 
     /// <summary>
-    /// Rebar area per meter
+    /// Rebar area per meter. Values provided applies between corresponding <see cref="StartPosition"/> and <see cref="EndPosition"/>
     /// </summary>
     List<Area> Area { get; }
 

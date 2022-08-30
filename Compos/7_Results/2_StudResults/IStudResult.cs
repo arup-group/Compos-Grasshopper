@@ -12,71 +12,71 @@ namespace ComposAPI
   public interface IStudResult
   {
     /// <summary>
-    /// Actual stud capacity, as [number of studs] x [single stud capacity]
+    /// Actual stud capacity, as [number of studs] x [single stud capacity]. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
     List<Force> StudCapacity { get; }
 
 
     /// <summary>
-    /// Capacity of a single stud
+    /// Capacity of a single stud. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
     Force SingleStudCapacity { get; }
 
 
     /// <summary>
-    /// Required stud capacity for given moment
+    /// Required stud capacity for given moment. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
     List<Force> StudCapacityRequired { get; }
 
 
     /// <summary>
-    /// Required stud capacity for 100% shear interaction
+    /// Required stud capacity for 100% shear interaction. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
     List<Force> StudCapacityRequiredForFullShearInteraction { get; }
 
 
     /// <summary>
-    /// Actual shear capacity from left end
+    /// Actual shear capacity from left end. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
-    List<Force> StudCapacityLeft { get; }
+    List<Force> StudCapacityStart { get; }
 
 
     /// <summary>
-    /// Actual shear capacity from right end
+    /// Actual shear capacity from right end. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
-    List<Force> StudCapacityRight { get; }
+    List<Force> StudCapacityEnd { get; }
 
 
     /// <summary>
-    /// Actual shear interaction
+    /// Actual shear interaction. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
     List<Ratio> ShearInteraction { get; }
 
 
     /// <summary>
-    /// Required shear interaction for given moment
+    /// Required shear interaction for given moment. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
     List<Ratio> ShearInteractionRequired { get; }
 
 
     /// <summary>
-    /// Actual number of studs provided from left end
+    /// Actual number of studs provided from start. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
-    List<int> NumberOfStudsLeft { get; }
+    List<int> NumberOfStudsStart { get; }
 
     /// <summary>
-    /// Used number of studs provided from left end
+    /// Used number of studs provided from start. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
-    List<int> NumberOfStudsRequiredLeft { get; }
+    List<int> NumberOfStudsRequiredStart { get; }
 
     /// <summary>
-    /// Actual number of studs provided from right end
+    /// Actual number of studs provided from end. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
-    List<int> NumberOfStudsRight { get; }
+    List<int> NumberOfStudsEnd { get; }
 
     /// <summary>
-    /// Used number of studs provided from right end
+    /// Used number of studs provided from end. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
-    List<int> NumberOfStudsRequiredRight { get; }
+    List<int> NumberOfStudsRequiredEnd { get; }
   }
 }
