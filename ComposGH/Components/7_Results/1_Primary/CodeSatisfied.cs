@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using ComposAPI;
-using ComposGH.Parameters;
-using ComposGH.UI;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
+using ComposAPI;
+using ComposGH.Parameters;
+using ComposGH.Properties;
 
 namespace ComposGH.Components
 {
@@ -70,11 +68,11 @@ namespace ComposGH.Components
       get
       {
         if (Status < 2)
-          return Properties.Resources.CodeReqMet;
-        else if (Status == 2)
-          return Properties.Resources.CodeReqNotMet;
-        else
-          return Properties.Resources.CodeReqNotAvailable;
+          return Resources.CodeReqMet;
+        if (Status == 2)
+          return Resources.CodeReqNotMet;
+        
+        return Resources.CodeReqNotAvailable;
       }
     }
 

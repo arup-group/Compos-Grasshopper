@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using Grasshopper.Kernel;
+using Grasshopper.Kernel.Types;
 using ComposAPI;
 using ComposGH.Helpers;
 using ComposGH.Parameters;
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Types;
+using ComposGH.Properties;
 
 namespace ComposGH.Components
 {
@@ -26,7 +27,7 @@ namespace ComposGH.Components
     { this.Hidden = true; } // sets the initial state of the component to hidden
     public override GH_Exposure Exposure => GH_Exposure.primary;
 
-    protected override Bitmap Icon => Properties.Resources.SaveModel;
+    protected override Bitmap Icon => Resources.SaveModel;
     #endregion
 
     #region Custom UI

@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using UnitsNet;
-using UnitsNet.Units;
+using System.Collections.Generic;
 using Grasshopper.Kernel;
 using ComposAPI;
 using ComposGH.Parameters;
+using ComposGH.Properties;
+using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposGH.Components
 {
@@ -24,7 +25,7 @@ namespace ComposGH.Components
 
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateConcreteMaterialBS;
+    protected override System.Drawing.Bitmap Icon => Resources.CreateConcreteMaterialBS;
     #endregion
 
     #region Input and output

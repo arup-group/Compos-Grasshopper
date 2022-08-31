@@ -1,8 +1,8 @@
 ﻿using System;
-
-using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using ComposAPI;
+using ComposGH.Parameters;
+using ComposGH.Properties;
 
 namespace ComposGH.Components
 {
@@ -21,7 +21,7 @@ namespace ComposGH.Components
 
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.CreepShrinkageParams;
+    protected override System.Drawing.Bitmap Icon => Resources.CreepShrinkageParams;
     #endregion
 
     #region Input and output

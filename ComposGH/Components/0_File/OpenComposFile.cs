@@ -1,12 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Drawing;
+using System.Collections.Generic;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
-using ComposGH.Parameters;
 using ComposAPI;
 using ComposGH.Helpers;
-using System.Collections.Generic;
+using ComposGH.Parameters;
+using ComposGH.Properties;
 
 namespace ComposGH.Components
 {
@@ -27,7 +28,7 @@ namespace ComposGH.Components
 
     public override GH_Exposure Exposure => GH_Exposure.primary;
 
-    protected override Bitmap Icon => Properties.Resources.OpenModel;
+    protected override Bitmap Icon => Resources.OpenModel;
     #endregion
 
     #region Custom UI

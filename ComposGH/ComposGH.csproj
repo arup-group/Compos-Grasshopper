@@ -149,6 +149,7 @@
     <Compile Include="Components\5_Member\3_Tertiary\CreateSafetyFactors.cs" />
     <Compile Include="Components\7_Results\1_Primary\Utilisations.cs" />
     <Compile Include="Components\7_Results\1_Primary\CodeSatisfied.cs" />
+    <Compile Include="Components\7_Results\2_Secondary\Properties.cs" />
     <Compile Include="Components\7_Results\3_Tertiary\TransverseRebarResults.cs" />
     <Compile Include="Components\7_Results\3_Tertiary\TransverseRebarLayout.cs" />
     <Compile Include="Components\7_Results\3_Tertiary\StudResults.cs" />
@@ -278,9 +279,6 @@
     <None Include="Properties\Icons\ComposLogo128.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\7_Results\2_Secondary\" />
-    <Folder Include="Components\8_Design\4_Quarternary\" />
-    <Folder Include="Components\8_Design\5_Quinary\" />
     <Folder Include="Parameters\0_File\" />
   </ItemGroup>
   <ItemGroup>

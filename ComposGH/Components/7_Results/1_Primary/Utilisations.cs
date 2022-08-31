@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using Grasshopper.Kernel;
-using ComposGH.Parameters;
-using UnitsNet;
-using UnitsNet.Units;
-using System.Linq;
-using System.Windows.Forms.VisualStyles;
-using ComposAPI;
-using UnitsNet.GH;
 using System.Drawing;
+using Grasshopper.Kernel;
+using ComposAPI;
+using ComposGH.Parameters;
+using ComposGH.Properties;
 
 namespace ComposGH.Components
 {
@@ -128,15 +123,15 @@ namespace ComposGH.Components
       get
       {
         if (maxUtil < 0)
-          return Properties.Resources.Utilisation;
+          return Resources.Utilisation;
         else if (maxUtil < 0.50)
-          return Properties.Resources.UtilisationLow;
+          return Resources.UtilisationLow;
         else if (maxUtil < 0.80)
-          return Properties.Resources.UtilisationMedium;
+          return Resources.UtilisationMedium;
         else if (maxUtil < 1)
-          return Properties.Resources.UtilisationHigh;
+          return Resources.UtilisationHigh;
         else
-          return Properties.Resources.UtilisationOver;
+          return Resources.UtilisationOver;
       }
     }
     #region IGH_VariableParameterComponent null implementation

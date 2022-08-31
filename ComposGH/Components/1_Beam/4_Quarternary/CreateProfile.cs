@@ -1,13 +1,14 @@
-﻿using ComposAPI;
-using ComposGH.Helpers;
-using ComposGH.Parameters;
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Parameters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;using Grasshopper.Kernel;
+using Grasshopper.Kernel.Parameters;
+using ComposAPI;
+using ComposGH.Helpers;
+using ComposGH.Parameters;
+using ComposGH.Properties;
+
 using UnitsNet;
 
 namespace ComposGH.Components
@@ -35,7 +36,7 @@ namespace ComposGH.Components
       return help;
     }
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateProfile;
+    protected override System.Drawing.Bitmap Icon => Resources.CreateProfile;
     #endregion
 
     #region Input and output

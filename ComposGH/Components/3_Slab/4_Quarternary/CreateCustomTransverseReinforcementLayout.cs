@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Grasshopper.Kernel;
+using ComposAPI;
 using ComposGH.Parameters;
+using ComposGH.Properties;
 using UnitsNet;
 using UnitsNet.Units;
-using System.Linq;
-using ComposAPI;
 
 namespace ComposGH.Components
 {
@@ -25,7 +25,7 @@ namespace ComposGH.Components
     public override Guid ComponentGuid => new Guid("19322156-8b1a-4849-9772-813411af965c");
     public override GH_Exposure Exposure => GH_Exposure.quarternary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.CustomRebarLayout;
+    protected override System.Drawing.Bitmap Icon => Resources.CustomRebarLayout;
     #endregion
 
     #region Input and output

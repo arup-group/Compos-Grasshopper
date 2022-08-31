@@ -7,27 +7,26 @@ using ComposGH.Parameters;
 using ComposGH.Properties;
 using UnitsNet.Units;
 using UnitsNet.GH;
-using Oasys.Units;
 
 namespace ComposGH.Components
 {
-  public class SlabStressResults : GH_OasysDropDownComponent
+  public class Properties : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
-    public override Guid ComponentGuid => new Guid("6a4a30b1-41b3-4fbb-bcd1-64c7834b6306");
-    public SlabStressResults()
-      : base("Slab Stress Results",
-          "SlabStress",
-          "Get slab stress and strain results for a " + MemberGoo.Description,
+    public override Guid ComponentGuid => new Guid("5ea441b0-03aa-4aa9-a63f-356c1fa05427");
+    public Properties()
+      : base("Beam Stress Results",
+          "BeamStress",
+          "Get beam stress results for a " + MemberGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat7())
     { this.Hidden = true; } // sets the initial state of the component to hidden
 
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
 
-    protected override System.Drawing.Bitmap Icon => Resources.SlabStressResults;
+    protected override System.Drawing.Bitmap Icon => Resources.BeamStressResults;
     #endregion
 
     #region Input and output
@@ -37,8 +36,9 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Stress", "σ", "Maximum stress in concrete slab for selected load case. Values given at each position", GH_ParamAccess.list);
-      pManager.AddGenericParameter("Strain", "ε", "Maximum strain in concrete slab for to selected load case. Values given at each position", GH_ParamAccess.list);
+      pManager.AddGenericParameter("TopFlange", "Tfl", "Maximum stress in steel beam top flange for selected load case. Values given at each position", GH_ParamAccess.list);
+      pManager.AddGenericParameter("Web", "Web", "Maximum stress in steel beam web due to selected load case. Values given at each position", GH_ParamAccess.list);
+      pManager.AddGenericParameter("BottomFlange", "Bfl", "Maximum stress in steel beam bottom flange for selected load case. Values given at each position", GH_ParamAccess.list);
       pManager.AddGenericParameter("Positions", "Pos", "Positions for each critical section location. Values are measured from beam start.", GH_ParamAccess.list);
     }
     #endregion
@@ -47,37 +47,49 @@ namespace ComposGH.Components
     {
       IResult res = ((MemberGoo)GetInput.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
       List<GH_UnitNumber> positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
-      ISlabStressResult result = res.SlabStresses;
+      IBeamStressResult result = res.BeamStresses;
 
       List<GH_UnitNumber> outputs0 = null;
       List<GH_UnitNumber> outputs1 = null;
+      List<GH_UnitNumber> outputs2 = null;
 
       switch (this.SelectedLoad)
       {
+        case Load.Construction:
+          outputs0 = result.TopFlangeConstruction.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
+          outputs1 = result.WebConstruction.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
+          outputs2 = result.BottomFlangeConstruction.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
+          break;
+
         case Load.AdditionalDead:
-          outputs0 = result.ConcreteStressAdditionalDeadLoad.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
-          outputs1 = result.ConcreteStrainAdditionalDeadLoad.Select(x => new GH_UnitNumber(x.ToUnit(this.StrainUnit))).ToList();
+          outputs0 = result.TopFlangeFinalAdditionalDeadLoad.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
+          outputs1 = result.WebFinalAdditionalDeadLoad.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
+          outputs2 = result.BottomFlangeConstruction.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
           break;
 
         case Load.LiveLoad:
-          outputs0 = result.ConcreteStressFinalLiveLoad.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
-          outputs1 = result.ConcreteStrainFinalLiveLoad.Select(x => new GH_UnitNumber(x.ToUnit(this.StrainUnit))).ToList();
+          outputs0 = result.TopFlangeFinalLiveLoad.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
+          outputs1 = result.WebFinalLiveLoad.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
+          outputs2 = result.BottomFlangeFinalLiveLoad.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
           break;
 
         case Load.Shrinkage:
-          outputs0 = result.ConcreteStressFinalShrinkage.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
-          outputs1 = result.ConcreteStrainFinalShrinkage.Select(x => new GH_UnitNumber(x.ToUnit(this.StrainUnit))).ToList();
+          outputs0 = result.TopFlangeFinalShrinkage.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
+          outputs1 = result.WebFinalShrinkage.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
+          outputs2 = result.BottomFlangeFinalShrinkage.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
           break;
 
         case Load.Final:
-          outputs0 = result.ConcreteStressFinal.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
-          outputs1 = result.ConcreteStrainFinal.Select(x => new GH_UnitNumber(x.ToUnit(this.StrainUnit))).ToList();
+          outputs0 = result.TopFlangeFinal.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
+          outputs1 = result.WebFinal.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
+          outputs2 = result.BottomFlangeFinal.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
           break;
       }
 
       int i = 0;
       SetOutput.List(this, DA, i++, outputs0);
       SetOutput.List(this, DA, i++, outputs1);
+      SetOutput.List(this, DA, i++, outputs2);
 
       SetOutput.List(this, DA, i, positions);
     }
@@ -85,6 +97,7 @@ namespace ComposGH.Components
     #region Custom UI
     internal enum Load
     {
+      Construction,
       AdditionalDead,
       LiveLoad,
       Shrinkage,
@@ -92,12 +105,11 @@ namespace ComposGH.Components
     }
     private Load SelectedLoad = Load.Final;
     private PressureUnit StressUnit = Units.StressUnit;
-    private StrainUnit StrainUnit = Units.StrainUnit;
     private LengthUnit LengthUnit = Units.LengthUnitGeometry;
 
     internal override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] { "Load", "Stress Unit", "Strain Unit", "Length Unit" });
+      this.SpacerDescriptions = new List<string>(new string[] { "Load", "Stress Unit", "Length Unit" });
 
       this.DropDownItems = new List<List<string>>();
       this.SelectedItems = new List<string>();
@@ -109,10 +121,6 @@ namespace ComposGH.Components
       // stress
       this.DropDownItems.Add(Units.FilteredStressUnits);
       this.SelectedItems.Add(this.StressUnit.ToString());
-
-      // strain
-      this.DropDownItems.Add(Units.FilteredStrainUnits);
-      this.SelectedItems.Add(this.StrainUnit.ToString());
 
       // length
       this.DropDownItems.Add(Units.FilteredLengthUnits);
@@ -130,8 +138,6 @@ namespace ComposGH.Components
       else if (i == 1)
         this.StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), this.SelectedItems[i]);
       else if (i == 2)
-        this.StrainUnit = (StrainUnit)Enum.Parse(typeof(StrainUnit), this.SelectedItems[i]);
-      else if (i == 3)
         this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
 
       base.UpdateUI();
@@ -141,8 +147,7 @@ namespace ComposGH.Components
     {
       this.SelectedLoad = (Load)Enum.Parse(typeof(Load), this.SelectedItems[0]);
       this.StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), this.SelectedItems[1]);
-      this.StrainUnit = (StrainUnit)Enum.Parse(typeof(StrainUnit), this.SelectedItems[2]);
-      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[3]);
+      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[2]);
 
       base.UpdateUIFromSelectedItems();
     }
