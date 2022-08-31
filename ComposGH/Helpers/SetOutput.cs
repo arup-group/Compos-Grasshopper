@@ -13,6 +13,8 @@ namespace ComposGH.Components
     private static UnitsNetIQuantityJsonConverter converter = new UnitsNetIQuantityJsonConverter();
     internal static void Item(GH_OasysDropDownComponent owner, IGH_DataAccess DA, int inputid, object data)
     {
+      DA.SetData(inputid, data);
+
       int outputsSerialized = data.GetHashCode(); //JsonConvert.SerializeObject(data, converter).GetHashCode();
 
       if (!owner.ExistingOutputsSerialized.ContainsKey(inputid))
@@ -27,12 +29,11 @@ namespace ComposGH.Components
       }
       else
         owner.UpdateOutput = false;
-
-      if (owner.UpdateOutput)
-        DA.SetData(inputid, data);
     }
     internal static void List<GH_Goo>(GH_OasysDropDownComponent owner, IGH_DataAccess DA, int inputid, List<GH_Goo> data)
     {
+      DA.SetDataList(inputid, data);
+
       if (!owner.ExistingOutputsSerialized.ContainsKey(inputid))
       {
         owner.ExistingOutputsSerialized.Add(inputid, new List<int>());
@@ -56,12 +57,12 @@ namespace ComposGH.Components
           owner.UpdateOutput = false;
       }
 
-      if (owner.UpdateOutput)
-        DA.SetDataList(inputid, data);
     }
 
     internal static void Tree<T>(GH_OasysDropDownComponent owner, IGH_DataAccess DA, int inputid, DataTree<T> dataTree)
     {
+      DA.SetDataTree(inputid, dataTree);
+
       if (!owner.ExistingOutputsSerialized.ContainsKey(inputid))
       {
         owner.ExistingOutputsSerialized.Add(inputid, new List<int>());
@@ -95,9 +96,6 @@ namespace ComposGH.Components
         }
         counter = data.Count;
       }
-      
-      if (owner.UpdateOutput)
-        DA.SetDataTree(inputid, dataTree);
     }
   }
 }
