@@ -8,7 +8,7 @@ namespace ComposGHTests.Slab
   [Collection("GrasshopperFixture collection")]
   public class CreateSlabDimensionComponentTests
   {
-    public static GH_OasysDropDownComponent CreateSlabDimensionMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateSlabDimension();
       comp.CreateAttributes();
@@ -25,7 +25,7 @@ namespace ComposGHTests.Slab
     [Fact]
     public void CreateComponent()
     {
-      var comp = CreateSlabDimensionMother();
+      var comp = ComponentMother();
       comp.SetSelected(0, 0); // change dropdown to mm
       SlabDimensionGoo output = (SlabDimensionGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(0, output.Value.StartPosition.Value);
@@ -38,7 +38,7 @@ namespace ComposGHTests.Slab
     [Fact]
     public void CreateComponentWithInputs1()
     {
-      var comp = CreateSlabDimensionMother();
+      var comp = ComponentMother();
 
       comp.SetSelected(0, 2); // change dropdown to m
 
@@ -55,14 +55,14 @@ namespace ComposGHTests.Slab
     [Fact]
     public void DeserializeTest()
     {
-      var comp = CreateSlabDimensionMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = CreateSlabDimensionMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }

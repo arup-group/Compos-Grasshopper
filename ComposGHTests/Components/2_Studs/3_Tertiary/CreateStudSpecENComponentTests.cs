@@ -10,7 +10,7 @@ namespace ComposGHTests.Stud
   [Collection("GrasshopperFixture collection")]
   public class CreateStudSpecENComponentTests
   {
-    public static GH_OasysDropDownComponent CreateStudSpecENMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateStudSpecEN();
       comp.CreateAttributes();
@@ -20,7 +20,7 @@ namespace ComposGHTests.Stud
     [Fact]
     public void CreateComponentTest()
     {
-      var comp = CreateStudSpecENMother();
+      var comp = ComponentMother();
 
       StudSpecificationGoo output = (StudSpecificationGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(Length.Zero, output.Value.NoStudZoneStart);
@@ -33,7 +33,7 @@ namespace ComposGHTests.Stud
     [Fact]
     public void CreateComponentWithInputsTest()
     {
-      var comp = CreateStudSpecENMother();
+      var comp = ComponentMother();
 
       int i = 0;
       ComponentTestHelper.SetInput(comp, 1.7, i++);
@@ -55,14 +55,14 @@ namespace ComposGHTests.Stud
     [Fact]
     public void DeserializeTest()
     {
-      var comp = CreateStudSpecENMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = CreateStudSpecENMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }

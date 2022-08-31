@@ -9,7 +9,7 @@ namespace ComposGHTests.Slab
   [Collection("GrasshopperFixture collection")]
   public class CreateCatalogueDeckComponentTests
   {
-    public static GH_OasysDropDownComponent CreateCatalogueDeckMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateCatalogueDeck();
       comp.CreateAttributes();
@@ -20,7 +20,7 @@ namespace ComposGHTests.Slab
     [Fact]
     public void CreateComponent()
     {
-      var comp = CreateCatalogueDeckMother();
+      var comp = ComponentMother();
 
       comp.SetSelected(0, 0); // set dropdown to mm
       comp.SetSelected(1, 2); // set dropdown to MPa
@@ -34,9 +34,9 @@ namespace ComposGHTests.Slab
     [Fact]
     public void CreateComponentWithInputs()
     {
-      var comp = CreateCatalogueDeckMother();
+      var comp = ComponentMother();
 
-      DeckingConfigurationGoo input1 = (DeckingConfigurationGoo)ComponentTestHelper.GetOutput(CreateDeckingConfigurationComponentTests.CreateDeckingConfigurationMother());
+      DeckingConfigurationGoo input1 = (DeckingConfigurationGoo)ComponentTestHelper.GetOutput(CreateDeckingConfigurationComponentTests.ComponentMother());
       ComponentTestHelper.SetInput(comp, input1, 0);
 
       DeckingGoo output = (DeckingGoo)ComponentTestHelper.GetOutput(comp);
@@ -47,14 +47,14 @@ namespace ComposGHTests.Slab
     [Fact]
     public void DeserializeTest()
     {
-      var comp = CreateCatalogueDeckMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = CreateCatalogueDeckMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }

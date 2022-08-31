@@ -15,7 +15,7 @@ namespace ComposGHTests.CompFile
   [Collection("GrasshopperFixture collection")]
   public class FileComponentsTests
   {
-    public static GH_OasysComponent OpenFileMother()
+    public static GH_OasysComponent ComponentMother()
     {
       var comp = new OpenComposFile();
       comp.CreateAttributes();
@@ -33,7 +33,7 @@ namespace ComposGHTests.CompFile
     [Fact]
     public void CreateOpenComponent()
     {
-      var comp = OpenFileMother();
+      var comp = ComponentMother();
 
       MemberGoo output = (MemberGoo)ComponentTestHelper.GetOutput(comp);
 
@@ -46,7 +46,7 @@ namespace ComposGHTests.CompFile
       SaveComposFile comp = new SaveComposFile();
       comp.CreateAttributes();
 
-      MemberGoo input1 = (MemberGoo)ComponentTestHelper.GetOutput(OpenFileMother());
+      MemberGoo input1 = (MemberGoo)ComponentTestHelper.GetOutput(ComponentMother());
 
       ComponentTestHelper.SetInput(comp, input1, 0);
 

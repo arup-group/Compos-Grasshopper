@@ -10,7 +10,7 @@ namespace ComposGHTests.Load
   [Collection("GrasshopperFixture collection")]
   public class CreateTriLinearLoadComponentTests
   {
-    public static GH_OasysDropDownComponent CreateTriLinearLoadMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateTriLinearLoad();
       comp.CreateAttributes();
@@ -26,7 +26,7 @@ namespace ComposGHTests.Load
     [Fact]
     public void CreateComponent1()
     {
-      var comp = CreateTriLinearLoadMother();
+      var comp = ComponentMother();
 
       comp.SetSelected(0, 0); // change dropdown to line
       comp.SetSelected(1, 5); // change dropdown to kN/m
@@ -54,7 +54,7 @@ namespace ComposGHTests.Load
     [Fact]
     public void CreateComponent2()
     {
-      var comp = CreateTriLinearLoadMother();
+      var comp = ComponentMother();
 
       comp.SetSelected(0, 1); // change dropdown to area
       comp.SetSelected(1, 5); // change dropdown to kN/m2
@@ -82,14 +82,14 @@ namespace ComposGHTests.Load
     [Fact]
     public void DeserializeTest()
     {
-      var comp = CreateTriLinearLoadMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = CreateTriLinearLoadMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }

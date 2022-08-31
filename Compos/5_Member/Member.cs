@@ -113,16 +113,16 @@ namespace ComposAPI
       switch (status)
       {
         case 0:
-          return "all code requirements are met";
+          return "All code requirements are met";
         case 1:
-          return "except the natural frequency is lower than that required, other code requirements are met";
+          return "Except natural frequency being lower than required, code requirements are met";
         case 2:
-          return "one or more code requirements are not met";
+          return "One or more code requirements are not met";
         case 3:
-          return "the given member name is not valid";
+          return "The given member name is not valid";
         case 4:
         default:
-          return "there is no results for the given named member";
+          return "There are no results for the given named member";
       }
     }
 

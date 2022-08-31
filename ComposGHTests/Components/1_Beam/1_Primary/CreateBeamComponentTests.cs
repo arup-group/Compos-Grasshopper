@@ -12,7 +12,7 @@ namespace ComposGHTests.Beam
   [Collection("GrasshopperFixture collection")]
   public class CreateBeamComponentTests
   {
-    public static GH_OasysDropDownComponent CreateBeamComponentMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateBeam();
       comp.CreateAttributes();
@@ -38,7 +38,7 @@ namespace ComposGHTests.Beam
     [Fact]
     public void CreateComponentWithInputsTest()
     {
-      var comp = CreateBeamComponentMother();
+      var comp = ComponentMother();
 
       RestraintGoo expectedRestraint = new RestraintGoo(new Restraint());
 
@@ -55,17 +55,17 @@ namespace ComposGHTests.Beam
     [Fact]
     public void CreateComponentWithInputsTest2()
     {
-      var comp = CreateBeamComponentMother();
+      var comp = ComponentMother();
 
       BeamSection beamSection = new BeamSection("CAT IPE IPE400");
       beamSection.StartPosition = new Ratio(50, RatioUnit.Percent);
       BeamSectionGoo input4_2 = new BeamSectionGoo(beamSection);
       ComponentTestHelper.SetInput(comp, input4_2, 3);
 
-      WebOpeningGoo input5_1 = (WebOpeningGoo)ComponentTestHelper.GetOutput(CreateNotchComponentTests.CreateNotchComponentMother());
+      WebOpeningGoo input5_1 = (WebOpeningGoo)ComponentTestHelper.GetOutput(CreateNotchComponentTests.ComponentMother());
       ComponentTestHelper.SetInput(comp, input5_1, 4);
 
-      WebOpeningGoo input5_2 = (WebOpeningGoo)ComponentTestHelper.GetOutput(CreateWebOpeningComponentTests.CreateWebOpeningComponentMother());
+      WebOpeningGoo input5_2 = (WebOpeningGoo)ComponentTestHelper.GetOutput(CreateWebOpeningComponentTests.ComponentMother());
       ComponentTestHelper.SetInput(comp, input5_2, 4);
 
       BeamGoo output = (BeamGoo)ComponentTestHelper.GetOutput(comp);
@@ -77,14 +77,14 @@ namespace ComposGHTests.Beam
     [Fact]
     public void DeserializeTest()
     {
-      GH_OasysDropDownComponent comp = CreateBeamComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      GH_OasysDropDownComponent comp = CreateBeamComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }

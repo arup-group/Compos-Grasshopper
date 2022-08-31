@@ -79,8 +79,8 @@ namespace ComposGH.Components
       SetOutput.List(this, DA, i++,
         result.ShearInteractionRequired.Select(x => new GH_UnitNumber(x.ToUnit(RatioUnit.DecimalFraction))).ToList());
 
-      SetOutput.Item(this, DA, i++,
-        result.SingleStudCapacity.ToUnit(this.ForceUnit));
+      SetOutput.Item(this, DA, i++, new GH_UnitNumber(
+        result.SingleStudCapacity.ToUnit(this.ForceUnit)));
 
       SetOutput.List(this, DA, i++,
         result.ShearInteraction.Select(x => new GH_UnitNumber(x.ToUnit(RatioUnit.DecimalFraction))).ToList());

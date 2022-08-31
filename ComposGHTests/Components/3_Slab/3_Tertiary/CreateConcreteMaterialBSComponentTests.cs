@@ -10,7 +10,7 @@ namespace ComposGHTests.Slab
   [Collection("GrasshopperFixture collection")]
   public class CreateConcreteMaterialBSComponentTests
   {
-    public static GH_OasysDropDownComponent CreateConcreteMaterialBSMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateConcreteMaterialBS();
       comp.CreateAttributes();
@@ -20,7 +20,7 @@ namespace ComposGHTests.Slab
     [Fact]
     public void CreateComponent()
     {
-      var comp = CreateConcreteMaterialBSMother();
+      var comp = ComponentMother();
 
       ConcreteMaterialGoo output = (ConcreteMaterialGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(ConcreteGrade.C25.ToString(), output.Value.Grade);
@@ -34,13 +34,13 @@ namespace ComposGHTests.Slab
     [Fact]
     public void CreateComponentWithInputs1()
     {
-      var comp = CreateConcreteMaterialBSMother();
+      var comp = ComponentMother();
 
       comp.SetSelected(2, 5); // change dropdown to KilogramPerCubicMeter
       
       ComponentTestHelper.SetInput(comp, 1864, 0);
 
-      ERatioGoo input2 = (ERatioGoo)ComponentTestHelper.GetOutput(CreateERatioComponentTests.CreateERatioMother());
+      ERatioGoo input2 = (ERatioGoo)ComponentTestHelper.GetOutput(CreateERatioComponentTests.ComponentMother());
       ComponentTestHelper.SetInput(comp, input2, 1);
       ComponentTestHelper.SetInput(comp, 0.2, 2);
 
@@ -55,7 +55,7 @@ namespace ComposGHTests.Slab
     [Fact]
     public void CreateComponentWithInputs2()
     {
-      var comp = CreateConcreteMaterialBSMother();
+      var comp = ComponentMother();
 
       ComponentTestHelper.SetInput(comp, "C30", 3);
 
@@ -66,7 +66,7 @@ namespace ComposGHTests.Slab
     [Fact]
     public void CreateComponentWithInputs3()
     {
-      var comp = CreateConcreteMaterialBSMother();
+      var comp = ComponentMother();
       comp.SetSelected(1, 1); // change dropdown to lightweight
 
       ConcreteMaterialGoo output = (ConcreteMaterialGoo)ComponentTestHelper.GetOutput(comp);
@@ -76,14 +76,14 @@ namespace ComposGHTests.Slab
     [Fact]
     public void DeserializeTest()
     {
-      var comp = CreateConcreteMaterialBSMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = CreateConcreteMaterialBSMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }

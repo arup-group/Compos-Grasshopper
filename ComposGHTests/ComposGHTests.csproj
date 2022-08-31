@@ -49,7 +49,6 @@
 
   <ItemGroup>
     <Folder Include="Components\6_Analysis\" />
-    <Folder Include="Components\7_Results\" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

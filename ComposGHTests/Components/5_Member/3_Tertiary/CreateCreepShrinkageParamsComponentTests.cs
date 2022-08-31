@@ -9,7 +9,7 @@ namespace ComposGHTests.Member
   [Collection("GrasshopperFixture collection")]
   public class CreateCreepShrinkageParamsComponentTests
   {
-    public static GH_OasysComponent CreateCreepShrinkageParamsMother()
+    public static GH_OasysComponent ComponentMother()
     {
       var comp = new CreateCreepShrinkageParams();
       comp.CreateAttributes();
@@ -23,7 +23,7 @@ namespace ComposGHTests.Member
     [Fact]
     public void CreateComponentWithInputs1()
     {
-      var comp = CreateCreepShrinkageParamsMother();
+      var comp = ComponentMother();
 
 
       CreepShrinkageParametersGoo output = (CreepShrinkageParametersGoo)ComponentTestHelper.GetOutput(comp);
@@ -39,7 +39,7 @@ namespace ComposGHTests.Member
     [Fact]
     public void CreateComponentWithInputs2()
     {
-      var comp = CreateCreepShrinkageParamsMother();
+      var comp = ComponentMother();
       ComponentTestHelper.SetInput(comp, 40000, 2);
       ComponentTestHelper.SetInput(comp, "60 %", 3);
 
