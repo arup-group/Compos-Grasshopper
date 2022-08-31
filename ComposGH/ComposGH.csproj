@@ -149,7 +149,11 @@
     <Compile Include="Components\5_Member\3_Tertiary\CreateSafetyFactors.cs" />
     <Compile Include="Components\7_Results\1_Primary\Utilisations.cs" />
     <Compile Include="Components\7_Results\1_Primary\CodeSatisfied.cs" />
-    <Compile Include="Components\7_Results\2_Secondary\Properties.cs" />
+    <Compile Include="Components\7_Results\2_Secondary\DeflectionResults.cs" />
+    <Compile Include="Components\7_Results\2_Secondary\InternalForces.cs" />
+    <Compile Include="Components\7_Results\2_Secondary\CapacityResults.cs" />
+    <Compile Include="Components\7_Results\2_Secondary\ConstantCompositeProperties.cs" />
+    <Compile Include="Components\7_Results\2_Secondary\CompositeProperties.cs" />
     <Compile Include="Components\7_Results\3_Tertiary\TransverseRebarResults.cs" />
     <Compile Include="Components\7_Results\3_Tertiary\TransverseRebarLayout.cs" />
     <Compile Include="Components\7_Results\3_Tertiary\StudResults.cs" />
@@ -557,6 +561,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\UtilisationOver.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\SectionPropertiesConstant.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

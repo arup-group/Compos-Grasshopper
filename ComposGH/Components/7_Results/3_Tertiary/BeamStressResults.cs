@@ -7,6 +7,7 @@ using ComposGH.Properties;
 using ComposGH.Parameters;
 using UnitsNet.Units;
 using UnitsNet.GH;
+using static ComposGH.Components.CompositeProperties;
 
 namespace ComposGH.Components
 {
@@ -53,33 +54,33 @@ namespace ComposGH.Components
       List<GH_UnitNumber> outputs1 = null;
       List<GH_UnitNumber> outputs2 = null;
 
-      switch (this.SelectedLoad)
+      switch (this.SelectedCase)
       {
-        case Load.Construction:
+        case Case.Construction:
           outputs0 = result.TopFlangeConstruction.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
           outputs1 = result.WebConstruction.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
           outputs2 = result.BottomFlangeConstruction.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
           break;
 
-        case Load.AdditionalDead:
+        case Case.AdditionalDead:
           outputs0 = result.TopFlangeFinalAdditionalDeadLoad.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
           outputs1 = result.WebFinalAdditionalDeadLoad.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
           outputs2 = result.BottomFlangeConstruction.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
           break;
 
-        case Load.LiveLoad:
+        case Case.LiveLoad:
           outputs0 = result.TopFlangeFinalLiveLoad.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
           outputs1 = result.WebFinalLiveLoad.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
           outputs2 = result.BottomFlangeFinalLiveLoad.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
           break;
 
-        case Load.Shrinkage:
+        case Case.Shrinkage:
           outputs0 = result.TopFlangeFinalShrinkage.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
           outputs1 = result.WebFinalShrinkage.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
           outputs2 = result.BottomFlangeFinalShrinkage.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
           break;
 
-        case Load.Final:
+        case Case.Final:
           outputs0 = result.TopFlangeFinal.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
           outputs1 = result.WebFinal.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
           outputs2 = result.BottomFlangeFinal.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
@@ -95,7 +96,7 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    internal enum Load
+    internal enum Case
     {
       Construction,
       AdditionalDead,
@@ -103,20 +104,20 @@ namespace ComposGH.Components
       Shrinkage,
       Final
     }
-    private Load SelectedLoad = Load.Final;
+    private Case SelectedCase = Case.Final;
     private PressureUnit StressUnit = Units.StressUnit;
     private LengthUnit LengthUnit = Units.LengthUnitGeometry;
 
     internal override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] { "Load", "Stress Unit", "Length Unit" });
+      this.SpacerDescriptions = new List<string>(new string[] { "Case", "Stress Unit", "Length Unit" });
 
       this.DropDownItems = new List<List<string>>();
       this.SelectedItems = new List<string>();
 
-      // load
-      this.DropDownItems.Add(Enum.GetNames(typeof(Load)).ToList());
-      this.SelectedItems.Add(this.SelectedLoad.ToString());
+      // Case
+      this.DropDownItems.Add(Enum.GetNames(typeof(Case)).ToList());
+      this.SelectedItems.Add(this.SelectedCase.ToString());
 
       // stress
       this.DropDownItems.Add(Units.FilteredStressUnits);
@@ -134,7 +135,7 @@ namespace ComposGH.Components
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
       if (i == 0)
-        this.SelectedLoad = (Load)Enum.Parse(typeof(Load), this.SelectedItems[i]);
+        this.SelectedCase = (Case)Enum.Parse(typeof(Case), this.SelectedItems[i]);
       else if (i == 1)
         this.StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), this.SelectedItems[i]);
       else if (i == 2)
@@ -145,7 +146,7 @@ namespace ComposGH.Components
 
     internal override void UpdateUIFromSelectedItems()
     {
-      this.SelectedLoad = (Load)Enum.Parse(typeof(Load), this.SelectedItems[0]);
+      this.SelectedCase = (Case)Enum.Parse(typeof(Case), this.SelectedItems[0]);
       this.StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), this.SelectedItems[1]);
       this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[2]);
 
