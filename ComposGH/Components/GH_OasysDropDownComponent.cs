@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Grasshopper.Kernel;
-using ComposGH.Helpers;
-using Newtonsoft.Json;
-using static System.Resources.ResXFileRef;
-using UnitsNet.Serialization.JsonNet;
 
 namespace ComposGH.Components
 {

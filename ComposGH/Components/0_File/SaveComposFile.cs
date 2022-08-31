@@ -73,10 +73,8 @@ namespace ComposGH.Components
       if (res) // == DialogResult.OK)
       {
         this.FileName = fdi.FileName;
-        //this.UsersetFileName = true;
 
         SaveFile();
-        //CreateAttributes();
 
         // add panel input with string
         // delete existing inputs if any
@@ -119,7 +117,7 @@ namespace ComposGH.Components
 
     #region Input and output
     // This region handles input and output parameters
-    string FileName = null;
+    public string FileName = null;
     ComposFile ComposFile;
     bool CanOpen = false;
 

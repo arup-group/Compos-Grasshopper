@@ -48,7 +48,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\0_File\" />
     <Folder Include="Components\6_Analysis\" />
     <Folder Include="Components\7_Results\" />
   </ItemGroup>
