@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
+using System.IO;
+using Xunit;
 
 namespace Rhino.Test
 {
@@ -13,8 +12,8 @@ namespace Rhino.Test
     private object _DocIO { get; set; }
     private object _Doc { get; set; }
     private bool _isDisposed;
-    protected string FilePath { get; private set; }
-
+    private static string _linkFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Grasshopper", "Libraries");
+    private static string _linkFileName = "ComposGhTests.ghlink";
     static GrasshopperFixture()
     {
       // This MUST be included in a static constructor to ensure that no Rhino DLLs
@@ -23,10 +22,22 @@ namespace Rhino.Test
       // assemblies to be loaded before this is called.
       RhinoInside.Resolver.Initialize();
     }
-    public GrasshopperFixture(string GHFilePath)
+    public GrasshopperFixture()
     {
-      FilePath = GHFilePath;
+      AddPluginToGH();
+
       InitializeCore();
+
+      // setup headless units
+      ComposGH.Units.SetupUnitsDuringLoad(true);
+    }
+
+    public void AddPluginToGH()
+    {
+      Directory.CreateDirectory(_linkFilePath);
+      StreamWriter writer = File.CreateText(Path.Combine(_linkFilePath, _linkFileName));
+      writer.Write(Environment.CurrentDirectory);
+      writer.Close();
     }
 
     protected virtual void Dispose(bool disposing)
@@ -57,7 +68,24 @@ namespace Rhino.Test
     {
       // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
       Dispose(disposing: true);
+      StopCompos();
       GC.SuppressFinalize(this);
+      File.Delete(Path.Combine(_linkFilePath, _linkFileName));
+    }
+
+    public void StopCompos()
+    {
+      try
+      {
+        ComposAPI.ComposFile.Close();
+        Process[] ps = Process.GetProcessesByName("Compos");
+        foreach (Process p in ps)
+          p.Kill();
+      }
+      catch (Exception)
+      {
+        // Compos was already closed by Grasshopper
+      }
     }
 
     public Rhino.Runtime.InProcess.RhinoCore Core
@@ -83,35 +111,6 @@ namespace Rhino.Test
         if (null == _DocIO) InitializeDocIO();
         return _DocIO as Grasshopper.Kernel.GH_DocumentIO;
       }
-    }
-
-    public Grasshopper.Kernel.GH_Document Doc
-    {
-      get
-      {
-        if (null == _Doc && null != FilePath)
-          _Doc = LoadGrasshopperDoc(FilePath);
-        return _Doc as Grasshopper.Kernel.GH_Document;
-      }
-    }
-
-    public Grasshopper.Kernel.GH_Document LoadGrasshopperDoc(string filePath)
-    {
-      if (null != _Doc)
-        return Doc;
-      if (!DocIO.Open(filePath))
-        throw new InvalidOperationException("File Loading Failed");
-      else
-      {
-        var doc = DocIO.Document;
-        _Doc = doc;
-
-        // Documents are typically only enabled when they are loaded
-        // into the Grasshopper canvas. In this case we -may- want to
-        // make sure our document is enabled before using it.
-        doc.Enabled = true;
-      }
-      return Doc;
     }
 
     void InitializeCore()
@@ -145,6 +144,11 @@ namespace Rhino.Test
     }
   }
 
+  [CollectionDefinition("GrasshopperFixture collection")]
+  public class GrasshopperCollection : ICollectionFixture<GrasshopperFixture>
+  {
+    // This class has no code, and is never created. Its purpose is simply
+    // to be the place to apply [CollectionDefinition] and all the
+    // ICollectionFixture<> interfaces.
+  }
 }
-
-

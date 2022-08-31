@@ -642,7 +642,16 @@ namespace ComposGH
         if (headless)
           m_length_geometry = LengthUnit.Meter;
         else
-          m_length_geometry = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
+        {
+          try
+          {
+            m_length_geometry = GetRhinoLengthUnit(RhinoDoc.ActiveDoc.ModelUnitSystem);
+          }
+          catch (System.NullReferenceException e)
+          {
+            m_length_geometry = LengthUnit.Meter;
+          }
+        }
         m_length_section = LengthUnit.Centimeter;
         m_length_result = LengthUnit.Millimeter;
 
