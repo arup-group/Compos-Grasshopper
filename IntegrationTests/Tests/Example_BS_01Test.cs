@@ -18,7 +18,7 @@ namespace IntegrationTests
       string fileName = "ComposGH_" + MethodBase.GetCurrentMethod().DeclaringType + ".gh";
       fileName = fileName.Replace("IntegrationTests.", string.Empty).Replace("Test", string.Empty);
 
-      string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
+      string solutiondir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.Parent.FullName;
       string path = Path.Combine(solutiondir, "ExampleFiles");
       GH_DocumentIO io = new GH_DocumentIO();
       Assert.True(File.Exists(Path.Combine(path, fileName)));
