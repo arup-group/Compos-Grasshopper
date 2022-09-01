@@ -38,16 +38,12 @@ namespace ComposGH
       var target = EnvironmentVariableTarget.Process;
       Environment.SetEnvironmentVariable(name, value, target);
 
-      // ### use the API and trigger a license check if possible
-
+      // ### Queue up Main menu loader ###
+      Grasshopper.Instances.CanvasCreated += UI.Menu.MenuLoad.OnStartup;
 
       // ### Create Ribbon Category name and icon ###
       Grasshopper.Instances.ComponentServer.AddCategorySymbolName("Compos", 'C');
       Grasshopper.Instances.ComponentServer.AddCategoryIcon("Compos", Properties.Resources.ComposLogo128);
-
-      // ### Queue up Main menu loader ###
-      Task task = new Task(UI.Menu.MenuLoad.OnStartup);
-      task.Start();
 
       // ### Setup units ###
       Units.SetupUnits();
