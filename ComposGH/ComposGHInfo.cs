@@ -22,25 +22,12 @@ namespace ComposGH
       var target = EnvironmentVariableTarget.Process;
       Environment.SetEnvironmentVariable(name, value, target);
 
-      // ### Load SQLite
-      try
-      {
-        Assembly ass2 = Assembly.LoadFile(Path.Combine(InstallPath, "x64", "SQLite.Interop.dll"));
-      }
-      catch (Exception)
-      {
-      }
-
-      // ### use the API and trigger a license check if possible
-      // TO-DO
+      // ### Queue up Main menu loader ###
+      Grasshopper.Instances.CanvasCreated += UI.Menu.MenuLoad.OnStartup;
 
       // ### Create Ribbon Category name and icon ###
       Grasshopper.Instances.ComponentServer.AddCategorySymbolName("Compos", 'C');
       Grasshopper.Instances.ComponentServer.AddCategoryIcon("Compos", Properties.Resources.ComposLogo128);
-
-      // ### Queue up Main menu loader ###
-      Helpers.Loader menuLoad = new Helpers.Loader();
-      menuLoad.CreateMainMenuItem();
 
       // ### Setup units ###
       Units.SetupUnitsDuringLoad();
