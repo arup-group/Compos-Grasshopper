@@ -23,6 +23,7 @@ namespace IntegrationTests
       GH_DocumentIO io = new GH_DocumentIO();
       Assert.True(File.Exists(Path.Combine(path, fileName)));
       Assert.True(io.Open(Path.Combine(path, fileName)));
+      io.Document.NewSolution(true);
       return io.Document;
     }
 
@@ -30,56 +31,26 @@ namespace IntegrationTests
     public void CodeSatisfiedTest01()
     {
       GH_Document doc = Document();
-      foreach (var obj in (doc.Objects))
-        if (obj is GH_Group group)
-        {
-          if (group.NickName == "TEST01")
-          {
-            Guid componentguid = group.ObjectIDs[0];
-
-            foreach (var obj2 in (doc.Objects))
-            {
-              if (obj2.InstanceGuid == componentguid)
-              {
-                GH_Component comp = (GH_Component)obj2;
-
-                GH_String output = (GH_String)ComponentTestHelper.GetOutput(comp);
-
-                Assert.Equal("One or more code requirements are not met", output.Value);
-                return;
-              }
-            }
-          }
-        }
-      Assert.True(false, "Did not find output");
+      GH_Component comp = Helper.FindComponentInDocumentByGroup(doc, "CodeCheckFails");
+      Assert.NotNull(comp);
+      GH_String output = (GH_String)ComponentTestHelper.GetOutput(comp);
+      Assert.Equal("One or more code requirements are not met", output.Value);
     }
 
     [Fact]
     public void CodeSatisfiedTest02()
     {
       GH_Document doc = Document();
-      foreach (var obj in (doc.Objects))
-        if (obj is GH_Group group)
-        {
-          if (group.NickName == "TEST02")
-          {
-            Guid componentguid = group.ObjectIDs[0];
+      GH_Component comp = Helper.FindComponentInDocumentByGroup(doc, "CodeCheckSucceeded");
+      Assert.NotNull(comp);
+      GH_String output = (GH_String)ComponentTestHelper.GetOutput(comp);
+      Assert.Equal("All code requirements are met", output.Value);
+    }
 
-            foreach (var obj2 in (doc.Objects))
-            {
-              if (obj2.InstanceGuid == componentguid)
-              {
-                GH_Component comp = (GH_Component)obj2;
-
-                GH_String output = (GH_String)ComponentTestHelper.GetOutput(comp);
-
-                Assert.Equal("All code requirements are met", output.Value);
-                return;
-              }
-            }
-          }
-        }
-      Assert.True(false, "Did not find output");
+    [Fact]
+    public void NoRuntimeErrorsTest()
+    {
+      Helper.TestNoRuntimeMessagesInDocument(Document(), GH_RuntimeMessageLevel.Error);
     }
   }
 }
