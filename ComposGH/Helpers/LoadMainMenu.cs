@@ -14,7 +14,8 @@ namespace ComposGH.UI.Menu
     private static ToolStripMenuItem oasysMenu;
     internal static void OnStartup(GH_Canvas canvas)
     {
-      oasysMenu = new ToolStripMenuItem("Compos");
+      oasysMenu = new ToolStripMenuItem("Oasys");
+      oasysMenu.Name = "Oasys";
 
       PopulateSub(oasysMenu);
 
@@ -25,7 +26,18 @@ namespace ComposGH.UI.Menu
         editor = Grasshopper.Instances.DocumentEditor;
         Thread.Sleep(750);
       }
-      editor.MainMenuStrip.Items.Add(oasysMenu);
+      
+      if (!editor.MainMenuStrip.Items.ContainsKey("Oasys"))
+        editor.MainMenuStrip.Items.Add(oasysMenu);
+      else
+      {
+        oasysMenu = (ToolStripMenuItem)editor.MainMenuStrip.Items["Oasys"];
+        lock (oasysMenu)
+        {
+          oasysMenu.DropDown.Items.Add(new ToolStripSeparator());
+          PopulateSub(oasysMenu);
+        }
+      }
 
       Grasshopper.Instances.CanvasCreated -= OnStartup;
     }
