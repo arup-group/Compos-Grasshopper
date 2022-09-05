@@ -207,7 +207,6 @@
     <Compile Include="Parameters\5_Member\DesignCode\DesignCodeGoo.cs" />
     <Compile Include="Parameters\3_Slab\Decking\DeckingConfigurationGoo.cs" />
     <Compile Include="Parameters\GH_OasysGeoGoo.cs" />
-    <Compile Include="Parameters\GH_OasysGoo.cs" />
     <Compile Include="Parameters\99_Other\GH_UnitNumber.cs" />
     <Compile Include="Parameters\_Units.cs" />
     <Compile Include="Parameters\3_Slab\Decking\DeckingGoo.cs" />
