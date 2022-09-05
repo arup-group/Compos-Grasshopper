@@ -86,7 +86,7 @@ namespace ComposAPI
 
     public static short Close()
     {
-      if (ComposFile.ComposCOM == null) { return 0;}
+      if (ComposFile.ComposCOM == null) { return 0; }
       short status = ComposFile.ComposCOM.Close();
       ComposFile.ComposCOM = null;
       return status;

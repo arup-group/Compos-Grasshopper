@@ -34,9 +34,9 @@ namespace ComposAPI
       get
       {
         ClassResultOption resultType = ClassResultOption.CLAS_CONS_FLAN_CLASS;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -48,9 +48,9 @@ namespace ComposAPI
       get
       {
         ClassResultOption resultType = ClassResultOption.CLAS_CONS_WEB_CLASS;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -62,9 +62,9 @@ namespace ComposAPI
       get
       {
         ClassResultOption resultType = ClassResultOption.CLAS_CONS_SECTION;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -76,9 +76,9 @@ namespace ComposAPI
       get
       {
         ClassResultOption resultType = ClassResultOption.CLAS_FINA_FLAN_CLASS;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -90,9 +90,9 @@ namespace ComposAPI
       get
       {
         ClassResultOption resultType = ClassResultOption.CLAS_FINA_WEB_CLASS;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -104,9 +104,9 @@ namespace ComposAPI
       get
       {
         ClassResultOption resultType = ClassResultOption.CLAS_FINA_SECTION;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -169,7 +169,7 @@ namespace ComposAPI
             break;
         }
       }
-      ResultsCache.Add(resultType, results);
+      this.ResultsCache.Add(resultType, results);
     }
   }
 }

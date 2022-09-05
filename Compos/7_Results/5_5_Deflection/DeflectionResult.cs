@@ -36,9 +36,9 @@ namespace ComposAPI
       get
       {
         DeflectionOption resultType = DeflectionOption.DEFL_CONS_DEAD_LOAD;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -51,9 +51,9 @@ namespace ComposAPI
       get
       {
         DeflectionOption resultType = DeflectionOption.DEFL_ADDI_DEAD_LOAD;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -66,9 +66,9 @@ namespace ComposAPI
       get
       {
         DeflectionOption resultType = DeflectionOption.DEFL_FINA_LIVE_LOAD;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -81,9 +81,9 @@ namespace ComposAPI
       get
       {
         DeflectionOption resultType = DeflectionOption.DEFL_SHRINK;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -96,9 +96,9 @@ namespace ComposAPI
       get
       {
         DeflectionOption resultType = DeflectionOption.DEFL_POST_CONS;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -111,9 +111,9 @@ namespace ComposAPI
       get
       {
         DeflectionOption resultType = DeflectionOption.DEFL_FINA_TOTAL;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -126,9 +126,9 @@ namespace ComposAPI
     //  get
     //  {
     //    DeflectionOption resultType = DeflectionOption.MODAL_SHAPE;
-    //    if (!ResultsCache.ContainsKey(resultType))
-    //      GetResults(resultType);
-    //    return ResultsCache[resultType];
+    //    if (!this.ResultsCache.ContainsKey(resultType))
+    //      this.GetResults(resultType);
+    //    return this.ResultsCache[resultType];
     //  }
     //}
 
@@ -141,7 +141,7 @@ namespace ComposAPI
         float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
         results.Add(new Length(value, LengthUnit.Meter));
       }
-      ResultsCache.Add(resultType, results);
+      this.ResultsCache.Add(resultType, results);
     }
   }
 }

@@ -25,9 +25,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_CONS_BEAM_BOT;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
       }
     }
 
@@ -39,9 +39,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_ADDI_BEAM_BOT;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
       }
     }
 
@@ -53,9 +53,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_LIVE_BEAM_BOT;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
       }
     }
 
@@ -67,9 +67,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_SHRINK_BEAM_BOT;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
       }
     }
 
@@ -81,9 +81,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_TOTL_BEAM_BOT;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
       }
     }
     #endregion
@@ -96,9 +96,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_CONS_BEAM_WEB;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
       }
     }
 
@@ -110,9 +110,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_ADDI_BEAM_WEB;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
       }
     }
 
@@ -124,9 +124,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_LIVE_BEAM_WEB;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
       }
     }
 
@@ -138,9 +138,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_SHRINK_BEAM_WEB;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
       }
     }
 
@@ -152,9 +152,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_TOTL_BEAM_WEB;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
       }
     }
     #endregion
@@ -167,9 +167,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_CONS_BEAM_TOP;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
       }
     }
 
@@ -181,9 +181,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_ADDI_BEAM_TOP;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
       }
     }
 
@@ -195,9 +195,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_LIVE_BEAM_TOP;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
       }
     }
 
@@ -209,9 +209,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_SHRINK_BEAM_TOP;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
       }
     }
 
@@ -223,9 +223,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_TOTL_BEAM_TOP;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
       }
     }
     #endregion
@@ -238,7 +238,7 @@ namespace ComposAPI
         float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
         results.Add(new Pressure(value, PressureUnit.Pascal));
       }
-      ResultsCache.Add(resultType, results);
+      this.ResultsCache.Add(resultType, results);
     }
   }
 }

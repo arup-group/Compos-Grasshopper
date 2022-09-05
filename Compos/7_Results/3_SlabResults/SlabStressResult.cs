@@ -25,9 +25,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_ADDI_CONC_STRESS;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
       }
     }
 
@@ -39,9 +39,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_LIVE_CONC_STRESS;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
       }
     }
 
@@ -53,9 +53,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_SHRINK_CONC_STRESS;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
       }
     }
 
@@ -67,9 +67,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_TOTL_CONC_STRESS;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
       }
     }
     #endregion
@@ -82,9 +82,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_ADDI_CONC_STRAIN;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Strain)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Strain)x).ToList();
       }
     }
 
@@ -96,9 +96,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_LIVE_CONC_STRAIN;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Strain)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Strain)x).ToList();
       }
     }
 
@@ -110,9 +110,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_SHRINK_CONC_STRAIN;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Strain)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Strain)x).ToList();
       }
     }
 
@@ -124,9 +124,9 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_TOTL_CONC_STRAIN;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Strain)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Strain)x).ToList();
       }
     }
     #endregion
@@ -154,7 +154,7 @@ namespace ComposAPI
             break;
         }
       }
-      ResultsCache.Add(resultType, results);
+      this.ResultsCache.Add(resultType, results);
     }
   }
 }

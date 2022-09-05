@@ -38,9 +38,9 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.FinalMoment;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -52,9 +52,9 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.FinalShear;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -66,9 +66,9 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.FinalDeflection;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -80,9 +80,9 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.ConstructionMoment;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -94,9 +94,9 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.ConstructionShear;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -108,9 +108,9 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.ConstructionDeflection;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -122,9 +122,9 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.ConstructionBuckling;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -136,9 +136,9 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.TransverseShear;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -150,9 +150,9 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.WebOpening;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType];
       }
     }
 
@@ -162,7 +162,7 @@ namespace ComposAPI
     {
       float value = this.Member.UtilisationFactor(resultType);
       Ratio utilisation = new Ratio(value, RatioUnit.DecimalFraction);
-      ResultsCache.Add(resultType, utilisation);
+      this.ResultsCache.Add(resultType, utilisation);
     }
   }
 }

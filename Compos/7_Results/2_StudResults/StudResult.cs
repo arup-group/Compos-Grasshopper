@@ -40,9 +40,9 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_CONCRTE_FORCE;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Force)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
       }
     }
 
@@ -54,9 +54,9 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_ONE_CAPACITY;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Force)x).ToList().Max();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Force)x).ToList().Max();
       }
     }
 
@@ -68,9 +68,9 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_CONCRTE_FORCE_REQ;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Force)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
       }
     }
 
@@ -82,9 +82,9 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_CONCRTE_FORCE_100;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Force)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
       }
     }
 
@@ -96,9 +96,9 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_CAPACITY_LEFT;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Force)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
       }
     }
 
@@ -110,9 +110,9 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_CAPACITY_RIGHT;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Force)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
       }
     }
 
@@ -124,9 +124,9 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_PERCENT_INTERACTION;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Ratio)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Ratio)x).ToList();
       }
     }
 
@@ -138,9 +138,9 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_INTERACT_REQ;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Ratio)x).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (Ratio)x).ToList();
       }
     }
 
@@ -152,9 +152,9 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_NUM_LEFT_PROV;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
       }
     }
     /// <summary>
@@ -165,9 +165,9 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_NUM_LEFT_USED;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
       }
     }
 
@@ -179,9 +179,9 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_NUM_RIGHT_PROV;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
       }
     }
 
@@ -193,9 +193,9 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_NUM_RIGHT_USED;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
+        if (!this.ResultsCache.ContainsKey(resultType))
+          this.GetResults(resultType);
+        return this.ResultsCache[resultType].Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
       }
     }
 
@@ -228,7 +228,7 @@ namespace ComposAPI
             break;
         }
       }
-      ResultsCache.Add(resultType, results);
+      this.ResultsCache.Add(resultType, results);
     }
   }
 }
