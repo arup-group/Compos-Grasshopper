@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using ComposAPI;
-using ComposGH.Helpers;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
+using OasysGH.Components;
+using OasysGH.Helpers;
 
 namespace ComposGH.Components
 {

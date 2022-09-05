@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Grasshopper.Kernel;
-using Oasys.Units;
-using UnitsNet;
-using UnitsNet.Units;
 using ComposAPI;
 using ComposGH.Parameters;
+using Grasshopper.Kernel;
+using Oasys.Units;
+using OasysGH.Components;
+using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposGH.Components
 {
@@ -184,7 +185,7 @@ namespace ComposGH.Components
     private StrainUnit StrainUnit = StrainUnit.MilliStrain;
     private bool isLightWeight = false;
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] {
         "Grade",
@@ -212,7 +213,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       // change selected item
       this.SelectedItems[i] = this.DropDownItems[i][j];
@@ -260,7 +261,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       if (this.SelectedItems[0] != "-")
         this.Grade = (ConcreteGradeEN)Enum.Parse(typeof(ConcreteGradeEN), this.SelectedItems[0]);

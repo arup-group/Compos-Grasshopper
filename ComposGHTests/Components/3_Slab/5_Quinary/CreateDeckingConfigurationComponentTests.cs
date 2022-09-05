@@ -4,6 +4,7 @@ using Xunit;
 using ComposGHTests.Helpers;
 using System;
 using Grasshopper.Kernel.Parameters;
+using OasysGH.Components;
 
 namespace ComposGHTests.Slab
 {

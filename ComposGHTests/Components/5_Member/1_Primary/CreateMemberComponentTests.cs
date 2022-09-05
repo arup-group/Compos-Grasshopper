@@ -7,6 +7,7 @@ using ComposGHTests.Beam;
 using ComposGHTests.Stud;
 using ComposGHTests.Slab;
 using ComposGHTests.Load;
+using OasysGH.Components;
 
 namespace ComposGHTests.Member
 {

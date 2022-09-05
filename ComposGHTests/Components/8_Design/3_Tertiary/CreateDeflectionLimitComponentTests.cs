@@ -3,6 +3,7 @@ using ComposGH.Components;
 using Xunit;
 using ComposGHTests.Helpers;
 using Grasshopper.Kernel.Types;
+using OasysGH.Components;
 
 namespace ComposGHTests.Design
 {

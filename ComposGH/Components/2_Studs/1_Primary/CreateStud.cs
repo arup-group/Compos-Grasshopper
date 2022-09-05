@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Grasshopper.Kernel;
-using ComposGH.Parameters;
 using System.Linq;
-using Grasshopper.Kernel.Parameters;
 using ComposAPI;
+using ComposGH.Parameters;
+using Grasshopper.Kernel;
+using Grasshopper.Kernel.Parameters;
+using OasysGH.Components;
 
 namespace ComposGH.Components
 {
@@ -80,7 +81,7 @@ namespace ComposGH.Components
     #region Custom UI
     private StudSpacingType SpacingType = StudSpacingType.Min_Num_of_Studs;
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Spacing Type" });
       this.DropDownItems = new List<List<string>>();
@@ -92,7 +93,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       // change selected item
       this.SelectedItems[i] = this.DropDownItems[i][j];
@@ -103,7 +104,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       this.SpacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), this.SelectedItems[0].Replace(" ", "_"));
       this.ModeChangeClicked();

@@ -4,9 +4,9 @@ using System.Drawing;
 using System.Linq;
 using ComposAPI;
 using ComposGH.Parameters;
-using ComposGH.UI;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
+using OasysGH.Components;
 
 namespace ComposGH.Components
 {

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Grasshopper.Kernel;
-using ComposGH.Parameters;
 using System.Linq;
-using Grasshopper.Kernel.Parameters;
 using ComposAPI;
+using ComposGH.Parameters;
+using Grasshopper.Kernel;
+using Grasshopper.Kernel.Parameters;
+using OasysGH.Components;
+using UnitsNet;
+using UnitsNet.Units;
 using static ComposAPI.CodeOptionsEN;
 
 namespace ComposGH.Components
@@ -164,7 +167,7 @@ namespace ComposGH.Components
       m_attributes = new UI.MultiDropDownCheckBoxesComponentUI(this, SetSelected, this.DropDownItems, this.SelectedItems, CheckBoxToggles, this.Checkboxes, this.CheckboxNames, this.SpacerDescriptions);
     }
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] {
         "Code",
@@ -202,7 +205,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
@@ -293,7 +296,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       for (int i = 0; i < this.DesignCodePretty.Count; i++)
       {

@@ -4,6 +4,7 @@ using ComposGH.Components;
 using Xunit;
 using ComposGHTests.Helpers;
 using static ComposAPI.ConcreteMaterial;
+using OasysGH.Components;
 
 namespace ComposGHTests.Slab
 {

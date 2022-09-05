@@ -1,10 +1,11 @@
-﻿using Grasshopper.Kernel;
-using System;
+﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using ComposAPI;
 using ComposGH.Helpers;
-using System.Reflection;
+using Grasshopper.Kernel;
+using OasysGH.Helpers;
 
 namespace ComposGH
 {

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Drawing;
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Types;
+using System.Collections.Generic;
 using ComposGH.Parameters;
 using ComposAPI;
 using ComposGH.Helpers;
-using System.Collections.Generic;
+using Grasshopper.Kernel;
+using Grasshopper.Kernel.Types;
+using OasysGH.Helpers;
 
 namespace ComposGH.Components
 {

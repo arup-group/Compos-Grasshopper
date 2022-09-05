@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Grasshopper.Kernel;
-using ComposGH.Parameters;
-using UnitsNet;
-using UnitsNet.Units;
 using System.Linq;
 using ComposAPI;
+using ComposGH.Parameters;
+using Grasshopper.Kernel;
+using OasysGH.Components;
+using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposGH.Components
 {
@@ -56,7 +57,7 @@ namespace ComposGH.Components
     private PressureUnit StressUnit = Units.StressUnit;
     private RebarGrade Grade = RebarGrade.EN_500B;
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Grade", "Unit" });
 
@@ -74,7 +75,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
@@ -86,7 +87,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       if (SelectedItems[0] != "Custom")
         this.Grade = (RebarGrade)Enum.Parse(typeof(RebarGrade), this.SelectedItems[0]);

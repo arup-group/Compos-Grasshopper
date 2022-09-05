@@ -4,6 +4,7 @@ using Xunit;
 using ComposGHTests.Helpers;
 using Grasshopper.Kernel.Types;
 using Grasshopper.Kernel.Parameters;
+using OasysGH.Components;
 
 namespace ComposGHTests.Beam
 {

@@ -1,13 +1,13 @@
 ﻿using System;
-
-using ComposGH.Parameters;
-using Grasshopper.Kernel;
-using ComposAPI;
 using System.Collections.Generic;
-using UnitsNet.Units;
-using UnitsNet;
 using System.Linq;
 using System.Text.RegularExpressions;
+using ComposAPI;
+using ComposGH.Parameters;
+using Grasshopper.Kernel;
+using OasysGH.Components;
+using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposGH.Components
 {
@@ -100,7 +100,7 @@ namespace ComposGH.Components
     #region Custom UI
     List<string> Catalogues = ComposAPI.Helpers.CatalogueSectionType.CatalogueSectionTypes.Values.Select(x => x.ToString()).ToList();
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Catalogue" });
 
@@ -113,7 +113,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       // change selected item
       this.SelectedItems[i] = this.DropDownItems[i][j];

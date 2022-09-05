@@ -1,9 +1,10 @@
-﻿using ComposAPI;
-using ComposGH.Parameters;
-using Grasshopper.Kernel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ComposAPI;
+using ComposGH.Parameters;
+using Grasshopper.Kernel;
+using OasysGH.Components;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -107,7 +108,7 @@ namespace ComposGH.Components
     List<bool> OverrideDropDownItems;
     private IntermediateRestraint RestraintType = IntermediateRestraint.None;
     private LengthUnit LengthUnit = Units.LengthUnitGeometry;
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[]
         {
@@ -132,7 +133,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
@@ -144,7 +145,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       this.ParseRestraintType(this.SelectedItems[0]);
       this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[1]);

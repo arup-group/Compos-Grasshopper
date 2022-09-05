@@ -6,6 +6,7 @@ using ComposGHTests.Helpers;
 using Rhino.Geometry;
 using UnitsNet;
 using UnitsNet.Units;
+using OasysGH.Components;
 
 namespace ComposGHTests.Beam
 {

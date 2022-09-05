@@ -58,6 +58,9 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="OasysGH, Version=0.0.1.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\OasysGH.0.0.1-beta\lib\net472\OasysGH.dll</HintPath>
+    </Reference>
     <Reference Include="OasysUnits, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Compos\lib\OasysUnits.dll</HintPath>
@@ -154,9 +157,6 @@
     <Compile Include="Components\7_Results\ReadBeamResults.cs" />
     <Compile Include="Components\7_Results\ReadInternalForces.cs" />
     <Compile Include="Components\7_Results\ReadResults.cs" />
-    <Compile Include="Components\GH_OasysVariableComponent.cs" />
-    <Compile Include="Components\GH_OasysComponent.cs" />
-    <Compile Include="Components\GH_OasysTaskCapableComponent.cs" />
     <Compile Include="Components\8_Design\1_Primary\DesignMember.cs" />
     <Compile Include="Components\8_Design\2_Secondary\CreateDesignCriteria.cs" />
     <Compile Include="Components\8_Design\3_Tertiary\CataloguesSections.cs" />
@@ -164,10 +164,8 @@
     <Compile Include="Components\8_Design\3_Tertiary\CreateBeamSizeLimits.cs" />
     <Compile Include="Components\8_Design\3_Tertiary\CreateDeflectionLimit.cs" />
     <Compile Include="ComposGHInfo.cs" />
-    <Compile Include="Helpers\DeSerialization.cs" />
     <Compile Include="Helpers\GhRibbonLayout.cs" />
     <Compile Include="Helpers\LoadMainMenu.cs" />
-    <Compile Include="Helpers\PostHog.cs" />
     <Compile Include="Helpers\_ComposResultsHelper.cs" />
     <Compile Include="Helpers\GetInputs.cs" />
     <Compile Include="Helpers\_SqlReaderValues.cs" />
