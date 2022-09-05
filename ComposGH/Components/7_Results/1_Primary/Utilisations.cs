@@ -128,7 +128,7 @@ namespace ComposGH.Components
           return Resources.UtilisationLow;
         else if (maxUtil < 0.80)
           return Resources.UtilisationMedium;
-        else if (maxUtil < 1)
+        else if (maxUtil <= 1)
           return Resources.UtilisationHigh;
         else
           return Resources.UtilisationOver;
