@@ -25,9 +25,8 @@ namespace ComposAPI
     STUD_CAPACITY_RIGHT, // Actual shear capacity from right end
   }
 
-  public class StudResult : ResultsBase, IStudResult
+  public class StudResult : SubResult, IStudResult
   {
-    internal Dictionary<StudResultOption, List<IQuantity>> ResultsCache = new Dictionary<StudResultOption, List<IQuantity>>();
     public StudResult(Member member, int numIntermediatePos) : base(member, numIntermediatePos)
     {
     }
@@ -40,9 +39,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_CONCRTE_FORCE;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -54,9 +51,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_ONE_CAPACITY;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList().Max();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList().Max();
       }
     }
 
@@ -68,9 +63,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_CONCRTE_FORCE_REQ;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -82,9 +75,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_CONCRTE_FORCE_100;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -96,9 +87,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_CAPACITY_LEFT;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -110,9 +99,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_CAPACITY_RIGHT;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -124,9 +111,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_PERCENT_INTERACTION;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Ratio)x).ToList();
+        return this.GetResults(resultType).Select(x => (Ratio)x).ToList();
       }
     }
 
@@ -138,9 +123,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_INTERACT_REQ;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Ratio)x).ToList();
+        return this.GetResults(resultType).Select(x => (Ratio)x).ToList();
       }
     }
 
@@ -152,9 +135,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_NUM_LEFT_PROV;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
+        return this.GetResults(resultType).Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
       }
     }
     /// <summary>
@@ -165,9 +146,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_NUM_LEFT_USED;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
+        return this.GetResults(resultType).Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
       }
     }
 
@@ -179,9 +158,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_NUM_RIGHT_PROV;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
+        return this.GetResults(resultType).Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
       }
     }
 
@@ -193,42 +170,46 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_NUM_RIGHT_USED;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
+        return this.GetResults(resultType).Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
       }
     }
 
-    private void GetResults(StudResultOption resultType)
-    {
-      List<IQuantity> results = new List<IQuantity>();
-      for (short pos = 0; pos < this.NumIntermediatePos; pos++)
-      {
-        float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
+    private Dictionary<StudResultOption, List<IQuantity>> ResultsCache = new Dictionary<StudResultOption, List<IQuantity>>();
 
-        switch (resultType)
+    private List<IQuantity> GetResults(StudResultOption resultType)
+    {
+      if(!this.ResultsCache.ContainsKey(resultType))
+      {
+        List<IQuantity> results = new List<IQuantity>();
+        for (short pos = 0; pos < this.NumIntermediatePos; pos++)
         {
-          case StudResultOption.STUD_CONCRTE_FORCE:
-          case StudResultOption.STUD_ONE_CAPACITY:
-          case StudResultOption.STUD_CONCRTE_FORCE_REQ:
-          case StudResultOption.STUD_CONCRTE_FORCE_100:
-          case StudResultOption.STUD_CAPACITY_LEFT:
-          case StudResultOption.STUD_CAPACITY_RIGHT:
-            results.Add(new Force(value, ForceUnit.Newton));
-            break;
-          case StudResultOption.STUD_PERCENT_INTERACTION:
-          case StudResultOption.STUD_INTERACT_REQ:
-            results.Add(new Ratio(value, RatioUnit.DecimalFraction));
-            break;
-          case StudResultOption.STUD_NUM_LEFT_PROV:
-          case StudResultOption.STUD_NUM_LEFT_USED:
-          case StudResultOption.STUD_NUM_RIGHT_PROV:
-          case StudResultOption.STUD_NUM_RIGHT_USED:
-            results.Add(new UnitsNet.Scalar(value, ScalarUnit.Amount));
-            break;
+          float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
+
+          switch (resultType)
+          {
+            case StudResultOption.STUD_CONCRTE_FORCE:
+            case StudResultOption.STUD_ONE_CAPACITY:
+            case StudResultOption.STUD_CONCRTE_FORCE_REQ:
+            case StudResultOption.STUD_CONCRTE_FORCE_100:
+            case StudResultOption.STUD_CAPACITY_LEFT:
+            case StudResultOption.STUD_CAPACITY_RIGHT:
+              results.Add(new Force(value, ForceUnit.Newton));
+              break;
+            case StudResultOption.STUD_PERCENT_INTERACTION:
+            case StudResultOption.STUD_INTERACT_REQ:
+              results.Add(new Ratio(value, RatioUnit.DecimalFraction));
+              break;
+            case StudResultOption.STUD_NUM_LEFT_PROV:
+            case StudResultOption.STUD_NUM_LEFT_USED:
+            case StudResultOption.STUD_NUM_RIGHT_PROV:
+            case StudResultOption.STUD_NUM_RIGHT_USED:
+              results.Add(new UnitsNet.Scalar(value, ScalarUnit.Amount));
+              break;
+          }
         }
+        this.ResultsCache.Add(resultType, results);
       }
-      this.ResultsCache.Add(resultType, results);
+      return this.ResultsCache[resultType];
     }
   }
 }

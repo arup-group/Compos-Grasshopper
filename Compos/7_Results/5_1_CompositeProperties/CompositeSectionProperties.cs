@@ -33,9 +33,8 @@ namespace ComposAPI
     AREA_VIBRATION, // Area of beam for vibration
   }
 
-  public class CompositeSectionProperties : ResultsBase, ICompositeSectionProperties
+  public class CompositeSectionProperties : SubResult, ICompositeSectionProperties
   {
-    internal Dictionary<Enum, List<IQuantity>> ResultsCache = new Dictionary<Enum, List<IQuantity>>();
     public CompositeSectionProperties(Member member, int numIntermediatePos) : base(member, numIntermediatePos)
     {
     }
@@ -48,9 +47,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.GIRDER_WELD_THICK_T;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -62,9 +59,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.GIRDER_WELD_THICK_B;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -76,9 +71,7 @@ namespace ComposAPI
       get
       {
         ResultOption resultType = ResultOption.SLAB_WIDTH_L_EFFECT;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -90,9 +83,7 @@ namespace ComposAPI
       get
       {
         ResultOption resultType = ResultOption.SLAB_WIDTH_R_EFFECT;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -104,9 +95,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.I_STEEL_BEAM;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (AreaMomentOfInertia)x).ToList();
+        return this.GetResults(resultType).Select(x => (AreaMomentOfInertia)x).ToList();
       }
     }
 
@@ -118,9 +107,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.X_STEEL_BEAM;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -132,9 +119,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.AREA_STEEL_BEAM;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Area)x).ToList();
+        return this.GetResults(resultType).Select(x => (Area)x).ToList();
       }
     }
 
@@ -146,9 +131,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.I_LONG_TERM;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (AreaMomentOfInertia)x).ToList();
+        return this.GetResults(resultType).Select(x => (AreaMomentOfInertia)x).ToList();
       }
     }
 
@@ -160,9 +143,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.X_LONG_TERM;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -174,9 +155,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.AREA_LONG_TERM;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Area)x).ToList();
+        return this.GetResults(resultType).Select(x => (Area)x).ToList();
       }
     }
 
@@ -188,9 +167,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.I_SHORT_TERM;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (AreaMomentOfInertia)x).ToList();
+        return this.GetResults(resultType).Select(x => (AreaMomentOfInertia)x).ToList();
       }
     }
 
@@ -202,9 +179,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.X_SHORT_TERM;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -216,9 +191,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.AREA_SHORT_TERM;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Area)x).ToList();
+        return this.GetResults(resultType).Select(x => (Area)x).ToList();
       }
     }
 
@@ -230,9 +203,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.I_SHRINK;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (AreaMomentOfInertia)x).ToList();
+        return this.GetResults(resultType).Select(x => (AreaMomentOfInertia)x).ToList();
       }
     }
 
@@ -244,9 +215,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.X_SHRINK;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -258,9 +227,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.AREA_SHRINK;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Area)x).ToList();
+        return this.GetResults(resultType).Select(x => (Area)x).ToList();
       }
     }
 
@@ -272,9 +239,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.I_EFFECTIVE;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (AreaMomentOfInertia)x).ToList();
+        return this.GetResults(resultType).Select(x => (AreaMomentOfInertia)x).ToList();
       }
     }
 
@@ -286,9 +251,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.X_EFFECTIVE;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -300,9 +263,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.AREA_EFFECT;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Area)x).ToList();
+        return this.GetResults(resultType).Select(x => (Area)x).ToList();
       }
     }
 
@@ -314,9 +275,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.I_VIBRATION;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (AreaMomentOfInertia)x).ToList();
+        return this.GetResults(resultType).Select(x => (AreaMomentOfInertia)x).ToList();
       }
     }
 
@@ -328,9 +287,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.X_VIBRATION;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -342,9 +299,7 @@ namespace ComposAPI
       get
       {
         BeamResultOption resultType = BeamResultOption.AREA_VIBRATION;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Area)x).ToList();
+        return this.GetResults(resultType).Select(x => (Area)x).ToList();
       }
     }
 
@@ -362,56 +317,66 @@ namespace ComposAPI
     }
     private Frequency m_frequency = Frequency.Zero;
 
-    private void GetResults(BeamResultOption resultType)
-    {
-      List<IQuantity> results = new List<IQuantity>();
-      for (short pos = 0; pos < this.NumIntermediatePos; pos++)
-      {
-        float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
+    private Dictionary<Enum, List<IQuantity>> ResultsCache = new Dictionary<Enum, List<IQuantity>>();
 
-        switch (resultType)
+    private List<IQuantity> GetResults(BeamResultOption resultType)
+    {
+      if (!this.ResultsCache.ContainsKey(resultType))
+      {
+        List<IQuantity> results = new List<IQuantity>();
+        for (short pos = 0; pos < this.NumIntermediatePos; pos++)
         {
-          case BeamResultOption.GIRDER_WELD_THICK_T:
-          case BeamResultOption.GIRDER_WELD_THICK_B:
-          case BeamResultOption.X_STEEL_BEAM:
-          case BeamResultOption.X_LONG_TERM:
-          case BeamResultOption.X_SHORT_TERM:
-          case BeamResultOption.X_SHRINK:
-          case BeamResultOption.X_EFFECTIVE:
-          case BeamResultOption.X_VIBRATION:
-            results.Add(new Length(value, LengthUnit.Meter));
-            break;
-          case BeamResultOption.I_STEEL_BEAM:
-          case BeamResultOption.I_LONG_TERM:
-          case BeamResultOption.I_SHORT_TERM:
-          case BeamResultOption.I_SHRINK:
-          case BeamResultOption.I_EFFECTIVE:
-          case BeamResultOption.I_VIBRATION:
-            results.Add(new AreaMomentOfInertia(value, AreaMomentOfInertiaUnit.MeterToTheFourth));
-            break;
-          case BeamResultOption.AREA_STEEL_BEAM:
-          case BeamResultOption.AREA_LONG_TERM:
-          case BeamResultOption.AREA_SHORT_TERM:
-          case BeamResultOption.AREA_SHRINK:
-          case BeamResultOption.AREA_EFFECT:
-          case BeamResultOption.AREA_VIBRATION:
-            results.Add(new Area(value, AreaUnit.SquareMeter));
-            break;
+          float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
+
+          switch (resultType)
+          {
+            case BeamResultOption.GIRDER_WELD_THICK_T:
+            case BeamResultOption.GIRDER_WELD_THICK_B:
+            case BeamResultOption.X_STEEL_BEAM:
+            case BeamResultOption.X_LONG_TERM:
+            case BeamResultOption.X_SHORT_TERM:
+            case BeamResultOption.X_SHRINK:
+            case BeamResultOption.X_EFFECTIVE:
+            case BeamResultOption.X_VIBRATION:
+              results.Add(new Length(value, LengthUnit.Meter));
+              break;
+            case BeamResultOption.I_STEEL_BEAM:
+            case BeamResultOption.I_LONG_TERM:
+            case BeamResultOption.I_SHORT_TERM:
+            case BeamResultOption.I_SHRINK:
+            case BeamResultOption.I_EFFECTIVE:
+            case BeamResultOption.I_VIBRATION:
+              results.Add(new AreaMomentOfInertia(value, AreaMomentOfInertiaUnit.MeterToTheFourth));
+              break;
+            case BeamResultOption.AREA_STEEL_BEAM:
+            case BeamResultOption.AREA_LONG_TERM:
+            case BeamResultOption.AREA_SHORT_TERM:
+            case BeamResultOption.AREA_SHRINK:
+            case BeamResultOption.AREA_EFFECT:
+            case BeamResultOption.AREA_VIBRATION:
+              results.Add(new Area(value, AreaUnit.SquareMeter));
+              break;
+          }
         }
+        this.ResultsCache.Add(resultType, results);
       }
-      this.ResultsCache.Add(resultType, results);
+      return this.ResultsCache[resultType];
     }
 
-    private void GetResults(ResultOption resultType)
+    private List<IQuantity> GetResults(ResultOption resultType)
     {
-      List<IQuantity> results = new List<IQuantity>();
-      for (short pos = 0; pos < this.NumIntermediatePos; pos++)
+      if (!this.ResultsCache.ContainsKey(resultType))
       {
-        float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
+        List<IQuantity> results = new List<IQuantity>();
+        for (short pos = 0; pos < this.NumIntermediatePos; pos++)
+        {
+          float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
 
-        results.Add(new Length(value, LengthUnit.Meter));
+          results.Add(new Length(value, LengthUnit.Meter));
+        }
+        this.ResultsCache.Add(resultType, results);
       }
-      this.ResultsCache.Add(resultType, results);
+      return this.ResultsCache[resultType];
     }
   }
 }

@@ -23,9 +23,8 @@ namespace ComposAPI
     NaturalFrequency
   }
 
-  public class Utilisation : ResultsBase, IUtilisation
+  public class Utilisation : SubResult, IUtilisation
   {
-    internal Dictionary<UtilisationFactorOption, Ratio> ResultsCache = new Dictionary<UtilisationFactorOption, Ratio>();
     public Utilisation(Member member) : base(member, 0)
     {
     }
@@ -38,9 +37,7 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.FinalMoment;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType];
+        return this.GetResults(resultType);
       }
     }
 
@@ -52,9 +49,7 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.FinalShear;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType];
+        return this.GetResults(resultType);
       }
     }
 
@@ -66,9 +61,7 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.FinalDeflection;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType];
+        return this.GetResults(resultType);
       }
     }
 
@@ -80,9 +73,7 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.ConstructionMoment;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType];
+        return this.GetResults(resultType);
       }
     }
 
@@ -94,9 +85,7 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.ConstructionShear;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType];
+        return this.GetResults(resultType);
       }
     }
 
@@ -108,9 +97,7 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.ConstructionDeflection;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType];
+        return this.GetResults(resultType);
       }
     }
 
@@ -122,9 +109,7 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.ConstructionBuckling;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType];
+        return this.GetResults(resultType);
       }
     }
 
@@ -136,9 +121,7 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.TransverseShear;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType];
+        return this.GetResults(resultType);
       }
     }
 
@@ -150,19 +133,21 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.WebOpening;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType];
+        return this.GetResults(resultType);
       }
     }
 
-    
+    private Dictionary<UtilisationFactorOption, Ratio> ResultsCache = new Dictionary<UtilisationFactorOption, Ratio>();
 
-    private void GetResults(UtilisationFactorOption resultType)
+    private Ratio GetResults(UtilisationFactorOption resultType)
     {
-      float value = this.Member.UtilisationFactor(resultType);
-      Ratio utilisation = new Ratio(value, RatioUnit.DecimalFraction);
-      this.ResultsCache.Add(resultType, utilisation);
+      if (!this.ResultsCache.ContainsKey(resultType))
+      {
+        float value = this.Member.UtilisationFactor(resultType);
+        Ratio utilisation = new Ratio(value, RatioUnit.DecimalFraction);
+        this.ResultsCache.Add(resultType, utilisation);
+      }
+      return this.ResultsCache[resultType];
     }
   }
 }

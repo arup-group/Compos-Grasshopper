@@ -32,9 +32,8 @@ namespace ComposAPI
     WORK_AXIAL_FINA_LIVE, // Final stage working live load axial
   }
 
-  public class InternalForceResult : ResultsBase, IInternalForceResult
+  public class InternalForceResult : SubResult, IInternalForceResult
   {
-    internal Dictionary<InternalForceOption, List<IQuantity>> ResultsCache = new Dictionary<InternalForceOption, List<IQuantity>>();
     public InternalForceResult(Member member, int numIntermediatePos) : base(member, numIntermediatePos)
     {
     }
@@ -48,9 +47,7 @@ namespace ComposAPI
       get
       {
         InternalForceOption resultType = InternalForceOption.ULTI_MOM_CONS;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Moment)x).ToList();
+        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -62,9 +59,7 @@ namespace ComposAPI
       get
       {
         InternalForceOption resultType = InternalForceOption.ULTI_MOM_FINA;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Moment)x).ToList();
+        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -76,9 +71,7 @@ namespace ComposAPI
       get
       {
         InternalForceOption resultType = InternalForceOption.WORK_MOM_CONS_DEAD;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Moment)x).ToList();
+        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -90,9 +83,7 @@ namespace ComposAPI
       get
       {
         InternalForceOption resultType = InternalForceOption.WORK_MOM_CONS_LIVE;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Moment)x).ToList();
+        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -104,9 +95,7 @@ namespace ComposAPI
       get
       {
         InternalForceOption resultType = InternalForceOption.WORK_MOM_FINA_ADDI;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Moment)x).ToList();
+        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -118,9 +107,7 @@ namespace ComposAPI
       get
       {
         InternalForceOption resultType = InternalForceOption.WORK_MOM_FINA_LIVE;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Moment)x).ToList();
+        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -132,9 +119,7 @@ namespace ComposAPI
       get
       {
         InternalForceOption resultType = InternalForceOption.WORK_MOM_FINA_SHRI;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Moment)x).ToList();
+        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
     #endregion
@@ -147,9 +132,7 @@ namespace ComposAPI
       get
       {
         InternalForceOption resultType = InternalForceOption.ULTI_SHE_CONS;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -161,9 +144,7 @@ namespace ComposAPI
       get
       {
         InternalForceOption resultType = InternalForceOption.ULTI_SHE_FINA;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -175,9 +156,7 @@ namespace ComposAPI
       get
       {
         InternalForceOption resultType = InternalForceOption.WORK_SHE_CONS_DEAD;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -189,9 +168,7 @@ namespace ComposAPI
       get
       {
         InternalForceOption resultType = InternalForceOption.WORK_SHE_CONS_LIVE;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -203,9 +180,7 @@ namespace ComposAPI
       get
       {
         InternalForceOption resultType = InternalForceOption.WORK_SHE_FINA_ADDI;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -217,9 +192,7 @@ namespace ComposAPI
       get
       {
         InternalForceOption resultType = InternalForceOption.WORK_SHE_FINA_LIVE;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
     #endregion
@@ -232,9 +205,7 @@ namespace ComposAPI
       get
       {
         InternalForceOption resultType = InternalForceOption.ULTI_AXIAL_CONS;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -246,9 +217,7 @@ namespace ComposAPI
       get
       {
         InternalForceOption resultType = InternalForceOption.ULTI_AXIAL_FINA;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -260,9 +229,7 @@ namespace ComposAPI
       get
       {
         InternalForceOption resultType = InternalForceOption.WORK_AXIAL_CONS_DEAD;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -274,9 +241,7 @@ namespace ComposAPI
       get
       {
         InternalForceOption resultType = InternalForceOption.WORK_AXIAL_CONS_LIVE;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -288,9 +253,7 @@ namespace ComposAPI
       get
       {
         InternalForceOption resultType = InternalForceOption.WORK_AXIAL_FINA_ADDI;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -302,47 +265,52 @@ namespace ComposAPI
       get
       {
         InternalForceOption resultType = InternalForceOption.WORK_AXIAL_FINA_LIVE;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
     #endregion
-    private void GetResults(InternalForceOption resultType)
-    {
-      List<IQuantity> results = new List<IQuantity>();
-      for (short pos = 0; pos < this.NumIntermediatePos; pos++)
-      {
-        float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
 
-        switch (resultType)
+    private Dictionary<InternalForceOption, List<IQuantity>> ResultsCache = new Dictionary<InternalForceOption, List<IQuantity>>();
+
+    private List<IQuantity> GetResults(InternalForceOption resultType)
+    {
+      if (!this.ResultsCache.ContainsKey(resultType))
+      {
+        List<IQuantity> results = new List<IQuantity>();
+        for (short pos = 0; pos < this.NumIntermediatePos; pos++)
         {
-          case InternalForceOption.ULTI_MOM_CONS:
-          case InternalForceOption.ULTI_MOM_FINA:
-          case InternalForceOption.WORK_MOM_CONS_DEAD:
-          case InternalForceOption.WORK_MOM_CONS_LIVE:
-          case InternalForceOption.WORK_MOM_FINA_ADDI:
-          case InternalForceOption.WORK_MOM_FINA_LIVE:
-          case InternalForceOption.WORK_MOM_FINA_SHRI:
-            results.Add(new Moment(value, MomentUnit.NewtonMeter));
-            break;
-          case InternalForceOption.ULTI_SHE_CONS:
-          case InternalForceOption.ULTI_SHE_FINA:
-          case InternalForceOption.WORK_SHE_CONS_DEAD:
-          case InternalForceOption.WORK_SHE_CONS_LIVE:
-          case InternalForceOption.WORK_SHE_FINA_ADDI:
-          case InternalForceOption.WORK_SHE_FINA_LIVE:
-          case InternalForceOption.ULTI_AXIAL_CONS:
-          case InternalForceOption.ULTI_AXIAL_FINA:
-          case InternalForceOption.WORK_AXIAL_CONS_DEAD:
-          case InternalForceOption.WORK_AXIAL_CONS_LIVE:
-          case InternalForceOption.WORK_AXIAL_FINA_ADDI:
-          case InternalForceOption.WORK_AXIAL_FINA_LIVE:
-            results.Add(new Force(value, ForceUnit.Newton));
-            break;
+          float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
+
+          switch (resultType)
+          {
+            case InternalForceOption.ULTI_MOM_CONS:
+            case InternalForceOption.ULTI_MOM_FINA:
+            case InternalForceOption.WORK_MOM_CONS_DEAD:
+            case InternalForceOption.WORK_MOM_CONS_LIVE:
+            case InternalForceOption.WORK_MOM_FINA_ADDI:
+            case InternalForceOption.WORK_MOM_FINA_LIVE:
+            case InternalForceOption.WORK_MOM_FINA_SHRI:
+              results.Add(new Moment(value, MomentUnit.NewtonMeter));
+              break;
+            case InternalForceOption.ULTI_SHE_CONS:
+            case InternalForceOption.ULTI_SHE_FINA:
+            case InternalForceOption.WORK_SHE_CONS_DEAD:
+            case InternalForceOption.WORK_SHE_CONS_LIVE:
+            case InternalForceOption.WORK_SHE_FINA_ADDI:
+            case InternalForceOption.WORK_SHE_FINA_LIVE:
+            case InternalForceOption.ULTI_AXIAL_CONS:
+            case InternalForceOption.ULTI_AXIAL_FINA:
+            case InternalForceOption.WORK_AXIAL_CONS_DEAD:
+            case InternalForceOption.WORK_AXIAL_CONS_LIVE:
+            case InternalForceOption.WORK_AXIAL_FINA_ADDI:
+            case InternalForceOption.WORK_AXIAL_FINA_LIVE:
+              results.Add(new Force(value, ForceUnit.Newton));
+              break;
+          }
         }
+        this.ResultsCache.Add(resultType, results);
       }
-      this.ResultsCache.Add(resultType, results);
+      return this.ResultsCache[resultType];
     }
   }
 }

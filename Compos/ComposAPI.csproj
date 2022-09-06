@@ -99,7 +99,7 @@
     <Compile Include="7_Results\1_BeamResults\BeamStressResult.cs" />
     <Compile Include="7_Results\1_BeamResults\IBeamStressResult.cs" />
     <Compile Include="7_Results\5_2_InternalForces\IInternalForceResult.cs" />
-    <Compile Include="7_Results\ResultsBase.cs" />
+    <Compile Include="7_Results\SubResult.cs" />
     <Compile Include="7_Results\IResult.cs" />
     <Compile Include="7_Results\5_2_InternalForces\InternalForceResult.cs" />
     <Compile Include="7_Results\Result.cs" />

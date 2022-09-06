@@ -32,9 +32,8 @@ namespace ComposAPI
     NEUTRAL_X_100_INTER_SAG, // Neutral axis depth under assumed 100% interaction sagging moment in final stage
   }
 
-  public class CapacityResult : ResultsBase, ICapacityResult
+  public class CapacityResult : SubResult, ICapacityResult
   {
-    internal Dictionary<CapacityOption, List<IQuantity>> ResultsCache = new Dictionary<CapacityOption, List<IQuantity>>();
     public CapacityResult(Member member, int numIntermediatePos) : base(member, numIntermediatePos)
     {
     }
@@ -47,9 +46,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_MOM_ULTI_FINA_SAG;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Moment)x).ToList();
+        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -61,9 +58,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.NEUTRAL_X_ULTI_FINA_SAG;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -75,9 +70,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_MOM_ULTI_CONS_SAG;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Moment)x).ToList();
+        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -89,9 +82,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.NEUTRAL_X_ULTI_CONS_SAG;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -103,9 +94,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_MOM_ULTI_CONS_HOG;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Moment)x).ToList();
+        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -117,9 +106,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.NEUTRAL_X_ULTI_CONS_HOG;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -131,9 +118,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_MOM_ULTI_FINA_HOG;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Moment)x).ToList();
+        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -145,9 +130,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.NEUTRAL_X_ULTI_FINA_HOG;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -159,9 +142,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_SHE_SHEAR;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -173,9 +154,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_SHE_BUCLE;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -187,9 +166,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_SHE_PV;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -201,9 +178,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_MOM_BEAM_PLAS_SAG;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Moment)x).ToList();
+        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -215,9 +190,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.NEUTRAL_X_BEAM_PLAS_SAG;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -229,9 +202,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_MOM_100_INTER_SAG;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Moment)x).ToList();
+        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -243,9 +214,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.NEUTRAL_X_100_INTER_SAG;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -257,9 +226,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_MOM_BEAM_PLAS_HOG;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Moment)x).ToList();
+        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -271,9 +238,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.NEUTRAL_X_BEAM_PLAS_HOG;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -285,9 +250,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_MOM_100_INTER_HOG;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Moment)x).ToList();
+        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -299,49 +262,53 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.NEUTRAL_X_100_INTER_HOG;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
-    private void GetResults(CapacityOption resultType)
-    {
-      List<IQuantity> results = new List<IQuantity>();
-      for (short pos = 0; pos < this.NumIntermediatePos; pos++)
-      {
-        float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
+    private Dictionary<CapacityOption, List<IQuantity>> ResultsCache = new Dictionary<CapacityOption, List<IQuantity>>();
 
-        switch (resultType)
+    private List<IQuantity> GetResults(CapacityOption resultType)
+    {
+      if (!this.ResultsCache.ContainsKey(resultType))
+      {
+        List<IQuantity> results = new List<IQuantity>();
+        for (short pos = 0; pos < this.NumIntermediatePos; pos++)
         {
-          case CapacityOption.CAPA_MOM_ULTI_CONS_HOG:
-          case CapacityOption.CAPA_MOM_ULTI_FINA_HOG:
-          case CapacityOption.CAPA_MOM_ULTI_CONS_SAG:
-          case CapacityOption.CAPA_MOM_ULTI_FINA_SAG:
-          case CapacityOption.CAPA_MOM_BEAM_PLAS_HOG:
-          case CapacityOption.CAPA_MOM_100_INTER_HOG:
-          case CapacityOption.CAPA_MOM_BEAM_PLAS_SAG:
-          case CapacityOption.CAPA_MOM_100_INTER_SAG:
-            results.Add(new Moment(value, MomentUnit.NewtonMeter));
-            break;
-          case CapacityOption.NEUTRAL_X_ULTI_CONS_HOG:
-          case CapacityOption.NEUTRAL_X_ULTI_FINA_HOG:
-          case CapacityOption.NEUTRAL_X_ULTI_CONS_SAG:
-          case CapacityOption.NEUTRAL_X_ULTI_FINA_SAG:
-          case CapacityOption.NEUTRAL_X_BEAM_PLAS_HOG:
-          case CapacityOption.NEUTRAL_X_100_INTER_HOG:
-          case CapacityOption.NEUTRAL_X_BEAM_PLAS_SAG:
-          case CapacityOption.NEUTRAL_X_100_INTER_SAG:
-            results.Add(new Length(value, LengthUnit.Meter));
-            break;
-          case CapacityOption.CAPA_SHE_SHEAR:
-          case CapacityOption.CAPA_SHE_BUCLE:
-          case CapacityOption.CAPA_SHE_PV:
-            results.Add(new Force(value, ForceUnit.Newton));
-            break;
+          float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
+
+          switch (resultType)
+          {
+            case CapacityOption.CAPA_MOM_ULTI_CONS_HOG:
+            case CapacityOption.CAPA_MOM_ULTI_FINA_HOG:
+            case CapacityOption.CAPA_MOM_ULTI_CONS_SAG:
+            case CapacityOption.CAPA_MOM_ULTI_FINA_SAG:
+            case CapacityOption.CAPA_MOM_BEAM_PLAS_HOG:
+            case CapacityOption.CAPA_MOM_100_INTER_HOG:
+            case CapacityOption.CAPA_MOM_BEAM_PLAS_SAG:
+            case CapacityOption.CAPA_MOM_100_INTER_SAG:
+              results.Add(new Moment(value, MomentUnit.NewtonMeter));
+              break;
+            case CapacityOption.NEUTRAL_X_ULTI_CONS_HOG:
+            case CapacityOption.NEUTRAL_X_ULTI_FINA_HOG:
+            case CapacityOption.NEUTRAL_X_ULTI_CONS_SAG:
+            case CapacityOption.NEUTRAL_X_ULTI_FINA_SAG:
+            case CapacityOption.NEUTRAL_X_BEAM_PLAS_HOG:
+            case CapacityOption.NEUTRAL_X_100_INTER_HOG:
+            case CapacityOption.NEUTRAL_X_BEAM_PLAS_SAG:
+            case CapacityOption.NEUTRAL_X_100_INTER_SAG:
+              results.Add(new Length(value, LengthUnit.Meter));
+              break;
+            case CapacityOption.CAPA_SHE_SHEAR:
+            case CapacityOption.CAPA_SHE_BUCLE:
+            case CapacityOption.CAPA_SHE_PV:
+              results.Add(new Force(value, ForceUnit.Newton));
+              break;
+          }
         }
+        this.ResultsCache.Add(resultType, results);
       }
-      this.ResultsCache.Add(resultType, results);
+      return this.ResultsCache[resultType];
     }
   }
 }

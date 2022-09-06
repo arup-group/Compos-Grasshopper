@@ -6,24 +6,18 @@ namespace ComposAPI
   public interface IResult
   {
     List<Length> Positions { get; }
-    ICompositeSectionProperties SectionProperties { get; } // 1
 
-    IBeamClassification BeamClassification { get; } // 2
+    IUtilisation Utilisations { get; }
 
-    ICapacityResult Capacities { get; } // 1
+    ICompositeSectionProperties SectionProperties { get; }
+    IInternalForceResult InternalForces { get; }
+    ICapacityResult Capacities { get; }
+    IDeflectionResult Deflections { get; }
 
-    IInternalForceResult InternalForces { get; } // 1
-
-    IUtilisation Utilisations { get; } // 0
-
-    IBeamStressResult BeamStresses { get; } // 2
-
-    ISlabStressResult SlabStresses { get; } // 2
-
-    ITransverseRebarResult TransverseRebarResults { get; } // 2
-
-    IStudResult StudResults { get; } // 2
-
-    IDeflectionResult Deflections { get; } // 1
+    IBeamClassification BeamClassification { get; }
+    IBeamStressResult BeamStresses { get; }
+    IStudResult StudResults { get; }
+    ISlabStressResult SlabStresses { get; }
+    ITransverseRebarResult TransverseRebarResults { get; } 
   }
 }

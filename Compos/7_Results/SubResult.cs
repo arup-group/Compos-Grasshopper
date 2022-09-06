@@ -9,11 +9,9 @@ using UnitsNet;
 
 namespace ComposAPI
 {
-  
-
-  public abstract class ResultsBase
+  public abstract class SubResult
   {
-    public ResultsBase(Member member, int numIntermediatePos)
+    public SubResult(Member member, int numIntermediatePos)
     {
       this.Member = member;
       this.NumIntermediatePos = numIntermediatePos;

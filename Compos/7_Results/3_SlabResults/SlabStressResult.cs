@@ -9,9 +9,8 @@ using UnitsNet.Units;
 
 namespace ComposAPI
 {
-  public class SlabStressResult : ResultsBase, ISlabStressResult
+  public class SlabStressResult : SubResult, ISlabStressResult
   {
-    internal Dictionary<StressOption, List<IQuantity>> ResultsCache = new Dictionary<StressOption, List<IQuantity>>();
     public SlabStressResult(Member member, int numIntermediatePos) : base(member, numIntermediatePos)
     {
     }
@@ -25,9 +24,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_ADDI_CONC_STRESS;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        return this.GetResults(resultType).Select(x => (Pressure)x).ToList();
       }
     }
 
@@ -39,9 +36,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_LIVE_CONC_STRESS;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        return this.GetResults(resultType).Select(x => (Pressure)x).ToList();
       }
     }
 
@@ -53,9 +48,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_SHRINK_CONC_STRESS;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        return this.GetResults(resultType).Select(x => (Pressure)x).ToList();
       }
     }
 
@@ -67,9 +60,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_TOTL_CONC_STRESS;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Pressure)x).ToList();
+        return this.GetResults(resultType).Select(x => (Pressure)x).ToList();
       }
     }
     #endregion
@@ -82,9 +73,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_ADDI_CONC_STRAIN;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Strain)x).ToList();
+        return this.GetResults(resultType).Select(x => (Strain)x).ToList();
       }
     }
 
@@ -96,9 +85,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_LIVE_CONC_STRAIN;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Strain)x).ToList();
+        return this.GetResults(resultType).Select(x => (Strain)x).ToList();
       }
     }
 
@@ -110,9 +97,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_SHRINK_CONC_STRAIN;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Strain)x).ToList();
+        return this.GetResults(resultType).Select(x => (Strain)x).ToList();
       }
     }
 
@@ -124,37 +109,40 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_TOTL_CONC_STRAIN;
-        if (!this.ResultsCache.ContainsKey(resultType))
-          this.GetResults(resultType);
-        return this.ResultsCache[resultType].Select(x => (Strain)x).ToList();
+        return this.GetResults(resultType).Select(x => (Strain)x).ToList();
       }
     }
     #endregion
 
-    private void GetResults(StressOption resultType)
+    private Dictionary<StressOption, List<IQuantity>> ResultsCache = new Dictionary<StressOption, List<IQuantity>>();
+    private List<IQuantity> GetResults(StressOption resultType)
     {
-      List<IQuantity> results = new List<IQuantity>();
-      for (short pos = 0; pos < this.NumIntermediatePos; pos++)
+      if (!this.ResultsCache.ContainsKey(resultType))
       {
-        float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
-
-        switch (resultType)
+        List<IQuantity> results = new List<IQuantity>();
+        for (short pos = 0; pos < this.NumIntermediatePos; pos++)
         {
-          case StressOption.STRESS_ADDI_CONC_STRESS:
-          case StressOption.STRESS_FINA_LIVE_CONC_STRESS:
-          case StressOption.STRESS_SHRINK_CONC_STRESS:
-          case StressOption.STRESS_FINA_TOTL_CONC_STRESS:
-            results.Add(new Pressure(value, PressureUnit.Pascal));
-            break;
-          case StressOption.STRESS_ADDI_CONC_STRAIN:
-          case StressOption.STRESS_FINA_LIVE_CONC_STRAIN:
-          case StressOption.STRESS_SHRINK_CONC_STRAIN:
-          case StressOption.STRESS_FINA_TOTL_CONC_STRAIN:
-            results.Add(new Strain(value, StrainUnit.Ratio));
-            break;
+          float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
+
+          switch (resultType)
+          {
+            case StressOption.STRESS_ADDI_CONC_STRESS:
+            case StressOption.STRESS_FINA_LIVE_CONC_STRESS:
+            case StressOption.STRESS_SHRINK_CONC_STRESS:
+            case StressOption.STRESS_FINA_TOTL_CONC_STRESS:
+              results.Add(new Pressure(value, PressureUnit.Pascal));
+              break;
+            case StressOption.STRESS_ADDI_CONC_STRAIN:
+            case StressOption.STRESS_FINA_LIVE_CONC_STRAIN:
+            case StressOption.STRESS_SHRINK_CONC_STRAIN:
+            case StressOption.STRESS_FINA_TOTL_CONC_STRAIN:
+              results.Add(new Strain(value, StrainUnit.Ratio));
+              break;
+          }
         }
+        this.ResultsCache.Add(resultType, results);
       }
-      this.ResultsCache.Add(resultType, results);
+      return this.ResultsCache[resultType];
     }
   }
 }
