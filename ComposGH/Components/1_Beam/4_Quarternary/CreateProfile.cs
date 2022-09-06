@@ -85,7 +85,7 @@ namespace ComposGH.Components
           this.ExpireSolution(true);
         }
 
-        DA.SetData(0, new BeamSectionGoo(new BeamSection("CAT " + ProfileString)));
+        SetOutput.Item(this, DA, 0, new BeamSectionGoo(new BeamSection("CAT " + ProfileString)));
 
         return;
       }
@@ -137,8 +137,7 @@ namespace ComposGH.Components
           return;
         }
 
-        DA.SetData(0, new BeamSectionGoo(new BeamSection(profile)));
-        return;
+        SetOutput.Item(this, DA, 0, new BeamSectionGoo(new BeamSection(profile)));
       }
       #endregion
     }

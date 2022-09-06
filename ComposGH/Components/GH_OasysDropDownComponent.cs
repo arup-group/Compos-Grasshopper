@@ -1,8 +1,10 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Grasshopper.Kernel;
 using ComposGH.Helpers;
+using Newtonsoft.Json;
+using static System.Resources.ResXFileRef;
+using UnitsNet.Serialization.JsonNet;
 
 namespace ComposGH.Components
 {
@@ -16,6 +18,8 @@ namespace ComposGH.Components
     internal List<string> SelectedItems;
     internal List<string> SpacerDescriptions;
     internal bool IsInitialised = false;
+    internal bool UpdateOutput = true;
+    internal Dictionary<int, List<int>> ExistingOutputsSerialized = new Dictionary<int, List<int>>() { { 0, new List<int>() { 0 } } }; // new dictionary with key = 0 (inputid) and list of serialized ints with initial one item = 0
 
     #region UI
     public override void CreateAttributes()
@@ -24,6 +28,12 @@ namespace ComposGH.Components
         this.InitialiseDropdowns();
 
       m_attributes = new UI.MultiDropDownComponentUI(this, this.SetSelected, this.DropDownItems, this.SelectedItems, this.SpacerDescriptions);
+    }
+
+    protected override void ExpireDownStreamObjects()
+    {
+      if (this.UpdateOutput)
+        base.ExpireDownStreamObjects();
     }
 
     internal abstract void InitialiseDropdowns();

@@ -46,10 +46,10 @@ namespace ComposGH.Components
       if (this.Params.Input[0].Sources.Count > 0)
       {
         SelectedItems[0] = "Custom";
-        DA.SetData(0, new ReinforcementMaterialGoo(new ReinforcementMaterial(GetInput.Stress(this, DA, 0, StressUnit))));
+        SetOutput.Item(this, DA, 0, new ReinforcementMaterialGoo(new ReinforcementMaterial(GetInput.Stress(this, DA, 0, StressUnit))));
       }
       else
-        DA.SetData(0, new ReinforcementMaterialGoo(new ReinforcementMaterial(Grade)));
+        SetOutput.Item(this, DA, 0, new ReinforcementMaterialGoo(new ReinforcementMaterial(Grade)));
     }
 
     #region Custom UI

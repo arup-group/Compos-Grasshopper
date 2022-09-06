@@ -49,7 +49,7 @@ namespace ComposGH.Components
       Length dia = GetInput.Length(this, DA, 0, LengthUnit, true);
       Length h = GetInput.Length(this, DA, 1, LengthUnit, true);
       Force strengthF = GetInput.Force(this, DA, 2, ForceUnit);
-      DA.SetData(0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthF)));
+      SetOutput.Item(this, DA, 0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthF)));
     }
 
     #region Custom UI

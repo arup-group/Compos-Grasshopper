@@ -13,7 +13,7 @@ namespace ComposGH.Components
   /// <summary>
   /// Component to read transverse rebar properties from a Compos model
   /// </summary>
-  public class ReadTransverseRebarProps : GH_OasysComponent, IGH_VariableParameterComponent
+  public class ReadTransverseRebarProps : GH_OasysDropDownComponent, IGH_VariableParameterComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
@@ -27,66 +27,6 @@ namespace ComposGH.Components
     public override GH_Exposure Exposure => GH_Exposure.primary;
 
     protected override Bitmap Icon => Properties.Resources.ReadResult;
-    #endregion
-
-    #region Custom UI
-    // This region overrides the typical component layout
-
-    // list of lists with all dropdown lists conctent
-    List<List<string>> DropDownItems;
-    // list of selected items
-    List<string> SelectedItems;
-    // list of descriptions 
-    List<string> SpacerDescriptions = new List<string>(new string[]
-    {
-      "Transverse rebar option"
-    });
-
-    private bool First = true;
-    private TransverseRebarOption Option = TransverseRebarOption.REBAR_DIST_LEFT_SIDE;
-
-    public override void CreateAttributes()
-    {
-      if (this.First)
-      {
-        this.DropDownItems = new List<List<string>>();
-        this.SelectedItems = new List<string>();
-
-        this.DropDownItems.Add(Enum.GetValues(typeof(TransverseRebarOption)).Cast<TransverseRebarOption>().Select(x => x.ToString()).ToList());
-        this.SelectedItems.Add(this.Option.ToString());
-
-        this.First = false;
-      }
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, this.DropDownItems, this.SelectedItems, this.SpacerDescriptions);
-    }
-
-    public void SetSelected(int i, int j)
-    {
-      // change selected item
-      this.SelectedItems[i] = this.DropDownItems[i][j];
-
-      if (i == 0)
-      {
-        this.Option = (TransverseRebarOption)Enum.Parse(typeof(TransverseRebarOption), this.SelectedItems[i]);
-      }
-
-      // update name of inputs (to display unit on sliders)
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      this.Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-
-    private void UpdateUIFromSelectedItems()
-    {
-      this.Option = (TransverseRebarOption)Enum.Parse(typeof(TransverseRebarOption), this.SelectedItems[0]);
-
-      CreateAttributes();
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      this.Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
     #endregion
 
     #region Input and output
@@ -124,33 +64,41 @@ namespace ComposGH.Components
           result.Add(new GH_Number(member.TranRebarProp(this.Option, Convert.ToInt16(num))));
         }
 
-        DA.SetDataList(0, result);
+        SetOutput.List(this, DA, 0, result);
       }
     }
 
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
+    #region Custom UI
+    private TransverseRebarOption Option = TransverseRebarOption.REBAR_DIST_LEFT_SIDE;
+
+    internal override void InitialiseDropdowns()
     {
-      return false;
+      SpacerDescriptions = new List<string>(new string[] { "Transverse rebar option" });
+
+      this.DropDownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
+
+      this.DropDownItems.Add(Enum.GetValues(typeof(TransverseRebarOption)).Cast<TransverseRebarOption>().Select(x => x.ToString()).ToList());
+      this.SelectedItems.Add(this.Option.ToString());
+
+      this.IsInitialised = true;
     }
 
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
+    internal override void SetSelected(int i, int j)
     {
-      return false;
+      this.SelectedItems[i] = this.DropDownItems[i][j];
+
+      if (i == 0)
+        this.Option = (TransverseRebarOption)Enum.Parse(typeof(TransverseRebarOption), this.SelectedItems[i]);
+
+      base.UpdateUI();
     }
 
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
+    internal override void UpdateUIFromSelectedItems()
     {
-      return null;
-    }
+      this.Option = (TransverseRebarOption)Enum.Parse(typeof(TransverseRebarOption), this.SelectedItems[0]);
 
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
+      base.UpdateUIFromSelectedItems();
     }
     #endregion
   }

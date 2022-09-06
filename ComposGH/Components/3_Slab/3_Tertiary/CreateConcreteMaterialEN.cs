@@ -158,7 +158,7 @@ namespace ComposGH.Components
 
       ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, selectedDensityClass, dryDensity, userDensity, (eRatio == null) ? new ERatio() { ShortTerm = 6, LongTerm = 18, Vibration = 5.39 } : eRatio.Value, imposedLoadPercentage, shrinkageStrain, userStrain);
 
-      DA.SetData(0, new ConcreteMaterialGoo(concreteMaterial));
+      SetOutput.Item(this, DA, 0, new ConcreteMaterialGoo(concreteMaterial));
     }
 
     #region (de)serialization

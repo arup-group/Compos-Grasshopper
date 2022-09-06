@@ -98,7 +98,7 @@ namespace ComposGH.Components
 
       ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, dryDensity, userDensity, (eRatio == null) ? new ERatio() : eRatio.Value, imposedLoadPercentage);
 
-      DA.SetData(0, new ConcreteMaterialGoo(concreteMaterial));
+      SetOutput.Item(this, DA, 0, new ConcreteMaterialGoo(concreteMaterial));
     }
 
     #region Custom UI

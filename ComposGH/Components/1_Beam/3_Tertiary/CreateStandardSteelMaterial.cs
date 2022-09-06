@@ -76,7 +76,7 @@ namespace ComposGH.Components
         this.OverrideDropDownItems[0] = false;
       }
 
-      DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(SteelGrade, Code.BS5950_3_1_1990_A1_2010))); //any code other than EN or ASNZ will do...
+      SetOutput.Item(this, DA, 0, new SteelMaterialGoo(new SteelMaterial(SteelGrade, Code.BS5950_3_1_1990_A1_2010))); //any code other than EN or ASNZ will do...
     }
 
     #region Custom UI

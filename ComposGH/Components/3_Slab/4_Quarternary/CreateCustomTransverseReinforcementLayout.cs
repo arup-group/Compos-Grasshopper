@@ -55,7 +55,7 @@ namespace ComposGH.Components
       Length spacing = GetInput.Length(this, DA, 3, LengthUnit);
       Length cov = GetInput.Length(this, DA, 4, LengthUnit);
 
-      DA.SetData(0, new CustomTransverseReinforcementLayoutGoo(new CustomTransverseReinforcementLayout(start, end, dia, spacing, cov)));
+      SetOutput.Item(this, DA, 0, new CustomTransverseReinforcementLayoutGoo(new CustomTransverseReinforcementLayout(start, end, dia, spacing, cov)));
     }
 
     #region Custom UI

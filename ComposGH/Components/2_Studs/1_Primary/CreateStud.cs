@@ -5,6 +5,11 @@ using ComposGH.Parameters;
 using System.Linq;
 using Grasshopper.Kernel.Parameters;
 using ComposAPI;
+using Newtonsoft.Json;
+using UnitsNet;
+using UnitsNet.Units;
+using UnitsNet.Serialization.JsonNet;
+
 
 namespace ComposGH.Components
 {
@@ -46,16 +51,17 @@ namespace ComposGH.Components
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       StudDimensionsGoo studDimensions = (StudDimensionsGoo)GetInput.GenericGoo<StudDimensionsGoo>(this, DA, 0);
-      if(studDimensions == null) { return; } // return here on non-optional inputs
+      if (studDimensions == null) { return; } // return here on non-optional inputs
       StudSpecificationGoo studSpec = (StudSpecificationGoo)GetInput.GenericGoo<StudSpecificationGoo>(this, DA, 1);
       if (studSpec == null) { return; } // return here on non-optional inputs
       double minSav = 0.2;
+      StudGoo output = null;
       switch (SpacingType)
       {
         case StudSpacingType.Automatic:
         case StudSpacingType.Min_Num_of_Studs:
           DA.GetData(2, ref minSav);
-          DA.SetData(0, new StudGoo(
+          SetOutput.Item(this, DA, 0, new StudGoo(
               new Stud(studDimensions.Value, studSpec.Value, minSav, SpacingType)));
           break;
 
@@ -63,7 +69,7 @@ namespace ComposGH.Components
           DA.GetData(2, ref minSav);
           double interaction = 0.85;
           DA.GetData(3, ref interaction);
-          DA.SetData(0, new StudGoo(
+          SetOutput.Item(this, DA, 0, new StudGoo(
               new Stud(studDimensions.Value, studSpec.Value, minSav, interaction)));
           break;
 
@@ -71,12 +77,12 @@ namespace ComposGH.Components
           List<StudGroupSpacingGoo> spacings = GetInput.GenericGooList<StudGroupSpacingGoo>(this, DA, 2);
           bool check = false;
           DA.GetData(3, ref check);
-          DA.SetData(0, new StudGoo(
-              new Stud(studDimensions.Value, studSpec.Value, (spacings == null) ? null : spacings.Select(x => x.Value as IStudGroupSpacing).ToList(), check)));
+          SetOutput.Item(this, DA, 0, new StudGoo(
+              new Stud(studDimensions.Value, studSpec.Value, spacings?.Select(x => x.Value as IStudGroupSpacing).ToList(), check)));
           break;
       }
     }
-
+    
     #region Custom UI
     private StudSpacingType SpacingType = StudSpacingType.Min_Num_of_Studs;
 
@@ -88,7 +94,7 @@ namespace ComposGH.Components
       // spacing
       this.DropDownItems.Add(Enum.GetValues(typeof(StudSpacingType)).Cast<StudSpacingType>()
           .Select(x => x.ToString().Replace("_", " ")).ToList());
-      this.SelectedItems.Add(StudSpacingType.Automatic.ToString().Replace("_", " "));
+      this.SelectedItems.Add(SpacingType.ToString().Replace("_", " "));
       this.IsInitialised = true;
     }
 

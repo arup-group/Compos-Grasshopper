@@ -58,12 +58,12 @@ namespace ComposGH.Components
       {
         Length bottomWidth = GetInput.Length(this, DA, 4, LengthUnit);
         Length bottomTHK = GetInput.Length(this, DA, 5, LengthUnit);
-        DA.SetData(0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
+        SetOutput.Item(this, DA, 0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
             start, topWidth, topTHK, bottomWidth, bottomTHK, bothSides)));
       }
       else
       {
-        DA.SetData(0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
+        SetOutput.Item(this, DA, 0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
             start, topWidth, topTHK, bothSides)));
       }
     }

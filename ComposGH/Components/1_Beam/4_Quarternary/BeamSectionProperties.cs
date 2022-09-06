@@ -7,6 +7,9 @@ using UnitsNet.Units;
 using System.Linq;
 using ComposAPI;
 using UnitsNet.GH;
+using Newtonsoft.Json;
+using static System.Resources.ResXFileRef;
+using UnitsNet.Serialization.JsonNet;
 
 namespace ComposGH.Components
 {
@@ -51,6 +54,16 @@ namespace ComposGH.Components
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       BeamSection profile = new BeamSection(GetInput.BeamSection(this, DA, 0, false));
+
+      int outputsSerialized = JsonConvert.SerializeObject(profile.SectionDescription + LengthUnit.ToString()).GetHashCode();
+      if (this.ProfileSerialized != outputsSerialized)
+      {
+        this.ProfileSerialized = outputsSerialized;
+        base.UpdateOutput = true;
+      }
+      else
+        base.UpdateOutput = false;
+
       int i = 0;
       DA.SetData(i++, new GH_UnitNumber(profile.Depth.ToUnit(this.LengthUnit)));
       DA.SetData(i++, new GH_UnitNumber(profile.TopFlangeWidth.ToUnit(this.LengthUnit)));
@@ -64,6 +77,7 @@ namespace ComposGH.Components
 
     #region Custom UI
     private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+    private int ProfileSerialized = 0;
 
     internal override void InitialiseDropdowns()
     {
