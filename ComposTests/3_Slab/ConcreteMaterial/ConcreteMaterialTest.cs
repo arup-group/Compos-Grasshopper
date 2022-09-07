@@ -9,8 +9,9 @@ using Oasys.Units;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
-using static ComposAPI.ConcreteMaterial;
 using ComposGHTests.Helpers;
+using OasysGH;
+using static ComposAPI.ConcreteMaterial;
 
 namespace ComposAPI.Slabs.Tests
 {

@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ComposGHTests.Helpers;
+using OasysGH;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
-using ComposAPITests.Helpers;
-using ComposAPI.Tests;
-using ComposGHTests.Helpers;
-
 
 namespace ComposAPI.Beams.Tests
 {

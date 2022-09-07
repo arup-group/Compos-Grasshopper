@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using ComposGHTests.Helpers;
+using OasysGH;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;

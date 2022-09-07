@@ -2,9 +2,8 @@
 using UnitsNet;
 using UnitsNet.Units;
 using System.Collections.Generic;
-using ComposAPI.Tests;
 using ComposGHTests.Helpers;
-
+using OasysGH;
 
 namespace ComposAPI.Beams.Tests
 {

@@ -5,7 +5,7 @@ using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
 using ComposGHTests.Helpers;
-
+using OasysGH;
 
 namespace ComposAPI.Slabs.Tests
 {

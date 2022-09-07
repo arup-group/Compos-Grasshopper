@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
+using OasysGH;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;

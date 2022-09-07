@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ComposAPI.Tests;
 using ComposGHTests.Helpers;
+using OasysGH;
 using UnitsNet;
 using Xunit;
 

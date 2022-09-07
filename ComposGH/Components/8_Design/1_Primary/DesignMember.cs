@@ -3,8 +3,8 @@ using System.Drawing;
 using ComposAPI;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
+using OasysGH;
 using OasysGH.Components;
-using OasysGH.Parameters;
 
 namespace ComposGH.Components
 {

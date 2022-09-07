@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using Xunit;
+using ComposGHTests.Helpers;
+using OasysGH;
 using UnitsNet;
 using UnitsNet.Units;
-using static ComposAPI.Load;
-using ComposAPI.Tests;
-using ComposGHTests.Helpers;
-
+using Xunit;
 
 namespace ComposAPI.Loads.Tests
 {
