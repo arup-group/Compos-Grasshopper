@@ -54,9 +54,9 @@ namespace ComposGH.Components
       BeamSection profile = new BeamSection(GetInput.BeamSection(this, DA, 0, false));
 
       int outputsSerialized = JsonConvert.SerializeObject(profile.SectionDescription + LengthUnit.ToString()).GetHashCode();
-      if (ProfileSerialized != outputsSerialized)
+      if (this.ProfileSerialized != outputsSerialized)
       {
-        ProfileSerialized = outputsSerialized;
+        this.ProfileSerialized = outputsSerialized;
         base.UpdateOutput = true;
       }
       else

@@ -482,6 +482,12 @@
     <None Include="Properties\Icons\StandardENSteelMaterial.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\Icons\ComposInfo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\ComposLogo64.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Properties\Icons\BeamSizeLimits.png" />
   </ItemGroup>
   <ItemGroup>

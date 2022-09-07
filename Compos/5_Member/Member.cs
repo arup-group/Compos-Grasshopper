@@ -71,7 +71,7 @@ namespace ComposAPI
     #region methods
     public short Analyse()
     {
-      return FileRegister[this.FileGuid].Analyse(this.Name);
+      return Member.FileRegister[this.FileGuid].Analyse(this.Name);
     }
 
     public bool Design()
@@ -81,7 +81,7 @@ namespace ComposAPI
       if (!this.Beam.Sections[0].isCatalogue)
         throw new Exception("Unable to design member, the initial section profile must be a catalogue profile");
 
-      ComposFile file = FileRegister[this.FileGuid];
+      ComposFile file = Member.FileRegister[this.FileGuid];
       if (file.Design(this.Name) == 0)
       {
         BeamSection newSection = new BeamSection(file.BeamSectDesc(this.Name));
@@ -95,16 +95,17 @@ namespace ComposAPI
     public void Register(ComposFile file)
     {
       this.FileGuid = file.Guid;
-      if (FileRegister.ContainsKey(file.Guid))
-        FileRegister.Remove(file.Guid);
-      FileRegister.Add(file.Guid, file);
+      if (Member.FileRegister.ContainsKey(file.Guid))
+        Member.FileRegister.Remove(file.Guid);
+      Member.FileRegister.Add(file.Guid, file);
     }
 
     #endregion
+
     #region results
     public short CodeSatisfied()
     {
-      return FileRegister[this.FileGuid].CodeSatisfied(this.Name);
+      return Member.FileRegister[this.FileGuid].CodeSatisfied(this.Name);
     }
 
     public string GetCodeSatisfiedMessage()
@@ -128,32 +129,32 @@ namespace ComposAPI
 
     internal float MaxResult(string option, short position)
     {
-      return FileRegister[this.FileGuid].MaxResult(this.Name, option, position);
+      return Member.FileRegister[this.FileGuid].MaxResult(this.Name, option, position);
     }
 
     internal short MaxResultPosition(string option, short position)
     {
-      return FileRegister[this.FileGuid].MaxResultPosition(this.Name, option, position);
+      return Member.FileRegister[this.FileGuid].MaxResultPosition(this.Name, option, position);
     }
 
     internal float MinResult(string option, short position)
     {
-      return FileRegister[this.FileGuid].MinResult(this.Name, option, position);
+      return Member.FileRegister[this.FileGuid].MinResult(this.Name, option, position);
     }
 
     internal short MinResultPosition(string option, short position)
     {
-      return FileRegister[this.FileGuid].MinResultPosition(this.Name, option, position);
+      return Member.FileRegister[this.FileGuid].MinResultPosition(this.Name, option, position);
     }
 
     internal short NumIntermediatePos()
     {
-      return FileRegister[this.FileGuid].NumIntermediatePos(this.Name);
+      return Member.FileRegister[this.FileGuid].NumIntermediatePos(this.Name);
     }
 
     internal short NumTranRebar()
     {
-      return FileRegister[this.FileGuid].NumTranRebar(this.Name);
+      return Member.FileRegister[this.FileGuid].NumTranRebar(this.Name);
     }
     internal float GetResult(string option, short position)
     {
@@ -162,12 +163,12 @@ namespace ComposAPI
 
     internal float TranRebarProp(TransverseRebarOption option, short rebarnum)
     {
-      return FileRegister[this.FileGuid].TranRebarProp(this.Name, option, rebarnum);
+      return Member.FileRegister[this.FileGuid].TranRebarProp(this.Name, option, rebarnum);
     }
 
     internal float UtilisationFactor(UtilisationFactorOption option)
     {
-      return FileRegister[this.FileGuid].UtilisationFactor(this.Name, option);
+      return Member.FileRegister[this.FileGuid].UtilisationFactor(this.Name, option);
     }
     #endregion
 

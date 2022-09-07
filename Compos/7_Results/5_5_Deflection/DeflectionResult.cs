@@ -20,13 +20,11 @@ namespace ComposAPI
     MODAL_SHAPE, // Mode shape
   }
 
-  public class DeflectionResult : ResultsBase, IDeflectionResult
+  public class DeflectionResult : SubResult, IDeflectionResult
   {
-    internal Dictionary<DeflectionOption, List<Length>> ResultsCache = new Dictionary<DeflectionOption, List<Length>>();
     public DeflectionResult(Member member, int numIntermediatePos) : base(member, numIntermediatePos)
     {
     }
-
 
     /// <summary>
     /// Deflection due to Construction dead loads
@@ -36,9 +34,7 @@ namespace ComposAPI
       get
       {
         DeflectionOption resultType = DeflectionOption.DEFL_CONS_DEAD_LOAD;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        return this.GetResults(resultType);
       }
     }
 
@@ -51,9 +47,7 @@ namespace ComposAPI
       get
       {
         DeflectionOption resultType = DeflectionOption.DEFL_ADDI_DEAD_LOAD;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        return this.GetResults(resultType);
       }
     }
 
@@ -66,9 +60,7 @@ namespace ComposAPI
       get
       {
         DeflectionOption resultType = DeflectionOption.DEFL_FINA_LIVE_LOAD;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        return this.GetResults(resultType);
       }
     }
 
@@ -81,9 +73,7 @@ namespace ComposAPI
       get
       {
         DeflectionOption resultType = DeflectionOption.DEFL_SHRINK;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        return this.GetResults(resultType);
       }
     }
 
@@ -96,9 +86,7 @@ namespace ComposAPI
       get
       {
         DeflectionOption resultType = DeflectionOption.DEFL_POST_CONS;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        return this.GetResults(resultType);
       }
     }
 
@@ -111,9 +99,7 @@ namespace ComposAPI
       get
       {
         DeflectionOption resultType = DeflectionOption.DEFL_FINA_TOTAL;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType];
+        return this.GetResults(resultType);
       }
     }
 
@@ -126,22 +112,27 @@ namespace ComposAPI
     //  get
     //  {
     //    DeflectionOption resultType = DeflectionOption.MODAL_SHAPE;
-    //    if (!ResultsCache.ContainsKey(resultType))
-    //      GetResults(resultType);
-    //    return ResultsCache[resultType];
+    //    if (!this.ResultsCache.ContainsKey(resultType))
+    //      this.GetResults(resultType);
+    //    return this.ResultsCache[resultType];
     //  }
     //}
 
+    private Dictionary<DeflectionOption, List<Length>> ResultsCache = new Dictionary<DeflectionOption, List<Length>>();
 
-    private void GetResults(DeflectionOption resultType)
+    private List<Length> GetResults(DeflectionOption resultType)
     {
-      List<Length> results = new List<Length>();
-      for (short pos = 0; pos < this.NumIntermediatePos; pos++)
+      if (!this.ResultsCache.ContainsKey(resultType))
       {
-        float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
-        results.Add(new Length(value, LengthUnit.Meter));
+        List<Length> results = new List<Length>();
+        for (short pos = 0; pos < this.NumIntermediatePos; pos++)
+        {
+          float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
+          results.Add(new Length(value, LengthUnit.Meter));
+        }
+        this.ResultsCache.Add(resultType, results);
       }
-      ResultsCache.Add(resultType, results);
+      return this.ResultsCache[resultType];
     }
   }
 }

@@ -1121,7 +1121,6 @@ namespace ComposGH.Components
       Catalogue,
       Other
     }
-    private bool first = true;
     private FoldMode _mode = FoldMode.Catalogue;
 
     private void Mode1Clicked()

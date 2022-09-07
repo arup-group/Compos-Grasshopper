@@ -28,13 +28,11 @@ namespace ComposAPI
     REBAR_CRITI_SHEAR_MAX_ALLOW, // Maximum allowable shear resistance
   }
 
-  public class TransverseRebarResult : ResultsBase, ITransverseRebarResult
+  public class TransverseRebarResult : SubResult, ITransverseRebarResult
   {
-    internal Dictionary<TransverseRebarOption, List<IQuantity>> ResultsCache = new Dictionary<TransverseRebarOption, List<IQuantity>>();
     public TransverseRebarResult(Member member, int numIntermediatePos) : base(member, numIntermediatePos)
     {
     }
-
 
     /// <summary>
     /// Rebar starting position, measured from start
@@ -44,9 +42,7 @@ namespace ComposAPI
       get
       {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_DIST_LEFT_SIDE;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -58,9 +54,7 @@ namespace ComposAPI
       get
       {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_DIST_RIGHT_SIDE;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -72,9 +66,7 @@ namespace ComposAPI
       get
       {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_DIAMETER;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -86,9 +78,7 @@ namespace ComposAPI
       get
       {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_INTERVAL;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -100,9 +90,7 @@ namespace ComposAPI
       get
       {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_COVER;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -114,9 +102,7 @@ namespace ComposAPI
       get
       {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_AREA;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Area)x).ToList();
+        return this.GetResults(resultType).Select(x => (Area)x).ToList();
       }
     }
 
@@ -128,9 +114,7 @@ namespace ComposAPI
       get
       {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_CRITI_DIST;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -171,9 +155,7 @@ namespace ComposAPI
       get
       {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_CRITI_PERI;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Length)x).ToList();
+        return this.GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -185,9 +167,7 @@ namespace ComposAPI
       get
       {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_CRITI_ACTUAL_SHEAR;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -199,9 +179,7 @@ namespace ComposAPI
       get
       {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_CRITI_SHEAR_CONC;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -213,9 +191,7 @@ namespace ComposAPI
       get
       {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_CRITI_SHEAR_DECK;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -227,9 +203,7 @@ namespace ComposAPI
       get
       {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_CRITI_SHEAR_MESH;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -241,9 +215,7 @@ namespace ComposAPI
       get
       {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_CRITI_SHEAR_REBAR;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -276,47 +248,50 @@ namespace ComposAPI
       get
       {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_CRITI_SHEAR_MAX_ALLOW;
-        if (!ResultsCache.ContainsKey(resultType))
-          GetResults(resultType);
-        return ResultsCache[resultType].Select(x => (Force)x).ToList();
+        return this.GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
+    private Dictionary<TransverseRebarOption, List<IQuantity>> ResultsCache = new Dictionary<TransverseRebarOption, List<IQuantity>>();
 
-    private void GetResults(TransverseRebarOption resultType)
+    private List<IQuantity> GetResults(TransverseRebarOption resultType)
     {
-      List<IQuantity> results = new List<IQuantity>();
-      for (short pos = 0; pos < this.NumIntermediatePos; pos++)
+      if (!this.ResultsCache.ContainsKey(resultType))
       {
-        float value = this.Member.TranRebarProp(resultType, Convert.ToInt16(pos));
-
-        switch (resultType)
+        List<IQuantity> results = new List<IQuantity>();
+        for (short pos = 0; pos < this.NumIntermediatePos; pos++)
         {
-          case TransverseRebarOption.REBAR_DIST_LEFT_SIDE:
-          case TransverseRebarOption.REBAR_DIST_RIGHT_SIDE:
-          case TransverseRebarOption.REBAR_DIAMETER:
-          case TransverseRebarOption.REBAR_INTERVAL:
-          case TransverseRebarOption.REBAR_CRITI_DIST:
-          case TransverseRebarOption.REBAR_CRITI_PERI:
-          case TransverseRebarOption.REBAR_COVER:
-            results.Add(new Length(value, LengthUnit.Meter));
-            break;
+          float value = this.Member.TranRebarProp(resultType, Convert.ToInt16(pos));
 
-          case TransverseRebarOption.REBAR_AREA:
-            results.Add(new Area(value, AreaUnit.SquareMeter));
-            break;
+          switch (resultType)
+          {
+            case TransverseRebarOption.REBAR_DIST_LEFT_SIDE:
+            case TransverseRebarOption.REBAR_DIST_RIGHT_SIDE:
+            case TransverseRebarOption.REBAR_DIAMETER:
+            case TransverseRebarOption.REBAR_INTERVAL:
+            case TransverseRebarOption.REBAR_CRITI_DIST:
+            case TransverseRebarOption.REBAR_CRITI_PERI:
+            case TransverseRebarOption.REBAR_COVER:
+              results.Add(new Length(value, LengthUnit.Meter));
+              break;
 
-          case TransverseRebarOption.REBAR_CRITI_ACTUAL_SHEAR:
-          case TransverseRebarOption.REBAR_CRITI_SHEAR_CONC:
-          case TransverseRebarOption.REBAR_CRITI_SHEAR_DECK:
-          case TransverseRebarOption.REBAR_CRITI_SHEAR_MESH:
-          case TransverseRebarOption.REBAR_CRITI_SHEAR_REBAR:
-          case TransverseRebarOption.REBAR_CRITI_SHEAR_MAX_ALLOW:
-            results.Add(new Force(value, ForceUnit.Newton));
-            break;
+            case TransverseRebarOption.REBAR_AREA:
+              results.Add(new Area(value, AreaUnit.SquareMeter));
+              break;
+
+            case TransverseRebarOption.REBAR_CRITI_ACTUAL_SHEAR:
+            case TransverseRebarOption.REBAR_CRITI_SHEAR_CONC:
+            case TransverseRebarOption.REBAR_CRITI_SHEAR_DECK:
+            case TransverseRebarOption.REBAR_CRITI_SHEAR_MESH:
+            case TransverseRebarOption.REBAR_CRITI_SHEAR_REBAR:
+            case TransverseRebarOption.REBAR_CRITI_SHEAR_MAX_ALLOW:
+              results.Add(new Force(value, ForceUnit.Newton));
+              break;
+          }
         }
+        this.ResultsCache.Add(resultType, results);
       }
-      ResultsCache.Add(resultType, results);
+      return this.ResultsCache[resultType];
     }
   }
 }
