@@ -1,6 +1,9 @@
 ﻿using Xunit;
 using UnitsNet;
 using UnitsNet.Units;
+using ComposAPI.Tests;
+using ComposGHTests.Helpers;
+
 
 namespace ComposAPI.Studs.Tests
 {
@@ -19,13 +22,26 @@ namespace ComposAPI.Studs.Tests
         new Length(distanceFromStart, unit), numberOfRows, numberOfLines, new Length(spacing, unit));
 
       // 3 check that inputs are set in object's members
-      Assert.Equal(distanceFromStart, studSpacing.DistanceFromStart.Millimeters);
+      Assert.Equal(distanceFromStart, studSpacing.DistanceFromStart.As(LengthUnit.Millimeter));
       Assert.Equal(numberOfRows, studSpacing.NumberOfRows);
       Assert.Equal(numberOfLines, studSpacing.NumberOfLines);
       Assert.Equal(spacing, studSpacing.Spacing.Millimeters);
 
       // 4 return object as input for overaching class test
       return studSpacing;
+    }
+    [Fact]
+    public void DuplicateTest()
+    {
+      // 1 create with constructor and duplicate
+      StudGroupSpacing original = TestConstructorStudSpacing(50, 1, 2, 150);
+      StudGroupSpacing duplicate = (StudGroupSpacing)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     [Fact]
@@ -46,7 +62,7 @@ namespace ComposAPI.Studs.Tests
       StudGroupSpacing duplicate = (StudGroupSpacing)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
-      Assert.Equal(25, duplicate.DistanceFromStart.Millimeters);
+      Assert.Equal(25, duplicate.DistanceFromStart.As(LengthUnit.Millimeter));
       Assert.Equal(1, duplicate.NumberOfRows);
       Assert.Equal(2, duplicate.NumberOfLines);
       Assert.Equal(250, duplicate.Spacing.Millimeters);
@@ -58,13 +74,13 @@ namespace ComposAPI.Studs.Tests
       duplicate.Spacing = new Length(199.99, unit);
 
       // 4 check that duplicate has set changes
-      Assert.Equal(26, duplicate.DistanceFromStart.Millimeters);
+      Assert.Equal(26, duplicate.DistanceFromStart.As(LengthUnit.Millimeter));
       Assert.Equal(2, duplicate.NumberOfRows);
       Assert.Equal(3, duplicate.NumberOfLines);
       Assert.Equal(199.99, duplicate.Spacing.Millimeters);
 
       // 5 check that original has not been changed
-      Assert.Equal(25, original.DistanceFromStart.Millimeters);
+      Assert.Equal(25, original.DistanceFromStart.As(LengthUnit.Millimeter));
       Assert.Equal(1, original.NumberOfRows);
       Assert.Equal(2, original.NumberOfLines);
       Assert.Equal(250, original.Spacing.Millimeters);

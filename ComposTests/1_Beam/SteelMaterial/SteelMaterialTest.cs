@@ -1,17 +1,22 @@
-﻿using System;
+﻿using ComposAPI.Tests;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
+using ComposGHTests.Helpers;
+using ComposAPI.Helpers;
 
 namespace ComposAPI.Beams.Tests
 {
-  public partial class SteelMaterialTest
+  [Collection("ComposAPI Fixture collection")]
+  public class SteelMaterialTest
   {
     [Theory]
     [InlineData(1000, 2000, 3000, true, WeldMaterialGrade.Grade_42, false, Code.BS5950_3_1_1990_A1_2010, "BEAM_STEEL_MATERIAL_USER	MEMBER-1	1000.00	2000.00	3000.00\nBEAM_WELDING_MATERIAL	MEMBER-1	Grade 42\n")]
     [InlineData(1, 2, 3, true, WeldMaterialGrade.Grade_35, false, Code.BS5950_3_1_1990_A1_2010, "BEAM_STEEL_MATERIAL_USER	MEMBER-1	1.00000	2.00000	3.00000\nBEAM_WELDING_MATERIAL	MEMBER-1	Grade 35\n")]
+    [InlineData(1000, 2000, 3000, true, WeldMaterialGrade.Grade_42, true, Code.EN1994_1_1_2004, "BEAM_STEEL_MATERIAL_USER	MEMBER-1	1000.00	2000.00	3000.00	TRUE\nBEAM_WELDING_MATERIAL	MEMBER-1	Grade 42\n")]
     public void ToCoaStringTest1(double fy, double E, double density, bool isCustom, WeldMaterialGrade weldGrade, bool reductionFacorMpl, Code code, string expected_coaString)
     {
       SteelMaterial steelMaterial = new SteelMaterial(new Pressure(fy, PressureUnit.NewtonPerSquareMeter), new Pressure(E, PressureUnit.NewtonPerSquareMeter), new Density(density, DensityUnit.KilogramPerCubicMeter), weldGrade, isCustom, reductionFacorMpl);
@@ -29,6 +34,38 @@ namespace ComposAPI.Beams.Tests
       string coaString = steelMaterial.ToCoaString("MEMBER-1", code, ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_coaString, coaString);
+    }
+
+    [Theory]
+    [InlineData("BEAM_STEEL_MATERIAL_USER	MEMBER-1	1000.00	2000.00	3000.00", "BEAM_WELDING_MATERIAL	MEMBER-1	Grade 42\n", 1000, 2000, 3000, true, WeldMaterialGrade.Grade_42, false)]
+    [InlineData("BEAM_STEEL_MATERIAL_USER	MEMBER-1	1.00000	2.00000	3.00000", "BEAM_WELDING_MATERIAL	MEMBER-1	Grade 35\n", 1, 2, 3, true, WeldMaterialGrade.Grade_35, false)]
+    [InlineData("BEAM_STEEL_MATERIAL_USER	MEMBER-1	1000.00	2000.00	3000.00	TRUE", "BEAM_WELDING_MATERIAL	MEMBER-1	Grade 42\n", 1000, 2000, 3000, true, WeldMaterialGrade.Grade_42, true)]
+    public void FromCoaStringTest1(string coaStringSteelMaterial, string coaStringWeldGrade, double expected_fy, double expected_E, double expected_density, bool expected_isCustom, WeldMaterialGrade expected_weldGrade, bool expected_reductionFacorMpl)
+    {
+      List<string> parameters = CoaHelper.Split(coaStringSteelMaterial);
+      ISteelMaterial steelMaterial = SteelMaterial.FromCoaString(parameters, ComposUnits.GetStandardUnits(), Code.EN1994_1_1_2004);
+
+      WeldMaterialGrade weldGrade = SteelMaterial.WeldGradeFromCoa(CoaHelper.Split(coaStringWeldGrade));
+
+      Assert.Equal(expected_fy, steelMaterial.fy.Value);
+      Assert.Equal(expected_E, steelMaterial.E.Value);
+      Assert.Equal(expected_density, steelMaterial.Density.Value);
+      Assert.Equal(expected_isCustom, steelMaterial.IsCustom);
+      Assert.Equal(expected_weldGrade, weldGrade);
+      Assert.Equal(expected_reductionFacorMpl, steelMaterial.ReductionFactorMpl);
+    }
+
+    [Theory]
+    [InlineData("BEAM_STEEL_MATERIAL_STD	MEMBER-1	S235", "BEAM_WELDING_MATERIAL	MEMBER-1	Grade 35\n", StandardSteelGrade.S235)]
+    [InlineData("BEAM_STEEL_MATERIAL_STD	MEMBER-1	S355 (EN)", "BEAM_WELDING_MATERIAL	MEMBER-1	Grade 42\n", StandardSteelGrade.S355)]
+    public void FromCoaStringTest2(string coaStringSteelMaterial, string coaStringWeldGrade, StandardSteelGrade expected_steelMaterialGrade)
+    {
+      List<string> parameters = CoaHelper.Split(coaStringSteelMaterial);
+      ISteelMaterial steelMaterial = SteelMaterial.FromCoaString(parameters, ComposUnits.GetStandardUnits(), Code.EN1994_1_1_2004);
+
+      WeldMaterialGrade weldGrade = SteelMaterial.WeldGradeFromCoa(CoaHelper.Split(coaStringWeldGrade));
+
+      Assert.Equal(expected_steelMaterialGrade, steelMaterial.Grade);
     }
 
     // 1 setup inputs
@@ -49,7 +86,7 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(E, material.E.Value);
       Assert.Equal(density, material.Density.Value);
       Assert.Equal(weldGrade, material.WeldGrade);
-      Assert.Equal(isCustom, material.isCustom);
+      Assert.Equal(isCustom, material.IsCustom);
       Assert.Equal(reductionFacorMpl, material.ReductionFactorMpl);
     }
 
@@ -76,37 +113,51 @@ namespace ComposAPI.Beams.Tests
         case StandardSteelGrade.S235:
           Assert.Equal(235, material.fy.Value);
           Assert.Equal(WeldMaterialGrade.Grade_35, material.WeldGrade);
-          Assert.False(material.isCustom);
+          Assert.False(material.IsCustom);
           break;
 
         case StandardSteelGrade.S275:
           Assert.Equal(275, material.fy.Value);
           Assert.Equal(WeldMaterialGrade.Grade_35, material.WeldGrade);
-          Assert.False(material.isCustom);
+          Assert.False(material.IsCustom);
           break;
 
         case StandardSteelGrade.S355:
           Assert.Equal(355, material.fy.Value);
           Assert.Equal(WeldMaterialGrade.Grade_42, material.WeldGrade);
-          Assert.False(material.isCustom);
+          Assert.False(material.IsCustom);
           break;
 
         case StandardSteelGrade.S450:
           Assert.Equal(450, material.fy.Value);
           Assert.Equal(WeldMaterialGrade.Grade_50, material.WeldGrade);
-          Assert.False(material.isCustom);
+          Assert.False(material.IsCustom);
           break;
 
         case StandardSteelGrade.S460:
           Assert.Equal(460, material.fy.Value);
           Assert.Equal(WeldMaterialGrade.Grade_50, material.WeldGrade);
-          Assert.False(material.isCustom);
+          Assert.False(material.IsCustom);
           break;
 
         default:
-          Assert.True(material.isCustom);
+          Assert.True(material.IsCustom);
           break;
       }
+    }
+
+    [Fact]
+    public void DuplicateTest()
+    {
+      // 1 create with constructor and duplicate
+      SteelMaterial original = new SteelMaterial();
+      SteelMaterial duplicate = (SteelMaterial)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     [Theory]
@@ -122,15 +173,15 @@ namespace ComposAPI.Beams.Tests
       foreach (StandardSteelGrade grade in grades)
       {
         SteelMaterial steelMaterialExpected = new SteelMaterial(grade, code);
-        string coaString = steelMaterialExpected.ToCoaString("MEMBER-1",code, units);
+        string coaString = steelMaterialExpected.ToCoaString("MEMBER-1", code, units);
         List<string> materialStrings = coaString.Split('\n').ToList()[0].Split('\t').ToList();
         List<string> weldStrings = coaString.Split('\n').ToList()[1].Split('\t').ToList();
-        SteelMaterial materialFromCoa = (SteelMaterial)SteelMaterial.FromCoaString(materialStrings, units);
+        SteelMaterial materialFromCoa = (SteelMaterial)SteelMaterial.FromCoaString(materialStrings, units, Code.EN1994_1_1_2004);
         materialFromCoa.WeldGrade = SteelMaterial.WeldGradeFromCoa(weldStrings);
 
         Assert.Equal(steelMaterialExpected.E, materialFromCoa.E);
         Assert.Equal(steelMaterialExpected.Density, materialFromCoa.Density);
-        Assert.Equal(steelMaterialExpected.isCustom, materialFromCoa.isCustom);
+        Assert.Equal(steelMaterialExpected.IsCustom, materialFromCoa.IsCustom);
         Assert.Equal(steelMaterialExpected.Grade, materialFromCoa.Grade);
         Assert.Equal(steelMaterialExpected.WeldGrade, materialFromCoa.WeldGrade);
         Assert.Equal(steelMaterialExpected.fy, materialFromCoa.fy);

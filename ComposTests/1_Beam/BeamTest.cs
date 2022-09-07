@@ -7,6 +7,9 @@ using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
 using ComposAPITests.Helpers;
+using ComposAPI.Tests;
+using ComposGHTests.Helpers;
+
 
 namespace ComposAPI.Beams.Tests
 {
@@ -79,6 +82,8 @@ namespace ComposAPI.Beams.Tests
       return new Beam(new Length(9, LengthUnit.Meter), restraint, steelMaterial, sections, webOpenings);
     }
   }
+
+  [Collection("ComposAPI Fixture collection")]
   public class BeamTest
   {
     // 1 setup inputs
@@ -124,10 +129,24 @@ namespace ComposAPI.Beams.Tests
       Beam expectedBeam = BeamMother.Example1Beam();
 
       // Act
-      Beam beam = (Beam)Beam.FromCoaString(BeamMother.Example1CoaString(), "MEMBER-1", ComposUnits.GetStandardUnits());
+      Beam beam = (Beam)Beam.FromCoaString(BeamMother.Example1CoaString(), "MEMBER-1", ComposUnits.GetStandardUnits(), Code.EN1994_1_1_2004);
 
       // Assert
       ObjectExtension.Equals(expectedBeam, beam);
+    }
+
+    [Fact]
+    public void DuplicateTest()
+    {
+      // 1 create with constructor and duplicate
+      Beam original = BeamMother.Example1Beam();
+      Beam duplicate = (Beam)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
   }
 }

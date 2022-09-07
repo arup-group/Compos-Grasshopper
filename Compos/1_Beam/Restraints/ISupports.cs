@@ -8,7 +8,7 @@ namespace ComposAPI
   /// </summary>
   public interface ISupports
   {
-    bool SecondaryMemberIntermediateRestraint { get; }
+    bool SecondaryMemberAsIntermediateRestraint { get; }
     bool BothFlangesFreeToRotateOnPlanAtEnds { get; }
     IList<IQuantity> CustomIntermediateRestraintPositions { get; }
     IntermediateRestraint IntermediateRestraintPositions { get; }

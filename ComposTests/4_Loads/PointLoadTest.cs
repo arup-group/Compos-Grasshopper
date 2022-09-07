@@ -3,6 +3,8 @@ using Xunit;
 using UnitsNet;
 using UnitsNet.Units;
 using static ComposAPI.Load;
+using ComposAPI.Tests;
+using ComposGHTests.Helpers;
 
 namespace ComposAPI.Loads.Tests
 {
@@ -31,6 +33,19 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(LoadType.Point, load.Type);
 
       return load;
+    }
+    [Fact]
+    public void DuplicatePointTest()
+    {
+      // 1 create with constructor and duplicate
+      Load original = TestPointLoadConstructor(1, 1.5, 3, 5, 5000);
+      Load duplicate = (Load)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     // 1 setup inputs

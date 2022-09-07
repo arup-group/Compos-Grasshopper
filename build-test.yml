@@ -3,7 +3,8 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-trigger: none
+trigger:
+- main
 
 variables:
   - group: s3PushInstallers
@@ -52,7 +53,10 @@ steps:
     MSBUILDDISABLENODEREUSE: 1
 
 - powershell: |
-    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposTests\bin\Release\net6.0\ComposAPITests.dll
+    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposTests\bin\x64\Release\net6.0\ComposAPITests.dll
+#    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposGHTests\bin\x64\Release\net48\ComposGHTests.dll
+#    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\IntegrationTests\bin\x64\Release\net48\IntegrationTests.dll
+#    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ConverterTests\bin\x64\Release\net6.0\ConverterTests.dll
   displayName: dotnet test
 
 - task: PublishCodeCoverageResults@1
@@ -73,20 +77,81 @@ steps:
   displayName: Upload Code Coverage to codecovio
   failOnStderr: true
 
+- task: PowerShell@2
+  displayName: Check for existing tags
+  inputs:
+    targetType: 'inline'
+    script: |
+        $versionInfo = $(Get-Item .\ComposGH\bin\x64\Release\ComposGH.dll).VersionInfo
+        echo $versionInfo
+        $fullVersion = [array]${versionInfo}.FileVersion.split('.')
+        $currentTime = $(Get-Date -Format "dddd MM/dd/yyyy HH:mm")
+        $majorVersion = [string]$fullVersion[0]
+        $minorVersion = [string]$fullVersion[1]
+        $spVersion = [string]$fullVersion[2]
+        $buildNumber = [string]$fullVersion[3]
+
+        $tag = [array]@($exeName,$majorVersion,$minorVersion,$spVersion,$buildNumber)
+        $tagNumbersOnly = [array]@($majorVersion,$minorVersion,$spVersion,$buildNumber)
+
+        $dotSeparatedTag = $majorVersion + "." + $minorVersion + "." + $spVersion + "-beta"
+        $underscoreSeparatedTag = $majorVersion + "_" + $minorVersion + "_" + $spVersion + "_" + $buildNumber
+        $tagNumbersOnlyUnderscore = $majorVersion + "_" + $minorVersion + "_" + $spVersion + "_" + $buildNumber
+        $tagNumbersOnlydot = $majorVersion + "." + $minorVersion + "." + $spVersion + "." + $buildNumber
+        
+        Write-Host ("##vso[task.setvariable variable=dotSeparatedTag]$dotSeparatedTag")
+        git rev-parse $dotSeparatedTag
+        if($lastExitCode -eq 0){Write-Host ("##vso[task.setvariable variable=TAG_EXISTS]true")}
+        if($lastExitCode -eq 0){
+          $tagExists = 'true'
+          echo $tagExists
+        }
+    errorActionPreference: 'continue'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+    ignoreLASTEXITCODE: true
+
 - powershell: |
     cd ComposGH\bin\x64
     curl https://files.mcneel.com/yak/tools/latest/yak.exe -o yak.exe
     .\yak version
     cd Release
     ..\yak spec
+    Add-Content manifest.yml 'icon: ComposIcon.png'
     ..\yak build --platform win
     $yakCurrentVersName = Get-ChildItem -Path . -Filter "*.yak"
     $yakRh7Name =  $yakCurrentVersName -Replace "rh6_27", "rh7_0"
     Rename-Item -Path $yakCurrentVersName -NewName $yakRh7Name
     ..\yak build --platform win
-    cd ..
-    ls Release\*.yak |% {.\yak push $_.FullName}
-  env:
-    YAK_TOKEN: $(YAK_TOKEN)
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables.isRelease, 'true'))
-  displayName: Deploy yak package
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables.TAG_EXISTS, 'true'))
+  displayName: Package yak
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'pack'
+    packagesToPack: 'ComposGH/*.csproj'
+    versioningScheme: 'byEnvVar'
+    versionEnvVar: 'dotSeparatedTag'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables.TAG_EXISTS, 'true'))
+  displayName: Package NuGet
+
+- task: GitHubRelease@1
+  inputs:
+    gitHubConnection: 'github.com_peterjgrainger'
+    repositoryName: 'arup-group/Compos-Grasshopper'
+    action: 'edit'
+    target: '$(Build.SourceVersion)'
+    tag: '$(dotSeparatedTag)'
+    title: 'ComposGH version $(dotSeparatedTag)'
+    releaseNotesSource: 'inline'
+    releaseNotesInline: |
+      Created from commit https://github.com/arup-group/Compos-Grasshopper/commit/$(Build.SourceVersion)
+    assets: |
+      $(System.DefaultWorkingDirectory)/**/*.yak
+      $(Build.ArtifactStagingDirectory)/**/*.nupkg
+      $(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg
+    assetUploadMode: 'replace'
+    isDraft: true
+    isPreRelease: true
+    addChangeLog: false
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables.TAG_EXISTS, 'true'))
+  displayName: 'Publishing assets to Github'

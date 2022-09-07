@@ -2,6 +2,9 @@
 using UnitsNet;
 using UnitsNet.Units;
 using System.Collections.Generic;
+using ComposAPI.Tests;
+using ComposGHTests.Helpers;
+
 
 namespace ComposAPI.Beams.Tests
 {
@@ -20,7 +23,7 @@ namespace ComposAPI.Beams.Tests
 
       // 3 check that inputs are set in object's members
       Assert.Equal(intermediateRestraint, sup.IntermediateRestraintPositions);
-      Assert.Equal(secondaryMemberIntermediateRestraint, sup.SecondaryMemberIntermediateRestraint);
+      Assert.Equal(secondaryMemberIntermediateRestraint, sup.SecondaryMemberAsIntermediateRestraint);
       Assert.Equal(bothFlangesFreeToRotateOnPlanAtEnds, sup.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.Null(sup.CustomIntermediateRestraintPositions);
 
@@ -34,18 +37,36 @@ namespace ComposAPI.Beams.Tests
     {
       LengthUnit unit = LengthUnit.Millimeter;
       List<IQuantity> customIntermediateRestraintPositions = new List<IQuantity>();
-      customIntermediateRestraintPositions.Add(new Length(val1, unit));
-      customIntermediateRestraintPositions.Add(new Length(val2, unit));
-      customIntermediateRestraintPositions.Add(new Length(val3, unit));
+      if (val1 < 0)
+        customIntermediateRestraintPositions.Add(new Ratio(val1 * -1, RatioUnit.DecimalFraction));
+      else
+        customIntermediateRestraintPositions.Add(new Length(val1, unit));
+      if (val2 < 0)
+        customIntermediateRestraintPositions.Add(new Ratio(val2 * -1, RatioUnit.DecimalFraction));
+      else
+        customIntermediateRestraintPositions.Add(new Length(val2, unit));
+      if (val3 < 0)
+        customIntermediateRestraintPositions.Add(new Ratio(val3 * -1, RatioUnit.DecimalFraction));
+      else
+        customIntermediateRestraintPositions.Add(new Length(val3, unit));
 
       // 2 create object instance with constructor
       Supports sup = new Supports(customIntermediateRestraintPositions, secondaryMemberIntermediateRestraint, bothFlangesFreeToRotateOnPlanAtEnds);
 
       // 3 check that inputs are set in object's members
-      Assert.Equal(val1, sup.CustomIntermediateRestraintPositions[0].As(LengthUnit.Millimeter));
-      Assert.Equal(val2, sup.CustomIntermediateRestraintPositions[1].As(LengthUnit.Millimeter));
-      Assert.Equal(val3, sup.CustomIntermediateRestraintPositions[2].As(LengthUnit.Millimeter));
-      Assert.Equal(secondaryMemberIntermediateRestraint, sup.SecondaryMemberIntermediateRestraint);
+      if (val1 < 0)
+        Assert.Equal(val1 * -1, sup.CustomIntermediateRestraintPositions[0].As(RatioUnit.DecimalFraction));
+      else
+        Assert.Equal(val1, sup.CustomIntermediateRestraintPositions[0].As(LengthUnit.Millimeter));
+      if (val2 < 0)
+        Assert.Equal(val2 * -1, sup.CustomIntermediateRestraintPositions[1].As(RatioUnit.DecimalFraction));
+      else
+        Assert.Equal(val2, sup.CustomIntermediateRestraintPositions[1].As(LengthUnit.Millimeter));
+      if (val3 < 0)
+        Assert.Equal(val3 * -1, sup.CustomIntermediateRestraintPositions[2].As(RatioUnit.DecimalFraction));
+      else
+        Assert.Equal(val3, sup.CustomIntermediateRestraintPositions[2].As(LengthUnit.Millimeter));
+      Assert.Equal(secondaryMemberIntermediateRestraint, sup.SecondaryMemberAsIntermediateRestraint);
       Assert.Equal(bothFlangesFreeToRotateOnPlanAtEnds, sup.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.Equal(IntermediateRestraint.Custom, sup.IntermediateRestraintPositions);
 
@@ -60,24 +81,25 @@ namespace ComposAPI.Beams.Tests
       Supports duplicate = (Supports)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
+      Assert.Equal(original.ToString(), duplicate.ToString());
       Assert.Equal(IntermediateRestraint.None, duplicate.IntermediateRestraintPositions);
-      Assert.True(duplicate.SecondaryMemberIntermediateRestraint);
+      Assert.True(duplicate.SecondaryMemberAsIntermediateRestraint);
       Assert.False(duplicate.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.Null(duplicate.CustomIntermediateRestraintPositions);
 
       // 3 make some changes to duplicate
-      duplicate.SecondaryMemberIntermediateRestraint = false;
+      duplicate.SecondaryMemberAsIntermediateRestraint = false;
       duplicate.BothFlangesFreeToRotateOnPlanAtEnds = true;
       duplicate.IntermediateRestraintPositions = IntermediateRestraint.Mid__Span;
 
       // 4 check that duplicate has set changes
       Assert.Equal(IntermediateRestraint.Mid__Span, duplicate.IntermediateRestraintPositions);
-      Assert.False(duplicate.SecondaryMemberIntermediateRestraint);
+      Assert.False(duplicate.SecondaryMemberAsIntermediateRestraint);
       Assert.True(duplicate.BothFlangesFreeToRotateOnPlanAtEnds);
 
       // 5 check that original has not been changed
       Assert.Equal(IntermediateRestraint.None, original.IntermediateRestraintPositions);
-      Assert.True(original.SecondaryMemberIntermediateRestraint);
+      Assert.True(original.SecondaryMemberAsIntermediateRestraint);
       Assert.False(original.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.Null(original.CustomIntermediateRestraintPositions);
     }
@@ -93,14 +115,14 @@ namespace ComposAPI.Beams.Tests
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(IntermediateRestraint.Custom, duplicate.IntermediateRestraintPositions);
-      Assert.False(duplicate.SecondaryMemberIntermediateRestraint);
+      Assert.False(duplicate.SecondaryMemberAsIntermediateRestraint);
       Assert.True(duplicate.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.Equal(1, duplicate.CustomIntermediateRestraintPositions[0].As(LengthUnit.Millimeter));
       Assert.Equal(2, duplicate.CustomIntermediateRestraintPositions[1].As(LengthUnit.Millimeter));
       Assert.Equal(3, duplicate.CustomIntermediateRestraintPositions[2].As(LengthUnit.Millimeter));
 
       // 3 make some changes to duplicate
-      duplicate.SecondaryMemberIntermediateRestraint = true;
+      duplicate.SecondaryMemberAsIntermediateRestraint = true;
       duplicate.BothFlangesFreeToRotateOnPlanAtEnds = false;
       List<IQuantity> customIntermediateRestraintPositions = new List<IQuantity>();
       customIntermediateRestraintPositions.Add(new Length(4, unit));
@@ -111,7 +133,7 @@ namespace ComposAPI.Beams.Tests
 
       // 4 check that duplicate has set changes
       Assert.Equal(IntermediateRestraint.Custom, duplicate.IntermediateRestraintPositions);
-      Assert.True(duplicate.SecondaryMemberIntermediateRestraint);
+      Assert.True(duplicate.SecondaryMemberAsIntermediateRestraint);
       Assert.False(duplicate.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.Equal(4, duplicate.CustomIntermediateRestraintPositions[0].As(LengthUnit.Millimeter));
       Assert.Equal(5, duplicate.CustomIntermediateRestraintPositions[1].As(LengthUnit.Millimeter));
@@ -120,11 +142,39 @@ namespace ComposAPI.Beams.Tests
 
       // 5 check that original has not been changed
       Assert.Equal(IntermediateRestraint.Custom, original.IntermediateRestraintPositions);
-      Assert.False(original.SecondaryMemberIntermediateRestraint);
+      Assert.False(original.SecondaryMemberAsIntermediateRestraint);
       Assert.True(original.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.Equal(1, original.CustomIntermediateRestraintPositions[0].As(LengthUnit.Millimeter));
       Assert.Equal(2, original.CustomIntermediateRestraintPositions[1].As(LengthUnit.Millimeter));
       Assert.Equal(3, original.CustomIntermediateRestraintPositions[2].As(LengthUnit.Millimeter));
+    }
+
+    [Fact]
+    public void DuplicateSupportTest()
+    {
+      // 1 create with constructor and duplicate
+      Supports original = TestSupportConstructor(IntermediateRestraint.None, true, false);
+      Supports duplicate = (Supports)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
+    [Fact]
+    public void DuplicateSupportCustomTest()
+    {
+      // 1 create with constructor and duplicate
+      Supports original = TestSupportConstructorCustom(-0, 4000, -1, false, true);
+      Supports duplicate = (Supports)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
   }
 }

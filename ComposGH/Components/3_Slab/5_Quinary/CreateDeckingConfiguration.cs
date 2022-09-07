@@ -1,29 +1,32 @@
 ﻿using System;
+using System.Linq;
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Parameters;
+using ComposAPI;
 using ComposGH.Parameters;
+using ComposGH.Properties;
 using UnitsNet;
 using UnitsNet.Units;
-using System.Linq;
-using ComposAPI;
-using Grasshopper.Kernel.Parameters;
 
 namespace ComposGH.Components
 {
-  public class CreateDeckingConfiguration : GH_Component
+  public class CreateDeckingConfiguration : GH_OasysComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("85E6A4A4-DD97-4780-A679-B733C4B4FE01");
     public CreateDeckingConfiguration()
-      : base("Deck Config", "DeckConf", "Create Decking configuration for a Compos Slab",
+      : base("Create" + DeckingConfigurationGoo.Name.Replace(" ", string.Empty),
+          DeckingConfigurationGoo.Name.Replace(" ", string.Empty),
+          "Create a " + DeckingConfigurationGoo.Description + " for a " + DeckingGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
 
     public override GH_Exposure Exposure => GH_Exposure.quinary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.DeckingConfig;
+    protected override System.Drawing.Bitmap Icon => Resources.DeckingConfig;
     #endregion
 
     private AngleUnit angleUnit = AngleUnit.Radian;
@@ -34,9 +37,9 @@ namespace ComposGH.Components
       IQuantity angle = new Angle(0, angleUnit);
       string unitAbbreviation = string.Concat(angle.ToString().Where(char.IsLetter));
 
-      pManager.AddAngleParameter("Angle", "Angle", "Decking angle", GH_ParamAccess.item, Math.PI/2);
-      pManager.AddBooleanParameter("Discontinaus", "Con", "Is decking discontinous (default = true)", GH_ParamAccess.item, false);
-      pManager.AddBooleanParameter("Welded", "Wd", "Is decking welded onto steel beam(default = false)", GH_ParamAccess.item, false);
+      pManager.AddAngleParameter("Angle", "Angle", "Decking angle", GH_ParamAccess.item, Math.PI / 2);
+      pManager.AddBooleanParameter("Discontinaus", "Con", "Is decking discontinous (default = true)", GH_ParamAccess.item, true);
+      pManager.AddBooleanParameter("Welded", "Wd", "Is decking welded onto steel beam (default = false)", GH_ParamAccess.item, false);
     }
     protected override void BeforeSolveInstance()
     {
@@ -52,7 +55,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Deck Config", "DC", "Compos Deck Configuration", GH_ParamAccess.item);
+      pManager.AddGenericParameter(DeckingConfigurationGoo.Name, DeckingConfigurationGoo.NickName, DeckingConfigurationGoo.Description + " for a Custom " + DeckingGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 

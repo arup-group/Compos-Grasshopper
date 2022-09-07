@@ -17,7 +17,7 @@ namespace ComposAPI
     public IStudSpecification Specification { get; set; }
     // Stud Spacing
     public IList<IStudGroupSpacing> CustomSpacing { get; set; } = null;
-    public double Interaction { get; set; }
+    public double Interaction { get; set; } = double.NaN;
     public double MinSavingMultipleZones { get; set; }
     public bool CheckStudSpacing { get; set; }
 
@@ -173,6 +173,7 @@ namespace ComposAPI
               stud.Dimensions.Diameter = new Length(Convert.ToDouble(parameters[3], noComma), units.Section);
               stud.Dimensions.Height = new Length(Convert.ToDouble(parameters[4], noComma), units.Section);
               stud.Dimensions.CharacterStrength = new Force(Convert.ToDouble(parameters[5], noComma), units.Force);
+              stud.Dimensions.IsStandard = false;
             }
             bool isWelded = parameters.Last() == "WELDED_YES";
             stud.Specification.Welding = isWelded;
@@ -192,7 +193,7 @@ namespace ComposAPI
             {
               StandardStudGrade standardGrade = (StandardStudGrade)Enum.Parse(typeof(StandardStudGrade), parameters[3]);
               stud.Dimensions.SetGradeFromStandard(standardGrade);
-              stud.Dimensions.IsStandard = true;
+              stud.Dimensions.IsStandardENGrade = true;
             }
             else if (parameters[2] == CoaIdentifier.StudDimensions.StudGradeEC4Custom)
             {
@@ -243,8 +244,8 @@ namespace ComposAPI
 
           case (CoaIdentifier.StudSpecifications.StudNoZone):
             //STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000
-            stud.Specification.NoStudZoneStart = new Length(Convert.ToDouble(parameters[2], noComma), units.Length);
-            stud.Specification.NoStudZoneEnd = new Length(Convert.ToDouble(parameters[3], noComma), units.Length);
+            stud.Specification.NoStudZoneStart = CoaHelper.ConvertToLengthOrRatio(parameters[2], units.Length);
+            stud.Specification.NoStudZoneEnd = CoaHelper.ConvertToLengthOrRatio(parameters[3], units.Length);
             break;
 
           case (CoaIdentifier.StudSpecifications.StudReinfPos):
@@ -288,19 +289,24 @@ namespace ComposAPI
       {
         //STUD_LAYOUT	MEMBER-1	USER_DEFINED	2	1	0.000000	2	1	0.0570000	0.0950000	0.150000	CHECK_SPACE_NO
         //STUD_LAYOUT MEMBER-1 USER_DEFINED 2 2 8.000000 3 2 0.0570000 0.0950000 0.250000 CHECK_SPACE_NO
+        //
         //STUD_LAYOUT	MEMBER-1	USER_DEFINED	1	1	0.000000	2	1	76.0000	95.0000	150.000	CHECK_SPACE_NO
         for (int i = 0; i < this.CustomSpacing.Count; i++)
         {
           str += CoaIdentifier.StudGroupSpacings.StudLayout + '\t' + name + '\t';
           str += CoaIdentifier.StudGroupSpacings.StudLayoutCustom + '\t';
           str += this.CustomSpacing.Count.ToString() + '\t' + (i + 1).ToString() + '\t';
-          str += CoaHelper.FormatSignificantFigures(this.CustomSpacing[i].DistanceFromStart.ToUnit(units.Length).Value, 6) + '\t';
+          
+          str += CoaHelper.FormatSignificantFigures(this.CustomSpacing[i].DistanceFromStart, units.Length, 6) + '\t';
+          
           str += this.CustomSpacing[i].NumberOfRows.ToString() + '\t';
           str += this.CustomSpacing[i].NumberOfLines.ToString() + '\t';
+          
           // these next two values are documented as row-spacing:	spacing of the rows and line-spacing: spacing of the lines but cannot be set anywhere in Compos?? - first is 76mm except for ASNZ code where it is 57mm, second is always 95mm
           double rowSpacing = (designCode == Code.AS_NZS2327_2017) ? 0.057 : 0.076;
           str += CoaHelper.FormatSignificantFigures(new Length(rowSpacing, LengthUnit.Meter).ToUnit(units.Length).Value, 6) + '\t';
           str += CoaHelper.FormatSignificantFigures(new Length(0.095, LengthUnit.Meter).ToUnit(units.Length).Value, 6) + '\t';
+          
           str += CoaHelper.FormatSignificantFigures(this.CustomSpacing[i].Spacing.ToUnit(units.Length).Value, 6) + '\t';
           str += (this.CheckStudSpacing) ? CoaIdentifier.StudGroupSpacings.StudLayoutCheckCustom : "CHECK_SPACE_NO";
           str += '\n';
@@ -338,8 +344,8 @@ namespace ComposAPI
       // ### No Stud Zone / STUD_NO_STUD_ZONE ###
       // STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000
       str += CoaIdentifier.StudSpecifications.StudNoZone + '\t' + name + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.Specification.NoStudZoneStart.ToUnit(units.Length).Value, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.Specification.NoStudZoneEnd.ToUnit(units.Length).Value, 6) + '\n';
+      str += CoaHelper.FormatSignificantFigures(this.Specification.NoStudZoneStart, units.Length, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(this.Specification.NoStudZoneEnd, units.Length, 6) + '\n';
 
       // ### Other code-dependent specs ###
       switch (this.Specification.SpecType)
@@ -487,7 +493,8 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      string size = this.Dimensions.Diameter.As(Units.LengthUnitSection).ToString("f0") + "/" + this.Dimensions.Height.ToUnit(Units.LengthUnitSection).ToString("f0");
+      if (Dimensions == null) { return "Invalid Stud (dimensions not set)"; }
+      string size = this.Dimensions.Diameter.As(this.Dimensions.Height.Unit).ToString("g4") + "/" + this.Dimensions.Height.ToString("g4");
       return size.Replace(" ", string.Empty);
     }
 

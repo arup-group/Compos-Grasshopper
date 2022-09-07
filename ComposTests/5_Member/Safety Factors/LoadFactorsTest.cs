@@ -1,9 +1,13 @@
 using ComposAPI.Helpers;
+using ComposAPI.Tests;
 using System.Collections.Generic;
 using Xunit;
+using ComposGHTests.Helpers;
+
 
 namespace ComposAPI.Members.Tests
 {
+  [Collection("ComposAPI Fixture collection")]
   public partial class LoadFactorsTest
   {
     [Fact]
@@ -52,6 +56,20 @@ namespace ComposAPI.Members.Tests
       string coaString = loadFactors.ToCoaString("MEMBER-1");
 
       Assert.Equal(expected_coaString, coaString);
+    }
+
+    [Fact]
+    public void DuplicateLFTest()
+    {
+      // 1 create with constructor and duplicate
+      LoadFactors original = ConstructorTest();
+      LoadFactors duplicate = (LoadFactors)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
   }
 }

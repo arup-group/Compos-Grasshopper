@@ -3,7 +3,7 @@
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5274EA0F-5CF8-4F74-ACE6-A273F4196522}</ProjectGuid>
@@ -55,6 +55,9 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="OasysUnits, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Compos\lib\OasysUnits.dll</HintPath>
@@ -78,6 +81,8 @@
     <Reference Include="System.Data.SQLite.Linq, Version=1.0.115.5, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.115.5\lib\net45\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
@@ -88,10 +93,14 @@
     <Reference Include="UnitsNet, Version=4.0.0.0, Culture=neutral, PublicKeyToken=f8601875a1f041da, processorArchitecture=MSIL">
       <HintPath>..\packages\UnitsNet.4.89.0\lib\net40\UnitsNet.dll</HintPath>
     </Reference>
+    <Reference Include="UnitsNet.Serialization.JsonNet, Version=4.0.0.0, Culture=neutral, PublicKeyToken=f8601875a1f041da, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnitsNet.Serialization.JsonNet.4.3.0\lib\net40\UnitsNet.Serialization.JsonNet.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\0_File\OpenModel.cs" />
-    <Compile Include="Components\0_File\SaveModel.cs" />
+    <Compile Include="Components\0_File\OpenComposFile.cs" />
+    <Compile Include="Components\0_File\SaveComposFile.cs" />
     <Compile Include="Components\1_Beam\1_Primary\CreateBeam.cs" />
     <Compile Include="Components\1_Beam\2_Secondary\CreateRestraint.cs" />
     <Compile Include="Components\1_Beam\3_Tertiary\CreateStandardENSteelMaterial.cs" />
@@ -99,6 +108,7 @@
     <Compile Include="Components\1_Beam\3_Tertiary\CreateStandardSteelMaterial.cs" />
     <Compile Include="Components\1_Beam\3_Tertiary\CreateCustomSteelMaterial.cs" />
     <Compile Include="Components\1_Beam\2_Secondary\CreateSupport.cs" />
+    <Compile Include="Components\1_Beam\4_Quarternary\BeamSectionProperties.cs" />
     <Compile Include="Components\1_Beam\4_Quarternary\CreateBeamSection.cs" />
     <Compile Include="Components\3_Slab\1_Primary\CreateSlab.cs" />
     <Compile Include="Components\3_Slab\2_Secondary\CreateSlabDimension.cs" />
@@ -111,7 +121,7 @@
     <Compile Include="Components\2_Studs\2_Secondary\CreateStandardStudDimsEN.cs" />
     <Compile Include="Components\2_Studs\3_Tertiary\CreateStudSpecBS.cs" />
     <Compile Include="Components\2_Studs\3_Tertiary\CreateStudSpecEN.cs" />
-    <Compile Include="Components\2_Studs\3_Tertiary\CreateStudSpec.cs" />
+    <Compile Include="Components\2_Studs\3_Tertiary\CreateStudSpecAZNZHK.cs" />
     <Compile Include="Components\2_Studs\2_Secondary\CreateStandardStudDims.cs" />
     <Compile Include="Components\2_Studs\1_Primary\CreateStud.cs" />
     <Compile Include="Components\3_Slab\5_Quinary\CreateDeckingConfiguration.cs" />
@@ -134,42 +144,57 @@
     <Compile Include="Components\3_Slab\3_Tertiary\CreateConcreteMaterialBS.cs" />
     <Compile Include="Components\5_Member\1_Primary\CreateMember.cs" />
     <Compile Include="Components\5_Member\2_Secondary\CreateDesignCode.cs" />
-    <Compile Include="Components\5_Member\2_Secondary\CreateEC4SafetyFactors.cs" />
-    <Compile Include="Components\5_Member\2_Secondary\CreateCreepShrinkageParams.cs" />
-    <Compile Include="Components\5_Member\2_Secondary\CreateSafetyFactors.cs" />
-    <Compile Include="Components\7_Results\ReadClassResults.cs" />
-    <Compile Include="Components\7_Results\ReadStresses.cs" />
-    <Compile Include="Components\7_Results\ReadStudResults.cs" />
-    <Compile Include="Components\7_Results\ReadDeflections.cs" />
-    <Compile Include="Components\7_Results\ReadTransverseRebarProps.cs" />
-    <Compile Include="Components\7_Results\CodeSatisfied.cs" />
-    <Compile Include="Components\7_Results\ReadUtilisations.cs" />
-    <Compile Include="Components\7_Results\ReadCapacities.cs" />
-    <Compile Include="Components\7_Results\ReadBeamResults.cs" />
-    <Compile Include="Components\7_Results\ReadInternalForces.cs" />
-    <Compile Include="Components\7_Results\ReadResults.cs" />
+    <Compile Include="Components\5_Member\3_Tertiary\CreateSafetyFactorsEN.cs" />
+    <Compile Include="Components\5_Member\3_Tertiary\CreateCreepShrinkageParams.cs" />
+    <Compile Include="Components\5_Member\3_Tertiary\CreateSafetyFactors.cs" />
+    <Compile Include="Components\7_Results\1_Primary\Utilisations.cs" />
+    <Compile Include="Components\7_Results\1_Primary\CodeSatisfied.cs" />
+    <Compile Include="Components\7_Results\2_Secondary\DeflectionResults.cs" />
+    <Compile Include="Components\7_Results\2_Secondary\InternalForces.cs" />
+    <Compile Include="Components\7_Results\2_Secondary\CapacityResults.cs" />
+    <Compile Include="Components\7_Results\2_Secondary\ConstantCompositeProperties.cs" />
+    <Compile Include="Components\7_Results\2_Secondary\CompositeProperties.cs" />
+    <Compile Include="Components\7_Results\3_Tertiary\TransverseRebarResults.cs" />
+    <Compile Include="Components\7_Results\3_Tertiary\TransverseRebarLayout.cs" />
+    <Compile Include="Components\7_Results\3_Tertiary\StudResults.cs" />
+    <Compile Include="Components\7_Results\3_Tertiary\SlabStressResults.cs" />
+    <Compile Include="Components\7_Results\3_Tertiary\BeamStressResults.cs" />
+    <Compile Include="Components\GH_OasysDropDownComponent.cs" />
+    <Compile Include="Components\GH_OasysComponent.cs" />
+    <Compile Include="Components\GH_OasysTaskCapableComponent.cs" />
     <Compile Include="Components\8_Design\1_Primary\DesignMember.cs" />
+    <Compile Include="Components\8_Design\2_Secondary\CreateDesignCriteria.cs" />
+    <Compile Include="Components\8_Design\3_Tertiary\CataloguesSections.cs" />
+    <Compile Include="Components\8_Design\3_Tertiary\CreateFrequencyLimits.cs" />
+    <Compile Include="Components\8_Design\3_Tertiary\CreateBeamSizeLimits.cs" />
+    <Compile Include="Components\8_Design\3_Tertiary\CreateDeflectionLimit.cs" />
     <Compile Include="ComposGHInfo.cs" />
     <Compile Include="Helpers\DeSerialization.cs" />
     <Compile Include="Helpers\GhRibbonLayout.cs" />
     <Compile Include="Helpers\LoadMainMenu.cs" />
+    <Compile Include="Helpers\PostHog.cs" />
+    <Compile Include="Helpers\SetOutput.cs" />
     <Compile Include="Helpers\_ComposResultsHelper.cs" />
     <Compile Include="Helpers\GetInputs.cs" />
     <Compile Include="Helpers\_SqlReaderValues.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
-    <Compile Include="Parameters\0_File\ComposFileGoo.cs" />
-    <Compile Include="Parameters\1_Beam\BeamGeometryGoo.cs" />
+    <Compile Include="Parameters\1_Beam\ComposBeamParameter.cs" />
+    <Compile Include="Parameters\1_Beam\BeamGoo.cs" />
+    <Compile Include="Parameters\1_Beam\WebOpening\ComposWebOpeningParameter.cs" />
+    <Compile Include="Parameters\2_Studs\ComposStudParameter.cs" />
     <Compile Include="Parameters\2_Studs\StudGoo.cs" />
     <Compile Include="Parameters\3_Slab\ConcreteMaterial\ConcreteMaterialGoo.cs" />
     <Compile Include="Parameters\3_Slab\ConcreteMaterial\ERatioGoo.cs" />
+    <Compile Include="Parameters\3_Slab\Decking\ComposDeckingParameter.cs" />
     <Compile Include="Parameters\3_Slab\Reinforcement\MeshReinforcementGoo.cs" />
     <Compile Include="Parameters\3_Slab\Reinforcement\TransverseReinforcementGoo.cs" />
+    <Compile Include="Parameters\3_Slab\ComposSlabParameter.cs" />
     <Compile Include="Parameters\3_Slab\SlabGoo.cs" />
     <Compile Include="Parameters\3_Slab\SlabDimension\SlabDimensionGoo.cs" />
     <Compile Include="Parameters\1_Beam\Restraints\RestraintGoo.cs" />
     <Compile Include="Parameters\3_Slab\Reinforcement\CustomTransverseReinforcementLayoutGoo.cs" />
+    <Compile Include="Parameters\4_Loads\ComposLoadParameter.cs" />
     <Compile Include="Parameters\4_Loads\LoadGoo.cs" />
-    <Compile Include="Parameters\3_Slab\Reinforcement\ReinforcementGoo.cs" />
     <Compile Include="Parameters\3_Slab\Reinforcement\ReinforcementMaterialGoo.cs" />
     <Compile Include="Parameters\1_Beam\SteelMaterial\SteelMaterialGoo.cs" />
     <Compile Include="Parameters\1_Beam\WebOpening\WebOpeningGoo.cs" />
@@ -177,17 +202,21 @@
     <Compile Include="Parameters\1_Beam\BeamSection\BeamSectionGoo.cs" />
     <Compile Include="Parameters\1_Beam\Restraints\SupportsGoo.cs" />
     <Compile Include="Parameters\1_Beam\WebOpening\WebOpeningStiffenersGoo.cs" />
-    <Compile Include="Parameters\2_Studs\StudSpecGoo.cs" />
-    <Compile Include="Parameters\2_Studs\StudSpacingGoo.cs" />
+    <Compile Include="Parameters\2_Studs\StudSpecificationGoo.cs" />
+    <Compile Include="Parameters\2_Studs\StudGroupSpacingGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\SafetyFactorsENGoo.cs" />
+    <Compile Include="Parameters\5_Member\DesignCriteria\FrequencyLimitsGoo.cs" />
+    <Compile Include="Parameters\5_Member\DesignCriteria\DeflectionLimitGoo.cs" />
+    <Compile Include="Parameters\5_Member\DesignCriteria\BeamSizeLimitsGoo.cs" />
+    <Compile Include="Parameters\5_Member\DesignCriteria\DesignCriteriaGoo.cs" />
     <Compile Include="Parameters\5_Member\MemberGoo.cs" />
-    <Compile Include="Parameters\5_Member\DesignCode\CreepShrinkageEC4ParamGoo.cs" />
+    <Compile Include="Parameters\5_Member\DesignCode\CreepShrinkageParametersGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\SafetyFactorsGoo.cs" />
-    <Compile Include="Parameters\5_Member\DesignCode\DesignOptionsGoo.cs" />
-    <Compile Include="Parameters\5_Member\DesignCode\CodeOptionsGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\DesignCodeGoo.cs" />
     <Compile Include="Parameters\3_Slab\Decking\DeckingConfigurationGoo.cs" />
-    <Compile Include="Parameters\GH_UnitNumber.cs" />
+    <Compile Include="Parameters\GH_OasysGeoGoo.cs" />
+    <Compile Include="Parameters\GH_OasysGoo.cs" />
+    <Compile Include="Parameters\99_Other\GH_UnitNumber.cs" />
     <Compile Include="Parameters\_Units.cs" />
     <Compile Include="Parameters\3_Slab\Decking\DeckingGoo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -220,6 +249,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="licenses\EntityFramework" />
+    <None Include="licenses\Newtonsoft" />
+    <None Include="licenses\UnitsNet" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -239,9 +271,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\Icons\CreateSteelMaterial.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Properties\Icons\OpenModel.png" />
   </ItemGroup>
   <ItemGroup>
@@ -254,18 +283,7 @@
     <None Include="Properties\Icons\ComposLogo128.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\5_Member\3_Tertiary\" />
-    <Folder Include="Components\5_Member\4_Quarternary\" />
-    <Folder Include="Components\5_Member\5_Quinary\" />
-    <Folder Include="Components\6_Analysis\1_Primary\" />
-    <Folder Include="Components\6_Analysis\2_Secondary\" />
-    <Folder Include="Components\6_Analysis\3_Tertiary\" />
-    <Folder Include="Components\6_Analysis\4_Quarternary\" />
-    <Folder Include="Components\6_Analysis\5_Quinary\" />
-    <Folder Include="Components\8_Design\2_Secondary\" />
-    <Folder Include="Components\8_Design\3_Tertiary\" />
-    <Folder Include="Components\8_Design\4_Quarternary\" />
-    <Folder Include="Components\8_Design\5_Quinary\" />
+    <Folder Include="Parameters\0_File\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\RebarMesh.png" />
@@ -468,6 +486,90 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\ComposLogo64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\BeamSizeLimits.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CatalogueID.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\DeflectionLimit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\DesignCriteria.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\DesignCriteriaParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\FrequencyLimit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\DesignMember.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CodeReqMet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CodeReqNotAvailable.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CodeReqNotMet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\ProfileProperties.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\BeamClassification.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\BeamStressResults.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CapacityResults.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\ComposLogo64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\DeflectionResults.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\InternalForceResults.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\SectionProperties.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\SlabStressResults.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\StudResults.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\TransverseRebarResults.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\Utilisation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\TransverseRebarLayout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\UtilisationHigh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\UtilisationLow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\UtilisationMedium.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\UtilisationOver.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\SectionPropertiesConstant.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

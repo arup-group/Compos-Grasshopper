@@ -1,7 +1,11 @@
+using ComposAPI.Tests;
 using Xunit;
+using ComposGHTests.Helpers;
+
 
 namespace ComposAPI.Members.Tests
 {
+  [Collection("ComposAPI Fixture collection")]
   public partial class SafetyFactorsTest
   {
     [Fact]
@@ -19,6 +23,19 @@ namespace ComposAPI.Members.Tests
 
       // (optionally return object for other tests)
       return safetyFactors;
+    }
+    [Fact]
+    public void DuplicateSFTest()
+    {
+      // 1 create with constructor and duplicate
+      SafetyFactors original = ConstructorTest();
+      SafetyFactors duplicate = (SafetyFactors)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     [Theory]

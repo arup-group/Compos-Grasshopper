@@ -1,108 +1,30 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Grasshopper.Kernel;
-using ComposGH.Parameters;
-using UnitsNet;
-using UnitsNet.Units;
-using System.Linq;
 using ComposAPI;
+using ComposGH.Parameters;
+using ComposGH.Properties;
 
 namespace ComposGH.Components
 {
-  public class CreateStandardASNZSteelMaterial : GH_Component, IGH_VariableParameterComponent
+  public class CreateStandardASNZSteelMaterial : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("8656c967-817c-49fe-9297-d863664b714a");
     public CreateStandardASNZSteelMaterial()
-      : base("Standard ASNZ Steel Material", "StdASNZSteelMat", "Create Standard AS/NZS2327:2017 Steel Material for a Compos Beam",
+      : base("StandardASNZ" + SteelMaterialGoo.Name.Replace(" ", string.Empty),
+          "ASNZ" + SteelMaterialGoo.NickName.Replace(" ", string.Empty),
+          "Look up a Standard ASNZ " + SteelMaterialGoo.Description + " for a " + BeamGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
 
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.StandardASNZSteelMaterial;
-    #endregion
-
-    #region Custom UI
-
-    // list of lists with all dropdown lists content
-    List<List<string>> DropDownItems;
-    // list of selected items
-    List<string> SelectedItems;
-    // list of descriptions 
-    List<string> SpacerDescriptions = new List<string>(new string[]
-    {
-            "Grade",
-    });
-    List<bool> OverrideDropDownItems;
-
-    private bool First = true;
-    private StandardASNZSteelMaterialGrade SteelGrade = StandardASNZSteelMaterialGrade.C450_AS1163;
-
-    public override void CreateAttributes()
-    {
-      if (First)
-      {
-        DropDownItems = new List<List<string>>();
-        SelectedItems = new List<string>();
-
-        // SteelType
-        List<StandardASNZSteelMaterialGrade> grades = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().ToList();
-        List<string> gradeStrings = new List<string>();
-        foreach (StandardASNZSteelMaterialGrade grade in grades)
-        {
-          ASNZSteelMaterial mat = new ASNZSteelMaterial(grade);
-          gradeStrings.Add(mat.ToString());
-        }
-        DropDownItems.Add(gradeStrings);
-        SelectedItems.Add(gradeStrings[0]);
-
-        this.OverrideDropDownItems = new List<bool>() { false };
-        First = false;
-      }
-
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropDownItems, SelectedItems, SpacerDescriptions);
-    }
-
-    public void SetSelected(int i, int j)
-    {
-      // change selected item
-      SelectedItems[i] = DropDownItems[i][j];
-
-      if (i == 0)  // change is made to code 
-      {
-        if (SteelGrade.ToString() == SelectedItems[i])
-          return; // return if selected value is same as before
-        StandardASNZSteelMaterialGrade grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), this.SelectedItems[i]);
-        ASNZSteelMaterial mat = new ASNZSteelMaterial(grade);
-        SteelGrade = mat.Grade;
-      }
-
-      // update name of inputs (to display unit on sliders)
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-
-    private void UpdateUIFromSelectedItems()
-    {
-      if (this.SelectedItems[0] != "-")
-      {
-        StandardASNZSteelMaterialGrade grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), this.SelectedItems[0]);
-        ASNZSteelMaterial mat = new ASNZSteelMaterial(grade);
-        this.SteelGrade = mat.Grade;
-      }
-
-      CreateAttributes();
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
+    protected override System.Drawing.Bitmap Icon => Resources.StandardASNZSteelMaterial;
     #endregion
 
     #region Input and output
@@ -113,7 +35,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("StandardSteelMaterial", "SSM", "Standard Steel Material for a Compos Beam", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Standard " + SteelMaterialGoo.Name, SteelMaterialGoo.NickName, "Standard ASNZ " + SteelMaterialGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -126,7 +48,7 @@ namespace ComposGH.Components
         DA.GetData(0, ref grade);
         try
         {
-          this.SteelGrade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), grade);
+          this.SteelGrade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), grade.Replace(" ", "_"));
           this.DropDownItems[0] = new List<string>();
           this.SelectedItems[0] = "-";
           this.OverrideDropDownItems[0] = true;
@@ -151,48 +73,57 @@ namespace ComposGH.Components
         this.OverrideDropDownItems[0] = false;
       }
 
-      DA.SetData(0, new SteelMaterialGoo(new ASNZSteelMaterial(SteelGrade)));
+      SetOutput.Item(this, DA, 0, new SteelMaterialGoo(new ASNZSteelMaterial(SteelGrade)));
     }
 
-    #region (de)serialization
-    public override bool Write(GH_IO.Serialization.GH_IWriter writer)
+    #region Custom UI
+    List<bool> OverrideDropDownItems;
+    private StandardASNZSteelMaterialGrade SteelGrade = StandardASNZSteelMaterialGrade.C450_AS1163;
+
+    internal override void InitialiseDropdowns()
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropDownItems, SelectedItems, SpacerDescriptions);
-      return base.Write(writer);
+      this.SpacerDescriptions = new List<string>(new string[] { "Grade" });
+
+      this.DropDownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
+
+      // SteelType
+      List<StandardASNZSteelMaterialGrade> grades = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().ToList();
+      
+      this.DropDownItems.Add(grades.Select(x => x.ToString().Replace("_", " ")).ToList());
+      this.SelectedItems.Add(DropDownItems[0][0]);
+
+      this.OverrideDropDownItems = new List<bool>() { false };
+
+      this.IsInitialised = true;
     }
-    public override bool Read(GH_IO.Serialization.GH_IReader reader)
+
+    internal override void SetSelected(int i, int j)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropDownItems, ref SelectedItems, ref SpacerDescriptions);
+      // change selected item
+      this.SelectedItems[i] = this.DropDownItems[i][j];
 
-      UpdateUIFromSelectedItems();
+      if (i == 0)  // change is made to code 
+      {
+        if (this.SteelGrade.ToString().Replace("_", " ") == this.SelectedItems[i])
+          return; // return if selected value is same as before
+        StandardASNZSteelMaterialGrade grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), this.SelectedItems[i].Replace(" ", "_"));
+        this.SteelGrade = grade;
+      }
 
-      First = false;
+      base.UpdateUI();
+    }
 
-      return base.Read(reader);
+    internal override void UpdateUIFromSelectedItems()
+    {
+      if (this.SelectedItems[0] != "-")
+      {
+        StandardASNZSteelMaterialGrade grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), this.SelectedItems[0].Replace(" ", "_"));
+        this.SteelGrade = grade;
+      }
+
+      base.UpdateUIFromSelectedItems();
     }
     #endregion
-
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
-    {
-      return null;
-    }
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
-    }
-    #endregion
-
   }
 }

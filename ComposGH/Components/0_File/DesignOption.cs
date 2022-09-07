@@ -20,7 +20,7 @@ using System.ComponentModel;
 
 namespace ComposGH.Components
 {
-    public class DesignOption : GH_Component
+    public class DesignOption : GH_OasysComponent
     {
         #region Name and Ribbon Layout
         // This region handles how the component in displayed on the ribbon
@@ -319,7 +319,7 @@ using System.ComponentModel;
 
 namespace ComposGH.Components
 {
-    public class DesignOption : GH_Component
+    public class DesignOption : GH_OasysComponent
     {
         #region Name and Ribbon Layout
         // This region handles how the component in displayed on the ribbon

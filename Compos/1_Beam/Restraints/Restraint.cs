@@ -16,7 +16,7 @@ namespace ComposAPI
   {
     public ISupports ConstructionStageSupports { get; set; }
     public ISupports FinalStageSupports { get; set; }
-    public bool TopFlangeRestrained { get; set; }
+    public bool TopFlangeRestrained { get; set; } = true;
     internal bool finalSupportsSet;
 
     #region constructors
@@ -42,7 +42,7 @@ namespace ComposAPI
 
     #region coa interop
     // not static to update the object 
-    internal Restraint FromCoaString(List<string> parameters, ComposUnits units)
+    internal void FromCoaString(List<string> parameters, ComposUnits units)
     {
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       switch (parameters[0])
@@ -72,7 +72,7 @@ namespace ComposAPI
             if (this.ConstructionStageSupports == null)
               this.ConstructionStageSupports = new Supports();
             this.ConstructionStageSupports = new Supports(intermediateRestraint,
-                this.ConstructionStageSupports.SecondaryMemberIntermediateRestraint, this.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+                this.ConstructionStageSupports.SecondaryMemberAsIntermediateRestraint, this.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
           }
           else if (parameters[2] == "USER_DEFINED")
           {
@@ -85,7 +85,7 @@ namespace ComposAPI
             List<IQuantity> positions = new List<IQuantity>();
             if (this.ConstructionStageSupports == null)
               this.ConstructionStageSupports = new Supports();
-            if (this.ConstructionStageSupports.CustomIntermediateRestraintPositions != null & this.ConstructionStageSupports.CustomIntermediateRestraintPositions.Count != 0)
+            if (this.ConstructionStageSupports.CustomIntermediateRestraintPositions != null && this.ConstructionStageSupports.CustomIntermediateRestraintPositions.Count != 0)
               positions = this.ConstructionStageSupports.CustomIntermediateRestraintPositions.ToList();
             if (parameters[5].EndsWith("%"))
               positions.Add(new Ratio(Convert.ToDouble(parameters[5].Replace("%", string.Empty), noComma), RatioUnit.Percent));
@@ -93,7 +93,7 @@ namespace ComposAPI
               positions.Add(new Length(Convert.ToDouble(parameters[5], noComma), units.Length));
 
             this.ConstructionStageSupports = new Supports(positions,
-                this.ConstructionStageSupports.SecondaryMemberIntermediateRestraint, this.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+                this.ConstructionStageSupports.SecondaryMemberAsIntermediateRestraint, this.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
           }
           break;
 
@@ -109,9 +109,9 @@ namespace ComposAPI
             this.ConstructionStageSupports = new Supports();
           Supports construction1 = this.ConstructionStageSupports as Supports;
           if (parameters[2] == "SEC_BEAM_AS_REST")
-            construction1.SecondaryMemberIntermediateRestraint = true;
+            construction1.SecondaryMemberAsIntermediateRestraint = true;
           else if (parameters[2] == "2ND_BEAM_NOT_AS_REST")
-            construction1.SecondaryMemberIntermediateRestraint = false;
+            construction1.SecondaryMemberAsIntermediateRestraint = false;
           this.ConstructionStageSupports = construction1;
           break;
 
@@ -151,7 +151,7 @@ namespace ComposAPI
             if (this.FinalStageSupports == null)
               this.FinalStageSupports = new Supports();
             this.FinalStageSupports = new Supports(intermediateRestraint,
-                this.FinalStageSupports.SecondaryMemberIntermediateRestraint, this.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+                this.FinalStageSupports.SecondaryMemberAsIntermediateRestraint, this.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
           }
           else if (parameters[2] == "USER_DEFINED")
           {
@@ -169,7 +169,7 @@ namespace ComposAPI
               positions.Add(new Length(Convert.ToDouble(parameters[5], noComma), units.Length));
 
             this.FinalStageSupports = new Supports(positions,
-                this.FinalStageSupports.SecondaryMemberIntermediateRestraint, this.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+                this.FinalStageSupports.SecondaryMemberAsIntermediateRestraint, this.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
           }
           break;
 
@@ -185,9 +185,9 @@ namespace ComposAPI
             this.FinalStageSupports = new Supports();
           Supports final1 = this.FinalStageSupports as Supports;
           if (parameters[2] == "SEC_BEAM_AS_REST")
-            final1.SecondaryMemberIntermediateRestraint = true;
+            final1.SecondaryMemberAsIntermediateRestraint = true;
           else if (parameters[2] == "2ND_BEAM_NOT_AS_REST")
-            final1.SecondaryMemberIntermediateRestraint = false;
+            final1.SecondaryMemberAsIntermediateRestraint = false;
           this.FinalStageSupports = final1;
           break;
 
@@ -202,7 +202,6 @@ namespace ComposAPI
           this.FinalStageSupports = final2;
           break;
       }
-      return this;
     }
 
     public string ToCoaString(string name, ComposUnits units)
@@ -254,7 +253,7 @@ namespace ComposAPI
               parameters.Add("3");
               break;
             default:
-              throw new Exception("Unknown intermediate restriant type for construction stage support");
+              throw new Exception("Unknown intermediate restraint type for construction stage support");
           }
           str += CoaHelper.CreateString(parameters);
         }
@@ -282,7 +281,7 @@ namespace ComposAPI
 
         //RESTRAINT_2ND_BEAM	MEMBER-1	2ND_BEAM_NOT_AS_REST
         //RESTRAINT_2ND_BEAM	MEMBER-1	SEC_BEAM_AS_REST
-        if (this.ConstructionStageSupports.SecondaryMemberIntermediateRestraint)
+        if (this.ConstructionStageSupports.SecondaryMemberAsIntermediateRestraint)
           str += "RESTRAINT_2ND_BEAM" + '\t' + name + '\t' + "SEC_BEAM_AS_REST" + '\n';
         else
           str += "RESTRAINT_2ND_BEAM" + '\t' + name + '\t' + "2ND_BEAM_NOT_AS_REST" + '\n';
@@ -368,7 +367,7 @@ namespace ComposAPI
         str += "FINAL_RESTRAINT_NOSTUD" + '\t' + name + '\t' + "NOSTUD_ZONE_LATERAL_FREE" + '\n';
 
         //FINAL_RESTRAINT_2ND_BEAM	MEMBER-1	SEC_BEAM_AS_REST
-        if (this.FinalStageSupports.SecondaryMemberIntermediateRestraint)
+        if (this.FinalStageSupports.SecondaryMemberAsIntermediateRestraint)
           str += "FINAL_RESTRAINT_2ND_BEAM" + '\t' + name + '\t' + "SEC_BEAM_AS_REST" + '\n';
         else
           str += "FINAL_RESTRAINT_2ND_BEAM" + '\t' + name + '\t' + "2ND_BEAM_NOT_AS_REST" + '\n';
@@ -388,9 +387,15 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
+      if (this.FinalStageSupports == null && this.ConstructionStageSupports == null && this.TopFlangeRestrained)
+        return "Simply supported";
       string top = (TopFlangeRestrained) ? "TFLR, " : "";
-      string con = "Constr.: " + this.ConstructionStageSupports.ToString();
-      string fin = ", Final: None";
+
+      string con = "Constr.: simply supported";
+      if (!this.TopFlangeRestrained && this.ConstructionStageSupports != null)
+        con = "Constr.: " + this.ConstructionStageSupports.ToString();
+      
+      string fin = ", Final: simply supported";
       if (this.FinalStageSupports != null)
         fin = ", Final: " + this.FinalStageSupports.ToString();
       return top + con + fin;

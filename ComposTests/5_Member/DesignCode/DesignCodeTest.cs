@@ -2,13 +2,16 @@ using ComposAPI.Helpers;
 using ComposAPI.Tests;
 using System.Collections.Generic;
 using Xunit;
+using ComposGHTests.Helpers;
+
 
 namespace ComposAPI.Members.Tests
 {
+  [Collection("ComposAPI Fixture collection")]
   public partial class DesignCodeTest
   {
     [Fact]
-    public void ConstructorTest()
+    public DesignCode ConstructorTest()
     {
       // 1 setup input
       Code code = Code.BS5950_3_1_1990_A1_2010;
@@ -26,6 +29,21 @@ namespace ComposAPI.Members.Tests
       // safety factors
       Assert.Null(designCode.SafetyFactors.MaterialFactors);
       Assert.Null(designCode.SafetyFactors.LoadFactors);
+
+      return designCode;
+    }
+    [Fact]
+    public void DuplicateDCTest()
+    {
+      // 1 create with constructor and duplicate
+      DesignCode original = ConstructorTest();
+      DesignCode duplicate = (DesignCode)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     [Fact]
@@ -79,6 +97,19 @@ namespace ComposAPI.Members.Tests
       // (optionally return object for other tests)
       return designCode;
     }
+    [Fact]
+    public void DuplicateDCASNZTest()
+    {
+      // 1 create with constructor and duplicate
+      DesignCode original = TestASNZConstructor();
+      DesignCode duplicate = (DesignCode)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
 
     [Fact]
     public void ASNZToCoaStringTest()
@@ -131,6 +162,19 @@ namespace ComposAPI.Members.Tests
       // (optionally return object for other tests)
       return designCode;
     }
+    [Fact]
+    public void DuplicateDCEC4Test()
+    {
+      // 1 create with constructor and duplicate
+      DesignCode original = TestEC4Constructor();
+      DesignCode duplicate = (DesignCode)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
 
     [Fact]
     public void EC4ToCoaStringTest()
@@ -154,7 +198,7 @@ namespace ComposAPI.Members.Tests
       // Act
       IDesignCode actual = EN1994.FromCoaString(coaString, "MEMBER-4", ComposUnits.GetStandardUnits());
       // Assert
-      ObjectExtensionTest.IsEqual(expected_dc, actual);
+      Duplicates.AreEqual(expected_dc, actual);
     }
 
     [Fact]

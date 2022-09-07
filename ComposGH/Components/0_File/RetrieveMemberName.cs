@@ -19,7 +19,7 @@ using ComposGH.Parameters;
 
 namespace ComposGH.Components
 {
-    public class RetrieveMemberName : GH_Component
+    public class RetrieveMemberName : GH_OasysComponent
     {
         #region Name and Ribbon Layout
         // This region handles how the component in displayed on the ribbon
@@ -109,7 +109,7 @@ using ComposGH.Parameters;
 
 namespace ComposGH.Components
 {
-    public class RetrieveMemberName : GH_Component
+    public class RetrieveMemberName : GH_OasysComponent
     {
         #region Name and Ribbon Layout
         // This region handles how the component in displayed on the ribbon

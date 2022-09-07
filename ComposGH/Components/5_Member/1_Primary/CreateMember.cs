@@ -1,36 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using ComposGH.Parameters;
+using System.Collections.Generic;
 using Grasshopper.Kernel;
 using ComposAPI;
+using ComposGH.Parameters;
+using ComposGH.Properties;
 
 namespace ComposGH.Components
 {
-  public class CreateMember : GH_Component
+  public class CreateMember : GH_OasysComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("e7eafcec-ede6-4d60-9fcb-5392cb878581");
     public CreateMember()
-      : base("Create Member", "Member", "Create a Compos Member",
+      : base("Create" + MemberGoo.Name.Replace(" ", string.Empty),
+          MemberGoo.Name.Replace(" ", string.Empty),
+          "Create a " + MemberGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
     { this.Hidden = false; } // sets the initial state of the component to hidden
 
     public override GH_Exposure Exposure => GH_Exposure.primary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateMember;
+    protected override System.Drawing.Bitmap Icon => Resources.CreateMember;
     #endregion
 
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter("Beam", "Bm", "Compos Steel Beam", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Stud", "Stu", "Compos Shear Stud", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Slab", "Sla", "Compos Concrete slab", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Loads", "Ld", "Compos Loads", GH_ParamAccess.list);
-      pManager.AddGenericParameter("Design Code", "DC", "Compos Design Code", GH_ParamAccess.item);
+      pManager.AddGenericParameter(BeamGoo.Name, BeamGoo.NickName, BeamGoo.Description, GH_ParamAccess.item);
+      pManager.AddGenericParameter(StudGoo.Name, StudGoo.NickName, StudGoo.Description, GH_ParamAccess.item);
+      pManager.AddGenericParameter(SlabGoo.Name, SlabGoo.NickName, SlabGoo.Description, GH_ParamAccess.item);
+      pManager.AddGenericParameter(LoadGoo.Name + "(s)", LoadGoo.NickName, LoadGoo.Description, GH_ParamAccess.list);
+      pManager.AddGenericParameter(DesignCodeGoo.Name, DesignCodeGoo.NickName, DesignCodeGoo.Description, GH_ParamAccess.item);
       pManager.AddTextParameter("Name", "Na", "Set Member Name", GH_ParamAccess.item);
       pManager.AddTextParameter("GridRef", "Grd", "(Optional) Set Member's Grid Reference", GH_ParamAccess.item);
       pManager.AddTextParameter("Note", "Nt", "(Optional) Set Notes about the Member", GH_ParamAccess.item);
@@ -40,8 +43,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Member", "Mem", "Compos Member", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Guid", "Guid", "Guid", GH_ParamAccess.item);
+      pManager.AddGenericParameter(MemberGoo.Name, MemberGoo.NickName, MemberGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -63,7 +65,6 @@ namespace ComposGH.Components
       Member member = new Member(name, gridRef, note, code.Value, beam.Value, stud.Value, slab.Value, loads.Select(x => x.Value).ToList());
       
       DA.SetData(0, new MemberGoo(member));
-      DA.SetData(1, member.Guid);
     }
   }
 }

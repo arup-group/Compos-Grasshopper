@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using ComposGH;
 
@@ -34,3 +35,5 @@ using ComposGH;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion(ComposGHInfo.Vers)]
 [assembly: AssemblyFileVersion(ComposGHInfo.Vers + ".0")]
+
+[assembly: InternalsVisibleTo("ComposGHTests")]

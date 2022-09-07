@@ -6,10 +6,14 @@ using Moq;
 using ComposAPI.Helpers;
 using ComposAPITests.Helpers;
 using System;
+using ComposAPI.Tests;
+using ComposGHTests.Helpers;
+
 
 namespace ComposAPI.Beams.Tests
 {
-  public partial class BeamSectionTest
+  [Collection("ComposAPI Fixture collection")]
+  public class BeamSectionTest
   {
     [Theory]
     [InlineData(7, 1, 0, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600. 200. 15. 25.", true, "BEAM_SECTION_AT_X	MEMBER-1	7	1	0.000000	STD I 600. 200. 15. 25.	TAPERED_YES\n")]
@@ -102,6 +106,8 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(expTopFlangeThickness, beam.TopFlangeThickness.Millimeters, 3);
       Assert.Equal(expBottomFlangeThickness, beam.BottomFlangeThickness.Millimeters, 3);
 
+      Assert.Equal(profile.Replace(',', '.'), beam.ToString());
+
       return beam;
     }
 
@@ -137,6 +143,8 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(expBottomFlangeThickness, beam.BottomFlangeThickness.Millimeters, 3);
       Assert.Equal(taperToNext, beam.TaperedToNext);
       Assert.Equal(expProfile, beam.SectionDescription);
+
+      Assert.Equal(expProfile.Replace(',', '.'), beam.ToString());
 
       return beam;
     }
@@ -217,6 +225,7 @@ namespace ComposAPI.Beams.Tests
       BeamSection duplicate = (BeamSection)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
+      Assert.Equal(original.ToString(), duplicate.ToString());
       Assert.Equal(400, duplicate.Depth.Millimeters);
       Assert.Equal(300, duplicate.TopFlangeWidth.Millimeters);
       Assert.Equal(300, duplicate.BottomFlangeWidth.Millimeters);
@@ -297,6 +306,20 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(11, original.TopFlangeThickness.Millimeters);
       Assert.Equal(12, original.BottomFlangeThickness.Millimeters);
       Assert.False(original.TaperedToNext);
+    }
+
+    [Fact]
+    public void DuplicateTest()
+    {
+      // 1 create with constructor and duplicate
+      BeamSection original = new BeamSection();
+      BeamSection duplicate = (BeamSection)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
   }
 }

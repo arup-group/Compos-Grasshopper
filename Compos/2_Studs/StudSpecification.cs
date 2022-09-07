@@ -24,8 +24,34 @@ namespace ComposAPI
     public bool Welding { get; set; }
     public bool NCCI { get; set; }
     public bool EC4_Limit { get; set; }
-    public Length NoStudZoneStart { get; set; }
-    public Length NoStudZoneEnd { get; set; }
+    public IQuantity NoStudZoneStart
+    {
+      get { return this.m_StartPosition; }
+      set
+      {
+        if (value == null) return;
+        if (value.QuantityInfo.UnitType != typeof(LengthUnit)
+          & value.QuantityInfo.UnitType != typeof(RatioUnit))
+          throw new ArgumentException("Start Position must be either Length or Ratio");
+        else
+          this.m_StartPosition = value;
+      }
+    }
+    private IQuantity m_StartPosition = Length.Zero;
+    public IQuantity NoStudZoneEnd
+    {
+      get { return this.m_EndPosition; }
+      set
+      {
+        if (value == null) return;
+        if (value.QuantityInfo.UnitType != typeof(LengthUnit)
+          & value.QuantityInfo.UnitType != typeof(RatioUnit))
+          throw new ArgumentException("Start Position must be either Length or Ratio");
+        else
+          this.m_EndPosition = value;
+      }
+    }
+    private IQuantity m_EndPosition = Length.Zero;
     public Length ReinforcementPosition { get; set; }
     public StudSpecType SpecType { get; set; }
 
@@ -43,7 +69,7 @@ namespace ComposAPI
     /// <param name="reinforcementPosition"></param>
     /// <param name="welding"></param>
     /// <param name="ncci"></param>
-    public StudSpecification(Length noStudZoneStart, Length noStudZoneEnd, Length reinforcementPosition, bool welding, bool ncci)
+    public StudSpecification(IQuantity noStudZoneStart, IQuantity noStudZoneEnd, Length reinforcementPosition, bool welding, bool ncci)
     {
       this.NoStudZoneStart = noStudZoneStart;
       this.NoStudZoneEnd = noStudZoneEnd;
@@ -60,7 +86,7 @@ namespace ComposAPI
     /// <param name="noStudZoneStart"></param>
     /// <param name="noStudZoneEnd"></param>
     /// <param name=""></param>
-    public StudSpecification(bool useEC4Limit, Length noStudZoneStart, Length noStudZoneEnd)
+    public StudSpecification(bool useEC4Limit, IQuantity noStudZoneStart, IQuantity noStudZoneEnd)
     {
       this.NoStudZoneStart = noStudZoneStart;
       this.NoStudZoneEnd = noStudZoneEnd;
@@ -75,7 +101,7 @@ namespace ComposAPI
     /// <param name="noStudZoneStart"></param>
     /// <param name="noStudZoneEnd"></param>
     /// <param name="welding"></param>
-    public StudSpecification(Length noStudZoneStart, Length noStudZoneEnd, bool welding)
+    public StudSpecification(IQuantity noStudZoneStart, IQuantity noStudZoneEnd, bool welding)
     {
       this.NoStudZoneStart = noStudZoneStart;
       this.NoStudZoneEnd = noStudZoneEnd;
@@ -88,9 +114,33 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      string noStudStart = (this.NoStudZoneStart.Value == 0) ? "" : "NSZS:" + this.NoStudZoneStart.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
-      string noStudEnd = (this.NoStudZoneEnd.Value == 0) ? "" : "NSZE:" + this.NoStudZoneEnd.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
-      string rebarPos = (this.ReinforcementPosition.Value == 0) ? "" : "RbP:" + this.ReinforcementPosition.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
+      string noStudStart = "";
+      if (this.NoStudZoneStart.QuantityInfo.UnitType == typeof(LengthUnit))
+      {
+        Length l = (Length)this.NoStudZoneStart;
+        if (l != Length.Zero)
+          noStudStart = "NoStudStart:" + l.ToString("g2").Replace(" ", string.Empty);
+      }
+      else
+      {
+        Ratio p = (Ratio)this.NoStudZoneStart;
+        if (p != Ratio.Zero)
+          noStudStart = "NoStudStart:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
+      }
+      string noStudEnd = "";
+      if (this.NoStudZoneEnd.QuantityInfo.UnitType == typeof(LengthUnit))
+      {
+        Length l = (Length)this.NoStudZoneEnd;
+        if (l != Length.Zero)
+          noStudEnd = "NoStudEnd:" + l.ToString("g2").Replace(" ", string.Empty);
+      }
+      else
+      {
+        Ratio p = (Ratio)this.NoStudZoneEnd;
+        if (p != Ratio.Zero)
+          noStudEnd = "NoStudEnd:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
+      }
+      string rebarPos = (this.ReinforcementPosition.Value == 0) ? "" : "RbP:" + this.ReinforcementPosition.ToString("g4").Replace(" ", string.Empty);
       string welding = (this.Welding == true) ? "Welded" : "";
       string ncci = (this.NCCI == true) ? "NCCI Limit" : "";
       string ec4 = (this.EC4_Limit == true) ? "EC4 Limit" : "";

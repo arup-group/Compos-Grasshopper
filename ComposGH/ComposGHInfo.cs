@@ -40,13 +40,14 @@ namespace ComposGH
 
       // ### Queue up Main menu loader ###
       Grasshopper.Instances.CanvasCreated += UI.Menu.MenuLoad.OnStartup;
-
       // ### Create Ribbon Category name and icon ###
       Grasshopper.Instances.ComponentServer.AddCategorySymbolName("Compos", 'C');
       Grasshopper.Instances.ComponentServer.AddCategoryIcon("Compos", Properties.Resources.ComposLogo128);
 
       // ### Setup units ###
-      Units.SetupUnits();
+      Units.SetupUnitsDuringLoad();
+
+      PostHog.PluginLoaded();
 
       // subscribe to rhino closing event
       Rhino.RhinoApp.Closing += CloseFile;

@@ -1,25 +1,27 @@
 ﻿using System;
-
-using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using ComposAPI;
+using ComposGH.Parameters;
+using ComposGH.Properties;
 
 namespace ComposGH.Components
 {
-  public class CreateERatio : GH_Component
+  public class CreateERatio : GH_OasysComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("a49e5e5e-502d-400e-81a2-3644577b3404");
     public CreateERatio()
-      : base("Steel/Concrete Modular Ratio", "ERatio", "Create steel/concrete Young´s modulus ratios for concrete material",
+      : base("Create" + ERatioGoo.Name.Replace(" ", string.Empty),
+          ERatioGoo.Name.Replace(" ", string.Empty),
+          "Create a " + ERatioGoo.Description + " for a " + ConcreteMaterialGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
 
     public override GH_Exposure Exposure => GH_Exposure.tertiary | GH_Exposure.obscure;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.ERatio;
+    protected override System.Drawing.Bitmap Icon => Resources.ERatio;
     #endregion
 
     #region Input and output
@@ -33,7 +35,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("E Ratios", "ER", "Steel/concrete Young´s modulus ratios for concrete material", GH_ParamAccess.item);
+      pManager.AddGenericParameter(ERatioGoo.Name, ERatioGoo.NickName, ERatioGoo.Description + " for a " + ConcreteMaterialGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 

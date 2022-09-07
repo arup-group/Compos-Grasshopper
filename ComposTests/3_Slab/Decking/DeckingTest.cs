@@ -8,16 +8,20 @@ using UnitsNet.Units;
 using Xunit;
 using ComposAPITests.Helpers;
 using ComposAPI.Helpers;
+using ComposAPI.Tests;
+using ComposGHTests.Helpers;
+
 
 namespace ComposAPI.Slabs.Tests
 {
+  [Collection("ComposAPI Fixture collection")]
   public class DeckingTest
   {
     [Theory]
     [InlineData("RLD", "Ribdeck AL (0.9)", DeckingSteelGrade.S280, 90, true, true, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck AL (0.9)	S280	90.0000	DECKING_JOINTED	JOINT_WELDED\n")]
     [InlineData("RLD", "Ribdeck AL (1.0)", DeckingSteelGrade.S280, 91, true, false, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck AL (1.0)	S280	91.0000	DECKING_JOINTED	JOINT_NOT_WELD\n")]
-    [InlineData("RLD", "Ribdeck AL (1.2)", DeckingSteelGrade.S350, 92, false, true, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck AL (1.2)	S350	92.0000	DECKING_CONTINUED	JOINT_WELDED\n")]
-    [InlineData("RLD", "Ribdeck E60 (0.9)", DeckingSteelGrade.S350, 93, false, false, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck E60 (0.9)	S350	93.0000	DECKING_CONTINUED	JOINT_NOT_WELD\n")]
+    [InlineData("RLD", "Ribdeck AL (1.2)", DeckingSteelGrade.S350, 92, false, true, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck AL (1.2)	S350	92.0000	DECKING_CONTINUE	JOINT_WELDED\n")]
+    [InlineData("RLD", "Ribdeck E60 (0.9)", DeckingSteelGrade.S350, 93, false, false, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck E60 (0.9)	S350	93.0000	DECKING_CONTINUE	JOINT_NOT_WELD\n")]
     public void CatalogueDeckingToCoaStringTest(string catalogue, string profile, DeckingSteelGrade deckingSteelGrade, double angle, bool isDiscontinous, bool isWelded, string expected_coaString)
     {
       Decking decking = new CatalogueDecking(catalogue, profile, deckingSteelGrade, new DeckingConfiguration(new Angle(angle, AngleUnit.Degree), isDiscontinous, isWelded));
@@ -74,7 +78,7 @@ namespace ComposAPI.Slabs.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(1, 2, 3, 4, 5, 6, 7, 8)]
-    public void CustomDeckingConstructorTest(double b1, double b2, double b3, double b4, double b5, double depth, double thickness, double strength)
+    public CustomDecking CustomDeckingConstructorTest(double b1, double b2, double b3, double b4, double b5, double depth, double thickness, double strength)
     {
       // 2 create object instance with constructor
       DeckingConfiguration configuration = new DeckingConfiguration();
@@ -92,6 +96,21 @@ namespace ComposAPI.Slabs.Tests
       Assert.Equal(strength, decking.Strength.Value);
       Assert.Equal(configuration, decking.DeckingConfiguration);
       Assert.Equal(DeckingType.Custom, decking.Type);
+
+      return decking;
+    }
+    [Fact]
+    public void DuplicateCustomDeckingTest()
+    {
+      // 1 create with constructor and duplicate
+      CustomDecking original = CustomDeckingConstructorTest(8, 7, 6, 5, 4, 3, 2, 1);
+      CustomDecking duplicate = (CustomDecking)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     [Theory]
@@ -99,7 +118,7 @@ namespace ComposAPI.Slabs.Tests
     [InlineData("RLD", "Ribdeck AL (1.0)", DeckingSteelGrade.S280, 91, true, false, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck AL (1.0)	S280	91.0000	DECKING_JOINTED	JOINT_NOT_WELD\n")]
     [InlineData("RLD", "Ribdeck AL (1.2)", DeckingSteelGrade.S350, 92, false, true, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck AL (1.2)	S350	92.0000	DECKING_CONTINUED	JOINT_WELDED\n")]
     [InlineData("RLD", "Ribdeck E60 (0.9)", DeckingSteelGrade.S350, 93, false, false, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck E60 (0.9)	S350	93.0000	DECKING_CONTINUED	JOINT_NOT_WELD\n")]
-    public void CatalogueDeckingFromCoaStringTest(string catalogue, string profile, DeckingSteelGrade deckingSteelGrade, double angle, bool isDiscontinous, bool isWelded, string expected_coaString)
+    public CatalogueDecking CatalogueDeckingFromCoaStringTest(string catalogue, string profile, DeckingSteelGrade deckingSteelGrade, double angle, bool isDiscontinous, bool isWelded, string expected_coaString)
     {
       // Assemble
       List<string> parameters = CoaHelper.Split(expected_coaString);
@@ -116,6 +135,21 @@ namespace ComposAPI.Slabs.Tests
       Assert.Equal(isDiscontinous, decking.DeckingConfiguration.IsDiscontinous);
       Assert.Equal(isWelded, decking.DeckingConfiguration.IsWelded);
       Assert.Equal(DeckingType.Catalogue, decking.Type);
+
+      return decking;
+    }
+    [Fact]
+    public void DuplicateCatDeckingTest()
+    {
+      // 1 create with constructor and duplicate
+      CatalogueDecking original = CatalogueDeckingFromCoaStringTest("RLD", "Ribdeck AL (0.9)", DeckingSteelGrade.S280, 90, true, true, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck AL (0.9)	S280	90.0000	DECKING_JOINTED	JOINT_WELDED\n");
+      CatalogueDecking duplicate = (CatalogueDecking)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     [Theory]

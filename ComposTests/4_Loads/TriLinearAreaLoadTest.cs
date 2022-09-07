@@ -3,6 +3,9 @@ using Xunit;
 using UnitsNet;
 using UnitsNet.Units;
 using static ComposAPI.Load;
+using ComposAPI.Tests;
+using ComposGHTests.Helpers;
+using ComposAPI.Helpers;
 
 namespace ComposAPI.Loads.Tests
 {
@@ -37,6 +40,19 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(LoadDistribution.Area, load.Distribution);
 
       return load;
+    }
+    [Fact]
+    public void DuplicateTriAreaTest()
+    {
+      // 1 create with constructor and duplicate
+      Load original = TestTriLinearAreaLoadConstructor(1, 1.5, 3, 5, 4000, 3, 4.5, 6, 5, 6000);
+      Load duplicate = (Load)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     // 1 setup inputs
@@ -102,7 +118,7 @@ namespace ComposAPI.Loads.Tests
       ComposUnits units = ComposUnits.GetStandardUnits();
       units.Force = forceUnit;
       units.Length = lengthUnit;
-      PressureUnit forcePerAreaUnit = Units.GetForcePerAreaUnit(forceUnit, lengthUnit);
+      PressureUnit forcePerAreaUnit = UnitsHelper.GetForcePerAreaUnit(forceUnit, lengthUnit);
 
       // Arrange
       string coaString = "LOAD	MEMBER-1	Tri-Linear	Area	3.00000	4.50000	6.00000	7.00000	8.90000	10.0000	11.0000	12.0000	13.0000	14.5000\n";
@@ -136,7 +152,7 @@ namespace ComposAPI.Loads.Tests
       ComposUnits units = ComposUnits.GetStandardUnits();
       units.Force = forceUnit;
       units.Length = lengthUnit;
-      PressureUnit forcePerAreaUnit = Units.GetForcePerAreaUnit(forceUnit, lengthUnit);
+      PressureUnit forcePerAreaUnit = UnitsHelper.GetForcePerAreaUnit(forceUnit, lengthUnit);
 
       // Arrange
       string coaString = "LOAD	MEMBER-1	Tri-Linear	Area	3.00000	4.50000	6.00000	7.00000	8.90000%	10.0000	11.0000	12.0000	13.0000	14.5000%\n";

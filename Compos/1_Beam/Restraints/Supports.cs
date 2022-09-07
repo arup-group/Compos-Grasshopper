@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposAPI
 {
@@ -19,8 +20,8 @@ namespace ComposAPI
   /// </summary>
   public class Supports : ISupports
   {
-    public bool SecondaryMemberIntermediateRestraint { get; set; }
-    public bool BothFlangesFreeToRotateOnPlanAtEnds { get; set; }
+    public bool SecondaryMemberAsIntermediateRestraint { get; set; } = true;
+    public bool BothFlangesFreeToRotateOnPlanAtEnds { get; set; } = false;
     public IList<IQuantity> CustomIntermediateRestraintPositions { get; set; }
     public IntermediateRestraint IntermediateRestraintPositions
     {
@@ -41,19 +42,19 @@ namespace ComposAPI
     #region constructors
     public Supports()
     {
-      // empty constructor
+      this.IntermediateRestraintPositions = IntermediateRestraint.None;
     }
     public Supports(List<IQuantity> customIntermediateRestraintPositions, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds)
     {
       this.CustomIntermediateRestraintPositions = customIntermediateRestraintPositions;
-      this.SecondaryMemberIntermediateRestraint = secondaryMemberIntermediateRestraint;
+      this.SecondaryMemberAsIntermediateRestraint = secondaryMemberIntermediateRestraint;
       this.BothFlangesFreeToRotateOnPlanAtEnds = bothFlangesFreeToRotateOnPlanAtEnds;
       this.IntermediateRestraintPositions = IntermediateRestraint.Custom;
     }
     public Supports(IntermediateRestraint intermediateRestraintPositions, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds)
     {
       this.IntermediateRestraintPositions = intermediateRestraintPositions;
-      this.SecondaryMemberIntermediateRestraint = secondaryMemberIntermediateRestraint;
+      this.SecondaryMemberAsIntermediateRestraint = secondaryMemberIntermediateRestraint;
       this.BothFlangesFreeToRotateOnPlanAtEnds = bothFlangesFreeToRotateOnPlanAtEnds;
     }
     #endregion
@@ -61,7 +62,7 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      string sec = (this.SecondaryMemberIntermediateRestraint) ? ", SMIR" : "";
+      string sec = (this.SecondaryMemberAsIntermediateRestraint) ? ", SMIR" : "";
       string flange = (this.BothFlangesFreeToRotateOnPlanAtEnds) ? ", FFRE" : "";
       string res = this.IntermediateRestraintPositions.ToString().Replace("__", "-").Replace("_", " ");
       if (CustomIntermediateRestraintPositions != null)
@@ -70,7 +71,7 @@ namespace ComposAPI
         foreach (IQuantity pos in CustomIntermediateRestraintPositions)
         {
           res += " ";
-          if (pos.QuantityInfo.UnitType == typeof(Length))
+          if (pos.QuantityInfo.UnitType == typeof(LengthUnit))
           {
             Length l = (Length)pos;
             res += l.ToString("g2").Replace(" ", string.Empty);

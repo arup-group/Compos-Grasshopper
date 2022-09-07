@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
-using Xunit;
+using ComposAPI.Helpers;
+using ComposAPI.Tests;
+using ComposGHTests.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
+using Xunit;
 using static ComposAPI.Load;
+
 
 namespace ComposAPI.Loads.Tests
 {
@@ -30,6 +34,19 @@ namespace ComposAPI.Loads.Tests
 
       return load;
     }
+    [Fact]
+    public void DuplicateUniLineTest()
+    {
+      // 1 create with constructor and duplicate
+      Load original = TestUniformAreaLoadConstructor(1, 1.5, 3, 5);
+      Load duplicate = (Load)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
 
     [Fact]
     public void UniformLineLoadToCoaStringTest()
@@ -51,7 +68,7 @@ namespace ComposAPI.Loads.Tests
       ComposUnits units = ComposUnits.GetStandardUnits();
       units.Force = forceUnit;
       units.Length = lengthUnit;
-      ForcePerLengthUnit forcePerLengthUnit = Units.GetForcePerLengthUnit(forceUnit, lengthUnit);
+      ForcePerLengthUnit forcePerLengthUnit = UnitsHelper.GetForcePerLengthUnit(forceUnit, lengthUnit);
 
       // Arrange
       string coaString = "LOAD	MEMBER-1	Uniform	Line	1.00000	2.00000	3.00000	4.50000	Line	1.00000	2.00000	3.00000	4.50000	3.00000	4.50000	6.00000	5.00000\n";

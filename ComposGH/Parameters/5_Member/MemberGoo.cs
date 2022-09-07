@@ -17,6 +17,9 @@ namespace ComposGH.Parameters
   {
     //public LineCurve Line { get; set; }
     //LengthUnit LengthUnit { get; set; }
+    public static string Name => "Member";
+    public static string NickName => "Mem";
+    public static string Description => "Compos Member";
 
     #region constructors
     public MemberGoo()

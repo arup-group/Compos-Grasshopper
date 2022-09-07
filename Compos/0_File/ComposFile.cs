@@ -1,34 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using ComposAPI.Helpers;
 using Compos_8_6;
-using Oasys.Units;
-using UnitsNet;
 using UnitsNet.Units;
 
 namespace ComposAPI
 {
-  public class ComposFile : IComposFile
+  public class ComposFile : IComposFile, IDisposable
   {
-    internal static IAutomation ComposCOM { get; } = new Automation();
-    internal static string CurrentGuid { get; set; } = "";
-
-    // verbose
-    internal static int counter;
-
-    public string Guid { get; set; } = System.Guid.NewGuid().ToString();
-    internal IList<IMember> Members = new List<IMember>();
-    internal bool IsAnalysed { get; set; } = false;
-    internal bool IsDesigned { get; set; } = false;
-
-    public string JobTitle { get; set; }
-    public string JobSubTitle { get; set; }
+    public Guid Guid { get; set; } = Guid.NewGuid();
     public string CalculationHeader { get; set; }
-    public string JobNumber { get; set; }
     public string Initials { get; set; }
+    public string JobNumber { get; set; }
+    public string JobSubTitle { get; set; }
+    public string JobTitle { get; set; }
+    public ComposUnits Units { get; set; }
+    private static IAutomation ComposCOM { get; set; }
+    private static Guid CurrentGuid { get; set; } = Guid.Empty;
+    private readonly IList<IMember> Members = new List<IMember>();
+    // verbose
+    private static int Counter;
 
     #region constructors
     public ComposFile()
@@ -47,8 +42,13 @@ namespace ComposAPI
     #region methods
     public void AddMember(IMember member)
     {
-      member.Register(this);
+      ((Member)member).Register(this);
       this.Members.Add(member);
+    }
+
+    public IList<IMember> GetMembers()
+    {
+      return this.Members;
     }
 
     /// <summary>
@@ -60,7 +60,7 @@ namespace ComposAPI
     /// </returns>
     internal short Analyse()
     {
-      counter++;
+      ComposFile.Counter++;
 
       short status = 0;
       foreach (Member member in this.Members)
@@ -68,7 +68,6 @@ namespace ComposAPI
         if (this.Analyse(member.Name) == 1)
           status = 1;
       }
-      this.IsAnalysed = true;
       return status;
     }
 
@@ -87,7 +86,15 @@ namespace ComposAPI
 
     public static short Close()
     {
-      return ComposFile.ComposCOM.Close();
+      if (ComposFile.ComposCOM == null) { return 0; }
+      short status = ComposFile.ComposCOM.Close();
+      ComposFile.ComposCOM = null;
+      return status;
+    }
+
+    public void Dispose()
+    {
+      Close();
     }
 
     /// <summary>
@@ -116,13 +123,13 @@ namespace ComposAPI
     /// </returns>
     internal short Design()
     {
+      this.Initialise();
       short status = 0;
       foreach (Member member in this.Members)
       {
         if (this.Design(member.Name) == 1)
           status = 1;
       }
-      this.IsDesigned = true;
       return status;
     }
 
@@ -136,7 +143,13 @@ namespace ComposAPI
     /// </returns>
     public short Design(string memberName)
     {
+      this.Initialise();
       return ComposFile.ComposCOM.Design(memberName);
+    }
+
+    public string BeamSectDesc(string memberName)
+    {
+      return ComposFile.ComposCOM.BeamSectDesc(memberName);
     }
 
     public IMember GetMember(string name)
@@ -146,18 +159,24 @@ namespace ComposAPI
 
     public static ComposFile Open(string fileName)
     {
-      ComposFile.ComposCOM.Close();
-      ComposFile.ComposCOM.Open(fileName);
+      if (ComposFile.ComposCOM != null)
+      {
+        ComposFile.ComposCOM.Close();
+        ComposFile.ComposCOM = null;
+      }
+      ComposFile.ComposCOM = new Automation();
+      int status = ComposFile.ComposCOM.Open(fileName);
+      if (status == 1)
+        return null;
 
       // save COM object to a temp coa file
       string tempCoa = Path.GetTempPath() + System.Guid.NewGuid().ToString() + ".coa";
-      int status = ComposFile.ComposCOM.SaveAs(tempCoa);
-
+      status = ComposFile.ComposCOM.SaveAs(tempCoa);
       if (status == 1)
         return null;
 
       // open temp coa file as ASCII string
-      string coaString = File.ReadAllText(tempCoa, Encoding.UTF7);
+      string coaString = File.ReadAllText(tempCoa, Encoding.Default);
       ComposFile file = ComposFile.FromCoaString(coaString);
 
       return file;
@@ -271,7 +290,7 @@ namespace ComposAPI
     /// <param name="option"></param>
     /// <param name="rebarnum">rebar number</param>
     /// <returns></returns>
-    public float TranRebarProp(string memberName, TransverseRebarOption option, short rebarnum)
+    internal float TranRebarProp(string memberName, TransverseRebarOption option, short rebarnum)
     {
       this.Initialise();
       return ComposFile.ComposCOM.TranRebarProp(memberName, option.ToString(), rebarnum);
@@ -291,21 +310,37 @@ namespace ComposAPI
     {
       Initialise();
 
-      // save to .cob with COM object
-      if (!fileName.EndsWith(".cob"))
-        fileName = fileName + ".cob";
+      // save to .coa with COM object
+      if (!fileName.EndsWith(".coa"))
+        fileName = fileName + ".coa";
 
       int status = ComposFile.ComposCOM.SaveAs(fileName);
 
       return status;
     }
 
-    private short Initialise()
+    /// <summary>
+    /// Open a COB, COA or CSV file. Returns a status, as follows:
+    /// </summary>
+    /// <param name="checkGUID"></param>
+    /// <returns>
+    /// 0 – OK
+    /// 1 – failed to open
+    /// </returns>
+    private short Initialise(bool checkGUID = true)
     {
-      if (this.Guid == ComposFile.CurrentGuid)
-        return -1;
+      if (checkGUID)
+      {
+        if (this.Guid == ComposFile.CurrentGuid)
+          return -1;
+      }
 
-      ComposFile.ComposCOM.Close();
+      short status;
+      if (ComposFile.ComposCOM != null)
+      {
+        ComposFile.ComposCOM.Close();
+        ComposFile.ComposCOM = null;
+      }
       ComposFile.CurrentGuid = this.Guid;
 
       // create coastring from members
@@ -313,9 +348,10 @@ namespace ComposAPI
 
       // save coa string to a temp to coa file (ASCII format)
       string tempCoa = Path.GetTempPath() + this.Guid + ".coa";
-      File.WriteAllLines(tempCoa, new string[] { coaString }, Encoding.UTF8);
+      File.WriteAllLines(tempCoa, new string[] { coaString }, Encoding.Default);
 
-      short status = ComposFile.ComposCOM.Open(tempCoa);
+      ComposFile.ComposCOM = new Automation();
+      status = ComposFile.ComposCOM.Open(tempCoa);
       this.Analyse();
 
       return status;
@@ -325,7 +361,8 @@ namespace ComposAPI
     {
       string str = "";
       foreach (IMember member in Members)
-        str += member.ToString();
+        str += member.ToString() + " ";
+      str.TrimEnd(' ');
       return str;
     }
 
@@ -335,10 +372,18 @@ namespace ComposAPI
     /// <param name="memberName"></param>
     /// <param name="option"></param>
     /// <returns></returns>
-    public float UtilisationFactor(string memberName, UtilisationFactorOption option)
+    internal float UtilisationFactor(string memberName, UtilisationFactorOption option)
     {
       this.Initialise();
       return ComposFile.ComposCOM.UtilisationFactor(memberName, option.ToString());
+    }
+
+    /// <summary>
+    /// Triggers an update of the Compos model.
+    /// </summary>
+    public void Update()
+    {
+      ComposFile.CurrentGuid = Guid.Empty;
     }
     #endregion
 
@@ -354,9 +399,6 @@ namespace ComposAPI
       {
         List<string> parameters = CoaHelper.Split(line);
         string coaIdentifier = parameters[0];
-
-        if (coaIdentifier == "END")
-          return new ComposFile(members);
 
         // ### member ###
         if (coaIdentifier == CoaIdentifier.MemberName)
@@ -379,29 +421,39 @@ namespace ComposAPI
         string name = member.Name;
         member.DesignCode = DesignCode.FromCoaString(coaString, name, units);
         Code code = member.DesignCode.Code;
+        member.DesignCriteria = DesignCriteria.FromCoaString(coaString, name, units);
 
-        member.Beam = Beam.FromCoaString(coaString, name, units);
+        member.Beam = Beam.FromCoaString(coaString, name, units, code);
         member.Stud = Stud.FromCoaString(coaString, name, code, units);
         member.Slab = Slab.FromCoaString(coaString, name, code, units);
         member.Loads = Load.FromCoaString(coaString, name, units);
       }
-      return new ComposFile(members);
+      if (members.Count < 0)
+        return null;
+
+      ComposFile file = new ComposFile(members);
+      file.Units = units;
+
+      return file;
     }
 
     public string ToCoaString()
     {
-      ComposUnits units = new ComposUnits
+      if (this.Units == null)
       {
-        Angle = AngleUnit.Degree,
-        Density = Units.DensityUnit,
-        Force = Units.ForceUnit,
-        Length = Units.LengthUnitGeometry,
-        Displacement = Units.LengthUnitResult,
-        Section = Units.LengthUnitSection,
-        Stress = Units.StressUnit,
-        Strain = Units.StrainUnit,
-        Mass = Units.MassUnit,
-      };
+        this.Units = new ComposUnits
+        {
+          Angle = AngleUnit.Degree,
+          Density = UnitsHelper.DensityUnit,
+          Force = UnitsHelper.ForceUnit,
+          Length = UnitsHelper.LengthUnitGeometry,
+          Displacement = UnitsHelper.LengthUnitResult,
+          Section = UnitsHelper.LengthUnitSection,
+          Stress = UnitsHelper.StressUnit,
+          Strain = UnitsHelper.StrainUnit,
+          Mass = UnitsHelper.MassUnit,
+        };
+      }
 
       string version = "0.1"; // ??
 
@@ -423,12 +475,18 @@ namespace ComposAPI
       coaString += "COMPOS_FILE_VERSION\t1\n";
       coaString += "TITLE\t" + this.JobTitle + "\t" + this.JobSubTitle + "\t" + this.CalculationHeader + "\t" + this.JobNumber + "\t" + this.Initials + "\n";
 
-      coaString += units.ToCoaString();
+      coaString += this.Units.ToCoaString();
 
       foreach (IMember member in this.Members)
-        coaString += member.ToCoaString(units);
+      {
+        coaString += member.ToCoaString(this.Units);
+        coaString += "FLOOR_RESPONSE\t" + member.Name + "\tFLOOR_RESPONSE_ANALYSIS_NO\n";
+      }
 
-      coaString += "END\n";
+      coaString += "GROUP\tALL\tDefault group containing all the members\t1";
+      foreach (IMember member in this.Members)
+        coaString += "\t" + member.Name;
+      coaString += "\nEND\n";
 
       return coaString;
     }

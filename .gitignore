@@ -1,7 +1,6 @@
 ﻿*.suo
 *.bak
 /.vs
-/.vs/ComposGH/DesignTimeBuild/.dtbcache.v2
 /packages
 /Compos/bin
 /Compos/obj
@@ -17,7 +16,7 @@
 /IntegrationTests/obj
 /ComposGH/Tests/bin
 /ComposGH/Tests/obj
-/ComposTests/TestFiles/Compos1.log
 /ConverterTests/bin
 /ConverterTests/obj
 *.log
+/ComposGH.sln.DotSettings.user

@@ -1,9 +1,12 @@
-﻿using System;
+﻿using ComposAPI.Tests;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using ComposGHTests.Helpers;
+
 
 namespace ComposAPI.Slabs.Tests
 {
@@ -15,6 +18,7 @@ namespace ComposAPI.Slabs.Tests
     }
   }
 
+  [Collection("ComposAPI Fixture collection")]
   public class ERatioTest
   {
     [Fact]
@@ -26,7 +30,19 @@ namespace ComposAPI.Slabs.Tests
 
       return eRatio;
     }
+    [Fact]
+    public void DuplicateStdTest()
+    {
+      // 1 create with constructor and duplicate
+      ERatio original = ERatioMother.CreateERatio();
+      ERatio duplicate = (ERatio)original.Duplicate();
 
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
     // 1 setup inputs
     [Theory]
     [InlineData(6, 18, 5.39)]

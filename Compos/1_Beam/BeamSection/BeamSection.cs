@@ -37,6 +37,7 @@ namespace ComposAPI
       get { return this.m_StartPosition; }
       set
       {
+        if (value == null) return;
         if (value.QuantityInfo.UnitType != typeof(LengthUnit)
           & value.QuantityInfo.UnitType != typeof(RatioUnit))
           throw new ArgumentException("Start Position must be either Length or Ratio");
@@ -207,7 +208,7 @@ namespace ComposAPI
       }
       else if (profile.StartsWith("CAT"))
       {
-        string prof = profile.Split(' ').Last();
+        string prof = profile.Split(' ')[2];
 
         List<double> sqlValues = catalogueDB.GetCatalogueProfileValues(prof);
 
@@ -317,7 +318,18 @@ namespace ComposAPI
       if (this.TaperedToNext)
         tapered = ", Tapered";
 
-      return (this.SectionDescription == null) ? "Null profile" : this.SectionDescription + start + tapered;
+      string sect = "";
+      if (this.SectionDescription != null)
+      {
+        sect = this.SectionDescription;
+        if (this.isCatalogue)
+        {
+          // remove the catalogue date if exist:
+          sect = sect.Split(' ')[0] + " " + sect.Split(' ')[1] + " " + sect.Split(' ')[2];
+        }  
+      }
+
+      return (this.SectionDescription == null) ? "Null profile" : sect + start + tapered;
     }
     #endregion
   }

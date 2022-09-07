@@ -3,6 +3,9 @@ using Xunit;
 using UnitsNet;
 using UnitsNet.Units;
 using static ComposAPI.Load;
+using ComposAPI.Tests;
+using ComposGHTests.Helpers;
+
 
 namespace ComposAPI.Loads.Tests
 {
@@ -37,6 +40,20 @@ namespace ComposAPI.Loads.Tests
 
       return load;
     }
+    [Fact]
+    public void DuplicateAxialTest()
+    {
+      // 1 create with constructor and duplicate
+      Load original = TestAxialLoadConstructor(1, 1.5, 3, 5, 150, 3, 4.5, 6, 5, 200);
+      Load duplicate = (Load)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
     [Fact]
     public void AxialLoadToCoaStringTest()
     {

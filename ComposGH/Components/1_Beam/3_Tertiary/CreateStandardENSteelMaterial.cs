@@ -1,97 +1,30 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Grasshopper.Kernel;
-using ComposGH.Parameters;
-using UnitsNet;
-using UnitsNet.Units;
-using System.Linq;
 using ComposAPI;
+using ComposGH.Parameters;
+using ComposGH.Properties;
 
 namespace ComposGH.Components
 {
-  public class CreateStandardENSteelMaterial : GH_Component, IGH_VariableParameterComponent
+  public class CreateStandardENSteelMaterial : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("e671a346-5989-47e0-aacc-920c77fdfb1f");
     public CreateStandardENSteelMaterial()
-      : base("Standard EC4 Steel Material", "ENSteelMat", "Create Standard EN1994-1-1 Steel Material for a Compos Beam",
+      : base("StandardEN" + SteelMaterialGoo.Name.Replace(" ", string.Empty),
+          "EN" + SteelMaterialGoo.NickName.Replace(" ", string.Empty),
+          "Look up a Standard EN " + SteelMaterialGoo.Description + " for a " + BeamGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
 
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.StandardENSteelMaterial;
-    #endregion
-
-    #region Custom UI
-
-    // list of lists with all dropdown lists content
-    List<List<string>> DropDownItems;
-    // list of selected items
-    List<string> SelectedItems;
-    // list of descriptions 
-    List<string> SpacerDescriptions = new List<string>(new string[]
-    {
-            "Grade",
-    });
-    List<bool> OverrideDropDownItems;
-
-    private bool First = true;
-    private StandardSteelGrade SteelGrade = StandardSteelGrade.S235;
-
-    public override void CreateAttributes()
-    {
-      if (First)
-      {
-        DropDownItems = new List<List<string>>();
-        SelectedItems = new List<string>();
-
-        // SteelType
-        DropDownItems.Add(Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList());
-        DropDownItems[0].RemoveAt(3); // remove S450
-        SelectedItems.Add(SteelGrade.ToString());
-
-        this.OverrideDropDownItems = new List<bool>() { false };
-        First = false;
-      }
-
-      m_attributes = new UI.MultiDropDownComponentUI(this, SetSelected, DropDownItems, SelectedItems, SpacerDescriptions);
-    }
-
-    public void SetSelected(int i, int j)
-    {
-      // change selected item
-      SelectedItems[i] = DropDownItems[i][j];
-
-      if (i == 0)  // change is made to code 
-      {
-        if (SteelGrade.ToString() == SelectedItems[i])
-          return; // return if selected value is same as before
-
-        SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), SelectedItems[i]);
-      }
-
-      // update name of inputs (to display unit on sliders)
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
-
-    private void UpdateUIFromSelectedItems()
-    {
-      if (this.SelectedItems[0] != "-")
-        this.SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), this.SelectedItems[0]);
-
-      CreateAttributes();
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
-    }
+    protected override System.Drawing.Bitmap Icon => Resources.StandardENSteelMaterial;
     #endregion
 
     #region Input and output
@@ -102,7 +35,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("StandardSteelMaterial", "SSM", "Standard Steel Material for a Compos Beam", GH_ParamAccess.item);
+      pManager.AddGenericParameter("Standard " + SteelMaterialGoo.Name, SteelMaterialGoo.NickName, "Standard EN1993-1-1 " + SteelMaterialGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
@@ -146,48 +79,52 @@ namespace ComposGH.Components
         this.OverrideDropDownItems[0] = false;
       }
 
-      DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(SteelGrade, Code.EN1994_1_1_2004)));
+      SetOutput.Item(this, DA, 0, new SteelMaterialGoo(new SteelMaterial(SteelGrade, Code.EN1994_1_1_2004)));
     }
 
-    #region (de)serialization
-    public override bool Write(GH_IO.Serialization.GH_IWriter writer)
+    #region Custom UI
+    List<bool> OverrideDropDownItems;
+    private StandardSteelGrade SteelGrade = StandardSteelGrade.S235;
+    internal override void InitialiseDropdowns()
     {
-      Helpers.DeSerialization.writeDropDownComponents(ref writer, DropDownItems, SelectedItems, SpacerDescriptions);
-      return base.Write(writer);
+      this.SpacerDescriptions = new List<string>(new string[] { "Grade" });
+
+      this.DropDownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
+
+      // SteelType
+      this.DropDownItems.Add(Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList());
+      this.DropDownItems[0].RemoveAt(3); // remove S450
+      this.SelectedItems.Add(this.SteelGrade.ToString());
+
+      this.OverrideDropDownItems = new List<bool>() { false };
+
+      this.IsInitialised = true;
     }
-    public override bool Read(GH_IO.Serialization.GH_IReader reader)
+
+    internal override void SetSelected(int i, int j)
     {
-      Helpers.DeSerialization.readDropDownComponents(ref reader, ref DropDownItems, ref SelectedItems, ref SpacerDescriptions);
+      // change selected item
+      this.SelectedItems[i] = this.DropDownItems[i][j];
 
-      UpdateUIFromSelectedItems();
+      if (i == 0)  // change is made to code 
+      {
+        if (this.SteelGrade.ToString() == this.SelectedItems[i])
+          return; // return if selected value is same as before
 
-      First = false;
+        this.SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), SelectedItems[i]);
+      }
 
-      return base.Read(reader);
+      base.UpdateUI();
+    }
+
+    internal override void UpdateUIFromSelectedItems()
+    {
+      if (this.SelectedItems[0] != "-")
+        this.SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), this.SelectedItems[0]);
+
+      base.UpdateUIFromSelectedItems();
     }
     #endregion
-
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
-    {
-      return null;
-    }
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
-    }
-    #endregion
-
   }
 }

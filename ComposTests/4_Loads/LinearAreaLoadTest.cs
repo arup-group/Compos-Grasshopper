@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
-using Xunit;
+using ComposAPI.Helpers;
+using ComposAPI.Tests;
+using ComposGHTests.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
+using Xunit;
 using static ComposAPI.Load;
 
 namespace ComposAPI.Loads.Tests
@@ -36,6 +39,20 @@ namespace ComposAPI.Loads.Tests
       return load;
     }
     [Fact]
+    public void DuplicateLinearAreaTest()
+    {
+      // 1 create with constructor and duplicate
+      Load original = TestLinearAreaLoadConstructor(1, 1.5, 3, 5, 3, 4.5, 6, 5);
+      Load duplicate = (Load)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
+    [Fact]
     public void LinearAreaLoadToCoaStringTest()
     {
       // Arrange
@@ -55,7 +72,7 @@ namespace ComposAPI.Loads.Tests
       ComposUnits units = ComposUnits.GetStandardUnits();
       units.Force = forceUnit;
       units.Length = lengthUnit;
-      PressureUnit forcePerAreaUnit = Units.GetForcePerAreaUnit(forceUnit, lengthUnit);
+      PressureUnit forcePerAreaUnit = UnitsHelper.GetForcePerAreaUnit(forceUnit, lengthUnit);
 
       // Arrange
       string coaString = "LOAD	MEMBER-1	Linear	Area	1.00000	2.00000	3.00000	4.50000	6.00000	7.00000	8.00000	9.00000\n";
