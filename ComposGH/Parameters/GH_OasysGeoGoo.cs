@@ -1,6 +1,7 @@
 ﻿using ComposAPI;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
+using OasysGH.Parameters;
 using Rhino.Geometry;
 
 namespace ComposGH.Parameters

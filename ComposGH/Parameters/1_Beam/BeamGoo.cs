@@ -10,6 +10,7 @@ using UnitsNet.Units;
 using System.Drawing;
 using Grasshopper;
 using ComposAPI;
+using OasysGH.Parameters;
 
 namespace ComposGH.Parameters
 {
