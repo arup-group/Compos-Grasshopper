@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using ComposAPI;
 using System.Threading.Tasks;
+using ComposGH.Helpers;
 
 namespace ComposGH
 {
