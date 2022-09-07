@@ -9,7 +9,7 @@ namespace ComposGHTests.Stud
   [Collection("GrasshopperFixture collection")]
   public class CreateCustomStudSpacingComponentTests
   {
-    public static GH_OasysDropDownComponent CreateCustomStudSpacingMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateCustomStudSpacing();
       comp.CreateAttributes();
@@ -26,7 +26,7 @@ namespace ComposGHTests.Stud
     [Fact]
     public void CreateComponentWithInputsTest()
     {
-      var comp = CreateCustomStudSpacingMother();
+      var comp = ComponentMother();
 
       comp.SetSelected(0, 0); // change the dropdown to mm
 
@@ -40,14 +40,14 @@ namespace ComposGHTests.Stud
     [Fact]
     public void DeserializeTest()
     {
-      var comp = CreateCustomStudSpacingMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = CreateCustomStudSpacingMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }

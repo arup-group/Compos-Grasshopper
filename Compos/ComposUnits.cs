@@ -44,7 +44,7 @@ namespace ComposAPI
     public string ToCoaString()
     {
       ComposUnits standardUnits = ComposUnits.GetStandardUnits();
-      
+
       Force force = new Force(1.0, this.Force);
       double forceFactor = 1.0 / force.ToUnit(standardUnits.Force).Value;
 

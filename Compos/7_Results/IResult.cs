@@ -1,18 +1,23 @@
-﻿namespace ComposAPI
+﻿using System.Collections.Generic;
+using UnitsNet;
+
+namespace ComposAPI
 {
-  interface IResult
+  public interface IResult
   {
-    float MaxResult(string option, short position);
-    short MaxResultPosition( string option, short position);
-    string MemberName(int index);
-    float MinResult(string option, short position);
-    short MinResultPosition(string option, short position);
-    short NumIntermediatePos();
-    short NumTranRebar();
-    float Result(string option, short position);
-    int SaveAs(string fileName);
-    string ToCoaString();
-    float TranRebarProp(TransverseRebarOption option, short rebarnum);
-    float UtilisationFactor(UtilisationFactorOption option);
+    List<Length> Positions { get; }
+
+    IUtilisation Utilisations { get; }
+
+    ICompositeSectionProperties SectionProperties { get; }
+    IInternalForceResult InternalForces { get; }
+    ICapacityResult Capacities { get; }
+    IDeflectionResult Deflections { get; }
+
+    IBeamClassification BeamClassification { get; }
+    IBeamStressResult BeamStresses { get; }
+    IStudResult StudResults { get; }
+    ISlabStressResult SlabStresses { get; }
+    ITransverseRebarResult TransverseRebarResults { get; } 
   }
 }

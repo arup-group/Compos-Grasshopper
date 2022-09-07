@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ComposAPI.Helpers;
+using ComposAPI.Tests;
 using ComposGHTests.Helpers;
 using UnitsNet;
 using UnitsNet.Units;

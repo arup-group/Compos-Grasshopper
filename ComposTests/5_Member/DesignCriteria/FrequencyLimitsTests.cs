@@ -9,6 +9,7 @@ using ComposGHTests.Helpers;
 
 namespace ComposAPI.Members.Tests
 {
+  [Collection("ComposAPI Fixture collection")]
   public class FrequencyLimitsTests
   {
     [Fact]

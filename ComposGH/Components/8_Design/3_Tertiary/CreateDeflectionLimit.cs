@@ -1,9 +1,9 @@
 ﻿using System;
-
-using ComposGH.Parameters;
+using System.Collections.Generic;
 using Grasshopper.Kernel;
 using ComposAPI;
-using System.Collections.Generic;
+using ComposGH.Parameters;
+using ComposGH.Properties;
 using UnitsNet.Units;
 using UnitsNet;
 
@@ -24,7 +24,7 @@ namespace ComposGH.Components
 
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.DeflectionLimit;
+    protected override System.Drawing.Bitmap Icon => Resources.DeflectionLimit;
     #endregion
 
     #region Input and output

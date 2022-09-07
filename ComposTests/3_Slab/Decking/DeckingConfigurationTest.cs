@@ -21,6 +21,7 @@ namespace ComposAPI.Slabs.Tests
     }
   }
 
+  [Collection("ComposAPI Fixture collection")]
   public class DeckingConfigurationTest
   {
     // 1 setup inputs

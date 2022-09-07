@@ -9,7 +9,7 @@ namespace ComposGHTests.Slab
   [Collection("GrasshopperFixture collection")]
   public class CreateCustomTransverseReinforcementLayoutComponentTests
   {
-    public static GH_OasysDropDownComponent CreateCustomTransverseReinforcementLayoutMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateCustomTransverseReinforcementLayout();
       comp.CreateAttributes();
@@ -27,7 +27,7 @@ namespace ComposGHTests.Slab
     [Fact]
     public void CreateComponent()
     {
-      var comp = CreateCustomTransverseReinforcementLayoutMother();
+      var comp = ComponentMother();
 
       comp.SetSelected(0, 0); // set dropdown to mm
 
@@ -42,14 +42,14 @@ namespace ComposGHTests.Slab
     [Fact]
     public void DeserializeTest()
     {
-      var comp = CreateCustomTransverseReinforcementLayoutMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = CreateCustomTransverseReinforcementLayoutMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }

@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Linq;
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Parameters;
+using ComposAPI;
 using ComposGH.Parameters;
+using ComposGH.Properties;
 using UnitsNet;
 using UnitsNet.Units;
-using System.Linq;
-using ComposAPI;
-using Grasshopper.Kernel.Parameters;
 
 namespace ComposGH.Components
 {
@@ -25,7 +26,7 @@ namespace ComposGH.Components
 
     public override GH_Exposure Exposure => GH_Exposure.quinary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.DeckingConfig;
+    protected override System.Drawing.Bitmap Icon => Resources.DeckingConfig;
     #endregion
 
     private AngleUnit angleUnit = AngleUnit.Radian;

@@ -7,6 +7,7 @@ using ComposGHTests.Helpers;
 
 namespace ComposAPI.Studs.Tests
 {
+  [Collection("ComposAPI Fixture collection")]
   public partial class StudTest
   {
     [Fact]

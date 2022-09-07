@@ -147,17 +147,18 @@
     <Compile Include="Components\5_Member\3_Tertiary\CreateSafetyFactorsEN.cs" />
     <Compile Include="Components\5_Member\3_Tertiary\CreateCreepShrinkageParams.cs" />
     <Compile Include="Components\5_Member\3_Tertiary\CreateSafetyFactors.cs" />
-    <Compile Include="Components\7_Results\ReadClassResults.cs" />
-    <Compile Include="Components\7_Results\ReadStresses.cs" />
-    <Compile Include="Components\7_Results\ReadStudResults.cs" />
-    <Compile Include="Components\7_Results\ReadDeflections.cs" />
-    <Compile Include="Components\7_Results\ReadTransverseRebarProps.cs" />
-    <Compile Include="Components\7_Results\CodeSatisfied.cs" />
-    <Compile Include="Components\7_Results\ReadUtilisations.cs" />
-    <Compile Include="Components\7_Results\ReadCapacities.cs" />
-    <Compile Include="Components\7_Results\ReadBeamResults.cs" />
-    <Compile Include="Components\7_Results\ReadInternalForces.cs" />
-    <Compile Include="Components\7_Results\ReadResults.cs" />
+    <Compile Include="Components\7_Results\1_Primary\Utilisations.cs" />
+    <Compile Include="Components\7_Results\1_Primary\CodeSatisfied.cs" />
+    <Compile Include="Components\7_Results\2_Secondary\DeflectionResults.cs" />
+    <Compile Include="Components\7_Results\2_Secondary\InternalForces.cs" />
+    <Compile Include="Components\7_Results\2_Secondary\CapacityResults.cs" />
+    <Compile Include="Components\7_Results\2_Secondary\ConstantCompositeProperties.cs" />
+    <Compile Include="Components\7_Results\2_Secondary\CompositeProperties.cs" />
+    <Compile Include="Components\7_Results\3_Tertiary\TransverseRebarResults.cs" />
+    <Compile Include="Components\7_Results\3_Tertiary\TransverseRebarLayout.cs" />
+    <Compile Include="Components\7_Results\3_Tertiary\StudResults.cs" />
+    <Compile Include="Components\7_Results\3_Tertiary\SlabStressResults.cs" />
+    <Compile Include="Components\7_Results\3_Tertiary\BeamStressResults.cs" />
     <Compile Include="Components\GH_OasysDropDownComponent.cs" />
     <Compile Include="Components\GH_OasysComponent.cs" />
     <Compile Include="Components\GH_OasysTaskCapableComponent.cs" />
@@ -270,9 +271,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\Icons\CreateSteelMaterial.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Properties\Icons\OpenModel.png" />
   </ItemGroup>
   <ItemGroup>
@@ -285,13 +283,6 @@
     <None Include="Properties\Icons\ComposLogo128.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\6_Analysis\1_Primary\" />
-    <Folder Include="Components\6_Analysis\2_Secondary\" />
-    <Folder Include="Components\6_Analysis\3_Tertiary\" />
-    <Folder Include="Components\6_Analysis\4_Quarternary\" />
-    <Folder Include="Components\6_Analysis\5_Quinary\" />
-    <Folder Include="Components\8_Design\4_Quarternary\" />
-    <Folder Include="Components\8_Design\5_Quinary\" />
     <Folder Include="Parameters\0_File\" />
   </ItemGroup>
   <ItemGroup>
@@ -522,6 +513,57 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Icons\ProfileProperties.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\BeamClassification.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\BeamStressResults.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\CapacityResults.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\ComposLogo64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\DeflectionResults.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\InternalForceResults.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\SectionProperties.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\SlabStressResults.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\StudResults.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\TransverseRebarResults.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\Utilisation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\TransverseRebarLayout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\UtilisationHigh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\UtilisationLow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\UtilisationMedium.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\UtilisationOver.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\SectionPropertiesConstant.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

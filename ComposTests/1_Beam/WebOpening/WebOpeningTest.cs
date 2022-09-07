@@ -8,6 +8,7 @@ using ComposGHTests.Helpers;
 
 namespace ComposAPI.Beams.Tests
 {
+  [Collection("ComposAPI Fixture collection")]
   public partial class WebOpeningTest
   {
     // 1 setup inputs

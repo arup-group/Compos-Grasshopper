@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Grasshopper.Kernel;
+using ComposAPI;
 using ComposGH.Parameters;
+using ComposGH.Properties;
+using Newtonsoft.Json;
 using UnitsNet;
 using UnitsNet.Units;
-using System.Linq;
-using ComposAPI;
 using UnitsNet.GH;
-using Newtonsoft.Json;
-using static System.Resources.ResXFileRef;
-using UnitsNet.Serialization.JsonNet;
 
 namespace ComposGH.Components
 {
@@ -29,7 +27,7 @@ namespace ComposGH.Components
 
     public override GH_Exposure Exposure => GH_Exposure.quarternary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.ProfileProperties;
+    protected override System.Drawing.Bitmap Icon => Resources.ProfileProperties;
     #endregion
 
     #region Input and output

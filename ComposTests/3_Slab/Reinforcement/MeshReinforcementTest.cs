@@ -13,6 +13,7 @@ using ComposGHTests.Helpers;
 
 namespace ComposAPI.Slabs.Tests
 {
+  [Collection("ComposAPI Fixture collection")]
   public class MeshReinforcementTest
   {
     [Theory]
