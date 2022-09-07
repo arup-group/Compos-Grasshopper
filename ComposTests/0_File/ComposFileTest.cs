@@ -41,6 +41,7 @@ namespace ComposAPI.File.Tests
     [InlineData("25_Loads[Patch].coa")]
     [InlineData("26_Loads[Axial].coa")]
     [InlineData("Compos1.coa")]
+    [InlineData("Compos2_UTF8.coa")] //Not found: UNIT_DATA	STRESS	N/m�	1.00000 
     public void AnalyseTest(string fileName)
     {
       string path = Path.GetFullPath(ComposFileTest.RelativePath);
@@ -99,6 +100,7 @@ namespace ComposAPI.File.Tests
     [InlineData("25_Loads[Patch].coa")]
     [InlineData("26_Loads[Axial].coa")]
     [InlineData("Compos1.coa")]
+    [InlineData("Compos2_UTF8.coa")] //Not found: UNIT_DATA	STRESS	N/m�	1.00000
     public void DesignTest(string fileName)
     {
       string path = Path.GetFullPath(ComposFileTest.RelativePath);
@@ -152,7 +154,7 @@ namespace ComposAPI.File.Tests
     [InlineData("25_Loads[Patch].coa")]
     [InlineData("26_Loads[Axial].coa")]
     [InlineData("Compos1.coa")]
-    //[InlineData("Compos2.coa")] Not found: UNIT_DATA	STRESS	N/m�	1.00000
+    [InlineData("Compos2_UTF8.coa")] //Not found: UNIT_DATA	STRESS	N/m�	1.00000
     public void FromAndToCoaStringTest(string fileName)
     {
       string path = Path.GetFullPath(ComposFileTest.RelativePath);
