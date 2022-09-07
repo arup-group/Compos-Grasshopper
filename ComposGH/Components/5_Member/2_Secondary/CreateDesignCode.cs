@@ -6,9 +6,7 @@ using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
 using OasysGH.Components;
-using UnitsNet;
-using UnitsNet.Units;
-using static ComposAPI.CodeOptionsEN;
+using OasysGH.Helpers;
 
 namespace ComposGH.Components
 {
@@ -100,7 +98,7 @@ namespace ComposGH.Components
           if (ec4safetyFactors != null)
             ec4.SafetyFactors = ec4safetyFactors;
 
-          DA.SetData(0, new DesignCodeGoo(ec4));
+          Output.SetItem(this, DA, 0, new DesignCodeGoo(ec4));
           break;
 
         case Code.AS_NZS2327_2017:
@@ -117,7 +115,7 @@ namespace ComposGH.Components
           if (safetyFactors != null)
             asnz.SafetyFactors = safetyFactors;
 
-          DA.SetData(0, new DesignCodeGoo(asnz));
+          Output.SetItem(this, DA, 0, new DesignCodeGoo(asnz));
           break;
 
         default:

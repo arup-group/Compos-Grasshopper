@@ -5,6 +5,7 @@ using ComposAPI;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -88,7 +89,11 @@ namespace ComposGH.Components
         if (redFact)
           AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Note that reduction factor only applies for EC4 DesignCode");
 
-      DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(GetInput.Stress(this, DA, 0, this.StressUnit), GetInput.Stress(this, DA, 1, this.StressUnit), GetInput.Density(this, DA, 2, this.DensityUnit), this.Grade, true, redFact)));
+      Output.SetItem(this, DA, 0, new SteelMaterialGoo(new SteelMaterial(
+        GetInput.Stress(this, DA, 0, this.StressUnit), 
+        GetInput.Stress(this, DA, 1, this.StressUnit), 
+        GetInput.Density(this, DA, 2, this.DensityUnit), 
+        this.Grade, true, redFact)));
     }
 
     #region Custom UI

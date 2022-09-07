@@ -6,6 +6,7 @@ using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using OasysGH.Components;
+using OasysGH.Helpers;
 using Rhino.Geometry;
 using UnitsNet;
 using UnitsNet.Units;
@@ -70,11 +71,11 @@ namespace ComposGH.Components
             if (this.Params.Input[4].Sources.Count > 0)
             {
               List<WebOpeningGoo> webOpenings = GetInput.GenericGooList<WebOpeningGoo>(this, DA, 4);
-              DA.SetData(0, new BeamGoo(new LineCurve(ln), this.LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value as IBeamSection).ToList(), webOpenings.Select(x => x.Value as IWebOpening).ToList()));
+              Output.SetItem(this, DA, 0, new BeamGoo(new LineCurve(ln), this.LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value as IBeamSection).ToList(), webOpenings.Select(x => x.Value as IWebOpening).ToList()));
             }
             else
             {
-              DA.SetData(0, new BeamGoo(new LineCurve(ln), this.LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value as IBeamSection).ToList()));
+              Output.SetItem(this, DA, 0, new BeamGoo(new LineCurve(ln), this.LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value as IBeamSection).ToList()));
             }
           }
           catch (Exception e)

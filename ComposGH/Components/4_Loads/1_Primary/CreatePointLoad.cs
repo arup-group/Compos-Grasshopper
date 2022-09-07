@@ -5,6 +5,7 @@ using ComposAPI;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -54,7 +55,7 @@ namespace ComposGH.Components
       IQuantity pos = GetInput.LengthOrRatio(this, DA, 4, this.LengthUnit);
 
       Load load = new PointLoad(constDead, constLive, finalDead, finalLive, pos);
-      DA.SetData(0, new LoadGoo(load));
+      Output.SetItem(this, DA, 0, new LoadGoo(load));
     }
 
     #region Custom UI

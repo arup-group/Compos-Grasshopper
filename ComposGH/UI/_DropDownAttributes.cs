@@ -6,6 +6,8 @@ using System.Windows.Forms;
 using System;
 using System.Drawing;
 using System.Collections.Generic;
+using ComposGH.Components;
+using OasysGH.Components;
 
 namespace ComposGH.UI
 {
@@ -19,7 +21,7 @@ namespace ComposGH.UI
   /// </summary>
   public class MultiDropDownComponentUI : GH_ComponentAttributes
   {
-    public MultiDropDownComponentUI(GH_Component owner, Action<int, int> clickHandle, List<List<string>> dropdownContents, List<string> selections, List<string> spacerTexts = null, List<string> initialdescriptions = null) : base(owner)
+    public MultiDropDownComponentUI(GH_OasysDropDownComponent owner, Action<int, int> clickHandle, List<List<string>> dropdownContents, List<string> selections, List<string> spacerTexts = null, List<string> initialdescriptions = null) : base(owner)
     {
       dropdownlists = dropdownContents;
       spacerTxts = spacerTexts;
@@ -368,7 +370,7 @@ namespace ComposGH.UI
     {
       if (e.Button == MouseButtons.Left)
       {
-        GH_Component comp = Owner as GH_Component;
+        GH_OasysDropDownComponent comp = Owner as GH_OasysDropDownComponent;
         if (drag)
         {
           // if drag was true then we release it here:
@@ -459,7 +461,7 @@ namespace ComposGH.UI
           if (e.Button == MouseButtons.Left)
           {
             RectangleF rec = scrollBar;
-            GH_Component comp = Owner as GH_Component;
+            GH_OasysDropDownComponent comp = Owner as GH_OasysDropDownComponent;
             if (rec.Contains(e.CanvasLocation))
             {
               dragMouseStartY = e.CanvasLocation.Y;
@@ -476,7 +478,7 @@ namespace ComposGH.UI
     {
       if (drag)
       {
-        GH_Component comp = Owner as GH_Component;
+        GH_OasysDropDownComponent comp = Owner as GH_OasysDropDownComponent;
 
         deltaY = e.CanvasLocation.Y - dragMouseStartY;
 

@@ -5,6 +5,7 @@ using ComposAPI;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -65,7 +66,7 @@ namespace ComposGH.Components
       BeamSection beamSection = new BeamSection(profile);
       beamSection.StartPosition = start;
       beamSection.TaperedToNext = taper;
-      DA.SetData(0, new BeamSectionGoo(beamSection));
+      Output.SetItem(this, DA, 0, new BeamSectionGoo(beamSection));
     }
 
     #region Custom UI

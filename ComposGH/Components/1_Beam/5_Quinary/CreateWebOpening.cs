@@ -6,6 +6,7 @@ using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
 using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -69,11 +70,11 @@ namespace ComposGH.Components
       switch (this.OpeningType)
       {
         case WebOpeningShape.Rectangular:
-          DA.SetData(0, new WebOpeningGoo(new WebOpening(width_dia, height, x, z, (stiff == null) ? null : stiff.Value)));
+          Output.SetItem(this, DA, 0, new WebOpeningGoo(new WebOpening(width_dia, height, x, z, (stiff == null) ? null : stiff.Value)));
           break;
 
         case WebOpeningShape.Circular:
-          DA.SetData(0, new WebOpeningGoo(new WebOpening(width_dia, x, z, (stiff == null) ? null : stiff.Value)));
+          Output.SetItem(this, DA, 0, new WebOpeningGoo(new WebOpening(width_dia, x, z, (stiff == null) ? null : stiff.Value)));
           break;
       }
     }

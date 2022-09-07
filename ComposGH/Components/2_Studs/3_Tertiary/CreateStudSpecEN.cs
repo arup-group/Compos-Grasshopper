@@ -5,6 +5,7 @@ using ComposAPI;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -77,7 +78,7 @@ namespace ComposGH.Components
       DA.GetData(4, ref ncci);
       StudSpecification specEN = new StudSpecification(
           noStudZoneStart, noStudZoneEnd, rebarPos, welded, ncci);
-      DA.SetData(0, new StudSpecificationGoo(specEN));
+      Output.SetItem(this, DA, 0, new StudSpecificationGoo(specEN));
     }
 
     #region Custom UI

@@ -6,6 +6,7 @@ using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
 using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -55,10 +56,10 @@ namespace ComposGH.Components
         {
           SelectedItems[1] = "Custom";
           Pressure strengthS = GetInput.Stress(this, DA, 2, StressUnit);
-          DA.SetData(0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthS)));
+          Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthS)));
         }
         else
-          DA.SetData(0, new StudDimensionsGoo(new StudDimensions(dia, h, StdGrd)));
+          Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(dia, h, StdGrd)));
       }
       else
       {
@@ -66,10 +67,10 @@ namespace ComposGH.Components
         {
           SelectedItems[1] = "Custom";
           Pressure strengthS = GetInput.Stress(this, DA, 0, StressUnit);
-          DA.SetData(0, new StudDimensionsGoo(new StudDimensions(StdSize, strengthS)));
+          Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(StdSize, strengthS)));
         }
         else
-          DA.SetData(0, new StudDimensionsGoo(new StudDimensions(StdSize, StdGrd)));
+          Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(StdSize, StdGrd)));
       }
     }
 

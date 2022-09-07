@@ -5,6 +5,7 @@ using ComposAPI;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -150,7 +151,7 @@ namespace ComposGH.Components
       if (mf != null)
         safetyFactors.MaterialFactors = mf;
 
-      DA.SetData(0, new SafetyFactorsENGoo(safetyFactors));
+      Output.SetItem(this, DA, 0, new SafetyFactorsENGoo(safetyFactors));
     }
 
     #region Custom UI

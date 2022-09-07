@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ComposAPI;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using OasysGH.Components;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysGH.Helpers;
 
 namespace ComposGH.Components
 {
@@ -114,7 +112,7 @@ namespace ComposGH.Components
         designCriteria.FrequencyLimits = dlGoo.Value;
       }
 
-      DA.SetData(0, new DesignCriteriaGoo(designCriteria));
+      Output.SetItem(this, DA, 0, new DesignCriteriaGoo(designCriteria));
     }
 
 

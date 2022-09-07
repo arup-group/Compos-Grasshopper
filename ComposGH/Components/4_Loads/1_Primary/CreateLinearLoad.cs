@@ -5,6 +5,7 @@ using ComposAPI;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -62,7 +63,7 @@ namespace ComposGH.Components
           ForcePerLength finalLiveL2 = GetInput.ForcePerLength(this, DA, 7, this.ForcePerLengthUnit);
           Load loadL = new LinearLoad(
             constDeadL1, constLiveL1, finalDeadL1, finalLiveL1, constDeadL2, constLiveL2, finalDeadL2, finalLiveL2);
-          DA.SetData(0, new LoadGoo(loadL));
+          Output.SetItem(this, DA, 0, new LoadGoo(loadL));
           break;
 
         case LoadDistribution.Area:
@@ -76,7 +77,7 @@ namespace ComposGH.Components
           Pressure finalLiveA2 = GetInput.Stress(this, DA, 7, this.ForcePerAreaUnit);
           Load loadA = new LinearLoad(
             constDeadA1, constLiveA1, finalDeadA1, finalLiveA1, constDeadA2, constLiveA2, finalDeadA2, finalLiveA2);
-          DA.SetData(0, new LoadGoo(loadA));
+          Output.SetItem(this, DA, 0, new LoadGoo(loadA));
           break;
       }
     }

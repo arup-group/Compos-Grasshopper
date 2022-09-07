@@ -6,6 +6,7 @@ using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
 using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -59,12 +60,12 @@ namespace ComposGH.Components
       {
         Length bottomWidth = GetInput.Length(this, DA, 4, LengthUnit);
         Length bottomTHK = GetInput.Length(this, DA, 5, LengthUnit);
-        DA.SetData(0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
+        Output.SetItem(this, DA, 0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
             start, topWidth, topTHK, bottomWidth, bottomTHK, bothSides)));
       }
       else
       {
-        DA.SetData(0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
+        Output.SetItem(this, DA, 0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
             start, topWidth, topTHK, bothSides)));
       }
     }

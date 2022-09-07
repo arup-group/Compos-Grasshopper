@@ -5,6 +5,7 @@ using ComposAPI;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -74,7 +75,7 @@ namespace ComposGH.Components
         MaxWidth = maxWidth
       };
 
-      DA.SetData(0, new BeamSizeLimitsGoo(beamSizeLimits));
+      Output.SetItem(this, DA, 0, new BeamSizeLimitsGoo(beamSizeLimits));
     }
 
     #region Custom UI

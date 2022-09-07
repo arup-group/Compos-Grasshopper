@@ -6,6 +6,7 @@ using ComposAPI;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -93,7 +94,7 @@ namespace ComposGH.Components
         if (SelectedItems[0] == " - ")
           SelectedItems[0] = Catalogues[4];
 
-        DA.SetData(0, catDic.FirstOrDefault(x => x.Value == SelectedItems[0]).Key);
+        Output.SetItem(this, DA, 0, catDic.FirstOrDefault(x => x.Value == SelectedItems[0]).Key);
       }
     }
 

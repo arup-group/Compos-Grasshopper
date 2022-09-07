@@ -5,6 +5,7 @@ using ComposAPI;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -104,7 +105,7 @@ namespace ComposGH.Components
 
       IConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, this.Type, dryDensity, userDensity, (eRatio == null) ? new ERatio() : eRatio.Value, imposedLoadPercentage);
 
-      DA.SetData(0, new ConcreteMaterialGoo(concreteMaterial));
+      Output.SetItem(this, DA, 0, new ConcreteMaterialGoo(concreteMaterial));
     }
 
 

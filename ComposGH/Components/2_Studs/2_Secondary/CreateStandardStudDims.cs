@@ -5,8 +5,7 @@ using ComposAPI;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using OasysGH.Components;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysGH.Helpers;
 
 namespace ComposGH.Components
 {
@@ -40,7 +39,7 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      DA.SetData(0, new StudDimensionsGoo(new StudDimensions(this.StdSize)));
+      Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(this.StdSize)));
     }
 
     #region Custom UI

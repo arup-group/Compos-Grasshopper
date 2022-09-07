@@ -5,6 +5,7 @@ using ComposAPI;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -40,7 +41,7 @@ namespace ComposGH.Components
       pManager.AddGenericParameter("No Stud Zone End [" + unitAbbreviation + "]",
           "NSZE", "Length of zone without shear studs at the end of the beam (default = 0)"
         + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
-      pManager.AddBooleanParameter("EC4 Limit", "Lim", "Use 'Eurocode 4'limit on minimum percentage of shear interaction if it is worse than BS5950", GH_ParamAccess.item, true);
+      pManager.AddBooleanParameter("EC4 Limit", "Lim", "Use 'Eurocode 4' limit on minimum percentage of shear interaction if it is worse than BS5950", GH_ParamAccess.item, true);
       pManager[0].Optional = true;
       pManager[1].Optional = true;
       pManager[2].Optional = true;
@@ -66,7 +67,7 @@ namespace ComposGH.Components
 
       StudSpecification specBS = new StudSpecification(
           ec4, noStudZoneStart, noStudZoneEnd);
-      DA.SetData(0, new StudSpecificationGoo(specBS));
+      Output.SetItem(this, DA, 0, new StudSpecificationGoo(specBS));
     }
 
     #region Custom UI

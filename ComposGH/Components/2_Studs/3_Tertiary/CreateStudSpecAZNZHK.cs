@@ -5,6 +5,7 @@ using ComposAPI;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -66,7 +67,7 @@ namespace ComposGH.Components
 
       StudSpecification specOther = new StudSpecification(
           noStudZoneStart, noStudZoneEnd, welded);
-      DA.SetData(0, new StudSpecificationGoo(specOther));
+      Output.SetItem(this, DA, 0, new StudSpecificationGoo(specOther));
     }
 
     #region Custom UI

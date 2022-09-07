@@ -5,6 +5,7 @@ using ComposAPI;
 using ComposGH.Parameters;
 using Grasshopper.Kernel;
 using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -61,7 +62,7 @@ namespace ComposGH.Components
       if (this.Params.Input[1].Sources.Count > 0)
         deflectionLimit.SpanOverDeflectionRatio = GetInput.Ratio(this, DA, 1, RatioUnit.DecimalFraction);
 
-      DA.SetData(0, new DeflectionLimitGoo(deflectionLimit));
+      Output.SetItem(this, DA, 0, new DeflectionLimitGoo(deflectionLimit));
     }
 
     #region Custom UI
