@@ -46,7 +46,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(MemberGoo.Name, MemberGoo.NickName, MemberGoo.Description, GH_ParamAccess.list);
+      pManager.AddGenericParameter(MemberGoo.Name, MemberGoo.NickName, "Saved " + MemberGoo.Description, GH_ParamAccess.list);
     }
     #endregion
 
