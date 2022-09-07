@@ -61,7 +61,7 @@ namespace ComposGHTests.CompFile
 
       var doc = new GH_Document();
       doc.AddObject(comp, true);
-      doc.NewSolution(true);
+      comp.CollectData();
 
       Assert.True(File.Exists(input2));
     }
