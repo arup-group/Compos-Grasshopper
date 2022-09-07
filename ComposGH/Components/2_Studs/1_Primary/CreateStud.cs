@@ -51,7 +51,6 @@ namespace ComposGH.Components
       StudSpecificationGoo studSpec = (StudSpecificationGoo)GetInput.GenericGoo<StudSpecificationGoo>(this, DA, 1);
       if (studSpec == null) { return; } // return here on non-optional inputs
       double minSav = 0.2;
-      StudGoo output = null;
       switch (SpacingType)
       {
         case StudSpacingType.Automatic:
