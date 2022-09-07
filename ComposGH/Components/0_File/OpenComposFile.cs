@@ -50,13 +50,13 @@ namespace ComposGH.Components
         {
           string tempfile = "";
           if (GH_Convert.ToString(gh_typ, out tempfile, GH_Conversion.Both))
-            fileName = tempfile;
+            this.FileName = tempfile;
 
-          if (!fileName.EndsWith(".coa"))
-            fileName = fileName + ".coa";
+          if (!this.FileName.EndsWith(".coa"))
+            this.FileName = this.FileName + ".coa";
 
-          IComposFile composFile = ComposFile.Open(fileName);
-          PostHog.ModelIO("openCOA", (int)(new FileInfo(fileName).Length / 1024));
+          IComposFile composFile = ComposFile.Open(this.FileName);
+          PostHog.ModelIO("openCOA", (int)(new FileInfo(this.FileName).Length / 1024));
 
           List<MemberGoo> members = new List<MemberGoo>();
           foreach (IMember mem in composFile.GetMembers())
@@ -67,7 +67,7 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    internal string fileName = null;
+    internal string FileName = null;
     Guid panelGUID = Guid.NewGuid();
 
     internal override void SetSelected(int i, int j) {}
@@ -84,7 +84,7 @@ namespace ComposGH.Components
       var res = fdi.ShowOpenDialog();
       if (res) // == DialogResult.OK)
       {
-        fileName = fdi.FileName;
+        this.FileName = fdi.FileName;
 
         // instantiate  new panel
         var panel = new Grasshopper.Kernel.Special.GH_Panel();
@@ -104,7 +104,7 @@ namespace ComposGH.Components
             // update the UserText in existing panel
             //RecordUndoEvent("Changed OpenGSA Component input");
             panel = input as Grasshopper.Kernel.Special.GH_Panel;
-            panel.UserText = fileName;
+            panel.UserText = this.FileName;
             panel.ExpireSolution(true); // update the display of the panel
           }
 
@@ -113,7 +113,7 @@ namespace ComposGH.Components
         }
 
         //populate panel with our own content
-        panel.UserText = fileName;
+        panel.UserText = this.FileName;
 
         // record the panel's GUID if new, so that we can update it on change
         panelGUID = panel.InstanceGuid;
@@ -133,18 +133,18 @@ namespace ComposGH.Components
     }
     public override void VariableParameterMaintenance()
     {
-      Params.Input[0].Optional = fileName != null; //filename can have input from user input
+      Params.Input[0].Optional = this.FileName != null; //filename can have input from user input
       Params.Input[0].ClearRuntimeMessages(); // this needs to be called to avoid having a runtime warning message after changed to optional
     }
 
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      writer.SetString("File", (string)fileName);
+      writer.SetString("File", (string)this.FileName);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      fileName = (string)reader.GetString("File");
+      this.FileName = (string)reader.GetString("File");
       return base.Read(reader);
     }
     #endregion
