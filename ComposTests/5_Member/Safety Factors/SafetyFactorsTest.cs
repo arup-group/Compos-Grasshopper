@@ -4,6 +4,7 @@ using Xunit;
 
 namespace ComposAPI.Members.Tests
 {
+  [Collection("ComposAPI Fixture collection")]
   public partial class SafetyFactorsTest
   {
     [Fact]

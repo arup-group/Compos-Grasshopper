@@ -9,7 +9,7 @@ namespace ComposGHTests.Stud
   [Collection("GrasshopperFixture collection")]
   public class CreateStandardStudDimsComponentTests
   {
-    public static GH_OasysDropDownComponent CreateStandardStudDimsMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateStandardStudDimensions();
       comp.CreateAttributes();
@@ -19,7 +19,7 @@ namespace ComposGHTests.Stud
     [Fact]
     public void CreateComponentTest()
     {
-      var comp = CreateStandardStudDimsMother();
+      var comp = ComponentMother();
       
       StudDimensionsGoo output = (StudDimensionsGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(19, output.Value.Diameter.Millimeters);
@@ -29,14 +29,14 @@ namespace ComposGHTests.Stud
     [Fact]
     public void DeserializeTest()
     {
-      var comp = CreateStandardStudDimsMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = CreateStandardStudDimsMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }

@@ -12,6 +12,7 @@ namespace ComposAPI
     IList<ILoad> Loads { get; }
     IDesignCode DesignCode { get; }
     IDesignCriteria DesignCriteria { get; }
+    IResult Result { get; }
     //IComposFile File { get; set; } // the hosting Compos file
     string Name { get; }
     string GridReference { get; }
@@ -21,15 +22,8 @@ namespace ComposAPI
     short Analyse();
     short CodeSatisfied();
     string GetCodeSatisfiedMessage();
-    float MaxResult(string option, short position);
-    short MaxResultPosition(string option, short position);
-    float MinResult(string option, short position);
-    short MinResultPosition(string option, short position);
-    short NumIntermediatePos();
-    short NumTranRebar();
-    void Register(IComposFile file);
-    float Result(string option, short position);
-    float TranRebarProp(TransverseRebarOption option, short rebarnum);
-    float UtilisationFactor(UtilisationFactorOption option);
+    
+    //void Register(ComposFile file);
+    
   }
 }

@@ -12,7 +12,8 @@ using OasysGH;
 
 namespace ComposAPI.Beams.Tests
 {
-  public partial class BeamSectionTest
+  [Collection("ComposAPI Fixture collection")]
+  public class BeamSectionTest
   {
     [Theory]
     [InlineData(7, 1, 0, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600. 200. 15. 25.", true, "BEAM_SECTION_AT_X	MEMBER-1	7	1	0.000000	STD I 600. 200. 15. 25.	TAPERED_YES\n")]

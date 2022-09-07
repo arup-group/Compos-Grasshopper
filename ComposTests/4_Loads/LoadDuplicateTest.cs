@@ -7,6 +7,7 @@ using static ComposAPI.Load;
 
 namespace ComposAPI.Loads.Tests
 {
+  [Collection("ComposAPI Fixture collection")]
   public partial class LoadTest
   {
     [Fact]

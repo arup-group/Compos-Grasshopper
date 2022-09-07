@@ -23,6 +23,7 @@ namespace ComposAPI.Slabs.Tests
     }
   }
 
+  [Collection("ComposAPI Fixture collection")]
   public class SlabDimensionTest
   {
     [Fact]

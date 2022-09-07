@@ -2,6 +2,7 @@
 using System.Drawing;
 using ComposAPI;
 using ComposGH.Parameters;
+using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH;
 using OasysGH.Components;
@@ -24,7 +25,7 @@ namespace ComposGH.Components
     { this.Hidden = true; } // sets the initial state of the component to hidden
     public override GH_Exposure Exposure => GH_Exposure.primary;
 
-    protected override Bitmap Icon => Properties.Resources.DesignMember;
+    protected override Bitmap Icon => Resources.DesignMember;
     #endregion
 
     #region Input and output

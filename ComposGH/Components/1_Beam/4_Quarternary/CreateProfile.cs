@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using ComposAPI;
 using ComposGH.Helpers;
 using ComposGH.Parameters;
+using ComposGH.Properties;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
 using OasysGH.Components;
@@ -38,7 +39,7 @@ namespace ComposGH.Components
       return help;
     }
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateProfile;
+    protected override System.Drawing.Bitmap Icon => Resources.CreateProfile;
     #endregion
 
     #region Input and output
@@ -1123,7 +1124,6 @@ namespace ComposGH.Components
       Catalogue,
       Other
     }
-    private bool first = true;
     private FoldMode _mode = FoldMode.Catalogue;
 
     private void Mode1Clicked()

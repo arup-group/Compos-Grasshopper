@@ -10,7 +10,7 @@ namespace ComposGHTests.Beam
   [Collection("GrasshopperFixture collection")]
   public class CreateWebOpeningComponentTests
   {
-    public static GH_OasysDropDownComponent CreateWebOpeningComponentMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateWebOpening();
       comp.CreateAttributes();
@@ -27,7 +27,7 @@ namespace ComposGHTests.Beam
     [Fact]
     public void CreateComponentWithInputsTest1()
     {
-      var comp = CreateWebOpeningComponentMother();
+      var comp = ComponentMother();
 
       comp.SetSelected(1, 0); // change the dropdown to mm
 
@@ -42,7 +42,7 @@ namespace ComposGHTests.Beam
     [Fact]
     public void CreateComponentWithInputsTest2()
     {
-      var comp = CreateWebOpeningComponentMother();
+      var comp = ComponentMother();
 
       comp.SetSelected(0, 1); // change the dropdown to Circular
       comp.SetSelected(1, 1); // change the dropdown to cm
@@ -57,10 +57,10 @@ namespace ComposGHTests.Beam
     [Fact]
     public void CreateComponentWithInputsTest3()
     {
-      var comp = CreateWebOpeningComponentMother();
+      var comp = ComponentMother();
 
       comp.SetSelected(1, 4); // change the dropdown to ft
-      WebOpeningStiffenersGoo input5 = (WebOpeningStiffenersGoo)ComponentTestHelper.GetOutput(CreateWebOpeningStiffenerComponentTests.CreateWebOpeningStiffenerComponentMother());
+      WebOpeningStiffenersGoo input5 = (WebOpeningStiffenersGoo)ComponentTestHelper.GetOutput(CreateWebOpeningStiffenerComponentTests.ComponentMother());
       ComponentTestHelper.SetInput(comp, input5, 4);
 
       WebOpeningGoo output = (WebOpeningGoo)ComponentTestHelper.GetOutput(comp);
@@ -74,14 +74,14 @@ namespace ComposGHTests.Beam
     [Fact]
     public void DeserializeTest()
     {
-      var comp = CreateWebOpeningComponentMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = CreateWebOpeningComponentMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }

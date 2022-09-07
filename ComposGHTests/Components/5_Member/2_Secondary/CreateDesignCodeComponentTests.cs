@@ -10,7 +10,7 @@ namespace ComposGHTests.Member
   [Collection("GrasshopperFixture collection")]
   public class CreateDesignCodeComponentTests
   {
-    public static GH_OasysDropDownComponent CreateDesignCodeMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateDesignCode();
       comp.CreateAttributes();
@@ -20,7 +20,7 @@ namespace ComposGHTests.Member
     [Fact]
     public void CreateComponent()
     {
-      var comp = CreateDesignCodeMother();
+      var comp = ComponentMother();
 
       DesignCodeGoo output = (DesignCodeGoo)ComponentTestHelper.GetOutput(comp);
       EN1994 code = (EN1994)output.Value;
@@ -39,7 +39,7 @@ namespace ComposGHTests.Member
     [Fact]
     public void CreateComponentENWithInputs()
     {
-      var comp = CreateDesignCodeMother();
+      var comp = ComponentMother();
 
       SafetyFactorsENGoo input1 = new SafetyFactorsENGoo(new SafetyFactorsEN());
       ComponentTestHelper.SetInput(comp, input1, 0);
@@ -58,7 +58,7 @@ namespace ComposGHTests.Member
     [Fact]
     public void CreateComponentBSHKToggleDropdown()
     {
-      var comp = CreateDesignCodeMother();
+      var comp = ComponentMother();
       Assert.Equal(3, comp.Params.Input.Count);
 
       comp.SetSelected(0, 0); // change to bs superseded
@@ -101,7 +101,7 @@ namespace ComposGHTests.Member
     [Fact]
     public void CreateComponentASNZWithInputs()
     {
-      var comp = CreateDesignCodeMother();
+      var comp = ComponentMother();
       Assert.Equal(3, comp.Params.Input.Count);
 
       comp.SetSelected(0, 5); // change to asnz
@@ -120,14 +120,14 @@ namespace ComposGHTests.Member
     [Fact]
     public void DeserializeTest()
     {
-      var comp = CreateDesignCodeMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = CreateDesignCodeMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp, true);
     }
   }

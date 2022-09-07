@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 using ComposAPI;
 using ComposGH.Parameters;
+using ComposGH.Properties;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
 using OasysGH.Components;
@@ -28,7 +29,7 @@ namespace ComposGH.Components
 
     public override GH_Exposure Exposure => GH_Exposure.quinary | GH_Exposure.obscure;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.Stiffener;
+    protected override System.Drawing.Bitmap Icon => Resources.Stiffener;
     #endregion
 
     #region Input and output

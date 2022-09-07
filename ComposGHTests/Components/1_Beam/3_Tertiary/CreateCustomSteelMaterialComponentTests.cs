@@ -10,7 +10,7 @@ namespace ComposGHTests.Beam
   [Collection("GrasshopperFixture collection")]
   public class CreateCustomSteelMaterialComponentTests
   {
-    public static GH_OasysDropDownComponent CreateCustomSteelMaterialComponentMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateCustomSteelMaterial();
       comp.CreateAttributes();
@@ -29,7 +29,7 @@ namespace ComposGHTests.Beam
     [Fact]
     public void CreateComponentWithInputsTest1()
     {
-      GH_OasysDropDownComponent comp = CreateCustomSteelMaterialComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
       SteelMaterialGoo output = (SteelMaterialGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(500, output.Value.fy.Value);
@@ -42,7 +42,7 @@ namespace ComposGHTests.Beam
     [Fact]
     public void CreateComponentWithInputsTest2()
     {
-      GH_OasysDropDownComponent comp = CreateCustomSteelMaterialComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
       bool input4 = true;
       string input5 = "Grade_50";
@@ -57,14 +57,14 @@ namespace ComposGHTests.Beam
     [Fact]
     public void DeserializeTest()
     {
-      GH_OasysDropDownComponent comp = CreateCustomSteelMaterialComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      GH_OasysDropDownComponent comp = CreateCustomSteelMaterialComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }

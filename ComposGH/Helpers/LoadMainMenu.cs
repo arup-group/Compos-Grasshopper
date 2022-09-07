@@ -1,180 +1,61 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
+using Grasshopper.GUI;
+using Grasshopper.GUI.Canvas;
 using Grasshopper.Kernel;
 
-namespace ComposGH.Helpers
+namespace ComposGH.UI.Menu
 {
-  public class Loader
+  public class MenuLoad
   {
-    System.Timers.Timer menuLoadTimer;
-    System.Timers.Timer menuTrimTimer;
-    static bool MenuHasBeenAdded = false;
-    bool AppendToExistingMenu = false;
-    int n_existingMenus = 0;
-    public Loader() { }
-
-    internal void CreateMainMenuItem()
+    private static ToolStripMenuItem oasysMenu;
+    internal static void OnStartup(GH_Canvas canvas)
     {
-      menuLoadTimer = new System.Timers.Timer(500);
-      menuLoadTimer.Elapsed += TryAddMenuItem;
-      menuTrimTimer = new System.Timers.Timer(500);
-      menuTrimTimer.Elapsed += TrimMenuItem;
+      oasysMenu = new ToolStripMenuItem("Oasys");
+      oasysMenu.Name = "Oasys";
 
-      AppDomain currentDomain = AppDomain.CurrentDomain;
-      Assembly[] assemblies = currentDomain.GetAssemblies();
-      foreach (Assembly ass in currentDomain.GetAssemblies())
+      PopulateSub(oasysMenu);
+
+      GH_DocumentEditor editor = null;
+
+      while (editor == null)
       {
-        if (ass.FullName.StartsWith("GsaGH"))
-        {
-          AppendToExistingMenu = true;
-          n_existingMenus += 2;
-        }
-        if (ass.FullName.StartsWith("AdSecGH"))
-        {
-          AppendToExistingMenu = true;
-          if (n_existingMenus > 0)
-            n_existingMenus += 3;
-          else
-            n_existingMenus += 2;
-        }
+        editor = Grasshopper.Instances.DocumentEditor;
+        Thread.Sleep(750);
       }
-
-      if (!AppendToExistingMenu)
-        menuLoadTimer.Start();
+      
+      if (!editor.MainMenuStrip.Items.ContainsKey("Oasys"))
+        editor.MainMenuStrip.Items.Add(oasysMenu);
       else
-        menuTrimTimer.Start();
-    }
-
-    private void TryAddMenuItem(object sender, ElapsedEventArgs e)
-    {
-      if (Grasshopper.Instances.DocumentEditor == null) return; // return if document editor hasn't yet loaded
-      if (Grasshopper.Instances.ActiveCanvas == null) return; // return if canvas has not yet been created
-      if (Grasshopper.Instances.ComponentServer.
-          FindAssembly(ComposGHInfo.GUID) == null) return; // return if this plugin has not yet been loaded
-
-      if (MenuHasBeenAdded)
       {
-        menuLoadTimer.Stop();
-        menuTrimTimer.Start();
-        return;
-      }
-
-      if (!AppendToExistingMenu)
-      {
-        ToolStripMenuItem oasysMenu = AddMenuItem(new ToolStripMenuItem("Oasys"), sender, e);
-
-        // get main menu
-        var mainMenu = Grasshopper.Instances.DocumentEditor.MainMenuStrip;
-
-        try
+        oasysMenu = (ToolStripMenuItem)editor.MainMenuStrip.Items["Oasys"];
+        lock (oasysMenu)
         {
-          mainMenu.Items.Insert(mainMenu.Items.Count - 2, oasysMenu);
-          MenuHasBeenAdded = true;
-
-        }
-        catch (Exception)
-        {
+          oasysMenu.DropDown.Items.Add(new ToolStripSeparator());
+          PopulateSub(oasysMenu);
         }
       }
 
-      menuLoadTimer.Stop();
-      menuTrimTimer.Start();
+      Grasshopper.Instances.CanvasCreated -= OnStartup;
     }
 
-    private ToolStripMenuItem AddMenuItem(ToolStripMenuItem oasysMenu, object sender, ElapsedEventArgs e)
+    private static void PopulateSub(ToolStripMenuItem menutItem)
     {
       // add units
-      oasysMenu.DropDown.Items.Add("Compos Units", Properties.Resources.ComposLogo128, (s, a) =>
+      menutItem.DropDown.Items.Add("Compos Units", Properties.Resources.Units, (s, a) =>
       {
-        UI.UnitSettingsBox unitBox = new UI.UnitSettingsBox();
+        UnitSettingsBox unitBox = new UnitSettingsBox();
         unitBox.ShowDialog();
       });
       // add info
-      oasysMenu.DropDown.Items.Add("Compos Info", Properties.Resources.ComposLogo128, (s, a) =>
+      menutItem.DropDown.Items.Add("Compos Info", Properties.Resources.ComposInfo, (s, a) =>
       {
-        UI.AboutBox aboutBox = new UI.AboutBox();
+        AboutBox aboutBox = new AboutBox();
         aboutBox.ShowDialog();
       });
-
-      return oasysMenu;
-    }
-
-    private void TrimMenuItem(object sender, ElapsedEventArgs e)
-    {
-      if (Grasshopper.Instances.DocumentEditor == null) return;
-      if (Grasshopper.Instances.ActiveCanvas == null) return;
-
-      var mainMenu = Grasshopper.Instances.DocumentEditor.MainMenuStrip;
-      if (AppendToExistingMenu)
-      {
-        // return if menu has not yet been created
-        if (mainMenu == null || mainMenu.Items.Count == 0)
-          return;
-        // return if trim loop has not yet been run by GSA plugin
-        int n = 0;
-        for (int i = 0; i < mainMenu.Items.Count; i++)
-        {
-          if (mainMenu.Items[i].ToString() == "Oasys")
-            n++;
-        }
-        if (n > 1) // if more than one Oasys menu exist we let GSA plugin handle removing that
-          return;
-        else if (n == 1) // if there is just one Oasys menu we append to that one
-        {
-          for (int i = 0; i < mainMenu.Items.Count; i++)
-          {
-            if (mainMenu.Items[i].ToString() == "Oasys")
-            {
-              ToolStripMenuItem oasysMenu = mainMenu.Items[i] as ToolStripMenuItem;
-              if (oasysMenu.DropDown.Items.Count == n_existingMenus)
-              {
-                // add separator first
-                oasysMenu.DropDown.Items.Add(GH_DocumentObject.Menu_AppendSeparator(oasysMenu.DropDown));
-                // append Compos menu items
-                AddMenuItem(oasysMenu, sender, e);
-              }
-            }
-          }
-        }
-        else
-          return;
-      }
-      else
-      {
-        bool removeNext = false;
-        for (int i = 0; i < mainMenu.Items.Count; i++)
-        {
-          if (mainMenu.Items[i].ToString() == "Oasys")
-          {
-            if (!removeNext)
-            {
-              removeNext = true;
-            }
-            else
-            {
-              mainMenu.Items.RemoveAt(i);
-              i--;
-            }
-          }
-        }
-      }
-
-      menuTrimTimer.Stop();
-
-      if (AppendToExistingMenu)
-      {
-        for (int i = 0; i < mainMenu.Items.Count; i++)
-        {
-          if (mainMenu.Items[i].ToString() == "Oasys")
-          {
-            ToolStripMenuItem oasysMenu = mainMenu.Items[i] as ToolStripMenuItem;
-            while (oasysMenu.DropDown.Items.Count > n_existingMenus + 3)
-              oasysMenu.DropDown.Items.RemoveAt(n_existingMenus + 3);
-          }
-        }
-      }
     }
   }
 }

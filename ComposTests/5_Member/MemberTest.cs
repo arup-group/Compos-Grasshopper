@@ -11,6 +11,7 @@ using Xunit;
 
 namespace ComposAPI.Members.Tests
 {
+  [Collection("ComposAPI Fixture collection")]
   public class MemberTest
   {
     // 1 setup inputs

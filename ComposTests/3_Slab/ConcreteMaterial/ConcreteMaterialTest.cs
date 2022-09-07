@@ -25,6 +25,7 @@ namespace ComposAPI.Slabs.Tests
     }
   }
 
+  [Collection("ComposAPI Fixture collection")]
   public class ConcreteMaterialTest
   {
     [Fact]

@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using ComposAPI;
 using ComposGH.Helpers;
 using ComposGH.Parameters;
+using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH.Components;
 using OasysGH.Helpers;
@@ -24,7 +25,7 @@ namespace ComposGH.Components
     public override Guid ComponentGuid => new Guid("6796D3E6-CF84-4AC6-ABB7-012C20E6DB9A");
     public override GH_Exposure Exposure => GH_Exposure.quinary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.StandardDecking;
+    protected override System.Drawing.Bitmap Icon => Resources.StandardDecking;
     #endregion
 
     #region Input and output

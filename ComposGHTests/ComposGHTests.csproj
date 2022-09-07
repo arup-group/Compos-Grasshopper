@@ -16,6 +16,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Components\6_Analysis\**" />
+    <EmbeddedResource Remove="Components\6_Analysis\**" />
+    <None Remove="Components\6_Analysis\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="OasysGH" Version="0.0.2-beta" />
     <PackageReference Include="Rhino.Inside" Version="7.0.0" />
@@ -48,10 +54,8 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Components\0_File\" />
-    <Folder Include="Components\6_Analysis\" />
-    <Folder Include="Components\7_Results\" />
-  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="Copy &quot;$(TargetDir)ComposGH.dll&quot; &quot;$(TargetDir)Compos.gha&quot;" />
+  </Target>
 
 </Project>

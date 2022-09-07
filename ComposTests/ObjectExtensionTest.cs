@@ -9,6 +9,7 @@ using Xunit;
 
 namespace ComposAPI.Tests
 {
+  [Collection("ComposAPI Fixture collection")]
   public class ObjectExtensionTest
   {
     [Fact]

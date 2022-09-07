@@ -10,7 +10,7 @@ namespace ComposGHTests.Slab
   [Collection("GrasshopperFixture collection")]
   public class CreateRebarMaterialComponentTests
   {
-    public static GH_OasysDropDownComponent CreateRebarMaterialMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateRebarMaterial();
       comp.CreateAttributes();
@@ -21,7 +21,7 @@ namespace ComposGHTests.Slab
     [Fact]
     public void CreateComponentTest()
     {
-      var comp = CreateRebarMaterialMother();
+      var comp = ComponentMother();
 
       ReinforcementMaterialGoo output = (ReinforcementMaterialGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(RebarGrade.EN_500B, output.Value.Grade);
@@ -30,7 +30,7 @@ namespace ComposGHTests.Slab
     [Fact]
     public void CreateComponentWithInputsTest()
     {
-      var comp = CreateRebarMaterialMother();
+      var comp = ComponentMother();
 
       ComponentTestHelper.SetInput(comp, "498 MPa", 0);
 
@@ -42,14 +42,14 @@ namespace ComposGHTests.Slab
     [Fact]
     public void DeserializeTest()
     {
-      var comp = CreateRebarMaterialMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = CreateRebarMaterialMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }

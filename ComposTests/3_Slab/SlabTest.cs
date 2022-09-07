@@ -49,6 +49,8 @@ namespace ComposAPI.Slabs.Tests
       return new Slab(material, slabDimensions, transverseReinforcement, mesh, decking);
     }
   }
+
+  [Collection("ComposAPI Fixture collection")]
   public class SlabTest
   {
     [Fact]

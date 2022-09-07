@@ -9,6 +9,7 @@ using OasysGH;
 
 namespace ComposAPI.Members.Tests
 {
+  [Collection("ComposAPI Fixture collection")]
   public class BeamSizeLimitsTests
   {
     [Fact]

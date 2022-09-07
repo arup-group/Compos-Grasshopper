@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ComposAPI;
 using ComposGH.Parameters;
+using ComposGH.Properties;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using OasysGH.Components;
@@ -29,7 +30,7 @@ namespace ComposGH.Components
 
     public override GH_Exposure Exposure => GH_Exposure.primary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateBeam;
+    protected override System.Drawing.Bitmap Icon => Resources.CreateBeam;
     #endregion
 
     #region Input and output

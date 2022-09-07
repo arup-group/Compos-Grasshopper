@@ -9,7 +9,7 @@ namespace ComposGHTests.Stud
   [Collection("GrasshopperFixture collection")]
   public class CreateCustomStudDimsComponentTests
   {
-    public static GH_OasysDropDownComponent CreateCustomStudDimsMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateCustomStudDimensions();
       comp.CreateAttributes();
@@ -25,7 +25,7 @@ namespace ComposGHTests.Stud
     [Fact]
     public void CreateComponentTest()
     {
-      var comp = CreateCustomStudDimsMother();
+      var comp = ComponentMother();
       comp.SetSelected(0, 1); // change the dropdown to cm
       comp.SetSelected(1, 0); // change the dropdown to N
       StudDimensionsGoo output = (StudDimensionsGoo)ComponentTestHelper.GetOutput(comp);
@@ -37,14 +37,14 @@ namespace ComposGHTests.Stud
     [Fact]
     public void DeserializeTest()
     {
-      var comp = CreateCustomStudDimsMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = CreateCustomStudDimsMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }

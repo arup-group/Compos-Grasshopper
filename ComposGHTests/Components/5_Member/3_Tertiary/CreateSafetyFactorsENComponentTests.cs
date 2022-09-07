@@ -9,7 +9,7 @@ namespace ComposGHTests.Member
   [Collection("GrasshopperFixture collection")]
   public class CreateSafetyFactorsENComponentTests
   {
-    public static GH_OasysDropDownComponent CreateSafetyFactorsENMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateSafetyFactorsEN();
       comp.CreateAttributes();
@@ -19,7 +19,7 @@ namespace ComposGHTests.Member
     [Fact]
     public void CreateComponent()
     {
-      var comp = CreateSafetyFactorsENMother();
+      var comp = ComponentMother();
 
       SafetyFactorsENGoo output = (SafetyFactorsENGoo)ComponentTestHelper.GetOutput(comp);
 
@@ -43,7 +43,7 @@ namespace ComposGHTests.Member
     [Fact]
     public void CreateComponentWithInputs()
     {
-      var comp = CreateSafetyFactorsENMother();
+      var comp = ComponentMother();
       
       for (int i = 0; i < comp.Params.Input.Count; i++)
         ComponentTestHelper.SetInput(comp, 1 + 1/(i + 1), i);
@@ -71,14 +71,14 @@ namespace ComposGHTests.Member
     [Fact]
     public void DeserializeTest()
     {
-      var comp = CreateSafetyFactorsENMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = CreateSafetyFactorsENMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }

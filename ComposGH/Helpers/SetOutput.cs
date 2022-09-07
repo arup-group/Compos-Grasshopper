@@ -2,17 +2,20 @@
 using Grasshopper.Kernel;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using UnitsNet.Serialization.JsonNet;
+using Grasshopper.Kernel.Types;
+using UnitsNet.GH;
+//using UnitsNet.Serialization.JsonNet;
 
 namespace ComposGH.Components
 {
   class SetOutput
   {
-    private static UnitsNetIQuantityJsonConverter converter = new UnitsNetIQuantityJsonConverter();
+    //private static UnitsNetIQuantityJsonConverter converter = new UnitsNetIQuantityJsonConverter();
     internal static void Item(GH_OasysDropDownComponent owner, IGH_DataAccess DA, int inputid, object data)
     {
       DA.SetData(inputid, data);
-      int outputsSerialized = JsonConvert.SerializeObject(data, converter).GetHashCode();
+
+      int outputsSerialized = data.GetHashCode(); //JsonConvert.SerializeObject(data, converter).GetHashCode();
 
       if (!owner.ExistingOutputsSerialized.ContainsKey(inputid))
       {
@@ -27,19 +30,19 @@ namespace ComposGH.Components
       else
         owner.UpdateOutput = false;
     }
-    internal static void List<T>(GH_OasysDropDownComponent owner, IGH_DataAccess DA, int inputid, List<T> data)
+    internal static void List<GH_Goo>(GH_OasysDropDownComponent owner, IGH_DataAccess DA, int inputid, List<GH_Goo> data)
     {
       DA.SetDataList(inputid, data);
-      
+
       if (!owner.ExistingOutputsSerialized.ContainsKey(inputid))
       {
-        owner.ExistingOutputsSerialized[inputid] = new List<int>();
+        owner.ExistingOutputsSerialized.Add(inputid, new List<int>());
         owner.UpdateOutput = true;
       }
       
       for (int i = 0; i < data.Count; i++)
       {
-        int outputsSerialized = JsonConvert.SerializeObject(data, converter).GetHashCode();
+        int outputsSerialized = data[i].GetHashCode(); //JsonConvert.SerializeObject(data[i], converter).GetHashCode();
         if (owner.ExistingOutputsSerialized[inputid].Count == i)
         {
           owner.UpdateOutput = true;
@@ -53,6 +56,7 @@ namespace ComposGH.Components
         else
           owner.UpdateOutput = false;
       }
+
     }
 
     internal static void Tree<T>(GH_OasysDropDownComponent owner, IGH_DataAccess DA, int inputid, DataTree<T> dataTree)
@@ -61,7 +65,7 @@ namespace ComposGH.Components
 
       if (!owner.ExistingOutputsSerialized.ContainsKey(inputid))
       {
-        owner.ExistingOutputsSerialized[inputid] = new List<int>();
+        owner.ExistingOutputsSerialized.Add(inputid, new List<int>());
         owner.UpdateOutput = true;
       }
 
@@ -71,21 +75,24 @@ namespace ComposGH.Components
         List<T> data = dataTree.Branch(dataTree.Paths[p]);
         for (int i = counter; i < data.Count - counter; i++)
         {
-          int outputsSerialized = JsonConvert.SerializeObject(data, converter).GetHashCode();
+          // bug in JsonConvert: System.ArrayTypeMismatchException: 'Attempted to access an element as a type incompatible with the array.'
+          // using GetHashCode but not sure if it is unique enough?
+          int outputsSerialized = data[i].GetHashCode(); //JsonConvert.SerializeObject(data[i], converter).GetHashCode();
           if (owner.ExistingOutputsSerialized[inputid].Count == i)
           {
             owner.UpdateOutput = true;
             owner.ExistingOutputsSerialized[inputid].Add(outputsSerialized);
-            return;
+            break;
           }
-          else if (owner.ExistingOutputsSerialized[inputid][i] != outputsSerialized)
+          
+          if (owner.ExistingOutputsSerialized[inputid][i] != outputsSerialized)
           {
             owner.UpdateOutput = true;
             owner.ExistingOutputsSerialized[inputid][i] = outputsSerialized;
-            return;
+            break;
           }
-          else
-            owner.UpdateOutput = false;
+          
+          owner.UpdateOutput = false;
         }
         counter = data.Count;
       }

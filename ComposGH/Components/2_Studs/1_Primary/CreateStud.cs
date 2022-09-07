@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 using ComposAPI;
 using ComposGH.Parameters;
+using ComposGH.Properties;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
 using OasysGH.Components;
@@ -26,7 +27,7 @@ namespace ComposGH.Components
 
     public override GH_Exposure Exposure => GH_Exposure.primary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.CreateStud;
+    protected override System.Drawing.Bitmap Icon => Resources.CreateStud;
     #endregion
 
     #region Input and output
@@ -52,7 +53,6 @@ namespace ComposGH.Components
       StudSpecificationGoo studSpec = (StudSpecificationGoo)GetInput.GenericGoo<StudSpecificationGoo>(this, DA, 1);
       if (studSpec == null) { return; } // return here on non-optional inputs
       double minSav = 0.2;
-      StudGoo output = null;
       switch (SpacingType)
       {
         case StudSpacingType.Automatic:

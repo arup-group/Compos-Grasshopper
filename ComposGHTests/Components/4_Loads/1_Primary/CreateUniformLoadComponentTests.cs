@@ -11,7 +11,7 @@ namespace ComposGHTests.Load
   [Collection("GrasshopperFixture collection")]
   public class CreateUniformLoadComponentTests
   {
-    public static GH_OasysDropDownComponent CreateUniformLoadMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateUniformLoad();
       comp.CreateAttributes();
@@ -27,7 +27,7 @@ namespace ComposGHTests.Load
     [Fact]
     public void CreateComponent1()
     {
-      var comp = CreateUniformLoadMother();
+      var comp = ComponentMother();
 
       comp.SetSelected(0, 0); // change dropdown to line
       comp.SetSelected(1, 5); // change dropdown to kN/m
@@ -47,7 +47,7 @@ namespace ComposGHTests.Load
     [Fact]
     public void CreateComponent2()
     {
-      var comp = CreateUniformLoadMother();
+      var comp = ComponentMother();
 
       comp.SetSelected(0, 1); // change dropdown to area
       comp.SetSelected(1, 5); // change dropdown to kN/m2
@@ -67,14 +67,14 @@ namespace ComposGHTests.Load
     [Fact]
     public void DeserializeTest()
     {
-      var comp = CreateUniformLoadMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = CreateUniformLoadMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }

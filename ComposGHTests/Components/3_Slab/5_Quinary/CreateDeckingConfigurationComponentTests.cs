@@ -11,7 +11,7 @@ namespace ComposGHTests.Slab
   [Collection("GrasshopperFixture collection")]
   public class CreateDeckingConfigurationComponentTests
   {
-    public static GH_OasysComponent CreateDeckingConfigurationMother()
+    public static GH_OasysComponent ComponentMother()
     {
       var comp = new CreateDeckingConfiguration();
       comp.CreateAttributes();
@@ -22,7 +22,7 @@ namespace ComposGHTests.Slab
     [Fact]
     public void CreateComponent()
     {
-      var comp = CreateDeckingConfigurationMother();
+      var comp = ComponentMother();
 
       DeckingConfigurationGoo output = (DeckingConfigurationGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(Math.PI / 2, output.Value.Angle.Radians);
@@ -33,7 +33,7 @@ namespace ComposGHTests.Slab
     [Fact]
     public void CreateComponentWithInputsTest1()
     {
-      var comp = CreateDeckingConfigurationMother();
+      var comp = ComponentMother();
       int i = 0;
       ComponentTestHelper.SetInput(comp, 0, i++);
       ComponentTestHelper.SetInput(comp, false, i++);
@@ -48,7 +48,7 @@ namespace ComposGHTests.Slab
     [Fact]
     public void CreateComponentWithInputsTest2()
     {
-      var comp = CreateDeckingConfigurationMother();
+      var comp = ComponentMother();
       Param_Number angleParameter = (Param_Number)comp.Params.Input[0];
       angleParameter.UseDegrees = true;
 

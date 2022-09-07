@@ -11,7 +11,7 @@ namespace ComposGHTests.Beam
   [Collection("GrasshopperFixture collection")]
   public class CreateWebOpeningStiffenerComponentTests
   {
-    public static GH_OasysDropDownComponent CreateWebOpeningStiffenerComponentMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateWebOpeningStiffener();
       comp.CreateAttributes();
@@ -29,7 +29,7 @@ namespace ComposGHTests.Beam
     [Fact]
     public void CreateComponentWithInputsTest1()
     {
-      var comp = CreateWebOpeningStiffenerComponentMother();
+      var comp = ComponentMother();
 
       comp.SetSelected(1, 0); // change the dropdown to mm
 
@@ -46,7 +46,7 @@ namespace ComposGHTests.Beam
     [Fact]
     public void CreateComponentWithInputsTest2()
     {
-      var comp = CreateWebOpeningStiffenerComponentMother();
+      var comp = ComponentMother();
 
       comp.SetSelected(0, 1); // change the dropdown to notch
       comp.SetSelected(1, 0); // change the dropdown to mm
@@ -64,14 +64,14 @@ namespace ComposGHTests.Beam
     [Fact]
     public void DeserializeTest()
     {
-      var comp = CreateWebOpeningStiffenerComponentMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = CreateWebOpeningStiffenerComponentMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }

@@ -9,7 +9,7 @@ using OasysGH;
 
 namespace ComposAPI.Loads.Tests
 {
-  public partial class LoadTest
+  public partial class LoadTest 
   {
     // 1 setup inputs
     [Theory]
