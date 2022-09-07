@@ -12,25 +12,8 @@ namespace ComposGH
   {
     public override GH_LoadingInstruction PriorityLoad()
     {
-      // ### Search for plugin path ###
-
-      // initially look in %appdata% folder where package manager will store the plugin
-      string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-      path = Path.Combine(path, "McNeel", "Rhinoceros", "Packages", Rhino.RhinoApp.ExeVersion + ".0", "Compos");
-
-      if (!File.Exists(Path.Combine(path, "Compos.gha"))) // if no plugin file is found there continue search
-      {
-        // look in all the other Grasshopper assembly (plugin) folders
-        foreach (GH_AssemblyFolderInfo pluginFolder in Grasshopper.Folders.AssemblyFolders)
-        {
-          if (File.Exists(Path.Combine(pluginFolder.Folder, "Compos.gha"))) // if the folder contains the plugin
-          {
-            path = pluginFolder.Folder;
-            break;
-          }
-        }
-      }
-      PluginPath = Path.GetDirectoryName(path);
+      if (!TryFindPluginPath("Compos.gha"))
+        return GH_LoadingInstruction.Abort;
 
       // ### Set system environment variables to allow user rights to read above dll ###
       const string name = "PATH";
@@ -41,6 +24,7 @@ namespace ComposGH
 
       // ### Queue up Main menu loader ###
       Grasshopper.Instances.CanvasCreated += UI.Menu.MenuLoad.OnStartup;
+
       // ### Create Ribbon Category name and icon ###
       Grasshopper.Instances.ComponentServer.AddCategorySymbolName("Compos", 'C');
       Grasshopper.Instances.ComponentServer.AddCategoryIcon("Compos", Properties.Resources.ComposLogo128);
@@ -63,6 +47,56 @@ namespace ComposGH
     {
       ComposFile.Close();
       Rhino.RhinoApp.Closing -= CloseFile;
+    }
+
+    private bool TryFindPluginPath(string keyword)
+    {
+      // ### Search for plugin path ###
+
+      // initially look in %appdata% folder where package manager will store the plugin
+      string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+      path = Path.Combine(path, "McNeel", "Rhinoceros", "Packages", Rhino.RhinoApp.ExeVersion + ".0", ComposGHInfo.ProductName);
+
+      if (!File.Exists(Path.Combine(path, keyword))) // if no plugin file is found there continue search
+      {
+        // search grasshopper libraries folder
+        string sDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Grasshopper",
+          "Libraries");
+
+        string[] files = Directory.GetFiles(sDir, keyword, SearchOption.AllDirectories);
+        if (files.Length > 0)
+          path = files[0].Replace(keyword, string.Empty);
+
+        if (!File.Exists(Path.Combine(path, keyword))) // if no plugin file is found there continue search
+        {
+          // look in all the other Grasshopper assembly (plugin) folders
+          foreach (GH_AssemblyFolderInfo pluginFolder in Grasshopper.Folders.AssemblyFolders)
+          {
+            files = Directory.GetFiles(pluginFolder.Folder, keyword, SearchOption.AllDirectories);
+            if (files.Length > 0)
+            {
+              path = files[0].Replace(keyword, string.Empty);
+              PluginPath = Path.GetDirectoryName(path);
+              return true;
+            }
+          }
+          string message =
+            "Error loading the file " + keyword + " from any Grasshopper plugin folders - check if the file exist."
+            + Environment.NewLine + "The plugin cannot be loaded."
+            + Environment.NewLine + "Folders (including subfolder) that was searched:"
+            + Environment.NewLine + sDir;
+          foreach (GH_AssemblyFolderInfo pluginFolder in Grasshopper.Folders.AssemblyFolders)
+            message += Environment.NewLine + pluginFolder.Folder;
+
+          Exception exception = new Exception(message);
+          GH_LoadingException gH_LoadingException = new GH_LoadingException(ComposGHInfo.ProductName + ": " + keyword + " loading failed", exception);
+          Grasshopper.Instances.ComponentServer.LoadingExceptions.Add(gH_LoadingException);
+          PostHog.PluginLoaded(message);
+          return false;
+        }
+      }
+      PluginPath = Path.GetDirectoryName(path);
+      return true;
     }
   }
 

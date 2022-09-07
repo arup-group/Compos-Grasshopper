@@ -4,13 +4,13 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using Grasshopper.Kernel.Types;
 using UnitsNet.GH;
-using UnitsNet.Serialization.JsonNet;
+//using UnitsNet.Serialization.JsonNet;
 
 namespace ComposGH.Components
 {
   class SetOutput
   {
-    private static UnitsNetIQuantityJsonConverter converter = new UnitsNetIQuantityJsonConverter();
+    //private static UnitsNetIQuantityJsonConverter converter = new UnitsNetIQuantityJsonConverter();
     internal static void Item(GH_OasysDropDownComponent owner, IGH_DataAccess DA, int inputid, object data)
     {
       DA.SetData(inputid, data);
