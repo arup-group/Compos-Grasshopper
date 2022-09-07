@@ -14,7 +14,7 @@ namespace ComposGH.Components
   /// <summary>
   /// Component to save to a compos data file
   /// </summary>
-  public class SaveComposFile : GH_OasysComponent, IGH_VariableParameterComponent
+  public class SaveComposFile : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
@@ -30,14 +30,87 @@ namespace ComposGH.Components
     protected override Bitmap Icon => Resources.SaveModel;
     #endregion
 
+    #region Input and output
+    // This region handles input and output parameters
+    public string FileName = null;
+    ComposFile ComposFile;
+    bool CanOpen = false;
+
+    protected override void RegisterInputParams(GH_InputParamManager pManager)
+    {
+      pManager.AddGenericParameter(MemberGoo.Name, MemberGoo.NickName, MemberGoo.Description + "s to save.", GH_ParamAccess.list);
+      pManager.AddBooleanParameter("Save?", "Save", "Input 'True' to save or use button", GH_ParamAccess.item, false);
+      pManager.AddTextParameter("File and Path", "File", "Filename and path", GH_ParamAccess.item);
+      pManager[1].Optional = true;
+    }
+
+    protected override void RegisterOutputParams(GH_OutputParamManager pManager)
+    {
+      pManager.AddGenericParameter(MemberGoo.Name, MemberGoo.NickName, MemberGoo.Description, GH_ParamAccess.list);
+    }
+    #endregion
+
+    protected override void SolveInstance(IGH_DataAccess DA)
+    {
+      List<GH_ObjectWrapper> list = new List<GH_ObjectWrapper>();
+      if (DA.GetDataList(0, list))
+      {
+        if (list == null || list.Count < 1) { return; }
+        if (list[0].Value is MemberGoo)
+        {
+          List<IMember> members = new List<IMember>();
+          foreach (GH_ObjectWrapper wrapper in list)
+          {
+            MemberGoo goo = (MemberGoo)wrapper.Value;
+            IMember member = (IMember)goo.Value;
+            members.Add(member);
+            Message = "";
+          }
+          this.ComposFile = new ComposFile(members);
+        }
+        else
+        {
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Error converting input to Compos File");
+          return;
+        }
+
+        this.FileName = null;
+
+        string tempfile = "";
+        if (DA.GetData(2, ref tempfile))
+          this.FileName = tempfile;
+
+        bool save = false;
+        if (DA.GetData(1, ref save))
+        {
+          if (save)
+          {
+            SaveFile();
+            this.Message = this.FileName;
+          }
+        }
+
+
+        IComposFile composFile = ComposFile.Open(this.FileName);
+        List<MemberGoo> savedMembers = new List<MemberGoo>();
+        foreach (IMember mem in composFile.GetMembers())
+          savedMembers.Add(new MemberGoo(mem));
+        DA.SetDataList(0, savedMembers);
+      }
+    }
+
+
     #region Custom UI
-    //This region overrides the typical component layout
+    internal override void SetSelected(int i, int j) { }
+
+    internal override void InitialiseDropdowns() { }
+
     public override void CreateAttributes()
     {
       m_attributes = new UI.Button3ComponentUI(this, "Save", "Save As", "Open in Compos", SaveFile, SaveAsFile, OpenCompos, true, "Save Compos file");
     }
 
-    public void SaveFile()
+    internal void SaveFile()
     {
       if (this.FileName == null)
       {
@@ -51,7 +124,7 @@ namespace ComposGH.Components
         case 0:
           this.CanOpen = true;
           this.Message = "File saved";
-          PostHog.ModelIO("saveCOB", (int)(new FileInfo(this.FileName).Length / 1024));
+          PostHog.ModelIO("saveCOA", (int)(new FileInfo(this.FileName).Length / 1024));
           return;
         case 1:
           this.Message = "No Compos file is open";
@@ -66,7 +139,7 @@ namespace ComposGH.Components
       }
     }
 
-    public void SaveAsFile()
+    internal void SaveAsFile()
     {
       var fdi = new Rhino.UI.SaveFileDialog { Filter = "Compos File (*.coa)|*.coa|All files (*.*)|*.*" };
       var res = fdi.ShowSaveDialog();
@@ -102,7 +175,7 @@ namespace ComposGH.Components
       }
     }
 
-    public void OpenCompos()
+    internal void OpenCompos()
     {
       string programFiles = Environment.ExpandEnvironmentVariables("%ProgramW6432%");
       string fileName = programFiles + @"\Oasys\Compos 8.6\Compos.exe";
@@ -113,126 +186,24 @@ namespace ComposGH.Components
       if (this.CanOpen)
         System.Diagnostics.Process.Start(fileName, this.FileName);
     }
-    #endregion
 
-    #region Input and output
-    // This region handles input and output parameters
-    public string FileName = null;
-    ComposFile ComposFile;
-    bool CanOpen = false;
-
-    protected override void RegisterInputParams(GH_InputParamManager pManager)
-    {
-      pManager.AddGenericParameter(MemberGoo.Name, MemberGoo.NickName, MemberGoo.Description + "s to save.", GH_ParamAccess.list);
-      pManager.AddBooleanParameter("Save?", "Save", "Input 'True' to save or use button", GH_ParamAccess.item, false);
-      pManager.AddTextParameter("File and Path", "File", "Filename and path", GH_ParamAccess.item);
-      pManager[1].Optional = true;
-      pManager[2].Optional = true;
-    }
-
-    protected override void RegisterOutputParams(GH_OutputParamManager pManager)
-    {
-    }
-    #endregion
-
-    #region IGH_VariableParameterComponent null implementation
-    //This sub region handles any changes to the component after it has been placed on the canvas
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
-    {
-      return null;
-    }
-
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
+    public override void VariableParameterMaintenance()
     {
       Params.Input[0].Optional = this.FileName != null; //filename can have input from user input
       Params.Input[0].ClearRuntimeMessages(); // this needs to be called to avoid having a runtime warning message after changed to optional
     }
-    #endregion
 
-    #region (de)serialization
-    //This region handles serialisation and deserialisation, meaning that 
-    // component states will be remembered when reopening GH script
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      writer.SetString("File", (string)FileName);
+      writer.SetString("File", (string)this.FileName);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      FileName = (string)reader.GetString("File");
-      UpdateUIFromSelectedItems();
+      this.FileName = (string)reader.GetString("File");
       return base.Read(reader);
-    }
-    private void UpdateUIFromSelectedItems()
-    {
-      CreateAttributes();
-      (this as IGH_VariableParameterComponent).VariableParameterMaintenance();
-      ExpireSolution(true);
-      Params.OnParametersChanged();
-      this.OnDisplayExpired(true);
     }
     #endregion
 
-    protected override void SolveInstance(IGH_DataAccess DA)
-    {
-      List<GH_ObjectWrapper> list = new List<GH_ObjectWrapper>();
-      if (DA.GetDataList(0, list))
-      {
-        if (list == null || list.Count < 1) { return; }
-        if (list[0].Value is MemberGoo)
-        {
-          List<IMember> members = new List<IMember>();
-          foreach (GH_ObjectWrapper wrapper in list)
-          {
-            MemberGoo goo = (MemberGoo)wrapper.Value;
-            IMember member = (IMember)goo.Value;
-            members.Add(member);
-            Message = "";
-          }
-          this.ComposFile = new ComposFile(members);
-        }
-        else
-        {
-          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Error converting input to Compos File");
-          return;
-        }
-
-        this.FileName = null;
-        //if (!this.UsersetFileName)
-        //{
-        //  if (this.ComposFile.FileName != "")
-        //    this.FileName = this.ComposFile.FileName;
-        //}
-
-        string tempfile = "";
-        if (DA.GetData(2, ref tempfile))
-          this.FileName = tempfile;
-
-        bool save = false;
-        if (DA.GetData(1, ref save))
-        {
-          if (save)
-          {
-            SaveFile();
-            this.Message = this.FileName;
-          }
-        }
-      }
-    }
   }
 }
