@@ -16,6 +16,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Components\6_Analysis\**" />
+    <EmbeddedResource Remove="Components\6_Analysis\**" />
+    <None Remove="Components\6_Analysis\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="Rhino.Inside" Version="7.0.0" />
     <PackageReference Include="UnitsNet" Version="4.89.0" />
@@ -45,10 +51,6 @@
     <None Update="xunit.runner.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Components\6_Analysis\" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
