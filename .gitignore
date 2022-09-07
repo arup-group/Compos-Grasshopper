@@ -20,3 +20,4 @@
 /ComposTests/TestFiles/Compos1.log
 /ConverterTests/bin
 /ConverterTests/obj
+*.log
