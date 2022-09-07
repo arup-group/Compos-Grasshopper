@@ -35,7 +35,7 @@ namespace ComposGH.Components
     //This region overrides the typical component layout
     public override void CreateAttributes()
     {
-      m_attributes = new UI.ButtonComponentUI(this, "Open", OpenFile, "Open Compos file");
+      m_attributes = new OasysGH.UI.ButtonComponentAttributes(this, "Open", OpenFile, "Open Compos file");
     }
     public void OpenFile()
     {

@@ -210,7 +210,6 @@
     <Compile Include="Parameters\5_Member\DesignCode\SafetyFactorsGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\DesignCodeGoo.cs" />
     <Compile Include="Parameters\3_Slab\Decking\DeckingConfigurationGoo.cs" />
-    <Compile Include="Parameters\GH_OasysGeoGoo.cs" />
     <Compile Include="Parameters\99_Other\GH_UnitNumber.cs" />
     <Compile Include="Parameters\_Units.cs" />
     <Compile Include="Parameters\3_Slab\Decking\DeckingGoo.cs" />
@@ -226,21 +225,12 @@
     <Compile Include="UI\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Colours.cs" />
-    <Compile Include="UI\_DropDownCheckBoxAttributes.cs" />
-    <Compile Include="UI\_SingleButtonAttributes.cs" />
-    <Compile Include="UI\_CheckBoxAttributes.cs" />
-    <Compile Include="UI\_DropDownAttributes.cs" />
-    <Compile Include="UI\_DropDownSliderAttributes.cs" />
-    <Compile Include="UI\GraphicButtons.cs" />
-    <Compile Include="UI\_TripleButtonAttributes.cs" />
     <Compile Include="UI\UnitSettingsBox.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\UnitSettingsBox.Designer.cs">
       <DependentUpon>UnitSettingsBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\WidthFix.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -162,7 +162,7 @@ namespace ComposGH.Components
       if (!this.IsInitialised)
         this.InitialiseDropdowns();
 
-      m_attributes = new UI.MultiDropDownCheckBoxesComponentUI(this, SetSelected, this.DropDownItems, this.SelectedItems, CheckBoxToggles, this.Checkboxes, this.CheckboxNames, this.SpacerDescriptions);
+      m_attributes = new OasysGH.UI.DropDownCheckBoxesComponentAttributes(this, SetSelected, this.DropDownItems, this.SelectedItems, CheckBoxToggles, this.Checkboxes, this.CheckboxNames, this.SpacerDescriptions);
     }
 
     public override void InitialiseDropdowns()

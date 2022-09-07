@@ -34,7 +34,7 @@ namespace ComposGH.Components
     //This region overrides the typical component layout
     public override void CreateAttributes()
     {
-      m_attributes = new UI.Button3ComponentUI(this, "Save", "Save As", "Open in Compos", SaveFile, SaveAsFile, OpenCompos, true, "Save Compos file");
+      m_attributes = new OasysGH.UI.ThreeButtonAtrributes(this, "Save", "Save As", "Open in Compos", SaveFile, SaveAsFile, OpenCompos, true, "Save Compos file");
     }
 
     public void SaveFile()
