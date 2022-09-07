@@ -26,7 +26,7 @@ namespace ComposAPI.Results.Tests
       {
         if (m_Member == null)
         {
-          string fileName = "Compos2.coa";
+          string fileName = "Compos2_UTF8.coa";
           string memberName = "MEMBER-1";
 
           ComposFile file = ComposFile.Open(Path.GetFullPath(RelativePath + fileName));
