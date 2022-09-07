@@ -34,7 +34,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Result", "Res", "Result", GH_ParamAccess.item);
+      pManager.AddTextParameter("Result", "Res", "Result", GH_ParamAccess.item);
     }
     #endregion
 
@@ -56,11 +56,11 @@ namespace ComposGH.Components
       }
       if (member != null)
       {
-        this.Message = member.GetCodeSatisfiedMessage();
+        this.Message = member.DesignCode.Code.ToString();
         this.Status = member.CodeSatisfied();
         if(this.Status == 1)
             AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "The natural frequency is lower than that required");
-        DA.SetData(0, new GH_Number(Status));
+        DA.SetData(0, member.GetCodeSatisfiedMessage());
       }
     }
     int Status = 4;
