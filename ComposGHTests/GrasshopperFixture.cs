@@ -70,8 +70,8 @@ namespace ComposGHTests
     public void Dispose()
     {
       // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-      Dispose(disposing: true);
-      StopCompos();
+      this.Dispose(disposing: true);
+      this.StopCompos();
       GC.SuppressFinalize(this);
       File.Delete(Path.Combine(_linkFilePath, _linkFileName));
     }
