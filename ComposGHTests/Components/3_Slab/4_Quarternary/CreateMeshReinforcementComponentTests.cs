@@ -10,7 +10,7 @@ namespace ComposGHTests.Slab
   [Collection("GrasshopperFixture collection")]
   public class CreateMeshReinforcementComponentTests
   {
-    public static GH_OasysDropDownComponent CreateMeshReinforcementMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateMeshReinforcement();
       comp.CreateAttributes();
@@ -24,7 +24,7 @@ namespace ComposGHTests.Slab
     [Fact]
     public void CreateComponentWithInputsTest()
     {
-      var comp = CreateMeshReinforcementMother();
+      var comp = ComponentMother();
 
       MeshReinforcementGoo output = (MeshReinforcementGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(35, output.Value.Cover.As(LengthUnit.Millimeter));
@@ -35,14 +35,14 @@ namespace ComposGHTests.Slab
     [Fact]
     public void DeserializeTest()
     {
-      var comp = CreateMeshReinforcementMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = CreateMeshReinforcementMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }

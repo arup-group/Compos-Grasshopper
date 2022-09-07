@@ -8,7 +8,7 @@ namespace ComposGHTests.Member
   [Collection("GrasshopperFixture collection")]
   public class CreateSafetyFactorsComponentTests
   {
-    public static GH_OasysComponent CreateSafetyFactorsMother()
+    public static GH_OasysComponent ComponentMother()
     {
       var comp = new CreateSafetyFactors();
       comp.CreateAttributes();
@@ -18,7 +18,7 @@ namespace ComposGHTests.Member
     [Fact]
     public void CreateComponent()
     {
-      var comp = CreateSafetyFactorsMother();
+      var comp = ComponentMother();
 
       SafetyFactorsGoo output = (SafetyFactorsGoo)ComponentTestHelper.GetOutput(comp);
 
@@ -37,7 +37,7 @@ namespace ComposGHTests.Member
     [Fact]
     public void CreateComponentWithInputs()
     {
-      var comp = CreateSafetyFactorsMother();
+      var comp = ComponentMother();
       
       for (int i = 0; i < comp.Params.Input.Count; i++)
         ComponentTestHelper.SetInput(comp, 1 + 1/(i + 1), i);

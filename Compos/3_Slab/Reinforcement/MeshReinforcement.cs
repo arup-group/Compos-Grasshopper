@@ -77,7 +77,7 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      string cov = Cover.ToString("f0");
+      string cov = Cover.ToString("g4");
       string msh = MeshType.ToString();
 
       string rotated = (this.Rotated == true) ? " (rotated)" : "";

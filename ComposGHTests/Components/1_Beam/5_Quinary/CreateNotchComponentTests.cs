@@ -9,7 +9,7 @@ namespace ComposGHTests.Beam
   [Collection("GrasshopperFixture collection")]
   public class CreateNotchComponentTests
   {
-    public static GH_OasysDropDownComponent CreateNotchComponentMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateNotch();
       comp.CreateAttributes();
@@ -24,7 +24,7 @@ namespace ComposGHTests.Beam
     [Fact]
     public void CreateComponentWithInputsTest1()
     {
-      var comp = CreateNotchComponentMother();
+      var comp = ComponentMother();
 
       comp.SetSelected(1, 0); // change the dropdown to mm
 
@@ -41,7 +41,7 @@ namespace ComposGHTests.Beam
     [Fact]
     public void CreateComponentWithInputsTest2()
     {
-      var comp = CreateNotchComponentMother();
+      var comp = ComponentMother();
 
       comp.SetSelected(0, 1); // change the dropdown to Start
       comp.SetSelected(1, 1); // change the dropdown to cm
@@ -55,7 +55,7 @@ namespace ComposGHTests.Beam
     [Fact]
     public void CreateComponentWithInputsTest3()
     {
-      var comp = CreateNotchComponentMother();
+      var comp = ComponentMother();
 
       comp.SetSelected(0, 2); // change the dropdown to End
       comp.SetSelected(1, 2); // change the dropdown to m
@@ -69,14 +69,14 @@ namespace ComposGHTests.Beam
     [Fact]
     public void DeserializeTest()
     {
-      var comp = CreateNotchComponentMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = CreateNotchComponentMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }

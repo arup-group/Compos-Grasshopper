@@ -111,6 +111,7 @@ namespace ComposGHTests.Parameters
           // require a nickname not longer than 3 characters excluding dots (".coa" being the exception)
           nickName = nickName.Replace(".", string.Empty);
           Assert.True(nickName.Length < 4);
+          Assert.True(nickName.Length > 0);
           hasNickName = true;
         }
         if (gooProperty.Name == "Description")

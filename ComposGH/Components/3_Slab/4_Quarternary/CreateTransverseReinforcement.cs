@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Grasshopper.Kernel;
-using ComposGH.Parameters;
-using System.Linq;
 using ComposAPI;
+using ComposGH.Parameters;
+using ComposGH.Properties;
 
 namespace ComposGH.Components
 {
@@ -23,7 +24,7 @@ namespace ComposGH.Components
     public override Guid ComponentGuid => new Guid("E832E3E8-1EF9-4F31-BC2A-683881E4BAC3");
     public override GH_Exposure Exposure => GH_Exposure.quarternary;
 
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.TransverseReinforcement;
+    protected override System.Drawing.Bitmap Icon => Resources.TransverseReinforcement;
     #endregion
 
     #region Input and output

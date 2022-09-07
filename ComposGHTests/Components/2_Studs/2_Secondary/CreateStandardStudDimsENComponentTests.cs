@@ -8,7 +8,7 @@ namespace ComposGHTests.Stud
   [Collection("GrasshopperFixture collection")]
   public class CreateStandardStudDimsENComponentTests
   {
-    public static GH_OasysDropDownComponent CreateStandardStudDimsENMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreateStandardStudDimensionsEN();
       comp.CreateAttributes();
@@ -18,7 +18,7 @@ namespace ComposGHTests.Stud
     [Fact]
     public void CreateComponentTest()
     {
-      var comp = CreateStandardStudDimsENMother();
+      var comp = ComponentMother();
       
       StudDimensionsGoo output = (StudDimensionsGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(19, output.Value.Diameter.Millimeters);
@@ -28,7 +28,7 @@ namespace ComposGHTests.Stud
     [Fact]
     public void CreateComponentWithInputsTest1()
     {
-      var comp = CreateStandardStudDimsENMother();
+      var comp = ComponentMother();
 
       int i = 0;
       ComponentTestHelper.SetInput(comp, 450, i++);
@@ -42,7 +42,7 @@ namespace ComposGHTests.Stud
     [Fact]
     public void CreateComponentWithInputsTest2()
     {
-      var comp = CreateStandardStudDimsENMother();
+      var comp = ComponentMother();
       Assert.Single(comp.Params.Input);
       comp.SetSelected(0, 0); // change the dropdown to Custom, adding two new inputs
       Assert.Equal(3, comp.Params.Input.Count);
@@ -65,14 +65,14 @@ namespace ComposGHTests.Stud
     [Fact]
     public void DeserializeTest()
     {
-      var comp = CreateStandardStudDimsENMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = CreateStandardStudDimsENMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }

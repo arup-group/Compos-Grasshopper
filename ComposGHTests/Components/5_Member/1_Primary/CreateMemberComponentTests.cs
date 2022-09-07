@@ -18,12 +18,12 @@ namespace ComposGHTests.Member
       var comp = new CreateMember();
       comp.CreateAttributes();
 
-      BeamGoo input1 = (BeamGoo)ComponentTestHelper.GetOutput(CreateBeamComponentTests.CreateBeamComponentMother());
-      StudGoo input2 = (StudGoo)ComponentTestHelper.GetOutput(CreateStudComponentTests.CreateStudMother());
-      SlabGoo input3 = (SlabGoo)ComponentTestHelper.GetOutput(CreateSlabComponentTests.CreateSlabMother());
-      LoadGoo input4_1 = (LoadGoo)ComponentTestHelper.GetOutput(CreateUniformLoadComponentTests.CreateUniformLoadMother());
-      LoadGoo input4_2 = (LoadGoo)ComponentTestHelper.GetOutput(CreatePointLoadComponentTests.CreatePointLoadMother());
-      DesignCodeGoo input5 = (DesignCodeGoo)ComponentTestHelper.GetOutput(CreateDesignCodeComponentTests.CreateDesignCodeMother());
+      BeamGoo input1 = (BeamGoo)ComponentTestHelper.GetOutput(CreateBeamComponentTests.ComponentMother());
+      StudGoo input2 = (StudGoo)ComponentTestHelper.GetOutput(CreateStudComponentTests.ComponentMother());
+      SlabGoo input3 = (SlabGoo)ComponentTestHelper.GetOutput(CreateSlabComponentTests.ComponentMother());
+      LoadGoo input4_1 = (LoadGoo)ComponentTestHelper.GetOutput(CreateUniformLoadComponentTests.ComponentMother());
+      LoadGoo input4_2 = (LoadGoo)ComponentTestHelper.GetOutput(CreatePointLoadComponentTests.ComponentMother());
+      DesignCodeGoo input5 = (DesignCodeGoo)ComponentTestHelper.GetOutput(CreateDesignCodeComponentTests.ComponentMother());
 
       ComponentTestHelper.SetInput(comp, input1, 0);
       ComponentTestHelper.SetInput(comp, input2, 1);
@@ -41,12 +41,12 @@ namespace ComposGHTests.Member
     {
       var comp = CreateMemberMother();
 
-      BeamGoo expected_input1 = (BeamGoo)ComponentTestHelper.GetOutput(CreateBeamComponentTests.CreateBeamComponentMother());
-      StudGoo expected_input2 = (StudGoo)ComponentTestHelper.GetOutput(CreateStudComponentTests.CreateStudMother());
-      SlabGoo expected_input3 = (SlabGoo)ComponentTestHelper.GetOutput(CreateSlabComponentTests.CreateSlabMother());
-      LoadGoo expected_input4_1 = (LoadGoo)ComponentTestHelper.GetOutput(CreateUniformLoadComponentTests.CreateUniformLoadMother());
-      LoadGoo expected_input4_2 = (LoadGoo)ComponentTestHelper.GetOutput(CreatePointLoadComponentTests.CreatePointLoadMother());
-      DesignCodeGoo expected_input5 = (DesignCodeGoo)ComponentTestHelper.GetOutput(CreateDesignCodeComponentTests.CreateDesignCodeMother());
+      BeamGoo expected_input1 = (BeamGoo)ComponentTestHelper.GetOutput(CreateBeamComponentTests.ComponentMother());
+      StudGoo expected_input2 = (StudGoo)ComponentTestHelper.GetOutput(CreateStudComponentTests.ComponentMother());
+      SlabGoo expected_input3 = (SlabGoo)ComponentTestHelper.GetOutput(CreateSlabComponentTests.ComponentMother());
+      LoadGoo expected_input4_1 = (LoadGoo)ComponentTestHelper.GetOutput(CreateUniformLoadComponentTests.ComponentMother());
+      LoadGoo expected_input4_2 = (LoadGoo)ComponentTestHelper.GetOutput(CreatePointLoadComponentTests.ComponentMother());
+      DesignCodeGoo expected_input5 = (DesignCodeGoo)ComponentTestHelper.GetOutput(CreateDesignCodeComponentTests.ComponentMother());
 
       MemberGoo output = (MemberGoo)ComponentTestHelper.GetOutput(comp);
 

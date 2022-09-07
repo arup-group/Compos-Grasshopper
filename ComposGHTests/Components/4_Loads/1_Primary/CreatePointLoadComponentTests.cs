@@ -10,7 +10,7 @@ namespace ComposGHTests.Load
   [Collection("GrasshopperFixture collection")]
   public class CreatePointLoadComponentTests
   {
-    public static GH_OasysDropDownComponent CreatePointLoadMother()
+    public static GH_OasysDropDownComponent ComponentMother()
     {
       var comp = new CreatePointLoad();
       comp.CreateAttributes();
@@ -26,7 +26,7 @@ namespace ComposGHTests.Load
     [Fact]
     public void CreateComponent()
     {
-      var comp = CreatePointLoadMother();
+      var comp = ComponentMother();
 
       comp.SetSelected(0, 1); // change dropdown to kN
       ForceUnit force = ForceUnit.Kilonewton;
@@ -47,14 +47,14 @@ namespace ComposGHTests.Load
     [Fact]
     public void DeserializeTest()
     {
-      var comp = CreatePointLoadMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
 
     [Fact]
     public void ChangeDropDownTest()
     {
-      var comp = CreatePointLoadMother();
+      var comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
