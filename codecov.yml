@@ -8,3 +8,5 @@ flags:
     carryforward: false
   integration:
     carryforward: false
+ignore:
+  - "ComposGHTests"  # ignore folders and all its contents
