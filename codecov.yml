@@ -1,0 +1,12 @@
+codecov:
+    notify:
+        after_n_builds: 3
+flags:
+  composapi:
+    carryforward: false
+  composgh:
+    carryforward: false
+  integration:
+    carryforward: false
+ignore:
+  - "ComposGHTests"  # ignore folders and all its contents

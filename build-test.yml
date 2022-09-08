@@ -53,25 +53,33 @@ steps:
     MSBUILDDISABLENODEREUSE: 1
 
 - powershell: |
-    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposTests\bin\x64\Release\net6.0\ComposAPITests.dll
-    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ComposGHTests\bin\x64\Release\net48\ComposGHTests.dll
-    # dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\IntegrationTests\bin\x64\Release\net48\IntegrationTests.dll
-    # dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results --no-restore --logger trx .\ConverterTests\bin\x64\Release\net6.0\ConverterTests.dll
+    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results\composapi --no-restore --logger trx .\ComposTests\bin\x64\Release\net6.0\ComposAPITests.dll
+    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results\composgh --no-restore --logger trx .\ComposGHTests\bin\x64\Release\net48\ComposGHTests.dll
+    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results\integration --no-restore --logger trx .\IntegrationTests\bin\x64\Release\net48\IntegrationTests.dll
+    # dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.0\build --results-directory .\results\3 --no-restore --logger trx .\ConverterTests\bin\x64\Release\net6.0\ConverterTests.dll
   displayName: dotnet test
 
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'cobertura'
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/results/**/coverage.cobertura.xml'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/results/composapi/**/coverage.cobertura.xml'
     pathToSources: '$(System.DefaultWorkingDirectory)'
 
 #    $coverage_file = (Resolve-Path $(System.DefaultWorkingDirectory)/results\*.trx).Path
 - powershell: |
-    $coverage_file = (Resolve-Path $(System.DefaultWorkingDirectory)/results/*/coverage.cobertura.xml).Path
-    echo $coverage_file
-    Copy-Item $coverage_file $(System.DefaultWorkingDirectory)\results\coverage.xml
+    $coverage_file_composapi = (Resolve-Path $(System.DefaultWorkingDirectory)/results/composapi/*/coverage.cobertura.xml).Path
+    echo $coverage_file_composapi
+    $coverage_file_composgh = (Resolve-Path $(System.DefaultWorkingDirectory)/results/composgh/*/coverage.cobertura.xml).Path
+    echo $coverage_file_composgh
+    $coverage_file_integration = (Resolve-Path $(System.DefaultWorkingDirectory)/results/integration/*/coverage.cobertura.xml).Path
+    echo $coverage_file_integration
+    Copy-Item $coverage_file_composapi $(System.DefaultWorkingDirectory)\results\coverage_composapi.xml
+    Copy-Item $coverage_file_composgh $(System.DefaultWorkingDirectory)\results\coverage_composgh.xml
+    Copy-Item $coverage_file_integration $(System.DefaultWorkingDirectory)\results\coverage_integration.xml
     ls $(System.DefaultWorkingDirectory)\results\
-    codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage.xml --flags unittests
+    codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_composapi.xml -F composapi
+    codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_composgh.xml -F composgh
+    codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_integration.xml -F integration
   env:
     CODECOV_TOKEN: $(CODECOV_TOKEN)
   displayName: Upload Code Coverage to codecovio
