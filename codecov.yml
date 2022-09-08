@@ -1,0 +1,10 @@
+codecov:
+    notify:
+        after_n_builds: 3
+flags:
+  composapi:
+    carryforward: true
+  composgh:
+    carryforward: true
+  integration:
+    carryforward: false

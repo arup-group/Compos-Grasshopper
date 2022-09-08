@@ -77,9 +77,9 @@ steps:
     Copy-Item $coverage_file_composgh $(System.DefaultWorkingDirectory)\results\coverage_composgh.xml
     Copy-Item $coverage_file_integration $(System.DefaultWorkingDirectory)\results\coverage_integration.xml
     ls $(System.DefaultWorkingDirectory)\results\
-    codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_composapi.xml --flags unittests
-    codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_composgh.xml --flags unittests
-    codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_integration.xml --flags unittests
+    codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_composapi.xml -F composapi
+    codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_composgh.xml -F composgh
+    codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_integration.xml -F integration
   env:
     CODECOV_TOKEN: $(CODECOV_TOKEN)
   displayName: Upload Code Coverage to codecovio
