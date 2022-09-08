@@ -3,7 +3,7 @@ using ComposAPI.Tests;
 using System.Collections.Generic;
 using Xunit;
 using ComposGHTests.Helpers;
-
+using OasysGH;
 
 namespace ComposAPI.Members.Tests
 {

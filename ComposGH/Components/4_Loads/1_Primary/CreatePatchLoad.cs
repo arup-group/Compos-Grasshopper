@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using Grasshopper.Kernel;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using Grasshopper.Kernel;
+using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -69,7 +71,7 @@ namespace ComposGH.Components
           ForcePerLength finalLiveL2 = GetInput.ForcePerLength(this, DA, 8, this.ForcePerLengthUnit);
           Load loadL = new PatchLoad(
             constDeadL1, constLiveL1, finalDeadL1, finalLiveL1, pos1, constDeadL2, constLiveL2, finalDeadL2, finalLiveL2, pos2);
-          SetOutput.Item(this, DA, 0, new LoadGoo(loadL));
+          Output.SetItem(this, DA, 0, new LoadGoo(loadL));
           break;
 
         case LoadDistribution.Area:
@@ -83,7 +85,7 @@ namespace ComposGH.Components
           Pressure finalLiveA2 = GetInput.Stress(this, DA, 8, this.ForcePerAreaUnit);
           Load loadA = new PatchLoad(
             constDeadA1, constLiveA1, finalDeadA1, finalLiveA1, pos1, constDeadA2, constLiveA2, finalDeadA2, finalLiveA2, pos2);
-          SetOutput.Item(this, DA, 0, new LoadGoo(loadA));
+          Output.SetItem(this, DA, 0, new LoadGoo(loadA));
           break;
       }
     }
@@ -94,7 +96,7 @@ namespace ComposGH.Components
     private LengthUnit LengthUnit = Units.LengthUnitGeometry;
     private LoadDistribution DistributionType = LoadDistribution.Area;
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] {
         "Distribution",
@@ -119,7 +121,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
@@ -150,7 +152,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       this.DistributionType = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), this.SelectedItems[0]);
       if (this.DistributionType == LoadDistribution.Line)

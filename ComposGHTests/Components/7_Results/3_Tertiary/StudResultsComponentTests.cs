@@ -4,6 +4,7 @@ using ComposGH.Components;
 using ComposGHTests.Helpers;
 using UnitsNet.GH;
 using Grasshopper.Kernel.Types;
+using OasysGH.Components;
 
 namespace ComposGHTests.Result
 {

@@ -1,9 +1,8 @@
-﻿using Xunit;
+﻿using ComposGHTests.Helpers;
+using OasysGH;
 using UnitsNet;
 using UnitsNet.Units;
-using ComposAPI.Tests;
-using ComposGHTests.Helpers;
-
+using Xunit;
 
 namespace ComposAPI.Beams.Tests
 {

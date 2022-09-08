@@ -1,10 +1,13 @@
-﻿using Grasshopper.Kernel;
-using System;
+﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using ComposAPI;
 using System.Threading.Tasks;
 using ComposGH.Helpers;
+using Grasshopper.Kernel;
+using OasysGH;
+using OasysGH.Helpers;
 
 namespace ComposGH
 {
@@ -30,6 +33,10 @@ namespace ComposGH
       Grasshopper.Instances.ComponentServer.AddCategoryIcon("Compos", Properties.Resources.ComposLogo128);
 
       // ### Setup units ###
+      GH_PluginInfo.PluginName = ComposGHInfo.PluginName;
+      GH_PluginInfo.ProductName = ComposGHInfo.ProductName;
+      GH_PluginInfo.PostHogApiKey = "phc_alOp3OccDM3D18xJTWDoW44Y1cJvbEScm5LJSX8qnhs";
+
       Units.SetupUnitsDuringLoad();
 
       PostHog.PluginLoaded();

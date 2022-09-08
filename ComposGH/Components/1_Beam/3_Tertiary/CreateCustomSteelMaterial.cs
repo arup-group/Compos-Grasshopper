@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using Grasshopper.Kernel;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using Grasshopper.Kernel;
+using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -88,7 +90,7 @@ namespace ComposGH.Components
         if (redFact)
           AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Note that reduction factor only applies for EC4 DesignCode");
 
-      SetOutput.Item(this, DA, 0, new SteelMaterialGoo(new SteelMaterial(
+      Output.SetItem(this, DA, 0, new SteelMaterialGoo(new SteelMaterial(
         GetInput.Stress(this, DA, 0, this.StressUnit), 
         GetInput.Stress(this, DA, 1, this.StressUnit), 
         GetInput.Density(this, DA, 2, this.DensityUnit), 
@@ -101,7 +103,7 @@ namespace ComposGH.Components
     private DensityUnit DensityUnit = Units.DensityUnit;
     private WeldMaterialGrade Grade = WeldMaterialGrade.Grade_35;
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[]
         {
@@ -130,7 +132,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       // change selected item
       this.SelectedItems[i] = this.DropDownItems[i][j];
@@ -150,7 +152,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       if (this.SelectedItems[0] != "-")
         this.Grade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), SelectedItems[0]);

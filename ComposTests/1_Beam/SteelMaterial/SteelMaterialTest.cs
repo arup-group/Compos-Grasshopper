@@ -7,6 +7,7 @@ using UnitsNet.Units;
 using Xunit;
 using ComposGHTests.Helpers;
 using ComposAPI.Helpers;
+using OasysGH;
 
 namespace ComposAPI.Beams.Tests
 {

@@ -3,6 +3,7 @@ using ComposGH.Parameters;
 using ComposGH.Components;
 using ComposGHTests.Helpers;
 using UnitsNet.GH;
+using OasysGH.Components;
 
 namespace ComposGHTests.Result
 {

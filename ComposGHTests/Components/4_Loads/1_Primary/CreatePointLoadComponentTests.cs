@@ -4,6 +4,8 @@ using Xunit;
 using ComposGHTests.Helpers;
 using ComposAPI;
 using UnitsNet.Units;
+using OasysGH.Components;
+using OasysGH.Components;
 
 namespace ComposGHTests.Load
 {

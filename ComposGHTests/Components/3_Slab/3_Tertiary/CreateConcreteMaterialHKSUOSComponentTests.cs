@@ -3,6 +3,7 @@ using ComposGH.Parameters;
 using ComposGH.Components;
 using Xunit;
 using ComposGHTests.Helpers;
+using OasysGH.Components;
 
 namespace ComposGHTests.Slab
 {

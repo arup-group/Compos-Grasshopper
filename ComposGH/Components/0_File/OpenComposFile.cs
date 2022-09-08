@@ -2,12 +2,14 @@
 using System.IO;
 using System.Drawing;
 using System.Collections.Generic;
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Types;
 using ComposAPI;
-using ComposGH.Helpers;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using Grasshopper.Kernel;
+using Grasshopper.Kernel.Types;
+using OasysGH.Helpers;
+using OasysGH.Components;
+using OasysGH.UI;
 
 namespace ComposGH.Components
 {
@@ -70,13 +72,13 @@ namespace ComposGH.Components
     internal string FileName = null;
     Guid panelGUID = Guid.NewGuid();
 
-    internal override void SetSelected(int i, int j) {}
+    public override void SetSelected(int i, int j) { }
 
-    internal override void InitialiseDropdowns(){}
+    public override void InitialiseDropdowns() { }
 
     public override void CreateAttributes()
     {
-      m_attributes = new UI.ButtonComponentUI(this, "Open", OpenFile, "Open Compos file");
+      m_attributes = new ButtonComponentAttributes(this, "Open", OpenFile, "Open Compos file");
     }
     internal void OpenFile()
     {

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Parameters;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using Grasshopper.Kernel;
+using Grasshopper.Kernel.Parameters;
+using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -59,12 +61,12 @@ namespace ComposGH.Components
       {
         Length bottomWidth = GetInput.Length(this, DA, 4, LengthUnit);
         Length bottomTHK = GetInput.Length(this, DA, 5, LengthUnit);
-        SetOutput.Item(this, DA, 0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
+        Output.SetItem(this, DA, 0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
             start, topWidth, topTHK, bottomWidth, bottomTHK, bothSides)));
       }
       else
       {
-        SetOutput.Item(this, DA, 0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
+        Output.SetItem(this, DA, 0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
             start, topWidth, topTHK, bothSides)));
       }
     }
@@ -78,7 +80,7 @@ namespace ComposGH.Components
     private Stiff_types OpeningType = Stiff_types.Web_Opening;
     private LengthUnit LengthUnit = Units.LengthUnitSection;
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Type", "Unit" });
 
@@ -97,7 +99,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
@@ -114,7 +116,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       this.OpeningType = (Stiff_types)Enum.Parse(typeof(Stiff_types), this.SelectedItems[0].Replace(' ', '_'));
       this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[1]);

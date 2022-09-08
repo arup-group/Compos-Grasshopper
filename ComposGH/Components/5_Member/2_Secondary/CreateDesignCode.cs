@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Parameters;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using Grasshopper.Kernel;
+using Grasshopper.Kernel.Parameters;
+using OasysGH.Components;
+using OasysGH.Helpers;
 
 namespace ComposGH.Components
 {
@@ -97,7 +99,7 @@ namespace ComposGH.Components
           if (ec4safetyFactors != null)
             ec4.SafetyFactors = ec4safetyFactors;
 
-          SetOutput.Item(this, DA, 0, new DesignCodeGoo(ec4));
+          Output.SetItem(this, DA, 0, new DesignCodeGoo(ec4));
           break;
 
         case Code.AS_NZS2327_2017:
@@ -114,7 +116,7 @@ namespace ComposGH.Components
           if (safetyFactors != null)
             asnz.SafetyFactors = safetyFactors;
 
-          SetOutput.Item(this, DA, 0, new DesignCodeGoo(asnz));
+          Output.SetItem(this, DA, 0, new DesignCodeGoo(asnz));
           break;
 
         default:
@@ -161,10 +163,10 @@ namespace ComposGH.Components
       if (!this.IsInitialised)
         this.InitialiseDropdowns();
 
-      m_attributes = new UI.MultiDropDownCheckBoxesComponentUI(this, SetSelected, this.DropDownItems, this.SelectedItems, CheckBoxToggles, this.Checkboxes, this.CheckboxNames, this.SpacerDescriptions);
+      m_attributes = new OasysGH.UI.DropDownCheckBoxesComponentAttributes(this, SetSelected, this.DropDownItems, this.SelectedItems, CheckBoxToggles, this.Checkboxes, this.CheckboxNames, this.SpacerDescriptions);
     }
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] {
         "Code",
@@ -202,7 +204,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
@@ -293,7 +295,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       for (int i = 0; i < this.DesignCodePretty.Count; i++)
       {

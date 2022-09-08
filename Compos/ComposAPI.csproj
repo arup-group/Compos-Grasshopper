@@ -141,7 +141,6 @@
     <Compile Include="Helpers\SqlDBconnection.cs" />
     <Compile Include="Helpers\UnitsHelper.cs" />
     <Compile Include="ICoaObject.cs" />
-    <Compile Include="ObjectExtension.cs" />
     <Compile Include="Helpers\CatalogueDB.cs" />
     <Compile Include="1_Beam\BeamSection\BeamSection.cs" />
     <Compile Include="1_Beam\Beam.cs" />

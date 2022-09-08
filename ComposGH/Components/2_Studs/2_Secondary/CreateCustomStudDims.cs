@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Grasshopper.Kernel;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using Grasshopper.Kernel;
+using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -49,14 +51,14 @@ namespace ComposGH.Components
       Length dia = GetInput.Length(this, DA, 0, LengthUnit, true);
       Length h = GetInput.Length(this, DA, 1, LengthUnit, true);
       Force strengthF = GetInput.Force(this, DA, 2, ForceUnit);
-      SetOutput.Item(this, DA, 0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthF)));
+      Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthF)));
     }
 
     #region Custom UI
     private LengthUnit LengthUnit = Units.LengthUnitSection;
     private ForceUnit ForceUnit = Units.ForceUnit;
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Length Unit", "Strength Unit" });
 
@@ -74,7 +76,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
@@ -86,7 +88,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[0]);
       this.ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), this.SelectedItems[1]);

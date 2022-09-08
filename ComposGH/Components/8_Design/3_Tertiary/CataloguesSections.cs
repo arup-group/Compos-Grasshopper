@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
-using Grasshopper.Kernel;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using Grasshopper.Kernel;
+using OasysGH.Components;
+using OasysGH.Helpers;
 
 namespace ComposGH.Components
 {
@@ -90,14 +92,14 @@ namespace ComposGH.Components
         if (SelectedItems[0] == " - ")
           SelectedItems[0] = Catalogues[4];
 
-        SetOutput.Item(this, DA, 0, catDic.FirstOrDefault(x => x.Value == SelectedItems[0]).Key);
+        Output.SetItem(this, DA, 0, catDic.FirstOrDefault(x => x.Value == SelectedItems[0]).Key);
       }
     }
 
     #region Custom UI
     List<string> Catalogues = ComposAPI.Helpers.CatalogueSectionType.CatalogueSectionTypes.Values.Select(x => x.ToString()).ToList();
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Catalogue" });
 
@@ -110,7 +112,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       // change selected item
       this.SelectedItems[i] = this.DropDownItems[i][j];

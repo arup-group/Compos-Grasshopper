@@ -5,6 +5,8 @@ using Grasshopper.Kernel;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -52,7 +54,7 @@ namespace ComposGH.Components
           ForcePerLength finalDeadL = GetInput.ForcePerLength(this, DA, 2, this.ForcePerLengthUnit);
           ForcePerLength finalLiveL = GetInput.ForcePerLength(this, DA, 3, this.ForcePerLengthUnit);
           Load loadL = new UniformLoad(constDeadL, constLiveL, finalDeadL, finalLiveL);
-          SetOutput.Item(this, DA, 0, new LoadGoo(loadL));
+          Output.SetItem(this, DA, 0, new LoadGoo(loadL));
           break;
 
         case LoadDistribution.Area:
@@ -61,7 +63,7 @@ namespace ComposGH.Components
           Pressure finalDeadA = GetInput.Stress(this, DA, 2, this.ForcePerAreaUnit);
           Pressure finalLiveA = GetInput.Stress(this, DA, 3, this.ForcePerAreaUnit);
           Load loadA = new UniformLoad(constDeadA, constLiveA, finalDeadA, finalLiveA);
-          SetOutput.Item(this, DA, 0, new LoadGoo(loadA));
+          Output.SetItem(this, DA, 0, new LoadGoo(loadA));
           break;
       }
     }
@@ -71,7 +73,7 @@ namespace ComposGH.Components
     private PressureUnit ForcePerAreaUnit = Units.StressUnit;
     private LoadDistribution DistributionType = LoadDistribution.Area;
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Distribution", "Unit" });
 
@@ -89,7 +91,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
@@ -118,7 +120,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       this.DistributionType = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), this.SelectedItems[0]);
       if (this.DistributionType == LoadDistribution.Line)

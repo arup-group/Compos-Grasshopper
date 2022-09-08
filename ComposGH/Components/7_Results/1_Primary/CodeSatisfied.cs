@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using ComposAPI;
 using ComposGH.Parameters;
-using ComposGH.Properties;
+using OasysGH.Components;
 
 namespace ComposGH.Components
 {
@@ -23,17 +23,18 @@ namespace ComposGH.Components
             Ribbon.SubCategoryName.Cat7())
     { this.Hidden = true; } // sets the initial state of the component to hidden
     public override GH_Exposure Exposure => GH_Exposure.primary;
+
     #endregion
 
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter(MemberGoo.Name, MemberGoo.NickName, MemberGoo.Description, GH_ParamAccess.item);
+      pManager.AddGenericParameter("Member", "Mem", "Compos member", GH_ParamAccess.item);
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddTextParameter("Status", "Res", "Status result for code satisfied check", GH_ParamAccess.item);
+      pManager.AddTextParameter("Result", "Res", "Result", GH_ParamAccess.item);
     }
     #endregion
 
@@ -68,11 +69,11 @@ namespace ComposGH.Components
       get
       {
         if (Status < 2)
-          return Resources.CodeReqMet;
-        if (Status == 2)
-          return Resources.CodeReqNotMet;
-        
-        return Resources.CodeReqNotAvailable;
+          return Properties.Resources.CodeReqMet;
+        else if (Status == 2)
+          return Properties.Resources.CodeReqNotMet;
+        else
+          return Properties.Resources.CodeReqNotAvailable;
       }
     }
 

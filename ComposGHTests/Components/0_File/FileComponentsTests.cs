@@ -9,6 +9,7 @@ using System.IO;
 using System;
 using System.ComponentModel;
 using Grasshopper.Kernel;
+using OasysGH.Components;
 
 namespace ComposGHTests.CompFile
 {

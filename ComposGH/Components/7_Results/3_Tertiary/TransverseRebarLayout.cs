@@ -5,6 +5,8 @@ using Grasshopper.Kernel;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet.Units;
 using UnitsNet.GH;
 
@@ -51,24 +53,24 @@ namespace ComposGH.Components
       ITransverseRebarResult result = res.TransverseRebarResults;
 
       int i = 0;
-      SetOutput.List(this, DA, i++, 
+      Output.SetList(this, DA, i++, 
         result.StartPosition.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList());
-      SetOutput.List(this, DA, i++,
+      Output.SetList(this, DA, i++,
         result.EndPosition.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList());
-      SetOutput.List(this, DA, i++,
+      Output.SetList(this, DA, i++,
         result.Diameter.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList());
-      SetOutput.List(this, DA, i++,
+      Output.SetList(this, DA, i++,
         result.Spacing.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList());
-      SetOutput.List(this, DA, i++,
+      Output.SetList(this, DA, i++,
         result.Cover.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList());
-      SetOutput.List(this, DA, i,
+      Output.SetList(this, DA, i,
         result.Area.Select(x => new GH_UnitNumber(x.ToUnit(Units.GetAreaUnit(this.LengthUnit)))).ToList());
     }
 
     #region Custom UI
     private LengthUnit LengthUnit = Units.LengthUnitGeometry;
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Unit" });
 
@@ -82,7 +84,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
@@ -91,7 +93,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[0]);
 

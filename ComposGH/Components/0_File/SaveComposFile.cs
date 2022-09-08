@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Types;
 using ComposAPI;
-using ComposGH.Helpers;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using Grasshopper.Kernel;
+using Grasshopper.Kernel.Types;
+using OasysGH.Components;
+using OasysGH.Helpers;
 
 namespace ComposGH.Components
 {
@@ -99,15 +100,14 @@ namespace ComposGH.Components
       }
     }
 
-
     #region Custom UI
-    internal override void SetSelected(int i, int j) { }
+    public override void SetSelected(int i, int j) { }
 
-    internal override void InitialiseDropdowns() { }
+    public override void InitialiseDropdowns() { }
 
     public override void CreateAttributes()
     {
-      m_attributes = new UI.Button3ComponentUI(this, "Save", "Save As", "Open in Compos", SaveFile, SaveAsFile, OpenCompos, true, "Save Compos file");
+      m_attributes = new OasysGH.UI.ThreeButtonAtrributes(this, "Save", "Save As", "Open in Compos", SaveFile, SaveAsFile, OpenCompos, true, "Save Compos file");
     }
 
     internal void SaveFile()
@@ -204,6 +204,5 @@ namespace ComposGH.Components
       return base.Read(reader);
     }
     #endregion
-
   }
 }

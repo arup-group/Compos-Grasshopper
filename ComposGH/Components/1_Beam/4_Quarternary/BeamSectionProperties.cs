@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Grasshopper.Kernel;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using Grasshopper.Kernel;
+using OasysGH.Components;
 using Newtonsoft.Json;
 using UnitsNet;
 using UnitsNet.Units;
@@ -57,10 +58,10 @@ namespace ComposGH.Components
       if (this.ProfileSerialized != outputsSerialized)
       {
         this.ProfileSerialized = outputsSerialized;
-        base.UpdateOutput = true;
+        base.ExpireDownStream = true;
       }
       else
-        base.UpdateOutput = false;
+        base.ExpireDownStream = false;
 
       int i = 0;
       DA.SetData(i++, new GH_UnitNumber(profile.Depth.ToUnit(this.LengthUnit)));
@@ -77,7 +78,7 @@ namespace ComposGH.Components
     private LengthUnit LengthUnit = Units.LengthUnitGeometry;
     private int ProfileSerialized = 0;
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Unit" });
 
@@ -91,7 +92,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       // change selected item
       this.SelectedItems[i] = this.DropDownItems[i][j];
@@ -101,7 +102,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[0]);
 

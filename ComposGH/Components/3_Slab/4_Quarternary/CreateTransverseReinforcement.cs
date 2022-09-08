@@ -5,6 +5,7 @@ using Grasshopper.Kernel;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using OasysGH.Components;
 
 namespace ComposGH.Components
 {

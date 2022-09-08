@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using Grasshopper.Kernel;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using Grasshopper.Kernel;
+using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -47,17 +49,17 @@ namespace ComposGH.Components
       if (this.Params.Input[0].Sources.Count > 0)
       {
         SelectedItems[0] = "Custom";
-        SetOutput.Item(this, DA, 0, new ReinforcementMaterialGoo(new ReinforcementMaterial(GetInput.Stress(this, DA, 0, StressUnit))));
+        Output.SetItem(this, DA, 0, new ReinforcementMaterialGoo(new ReinforcementMaterial(GetInput.Stress(this, DA, 0, StressUnit))));
       }
       else
-        SetOutput.Item(this, DA, 0, new ReinforcementMaterialGoo(new ReinforcementMaterial(Grade)));
+        Output.SetItem(this, DA, 0, new ReinforcementMaterialGoo(new ReinforcementMaterial(Grade)));
     }
 
     #region Custom UI
     private PressureUnit StressUnit = Units.StressUnit;
     private RebarGrade Grade = RebarGrade.EN_500B;
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Grade", "Unit" });
 
@@ -75,7 +77,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
@@ -87,7 +89,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       if (SelectedItems[0] != "Custom")
         this.Grade = (RebarGrade)Enum.Parse(typeof(RebarGrade), this.SelectedItems[0]);

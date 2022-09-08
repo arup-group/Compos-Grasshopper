@@ -6,6 +6,9 @@ using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Oasys.Units;
+using OasysGH.Components;
+using OasysGH.Helpers;
+using OasysGH.Helpers;
 using UnitsNet.Units;
 using UnitsNet.GH;
 
@@ -115,17 +118,17 @@ namespace ComposGH.Components
       }
 
       int i = 0;
-      SetOutput.List(this, DA, i++, outputs0);
-      SetOutput.List(this, DA, i++, outputs1);
+      Output.SetList(this, DA, i++, outputs0);
+      Output.SetList(this, DA, i++, outputs1);
 
-      SetOutput.List(this, DA, i++, result.Shear
+      Output.SetList(this, DA, i++, result.Shear
         .Select(x => new GH_UnitNumber(x.ToUnit(this.ForceUnit))).ToList());
-      SetOutput.List(this, DA, i++, result.ShearBuckling
+      Output.SetList(this, DA, i++, result.ShearBuckling
         .Select(x => new GH_UnitNumber(x.ToUnit(this.ForceUnit))).ToList());
-      SetOutput.List(this, DA, i++, result.ShearRequired
+      Output.SetList(this, DA, i++, result.ShearRequired
         .Select(x => new GH_UnitNumber(x.ToUnit(this.ForceUnit))).ToList());
       
-      SetOutput.List(this, DA, i, positions);
+      Output.SetList(this, DA, i, positions);
     }
 
     #region Custom UI
@@ -145,7 +148,7 @@ namespace ComposGH.Components
     private ForceUnit ForceUnit = Units.ForceUnit;
     private LengthUnit LengthUnit = Units.LengthUnitSection;
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Case", "Moment Unit", "Force Unit", "Length Unit" });
 
@@ -171,7 +174,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       this.SelectedItems[i] = this.DropDownItems[i][j];
       if (i == 0)
@@ -186,7 +189,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       this.SelectedCase = (Case)Enum.Parse(typeof(Case), this.SelectedItems[0]);
       this.MomentUnit = (MomentUnit)Enum.Parse(typeof(MomentUnit), this.SelectedItems[1]);

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using Grasshopper.Kernel;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using Grasshopper.Kernel;
+using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -99,7 +101,7 @@ namespace ComposGH.Components
 
       ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, dryDensity, userDensity, (eRatio == null) ? new ERatio() : eRatio.Value, imposedLoadPercentage);
 
-      SetOutput.Item(this, DA, 0, new ConcreteMaterialGoo(concreteMaterial));
+      Output.SetItem(this, DA, 0, new ConcreteMaterialGoo(concreteMaterial));
     }
 
     #region Custom UI
@@ -107,7 +109,7 @@ namespace ComposGH.Components
     private ConcreteGrade Grade = ConcreteGrade.C25;
     private DensityUnit DensityUnit = Units.DensityUnit;
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Grade", "Density Unit" });
 
@@ -131,7 +133,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
@@ -144,7 +146,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       if (this.SelectedItems[0] != "-")
         this.Grade = (ConcreteGrade)Enum.Parse(typeof(ConcreteGrade), this.SelectedItems[0]);

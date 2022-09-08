@@ -1,8 +1,12 @@
 ﻿using System;
-using Grasshopper.Kernel;
+using System.Collections.Generic;
+using System.Linq;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using Grasshopper.Kernel;
+using OasysGH.Components;
+using UnitsNet;
 using UnitsNet.Units;
 
 namespace ComposGH.Components

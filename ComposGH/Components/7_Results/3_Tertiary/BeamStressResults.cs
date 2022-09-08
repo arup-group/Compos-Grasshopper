@@ -5,6 +5,8 @@ using Grasshopper.Kernel;
 using ComposAPI;
 using ComposGH.Properties;
 using ComposGH.Parameters;
+using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet.Units;
 using UnitsNet.GH;
 using static ComposGH.Components.CompositeProperties;
@@ -88,11 +90,11 @@ namespace ComposGH.Components
       }
 
       int i = 0;
-      SetOutput.List(this, DA, i++, outputs0);
-      SetOutput.List(this, DA, i++, outputs1);
-      SetOutput.List(this, DA, i++, outputs2);
+      Output.SetList(this, DA, i++, outputs0);
+      Output.SetList(this, DA, i++, outputs1);
+      Output.SetList(this, DA, i++, outputs2);
 
-      SetOutput.List(this, DA, i, positions);
+      Output.SetList(this, DA, i, positions);
     }
 
     #region Custom UI
@@ -108,7 +110,7 @@ namespace ComposGH.Components
     private PressureUnit StressUnit = Units.StressUnit;
     private LengthUnit LengthUnit = Units.LengthUnitGeometry;
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Case", "Stress Unit", "Length Unit" });
 
@@ -130,7 +132,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
@@ -144,7 +146,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       this.SelectedCase = (Case)Enum.Parse(typeof(Case), this.SelectedItems[0]);
       this.StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), this.SelectedItems[1]);

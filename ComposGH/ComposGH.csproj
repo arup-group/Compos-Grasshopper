@@ -58,6 +58,9 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="OasysGH, Version=0.1.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\OasysGH.0.1.0-beta\lib\net472\OasysGH.dll</HintPath>
+    </Reference>
     <Reference Include="OasysUnits, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Compos\lib\OasysUnits.dll</HintPath>
@@ -159,9 +162,6 @@
     <Compile Include="Components\7_Results\3_Tertiary\StudResults.cs" />
     <Compile Include="Components\7_Results\3_Tertiary\SlabStressResults.cs" />
     <Compile Include="Components\7_Results\3_Tertiary\BeamStressResults.cs" />
-    <Compile Include="Components\GH_OasysDropDownComponent.cs" />
-    <Compile Include="Components\GH_OasysComponent.cs" />
-    <Compile Include="Components\GH_OasysTaskCapableComponent.cs" />
     <Compile Include="Components\8_Design\1_Primary\DesignMember.cs" />
     <Compile Include="Components\8_Design\2_Secondary\CreateDesignCriteria.cs" />
     <Compile Include="Components\8_Design\3_Tertiary\CataloguesSections.cs" />
@@ -169,11 +169,8 @@
     <Compile Include="Components\8_Design\3_Tertiary\CreateBeamSizeLimits.cs" />
     <Compile Include="Components\8_Design\3_Tertiary\CreateDeflectionLimit.cs" />
     <Compile Include="ComposGHInfo.cs" />
-    <Compile Include="Helpers\DeSerialization.cs" />
     <Compile Include="Helpers\GhRibbonLayout.cs" />
     <Compile Include="Helpers\LoadMainMenu.cs" />
-    <Compile Include="Helpers\PostHog.cs" />
-    <Compile Include="Helpers\SetOutput.cs" />
     <Compile Include="Helpers\_ComposResultsHelper.cs" />
     <Compile Include="Helpers\GetInputs.cs" />
     <Compile Include="Helpers\_SqlReaderValues.cs" />
@@ -214,8 +211,6 @@
     <Compile Include="Parameters\5_Member\DesignCode\SafetyFactorsGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\DesignCodeGoo.cs" />
     <Compile Include="Parameters\3_Slab\Decking\DeckingConfigurationGoo.cs" />
-    <Compile Include="Parameters\GH_OasysGeoGoo.cs" />
-    <Compile Include="Parameters\GH_OasysGoo.cs" />
     <Compile Include="Parameters\99_Other\GH_UnitNumber.cs" />
     <Compile Include="Parameters\_Units.cs" />
     <Compile Include="Parameters\3_Slab\Decking\DeckingGoo.cs" />
@@ -231,21 +226,12 @@
     <Compile Include="UI\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Colours.cs" />
-    <Compile Include="UI\_DropDownCheckBoxAttributes.cs" />
-    <Compile Include="UI\_SingleButtonAttributes.cs" />
-    <Compile Include="UI\_CheckBoxAttributes.cs" />
-    <Compile Include="UI\_DropDownAttributes.cs" />
-    <Compile Include="UI\_DropDownSliderAttributes.cs" />
-    <Compile Include="UI\GraphicButtons.cs" />
-    <Compile Include="UI\_TripleButtonAttributes.cs" />
     <Compile Include="UI\UnitSettingsBox.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\UnitSettingsBox.Designer.cs">
       <DependentUpon>UnitSettingsBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\WidthFix.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

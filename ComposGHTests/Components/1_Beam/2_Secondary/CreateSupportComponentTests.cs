@@ -5,6 +5,7 @@ using Xunit;
 using ComposGHTests.Helpers;
 using System.Collections.Generic;
 using UnitsNet;
+using OasysGH.Components;
 
 namespace ComposGHTests.Beam
 {

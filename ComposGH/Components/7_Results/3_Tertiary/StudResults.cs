@@ -5,6 +5,8 @@ using Grasshopper.Kernel;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet.Units;
 using UnitsNet.GH;
 
@@ -58,47 +60,47 @@ namespace ComposGH.Components
       IStudResult result = res.StudResults;
 
       int i = 0;
-      SetOutput.List(this, DA, i++, 
+      Output.SetList(this, DA, i++, 
         result.StudCapacity.Select(x => new GH_UnitNumber(x.ToUnit(this.ForceUnit))).ToList());
       
-      SetOutput.List(this, DA, i++,
+      Output.SetList(this, DA, i++,
         result.NumberOfStudsStart);
       
-      SetOutput.List(this, DA, i++,
+      Output.SetList(this, DA, i++,
         result.NumberOfStudsEnd);
 
-      SetOutput.List(this, DA, i++,
+      Output.SetList(this, DA, i++,
         result.NumberOfStudsRequiredStart);
 
-      SetOutput.List(this, DA, i++,
+      Output.SetList(this, DA, i++,
         result.NumberOfStudsRequiredEnd);
 
-      SetOutput.List(this, DA, i++,
+      Output.SetList(this, DA, i++,
         result.StudCapacityRequiredForFullShearInteraction.Select(x => new GH_UnitNumber(x.ToUnit(this.ForceUnit))).ToList());
 
-      SetOutput.List(this, DA, i++,
+      Output.SetList(this, DA, i++,
         result.ShearInteractionRequired.Select(x => new GH_UnitNumber(x.ToUnit(RatioUnit.DecimalFraction))).ToList());
 
-      SetOutput.Item(this, DA, i++, new GH_UnitNumber(
+      Output.SetItem(this, DA, i++, new GH_UnitNumber(
         result.SingleStudCapacity.ToUnit(this.ForceUnit)));
 
-      SetOutput.List(this, DA, i++,
+      Output.SetList(this, DA, i++,
         result.ShearInteraction.Select(x => new GH_UnitNumber(x.ToUnit(RatioUnit.DecimalFraction))).ToList());
 
-      SetOutput.List(this, DA, i++,
+      Output.SetList(this, DA, i++,
         result.StudCapacityStart.Select(x => new GH_UnitNumber(x.ToUnit(this.ForceUnit))).ToList());
 
-      SetOutput.List(this, DA, i++,
+      Output.SetList(this, DA, i++,
         result.StudCapacityEnd.Select(x => new GH_UnitNumber(x.ToUnit(this.ForceUnit))).ToList());
 
-      SetOutput.List(this, DA, i, positions);
+      Output.SetList(this, DA, i, positions);
     }
 
     #region Custom UI
     private ForceUnit ForceUnit = Units.ForceUnit;
     private LengthUnit LengthUnit = Units.LengthUnitGeometry;
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Force Unit", "Length Unit" });
 
@@ -116,7 +118,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
@@ -128,7 +130,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       this.ForceUnit = (ForceUnit)Enum.Parse(typeof(ForceUnit), this.SelectedItems[0]);
       this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[1]);

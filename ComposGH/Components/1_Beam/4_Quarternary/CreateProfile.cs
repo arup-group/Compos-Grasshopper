@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;using Grasshopper.Kernel;
-using Grasshopper.Kernel.Parameters;
+using System.Text.RegularExpressions;
 using ComposAPI;
 using ComposGH.Helpers;
 using ComposGH.Parameters;
 using ComposGH.Properties;
-
+using Grasshopper.Kernel;
+using Grasshopper.Kernel.Parameters;
+using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
+using UnitsNet.Units;
 
 namespace ComposGH.Components
 {
@@ -86,7 +89,7 @@ namespace ComposGH.Components
           this.ExpireSolution(true);
         }
 
-        SetOutput.Item(this, DA, 0, new BeamSectionGoo(new BeamSection("CAT " + ProfileString)));
+        Output.SetItem(this, DA, 0, new BeamSectionGoo(new BeamSection("CAT " + ProfileString)));
 
         return;
       }
@@ -138,7 +141,7 @@ namespace ComposGH.Components
           return;
         }
 
-        SetOutput.Item(this, DA, 0, new BeamSectionGoo(new BeamSection(profile)));
+        Output.SetItem(this, DA, 0, new BeamSectionGoo(new BeamSection(profile)));
       }
       #endregion
     }
@@ -177,7 +180,7 @@ namespace ComposGH.Components
     string ProfileString = "HE HE600.B";
     string Search = "";
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Profile type", "Measure", "Type", "Profile" });
 
@@ -196,7 +199,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       // input -1 to force update of catalogue sections to include/exclude superseded
       bool updateCat = false;
@@ -425,7 +428,7 @@ namespace ComposGH.Components
       }
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       if (this.SelectedItems[0] == "Catalogue")
       {

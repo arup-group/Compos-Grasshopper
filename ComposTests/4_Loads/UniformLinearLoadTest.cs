@@ -5,8 +5,8 @@ using ComposGHTests.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 using Xunit;
+using OasysGH;
 using static ComposAPI.Load;
-
 
 namespace ComposAPI.Loads.Tests
 {

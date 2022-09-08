@@ -10,7 +10,7 @@ using ComposAPITests.Helpers;
 using ComposAPI.Helpers;
 using ComposAPI.Tests;
 using ComposGHTests.Helpers;
-
+using OasysGH;
 
 namespace ComposAPI.Slabs.Tests
 {

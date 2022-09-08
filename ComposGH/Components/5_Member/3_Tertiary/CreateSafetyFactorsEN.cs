@@ -5,6 +5,8 @@ using Grasshopper.Kernel;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using OasysGH.Components;
+using OasysGH.Helpers;
 
 namespace ComposGH.Components
 {
@@ -148,13 +150,13 @@ namespace ComposGH.Components
       if (mf != null)
         safetyFactors.MaterialFactors = mf;
 
-      SetOutput.Item(this, DA, 0, new SafetyFactorsENGoo(safetyFactors));
+      Output.SetItem(this, DA, 0, new SafetyFactorsENGoo(safetyFactors));
     }
 
     #region Custom UI
     private LoadCombination LoadCombinationType = LoadCombination.Equation6_10;
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Load Combination" });
 
@@ -170,7 +172,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       // change selected item
       this.SelectedItems[i] = this.DropDownItems[i][j];
@@ -183,7 +185,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       this.LoadCombinationType = (LoadCombination)Enum.Parse(typeof(LoadCombination), this.SelectedItems[0].Replace(" or ", "__").Replace(".", "_"));
 

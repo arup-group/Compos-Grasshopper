@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Parameters;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using Grasshopper.Kernel;
+using Grasshopper.Kernel.Parameters;
+using OasysGH.Components;
+using OasysGH.Helpers;
 
 namespace ComposGH.Components
 {
@@ -56,7 +58,7 @@ namespace ComposGH.Components
         case StudSpacingType.Automatic:
         case StudSpacingType.Min_Num_of_Studs:
           DA.GetData(2, ref minSav);
-          SetOutput.Item(this, DA, 0, new StudGoo(
+          Output.SetItem(this, DA, 0, new StudGoo(
               new Stud(studDimensions.Value, studSpec.Value, minSav, SpacingType)));
           break;
 
@@ -64,7 +66,7 @@ namespace ComposGH.Components
           DA.GetData(2, ref minSav);
           double interaction = 0.85;
           DA.GetData(3, ref interaction);
-          SetOutput.Item(this, DA, 0, new StudGoo(
+          Output.SetItem(this, DA, 0, new StudGoo(
               new Stud(studDimensions.Value, studSpec.Value, minSav, interaction)));
           break;
 
@@ -72,7 +74,7 @@ namespace ComposGH.Components
           List<StudGroupSpacingGoo> spacings = GetInput.GenericGooList<StudGroupSpacingGoo>(this, DA, 2);
           bool check = false;
           DA.GetData(3, ref check);
-          SetOutput.Item(this, DA, 0, new StudGoo(
+          Output.SetItem(this, DA, 0, new StudGoo(
               new Stud(studDimensions.Value, studSpec.Value, spacings?.Select(x => x.Value as IStudGroupSpacing).ToList(), check)));
           break;
       }
@@ -81,7 +83,7 @@ namespace ComposGH.Components
     #region Custom UI
     private StudSpacingType SpacingType = StudSpacingType.Min_Num_of_Studs;
 
-    internal override void InitialiseDropdowns()
+    public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Spacing Type" });
       this.DropDownItems = new List<List<string>>();
@@ -93,7 +95,7 @@ namespace ComposGH.Components
       this.IsInitialised = true;
     }
 
-    internal override void SetSelected(int i, int j)
+    public override void SetSelected(int i, int j)
     {
       // change selected item
       this.SelectedItems[i] = this.DropDownItems[i][j];
@@ -104,7 +106,7 @@ namespace ComposGH.Components
       base.UpdateUI();
     }
 
-    internal override void UpdateUIFromSelectedItems()
+    public override void UpdateUIFromSelectedItems()
     {
       this.SpacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), this.SelectedItems[0].Replace(" ", "_"));
       this.ModeChangeClicked();
