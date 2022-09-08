@@ -67,11 +67,19 @@ steps:
 
 #    $coverage_file = (Resolve-Path $(System.DefaultWorkingDirectory)/results\*.trx).Path
 - powershell: |
-    $coverage_file = (Resolve-Path $(System.DefaultWorkingDirectory)/results/composapi/*/coverage.cobertura.xml).Path
-    echo $coverage_file
-    Copy-Item $coverage_file $(System.DefaultWorkingDirectory)\results\coverage.xml
+    $coverage_file_composapi = (Resolve-Path $(System.DefaultWorkingDirectory)/results/composapi/*/coverage.cobertura.xml).Path
+    echo $coverage_file_composapi
+    $coverage_file_composgh = (Resolve-Path $(System.DefaultWorkingDirectory)/results/composgh/*/coverage.cobertura.xml).Path
+    echo $coverage_file_composgh
+    $coverage_file_integration = (Resolve-Path $(System.DefaultWorkingDirectory)/results/integration/*/coverage.cobertura.xml).Path
+    echo $coverage_file_integration
+    Copy-Item $coverage_file_composapi $(System.DefaultWorkingDirectory)\results\coverage_composapi.xml
+    Copy-Item $coverage_file_composgh $(System.DefaultWorkingDirectory)\results\coverage_composgh.xml
+    Copy-Item $coverage_file_integration $(System.DefaultWorkingDirectory)\results\coverage_integration.xml
     ls $(System.DefaultWorkingDirectory)\results\
-    codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage.xml --flags unittests
+    codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_composapi.xml --flags unittests
+    codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_composgh.xml --flags unittests
+    codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_integration.xml --flags unittests
   env:
     CODECOV_TOKEN: $(CODECOV_TOKEN)
   displayName: Upload Code Coverage to codecovio
