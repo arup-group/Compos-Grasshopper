@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using ComposGH;
+using OasysGH;
 using Xunit;
 
 namespace Rhino.Test
@@ -27,6 +29,9 @@ namespace Rhino.Test
       AddPluginToGH();
 
       InitializeCore();
+
+      GH_PluginInfo.PluginName = ComposGHInfo.PluginName;
+      GH_PluginInfo.ProductName = ComposGHInfo.ProductName;
 
       // setup headless units
       ComposGH.Units.SetupUnitsDuringLoad(true);

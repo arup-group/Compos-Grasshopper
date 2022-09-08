@@ -109,15 +109,15 @@ namespace ComposGH
 
   public class ComposGHInfo : GH_AssemblyInfo
   {
-    internal static Guid GUID = new Guid("c3884cdc-ac5b-4151-afc2-93590cef4f8f");
-    internal const string Company = "Oasys";
-    internal const string Copyright = "Copyright © Oasys 1985 - 2022";
-    internal const string Contact = "https://www.oasys-software.com/";
-    internal const string Vers = "0.0.3";
-    internal static bool isBeta = true;
-    internal static string Disclaimer = PluginName + " is pre-release and under active development, including further testing to be undertaken. It is provided \"as-is\" and you bear the risk of using it. Future versions may contain breaking changes. Any files, results, or other types of output information created using " + PluginName + " should not be relied upon without thorough and independent checking.";
-    internal const string ProductName = "Compos";
-    internal const string PluginName = "ComposGH";
+    public static Guid GUID = new Guid("c3884cdc-ac5b-4151-afc2-93590cef4f8f");
+    public const string Company = "Oasys";
+    public const string Copyright = "Copyright © Oasys 1985 - 2022";
+    public const string Contact = "https://www.oasys-software.com/";
+    public const string Vers = "0.0.3";
+    public static bool isBeta = true;
+    public static string Disclaimer = PluginName + " is pre-release and under active development, including further testing to be undertaken. It is provided \"as-is\" and you bear the risk of using it. Future versions may contain breaking changes. Any files, results, or other types of output information created using " + PluginName + " should not be relied upon without thorough and independent checking.";
+    public const string ProductName = "Compos";
+    public const string PluginName = "ComposGH";
 
     public override string Name
     {
