@@ -33,7 +33,7 @@ namespace ComposGH.Parameters
     { }
     public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + DeflectionLimitGoo.Name + " parameter" : base.InstanceDescription;
     public override string TypeName => this.SourceCount == 0 ? DeflectionLimitGoo.Name : base.TypeName;
-    public override Guid ComponentGuid => new Guid("bef8188b-0874-43c4-94b1-4285fbbdec2e");
+    public override Guid ComponentGuid => new Guid("f226c2c8-6524-45a2-8579-77bfa8d0542e");
     public override GH_Exposure Exposure => GH_Exposure.hidden;
     protected override System.Drawing.Bitmap Icon => Properties.Resources.DeflectionLimit;
   }

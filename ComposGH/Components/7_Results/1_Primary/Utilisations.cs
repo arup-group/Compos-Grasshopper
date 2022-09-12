@@ -28,7 +28,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter(MemberGoo.Name, MemberGoo.NickName, MemberGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new ComposMemberParameter());
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
