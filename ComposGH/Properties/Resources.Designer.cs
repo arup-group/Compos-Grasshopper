@@ -753,6 +753,16 @@ namespace ComposGH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap SlabDimensionParam {
+            get {
+                object obj = ResourceManager.GetObject("SlabDimensionParam", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap SlabDimensions {
             get {
                 object obj = ResourceManager.GetObject("SlabDimensions", resourceCulture);

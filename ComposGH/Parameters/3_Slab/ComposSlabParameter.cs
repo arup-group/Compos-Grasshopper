@@ -12,9 +12,16 @@ namespace ComposGH.Parameters
   public class ComposSlabParameter : GH_PersistentParam<SlabGoo>
   {
     public ComposSlabParameter()
-      : base(new GH_InstanceDescription(SlabGoo.Name, SlabGoo.NickName, "Maintains a collection of " + SlabGoo.Description + " data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+      : base(new GH_InstanceDescription(
+        SlabGoo.Name, 
+        SlabGoo.NickName, 
+        SlabGoo.Description + " parameter", 
+        Components.Ribbon.CategoryName.Name(), 
+        Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
+    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + SlabGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => this.SourceCount == 0 ? SlabGoo.Name : base.TypeName;
 
     public override Guid ComponentGuid => new Guid("e1c8e010-a55d-4f41-8f37-8d6e56976975");
 

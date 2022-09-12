@@ -31,7 +31,7 @@ namespace ComposGH.Components
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       pManager.AddParameter(new ConcreteMaterialParam());
-      pManager.AddGenericParameter(SlabDimensionGoo.Name + "(s)", SlabDimensionGoo.NickName, SlabDimensionGoo.Description, GH_ParamAccess.list);
+      pManager.AddParameter(new SlabDimensionParam(), SlabDimensionGoo.Name + "(s)", SlabDimensionGoo.NickName, SlabDimensionGoo.Description, GH_ParamAccess.list);
       pManager.AddParameter(new TransverseReinforcementParam());
       pManager.AddParameter(new MeshReinforcementParam());
       pManager.AddParameter(new ComposDeckingParameter(), DeckingGoo.Name, DeckingGoo.NickName, "(Optional) " + DeckingGoo.Description, GH_ParamAccess.item);
