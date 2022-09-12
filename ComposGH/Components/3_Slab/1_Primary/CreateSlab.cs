@@ -30,7 +30,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter(ConcreteMaterialGoo.Name, ConcreteMaterialGoo.NickName, ConcreteMaterialGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new ConcreteMaterialParam());
       pManager.AddGenericParameter(SlabDimensionGoo.Name + "(s)", SlabDimensionGoo.NickName, SlabDimensionGoo.Description, GH_ParamAccess.list);
       pManager.AddGenericParameter(TransverseReinforcementGoo.Name, TransverseReinforcementGoo.NickName, TransverseReinforcementGoo.Description, GH_ParamAccess.item);
       pManager.AddGenericParameter(MeshReinforcementGoo.Name, MeshReinforcementGoo.NickName, "(Optional) " + MeshReinforcementGoo.Description, GH_ParamAccess.item);
