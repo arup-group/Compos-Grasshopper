@@ -35,6 +35,6 @@ namespace ComposGH.Parameters
     public override string TypeName => this.SourceCount == 0 ? DesignCodeGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("029870cb-c510-488b-940e-cabc31045910");
     public override GH_Exposure Exposure => GH_Exposure.hidden;
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.BeamSectionParam;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.DesignCodeParameter;
   }
 }

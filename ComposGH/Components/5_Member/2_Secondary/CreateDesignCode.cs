@@ -364,26 +364,29 @@ namespace ComposGH.Components
         case Code.HKSUOS_2005:
         case Code.HKSUOS_2011:
           // remove input parameters 
-          while (this.Params.Input.Count > 1)
-            this.Params.UnregisterInputParameter(Params.Input[1], true);
+          while (this.Params.Input.Count > 0)
+            this.Params.UnregisterInputParameter(Params.Input[0], true);
+          this.Params.RegisterInputParam(new SafetyFactorParam());
           break;
 
         case Code.EN1994_1_1_2004:
           // remove input parameters
-          while (this.Params.Input.Count > 1)
-            this.Params.UnregisterInputParameter(Params.Input[1], true);
+          while (this.Params.Input.Count > 0)
+            this.Params.UnregisterInputParameter(Params.Input[0], true);
 
           // add input parameters of generic type
+          this.Params.RegisterInputParam(new SafetyFactorENParam());
           this.Params.RegisterInputParam(new Param_GenericObject());
           this.Params.RegisterInputParam(new Param_GenericObject());
           break;
 
         case Code.AS_NZS2327_2017:
           //remove input parameters
-          while (this.Params.Input.Count > 1)
-            this.Params.UnregisterInputParameter(Params.Input[1], true);
+          while (this.Params.Input.Count > 0)
+            this.Params.UnregisterInputParameter(Params.Input[0], true);
 
           //add input parameters of number type
+          this.Params.RegisterInputParam(new SafetyFactorParam());
           this.Params.RegisterInputParam(new Param_Number());
           this.Params.RegisterInputParam(new Param_Number());
           break;

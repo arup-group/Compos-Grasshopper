@@ -45,7 +45,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(SafetyFactorsGoo.Name, SafetyFactorsGoo.NickName, SafetyFactorsGoo.Description + " for a " + DesignCodeGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new SafetyFactorParam());
     }
     #endregion
 
