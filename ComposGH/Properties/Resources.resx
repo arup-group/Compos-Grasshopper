@@ -277,6 +277,9 @@
   <data name="MeshReinforcement" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\MeshReinforcement.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="MeshReinforcementParam" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\MeshReinforcementParam.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="ModelParam" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\ModelParam.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -298,11 +301,14 @@
   <data name="ReadResult" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\ReadResult.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="RebarLayoutParam" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\RebarLayoutParam.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="RebarMaterial" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\RebarMaterial.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ReinforcementParam" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Icons\ReinforcementParam.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="RebarMaterialParam" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\RebarMaterialParam.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="RestraintParam" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\RestraintParam.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -387,6 +393,9 @@
   </data>
   <data name="TransverseReinforcement" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\TransverseReinforcement.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TransverseReinforcementParam" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Icons\TransverseReinforcementParam.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TriLinearLoad" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Icons\TriLinearLoad.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

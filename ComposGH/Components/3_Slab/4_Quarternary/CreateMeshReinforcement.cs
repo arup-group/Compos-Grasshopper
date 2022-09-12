@@ -38,7 +38,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(MeshReinforcementGoo.Name, MeshReinforcementGoo.NickName, MeshReinforcementGoo.Description + " for a " + SlabGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new MeshReinforcementParam());
     }
     #endregion
 

@@ -581,6 +581,18 @@
   <ItemGroup>
     <None Include="Properties\Icons\StudSpecParam.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\MeshReinforcementParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\RebarLayoutParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\TransverseReinforcementParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\RebarMaterialParam.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

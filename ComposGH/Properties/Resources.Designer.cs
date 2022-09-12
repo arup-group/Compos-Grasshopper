@@ -593,6 +593,16 @@ namespace ComposGH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap MeshReinforcementParam {
+            get {
+                object obj = ResourceManager.GetObject("MeshReinforcementParam", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ModelParam {
             get {
                 object obj = ResourceManager.GetObject("ModelParam", resourceCulture);
@@ -663,6 +673,16 @@ namespace ComposGH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap RebarLayoutParam {
+            get {
+                object obj = ResourceManager.GetObject("RebarLayoutParam", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap RebarMaterial {
             get {
                 object obj = ResourceManager.GetObject("RebarMaterial", resourceCulture);
@@ -673,9 +693,9 @@ namespace ComposGH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ReinforcementParam {
+        internal static System.Drawing.Bitmap RebarMaterialParam {
             get {
-                object obj = ResourceManager.GetObject("ReinforcementParam", resourceCulture);
+                object obj = ResourceManager.GetObject("RebarMaterialParam", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -956,6 +976,16 @@ namespace ComposGH.Properties {
         internal static System.Drawing.Bitmap TransverseReinforcement {
             get {
                 object obj = ResourceManager.GetObject("TransverseReinforcement", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TransverseReinforcementParam {
+            get {
+                object obj = ResourceManager.GetObject("TransverseReinforcementParam", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
