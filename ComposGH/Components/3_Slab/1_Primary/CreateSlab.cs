@@ -34,7 +34,7 @@ namespace ComposGH.Components
       pManager.AddGenericParameter(SlabDimensionGoo.Name + "(s)", SlabDimensionGoo.NickName, SlabDimensionGoo.Description, GH_ParamAccess.list);
       pManager.AddGenericParameter(TransverseReinforcementGoo.Name, TransverseReinforcementGoo.NickName, TransverseReinforcementGoo.Description, GH_ParamAccess.item);
       pManager.AddGenericParameter(MeshReinforcementGoo.Name, MeshReinforcementGoo.NickName, "(Optional) " + MeshReinforcementGoo.Description, GH_ParamAccess.item);
-      pManager.AddGenericParameter(DeckingGoo.Name, DeckingGoo.NickName, "(Optional) " + DeckingGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new ComposDeckingParameter(), DeckingGoo.Name, DeckingGoo.NickName, "(Optional) " + DeckingGoo.Description, GH_ParamAccess.item);
 
       pManager[3].Optional = true;
       pManager[4].Optional = true;
