@@ -306,6 +306,7 @@ namespace ComposGH.Components
     }
     public override void VariableParameterMaintenance()
     {
+      Params.Input[0].Optional = true;
       switch (this.Code)
       {
         case Code.EN1994_1_1_2004:
