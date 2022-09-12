@@ -32,8 +32,8 @@ namespace ComposGH.Components
     {
       pManager.AddParameter(new ComposBeamParameter());
       pManager.AddParameter(new ComposStudParameter());
-      pManager.AddGenericParameter(SlabGoo.Name, SlabGoo.NickName, SlabGoo.Description, GH_ParamAccess.item);
-      pManager.AddGenericParameter(LoadGoo.Name + "(s)", LoadGoo.NickName, LoadGoo.Description, GH_ParamAccess.list);
+      pManager.AddParameter(new ComposSlabParameter());
+      pManager.AddParameter(new ComposLoadParameter(), LoadGoo.Name + "(s)", LoadGoo.NickName, LoadGoo.Description, GH_ParamAccess.list);
       pManager.AddGenericParameter(DesignCodeGoo.Name, DesignCodeGoo.NickName, DesignCodeGoo.Description, GH_ParamAccess.item);
       pManager.AddTextParameter("Name", "Na", "Set Member Name", GH_ParamAccess.item);
       pManager.AddTextParameter("GridRef", "Grd", "(Optional) Set Member's Grid Reference", GH_ParamAccess.item);
