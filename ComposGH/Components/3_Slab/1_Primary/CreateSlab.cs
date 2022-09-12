@@ -41,7 +41,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(SlabGoo.Name, SlabGoo.NickName, SlabGoo.Description + " for a " + MemberGoo.Description, GH_ParamAccess.list);
+      pManager.AddParameter(new ComposSlabParameter());
     }
     #endregion
 
