@@ -49,7 +49,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(SupportsGoo.Name, SupportsGoo.NickName, SupportsGoo.Description + " for a " + RestraintGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new SupportsParam());
     }
     #endregion
 

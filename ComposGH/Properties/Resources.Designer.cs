@@ -893,6 +893,16 @@ namespace ComposGH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap SupportParam {
+            get {
+                object obj = ResourceManager.GetObject("SupportParam", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap TransverseRebarLayout {
             get {
                 object obj = ResourceManager.GetObject("TransverseRebarLayout", resourceCulture);
