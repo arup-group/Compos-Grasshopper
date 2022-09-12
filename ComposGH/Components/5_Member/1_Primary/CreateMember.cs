@@ -30,7 +30,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter(BeamGoo.Name, BeamGoo.NickName, BeamGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new ComposBeamParameter());
       pManager.AddGenericParameter(StudGoo.Name, StudGoo.NickName, StudGoo.Description, GH_ParamAccess.item);
       pManager.AddGenericParameter(SlabGoo.Name, SlabGoo.NickName, SlabGoo.Description, GH_ParamAccess.item);
       pManager.AddGenericParameter(LoadGoo.Name + "(s)", LoadGoo.NickName, LoadGoo.Description, GH_ParamAccess.list);

@@ -10,10 +10,16 @@ namespace ComposGH.Parameters
   public class ComposWebOpeningParameter : GH_PersistentParam<WebOpeningGoo>
   {
     public ComposWebOpeningParameter()
-      : base(new GH_InstanceDescription(WebOpeningGoo.Name, WebOpeningGoo.NickName, "Maintains a collection of " + WebOpeningGoo.Description + " data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+      : base(new GH_InstanceDescription(
+        WebOpeningGoo.Name, 
+        WebOpeningGoo.NickName, 
+        WebOpeningGoo.Description + " parameter", 
+        Components.Ribbon.CategoryName.Name(), 
+        Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
-
+    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + WebOpeningGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => this.SourceCount == 0 ? WebOpeningGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("eb70e868-29d9-4fae-9ef7-c465f3762a43");
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
