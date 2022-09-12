@@ -15,7 +15,8 @@ namespace ComposGH.Parameters
       : base(new GH_InstanceDescription(LoadGoo.Name, LoadGoo.NickName, "Maintains a collection of " + LoadGoo.Description + " data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
-
+    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + LoadGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => this.SourceCount == 0 ? LoadGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("3dc51bc1-9abb-4f26-845f-ca1e66236e9e");
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;
