@@ -313,10 +313,15 @@ namespace ComposGH.Parameters
   public class ComposMemberParameter : GH_PersistentGeometryParam<MemberGoo>, IGH_PreviewObject
   {
     public ComposMemberParameter()
-      : base(new GH_InstanceDescription("Member", "Mem", "Maintains a collection of Compos Member data.", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
-    {
-    }
-
+      : base(new GH_InstanceDescription(
+        "Member", 
+        "Mem", 
+        "Compos Member parameter", 
+        Components.Ribbon.CategoryName.Name(), 
+        Components.Ribbon.SubCategoryName.Cat10()))
+    { }
+    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty Member parameter" : base.InstanceDescription;
+    public override string TypeName => this.SourceCount == 0 ? "Member" : base.TypeName;
     public override Guid ComponentGuid => new Guid("a94f9373-e1a3-49d9-9b98-d3a2618fb9f8");
 
     public override GH_Exposure Exposure => GH_Exposure.primary;
