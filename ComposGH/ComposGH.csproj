@@ -572,6 +572,15 @@
   <ItemGroup>
     <None Include="Properties\Icons\WebOpeningStiffenerParam.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\StudDimParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\StudGrpDimParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\StudSpecParam.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

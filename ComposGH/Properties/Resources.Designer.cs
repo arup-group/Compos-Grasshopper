@@ -873,6 +873,26 @@ namespace ComposGH.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap StudDimParam {
+            get {
+                object obj = ResourceManager.GetObject("StudDimParam", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StudGrpDimParam {
+            get {
+                object obj = ResourceManager.GetObject("StudGrpDimParam", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap StudParam {
             get {
                 object obj = ResourceManager.GetObject("StudParam", resourceCulture);
@@ -886,6 +906,16 @@ namespace ComposGH.Properties {
         internal static System.Drawing.Bitmap StudResults {
             get {
                 object obj = ResourceManager.GetObject("StudResults", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StudSpecParam {
+            get {
+                object obj = ResourceManager.GetObject("StudSpecParam", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

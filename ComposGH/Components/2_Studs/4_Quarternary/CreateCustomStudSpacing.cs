@@ -44,7 +44,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(StudGroupSpacingGoo.Name, StudGroupSpacingGoo.NickName, StudGroupSpacingGoo.Description + " for a " + StudGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new StudGroupSpacingParam());
     }
     #endregion
 

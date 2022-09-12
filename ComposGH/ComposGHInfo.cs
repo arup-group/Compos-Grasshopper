@@ -32,11 +32,12 @@ namespace ComposGH
       Grasshopper.Instances.ComponentServer.AddCategorySymbolName("Compos", 'C');
       Grasshopper.Instances.ComponentServer.AddCategoryIcon("Compos", Properties.Resources.ComposLogo128);
 
-      // ### Setup units ###
+      // ### Setup OasysGH ###
       GH_PluginInfo.PluginName = ComposGHInfo.PluginName;
       GH_PluginInfo.ProductName = ComposGHInfo.ProductName;
       GH_PluginInfo.PostHogApiKey = "phc_alOp3OccDM3D18xJTWDoW44Y1cJvbEScm5LJSX8qnhs";
 
+      // ### Setup Units ###
       Units.SetupUnitsDuringLoad();
 
       PostHog.PluginLoaded();
