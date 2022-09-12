@@ -33,7 +33,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter(SafetyFactorsENGoo.Name, SafetyFactorsENGoo.NickName, "(Optional) " + SafetyFactorsENGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new SafetyFactorENParam(), SafetyFactorsENGoo.Name, SafetyFactorsENGoo.NickName, "(Optional) " + SafetyFactorsENGoo.Description, GH_ParamAccess.item);
       pManager.AddGenericParameter(CreepShrinkageParametersGoo.Name + " Short Term", CreepShrinkageParametersGoo.NickName.ToLower(), "(Optional) Short Term " + CreepShrinkageParametersGoo.Description + ". If no input, the default code values will be used", GH_ParamAccess.item);
       pManager.AddGenericParameter(CreepShrinkageParametersGoo.Name + " Long Term", CreepShrinkageParametersGoo.NickName.ToUpper(), "(Optional) Long Term " + CreepShrinkageParametersGoo.Description + ". If no input, the default code values will be used", GH_ParamAccess.item);
 
@@ -43,7 +43,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(DesignCodeGoo.Name, DesignCodeGoo.NickName, DesignCodeGoo.Description + " for a " + MemberGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new DesignCodeParam());
     }
     #endregion
 
@@ -123,12 +123,6 @@ namespace ComposGH.Components
           break;
       }
     }
-
-    #region update input params
-    
-    #endregion
-
-
 
     #region Custom UI
     List<string> DesignCodePretty = new List<string>(new string[]
