@@ -9,7 +9,8 @@ using Oasys.Units;
 using OasysGH.Components;
 using OasysGH.Helpers;
 using UnitsNet.Units;
-using UnitsNet.GH;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
 
 namespace ComposGH.Components
 {
@@ -93,9 +94,9 @@ namespace ComposGH.Components
       Final
     }
     private Load SelectedLoad = Load.Final;
-    private PressureUnit StressUnit = Units.StressUnit;
-    private StrainUnit StrainUnit = Units.StrainUnit;
-    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+    private PressureUnit StressUnit = DefaultUnits.StressUnit;
+    private StrainUnit StrainUnit = DefaultUnits.StrainUnit;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
 
     public override void InitialiseDropdowns()
     {
@@ -109,15 +110,15 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.SelectedLoad.ToString());
 
       // stress
-      this.DropDownItems.Add(Units.FilteredStressUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredStressUnits);
       this.SelectedItems.Add(this.StressUnit.ToString());
 
       // strain
-      this.DropDownItems.Add(Units.FilteredStrainUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredStrainUnits);
       this.SelectedItems.Add(this.StrainUnit.ToString());
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

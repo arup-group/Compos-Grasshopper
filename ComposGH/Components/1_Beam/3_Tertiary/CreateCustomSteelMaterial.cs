@@ -9,6 +9,8 @@ using OasysGH.Components;
 using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
 
 namespace ComposGH.Components
 {
@@ -99,8 +101,8 @@ namespace ComposGH.Components
 
     #region Custom UI
     List<bool> OverrideDropDownItems;
-    private PressureUnit StressUnit = Units.StressUnit;
-    private DensityUnit DensityUnit = Units.DensityUnit;
+    private PressureUnit StressUnit = DefaultUnits.StressUnit;
+    private DensityUnit DensityUnit = DefaultUnits.DensityUnit;
     private WeldMaterialGrade Grade = WeldMaterialGrade.Grade_35;
 
     public override void InitialiseDropdowns()
@@ -121,11 +123,11 @@ namespace ComposGH.Components
       this.SelectedItems.Add(Grade.ToString());
 
       // Stress
-      this.DropDownItems.Add(Units.FilteredStressUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredStressUnits);
       this.SelectedItems.Add(StressUnit.ToString());
 
       // Density
-      this.DropDownItems.Add(Units.FilteredDensityUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredDensityUnits);
       this.SelectedItems.Add(DensityUnit.ToString());
 
       this.OverrideDropDownItems = new List<bool>() { false, false, false };

@@ -37,7 +37,7 @@ namespace ComposGHTests
       OasysGHInfo.ProductName = ComposGHInfo.ProductName;
 
       // setup headless units
-      ComposGH.Units.SetupUnitsDuringLoad(true);
+      OasysGH.Units.Helpers.Setup.SetupUnitsDuringLoad(true);
     }
 
     public void AddPluginToGH()

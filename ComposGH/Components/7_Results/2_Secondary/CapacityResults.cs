@@ -10,6 +10,7 @@ using OasysGH.Components;
 using OasysGH.Helpers;
 using UnitsNet.Units;
 using OasysGH.Units;
+using OasysGH.Units.Helpers;
 
 namespace ComposGH.Components
 {
@@ -143,9 +144,9 @@ namespace ComposGH.Components
       FullInteraction
     }
     private Case SelectedCase = Case.Sagging;
-    private MomentUnit MomentUnit = Units.MomentUnit;
-    private ForceUnit ForceUnit = Units.ForceUnit;
-    private LengthUnit LengthUnit = Units.LengthUnitSection;
+    private MomentUnit MomentUnit = DefaultUnits.MomentUnit;
+    private ForceUnit ForceUnit = DefaultUnits.ForceUnit;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
     public override void InitialiseDropdowns()
     {
@@ -159,15 +160,15 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.SelectedCase.ToString());
 
       // moment
-      this.DropDownItems.Add(Units.FilteredMomentUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredMomentUnits);
       this.SelectedItems.Add(this.MomentUnit.ToString());
 
       // force
-      this.DropDownItems.Add(Units.FilteredForceUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredForceUnits);
       this.SelectedItems.Add(this.ForceUnit.ToString());
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

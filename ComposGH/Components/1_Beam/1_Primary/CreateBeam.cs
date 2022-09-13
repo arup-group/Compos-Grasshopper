@@ -8,6 +8,8 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using OasysGH.Components;
 using OasysGH.Helpers;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
 using Rhino.Geometry;
 using UnitsNet;
 using UnitsNet.Units;
@@ -89,13 +91,13 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
 
     public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Unit" });
 
-      this.DropDownItems = new List<List<string>>() { Units.FilteredLengthUnits };
+      this.DropDownItems = new List<List<string>>() { FilteredUnits.FilteredLengthUnits };
       this.SelectedItems = new List<string>() { this.LengthUnit.ToString() };
 
       this.IsInitialised = true;

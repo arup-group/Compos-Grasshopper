@@ -10,6 +10,8 @@ using OasysGH.Components;
 using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
 
 namespace ComposGH.Components
 {
@@ -78,7 +80,7 @@ namespace ComposGH.Components
       Notch,
     }
     private Stiff_types OpeningType = Stiff_types.Web_Opening;
-    private LengthUnit LengthUnit = Units.LengthUnitSection;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
     public override void InitialiseDropdowns()
     {
@@ -93,7 +95,7 @@ namespace ComposGH.Components
       this.SelectedItems.Add(Stiff_types.Web_Opening.ToString().Replace('_', ' '));
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

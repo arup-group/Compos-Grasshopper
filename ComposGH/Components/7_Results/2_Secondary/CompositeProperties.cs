@@ -8,7 +8,8 @@ using ComposGH.Properties;
 using OasysGH.Components;
 using OasysGH.Helpers;
 using UnitsNet.Units;
-using UnitsNet.GH;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
 
 namespace ComposGH.Components
 {
@@ -51,8 +52,8 @@ namespace ComposGH.Components
       List<GH_UnitNumber> positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
       ICompositeSectionProperties result = res.SectionProperties;
 
-      AreaUnit areaUnit = Units.GetAreaUnit(this.LengthUnit);
-      AreaMomentOfInertiaUnit inertiaUnit = Units.GetAreaMomentOfInertiaUnit(this.LengthUnit);
+      AreaUnit areaUnit = UnitsHelper.GetAreaUnit(this.LengthUnit);
+      AreaMomentOfInertiaUnit inertiaUnit = UnitsHelper.GetAreaMomentOfInertiaUnit(this.LengthUnit);
 
       List<GH_UnitNumber> outputs0 = null;
       List<GH_UnitNumber> outputs1 = null;
@@ -117,7 +118,7 @@ namespace ComposGH.Components
       Vibration
     }
     private Case SelectedCase = Case.LongTerm;
-    private LengthUnit LengthUnit = Units.LengthUnitSection;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
     public override void InitialiseDropdowns()
     {
@@ -131,7 +132,7 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.SelectedCase.ToString());
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

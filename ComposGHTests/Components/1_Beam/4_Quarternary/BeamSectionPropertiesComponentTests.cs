@@ -1,8 +1,8 @@
-﻿using ComposGH.Components;
-using Xunit;
-using ComposGHTests.Helpers;
-using UnitsNet.GH;
+﻿using Xunit;
 using Grasshopper.Kernel.Types;
+using OasysGH.Units;
+using ComposGH.Components;
+using ComposGHTests.Helpers;
 
 namespace ComposGHTests.Beam
 {

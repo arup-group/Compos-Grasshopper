@@ -8,7 +8,8 @@ using ComposGH.Properties;
 using OasysGH.Components;
 using OasysGH.Helpers;
 using UnitsNet.Units;
-using UnitsNet.GH;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
 
 namespace ComposGH.Components
 {
@@ -64,11 +65,11 @@ namespace ComposGH.Components
       Output.SetList(this, DA, i++,
         result.Cover.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList());
       Output.SetList(this, DA, i,
-        result.Area.Select(x => new GH_UnitNumber(x.ToUnit(Units.GetAreaUnit(this.LengthUnit)))).ToList());
+        result.Area.Select(x => new GH_UnitNumber(x.ToUnit(UnitsHelper.GetAreaUnit(this.LengthUnit)))).ToList());
     }
 
     #region Custom UI
-    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
 
     public override void InitialiseDropdowns()
     {
@@ -78,7 +79,7 @@ namespace ComposGH.Components
       this.SelectedItems = new List<string>();
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

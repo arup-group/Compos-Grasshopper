@@ -211,8 +211,6 @@
     <Compile Include="Parameters\5_Member\DesignCode\SafetyFactorsGoo.cs" />
     <Compile Include="Parameters\5_Member\DesignCode\DesignCodeGoo.cs" />
     <Compile Include="Parameters\3_Slab\Decking\DeckingConfigurationGoo.cs" />
-    <Compile Include="Parameters\99_Other\GH_UnitNumber.cs" />
-    <Compile Include="Parameters\_Units.cs" />
     <Compile Include="Parameters\3_Slab\Decking\DeckingGoo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -225,12 +223,6 @@
     </Compile>
     <Compile Include="UI\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\UnitSettingsBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\UnitSettingsBox.Designer.cs">
-      <DependentUpon>UnitSettingsBox.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -251,9 +243,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\UnitSettingsBox.resx">
-      <DependentUpon>UnitSettingsBox.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

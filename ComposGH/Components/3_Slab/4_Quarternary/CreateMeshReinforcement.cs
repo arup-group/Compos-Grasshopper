@@ -9,6 +9,8 @@ using OasysGH.Components;
 using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
 
 namespace ComposGH.Components
 {
@@ -55,7 +57,7 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    private LengthUnit LengthUnit = Units.LengthUnitSection;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
     private ReinforcementMeshType Mesh = ReinforcementMeshType.A393;
 
     public override void InitialiseDropdowns()
@@ -71,7 +73,7 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.Mesh.ToString());
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

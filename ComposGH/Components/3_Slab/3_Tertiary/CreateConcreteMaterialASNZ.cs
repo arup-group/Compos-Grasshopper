@@ -10,6 +10,8 @@ using OasysGH.Components;
 using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
 
 namespace ComposGH.Components
 {
@@ -119,7 +121,7 @@ namespace ComposGH.Components
     #region Custom UI
     List<bool> OverrideDropDownItems;
     private ConcreteGrade Grade = ConcreteGrade.C20;
-    private DensityUnit DensityUnit = Units.DensityUnit;
+    private DensityUnit DensityUnit = DefaultUnits.DensityUnit;
     private StrainUnit StrainUnit = StrainUnit.MilliStrain;
 
     public override void InitialiseDropdowns()
@@ -138,11 +140,11 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.Grade.ToString());
 
       // density unit
-      this.DropDownItems.Add(Units.FilteredDensityUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredDensityUnits);
       this.SelectedItems.Add(this.DensityUnit.ToString());
 
       // strain unit
-      this.DropDownItems.Add(Units.FilteredStrainUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredStrainUnits);
       this.SelectedItems.Add(this.StrainUnit.ToString());
 
       this.OverrideDropDownItems = new List<bool>() { false, false, false };

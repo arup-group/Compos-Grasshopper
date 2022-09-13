@@ -9,6 +9,8 @@ using OasysGH.Components;
 using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
 
 namespace ComposGH.Components
 {
@@ -56,7 +58,7 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    private PressureUnit StressUnit = Units.StressUnit;
+    private PressureUnit StressUnit = DefaultUnits.StressUnit;
     private RebarGrade Grade = RebarGrade.EN_500B;
 
     public override void InitialiseDropdowns()
@@ -71,7 +73,7 @@ namespace ComposGH.Components
       this.SelectedItems.Add(Grade.ToString());
 
       // strength
-      this.DropDownItems.Add(Units.FilteredStressUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredStressUnits);
       this.SelectedItems.Add(StressUnit.ToString());
 
       this.IsInitialised = true;

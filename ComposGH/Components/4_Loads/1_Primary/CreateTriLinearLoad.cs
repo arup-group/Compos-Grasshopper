@@ -9,6 +9,8 @@ using OasysGH.Components;
 using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
 
 namespace ComposGH.Components
 {
@@ -92,9 +94,9 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    private ForcePerLengthUnit ForcePerLengthUnit = Units.ForcePerLengthUnit;
-    private PressureUnit ForcePerAreaUnit = Units.StressUnit;
-    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+    private ForcePerLengthUnit ForcePerLengthUnit = DefaultUnits.ForcePerLengthUnit;
+    private PressureUnit ForcePerAreaUnit = DefaultUnits.StressUnit;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
     private LoadDistribution DistributionType = LoadDistribution.Area;
 
     public override void InitialiseDropdowns()
@@ -112,11 +114,11 @@ namespace ComposGH.Components
       this.SelectedItems.Add(LoadDistribution.Area.ToString());
 
       // force unit
-      this.DropDownItems.Add(Units.FilteredForcePerAreaUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredForcePerAreaUnits);
       this.SelectedItems.Add(this.ForcePerAreaUnit.ToString());
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;
@@ -131,12 +133,12 @@ namespace ComposGH.Components
         this.DistributionType = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), this.SelectedItems[i]);
         if (this.DistributionType == LoadDistribution.Line)
         {
-          this.DropDownItems[1] = Units.FilteredForcePerLengthUnits;
+          this.DropDownItems[1] = FilteredUnits.FilteredForcePerLengthUnits;
           this.SelectedItems[1] = this.ForcePerLengthUnit.ToString();
         }
         else
         {
-          this.DropDownItems[1] = Units.FilteredForcePerAreaUnits;
+          this.DropDownItems[1] = FilteredUnits.FilteredForcePerAreaUnits;
           this.SelectedItems[1] = this.ForcePerAreaUnit.ToString();
         }
       }

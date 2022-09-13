@@ -10,6 +10,8 @@ using OasysGH.Components;
 using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
 
 namespace ComposGH.Components
 {
@@ -87,8 +89,8 @@ namespace ComposGH.Components
             "Ø22/100mm",
             "Ø25/100mm"
     });
-    private PressureUnit StressUnit = Units.StressUnit;
-    private LengthUnit LengthUnit = Units.LengthUnitSection;
+    private PressureUnit StressUnit = DefaultUnits.StressUnit;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
     private StandardStudGrade StdGrd = StandardStudGrade.SD1_EN13918;
     private StandardStudSize StdSize = StandardStudSize.D19mmH100mm;
 
@@ -111,7 +113,7 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.StdGrd.ToString());
 
       // strength
-      this.DropDownItems.Add(Units.FilteredStressUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredStressUnits);
       this.SelectedItems.Add(this.StressUnit.ToString());
 
       this.IsInitialised = true;
@@ -139,7 +141,7 @@ namespace ComposGH.Components
         else if (this.DropDownItems.Count < 4)
         {
           // add length dropdown
-          this.DropDownItems.Add(Units.FilteredLengthUnits);
+          this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
           this.SelectedItems.Add(this.LengthUnit.ToString());
           this.SpacerDescriptions.Add("Length Unit");
           this.ModeChangeClicked();

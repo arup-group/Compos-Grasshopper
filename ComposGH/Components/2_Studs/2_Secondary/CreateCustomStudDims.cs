@@ -6,6 +6,8 @@ using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH.Components;
 using OasysGH.Helpers;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -55,8 +57,8 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    private LengthUnit LengthUnit = Units.LengthUnitSection;
-    private ForceUnit ForceUnit = Units.ForceUnit;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
+    private ForceUnit ForceUnit = DefaultUnits.ForceUnit;
 
     public override void InitialiseDropdowns()
     {
@@ -66,11 +68,11 @@ namespace ComposGH.Components
       this.SelectedItems = new List<string>();
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       // strength
-      this.DropDownItems.Add(Units.FilteredForceUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredForceUnits);
       this.SelectedItems.Add(this.ForceUnit.ToString());
 
       this.IsInitialised = true;

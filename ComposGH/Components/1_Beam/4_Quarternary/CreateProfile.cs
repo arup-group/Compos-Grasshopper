@@ -10,6 +10,8 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
 using OasysGH.Components;
 using OasysGH.Helpers;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -155,7 +157,7 @@ namespace ComposGH.Components
       { "I Beam Symmetrical", "IIBeamSymmetricalProfile" },
     };
 
-    private UnitsNet.Units.LengthUnit LengthUnit = Units.LengthUnitSection;
+    private UnitsNet.Units.LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
     // for catalogue selection
     // Catalogues
@@ -190,7 +192,7 @@ namespace ComposGH.Components
       this.SelectedItems.Add("Catalogue");
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.SetSelected(-1, 0);
@@ -405,7 +407,7 @@ namespace ComposGH.Components
             this.DropDownItems.RemoveAt(1);
 
           // add length measure dropdown list
-          this.DropDownItems.Add(Units.FilteredLengthUnits);
+          this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
 
           // set selected length
           this.SelectedItems[1] = this.LengthUnit.ToString();

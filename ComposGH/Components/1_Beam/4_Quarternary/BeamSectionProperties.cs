@@ -8,8 +8,9 @@ using OasysGH.Components;
 using Newtonsoft.Json;
 using UnitsNet;
 using UnitsNet.Units;
-using UnitsNet.GH;
+using OasysGH.Units;
 using ComposGH.Helpers;
+using OasysGH.Units.Helpers;
 
 namespace ComposGH.Components
 {
@@ -76,7 +77,7 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
     private int ProfileSerialized = 0;
 
     public override void InitialiseDropdowns()
@@ -87,7 +88,7 @@ namespace ComposGH.Components
       this.SelectedItems = new List<string>();
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

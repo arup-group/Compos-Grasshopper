@@ -7,6 +7,8 @@ using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH.Components;
 using OasysGH.Helpers;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -109,7 +111,7 @@ namespace ComposGH.Components
     #region Custom UI
     List<bool> OverrideDropDownItems;
     private IntermediateRestraint RestraintType = IntermediateRestraint.None;
-    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
     public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[]
@@ -128,7 +130,7 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.DropDownItems[0][0]);
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(LengthUnit.ToString());
 
       this.OverrideDropDownItems = new List<bool>() { false, false };

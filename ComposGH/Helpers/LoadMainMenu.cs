@@ -45,11 +45,11 @@ namespace ComposGH.UI.Menu
     private static void PopulateSub(ToolStripMenuItem menutItem)
     {
       // add units
-      menutItem.DropDown.Items.Add("Compos Units", Properties.Resources.Units, (s, a) =>
-      {
-        UnitSettingsBox unitBox = new UnitSettingsBox();
-        unitBox.ShowDialog();
-      });
+      //menutItem.DropDown.Items.Add("Compos Units", Properties.Resources.Units, (s, a) =>
+      //{
+      //  UnitSettingsBox unitBox = new UnitSettingsBox();
+      //  unitBox.ShowDialog();
+      //});
       // add info
       menutItem.DropDown.Items.Add("Compos Info", Properties.Resources.ComposInfo, (s, a) =>
       {
