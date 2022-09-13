@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using UnitsNet;
 using UnitsNet.Units;
 using UnitsNet.GH;
+using ComposGH.Helpers;
 
 namespace ComposGH.Components
 {
@@ -52,7 +53,7 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      BeamSection profile = new BeamSection(GetInput.BeamSection(this, DA, 0, false));
+      BeamSection profile = new BeamSection(Input.BeamSection(this, DA, 0, false));
 
       int outputsSerialized = JsonConvert.SerializeObject(profile.SectionDescription + LengthUnit.ToString()).GetHashCode();
       if (this.ProfileSerialized != outputsSerialized)

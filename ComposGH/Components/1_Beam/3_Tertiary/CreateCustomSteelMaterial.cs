@@ -91,9 +91,9 @@ namespace ComposGH.Components
           AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Note that reduction factor only applies for EC4 DesignCode");
 
       Output.SetItem(this, DA, 0, new SteelMaterialGoo(new SteelMaterial(
-        GetInput.Stress(this, DA, 0, this.StressUnit), 
-        GetInput.Stress(this, DA, 1, this.StressUnit), 
-        GetInput.Density(this, DA, 2, this.DensityUnit), 
+        (Pressure)Input.UnitNumber(this, DA, 0, this.StressUnit),
+        (Pressure)Input.UnitNumber(this, DA, 1, this.StressUnit),
+        (Density)Input.UnitNumber(this, DA, 2, this.DensityUnit), 
         this.Grade, true, redFact)));
     }
 

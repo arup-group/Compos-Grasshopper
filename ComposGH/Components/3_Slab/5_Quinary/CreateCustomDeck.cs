@@ -55,15 +55,15 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Length distB1 = GetInput.Length(this, DA, 0, this.LengthUnit);
-      Length distB2 = GetInput.Length(this, DA, 1, this.LengthUnit);
-      Length distB3 = GetInput.Length(this, DA, 2, this.LengthUnit);
-      Length distB4 = GetInput.Length(this, DA, 3, this.LengthUnit);
-      Length distB5 = GetInput.Length(this, DA, 4, this.LengthUnit);
-      Length depth = GetInput.Length(this, DA, 5, this.LengthUnit);
-      Length thickness = GetInput.Length(this, DA, 6, this.LengthUnit);
-      Pressure stress = GetInput.Stress(this, DA, 7, this.StressUnit);
-      DeckingConfigurationGoo dconf = (DeckingConfigurationGoo)GetInput.GenericGoo<DeckingConfigurationGoo>(this, DA, 8);
+      Length distB1 = (Length)Input.UnitNumber(this, DA, 0, this.LengthUnit);
+      Length distB2 = (Length)Input.UnitNumber(this, DA, 1, this.LengthUnit);
+      Length distB3 = (Length)Input.UnitNumber(this, DA, 2, this.LengthUnit);
+      Length distB4 = (Length)Input.UnitNumber(this, DA, 3, this.LengthUnit);
+      Length distB5 = (Length)Input.UnitNumber(this, DA, 4, this.LengthUnit);
+      Length depth = (Length)Input.UnitNumber(this, DA, 5, this.LengthUnit);
+      Length thickness = (Length)Input.UnitNumber(this, DA, 6, this.LengthUnit);
+      Pressure stress = (Pressure)Input.UnitNumber(this, DA, 7, this.StressUnit);
+      DeckingConfigurationGoo dconf = (DeckingConfigurationGoo)Input.GenericGoo<DeckingConfigurationGoo>(this, DA, 8);
 
       Output.SetItem(this, DA, 0, new DeckingGoo(new CustomDecking(distB1, distB2, distB3, distB4, distB5, depth, thickness, stress, (dconf == null) ? new DeckingConfiguration() : dconf.Value)));
     }

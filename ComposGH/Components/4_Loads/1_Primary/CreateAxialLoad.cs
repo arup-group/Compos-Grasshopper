@@ -60,16 +60,16 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Force constDead1 = GetInput.Force(this, DA, 0, this.ForceUnit);
-      Force constLive1 = GetInput.Force(this, DA, 1, this.ForceUnit);
-      Force finalDead1 = GetInput.Force(this, DA, 2, this.ForceUnit);
-      Force finalLive1 = GetInput.Force(this, DA, 3, this.ForceUnit);
-      Length pos1 = GetInput.Length(this, DA, 4, this.LengthUnit);
-      Force constDead2 = GetInput.Force(this, DA, 5, this.ForceUnit);
-      Force constLive2 = GetInput.Force(this, DA, 6, this.ForceUnit);
-      Force finalDead2 = GetInput.Force(this, DA, 7, this.ForceUnit);
-      Force finalLive2 = GetInput.Force(this, DA, 8, this.ForceUnit);
-      Length pos2 = GetInput.Length(this, DA, 9, this.LengthUnit);
+      Force constDead1 = (Force)Input.UnitNumber(this, DA, 0, this.ForceUnit);
+      Force constLive1 = (Force)Input.UnitNumber(this, DA, 1, this.ForceUnit);
+      Force finalDead1 = (Force)Input.UnitNumber(this, DA, 2, this.ForceUnit);
+      Force finalLive1 = (Force)Input.UnitNumber(this, DA, 3, this.ForceUnit);
+      Length pos1 = (Length)Input.UnitNumber(this, DA, 4, this.LengthUnit);
+      Force constDead2 = (Force)Input.UnitNumber(this, DA, 5, this.ForceUnit);
+      Force constLive2 = (Force)Input.UnitNumber(this, DA, 6, this.ForceUnit);
+      Force finalDead2 = (Force)Input.UnitNumber(this, DA, 7, this.ForceUnit);
+      Force finalLive2 = (Force)Input.UnitNumber(this, DA, 8, this.ForceUnit);
+      Length pos2 = (Length)Input.UnitNumber(this, DA, 9, this.LengthUnit);
 
       Load load = new AxialLoad(
         constDead1, constLive1, finalDead1, finalLive1, pos1, constDead2, constLive2, finalDead2, finalLive2, pos2);

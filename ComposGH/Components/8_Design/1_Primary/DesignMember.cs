@@ -6,6 +6,7 @@ using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH;
 using OasysGH.Components;
+using OasysGH.Helpers;
 
 namespace ComposGH.Components
 {
@@ -43,8 +44,8 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      MemberGoo memGoo = (MemberGoo)GetInput.GenericGoo<MemberGoo>(this, DA, 0);
-      DesignCriteriaGoo critGoo = (DesignCriteriaGoo)GetInput.GenericGoo<DesignCriteriaGoo>(this, DA, 1);
+      MemberGoo memGoo = (MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0);
+      DesignCriteriaGoo critGoo = (DesignCriteriaGoo)Input.GenericGoo<DesignCriteriaGoo>(this, DA, 1);
       this.Message = "";
       if (memGoo.Value != null)
       {

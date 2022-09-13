@@ -48,11 +48,11 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Force constDead = GetInput.Force(this, DA, 0, this.ForceUnit);
-      Force constLive = GetInput.Force(this, DA, 1, this.ForceUnit);
-      Force finalDead = GetInput.Force(this, DA, 2, this.ForceUnit);
-      Force finalLive = GetInput.Force(this, DA, 3, this.ForceUnit);
-      IQuantity pos = GetInput.LengthOrRatio(this, DA, 4, this.LengthUnit);
+      Force constDead = (Force)Input.UnitNumber(this, DA, 0, this.ForceUnit);
+      Force constLive = (Force)Input.UnitNumber(this, DA, 1, this.ForceUnit);
+      Force finalDead = (Force)Input.UnitNumber(this, DA, 2, this.ForceUnit);
+      Force finalLive = (Force)Input.UnitNumber(this, DA, 3, this.ForceUnit);
+      IQuantity pos = Input.LengthOrRatio(this, DA, 4, this.LengthUnit);
 
       Load load = new PointLoad(constDead, constLive, finalDead, finalLive, pos);
       Output.SetItem(this, DA, 0, new LoadGoo(load));

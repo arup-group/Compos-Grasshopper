@@ -94,7 +94,7 @@ namespace ComposGH.Components
 
       if (this.Params.Input[2].Sources.Count > 0)
       {
-        List<IQuantity> restrs = GetInput.LengthsOrRatios(this, DA, 2, LengthUnit);
+        List<IQuantity> restrs = Input.LengthsOrRatios(this, DA, 2, LengthUnit);
         SelectedItems[0] = "Custom";
         Supports sup = new Supports(restrs, smir, ffre);
         Output.SetItem(this, DA, 0, new SupportsGoo(sup));

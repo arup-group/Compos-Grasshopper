@@ -54,19 +54,19 @@ namespace ComposGH.Components
     {
       Length minDepth = new Length(20, LengthUnit.Centimeter);
       if (this.Params.Input[0].Sources.Count > 0)
-        minDepth = GetInput.Length(this, DA, 0, this.LengthUnit);
+        minDepth = (Length)Input.UnitNumber(this, DA, 0, this.LengthUnit);
 
       Length maxDepth = new Length(100, LengthUnit.Centimeter);
       if (this.Params.Input[1].Sources.Count > 0)
-        maxDepth = GetInput.Length(this, DA, 1, this.LengthUnit);
+        maxDepth = (Length)Input.UnitNumber(this, DA, 1, this.LengthUnit);
 
       Length minWidth = new Length(10, LengthUnit.Centimeter);
       if (this.Params.Input[2].Sources.Count > 0)
-        minWidth = GetInput.Length(this, DA, 2, this.LengthUnit);
+        minWidth = (Length)Input.UnitNumber(this, DA, 2, this.LengthUnit);
 
       Length maxWidth = new Length(50, LengthUnit.Centimeter);
       if (this.Params.Input[3].Sources.Count > 0)
-        maxWidth = GetInput.Length(this, DA, 3, this.LengthUnit);
+        maxWidth = (Length)Input.UnitNumber(this, DA, 3, this.LengthUnit);
 
       BeamSizeLimits beamSizeLimits = new BeamSizeLimits()
       {

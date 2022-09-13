@@ -55,12 +55,12 @@ namespace ComposGH.Components
       ISafetyFactorsEN ec4safetyFactors = null;
       if (this.Code == Code.EN1994_1_1_2004)
       {
-        ec4safetyFactorsGoo = (SafetyFactorsENGoo)GetInput.GenericGoo<SafetyFactorsENGoo>(this, DA, 0);
+        ec4safetyFactorsGoo = (SafetyFactorsENGoo)Input.GenericGoo<SafetyFactorsENGoo>(this, DA, 0);
         ec4safetyFactors = (ec4safetyFactorsGoo == null) ? null : ec4safetyFactorsGoo.Value;
       }
       else
       {
-        safetyFactorsGoo = (SafetyFactorsGoo)GetInput.GenericGoo<SafetyFactorsGoo>(this, DA, 0);
+        safetyFactorsGoo = (SafetyFactorsGoo)Input.GenericGoo<SafetyFactorsGoo>(this, DA, 0);
         safetyFactors = (safetyFactorsGoo == null) ? null : safetyFactorsGoo.Value;
       }
 
@@ -89,10 +89,10 @@ namespace ComposGH.Components
           ec4.DesignOption = this.DesignOptions;
           ec4.CodeOptions = this.EC4CodeOptions;
 
-          CreepShrinkageParametersGoo shrink = (CreepShrinkageParametersGoo)GetInput.GenericGoo<CreepShrinkageParametersGoo>(this, DA, 1);
+          CreepShrinkageParametersGoo shrink = (CreepShrinkageParametersGoo)Input.GenericGoo<CreepShrinkageParametersGoo>(this, DA, 1);
           if (shrink != null)
             ec4.CodeOptions.ShortTerm = shrink.Value;
-          CreepShrinkageParametersGoo longt = (CreepShrinkageParametersGoo)GetInput.GenericGoo<CreepShrinkageParametersGoo>(this, DA, 2);
+          CreepShrinkageParametersGoo longt = (CreepShrinkageParametersGoo)Input.GenericGoo<CreepShrinkageParametersGoo>(this, DA, 2);
           if (longt != null)
             ec4.CodeOptions.LongTerm = longt.Value;
 
@@ -127,8 +127,6 @@ namespace ComposGH.Components
     #region update input params
     
     #endregion
-
-
 
     #region Custom UI
     List<string> DesignCodePretty = new List<string>(new string[]
@@ -399,7 +397,6 @@ namespace ComposGH.Components
       }
     }
     #endregion
-
 
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)

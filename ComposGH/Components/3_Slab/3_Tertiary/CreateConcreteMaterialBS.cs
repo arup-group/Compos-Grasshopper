@@ -91,7 +91,7 @@ namespace ComposGH.Components
       bool userDensity = false;
       if (this.Params.Input[0].Sources.Count > 0)
       {
-        dryDensity = GetInput.Density(this, DA, 0, this.DensityUnit);
+        dryDensity = (Density)Input.UnitNumber(this, DA, 0, this.DensityUnit);
         userDensity = true;
       }
       else
@@ -100,9 +100,9 @@ namespace ComposGH.Components
           dryDensity = new Density(1800, DensityUnit.KilogramPerCubicMeter);
       }
 
-      Ratio imposedLoadPercentage = GetInput.Ratio(this, DA, 2, RatioUnit.DecimalFraction);
+      Ratio imposedLoadPercentage = (Ratio)Input.UnitNumber(this, DA, 2, RatioUnit.DecimalFraction);
 
-      ERatioGoo eRatio = (ERatioGoo)GetInput.GenericGoo<ERatioGoo>(this, DA, 1);
+      ERatioGoo eRatio = (ERatioGoo)Input.GenericGoo<ERatioGoo>(this, DA, 1);
 
       IConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, this.Type, dryDensity, userDensity, (eRatio == null) ? new ERatio() : eRatio.Value, imposedLoadPercentage);
 

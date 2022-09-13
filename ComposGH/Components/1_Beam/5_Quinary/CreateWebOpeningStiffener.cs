@@ -54,13 +54,13 @@ namespace ComposGH.Components
     {
       bool bothSides = false;
       DA.GetData(0, ref bothSides);
-      Length start = GetInput.Length(this, DA, 1, LengthUnit);
-      Length topWidth = GetInput.Length(this, DA, 2, LengthUnit);
-      Length topTHK = GetInput.Length(this, DA, 3, LengthUnit);
+      Length start = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
+      Length topWidth = (Length)Input.UnitNumber(this, DA, 2, LengthUnit);
+      Length topTHK = (Length)Input.UnitNumber(this, DA, 3, LengthUnit);
       if (OpeningType == Stiff_types.Web_Opening)
       {
-        Length bottomWidth = GetInput.Length(this, DA, 4, LengthUnit);
-        Length bottomTHK = GetInput.Length(this, DA, 5, LengthUnit);
+        Length bottomWidth = (Length)Input.UnitNumber(this, DA, 4, LengthUnit);
+        Length bottomTHK = (Length)Input.UnitNumber(this, DA, 5, LengthUnit);
         Output.SetItem(this, DA, 0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
             start, topWidth, topTHK, bottomWidth, bottomTHK, bothSides)));
       }

@@ -128,7 +128,7 @@ namespace ComposGH.Components
       bool userDensity = false;
       if (this.Params.Input[0].Sources.Count > 0)
       {
-        dryDensity = GetInput.Density(this, DA, 0, this.DensityUnit);
+        dryDensity = (Density)Input.UnitNumber(this, DA, 0, this.DensityUnit);
         userDensity = true;
         if (this.isLightWeight)
           SelectedItems[1] = "NOT_APPLY";
@@ -143,15 +143,15 @@ namespace ComposGH.Components
         dryDensity = new Density((double)this.DensityClass, DensityUnit.KilogramPerCubicMeter);
       }
 
-      ERatioGoo eRatio = (ERatioGoo)GetInput.GenericGoo<ERatioGoo>(this, DA, 1);
+      ERatioGoo eRatio = (ERatioGoo)Input.GenericGoo<ERatioGoo>(this, DA, 1);
 
-      Ratio imposedLoadPercentage = GetInput.Ratio(this, DA, 2, RatioUnit.DecimalFraction);
+      Ratio imposedLoadPercentage = (Ratio)Input.UnitNumber(this, DA, 2, RatioUnit.DecimalFraction);
 
       Strain shrinkageStrain = new Strain(-0.5, StrainUnit.MilliStrain);
       bool userStrain = false;
       if (this.Params.Input[3].Sources.Count > 0)
       {
-        shrinkageStrain = GetInput.Strain(this, DA, 3, StrainUnit, true);
+        shrinkageStrain = (Strain)Input.UnitNumber(this, DA, 3, StrainUnit, true);
         userStrain = true;
       }
 

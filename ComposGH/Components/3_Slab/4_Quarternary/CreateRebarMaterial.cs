@@ -49,7 +49,7 @@ namespace ComposGH.Components
       if (this.Params.Input[0].Sources.Count > 0)
       {
         SelectedItems[0] = "Custom";
-        Output.SetItem(this, DA, 0, new ReinforcementMaterialGoo(new ReinforcementMaterial(GetInput.Stress(this, DA, 0, StressUnit))));
+        Output.SetItem(this, DA, 0, new ReinforcementMaterialGoo(new ReinforcementMaterial((Pressure)Input.UnitNumber(this, DA, 0, StressUnit))));
       }
       else
         Output.SetItem(this, DA, 0, new ReinforcementMaterialGoo(new ReinforcementMaterial(Grade)));

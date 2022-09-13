@@ -58,8 +58,8 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="OasysGH, Version=0.1.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\OasysGH.0.1.0-beta\lib\net472\OasysGH.dll</HintPath>
+    <Reference Include="OasysGH, Version=0.2.5.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\OasysGH.0.2.5-beta\lib\net472\OasysGH.dll</HintPath>
     </Reference>
     <Reference Include="OasysUnits, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -170,9 +170,9 @@
     <Compile Include="Components\8_Design\3_Tertiary\CreateDeflectionLimit.cs" />
     <Compile Include="ComposGHInfo.cs" />
     <Compile Include="Helpers\GhRibbonLayout.cs" />
+    <Compile Include="Helpers\Input.cs" />
     <Compile Include="Helpers\LoadMainMenu.cs" />
     <Compile Include="Helpers\_ComposResultsHelper.cs" />
-    <Compile Include="Helpers\GetInputs.cs" />
     <Compile Include="Helpers\_SqlReaderValues.cs" />
     <Compile Include="Helpers\_SqlReader.cs" />
     <Compile Include="Parameters\1_Beam\ComposBeamParameter.cs" />

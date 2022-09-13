@@ -57,10 +57,10 @@ namespace ComposGH.Components
       // get default length inputs used for all cases
       IQuantity noStudZoneStart = Length.Zero;
       if (this.Params.Input[0].Sources.Count > 0)
-        noStudZoneStart = GetInput.LengthOrRatio(this, DA, 0, LengthUnit, true);
+        noStudZoneStart = Input.LengthOrRatio(this, DA, 0, LengthUnit, true);
       IQuantity noStudZoneEnd = Length.Zero;
       if (this.Params.Input[1].Sources.Count > 0)
-        noStudZoneEnd = GetInput.LengthOrRatio(this, DA, 1, LengthUnit, true);
+        noStudZoneEnd = Input.LengthOrRatio(this, DA, 1, LengthUnit, true);
 
       bool ec4 = true;
       DA.GetData(2, ref ec4);

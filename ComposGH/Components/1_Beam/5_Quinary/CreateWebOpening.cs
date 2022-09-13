@@ -54,19 +54,19 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Length width_dia = GetInput.Length(this, DA, 0, this.LengthUnit);
+      Length width_dia = (Length)Input.UnitNumber(this, DA, 0, this.LengthUnit);
       
       int i = 1;
 
       Length height = Length.Zero;
       if (this.OpeningType == WebOpeningShape.Rectangular)
-        height = GetInput.Length(this, DA, i++, this.LengthUnit);
+        height = (Length)Input.UnitNumber(this, DA, i++, this.LengthUnit);
       
-      IQuantity x = GetInput.LengthOrRatio(this, DA, i++, this.LengthUnit);
+      IQuantity x = Input.LengthOrRatio(this, DA, i++, this.LengthUnit);
       
-      IQuantity z = GetInput.LengthOrRatio(this, DA, i++, this.LengthUnit);
+      IQuantity z = Input.LengthOrRatio(this, DA, i++, this.LengthUnit);
       
-      WebOpeningStiffenersGoo stiff = (WebOpeningStiffenersGoo)GetInput.GenericGoo<WebOpeningStiffenersGoo>(this, DA, i++);
+      WebOpeningStiffenersGoo stiff = (WebOpeningStiffenersGoo)Input.GenericGoo<WebOpeningStiffenersGoo>(this, DA, i++);
 
       switch (this.OpeningType)
       {

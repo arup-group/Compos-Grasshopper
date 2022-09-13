@@ -51,11 +51,11 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      IQuantity start = GetInput.LengthOrRatio(this, DA, 0, LengthUnit);
-      IQuantity end = GetInput.LengthOrRatio(this, DA, 1, LengthUnit);
-      Length dia = GetInput.Length(this, DA, 2, LengthUnit);
-      Length spacing = GetInput.Length(this, DA, 3, LengthUnit);
-      Length cov = GetInput.Length(this, DA, 4, LengthUnit);
+      IQuantity start = Input.LengthOrRatio(this, DA, 0, LengthUnit);
+      IQuantity end = Input.LengthOrRatio(this, DA, 1, LengthUnit);
+      Length dia = (Length)Input.UnitNumber(this, DA, 2, LengthUnit);
+      Length spacing = (Length)Input.UnitNumber(this, DA, 3, LengthUnit);
+      Length cov = (Length)Input.UnitNumber(this, DA, 4, LengthUnit);
 
       Output.SetItem(this, DA, 0, new CustomTransverseReinforcementLayoutGoo(new CustomTransverseReinforcementLayout(start, end, dia, spacing, cov)));
     }

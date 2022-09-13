@@ -50,11 +50,11 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      string profile = GetInput.BeamSection(this, DA, 0, false);
+      string profile = Helpers.Input.BeamSection(this, DA, 0, false);
 
       IQuantity start = new Ratio(0, RatioUnit.Percent);
       if (this.Params.Input[1].Sources.Count > 0)
-       start = GetInput.LengthOrRatio(this, DA, 1, this.LengthUnit);
+       start = Input.LengthOrRatio(this, DA, 1, this.LengthUnit);
 
       bool taper = false;
       if (DA.GetData(2, ref taper))

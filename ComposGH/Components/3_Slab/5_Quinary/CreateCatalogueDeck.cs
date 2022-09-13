@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using ComposAPI;
-using ComposGH.Helpers;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -44,7 +43,7 @@ namespace ComposGH.Components
     {
       if (this.Params.Input[0].Sources.Count > 0)
       {
-        DeckingConfigurationGoo dconf = (DeckingConfigurationGoo)GetInput.GenericGoo<DeckingConfigurationGoo>(this, DA, 0);
+        DeckingConfigurationGoo dconf = (DeckingConfigurationGoo)Input.GenericGoo<DeckingConfigurationGoo>(this, DA, 0);
         if (dconf == null) { return; }
         DA.SetData(0, new DeckingGoo(new CatalogueDecking(this.Catalogue, this.Profile, this.SteelGrade, dconf.Value)));
       }
@@ -56,7 +55,7 @@ namespace ComposGH.Components
     string Catalogue = null;
     string Profile = null;
     private DeckingSteelGrade SteelGrade = DeckingSteelGrade.S350;
-    List<string> CatalogueNames = SqlReader.GetDeckCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"));
+    List<string> CatalogueNames = Helpers.SqlReader.GetDeckCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"));
     List<string> SectionList = null;
 
     public override void InitialiseDropdowns()
@@ -75,7 +74,7 @@ namespace ComposGH.Components
       this.Catalogue = this.SelectedItems[0];
 
       // decking
-      this.SectionList = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
+      this.SectionList = Helpers.SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
       this.DropDownItems.Add(this.SectionList);
       this.SelectedItems.Add(this.SectionList[0]);
       this.Profile = this.SelectedItems[1];
@@ -95,7 +94,7 @@ namespace ComposGH.Components
       {
         // update selected section to be all
         this.Catalogue = SelectedItems[0];
-        this.DropDownItems[1] = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
+        this.DropDownItems[1] = Helpers.SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
       }
 
       if (i == 1)
@@ -109,7 +108,7 @@ namespace ComposGH.Components
 
     public override void UpdateUIFromSelectedItems()
     {
-      this.SectionList = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
+      this.SectionList = Helpers.SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
       this.Catalogue = this.SelectedItems[0];
       this.Profile = this.SelectedItems[1];
       this.SteelGrade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), this.SelectedItems[2]);

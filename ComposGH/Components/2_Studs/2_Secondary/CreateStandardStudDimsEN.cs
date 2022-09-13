@@ -50,13 +50,13 @@ namespace ComposGH.Components
     {
       if (SelectedItems[0] == StandardSizes[0]) // custom size
       {
-        Length dia = GetInput.Length(this, DA, 0, LengthUnit);
-        Length h = GetInput.Length(this, DA, 1, LengthUnit);
+        Length dia = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
+        Length h = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
 
         if (this.Params.Input[2].Sources.Count > 0)
         {
           SelectedItems[1] = "Custom";
-          Pressure strengthS = GetInput.Stress(this, DA, 2, StressUnit);
+          Pressure strengthS = (Pressure)Input.UnitNumber(this, DA, 2, StressUnit);
           Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthS)));
         }
         else
@@ -67,7 +67,7 @@ namespace ComposGH.Components
         if (this.Params.Input[0].Sources.Count > 0)
         {
           SelectedItems[1] = "Custom";
-          Pressure strengthS = GetInput.Stress(this, DA, 0, StressUnit);
+          Pressure strengthS = (Pressure)Input.UnitNumber(this, DA, 0, StressUnit);
           Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(StdSize, strengthS)));
         }
         else

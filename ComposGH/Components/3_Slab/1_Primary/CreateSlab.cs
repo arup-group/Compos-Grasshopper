@@ -6,6 +6,7 @@ using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH.Components;
+using OasysGH.Helpers;
 
 namespace ComposGH.Components
 {
@@ -47,10 +48,10 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      ConcreteMaterialGoo material = (ConcreteMaterialGoo)GetInput.GenericGoo<ConcreteMaterialGoo>(this, DA, 0);
+      ConcreteMaterialGoo material = (ConcreteMaterialGoo)Input.GenericGoo<ConcreteMaterialGoo>(this, DA, 0);
       if (material == null) { return; } // return here on non-optional inputs
 
-      List<SlabDimensionGoo> dimensions = GetInput.GenericGooList<SlabDimensionGoo>(this, DA, 1);
+      List<SlabDimensionGoo> dimensions = Input.GenericGooList<SlabDimensionGoo>(this, DA, 1);
       if (dimensions == null) { return; } // return here on non-optional inputs
 
       if (dimensions.Count > 1) 
@@ -58,12 +59,12 @@ namespace ComposGH.Components
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "There is currently a bug in ComposAPI preventing more than one SlabDimension to be written to a compos file."); 
       }
 
-      TransverseReinforcementGoo transverseReinforcement = (TransverseReinforcementGoo)GetInput.GenericGoo<TransverseReinforcementGoo>(this, DA, 2);
+      TransverseReinforcementGoo transverseReinforcement = (TransverseReinforcementGoo)Input.GenericGoo<TransverseReinforcementGoo>(this, DA, 2);
       if (transverseReinforcement == null) { return; } // return here on non-optional inputs
 
-      MeshReinforcementGoo meshReinforcement = (MeshReinforcementGoo)GetInput.GenericGoo<MeshReinforcementGoo>(this, DA, 3);
+      MeshReinforcementGoo meshReinforcement = (MeshReinforcementGoo)Input.GenericGoo<MeshReinforcementGoo>(this, DA, 3);
 
-      DeckingGoo decking = (DeckingGoo)GetInput.GenericGoo<DeckingGoo>(this, DA, 4);
+      DeckingGoo decking = (DeckingGoo)Input.GenericGoo<DeckingGoo>(this, DA, 4);
 
       ISlab slab = new Slab(
         material.Value, 

@@ -5,6 +5,7 @@ using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using OasysGH.Components;
+using OasysGH.Helpers;
 
 namespace ComposGH.Components
 {
@@ -46,7 +47,7 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      IResult res = ((MemberGoo)GetInput.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
+      IResult res = ((MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
       IUtilisation result = res.Utilisations;
 
       maxUtil = -1;

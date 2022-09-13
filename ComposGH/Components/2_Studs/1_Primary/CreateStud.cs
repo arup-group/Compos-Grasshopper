@@ -48,9 +48,9 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      StudDimensionsGoo studDimensions = (StudDimensionsGoo)GetInput.GenericGoo<StudDimensionsGoo>(this, DA, 0);
+      StudDimensionsGoo studDimensions = (StudDimensionsGoo)Input.GenericGoo<StudDimensionsGoo>(this, DA, 0);
       if (studDimensions == null) { return; } // return here on non-optional inputs
-      StudSpecificationGoo studSpec = (StudSpecificationGoo)GetInput.GenericGoo<StudSpecificationGoo>(this, DA, 1);
+      StudSpecificationGoo studSpec = (StudSpecificationGoo)Input.GenericGoo<StudSpecificationGoo>(this, DA, 1);
       if (studSpec == null) { return; } // return here on non-optional inputs
       double minSav = 0.2;
       switch (SpacingType)
@@ -71,7 +71,7 @@ namespace ComposGH.Components
           break;
 
         case StudSpacingType.Custom:
-          List<StudGroupSpacingGoo> spacings = GetInput.GenericGooList<StudGroupSpacingGoo>(this, DA, 2);
+          List<StudGroupSpacingGoo> spacings = Input.GenericGooList<StudGroupSpacingGoo>(this, DA, 2);
           bool check = false;
           DA.GetData(3, ref check);
           Output.SetItem(this, DA, 0, new StudGoo(

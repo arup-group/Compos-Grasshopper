@@ -58,10 +58,10 @@ namespace ComposGH.Components
       DeflectionLimit deflectionLimit = new DeflectionLimit();
 
       if (this.Params.Input[0].Sources.Count > 0)
-        deflectionLimit.AbsoluteDeflection = GetInput.Length(this, DA, 0, this.LengthUnit, true);
+        deflectionLimit.AbsoluteDeflection = (Length)Input.UnitNumber(this, DA, 0, this.LengthUnit, true);
 
       if (this.Params.Input[1].Sources.Count > 0)
-        deflectionLimit.SpanOverDeflectionRatio = GetInput.Ratio(this, DA, 1, RatioUnit.DecimalFraction);
+        deflectionLimit.SpanOverDeflectionRatio = (Ratio)Input.UnitNumber(this, DA, 1, RatioUnit.DecimalFraction);
 
       Output.SetItem(this, DA, 0, new DeflectionLimitGoo(deflectionLimit));
     }

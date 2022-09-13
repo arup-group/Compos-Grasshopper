@@ -4,6 +4,8 @@ using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using OasysGH.Components;
+using UnitsNet;
+using OasysGH.Helpers;
 
 namespace ComposGH.Components
 {
@@ -59,7 +61,7 @@ namespace ComposGH.Components
         csparams.FinalConcreteAgeCreep = ageFinal;
       
       if (this.Params.Input[3].Sources.Count > 0)
-        csparams.RelativeHumidity = GetInput.Ratio(this, DA, 3, UnitsNet.Units.RatioUnit.DecimalFraction);
+        csparams.RelativeHumidity = (Ratio)Input.UnitNumber(this, DA, 3, UnitsNet.Units.RatioUnit.DecimalFraction);
       
       DA.SetData(0, new CreepShrinkageParametersGoo(csparams));
     }

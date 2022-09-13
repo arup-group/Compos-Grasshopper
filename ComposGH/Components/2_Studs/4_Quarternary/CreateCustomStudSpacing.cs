@@ -50,12 +50,12 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      IQuantity start = GetInput.LengthOrRatio(this, DA, 0, this.LengthUnit);
+      IQuantity start = Input.LengthOrRatio(this, DA, 0, this.LengthUnit);
       int rows = 1;
       DA.GetData(1, ref rows);
       int lines = 1;
       DA.GetData(2, ref lines);
-      Length spacing = GetInput.Length(this, DA, 3, this.LengthUnit);
+      Length spacing = (Length)Input.UnitNumber(this, DA, 3, this.LengthUnit);
 
       Output.SetItem(this, DA, 0, new StudGroupSpacingGoo(new StudGroupSpacing(start, rows, lines, spacing)));
     }

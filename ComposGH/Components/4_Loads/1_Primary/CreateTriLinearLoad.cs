@@ -56,34 +56,34 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      IQuantity pos1 = GetInput.LengthOrRatio(this, DA, 4, this.LengthUnit);
-      IQuantity pos2 = GetInput.LengthOrRatio(this, DA, 9, this.LengthUnit);
+      IQuantity pos1 = Input.LengthOrRatio(this, DA, 4, this.LengthUnit);
+      IQuantity pos2 = Input.LengthOrRatio(this, DA, 9, this.LengthUnit);
 
       switch (DistributionType)
       {
         case LoadDistribution.Line:
-          ForcePerLength constDeadL1 = GetInput.ForcePerLength(this, DA, 0, this.ForcePerLengthUnit);
-          ForcePerLength constLiveL1 = GetInput.ForcePerLength(this, DA, 1, this.ForcePerLengthUnit);
-          ForcePerLength finalDeadL1 = GetInput.ForcePerLength(this, DA, 2, this.ForcePerLengthUnit);
-          ForcePerLength finalLiveL1 = GetInput.ForcePerLength(this, DA, 3, this.ForcePerLengthUnit);
-          ForcePerLength constDeadL2 = GetInput.ForcePerLength(this, DA, 5, this.ForcePerLengthUnit);
-          ForcePerLength constLiveL2 = GetInput.ForcePerLength(this, DA, 6, this.ForcePerLengthUnit);
-          ForcePerLength finalDeadL2 = GetInput.ForcePerLength(this, DA, 7, this.ForcePerLengthUnit);
-          ForcePerLength finalLiveL2 = GetInput.ForcePerLength(this, DA, 8, this.ForcePerLengthUnit);
+          ForcePerLength constDeadL1 = (ForcePerLength)Input.UnitNumber(this, DA, 0, this.ForcePerLengthUnit);
+          ForcePerLength constLiveL1 = (ForcePerLength)Input.UnitNumber(this, DA, 1, this.ForcePerLengthUnit);
+          ForcePerLength finalDeadL1 = (ForcePerLength)Input.UnitNumber(this, DA, 2, this.ForcePerLengthUnit);
+          ForcePerLength finalLiveL1 = (ForcePerLength)Input.UnitNumber(this, DA, 3, this.ForcePerLengthUnit);
+          ForcePerLength constDeadL2 = (ForcePerLength)Input.UnitNumber(this, DA, 5, this.ForcePerLengthUnit);
+          ForcePerLength constLiveL2 = (ForcePerLength)Input.UnitNumber(this, DA, 6, this.ForcePerLengthUnit);
+          ForcePerLength finalDeadL2 = (ForcePerLength)Input.UnitNumber(this, DA, 7, this.ForcePerLengthUnit);
+          ForcePerLength finalLiveL2 = (ForcePerLength)Input.UnitNumber(this, DA, 8, this.ForcePerLengthUnit);
           Load loadL = new TriLinearLoad(
             constDeadL1, constLiveL1, finalDeadL1, finalLiveL1, pos1, constDeadL2, constLiveL2, finalDeadL2, finalLiveL2, pos2);
           Output.SetItem(this, DA, 0, new LoadGoo(loadL));
           break;
 
         case LoadDistribution.Area:
-          Pressure constDeadA1 = GetInput.Stress(this, DA, 0, this.ForcePerAreaUnit);
-          Pressure constLiveA1 = GetInput.Stress(this, DA, 1, this.ForcePerAreaUnit);
-          Pressure finalDeadA1 = GetInput.Stress(this, DA, 2, this.ForcePerAreaUnit);
-          Pressure finalLiveA1 = GetInput.Stress(this, DA, 3, this.ForcePerAreaUnit);
-          Pressure constDeadA2 = GetInput.Stress(this, DA, 5, this.ForcePerAreaUnit);
-          Pressure constLiveA2 = GetInput.Stress(this, DA, 6, this.ForcePerAreaUnit);
-          Pressure finalDeadA2 = GetInput.Stress(this, DA, 7, this.ForcePerAreaUnit);
-          Pressure finalLiveA2 = GetInput.Stress(this, DA, 8, this.ForcePerAreaUnit);
+          Pressure constDeadA1 = (Pressure)Input.UnitNumber(this, DA, 0, this.ForcePerAreaUnit);
+          Pressure constLiveA1 = (Pressure)Input.UnitNumber(this, DA, 1, this.ForcePerAreaUnit);
+          Pressure finalDeadA1 = (Pressure)Input.UnitNumber(this, DA, 2, this.ForcePerAreaUnit);
+          Pressure finalLiveA1 = (Pressure)Input.UnitNumber(this, DA, 3, this.ForcePerAreaUnit);
+          Pressure constDeadA2 = (Pressure)Input.UnitNumber(this, DA, 5, this.ForcePerAreaUnit);
+          Pressure constLiveA2 = (Pressure)Input.UnitNumber(this, DA, 6, this.ForcePerAreaUnit);
+          Pressure finalDeadA2 = (Pressure)Input.UnitNumber(this, DA, 7, this.ForcePerAreaUnit);
+          Pressure finalLiveA2 = (Pressure)Input.UnitNumber(this, DA, 8, this.ForcePerAreaUnit);
           Load loadA = new TriLinearLoad(
             constDeadA1, constLiveA1, finalDeadA1, finalLiveA1, pos1, constDeadA2, constLiveA2, finalDeadA2, finalLiveA2, pos2);
           Output.SetItem(this, DA, 0, new LoadGoo(loadA));

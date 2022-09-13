@@ -47,7 +47,7 @@ namespace ComposGH.Components
       // get default length inputs used for all cases
       Length cov = Length.Zero;
       if (this.Params.Input[0].Sources.Count > 0)
-        cov = GetInput.Length(this, DA, 0, LengthUnit, true);
+        cov = (Length)Input.UnitNumber(this, DA, 0, LengthUnit, true);
 
       bool rotated = false;
       DA.GetData(1, ref rotated);

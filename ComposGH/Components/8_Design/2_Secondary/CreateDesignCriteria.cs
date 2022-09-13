@@ -55,7 +55,7 @@ namespace ComposGH.Components
       
       int i = 0;
       // 0 beam size limits
-      BeamSizeLimitsGoo beamGoo = (BeamSizeLimitsGoo)GetInput.GenericGoo<BeamSizeLimitsGoo>(this, DA, i++);
+      BeamSizeLimitsGoo beamGoo = (BeamSizeLimitsGoo)Input.GenericGoo<BeamSizeLimitsGoo>(this, DA, i++);
       designCriteria.BeamSizeLimits = beamGoo.Value;
       
       // 1 catalogues
@@ -74,42 +74,42 @@ namespace ComposGH.Components
       // 2 Constr limits
       if (this.Params.Input[i].Sources.Count > 0)
       {
-        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)GetInput.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
+        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.ConstructionDeadLoad = dlGoo.Value;
       }
 
       // 3 Add limits
       if (this.Params.Input[i].Sources.Count > 0)
       {
-        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)GetInput.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
+        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.AdditionalDeadLoad = dlGoo.Value;
       }
 
       // 4 final limits
       if (this.Params.Input[i].Sources.Count > 0)
       {
-        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)GetInput.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
+        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.FinalLiveLoad = dlGoo.Value;
       }
 
       // 5 total limits
       if (this.Params.Input[i].Sources.Count > 0)
       {
-        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)GetInput.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
+        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.TotalLoads = dlGoo.Value;
       }
 
       // 6 post limits
       if (this.Params.Input[i].Sources.Count > 0)
       {
-        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)GetInput.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
+        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.PostConstruction = dlGoo.Value;
       }
 
       // 7 freq limits
       if (this.Params.Input[i].Sources.Count > 0)
       {
-        FrequencyLimitsGoo dlGoo = (FrequencyLimitsGoo)GetInput.GenericGoo<FrequencyLimitsGoo>(this, DA, i++);
+        FrequencyLimitsGoo dlGoo = (FrequencyLimitsGoo)Input.GenericGoo<FrequencyLimitsGoo>(this, DA, i++);
         designCriteria.FrequencyLimits = dlGoo.Value;
       }
 

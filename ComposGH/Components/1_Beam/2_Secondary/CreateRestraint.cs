@@ -4,6 +4,7 @@ using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH.Components;
+using OasysGH.Helpers;
 
 namespace ComposGH.Components
 {
@@ -50,7 +51,7 @@ namespace ComposGH.Components
 
       if (this.Params.Input[1].Sources.Count > 0)
       {
-        SupportsGoo constructionGoo = (SupportsGoo)GetInput.GenericGoo<SupportsGoo>(this, DA, 1);
+        SupportsGoo constructionGoo = (SupportsGoo)Input.GenericGoo<SupportsGoo>(this, DA, 1);
         construction = constructionGoo.Value;
 
         if (this.Params.Input[0].Sources.Count > 0)
@@ -64,7 +65,7 @@ namespace ComposGH.Components
 
       if (this.Params.Input[2].Sources.Count > 0)
       {
-        SupportsGoo final = (SupportsGoo)GetInput.GenericGoo<SupportsGoo>(this, DA, 2);
+        SupportsGoo final = (SupportsGoo)Input.GenericGoo<SupportsGoo>(this, DA, 2);
         if (final == null) { return; }
         res = new Restraint(tflr, construction, final.Value);
       }

@@ -60,18 +60,18 @@ namespace ComposGH.Components
         Line ln = new Line();
         if (GH_Convert.ToLine(ghln, ref ln, GH_Conversion.Both))
         {
-          RestraintGoo res = (RestraintGoo)GetInput.GenericGoo<RestraintGoo>(this, DA, 1);
+          RestraintGoo res = (RestraintGoo)Input.GenericGoo<RestraintGoo>(this, DA, 1);
           if (res == null) { return; } // return here on non-optional inputs
 
-          SteelMaterialGoo mat = (SteelMaterialGoo)GetInput.GenericGoo<SteelMaterialGoo>(this, DA, 2);
+          SteelMaterialGoo mat = (SteelMaterialGoo)Input.GenericGoo<SteelMaterialGoo>(this, DA, 2);
           if (mat == null) { return; } // return here on non-optional inputs
 
-          List<BeamSectionGoo> beamSections = GetInput.GenericGooList<BeamSectionGoo>(this, DA, 3);
+          List<BeamSectionGoo> beamSections = Input.GenericGooList<BeamSectionGoo>(this, DA, 3);
           try
           {
             if (this.Params.Input[4].Sources.Count > 0)
             {
-              List<WebOpeningGoo> webOpenings = GetInput.GenericGooList<WebOpeningGoo>(this, DA, 4);
+              List<WebOpeningGoo> webOpenings = Input.GenericGooList<WebOpeningGoo>(this, DA, 4);
               Output.SetItem(this, DA, 0, new BeamGoo(new LineCurve(ln), this.LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value as IBeamSection).ToList(), webOpenings.Select(x => x.Value as IWebOpening).ToList()));
             }
             else

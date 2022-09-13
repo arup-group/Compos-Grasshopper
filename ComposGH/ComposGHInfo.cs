@@ -32,18 +32,20 @@ namespace ComposGH
       Grasshopper.Instances.ComponentServer.AddCategorySymbolName("Compos", 'C');
       Grasshopper.Instances.ComponentServer.AddCategoryIcon("Compos", Properties.Resources.ComposLogo128);
 
+      // ### Setup OasysGH ###
+      OasysGHInfo.PluginName = ComposGHInfo.PluginName;
+      OasysGHInfo.ProductName = ComposGHInfo.ProductName;
+      OasysGHInfo.PostHogApiKey = "phc_alOp3OccDM3D18xJTWDoW44Y1cJvbEScm5LJSX8qnhs";
+
       // ### Setup units ###
-      GH_PluginInfo.PluginName = ComposGHInfo.PluginName;
-      GH_PluginInfo.ProductName = ComposGHInfo.ProductName;
-      GH_PluginInfo.PostHogApiKey = "phc_alOp3OccDM3D18xJTWDoW44Y1cJvbEScm5LJSX8qnhs";
-
-      Units.SetupUnitsDuringLoad();
-
-      PostHog.PluginLoaded();
+      OasysGH.Units.Helpers.Setup.SetupUnitsDuringLoad();
+      //Units.SetupUnitsDuringLoad();
 
       // subscribe to rhino closing event
       Rhino.RhinoApp.Closing += CloseFile;
 
+      PostHog.PluginLoaded();
+      
       return GH_LoadingInstruction.Proceed;
     }
 

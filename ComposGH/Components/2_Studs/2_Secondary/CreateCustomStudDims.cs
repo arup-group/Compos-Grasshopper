@@ -48,9 +48,9 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Length dia = GetInput.Length(this, DA, 0, LengthUnit, true);
-      Length h = GetInput.Length(this, DA, 1, LengthUnit, true);
-      Force strengthF = GetInput.Force(this, DA, 2, ForceUnit);
+      Length dia = (Length)Input.UnitNumber(this, DA, 0, LengthUnit, true);
+      Length h = (Length)Input.UnitNumber(this, DA, 1, LengthUnit, true);
+      Force strengthF = (Force)Input.UnitNumber(this, DA, 2, ForceUnit);
       Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthF)));
     }
 

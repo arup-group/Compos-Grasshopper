@@ -47,9 +47,9 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Length width = GetInput.Length(this, DA, 0, LengthUnit);
-      Length height = GetInput.Length(this, DA, 1, LengthUnit);
-      WebOpeningStiffenersGoo stiff = (WebOpeningStiffenersGoo)GetInput.GenericGoo<WebOpeningStiffenersGoo>(this, DA, 2);
+      Length width = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
+      Length height = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
+      WebOpeningStiffenersGoo stiff = (WebOpeningStiffenersGoo)Input.GenericGoo<WebOpeningStiffenersGoo>(this, DA, 2);
       if (stiff != null)
       {
         if (stiff.Value.BottomStiffenerWidth != Length.Zero)

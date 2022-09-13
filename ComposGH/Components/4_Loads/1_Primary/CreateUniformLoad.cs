@@ -49,19 +49,19 @@ namespace ComposGH.Components
       switch (DistributionType)
       {
         case LoadDistribution.Line:
-          ForcePerLength constDeadL = GetInput.ForcePerLength(this, DA, 0, this.ForcePerLengthUnit);
-          ForcePerLength constLiveL = GetInput.ForcePerLength(this, DA, 1, this.ForcePerLengthUnit);
-          ForcePerLength finalDeadL = GetInput.ForcePerLength(this, DA, 2, this.ForcePerLengthUnit);
-          ForcePerLength finalLiveL = GetInput.ForcePerLength(this, DA, 3, this.ForcePerLengthUnit);
+          ForcePerLength constDeadL = (ForcePerLength)Input.UnitNumber(this, DA, 0, this.ForcePerLengthUnit);
+          ForcePerLength constLiveL = (ForcePerLength)Input.UnitNumber(this, DA, 1, this.ForcePerLengthUnit);
+          ForcePerLength finalDeadL = (ForcePerLength)Input.UnitNumber(this, DA, 2, this.ForcePerLengthUnit);
+          ForcePerLength finalLiveL = (ForcePerLength)Input.UnitNumber(this, DA, 3, this.ForcePerLengthUnit);
           Load loadL = new UniformLoad(constDeadL, constLiveL, finalDeadL, finalLiveL);
           Output.SetItem(this, DA, 0, new LoadGoo(loadL));
           break;
 
         case LoadDistribution.Area:
-          Pressure constDeadA = GetInput.Stress(this, DA, 0, this.ForcePerAreaUnit);
-          Pressure constLiveA = GetInput.Stress(this, DA, 1, this.ForcePerAreaUnit);
-          Pressure finalDeadA = GetInput.Stress(this, DA, 2, this.ForcePerAreaUnit);
-          Pressure finalLiveA = GetInput.Stress(this, DA, 3, this.ForcePerAreaUnit);
+          Pressure constDeadA = (Pressure)Input.UnitNumber(this, DA, 0, this.ForcePerAreaUnit);
+          Pressure constLiveA = (Pressure)Input.UnitNumber(this, DA, 1, this.ForcePerAreaUnit);
+          Pressure finalDeadA = (Pressure)Input.UnitNumber(this, DA, 2, this.ForcePerAreaUnit);
+          Pressure finalLiveA = (Pressure)Input.UnitNumber(this, DA, 3, this.ForcePerAreaUnit);
           Load loadA = new UniformLoad(constDeadA, constLiveA, finalDeadA, finalLiveA);
           Output.SetItem(this, DA, 0, new LoadGoo(loadA));
           break;

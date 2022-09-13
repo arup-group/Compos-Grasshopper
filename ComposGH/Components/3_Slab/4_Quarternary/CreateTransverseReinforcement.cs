@@ -6,6 +6,7 @@ using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using OasysGH.Components;
+using OasysGH.Helpers;
 
 namespace ComposGH.Components
 {
@@ -44,12 +45,12 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      ReinforcementMaterialGoo mat = (ReinforcementMaterialGoo)GetInput.GenericGoo<ReinforcementMaterialGoo>(this, DA, 0);
+      ReinforcementMaterialGoo mat = (ReinforcementMaterialGoo)Input.GenericGoo<ReinforcementMaterialGoo>(this, DA, 0);
       if (mat == null) { return; }
 
       if (this.Params.Input[1].Sources.Count > 0)
       {
-        List<CustomTransverseReinforcementLayoutGoo> transverseReinforcmentLayouts = GetInput.GenericGooList<CustomTransverseReinforcementLayoutGoo>(this, DA, 1);
+        List<CustomTransverseReinforcementLayoutGoo> transverseReinforcmentLayouts = Input.GenericGooList<CustomTransverseReinforcementLayoutGoo>(this, DA, 1);
         DA.SetData(0, new TransverseReinforcementGoo(new TransverseReinforcement(mat.Value, transverseReinforcmentLayouts.Select(x => x.Value).ToList())));
       }
       else

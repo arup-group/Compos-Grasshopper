@@ -6,6 +6,7 @@ using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using OasysGH.Components;
+using OasysGH.Helpers;
 
 namespace ComposGH.Components
 {
@@ -50,11 +51,11 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      BeamGoo beam = (BeamGoo)GetInput.GenericGoo<BeamGoo>(this, DA, 0);
-      StudGoo stud = (StudGoo)GetInput.GenericGoo<StudGoo>(this, DA, 1);
-      SlabGoo slab = (SlabGoo)GetInput.GenericGoo<SlabGoo>(this, DA, 2);
-      List<LoadGoo> loads = GetInput.GenericGooList<LoadGoo>(this, DA, 3);
-      DesignCodeGoo code = (DesignCodeGoo)GetInput.GenericGoo<DesignCodeGoo>(this, DA, 4);
+      BeamGoo beam = (BeamGoo)Input.GenericGoo<BeamGoo>(this, DA, 0);
+      StudGoo stud = (StudGoo)Input.GenericGoo<StudGoo>(this, DA, 1);
+      SlabGoo slab = (SlabGoo)Input.GenericGoo<SlabGoo>(this, DA, 2);
+      List<LoadGoo> loads = Input.GenericGooList<LoadGoo>(this, DA, 3);
+      DesignCodeGoo code = (DesignCodeGoo)Input.GenericGoo<DesignCodeGoo>(this, DA, 4);
 
       string name = "";
       DA.GetData(5, ref name);

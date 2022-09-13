@@ -55,10 +55,10 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Length start = GetInput.Length(this, DA, 0, this.LengthUnit, true);
-      Length overallDepth = GetInput.Length(this, DA, 1, this.LengthUnit, true);
-      Length availableWidthLeft = GetInput.Length(this, DA, 2, this.LengthUnit, true);
-      Length availableWidthRight = GetInput.Length(this, DA, 3, this.LengthUnit, true);
+      Length start = (Length)Input.UnitNumber(this, DA, 0, this.LengthUnit, true);
+      Length overallDepth = (Length)Input.UnitNumber(this, DA, 1, this.LengthUnit, true);
+      Length availableWidthLeft = (Length)Input.UnitNumber(this, DA, 2, this.LengthUnit, true);
+      Length availableWidthRight = (Length)Input.UnitNumber(this, DA, 3, this.LengthUnit, true);
 
       bool customEffectiveWidth = false;
       Length effectiveWidthLeft = Length.Zero;
@@ -67,8 +67,8 @@ namespace ComposGH.Components
       if (this.Params.Input[4].Sources.Count > 0 && this.Params.Input[5].Sources.Count > 0)
       {
         customEffectiveWidth = true;
-        effectiveWidthLeft = GetInput.Length(this, DA, 4, this.LengthUnit, true);
-        effectiveWidthRight = GetInput.Length(this, DA, 5, this.LengthUnit, true);
+        effectiveWidthLeft = (Length)Input.UnitNumber(this, DA, 4, this.LengthUnit, true);
+        effectiveWidthRight = (Length)Input.UnitNumber(this, DA, 5, this.LengthUnit, true);
       }
       bool taperedToNext = false;
       DA.GetData(6, ref taperedToNext);

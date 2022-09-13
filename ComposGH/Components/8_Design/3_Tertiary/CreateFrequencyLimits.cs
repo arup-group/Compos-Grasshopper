@@ -6,6 +6,7 @@ using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH.Components;
+using OasysGH.Helpers;
 using UnitsNet;
 using UnitsNet.Units;
 
@@ -48,13 +49,13 @@ namespace ComposGH.Components
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       FrequencyLimits frequencyLimits = new FrequencyLimits()
-      { MinimumRequired = GetInput.Frequency(this, DA, 0, FrequencyUnit.Hertz) };
+      { MinimumRequired = (Frequency)Input.UnitNumber(this, DA, 0, FrequencyUnit.Hertz) };
       
       if (this.Params.Input[1].Sources.Count > 0)
-        frequencyLimits.DeadLoadIncl = GetInput.Ratio(this, DA, 1, RatioUnit.DecimalFraction);
+        frequencyLimits.DeadLoadIncl = (Ratio)Input.UnitNumber(this, DA, 1, RatioUnit.DecimalFraction);
 
       if (this.Params.Input[2].Sources.Count > 0)
-        frequencyLimits.LiveLoadIncl = GetInput.Ratio(this, DA, 2, RatioUnit.DecimalFraction);
+        frequencyLimits.LiveLoadIncl = (Ratio)Input.UnitNumber(this, DA, 2, RatioUnit.DecimalFraction);
 
       DA.SetData(0, new FrequencyLimitsGoo(frequencyLimits));
     }
