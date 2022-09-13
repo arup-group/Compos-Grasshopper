@@ -53,7 +53,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(SafetyFactorsENGoo.Name, SafetyFactorsENGoo.NickName, SafetyFactorsENGoo.Description + " for a " + DesignCodeGoo.Description + " (EN)", GH_ParamAccess.item);
+      pManager.AddParameter(new SafetyFactorENParam());
     }
     #endregion
 

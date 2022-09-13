@@ -560,6 +560,45 @@
   <ItemGroup>
     <None Include="Properties\Icons\ComposInfo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\BeamSectionParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\ConcreteMaterialParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\SupportParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\WebOpeningStiffenerParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\StudDimParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\StudGrpDimParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\StudSpecParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\MeshReinforcementParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\RebarLayoutParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\TransverseReinforcementParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\RebarMaterialParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\SlabDimensionParam.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Icons\SafetyFactorParam.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -39,15 +39,15 @@ namespace ComposGH.Components
       string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
 
       pManager.AddCurveParameter("Line [" + unitAbbreviation + "]", "L", "Line drawn to selected units to create Compos Beam from", GH_ParamAccess.item);
-      pManager.AddGenericParameter(RestraintGoo.Name, RestraintGoo.NickName, RestraintGoo.Description, GH_ParamAccess.item);
-      pManager.AddGenericParameter(SteelMaterialGoo.Name, SteelMaterialGoo.NickName, SteelMaterialGoo.Description, GH_ParamAccess.item);
-      pManager.AddGenericParameter(BeamSectionGoo.Name + "(s)", BeamSectionGoo.NickName, BeamSectionGoo.Description + " or an I Profile string descriptions like 'CAT IPE IPE200', 'STD I(cm) 20. 19. 8.5 1.27' or 'STD GI 400 300 250 12 25 20'", GH_ParamAccess.list);
-      pManager.AddGenericParameter(WebOpeningGoo.Name, WebOpeningGoo.NickName, "(Optional) " + WebOpeningGoo.Description, GH_ParamAccess.list);
+      pManager.AddParameter(new RestraintParam());
+      pManager.AddParameter(new SteelMaterialParam());
+      pManager.AddGenericParameter(BeamSectionGoo.Name + "(s)", BeamSectionGoo.NickName, BeamSectionGoo.Description + " parameter or a text string in the format of either 'CAT IPE IPE200', 'STD I(cm) 20. 19. 8.5 1.27' or 'STD GI 400 300 250 12 25 20'", GH_ParamAccess.list);
+      pManager.AddParameter(new ComposWebOpeningParameter(), WebOpeningGoo.Name + "(s)", WebOpeningGoo.NickName, "(Optional) " + WebOpeningGoo.Description, GH_ParamAccess.list);
       pManager[4].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(BeamGoo.Name, BeamGoo.NickName, BeamGoo.Description + " for a " + MemberGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new ComposBeamParameter());
     }
     #endregion
 

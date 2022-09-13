@@ -31,18 +31,17 @@ namespace ComposGH.Components
     #endregion
 
     #region Input and output
-
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter(StudDimensionsGoo.Name, StudDimensionsGoo.NickName, StudDimensionsGoo.Description, GH_ParamAccess.item);
-      pManager.AddGenericParameter(StudSpecificationGoo.Name, StudSpecificationGoo.NickName, StudSpecificationGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new StudDimensionsParam());
+      pManager.AddParameter(new StudSpecificationParam());
       pManager.AddNumberParameter("Min Saving", "Msm", "Fraction for Minimum Saving for using Multiple Zones (Default = 0.2 (20%))", GH_ParamAccess.item, 0.2);
       pManager[2].Optional = true;
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(StudGoo.Name, StudGoo.NickName, StudGoo.Description + " for a " + MemberGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new ComposStudParameter());
     }
     #endregion
 
@@ -145,7 +144,7 @@ namespace ComposGH.Components
             Params.UnregisterInputParameter(Params.Input[2], true);
 
           //add input parameters
-          Params.RegisterInputParam(new Param_GenericObject());
+          Params.RegisterInputParam(new StudGroupSpacingParam());
           Params.RegisterInputParam(new Param_Boolean());
           break;
       }

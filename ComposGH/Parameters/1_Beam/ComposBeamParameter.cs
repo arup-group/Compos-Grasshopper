@@ -19,9 +19,16 @@ namespace ComposGH.Parameters
   public class ComposBeamParameter : GH_PersistentGeometryParam<BeamGoo>, IGH_PreviewObject
   {
     public ComposBeamParameter()
-      : base(new GH_InstanceDescription(BeamGoo.Name, BeamGoo.NickName, "Maintains a collection of "+ BeamGoo.Description + " data.", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+      : base(new GH_InstanceDescription(
+        BeamGoo.Name, 
+        BeamGoo.NickName, 
+        BeamGoo.Description + " parameter", 
+        Components.Ribbon.CategoryName.Name(), 
+        Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
+    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + BeamGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => this.SourceCount == 0 ? BeamGoo.Name : base.TypeName;
 
     public override Guid ComponentGuid => new Guid("dc61e94b-c326-4789-92f2-e0fe3caea4c7");
 

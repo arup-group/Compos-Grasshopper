@@ -33,7 +33,7 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter(SafetyFactorsENGoo.Name, SafetyFactorsENGoo.NickName, "(Optional) " + SafetyFactorsENGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new SafetyFactorENParam(), SafetyFactorsENGoo.Name, SafetyFactorsENGoo.NickName, "(Optional) " + SafetyFactorsENGoo.Description, GH_ParamAccess.item);
       pManager.AddGenericParameter(CreepShrinkageParametersGoo.Name + " Short Term", CreepShrinkageParametersGoo.NickName.ToLower(), "(Optional) Short Term " + CreepShrinkageParametersGoo.Description + ". If no input, the default code values will be used", GH_ParamAccess.item);
       pManager.AddGenericParameter(CreepShrinkageParametersGoo.Name + " Long Term", CreepShrinkageParametersGoo.NickName.ToUpper(), "(Optional) Long Term " + CreepShrinkageParametersGoo.Description + ". If no input, the default code values will be used", GH_ParamAccess.item);
 
@@ -43,7 +43,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(DesignCodeGoo.Name, DesignCodeGoo.NickName, DesignCodeGoo.Description + " for a " + MemberGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new DesignCodeParam());
     }
     #endregion
 
@@ -123,12 +123,6 @@ namespace ComposGH.Components
           break;
       }
     }
-
-    #region update input params
-    
-    #endregion
-
-
 
     #region Custom UI
     List<string> DesignCodePretty = new List<string>(new string[]
@@ -312,6 +306,7 @@ namespace ComposGH.Components
     }
     public override void VariableParameterMaintenance()
     {
+      Params.Input[0].Optional = true;
       switch (this.Code)
       {
         case Code.EN1994_1_1_2004:
@@ -370,26 +365,29 @@ namespace ComposGH.Components
         case Code.HKSUOS_2005:
         case Code.HKSUOS_2011:
           // remove input parameters 
-          while (this.Params.Input.Count > 1)
-            this.Params.UnregisterInputParameter(Params.Input[1], true);
+          while (this.Params.Input.Count > 0)
+            this.Params.UnregisterInputParameter(Params.Input[0], true);
+          this.Params.RegisterInputParam(new SafetyFactorParam());
           break;
 
         case Code.EN1994_1_1_2004:
           // remove input parameters
-          while (this.Params.Input.Count > 1)
-            this.Params.UnregisterInputParameter(Params.Input[1], true);
+          while (this.Params.Input.Count > 0)
+            this.Params.UnregisterInputParameter(Params.Input[0], true);
 
           // add input parameters of generic type
+          this.Params.RegisterInputParam(new SafetyFactorENParam());
           this.Params.RegisterInputParam(new Param_GenericObject());
           this.Params.RegisterInputParam(new Param_GenericObject());
           break;
 
         case Code.AS_NZS2327_2017:
           //remove input parameters
-          while (this.Params.Input.Count > 1)
-            this.Params.UnregisterInputParameter(Params.Input[1], true);
+          while (this.Params.Input.Count > 0)
+            this.Params.UnregisterInputParameter(Params.Input[0], true);
 
           //add input parameters of number type
+          this.Params.RegisterInputParam(new SafetyFactorParam());
           this.Params.RegisterInputParam(new Param_Number());
           this.Params.RegisterInputParam(new Param_Number());
           break;

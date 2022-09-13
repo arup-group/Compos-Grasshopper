@@ -31,14 +31,14 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter(ReinforcementMaterialGoo.Name, ReinforcementMaterialGoo.NickName, ReinforcementMaterialGoo.Description, GH_ParamAccess.item);
-      pManager.AddGenericParameter(CustomTransverseReinforcementLayoutGoo.Name + "(s)", CustomTransverseReinforcementLayoutGoo.NickName, "(Optional) " + CustomTransverseReinforcementLayoutGoo.Description + " for a " + TransverseReinforcementGoo.Description + " - if left empty, Compos will create the layout automatically", GH_ParamAccess.list);
+      pManager.AddParameter(new ReinforcementMaterialParam());
+      pManager.AddParameter(new CustomTransverseReinforcementParam(), CustomTransverseReinforcementLayoutGoo.Name + "(s)", CustomTransverseReinforcementLayoutGoo.NickName, "(Optional) " + CustomTransverseReinforcementLayoutGoo.Description + " for a " + TransverseReinforcementGoo.Description + " - if left empty, Compos will create the layout automatically", GH_ParamAccess.list);
       pManager[1].Optional = true;
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(TransverseReinforcementGoo.Name, TransverseReinforcementGoo.NickName, TransverseReinforcementGoo.Description + " for a " + SlabGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new TransverseReinforcementParam());
     }
     #endregion
 

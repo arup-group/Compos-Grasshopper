@@ -54,7 +54,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(StudSpecificationGoo.Name, StudSpecificationGoo.NickName, "EN " + StudSpecificationGoo.Description + " for a " + StudGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new StudSpecificationParam(), StudSpecificationGoo.Name, StudSpecificationGoo.NickName, "EN " + StudSpecificationGoo.Description + " for a " + StudGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 

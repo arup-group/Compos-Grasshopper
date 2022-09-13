@@ -52,7 +52,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(BeamSectionGoo.Name, BeamSectionGoo.NickName, BeamSectionGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new BeamSectionParam());
     }
     #endregion
     protected override void SolveInstance(IGH_DataAccess DA)

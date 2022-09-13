@@ -30,11 +30,11 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter(BeamGoo.Name, BeamGoo.NickName, BeamGoo.Description, GH_ParamAccess.item);
-      pManager.AddGenericParameter(StudGoo.Name, StudGoo.NickName, StudGoo.Description, GH_ParamAccess.item);
-      pManager.AddGenericParameter(SlabGoo.Name, SlabGoo.NickName, SlabGoo.Description, GH_ParamAccess.item);
-      pManager.AddGenericParameter(LoadGoo.Name + "(s)", LoadGoo.NickName, LoadGoo.Description, GH_ParamAccess.list);
-      pManager.AddGenericParameter(DesignCodeGoo.Name, DesignCodeGoo.NickName, DesignCodeGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new ComposBeamParameter());
+      pManager.AddParameter(new ComposStudParameter());
+      pManager.AddParameter(new ComposSlabParameter());
+      pManager.AddParameter(new ComposLoadParameter(), LoadGoo.Name + "(s)", LoadGoo.NickName, LoadGoo.Description, GH_ParamAccess.list);
+      pManager.AddParameter(new DesignCodeParam());
       pManager.AddTextParameter("Name", "Na", "Set Member Name", GH_ParamAccess.item);
       pManager.AddTextParameter("GridRef", "Grd", "(Optional) Set Member's Grid Reference", GH_ParamAccess.item);
       pManager.AddTextParameter("Note", "Nt", "(Optional) Set Notes about the Member", GH_ParamAccess.item);
@@ -44,7 +44,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(MemberGoo.Name, MemberGoo.NickName, MemberGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new ComposMemberParameter());
     }
     #endregion
 
