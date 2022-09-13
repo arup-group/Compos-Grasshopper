@@ -46,7 +46,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(BeamSizeLimitsGoo.Name, BeamSizeLimitsGoo.NickName, BeamSizeLimitsGoo.Description + " for a " + DesignCriteriaGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new BeamSizeLimitsParam());
     }
     #endregion
 

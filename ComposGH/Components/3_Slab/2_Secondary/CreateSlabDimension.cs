@@ -49,7 +49,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(SlabDimensionGoo.Name, SlabDimensionGoo.NickName, SlabDimensionGoo.Description + " for a " + SlabGoo.Description, GH_ParamAccess.list);
+      pManager.AddParameter(new SlabDimensionParam());
     }
     #endregion
 

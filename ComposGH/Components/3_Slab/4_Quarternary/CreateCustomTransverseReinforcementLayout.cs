@@ -45,7 +45,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(CustomTransverseReinforcementLayoutGoo.Name, CustomTransverseReinforcementLayoutGoo.NickName, CustomTransverseReinforcementLayoutGoo.Description + " for a " + TransverseReinforcementGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new CustomTransverseReinforcementParam());
     }
     #endregion
 

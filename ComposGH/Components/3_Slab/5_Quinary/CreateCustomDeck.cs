@@ -49,7 +49,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Custom " + DeckingGoo.Name, DeckingGoo.NickName, "Custom " + DeckingGoo.Description + " for a " + SlabGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new ComposDeckingParameter(), "Custom " + DeckingGoo.Name, DeckingGoo.NickName, "Custom " + DeckingGoo.Description + " for a " + SlabGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 

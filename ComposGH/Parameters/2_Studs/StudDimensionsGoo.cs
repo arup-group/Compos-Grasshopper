@@ -1,6 +1,8 @@
 ﻿using Grasshopper.Kernel.Types;
 using ComposAPI;
 using OasysGH.Parameters;
+using Grasshopper.Kernel;
+using System;
 
 namespace ComposGH.Parameters
 {
@@ -14,5 +16,25 @@ namespace ComposGH.Parameters
     public static string Description => "Compos Shear Stud Dimensions";
     public StudDimensionsGoo(IStudDimensions item) : base(item) { }
     public override IGH_Goo Duplicate() => new StudDimensionsGoo(this.Value);
+  }
+
+  /// <summary>
+  /// /// This class provides a Parameter interface for the CustomGoo type.
+  /// </summary>
+  public class StudDimensionsParam : GH_Param<StudDimensionsGoo>
+  {
+    public StudDimensionsParam()
+      : base(new GH_InstanceDescription(
+        StudDimensionsGoo.Name,
+        StudDimensionsGoo.NickName,
+        StudDimensionsGoo.Description + " parameter",
+        Components.Ribbon.CategoryName.Name(),
+        Components.Ribbon.SubCategoryName.Cat10()))
+    { }
+    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + StudDimensionsGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => this.SourceCount == 0 ? StudDimensionsGoo.Name : base.TypeName;
+    public override Guid ComponentGuid => new Guid("573cbc43-c33a-4047-82c2-f0aeb700513d");
+    public override GH_Exposure Exposure => GH_Exposure.hidden;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.StudDimParam;
   }
 }

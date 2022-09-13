@@ -42,7 +42,7 @@ namespace ComposGH.Components
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(DeflectionLimitGoo.Name, DeflectionLimitGoo.NickName, DeflectionLimitGoo.Description + " for a " + DesignCriteriaGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new DeflectionLimitParam());
     }
     #endregion
 

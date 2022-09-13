@@ -32,13 +32,13 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter(MemberGoo.Name, MemberGoo.NickName, MemberGoo.Description, GH_ParamAccess.item);
-      pManager.AddGenericParameter(DesignCriteriaGoo.Name, DesignCriteriaGoo.NickName, DesignCriteriaGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new ComposMemberParameter());
+      pManager.AddParameter(new DesignCriteriaParam());
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(MemberGoo.Name, MemberGoo.NickName, "Designed " + MemberGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new ComposMemberParameter(), MemberGoo.Name, MemberGoo.NickName, "Designed " + MemberGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 

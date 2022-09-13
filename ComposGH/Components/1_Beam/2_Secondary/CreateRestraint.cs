@@ -31,14 +31,14 @@ namespace ComposGH.Components
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       pManager.AddBooleanParameter("Top flng. lat. res. constr.stg.", "TFLR", "Top flange laterally restrained continuously at construction stage (default = true)", GH_ParamAccess.item, true);
-      pManager.AddGenericParameter("Construction Stage " + SupportsGoo.Name, SupportsGoo.NickName.ToLower(), "Construction stage " + SupportsGoo.Description, GH_ParamAccess.item);
-      pManager.AddGenericParameter("Final Stage " + SupportsGoo.Name, SupportsGoo.NickName.ToUpper(), "(Optional) Final stage " + SupportsGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new SupportsParam(), "Construction Stage " + SupportsGoo.Name, SupportsGoo.NickName.ToLower(), "Construction stage " + SupportsGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new SupportsParam(), "Final Stage " + SupportsGoo.Name, SupportsGoo.NickName.ToUpper(), "(Optional) Final stage " + SupportsGoo.Description, GH_ParamAccess.item);
       pManager[1].Optional = true;
       pManager[2].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(RestraintGoo.Name, RestraintGoo.NickName, RestraintGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new RestraintParam());
     }
     #endregion
 

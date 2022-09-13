@@ -30,21 +30,21 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter(BeamSizeLimitsGoo.Name, BeamSizeLimitsGoo.NickName, BeamSizeLimitsGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new BeamSizeLimitsParam());
       pManager.AddIntegerParameter("Catalogue ID(s)", "CID", "Compos Section Catalogue IDs.", GH_ParamAccess.list);
-      pManager.AddGenericParameter("Constr. Dead Load Lim.", "DLm", DeflectionLimitGoo.Description + " for Construction Dead Load.", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Additional Load Lim.", "ALm", DeflectionLimitGoo.Description + " for Additional Dead Load.", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Live Load Lim.", "LLm", DeflectionLimitGoo.Description + " for Final Live Load.", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Total Load Lim.", "ALm", DeflectionLimitGoo.Description + " for Total Load.", GH_ParamAccess.item);
-      pManager.AddGenericParameter("Post Constr. Lim.", "PLm", DeflectionLimitGoo.Description + " for Post Construction Load (Total Load minus Construction Dead Load).", GH_ParamAccess.item);
-      pManager.AddGenericParameter(FrequencyLimitsGoo.Name, FrequencyLimitsGoo.NickName, FrequencyLimitsGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new DeflectionLimitParam(), "Constr. Dead Load Lim.", "DLm", DeflectionLimitGoo.Description + " for Construction Dead Load.", GH_ParamAccess.item);
+      pManager.AddParameter(new DeflectionLimitParam(), "Additional Load Lim.", "ALm", DeflectionLimitGoo.Description + " for Additional Dead Load.", GH_ParamAccess.item);
+      pManager.AddParameter(new DeflectionLimitParam(), "Live Load Lim.", "LLm", DeflectionLimitGoo.Description + " for Final Live Load.", GH_ParamAccess.item);
+      pManager.AddParameter(new DeflectionLimitParam(), "Total Load Lim.", "ALm", DeflectionLimitGoo.Description + " for Total Load.", GH_ParamAccess.item);
+      pManager.AddParameter(new DeflectionLimitParam(), "Post Constr. Lim.", "PLm", DeflectionLimitGoo.Description + " for Post Construction Load (Total Load minus Construction Dead Load).", GH_ParamAccess.item);
+      pManager.AddParameter(new FrequencyLimitsParam());
       for (int i = 2; i < pManager.ParamCount; i++)
         pManager[i].Optional = true;
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(DesignCriteriaGoo.Name, DesignCriteriaGoo.NickName, DesignCriteriaGoo.Description + " for a " + MemberGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new DesignCriteriaParam());
     }
     #endregion
 

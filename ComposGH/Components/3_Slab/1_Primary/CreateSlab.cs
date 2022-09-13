@@ -31,18 +31,18 @@ namespace ComposGH.Components
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      pManager.AddGenericParameter(ConcreteMaterialGoo.Name, ConcreteMaterialGoo.NickName, ConcreteMaterialGoo.Description, GH_ParamAccess.item);
-      pManager.AddGenericParameter(SlabDimensionGoo.Name + "(s)", SlabDimensionGoo.NickName, SlabDimensionGoo.Description, GH_ParamAccess.list);
-      pManager.AddGenericParameter(TransverseReinforcementGoo.Name, TransverseReinforcementGoo.NickName, TransverseReinforcementGoo.Description, GH_ParamAccess.item);
-      pManager.AddGenericParameter(MeshReinforcementGoo.Name, MeshReinforcementGoo.NickName, "(Optional) " + MeshReinforcementGoo.Description, GH_ParamAccess.item);
-      pManager.AddGenericParameter(DeckingGoo.Name, DeckingGoo.NickName, "(Optional) " + DeckingGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new ConcreteMaterialParam());
+      pManager.AddParameter(new SlabDimensionParam(), SlabDimensionGoo.Name + "(s)", SlabDimensionGoo.NickName, SlabDimensionGoo.Description, GH_ParamAccess.list);
+      pManager.AddParameter(new TransverseReinforcementParam());
+      pManager.AddParameter(new MeshReinforcementParam());
+      pManager.AddParameter(new ComposDeckingParameter(), DeckingGoo.Name, DeckingGoo.NickName, "(Optional) " + DeckingGoo.Description, GH_ParamAccess.item);
 
       pManager[3].Optional = true;
       pManager[4].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(SlabGoo.Name, SlabGoo.NickName, SlabGoo.Description + " for a " + MemberGoo.Description, GH_ParamAccess.list);
+      pManager.AddParameter(new ComposSlabParameter());
     }
     #endregion
 

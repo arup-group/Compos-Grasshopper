@@ -46,7 +46,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(WebOpeningStiffenersGoo.Name, WebOpeningStiffenersGoo.NickName, WebOpeningStiffenersGoo.Description + " for a " + WebOpeningGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new WebOpeningStiffenersParam());
     }
     #endregion
 

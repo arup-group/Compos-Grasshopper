@@ -43,12 +43,12 @@ namespace ComposGH.Components
         + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
       pManager.AddGenericParameter("Pos z [" + unitAbbreviation + "]", "Pz", "Position of opening Centroid from Top of Beam (beam local z-axis)."
         + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
-      pManager.AddGenericParameter(WebOpeningStiffenersGoo.Name, WebOpeningStiffenersGoo.NickName, "(Optional) " + WebOpeningStiffenersGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new WebOpeningStiffenersParam(), WebOpeningStiffenersGoo.Name + "(s)", WebOpeningStiffenersGoo.NickName, "(Optional) " + WebOpeningStiffenersGoo.Description, GH_ParamAccess.item);
       pManager[4].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(WebOpeningGoo.Name, WebOpeningGoo.NickName, WebOpeningGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new ComposWebOpeningParameter());
     }
     #endregion
 

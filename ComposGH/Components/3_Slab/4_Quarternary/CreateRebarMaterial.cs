@@ -40,7 +40,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(ReinforcementMaterialGoo.Name, ReinforcementMaterialGoo.NickName, ReinforcementMaterialGoo.Description + " for a " + TransverseReinforcementGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new ReinforcementMaterialParam());
     }
     #endregion
 

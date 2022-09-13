@@ -36,12 +36,12 @@ namespace ComposGH.Components
 
       pManager.AddGenericParameter("Width [" + unitAbbreviation + "]", "B", "Web Opening Width", GH_ParamAccess.item);
       pManager.AddGenericParameter("Height [" + unitAbbreviation + "]", "H", "Web Opening Height", GH_ParamAccess.item);
-      pManager.AddGenericParameter(WebOpeningStiffenersGoo.Name + "(s)", WebOpeningStiffenersGoo.NickName, "(Optional) " + WebOpeningStiffenersGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new WebOpeningStiffenersParam(), WebOpeningStiffenersGoo.Name + "(s)", WebOpeningStiffenersGoo.NickName, "(Optional) " + WebOpeningStiffenersGoo.Description, GH_ParamAccess.item);
       pManager[2].Optional = true;
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter(WebOpeningGoo.Name, WebOpeningGoo.NickName, "Notch " + WebOpeningGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.list);
+      pManager.AddParameter(new ComposWebOpeningParameter(), WebOpeningGoo.Name, WebOpeningGoo.NickName, "Notch " + WebOpeningGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.list);
     }
     #endregion
 

@@ -37,7 +37,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      pManager.AddGenericParameter("Standard " + SteelMaterialGoo.Name, SteelMaterialGoo.NickName, "Standard " + SteelMaterialGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.item);
+      pManager.AddParameter(new SteelMaterialParam(), "Standard " + SteelMaterialGoo.Name, SteelMaterialGoo.NickName, "Standard " + SteelMaterialGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 

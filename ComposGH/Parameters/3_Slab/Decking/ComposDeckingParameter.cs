@@ -13,10 +13,16 @@ namespace ComposGH.Parameters
   public class ComposDeckingParameter : GH_PersistentParam<DeckingGoo>
   {
     public ComposDeckingParameter()
-      : base(new GH_InstanceDescription(DeckingGoo.Name, DeckingGoo.NickName, "Maintains a collection of " + DeckingGoo.Description + " data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+      : base(new GH_InstanceDescription(
+        DeckingGoo.Name, 
+        DeckingGoo.NickName, 
+        DeckingGoo.Description + " parameter", 
+        Components.Ribbon.CategoryName.Name(), 
+        Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
-
+    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + DeckingGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => this.SourceCount == 0 ? DeckingGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("81411C5C-6EF7-4782-B173-CFB2C7355F4F");
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;

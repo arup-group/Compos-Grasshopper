@@ -10,9 +10,17 @@ namespace ComposGH.Parameters
   public class ComposStudParameter : GH_PersistentParam<StudGoo>
   {
     public ComposStudParameter()
-      : base(new GH_InstanceDescription(StudGoo.Name, StudGoo.NickName, "Maintains a collection of " + StudGoo.Description + " data", Components.Ribbon.CategoryName.Name(), Components.Ribbon.SubCategoryName.Cat10()))
+      : base(new GH_InstanceDescription(
+        StudGoo.Name, 
+        StudGoo.NickName, 
+        StudGoo.Description + " parameter", 
+        Components.Ribbon.CategoryName.Name(), 
+        Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
+
+    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + StudGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => this.SourceCount == 0 ? StudGoo.Name : base.TypeName;
 
     public override Guid ComponentGuid => new Guid("e0b6cb52-99c8-4b2a-aec1-7f8a2d720daa");
 
