@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
-    <PackageReference Include="OasysGH" Version="0.1.0-beta" />
+    <PackageReference Include="OasysGH" Version="0.2.5-beta" />
     <PackageReference Include="Rhino.Inside" Version="7.0.0" />
     <PackageReference Include="UnitsNet" Version="4.89.0" />
     <PackageReference Include="UnitsNet.Serialization.JsonNet" Version="4.3.0" />

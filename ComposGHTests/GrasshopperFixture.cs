@@ -33,8 +33,8 @@ namespace ComposGHTests
 
       InitializeCore();
 
-      GH_PluginInfo.PluginName = ComposGHInfo.PluginName;
-      GH_PluginInfo.ProductName = ComposGHInfo.ProductName;
+      OasysGHInfo.PluginName = ComposGHInfo.PluginName;
+      OasysGHInfo.ProductName = ComposGHInfo.ProductName;
 
       // setup headless units
       ComposGH.Units.SetupUnitsDuringLoad(true);
