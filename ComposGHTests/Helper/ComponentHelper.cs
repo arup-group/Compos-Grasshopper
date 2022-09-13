@@ -83,18 +83,32 @@ namespace ComposGHTests.Helpers
 
     public static object GetOutput(GH_Component component, int index = 0, int branch = 0, int item = 0, bool forceUpdate = false)
     {
-      if (forceUpdate || component.Params.Output[index].VolatileDataCount == 0)
+      var doc = new GH_Document();
+      doc.AddObject(component, true);
+      GH_DocumentIO io = new GH_DocumentIO(doc);
+      doc.NewSolution(true);
+      GH_Component originalComponent = (GH_Component)io.Document.Objects[0];
+      originalComponent.Attributes.PerformLayout();
+      if (component.GetType().BaseType == typeof(GH_OasysDropDownComponent))
       {
-        component.ExpireSolution(true);
-        if (component.GetType().BaseType == typeof(GH_OasysDropDownComponent))
-        {
-          GH_OasysDropDownComponent dropdownComponent = (GH_OasysDropDownComponent)component;
-          dropdownComponent.ExpireDownStream = true;
-        }
-        component.Params.Output[index].ExpireSolution(true);
-        component.Params.Output[index].CollectData();
+        GH_OasysDropDownComponent dropdownComponent = (GH_OasysDropDownComponent)component;
+        dropdownComponent.ExpireDownStream = true;
       }
-      return component.Params.Output[index].VolatileData.get_Branch(branch)[item];
+      originalComponent.ExpireSolution(true);
+      originalComponent.Params.Output[index].CollectData();
+      return originalComponent.Params.Output[index].VolatileData.get_Branch(branch)[item];
+      //if (forceUpdate || component.Params.Output[index].VolatileDataCount == 0)
+      //{
+      //  component.ExpireSolution(true);
+      //  if (component.GetType().BaseType == typeof(GH_OasysDropDownComponent))
+      //  {
+      //    GH_OasysDropDownComponent dropdownComponent = (GH_OasysDropDownComponent)component;
+      //    dropdownComponent.ExpireDownStream = true;
+      //  }
+      //  component.Params.Output[index].ExpireSolution(true);
+      //  component.Params.Output[index].CollectData();
+      //}
+      //return component.Params.Output[index].VolatileData.get_Branch(branch)[item];
     }
   }
 }
