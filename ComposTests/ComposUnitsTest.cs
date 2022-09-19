@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using ComposAPI.Helpers;
-using Oasys.Units;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnitsNet.Units;
 using Xunit;
 
 namespace ComposAPI.Tests
 {
-  [Collection("ComposAPI Fixture collection")]
+    [Collection("ComposAPI Fixture collection")]
   public class ComposUnitsTest
   {
     [Theory]

@@ -1,13 +1,12 @@
 ﻿using Xunit;
-using UnitsNet;
-using UnitsNet.Units;
-using ComposAPI.Tests;
+using OasysUnitsNet;
+using OasysUnitsNet.Units;
 using ComposGHTests.Helpers;
 using OasysGH;
 
 namespace ComposAPI.Studs.Tests
 {
-  public partial class StudTest
+    public partial class StudTest
   {
     // 1 setup inputs
     [Theory]

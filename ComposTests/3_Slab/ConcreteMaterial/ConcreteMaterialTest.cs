@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using ComposAPI.Helpers;
-using ComposAPI.Tests;
-using Oasys.Units;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnitsNet;
+using OasysUnitsNet.Units;
 using Xunit;
 using ComposGHTests.Helpers;
 using OasysGH;

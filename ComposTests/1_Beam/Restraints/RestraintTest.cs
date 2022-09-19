@@ -1,15 +1,12 @@
 ﻿using Xunit;
-using UnitsNet;
-using UnitsNet.Units;
 using System.Collections.Generic;
 using ComposAPI.Helpers;
-using ComposAPI.Tests;
 using ComposGHTests.Helpers;
 using OasysGH;
 
 namespace ComposAPI.Beams.Tests
 {
-  [Collection("ComposAPI Fixture collection")]
+    [Collection("ComposAPI Fixture collection")]
   public partial class RestraintTest
   {
     // 1 setup inputs

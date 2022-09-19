@@ -1,9 +1,8 @@
-﻿using ComposAPI.Tests;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnitsNet;
+using OasysUnitsNet.Units;
 using Xunit;
 using ComposGHTests.Helpers;
 using ComposAPI.Helpers;
@@ -11,7 +10,7 @@ using OasysGH;
 
 namespace ComposAPI.Beams.Tests
 {
-  [Collection("ComposAPI Fixture collection")]
+    [Collection("ComposAPI Fixture collection")]
   public class SteelMaterialTest
   {
     [Theory]

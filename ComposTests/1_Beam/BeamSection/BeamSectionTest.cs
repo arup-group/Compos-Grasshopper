@@ -1,18 +1,16 @@
 ﻿using Xunit;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnitsNet;
+using OasysUnitsNet.Units;
 using System.Collections.Generic;
-using Moq;
 using ComposAPI.Helpers;
 using ComposAPITests.Helpers;
 using System;
-using ComposAPI.Tests;
 using ComposGHTests.Helpers;
 using OasysGH;
 
 namespace ComposAPI.Beams.Tests
 {
-  [Collection("ComposAPI Fixture collection")]
+    [Collection("ComposAPI Fixture collection")]
   public class BeamSectionTest
   {
     [Theory]

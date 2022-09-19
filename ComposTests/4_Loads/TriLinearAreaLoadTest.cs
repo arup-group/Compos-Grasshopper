@@ -2,14 +2,13 @@
 using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnitsNet;
+using OasysUnitsNet.Units;
 using Xunit;
-using static ComposAPI.Load;
 
 namespace ComposAPI.Loads.Tests
 {
-  public partial class LoadTest
+    public partial class LoadTest
   {
     // 1 setup inputs
     [Theory]

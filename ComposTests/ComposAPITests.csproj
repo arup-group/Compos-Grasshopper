@@ -33,8 +33,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="Moq" Version="4.16.1" />
-    <PackageReference Include="OasysGH" Version="0.2.5-beta" />
-    <PackageReference Include="UnitsNet" Version="4.89.0" />
+    <PackageReference Include="OasysGH" Version="0.2.8" />
+    <PackageReference Include="OasysUnitsNet" Version="4.145.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -49,12 +49,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ComposGHTests\ComposGHTests.csproj" />
     <ProjectReference Include="..\Compos\ComposAPI.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="OasysUnits">
-      <HintPath>..\Compos\lib\OasysUnits.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

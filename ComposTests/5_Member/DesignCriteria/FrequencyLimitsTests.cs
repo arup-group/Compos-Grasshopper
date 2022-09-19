@@ -1,16 +1,15 @@
 using ComposAPI.Helpers;
-using ComposAPI.Tests;
 using System.Collections.Generic;
 using OasysGH;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnitsNet;
+using OasysUnitsNet.Units;
 using Xunit;
 using ComposGHTests.Helpers;
 
 
 namespace ComposAPI.Members.Tests
 {
-  [Collection("ComposAPI Fixture collection")]
+    [Collection("ComposAPI Fixture collection")]
   public class FrequencyLimitsTests
   {
     [Fact]

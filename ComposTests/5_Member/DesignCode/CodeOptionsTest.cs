@@ -1,16 +1,12 @@
-using ComposAPI.Tests;
-using Moq;
-using System;
-using System.Linq.Expressions;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnitsNet;
+using OasysUnitsNet.Units;
 using Xunit;
 using ComposGHTests.Helpers;
 using OasysGH;
 
 namespace ComposAPI.Members.Tests
 {
-  public partial class DesignCodeTest
+    public partial class DesignCodeTest
   {
     [Fact]
     public CodeOptionsASNZ TestCodeOptionsConstructor()

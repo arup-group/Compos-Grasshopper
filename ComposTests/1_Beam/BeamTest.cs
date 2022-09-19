@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ComposGHTests.Helpers;
 using OasysGH;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnitsNet;
+using OasysUnitsNet.Units;
 using Xunit;
 
 namespace ComposAPI.Beams.Tests
 {
-  public static class BeamMother
+    public static class BeamMother
   {
     public static string Example1CoaString()
     {
