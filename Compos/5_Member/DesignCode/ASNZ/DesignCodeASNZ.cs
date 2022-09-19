@@ -1,11 +1,4 @@
-﻿using ComposAPI.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using OasysUnitsNet;
-
-namespace ComposAPI
+﻿namespace ComposAPI
 {
   /// <summary>
   /// <see cref="DesignCode"/> inherit class specific to AS/NZS2327:2017

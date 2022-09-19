@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using OasysUnitsNet;
-
-namespace ComposAPI
+﻿namespace ComposAPI
 {
   public class CreepShrinkageParametersASNZ : ICreepShrinkageParameters
   {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ComposAPI.Helpers;
-using OasysUnitsNet;
-
-namespace ComposAPI
+﻿namespace ComposAPI
 {
   public class DesignOption : IDesignOption
   {

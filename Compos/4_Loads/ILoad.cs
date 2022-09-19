@@ -1,6 +1,4 @@
-﻿using OasysUnitsNet.Units;
-
-namespace ComposAPI
+﻿namespace ComposAPI
 {
   public interface ILoad
   {

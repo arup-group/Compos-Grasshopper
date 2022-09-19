@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using ComposAPI.Helpers;
-using OasysUnitsNet;
+﻿using OasysUnitsNet;
 using OasysUnitsNet.Units;
 
 namespace ComposAPI
