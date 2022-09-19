@@ -5,12 +5,12 @@ using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH.Components;
-using Newtonsoft.Json;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnitsNet;
+using OasysUnitsNet.Units;
 using OasysGH.Units;
 using ComposGH.Helpers;
 using OasysGH.Units.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -20,6 +20,10 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("93b27356-f92d-454f-b39d-5c7e2c607391");
+
+    public override GH_Exposure Exposure => GH_Exposure.quarternary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.ProfileProperties;
     public BeamSectionProperties()
       : base(BeamSectionGoo.Name.Replace(" ", string.Empty)+ "Props",
           BeamSectionGoo.Name.Replace(" ", string.Empty),
@@ -27,10 +31,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.quarternary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.ProfileProperties;
     #endregion
 
     #region Input and output
@@ -55,15 +55,6 @@ namespace ComposGH.Components
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       BeamSection profile = new BeamSection(Input.BeamSection(this, DA, 0, false));
-
-      int outputsSerialized = JsonConvert.SerializeObject(profile.SectionDescription + LengthUnit.ToString()).GetHashCode();
-      if (this.ProfileSerialized != outputsSerialized)
-      {
-        this.ProfileSerialized = outputsSerialized;
-        base.ExpireDownStream = true;
-      }
-      else
-        base.ExpireDownStream = false;
 
       int i = 0;
       DA.SetData(i++, new GH_UnitNumber(profile.Depth.ToUnit(this.LengthUnit)));

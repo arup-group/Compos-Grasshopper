@@ -7,6 +7,7 @@ using ComposGH.Parameters;
 using ComposGH.Properties;
 using OasysGH.Components;
 using OasysGH.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -15,6 +16,10 @@ namespace ComposGH.Components
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
+    public override Guid ComponentGuid => new Guid("E832E3E8-1EF9-4F31-BC2A-683881E4BAC3");
+    public override GH_Exposure Exposure => GH_Exposure.quarternary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.TransverseReinforcement;
     public CreateTransverseReinforcement()
       : base("Create" + TransverseReinforcementGoo.Name.Replace(" ", string.Empty),
           TransverseReinforcementGoo.Name.Replace(" ", string.Empty),
@@ -22,11 +27,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override Guid ComponentGuid => new Guid("E832E3E8-1EF9-4F31-BC2A-683881E4BAC3");
-    public override GH_Exposure Exposure => GH_Exposure.quarternary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.TransverseReinforcement;
     #endregion
 
     #region Input and output

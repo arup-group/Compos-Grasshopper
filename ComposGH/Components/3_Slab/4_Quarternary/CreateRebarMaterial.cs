@@ -7,10 +7,11 @@ using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnitsNet;
+using OasysUnitsNet.Units;
 using OasysGH.Units;
 using OasysGH.Units.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -20,6 +21,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("E91D37A1-81D4-427D-9910-E8A514466F3C");
+    public override GH_Exposure Exposure => GH_Exposure.quarternary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.RebarMaterial;
     public CreateRebarMaterial()
       : base("Create" + ReinforcementMaterialGoo.Name.Replace(" ", string.Empty),
           ReinforcementMaterialGoo.Name.Replace(" ", string.Empty),
@@ -27,10 +31,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.quarternary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.RebarMaterial;
     #endregion
 
     #region Input and output
@@ -58,7 +58,7 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    private PressureUnit StressUnit = DefaultUnits.StressUnit;
+    private PressureUnit StressUnit = DefaultUnits.MaterialStrengthUnit;
     private RebarGrade Grade = RebarGrade.EN_500B;
 
     public override void InitialiseDropdowns()

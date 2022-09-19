@@ -7,10 +7,11 @@ using ComposGH.Parameters;
 using ComposGH.Properties;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnitsNet;
+using OasysUnitsNet.Units;
 using OasysGH.Units;
 using OasysGH.Units.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -20,16 +21,15 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("7dfed0d2-3ad1-49e6-a8d8-d5a5fd851a64");
+    public override GH_Exposure Exposure => GH_Exposure.primary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.TriLinearLoad;
     public CreateTriLinearLoad()
       : base("CreateTriLinearLoad", "TriLinearLoad", "Create a tri-linearly varying distributed Compos Load starting from left end of the beam and ending at the right." +
           Environment.NewLine + "The two peak load points can be defined at any positions along the span.",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat4())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.primary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.TriLinearLoad;
     #endregion
 
     #region Input and output
@@ -95,7 +95,7 @@ namespace ComposGH.Components
 
     #region Custom UI
     private ForcePerLengthUnit ForcePerLengthUnit = DefaultUnits.ForcePerLengthUnit;
-    private PressureUnit ForcePerAreaUnit = DefaultUnits.StressUnit;
+    private PressureUnit ForcePerAreaUnit = DefaultUnits.ForcePerAreaUnit;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
     private LoadDistribution DistributionType = LoadDistribution.Area;
 

@@ -5,12 +5,12 @@ using Grasshopper.Kernel;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
-using Oasys.Units;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet.Units;
+using OasysGH;
 using OasysGH.Units;
 using OasysGH.Units.Helpers;
+using OasysUnitsNet.Units;
 
 namespace ComposGH.Components
 {
@@ -20,6 +20,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("ceece06d-48e7-4dd4-9d1e-895872080c12");
+    public override GH_Exposure Exposure => GH_Exposure.secondary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.InternalForceResults;
     public InternalForces()
       : base("Internal Force Results",
           "Internal Forces",
@@ -27,10 +30,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat7())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.secondary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.InternalForceResults;
     #endregion
 
     #region Input and output

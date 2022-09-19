@@ -8,12 +8,13 @@ using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
 using OasysGH.Units;
 using OasysGH.Units.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnitsNet;
+using OasysUnitsNet.Units;
 
 namespace ComposGH.Components
 {
@@ -26,21 +27,19 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("dd28f981-592c-4c70-9295-740409300472");
-    public CreateProfile()
-      : base("CreateProfile", "Profile", "Create or look up a Profile text-string for a " + BeamGoo.Description + " or a " + BeamSectionGoo.Description,
-            Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat1())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
-
     public override GH_Exposure Exposure => GH_Exposure.quarternary;
-
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override string HtmlHelp_Source()
     {
       string help = "GOTO:https://arup-group.github.io/oasys-combined/adsec-api/api/Oasys.Profiles.html";
       return help;
     }
-
     protected override System.Drawing.Bitmap Icon => Resources.CreateProfile;
+    public CreateProfile()
+      : base("CreateProfile", "Profile", "Create or look up a Profile text-string for a " + BeamGoo.Description + " or a " + BeamSectionGoo.Description,
+            Ribbon.CategoryName.Name(),
+            Ribbon.SubCategoryName.Cat1())
+    { this.Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -157,7 +156,7 @@ namespace ComposGH.Components
       { "I Beam Symmetrical", "IIBeamSymmetricalProfile" },
     };
 
-    private UnitsNet.Units.LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
     // for catalogue selection
     // Catalogues
@@ -422,7 +421,7 @@ namespace ComposGH.Components
         else
         {
           // change unit
-          this.LengthUnit = (UnitsNet.Units.LengthUnit)Enum.Parse(typeof(UnitsNet.Units.LengthUnit), SelectedItems[i]);
+          this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
 
           base.UpdateUI();
         }
@@ -1369,7 +1368,7 @@ namespace ComposGH.Components
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
       _mode = (FoldMode)Enum.Parse(typeof(FoldMode), reader.GetString("mode"));
-      LengthUnit = (UnitsNet.Units.LengthUnit)Enum.Parse(typeof(UnitsNet.Units.LengthUnit), reader.GetString("lengthUnit"));
+      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), reader.GetString("lengthUnit"));
 
       InclSS = reader.GetBoolean("inclSS");
       numberOfInputs = reader.GetInt32("NumberOfInputs");

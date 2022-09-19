@@ -7,9 +7,11 @@ using ComposGH.Parameters;
 using ComposGH.Properties;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet.Units;
+using OasysUnitsNet.Units;
 using OasysGH.Units;
 using OasysGH.Units.Helpers;
+using OasysGH;
+using Grasshopper.Kernel.Types;
 
 namespace ComposGH.Components
 {
@@ -19,6 +21,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("6d88f397-b1da-421f-a8ba-97de100feab1");
+    public override GH_Exposure Exposure => GH_Exposure.tertiary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.TransverseRebarResults;
     public TransverseRebarResults()
       : base("Transverse Rebar Results",
           "RebarResults",
@@ -26,10 +31,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat7())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.tertiary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.TransverseRebarResults;
     #endregion
 
     #region Input and output
@@ -61,7 +62,7 @@ namespace ComposGH.Components
       Output.SetList(this, DA, i++, 
         result.Positions.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList());
       Output.SetList(this, DA, i++,
-        result.ControlSurface);
+        result.ControlSurface.Select(x => new GH_String(x)).ToList());
       Output.SetList(this, DA, i++,
         result.EffectiveShearPerimeter.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList());
       Output.SetList(this, DA, i++,

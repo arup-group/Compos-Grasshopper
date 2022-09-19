@@ -7,11 +7,10 @@ using ComposGH.Properties;
 using ComposGH.Parameters;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet.Units;
+using OasysUnitsNet.Units;
 using OasysGH.Units;
-using OasysGH.Units;
-using static ComposGH.Components.CompositeProperties;
 using OasysGH.Units.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -21,6 +20,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("5ea441b0-03aa-4aa9-a63f-356c1fa05427");
+    public override GH_Exposure Exposure => GH_Exposure.tertiary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.BeamStressResults;
     public BeamStressResults()
       : base("Beam Stress Results",
           "BeamStress",
@@ -28,10 +30,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat7())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.tertiary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.BeamStressResults;
     #endregion
 
     #region Input and output
@@ -109,7 +107,7 @@ namespace ComposGH.Components
       Final
     }
     private Case SelectedCase = Case.Final;
-    private PressureUnit StressUnit = DefaultUnits.StressUnit;
+    private PressureUnit StressUnit = DefaultUnits.StressUnitResult;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
 
     public override void InitialiseDropdowns()

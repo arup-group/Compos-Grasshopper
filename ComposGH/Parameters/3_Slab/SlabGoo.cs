@@ -1,6 +1,7 @@
 ﻿using Grasshopper.Kernel.Types;
 using ComposAPI;
 using OasysGH.Parameters;
+using OasysGH;
 
 namespace ComposGH.Parameters
 {
@@ -14,5 +15,6 @@ namespace ComposGH.Parameters
     public static string Description => "Compos Concrete Slab";
     public SlabGoo(ISlab item) : base(item) { }
     public override IGH_Goo Duplicate() => new SlabGoo(this.Value);
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 }

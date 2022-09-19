@@ -7,9 +7,11 @@ using ComposGH.Parameters;
 using ComposGH.Properties;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet.Units;
+using OasysUnitsNet.Units;
 using OasysGH.Units;
 using OasysGH.Units.Helpers;
+using OasysGH;
+using Grasshopper.Kernel.Types;
 
 namespace ComposGH.Components
 {
@@ -19,6 +21,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("75fbd8a9-eb55-443e-88c8-353307c96097");
+    public override GH_Exposure Exposure => GH_Exposure.tertiary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.StudResults;
     public StudResults()
       : base("Stud Results",
           "StudResults",
@@ -26,10 +31,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat7())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.tertiary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.StudResults;
     #endregion
 
     #region Input and output
@@ -65,16 +66,16 @@ namespace ComposGH.Components
         result.StudCapacity.Select(x => new GH_UnitNumber(x.ToUnit(this.ForceUnit))).ToList());
       
       Output.SetList(this, DA, i++,
-        result.NumberOfStudsStart);
+        result.NumberOfStudsStart.Select(x => new GH_Integer(x)).ToList());
       
       Output.SetList(this, DA, i++,
-        result.NumberOfStudsEnd);
+        result.NumberOfStudsEnd.Select(x => new GH_Integer(x)).ToList());
 
       Output.SetList(this, DA, i++,
-        result.NumberOfStudsRequiredStart);
+        result.NumberOfStudsRequiredStart.Select(x => new GH_Integer(x)).ToList());
 
       Output.SetList(this, DA, i++,
-        result.NumberOfStudsRequiredEnd);
+        result.NumberOfStudsRequiredEnd.Select(x => new GH_Integer(x)).ToList());
 
       Output.SetList(this, DA, i++,
         result.StudCapacityRequiredForFullShearInteraction.Select(x => new GH_UnitNumber(x.ToUnit(this.ForceUnit))).ToList());

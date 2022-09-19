@@ -5,6 +5,7 @@ using Grasshopper.Kernel.Types;
 using ComposAPI;
 using ComposGH.Parameters;
 using OasysGH.Components;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -17,13 +18,13 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("c402ae16-b8c0-4203-86c7-43c3f2917075");
+    public override GH_Exposure Exposure => GH_Exposure.primary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     public CodeSatisfied()
       : base("Code Satisfied?", "Code", "Check if a Compos model satisfies the chosen code",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat7())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-    public override GH_Exposure Exposure => GH_Exposure.primary;
-
     #endregion
 
     #region Input and output

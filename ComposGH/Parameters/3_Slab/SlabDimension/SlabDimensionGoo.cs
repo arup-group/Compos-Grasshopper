@@ -3,6 +3,7 @@ using ComposAPI;
 using OasysGH.Parameters;
 using Grasshopper.Kernel;
 using System;
+using OasysGH;
 
 namespace ComposGH.Parameters
 {
@@ -16,6 +17,7 @@ namespace ComposGH.Parameters
     public static string Description => "Compos Slab Dimensions";
     public SlabDimensionGoo(ISlabDimension item) : base(item) { }
     public override IGH_Goo Duplicate() => new SlabDimensionGoo(this.Value);
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 
   /// <summary>

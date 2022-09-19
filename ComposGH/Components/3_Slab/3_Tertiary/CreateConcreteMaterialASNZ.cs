@@ -5,13 +5,13 @@ using Grasshopper.Kernel;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
-using Oasys.Units;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnitsNet;
+using OasysUnitsNet.Units;
 using OasysGH.Units;
 using OasysGH.Units.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -20,6 +20,9 @@ namespace ComposGH.Components
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("0f51c6bb-e8cc-4b8a-add2-03b91ed2ca9b");
+    public override GH_Exposure Exposure => GH_Exposure.tertiary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.CreateConcreteMaterialAZ;
     public CreateConcreteMaterialASNZ()
       : base("ASNZ" + ConcreteMaterialGoo.Name.Replace(" ", string.Empty),
           "ASNZ" + ConcreteMaterialGoo.NickName.Replace(" ", string.Empty),
@@ -27,10 +30,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.tertiary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.CreateConcreteMaterialAZ;
     #endregion
 
     #region Input and output

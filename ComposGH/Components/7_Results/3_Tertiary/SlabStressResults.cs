@@ -5,12 +5,12 @@ using Grasshopper.Kernel;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
-using Oasys.Units;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet.Units;
 using OasysGH.Units;
 using OasysGH.Units.Helpers;
+using OasysGH;
+using OasysUnitsNet.Units;
 
 namespace ComposGH.Components
 {
@@ -20,6 +20,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("6a4a30b1-41b3-4fbb-bcd1-64c7834b6306");
+    public override GH_Exposure Exposure => GH_Exposure.tertiary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.SlabStressResults;
     public SlabStressResults()
       : base("Slab Stress Results",
           "SlabStress",
@@ -27,10 +30,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat7())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.tertiary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.SlabStressResults;
     #endregion
 
     #region Input and output
@@ -94,8 +93,8 @@ namespace ComposGH.Components
       Final
     }
     private Load SelectedLoad = Load.Final;
-    private PressureUnit StressUnit = DefaultUnits.StressUnit;
-    private StrainUnit StrainUnit = DefaultUnits.StrainUnit;
+    private PressureUnit StressUnit = DefaultUnits.StressUnitResult;
+    private StrainUnit StrainUnit = DefaultUnits.StrainUnitResult;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
 
     public override void InitialiseDropdowns()

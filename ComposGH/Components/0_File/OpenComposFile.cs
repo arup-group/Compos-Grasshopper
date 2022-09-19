@@ -10,6 +10,7 @@ using Grasshopper.Kernel.Types;
 using OasysGH.Helpers;
 using OasysGH.Components;
 using OasysGH.UI;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -19,15 +20,14 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("51e4fa31-a626-45a0-a3f6-70175ebb80e4");
+    public override GH_Exposure Exposure => GH_Exposure.primary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override Bitmap Icon => Resources.OpenModel;
     public OpenComposFile()
       : base("OpenCompos", "Open", "Open an existing Compos .coa file",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat0())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.primary;
-
-    protected override Bitmap Icon => Resources.OpenModel;
     #endregion
 
     #region Input and output
@@ -58,7 +58,7 @@ namespace ComposGH.Components
             this.FileName = this.FileName + ".coa";
 
           IComposFile composFile = ComposFile.Open(this.FileName);
-          PostHog.ModelIO("openCOA", (int)(new FileInfo(this.FileName).Length / 1024));
+          PostHog.ModelIO(PluginInfo, "openCOA", (int)(new FileInfo(this.FileName).Length / 1024));
 
           List<MemberGoo> members = new List<MemberGoo>();
           foreach (IMember mem in composFile.GetMembers())

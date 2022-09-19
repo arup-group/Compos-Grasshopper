@@ -8,12 +8,17 @@ using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH.Components;
 using OasysGH.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
   public class CreateCatalogueDeck : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
+    public override Guid ComponentGuid => new Guid("6796D3E6-CF84-4AC6-ABB7-012C20E6DB9A");
+    public override GH_Exposure Exposure => GH_Exposure.quinary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.StandardDecking;
     public CreateCatalogueDeck()
         : base("Catalogue" + DeckingGoo.Name.Replace(" ", string.Empty),
           DeckingGoo.Name.Replace(" ", string.Empty),
@@ -21,10 +26,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; }
-    public override Guid ComponentGuid => new Guid("6796D3E6-CF84-4AC6-ABB7-012C20E6DB9A");
-    public override GH_Exposure Exposure => GH_Exposure.quinary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.StandardDecking;
     #endregion
 
     #region Input and output

@@ -8,10 +8,11 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnitsNet;
+using OasysUnitsNet.Units;
 using OasysGH.Units;
 using OasysGH.Units.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -21,6 +22,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("f012d853-af53-45b9-b080-723661b9c2ad");
+    public override GH_Exposure Exposure => GH_Exposure.secondary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.StandardStudDimsEN;
     public CreateStandardStudDimensionsEN()
       : base("StandardEN" + StudDimensionsGoo.Name.Replace(" ", string.Empty),
           "StudDimsEN",
@@ -28,10 +32,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.secondary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.StandardStudDimsEN;
     #endregion
 
     #region Input and output
@@ -89,7 +89,7 @@ namespace ComposGH.Components
             "Ø22/100mm",
             "Ø25/100mm"
     });
-    private PressureUnit StressUnit = DefaultUnits.StressUnit;
+    private PressureUnit StressUnit = DefaultUnits.MaterialStrengthUnit;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
     private StandardStudGrade StdGrd = StandardStudGrade.SD1_EN13918;
     private StandardStudSize StdSize = StandardStudSize.D19mmH100mm;
