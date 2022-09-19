@@ -58,10 +58,13 @@ namespace ComposGH.Components
 
       string name = "";
       DA.GetData(5, ref name);
+      name = name.Trim();
       string gridRef = "";
       DA.GetData(6, ref gridRef);
+      gridRef = gridRef.Trim();
       string note = "";
       DA.GetData(7, ref note);
+      note = note.Trim();
 
       Member member = new Member(name, gridRef, note, code.Value, beam.Value, stud.Value, slab.Value, loads.Select(x => x.Value).ToList());
       
