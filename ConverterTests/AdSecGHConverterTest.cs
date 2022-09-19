@@ -1,5 +1,3 @@
-using Xunit;
-
 namespace ConverterTests
 {
   public class AdSecGHConverterTest
