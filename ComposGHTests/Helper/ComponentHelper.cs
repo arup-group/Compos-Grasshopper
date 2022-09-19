@@ -3,7 +3,6 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
 using Grasshopper.Kernel.Types;
 using System.Collections.Generic;
-using OasysGH.Components;
 
 namespace ComposGHTests.Helpers
 {
@@ -86,11 +85,6 @@ namespace ComposGHTests.Helpers
       if (forceUpdate || component.Params.Output[index].VolatileDataCount == 0)
       {
         component.ExpireSolution(true);
-        if (component.GetType().BaseType == typeof(GH_OasysDropDownComponent))
-        {
-          GH_OasysDropDownComponent dropdownComponent = (GH_OasysDropDownComponent)component;
-          dropdownComponent.ExpireDownStream = true;
-        }
         component.Params.Output[index].ExpireSolution(true);
         component.Params.Output[index].CollectData();
       }

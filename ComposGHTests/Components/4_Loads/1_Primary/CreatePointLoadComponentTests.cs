@@ -3,13 +3,12 @@ using ComposGH.Components;
 using Xunit;
 using ComposGHTests.Helpers;
 using ComposAPI;
-using UnitsNet.Units;
-using OasysGH.Components;
+using OasysUnitsNet.Units;
 using OasysGH.Components;
 
 namespace ComposGHTests.Load
 {
-  [Collection("GrasshopperFixture collection")]
+    [Collection("GrasshopperFixture collection")]
   public class CreatePointLoadComponentTests
   {
     public static GH_OasysDropDownComponent ComponentMother()

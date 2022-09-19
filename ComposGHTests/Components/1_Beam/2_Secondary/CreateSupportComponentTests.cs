@@ -4,8 +4,9 @@ using ComposGH.Components;
 using Xunit;
 using ComposGHTests.Helpers;
 using System.Collections.Generic;
-using UnitsNet;
+using OasysUnitsNet;
 using OasysGH.Components;
+using OasysUnitsNet.Units;
 
 namespace ComposGHTests.Beam
 {
@@ -36,9 +37,9 @@ namespace ComposGHTests.Beam
       List<object> input3 = new List<object>() { "2 %", "5000 mm", "8.7 m" };
       List<IQuantity> quantities = new List<IQuantity>()
       {
-        new Ratio(2, UnitsNet.Units.RatioUnit.Percent),
-        new Length(5000, UnitsNet.Units.LengthUnit.Millimeter),
-        new Length(8.7, UnitsNet.Units.LengthUnit.Meter)
+        new Ratio(2, RatioUnit.Percent),
+        new Length(5000, LengthUnit.Millimeter),
+        new Length(8.7, LengthUnit.Meter)
       };
 
       ComponentTestHelper.SetInput(comp, input1, 0);

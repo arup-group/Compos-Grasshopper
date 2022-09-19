@@ -4,6 +4,7 @@ using ComposGH.Components;
 using Xunit;
 using ComposGHTests.Helpers;
 using OasysGH.Components;
+using OasysUnitsNet.Units;
 
 namespace ComposGHTests.Beam
 {
@@ -34,8 +35,8 @@ namespace ComposGHTests.Beam
       WebOpeningGoo output = (WebOpeningGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(400, output.Value.Width.Millimeters);
       Assert.Equal(300, output.Value.Height.Millimeters);
-      Assert.Equal(0.5, output.Value.CentroidPosFromStart.As(UnitsNet.Units.RatioUnit.DecimalFraction));
-      Assert.Equal(150, output.Value.CentroidPosFromTop.As(UnitsNet.Units.LengthUnit.Millimeter));
+      Assert.Equal(0.5, output.Value.CentroidPosFromStart.As(RatioUnit.DecimalFraction));
+      Assert.Equal(150, output.Value.CentroidPosFromTop.As(LengthUnit.Millimeter));
       Assert.Equal(OpeningType.Rectangular, output.Value.WebOpeningType);
     }
 
@@ -49,8 +50,8 @@ namespace ComposGHTests.Beam
 
       WebOpeningGoo output = (WebOpeningGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(400, output.Value.Diameter.Centimeters);
-      Assert.Equal(0.5, output.Value.CentroidPosFromStart.As(UnitsNet.Units.RatioUnit.DecimalFraction));
-      Assert.Equal(150, output.Value.CentroidPosFromTop.As(UnitsNet.Units.LengthUnit.Centimeter));
+      Assert.Equal(0.5, output.Value.CentroidPosFromStart.As(RatioUnit.DecimalFraction));
+      Assert.Equal(150, output.Value.CentroidPosFromTop.As(LengthUnit.Centimeter));
       Assert.Equal(OpeningType.Circular, output.Value.WebOpeningType);
     }
 
@@ -66,8 +67,8 @@ namespace ComposGHTests.Beam
       WebOpeningGoo output = (WebOpeningGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(400, output.Value.Width.Feet);
       Assert.Equal(300, output.Value.Height.Feet);
-      Assert.Equal(0.5, output.Value.CentroidPosFromStart.As(UnitsNet.Units.RatioUnit.DecimalFraction));
-      Assert.Equal(150, output.Value.CentroidPosFromTop.As(UnitsNet.Units.LengthUnit.Foot));
+      Assert.Equal(0.5, output.Value.CentroidPosFromStart.As(RatioUnit.DecimalFraction));
+      Assert.Equal(150, output.Value.CentroidPosFromTop.As(LengthUnit.Foot));
       Assert.Equal(OpeningType.Rectangular, output.Value.WebOpeningType);
     }
 

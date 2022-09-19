@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using ComposAPI;
-using ComposGH;
-using Grasshopper.Kernel;
-using OasysGH;
 using Xunit;
 
 namespace ComposGHTests
@@ -33,11 +29,8 @@ namespace ComposGHTests
 
       InitializeCore();
 
-      OasysGHInfo.PluginName = ComposGHInfo.PluginName;
-      OasysGHInfo.ProductName = ComposGHInfo.ProductName;
-
       // setup headless units
-      OasysGH.Units.Helpers.Setup.SetupUnitsDuringLoad(true);
+      OasysGH.Units.Utility.SetupUnitsDuringLoad(true);
     }
 
     public void AddPluginToGH()
