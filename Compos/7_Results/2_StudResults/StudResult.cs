@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Oasys.Units;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnitsNet;
+using OasysUnitsNet.Units;
 
 namespace ComposAPI
 {
@@ -203,7 +200,7 @@ namespace ComposAPI
             case StudResultOption.STUD_NUM_LEFT_USED:
             case StudResultOption.STUD_NUM_RIGHT_PROV:
             case StudResultOption.STUD_NUM_RIGHT_USED:
-              results.Add(new UnitsNet.Scalar(value, ScalarUnit.Amount));
+              results.Add(new Scalar(value, ScalarUnit.Amount));
               break;
           }
         }

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using ComposAPI.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnitsNet;
+using OasysUnitsNet.Units;
 
 namespace ComposAPI
 {
@@ -124,11 +124,11 @@ namespace ComposAPI
         case RebarGrade.BS_250R:
         case RebarGrade.HK_250:
         case RebarGrade.AS_R250N:
-          this.Fy = new Pressure(250, UnitsNet.Units.PressureUnit.Megapascal);
+          this.Fy = new Pressure(250, PressureUnit.Megapascal);
           break;
         case RebarGrade.BS_460T:
         case RebarGrade.HK_460:
-          this.Fy = new Pressure(460, UnitsNet.Units.PressureUnit.Megapascal);
+          this.Fy = new Pressure(460, PressureUnit.Megapascal);
           break;
         case RebarGrade.BS_500X:
         case RebarGrade.AS_D500L:
@@ -137,10 +137,10 @@ namespace ComposAPI
         case RebarGrade.EN_500A:
         case RebarGrade.EN_500B:
         case RebarGrade.EN_500C:
-          this.Fy = new Pressure(500, UnitsNet.Units.PressureUnit.Megapascal);
+          this.Fy = new Pressure(500, PressureUnit.Megapascal);
           break;
         case RebarGrade.BS_1770:
-          this.Fy = new Pressure(1770, UnitsNet.Units.PressureUnit.Megapascal);
+          this.Fy = new Pressure(1770, PressureUnit.Megapascal);
           break;
       }
     }
