@@ -24,7 +24,7 @@ namespace ComposGH.Helpers
           return goo.Value.SectionDescription;
         }
         else if (gh_typ.CastTo(ref profile))
-          return profile;
+          return profile.Trim();
         else
         {
           owner.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Unable to convert " + owner.Params.Input[inputid].NickName + " input (" + gh_typ.Value.GetType().Name + ") to " + typeof(BeamSectionGoo).Name.Replace("Goo", string.Empty) + " or text string");
