@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using ComposAPI.Helpers;
 using Compos_8_6;
-using OasysUnitsNet.Units;
+using OasysUnits.Units;
 
 namespace ComposAPI
 {

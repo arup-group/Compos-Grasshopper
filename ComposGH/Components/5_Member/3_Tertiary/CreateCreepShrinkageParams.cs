@@ -4,9 +4,9 @@ using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using OasysGH.Components;
-using OasysUnitsNet;
+using OasysUnits;
 using OasysGH.Helpers;
-using OasysUnitsNet.Units;
+using OasysUnits.Units;
 using OasysGH;
 
 namespace ComposGH.Components

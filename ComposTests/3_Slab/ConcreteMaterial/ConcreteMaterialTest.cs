@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using ComposAPI.Helpers;
-using OasysUnitsNet;
-using OasysUnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
 using Xunit;
 using ComposGHTests.Helpers;
 using OasysGH;

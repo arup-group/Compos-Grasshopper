@@ -8,8 +8,8 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using OasysGH;
 using Rhino.Geometry;
-using OasysUnitsNet;
-using OasysUnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposGH.Parameters
 {

@@ -1,4 +1,4 @@
-﻿using OasysUnitsNet;
+﻿using OasysUnits;
 
 namespace ComposAPI
 {

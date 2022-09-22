@@ -1,5 +1,5 @@
 ﻿using ComposAPI.Helpers;
-using OasysUnitsNet;
+using OasysUnits;
 
 namespace ComposAPI
 {

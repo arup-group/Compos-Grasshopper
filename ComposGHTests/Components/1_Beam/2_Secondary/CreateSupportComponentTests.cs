@@ -4,9 +4,9 @@ using ComposGH.Components;
 using Xunit;
 using ComposGHTests.Helpers;
 using System.Collections.Generic;
-using OasysUnitsNet;
+using OasysUnits;
 using OasysGH.Components;
-using OasysUnitsNet.Units;
+using OasysUnits.Units;
 
 namespace ComposGHTests.Beam
 {

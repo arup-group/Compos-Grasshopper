@@ -12,8 +12,8 @@ using OasysGH.Helpers;
 using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using Rhino.Geometry;
-using OasysUnitsNet;
-using OasysUnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposGH.Components
 {

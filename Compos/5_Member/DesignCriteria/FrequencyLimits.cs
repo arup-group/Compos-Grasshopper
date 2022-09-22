@@ -1,7 +1,7 @@
 ﻿using ComposAPI.Helpers;
 using System.Collections.Generic;
-using OasysUnitsNet;
-using OasysUnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposAPI
 {

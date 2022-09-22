@@ -541,10 +541,7 @@
       <Version>6.27.20176.5001</Version>
     </PackageReference>
     <PackageReference Include="OasysGH">
-      <Version>0.2.8</Version>
-    </PackageReference>
-    <PackageReference Include="OasysUnitsNet.Serialization.JsonNet">
-      <Version>4.6.0</Version>
+      <Version>0.2.9-beta</Version>
     </PackageReference>
     <PackageReference Include="System.Data.SQLite">
       <Version>1.0.115.5</Version>
