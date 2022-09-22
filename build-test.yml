@@ -1,6 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
 trigger:
@@ -15,7 +12,7 @@ variables:
 pool: 'rhino-compute'
 
 steps:
-- powershell: Remove-Item -Path %AppData%\Grasshopper\*.ghlink
+- powershell: Remove-Item -Path C:\Users\**\AppData\Roaming\Grasshopper\*.ghlink
   displayName: 'Delete all orphan .ghlink files in %AppData%'
 
 - task: NuGetToolInstaller@1
