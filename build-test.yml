@@ -10,6 +10,11 @@ variables:
     value: Release
 
 pool: 'rhino-compute'
+
+#- powershell: Remove-Item -Path C:\Users\**\AppData\Roaming\Grasshopper\*.ghlink
+#  displayName: 'Delete orphan .ghlink files'
+
+steps:
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
