@@ -48,7 +48,6 @@
     <None Include="licenses\Speckle" />
     <None Include="licenses\System.Reactive" />
     <None Include="licenses\UnitsNet" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdSecGHConverter.cs" />
