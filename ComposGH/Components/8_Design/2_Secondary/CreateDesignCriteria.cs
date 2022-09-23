@@ -4,6 +4,7 @@ using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
 
@@ -14,6 +15,9 @@ namespace ComposGH.Components
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("f99fbf92-b4a2-46d7-8b7a-1e3360ba9f00");
+    public override GH_Exposure Exposure => GH_Exposure.secondary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.DesignCriteria;
     public CreateDesignCriteria()
       : base("Create" + DesignCriteriaGoo.Name.Replace(" ", string.Empty),
           DesignCriteriaGoo.Name.Replace(" ", string.Empty),
@@ -21,10 +25,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat8())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.secondary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.DesignCriteria;
     #endregion
 
     #region Input and output
@@ -55,7 +55,7 @@ namespace ComposGH.Components
       
       int i = 0;
       // 0 beam size limits
-      BeamSizeLimitsGoo beamGoo = (BeamSizeLimitsGoo)GetInput.GenericGoo<BeamSizeLimitsGoo>(this, DA, i++);
+      BeamSizeLimitsGoo beamGoo = (BeamSizeLimitsGoo)Input.GenericGoo<BeamSizeLimitsGoo>(this, DA, i++);
       designCriteria.BeamSizeLimits = beamGoo.Value;
       
       // 1 catalogues
@@ -74,42 +74,42 @@ namespace ComposGH.Components
       // 2 Constr limits
       if (this.Params.Input[i].Sources.Count > 0)
       {
-        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)GetInput.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
+        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.ConstructionDeadLoad = dlGoo.Value;
       }
 
       // 3 Add limits
       if (this.Params.Input[i].Sources.Count > 0)
       {
-        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)GetInput.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
+        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.AdditionalDeadLoad = dlGoo.Value;
       }
 
       // 4 final limits
       if (this.Params.Input[i].Sources.Count > 0)
       {
-        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)GetInput.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
+        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.FinalLiveLoad = dlGoo.Value;
       }
 
       // 5 total limits
       if (this.Params.Input[i].Sources.Count > 0)
       {
-        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)GetInput.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
+        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.TotalLoads = dlGoo.Value;
       }
 
       // 6 post limits
       if (this.Params.Input[i].Sources.Count > 0)
       {
-        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)GetInput.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
+        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.PostConstruction = dlGoo.Value;
       }
 
       // 7 freq limits
       if (this.Params.Input[i].Sources.Count > 0)
       {
-        FrequencyLimitsGoo dlGoo = (FrequencyLimitsGoo)GetInput.GenericGoo<FrequencyLimitsGoo>(this, DA, i++);
+        FrequencyLimitsGoo dlGoo = (FrequencyLimitsGoo)Input.GenericGoo<FrequencyLimitsGoo>(this, DA, i++);
         designCriteria.FrequencyLimits = dlGoo.Value;
       }
 

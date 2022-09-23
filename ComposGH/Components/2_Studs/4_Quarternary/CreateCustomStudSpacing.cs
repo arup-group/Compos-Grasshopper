@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -18,6 +20,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("49328e6d-eebe-405c-b58c-060b8bdc1bef");
+    public override GH_Exposure Exposure => GH_Exposure.quarternary | GH_Exposure.obscure;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.CustomStudSpacing;
     public CreateCustomStudSpacing()
       : base("Custom" + StudGroupSpacingGoo.Name.Replace(" ", string.Empty),
           StudGroupSpacingGoo.Name.Replace(" ", string.Empty),
@@ -25,10 +30,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.quarternary | GH_Exposure.obscure;
-
-    protected override System.Drawing.Bitmap Icon => Resources.CustomStudSpacing;
     #endregion
 
     #region Input and output
@@ -50,18 +51,18 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      IQuantity start = GetInput.LengthOrRatio(this, DA, 0, this.LengthUnit);
+      IQuantity start = Input.LengthOrRatio(this, DA, 0, this.LengthUnit);
       int rows = 1;
       DA.GetData(1, ref rows);
       int lines = 1;
       DA.GetData(2, ref lines);
-      Length spacing = GetInput.Length(this, DA, 3, this.LengthUnit);
+      Length spacing = (Length)Input.UnitNumber(this, DA, 3, this.LengthUnit);
 
       Output.SetItem(this, DA, 0, new StudGroupSpacingGoo(new StudGroupSpacing(start, rows, lines, spacing)));
     }
 
     #region Custom UI
-    private LengthUnit LengthUnit = Units.LengthUnitSection;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
     public override void InitialiseDropdowns()
     {
@@ -71,7 +72,7 @@ namespace ComposGH.Components
       this.SelectedItems = new List<string>();
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

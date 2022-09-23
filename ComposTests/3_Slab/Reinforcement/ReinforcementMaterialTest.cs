@@ -1,15 +1,14 @@
 ﻿using ComposAPI.Helpers;
-using ComposAPI.Tests;
 using System.Collections.Generic;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
 using Xunit;
 using ComposGHTests.Helpers;
 using OasysGH;
 
 namespace ComposAPI.Slabs.Tests
 {
-  [Collection("ComposAPI Fixture collection")]
+    [Collection("ComposAPI Fixture collection")]
   public class ReinforcementMaterialTest
   {
     [Theory]

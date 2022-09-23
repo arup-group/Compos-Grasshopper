@@ -1,14 +1,11 @@
 ﻿using System.Collections.Generic;
 using ComposAPI.Helpers;
-using ComposAPI.Tests;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnits.Units;
 using Xunit;
-using static ComposAPI.Load;
 
 namespace ComposAPI.Loads.Tests
 {
-  public partial class LoadTest
+    public partial class LoadTest
   {
     [Fact]
     public void TestFileCoaStringForLoadingParts()

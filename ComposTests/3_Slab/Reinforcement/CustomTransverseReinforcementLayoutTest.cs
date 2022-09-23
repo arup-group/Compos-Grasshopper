@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using ComposAPI.Helpers;
-using ComposAPI.Tests;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnits;
 using Xunit;
 using ComposGHTests.Helpers;
 using OasysGH;
 
 namespace ComposAPI.Slabs.Tests
 {
-  [Collection("ComposAPI Fixture collection")]
+    [Collection("ComposAPI Fixture collection")]
   public class CustomTransverseReinforcementLayoutTest
   {
     [Theory]

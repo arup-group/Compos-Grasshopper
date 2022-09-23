@@ -1,4 +1,3 @@
-using ComposAPI.Tests;
 using Xunit;
 using ComposGHTests.Helpers;
 using OasysGH;

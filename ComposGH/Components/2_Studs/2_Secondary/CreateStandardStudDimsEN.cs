@@ -8,8 +8,11 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -19,6 +22,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("f012d853-af53-45b9-b080-723661b9c2ad");
+    public override GH_Exposure Exposure => GH_Exposure.secondary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.StandardStudDimsEN;
     public CreateStandardStudDimensionsEN()
       : base("StandardEN" + StudDimensionsGoo.Name.Replace(" ", string.Empty),
           "StudDimsEN",
@@ -26,10 +32,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.secondary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.StandardStudDimsEN;
     #endregion
 
     #region Input and output
@@ -50,13 +52,13 @@ namespace ComposGH.Components
     {
       if (SelectedItems[0] == StandardSizes[0]) // custom size
       {
-        Length dia = GetInput.Length(this, DA, 0, LengthUnit);
-        Length h = GetInput.Length(this, DA, 1, LengthUnit);
+        Length dia = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
+        Length h = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
 
         if (this.Params.Input[2].Sources.Count > 0)
         {
           SelectedItems[1] = "Custom";
-          Pressure strengthS = GetInput.Stress(this, DA, 2, StressUnit);
+          Pressure strengthS = (Pressure)Input.UnitNumber(this, DA, 2, StressUnit);
           Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthS)));
         }
         else
@@ -67,7 +69,7 @@ namespace ComposGH.Components
         if (this.Params.Input[0].Sources.Count > 0)
         {
           SelectedItems[1] = "Custom";
-          Pressure strengthS = GetInput.Stress(this, DA, 0, StressUnit);
+          Pressure strengthS = (Pressure)Input.UnitNumber(this, DA, 0, StressUnit);
           Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(StdSize, strengthS)));
         }
         else
@@ -87,8 +89,8 @@ namespace ComposGH.Components
             "Ø22/100mm",
             "Ø25/100mm"
     });
-    private PressureUnit StressUnit = Units.StressUnit;
-    private LengthUnit LengthUnit = Units.LengthUnitSection;
+    private PressureUnit StressUnit = DefaultUnits.MaterialStrengthUnit;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
     private StandardStudGrade StdGrd = StandardStudGrade.SD1_EN13918;
     private StandardStudSize StdSize = StandardStudSize.D19mmH100mm;
 
@@ -111,7 +113,7 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.StdGrd.ToString());
 
       // strength
-      this.DropDownItems.Add(Units.FilteredStressUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredStressUnits);
       this.SelectedItems.Add(this.StressUnit.ToString());
 
       this.IsInitialised = true;
@@ -139,7 +141,7 @@ namespace ComposGH.Components
         else if (this.DropDownItems.Count < 4)
         {
           // add length dropdown
-          this.DropDownItems.Add(Units.FilteredLengthUnits);
+          this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
           this.SelectedItems.Add(this.LengthUnit.ToString());
           this.SpacerDescriptions.Add("Length Unit");
           this.ModeChangeClicked();

@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using ComposAPI;
+using ComposGH.Helpers;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
+using OasysGH;
 using OasysGH.Components;
-using Newtonsoft.Json;
-using UnitsNet;
-using UnitsNet.Units;
-using UnitsNet.GH;
+using OasysGH.Parameters;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposGH.Components
 {
@@ -18,6 +21,10 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("93b27356-f92d-454f-b39d-5c7e2c607391");
+
+    public override GH_Exposure Exposure => GH_Exposure.quarternary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.ProfileProperties;
     public BeamSectionProperties()
       : base(BeamSectionGoo.Name.Replace(" ", string.Empty)+ "Props",
           BeamSectionGoo.Name.Replace(" ", string.Empty),
@@ -25,10 +32,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.quarternary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.ProfileProperties;
     #endregion
 
     #region Input and output
@@ -52,16 +55,7 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      BeamSection profile = new BeamSection(GetInput.BeamSection(this, DA, 0, false));
-
-      int outputsSerialized = JsonConvert.SerializeObject(profile.SectionDescription + LengthUnit.ToString()).GetHashCode();
-      if (this.ProfileSerialized != outputsSerialized)
-      {
-        this.ProfileSerialized = outputsSerialized;
-        base.ExpireDownStream = true;
-      }
-      else
-        base.ExpireDownStream = false;
+      BeamSection profile = new BeamSection(Input.BeamSection(this, DA, 0, false));
 
       int i = 0;
       DA.SetData(i++, new GH_UnitNumber(profile.Depth.ToUnit(this.LengthUnit)));
@@ -75,7 +69,7 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
     private int ProfileSerialized = 0;
 
     public override void InitialiseDropdowns()
@@ -86,7 +80,7 @@ namespace ComposGH.Components
       this.SelectedItems = new List<string>();
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

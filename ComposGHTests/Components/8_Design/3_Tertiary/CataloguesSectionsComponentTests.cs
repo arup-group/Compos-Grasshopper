@@ -1,5 +1,4 @@
-﻿using ComposGH.Parameters;
-using ComposGH.Components;
+﻿using ComposGH.Components;
 using Xunit;
 using ComposGHTests.Helpers;
 using Grasshopper.Kernel.Types;

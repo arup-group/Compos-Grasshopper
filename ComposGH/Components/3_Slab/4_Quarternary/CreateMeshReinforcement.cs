@@ -7,14 +7,21 @@ using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
   public class CreateMeshReinforcement : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
+    public override Guid ComponentGuid => new Guid("17960644-0DFC-4F5D-B17C-45E6FBC3732E");
+    public override GH_Exposure Exposure => GH_Exposure.quarternary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.MeshReinforcement;
     public CreateMeshReinforcement()
         : base("Create" + MeshReinforcementGoo.Name.Replace(" ", string.Empty),
           MeshReinforcementGoo.Name.Replace(" ", string.Empty),
@@ -22,10 +29,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; }
-    public override Guid ComponentGuid => new Guid("17960644-0DFC-4F5D-B17C-45E6FBC3732E");
-    public override GH_Exposure Exposure => GH_Exposure.quarternary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.MeshReinforcement;
     #endregion
 
     #region Input and output
@@ -47,7 +50,7 @@ namespace ComposGH.Components
       // get default length inputs used for all cases
       Length cov = Length.Zero;
       if (this.Params.Input[0].Sources.Count > 0)
-        cov = GetInput.Length(this, DA, 0, LengthUnit, true);
+        cov = (Length)Input.UnitNumber(this, DA, 0, LengthUnit, true);
 
       bool rotated = false;
       DA.GetData(1, ref rotated);
@@ -55,7 +58,7 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    private LengthUnit LengthUnit = Units.LengthUnitSection;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
     private ReinforcementMeshType Mesh = ReinforcementMeshType.A393;
 
     public override void InitialiseDropdowns()
@@ -71,7 +74,7 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.Mesh.ToString());
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

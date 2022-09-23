@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 
 using ComposAPI.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposAPI
 {

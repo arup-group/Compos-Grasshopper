@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposGH.Components
 {
@@ -17,6 +19,9 @@ namespace ComposGH.Components
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("02b54c18-a142-4e9c-a2ad-715a71c962f7");
+    public override GH_Exposure Exposure => GH_Exposure.tertiary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.DeflectionLimit;
     public CreateDeflectionLimit()
       : base("Create" + DeflectionLimitGoo.Name.Replace(" ", string.Empty),
           DeflectionLimitGoo.Name.Replace(" ", string.Empty),
@@ -24,10 +29,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat8())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.tertiary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.DeflectionLimit;
     #endregion
 
     #region Input and output
@@ -58,16 +59,16 @@ namespace ComposGH.Components
       DeflectionLimit deflectionLimit = new DeflectionLimit();
 
       if (this.Params.Input[0].Sources.Count > 0)
-        deflectionLimit.AbsoluteDeflection = GetInput.Length(this, DA, 0, this.LengthUnit, true);
+        deflectionLimit.AbsoluteDeflection = (Length)Input.UnitNumber(this, DA, 0, this.LengthUnit, true);
 
       if (this.Params.Input[1].Sources.Count > 0)
-        deflectionLimit.SpanOverDeflectionRatio = GetInput.Ratio(this, DA, 1, RatioUnit.DecimalFraction);
+        deflectionLimit.SpanOverDeflectionRatio = (Ratio)Input.UnitNumber(this, DA, 1, RatioUnit.DecimalFraction);
 
       Output.SetItem(this, DA, 0, new DeflectionLimitGoo(deflectionLimit));
     }
 
     #region Custom UI
-    private LengthUnit LengthUnit = Units.LengthUnitResult;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitResult;
 
     public override void InitialiseDropdowns()
     {
@@ -77,7 +78,7 @@ namespace ComposGH.Components
       this.SelectedItems = new List<string>();
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

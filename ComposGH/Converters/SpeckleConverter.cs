@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Speckle.Core.Kits;
-using Speckle.Core.Models;
-
-namespace ComposGH.Converters
+﻿namespace ComposGH.Converters
 {
   public class SpeckleConverter //: ISpeckleConverter
   {

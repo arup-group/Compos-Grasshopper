@@ -1,15 +1,17 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using Grasshopper.Kernel;
+using System.Linq;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
-using Oasys.Units;
+using Grasshopper.Kernel;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet.Units;
-using UnitsNet.GH;
+using OasysGH.Parameters;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysUnits.Units;
 
 namespace ComposGH.Components
 {
@@ -19,6 +21,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("6a4a30b1-41b3-4fbb-bcd1-64c7834b6306");
+    public override GH_Exposure Exposure => GH_Exposure.tertiary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.SlabStressResults;
     public SlabStressResults()
       : base("Slab Stress Results",
           "SlabStress",
@@ -26,10 +31,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat7())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.tertiary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.SlabStressResults;
     #endregion
 
     #region Input and output
@@ -47,7 +48,7 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      IResult res = ((MemberGoo)GetInput.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
+      IResult res = ((MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
       List<GH_UnitNumber> positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
       ISlabStressResult result = res.SlabStresses;
 
@@ -93,9 +94,9 @@ namespace ComposGH.Components
       Final
     }
     private Load SelectedLoad = Load.Final;
-    private PressureUnit StressUnit = Units.StressUnit;
-    private StrainUnit StrainUnit = Units.StrainUnit;
-    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+    private PressureUnit StressUnit = DefaultUnits.StressUnitResult;
+    private StrainUnit StrainUnit = DefaultUnits.StrainUnitResult;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
 
     public override void InitialiseDropdowns()
     {
@@ -109,15 +110,15 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.SelectedLoad.ToString());
 
       // stress
-      this.DropDownItems.Add(Units.FilteredStressUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredStressUnits);
       this.SelectedItems.Add(this.StressUnit.ToString());
 
       // strain
-      this.DropDownItems.Add(Units.FilteredStrainUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredStrainUnits);
       this.SelectedItems.Add(this.StrainUnit.ToString());
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

@@ -4,10 +4,13 @@ using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposGH.Components
 {
@@ -16,6 +19,9 @@ namespace ComposGH.Components
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("3da0ace2-b5a0-4a6a-8bf0-d669800c1f08");
+    public override GH_Exposure Exposure => GH_Exposure.secondary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.SlabDimensions;
     public CreateSlabDimension()
       : base("Create" + SlabDimensionGoo.Name.Replace(" ", string.Empty),
           SlabDimensionGoo.Name.Replace(" ", string.Empty),
@@ -23,10 +29,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.secondary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.SlabDimensions;
     #endregion
 
     #region Input and output
@@ -55,10 +57,10 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Length start = GetInput.Length(this, DA, 0, this.LengthUnit, true);
-      Length overallDepth = GetInput.Length(this, DA, 1, this.LengthUnit, true);
-      Length availableWidthLeft = GetInput.Length(this, DA, 2, this.LengthUnit, true);
-      Length availableWidthRight = GetInput.Length(this, DA, 3, this.LengthUnit, true);
+      Length start = (Length)Input.UnitNumber(this, DA, 0, this.LengthUnit, true);
+      Length overallDepth = (Length)Input.UnitNumber(this, DA, 1, this.LengthUnit, true);
+      Length availableWidthLeft = (Length)Input.UnitNumber(this, DA, 2, this.LengthUnit, true);
+      Length availableWidthRight = (Length)Input.UnitNumber(this, DA, 3, this.LengthUnit, true);
 
       bool customEffectiveWidth = false;
       Length effectiveWidthLeft = Length.Zero;
@@ -67,8 +69,8 @@ namespace ComposGH.Components
       if (this.Params.Input[4].Sources.Count > 0 && this.Params.Input[5].Sources.Count > 0)
       {
         customEffectiveWidth = true;
-        effectiveWidthLeft = GetInput.Length(this, DA, 4, this.LengthUnit, true);
-        effectiveWidthRight = GetInput.Length(this, DA, 5, this.LengthUnit, true);
+        effectiveWidthLeft = (Length)Input.UnitNumber(this, DA, 4, this.LengthUnit, true);
+        effectiveWidthRight = (Length)Input.UnitNumber(this, DA, 5, this.LengthUnit, true);
       }
       bool taperedToNext = false;
       DA.GetData(6, ref taperedToNext);
@@ -83,7 +85,7 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    private LengthUnit LengthUnit = Units.LengthUnitSection;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
     public override void InitialiseDropdowns()
     {
@@ -93,7 +95,7 @@ namespace ComposGH.Components
       this.SelectedItems = new List<string>();
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

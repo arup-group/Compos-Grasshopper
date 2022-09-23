@@ -8,6 +8,7 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
 using OasysGH.Components;
 using OasysGH.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -17,6 +18,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("1451E11C-69D0-47D3-8730-FCA80E838E25");
+    public override GH_Exposure Exposure => GH_Exposure.primary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.CreateStud;
     public CreateStud()
       : base("Create" + StudGoo.Name.Replace(" ", string.Empty),
           StudGoo.Name.Replace(" ", string.Empty),
@@ -24,10 +28,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.primary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.CreateStud;
     #endregion
 
     #region Input and output
@@ -47,9 +47,9 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      StudDimensionsGoo studDimensions = (StudDimensionsGoo)GetInput.GenericGoo<StudDimensionsGoo>(this, DA, 0);
+      StudDimensionsGoo studDimensions = (StudDimensionsGoo)Input.GenericGoo<StudDimensionsGoo>(this, DA, 0);
       if (studDimensions == null) { return; } // return here on non-optional inputs
-      StudSpecificationGoo studSpec = (StudSpecificationGoo)GetInput.GenericGoo<StudSpecificationGoo>(this, DA, 1);
+      StudSpecificationGoo studSpec = (StudSpecificationGoo)Input.GenericGoo<StudSpecificationGoo>(this, DA, 1);
       if (studSpec == null) { return; } // return here on non-optional inputs
       double minSav = 0.2;
       switch (SpacingType)
@@ -70,7 +70,7 @@ namespace ComposGH.Components
           break;
 
         case StudSpacingType.Custom:
-          List<StudGroupSpacingGoo> spacings = GetInput.GenericGooList<StudGroupSpacingGoo>(this, DA, 2);
+          List<StudGroupSpacingGoo> spacings = Input.GenericGooList<StudGroupSpacingGoo>(this, DA, 2);
           bool check = false;
           DA.GetData(3, ref check);
           Output.SetItem(this, DA, 0, new StudGoo(

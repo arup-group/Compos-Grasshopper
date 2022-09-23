@@ -1,11 +1,6 @@
 ﻿using System;
-using ComposGHTests.Helpers;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Special;
-using Grasshopper.Kernel.Types;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 using Xunit;
 
 namespace IntegrationTests

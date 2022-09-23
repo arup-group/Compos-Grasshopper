@@ -8,8 +8,11 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -19,6 +22,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("4e7a2c23-0504-46d2-8fe1-846bf4ef6a37");
+    public override GH_Exposure Exposure => GH_Exposure.quinary | GH_Exposure.obscure;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.Stiffener;
     public CreateWebOpeningStiffener()
       : base("Create" + WebOpeningStiffenersGoo.Name.Replace(" ", string.Empty),
           WebOpeningStiffenersGoo.Name.Replace(" ", string.Empty),
@@ -26,10 +32,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.quinary | GH_Exposure.obscure;
-
-    protected override System.Drawing.Bitmap Icon => Resources.Stiffener;
     #endregion
 
     #region Input and output
@@ -54,13 +56,13 @@ namespace ComposGH.Components
     {
       bool bothSides = false;
       DA.GetData(0, ref bothSides);
-      Length start = GetInput.Length(this, DA, 1, LengthUnit);
-      Length topWidth = GetInput.Length(this, DA, 2, LengthUnit);
-      Length topTHK = GetInput.Length(this, DA, 3, LengthUnit);
+      Length start = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
+      Length topWidth = (Length)Input.UnitNumber(this, DA, 2, LengthUnit);
+      Length topTHK = (Length)Input.UnitNumber(this, DA, 3, LengthUnit);
       if (OpeningType == Stiff_types.Web_Opening)
       {
-        Length bottomWidth = GetInput.Length(this, DA, 4, LengthUnit);
-        Length bottomTHK = GetInput.Length(this, DA, 5, LengthUnit);
+        Length bottomWidth = (Length)Input.UnitNumber(this, DA, 4, LengthUnit);
+        Length bottomTHK = (Length)Input.UnitNumber(this, DA, 5, LengthUnit);
         Output.SetItem(this, DA, 0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
             start, topWidth, topTHK, bottomWidth, bottomTHK, bothSides)));
       }
@@ -78,7 +80,7 @@ namespace ComposGH.Components
       Notch,
     }
     private Stiff_types OpeningType = Stiff_types.Web_Opening;
-    private LengthUnit LengthUnit = Units.LengthUnitSection;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
     public override void InitialiseDropdowns()
     {
@@ -93,7 +95,7 @@ namespace ComposGH.Components
       this.SelectedItems.Add(Stiff_types.Web_Opening.ToString().Replace('_', ' '));
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

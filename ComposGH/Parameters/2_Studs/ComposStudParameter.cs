@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 
 using Grasshopper.Kernel;
-using Grasshopper.Kernel.Types;
-using ComposAPI;
 
 namespace ComposGH.Parameters
 {

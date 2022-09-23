@@ -5,6 +5,8 @@ using System.Text.RegularExpressions;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Types;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
 
@@ -15,15 +17,14 @@ namespace ComposGH.Components
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("38a7e123-4bdc-4f26-96f0-65ab64ab964e");
+    public override GH_Exposure Exposure => GH_Exposure.tertiary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.CatalogueID;
     public CataloguesSections()
       : base("SectionCatID", "Cat", "Get Compos Section Catalogue IDs for a " + DesignCriteriaGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat8())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.tertiary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.CatalogueID;
     #endregion
 
     #region Input and output
@@ -92,7 +93,7 @@ namespace ComposGH.Components
         if (SelectedItems[0] == " - ")
           SelectedItems[0] = Catalogues[4];
 
-        Output.SetItem(this, DA, 0, catDic.FirstOrDefault(x => x.Value == SelectedItems[0]).Key);
+        Output.SetItem(this, DA, 0, new GH_Integer(catDic.FirstOrDefault(x => x.Value == SelectedItems[0]).Key));
       }
     }
 

@@ -2,8 +2,8 @@
 using ComposGH.Components;
 using Xunit;
 using ComposGHTests.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
 using OasysGH.Components;
 
 namespace ComposGHTests.Stud

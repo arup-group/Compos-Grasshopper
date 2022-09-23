@@ -8,8 +8,11 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -19,6 +22,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("084fa2ab-d50e-4213-8f44-2affc9f41752");
+    public override GH_Exposure Exposure => GH_Exposure.quinary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.WebOpening;
     public CreateWebOpening()
       : base("Create" + WebOpeningGoo.Name.Replace(" ", string.Empty),
           WebOpeningGoo.Name.Replace(" ", string.Empty),
@@ -26,10 +32,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.quinary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.WebOpening;
     #endregion
 
     #region Input and output
@@ -54,19 +56,19 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Length width_dia = GetInput.Length(this, DA, 0, this.LengthUnit);
+      Length width_dia = (Length)Input.UnitNumber(this, DA, 0, this.LengthUnit);
       
       int i = 1;
 
       Length height = Length.Zero;
       if (this.OpeningType == WebOpeningShape.Rectangular)
-        height = GetInput.Length(this, DA, i++, this.LengthUnit);
+        height = (Length)Input.UnitNumber(this, DA, i++, this.LengthUnit);
       
-      IQuantity x = GetInput.LengthOrRatio(this, DA, i++, this.LengthUnit);
+      IQuantity x = Input.LengthOrRatio(this, DA, i++, this.LengthUnit);
       
-      IQuantity z = GetInput.LengthOrRatio(this, DA, i++, this.LengthUnit);
+      IQuantity z = Input.LengthOrRatio(this, DA, i++, this.LengthUnit);
       
-      WebOpeningStiffenersGoo stiff = (WebOpeningStiffenersGoo)GetInput.GenericGoo<WebOpeningStiffenersGoo>(this, DA, i++);
+      WebOpeningStiffenersGoo stiff = (WebOpeningStiffenersGoo)Input.GenericGoo<WebOpeningStiffenersGoo>(this, DA, i++);
 
       switch (this.OpeningType)
       {
@@ -82,7 +84,7 @@ namespace ComposGH.Components
 
     #region Custom UI
     private WebOpeningShape OpeningType = WebOpeningShape.Rectangular;
-    private LengthUnit LengthUnit = Units.LengthUnitSection;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
     public override void InitialiseDropdowns()
     {
@@ -97,7 +99,7 @@ namespace ComposGH.Components
       this.SelectedItems.Add(WebOpeningShape.Rectangular.ToString());
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

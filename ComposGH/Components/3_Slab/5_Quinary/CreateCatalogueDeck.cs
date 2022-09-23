@@ -3,18 +3,22 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using ComposAPI;
-using ComposGH.Helpers;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH.Components;
 using OasysGH.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
   public class CreateCatalogueDeck : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
+    public override Guid ComponentGuid => new Guid("6796D3E6-CF84-4AC6-ABB7-012C20E6DB9A");
+    public override GH_Exposure Exposure => GH_Exposure.quinary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.StandardDecking;
     public CreateCatalogueDeck()
         : base("Catalogue" + DeckingGoo.Name.Replace(" ", string.Empty),
           DeckingGoo.Name.Replace(" ", string.Empty),
@@ -22,10 +26,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; }
-    public override Guid ComponentGuid => new Guid("6796D3E6-CF84-4AC6-ABB7-012C20E6DB9A");
-    public override GH_Exposure Exposure => GH_Exposure.quinary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.StandardDecking;
     #endregion
 
     #region Input and output
@@ -44,7 +44,7 @@ namespace ComposGH.Components
     {
       if (this.Params.Input[0].Sources.Count > 0)
       {
-        DeckingConfigurationGoo dconf = (DeckingConfigurationGoo)GetInput.GenericGoo<DeckingConfigurationGoo>(this, DA, 0);
+        DeckingConfigurationGoo dconf = (DeckingConfigurationGoo)Input.GenericGoo<DeckingConfigurationGoo>(this, DA, 0);
         if (dconf == null) { return; }
         DA.SetData(0, new DeckingGoo(new CatalogueDecking(this.Catalogue, this.Profile, this.SteelGrade, dconf.Value)));
       }
@@ -56,7 +56,7 @@ namespace ComposGH.Components
     string Catalogue = null;
     string Profile = null;
     private DeckingSteelGrade SteelGrade = DeckingSteelGrade.S350;
-    List<string> CatalogueNames = SqlReader.GetDeckCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"));
+    List<string> CatalogueNames = Helpers.SqlReader.GetDeckCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"));
     List<string> SectionList = null;
 
     public override void InitialiseDropdowns()
@@ -75,7 +75,7 @@ namespace ComposGH.Components
       this.Catalogue = this.SelectedItems[0];
 
       // decking
-      this.SectionList = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
+      this.SectionList = Helpers.SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
       this.DropDownItems.Add(this.SectionList);
       this.SelectedItems.Add(this.SectionList[0]);
       this.Profile = this.SelectedItems[1];
@@ -95,7 +95,7 @@ namespace ComposGH.Components
       {
         // update selected section to be all
         this.Catalogue = SelectedItems[0];
-        this.DropDownItems[1] = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
+        this.DropDownItems[1] = Helpers.SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
       }
 
       if (i == 1)
@@ -109,7 +109,7 @@ namespace ComposGH.Components
 
     public override void UpdateUIFromSelectedItems()
     {
-      this.SectionList = SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
+      this.SectionList = Helpers.SqlReader.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
       this.Catalogue = this.SelectedItems[0];
       this.Profile = this.SelectedItems[1];
       this.SteelGrade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), this.SelectedItems[2]);

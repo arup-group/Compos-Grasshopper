@@ -5,11 +5,13 @@ using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
-using Oasys.Units;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -18,6 +20,9 @@ namespace ComposGH.Components
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("fd361dc8-98bc-4cad-ba15-4da5da3c52bb");
+    public override GH_Exposure Exposure => GH_Exposure.tertiary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.CreateConcreteMaterialEN;
     public CreateConcreteMaterialEN()
       : base("EN" + ConcreteMaterialGoo.Name.Replace(" ", string.Empty),
           "EN" + ConcreteMaterialGoo.NickName.Replace(" ", string.Empty),
@@ -25,10 +30,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.tertiary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.CreateConcreteMaterialEN;
     #endregion
 
     #region Input and output
@@ -128,7 +129,7 @@ namespace ComposGH.Components
       bool userDensity = false;
       if (this.Params.Input[0].Sources.Count > 0)
       {
-        dryDensity = GetInput.Density(this, DA, 0, this.DensityUnit);
+        dryDensity = (Density)Input.UnitNumber(this, DA, 0, this.DensityUnit);
         userDensity = true;
         if (this.isLightWeight)
           SelectedItems[1] = "NOT_APPLY";
@@ -143,15 +144,15 @@ namespace ComposGH.Components
         dryDensity = new Density((double)this.DensityClass, DensityUnit.KilogramPerCubicMeter);
       }
 
-      ERatioGoo eRatio = (ERatioGoo)GetInput.GenericGoo<ERatioGoo>(this, DA, 1);
+      ERatioGoo eRatio = (ERatioGoo)Input.GenericGoo<ERatioGoo>(this, DA, 1);
 
-      Ratio imposedLoadPercentage = GetInput.Ratio(this, DA, 2, RatioUnit.DecimalFraction);
+      Ratio imposedLoadPercentage = (Ratio)Input.UnitNumber(this, DA, 2, RatioUnit.DecimalFraction);
 
       Strain shrinkageStrain = new Strain(-0.5, StrainUnit.MilliStrain);
       bool userStrain = false;
       if (this.Params.Input[3].Sources.Count > 0)
       {
-        shrinkageStrain = GetInput.Strain(this, DA, 3, StrainUnit, true);
+        shrinkageStrain = (Strain)Input.UnitNumber(this, DA, 3, StrainUnit, true);
         userStrain = true;
       }
 
@@ -183,7 +184,7 @@ namespace ComposGH.Components
     List<bool> OverrideDropDownItems;
     private ConcreteGradeEN Grade = ConcreteGradeEN.C20_25;
     private ConcreteMaterial.DensityClass DensityClass = ConcreteMaterial.DensityClass.DC801_1000;
-    private DensityUnit DensityUnit = Units.DensityUnit;
+    private DensityUnit DensityUnit = DefaultUnits.DensityUnit;
     private StrainUnit StrainUnit = StrainUnit.MilliStrain;
     private bool isLightWeight = false;
 
@@ -203,11 +204,11 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.Grade.ToString());
 
       // density unit
-      this.DropDownItems.Add(Units.FilteredDensityUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredDensityUnits);
       this.SelectedItems.Add(this.DensityUnit.ToString());
 
       // strain unit
-      this.DropDownItems.Add(Units.FilteredStrainUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredStrainUnits);
       this.SelectedItems.Add(this.StrainUnit.ToString());
 
       this.OverrideDropDownItems = new List<bool>() { false, false, false, false };

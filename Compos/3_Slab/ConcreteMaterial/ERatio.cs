@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace ComposAPI
+﻿namespace ComposAPI
 {
   /// <summary>
   /// Define the Steel/Concrete Modular Ratio used for a <see cref="ConcreteMaterial"/> object.

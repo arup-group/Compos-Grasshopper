@@ -4,15 +4,17 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using ComposAPI;
-using ComposGH.Helpers;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposGH.Components
 {
@@ -25,21 +27,19 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("dd28f981-592c-4c70-9295-740409300472");
-    public CreateProfile()
-      : base("CreateProfile", "Profile", "Create or look up a Profile text-string for a " + BeamGoo.Description + " or a " + BeamSectionGoo.Description,
-            Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat1())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
-
     public override GH_Exposure Exposure => GH_Exposure.quarternary;
-
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override string HtmlHelp_Source()
     {
       string help = "GOTO:https://arup-group.github.io/oasys-combined/adsec-api/api/Oasys.Profiles.html";
       return help;
     }
-
     protected override System.Drawing.Bitmap Icon => Resources.CreateProfile;
+    public CreateProfile()
+      : base("CreateProfile", "Profile", "Create or look up a Profile text-string for a " + BeamGoo.Description + " or a " + BeamSectionGoo.Description,
+            Ribbon.CategoryName.Name(),
+            Ribbon.SubCategoryName.Cat1())
+    { this.Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -108,15 +108,15 @@ namespace ComposGH.Components
         if (Typ == "IIBeamAsymmetricalProfile") //(typ.Name.Equals(typeof(IIBeamAsymmetricalProfile).Name))
         {
           profile += "GI" + unit +
-              GetInput.Length(this, DA, 0, LengthUnit).As(LengthUnit).ToString() + " " +
-              GetInput.Length(this, DA, 1, LengthUnit).As(LengthUnit).ToString() + " " +
-              GetInput.Length(this, DA, 2, LengthUnit).As(LengthUnit).ToString() + " " +
-              GetInput.Length(this, DA, 3, LengthUnit).As(LengthUnit).ToString() + " " +
-              GetInput.Length(this, DA, 4, LengthUnit).As(LengthUnit).ToString() + " " +
-              GetInput.Length(this, DA, 5, LengthUnit).As(LengthUnit).ToString();
+              Input.UnitNumber(this, DA, 0, LengthUnit).As(LengthUnit).ToString() + " " +
+              Input.UnitNumber(this, DA, 1, LengthUnit).As(LengthUnit).ToString() + " " +
+              Input.UnitNumber(this, DA, 2, LengthUnit).As(LengthUnit).ToString() + " " +
+              Input.UnitNumber(this, DA, 3, LengthUnit).As(LengthUnit).ToString() + " " +
+              Input.UnitNumber(this, DA, 4, LengthUnit).As(LengthUnit).ToString() + " " +
+              Input.UnitNumber(this, DA, 5, LengthUnit).As(LengthUnit).ToString();
 
           //profile = IIBeamAsymmetricalProfile.Create(
-          //    GetInput.Length(this, DA, 0, lengthUnit),
+          //    Input.UnitNumber(this, DA, 0, lengthUnit),
           //    GetInput.Flange(this, DA, 1),
           //    GetInput.Flange(this, DA, 2),
           //    GetInput.Web(this, DA, 3));
@@ -125,13 +125,13 @@ namespace ComposGH.Components
         else if (Typ == "IIBeamSymmetricalProfile") //(typ.Name.Equals(typeof(IIBeamSymmetricalProfile).Name))
         {
           profile += "I" + unit +
-             GetInput.Length(this, DA, 0, LengthUnit).As(LengthUnit).ToString() + " " +
-             GetInput.Length(this, DA, 1, LengthUnit).As(LengthUnit).ToString() + " " +
-             GetInput.Length(this, DA, 2, LengthUnit).As(LengthUnit).ToString() + " " +
-             GetInput.Length(this, DA, 3, LengthUnit).As(LengthUnit).ToString();
+             Input.UnitNumber(this, DA, 0, LengthUnit).As(LengthUnit).ToString() + " " +
+             Input.UnitNumber(this, DA, 1, LengthUnit).As(LengthUnit).ToString() + " " +
+             Input.UnitNumber(this, DA, 2, LengthUnit).As(LengthUnit).ToString() + " " +
+             Input.UnitNumber(this, DA, 3, LengthUnit).As(LengthUnit).ToString();
 
           //profile = IIBeamSymmetricalProfile.Create(
-          //    GetInput.Length(this, DA, 0, lengthUnit),
+          //    Input.UnitNumber(this, DA, 0, lengthUnit),
           //    GetInput.Flange(this, DA, 1),
           //    (IWebConstant)GetInput.Web(this, DA, 2));
         }
@@ -156,23 +156,23 @@ namespace ComposGH.Components
       { "I Beam Symmetrical", "IIBeamSymmetricalProfile" },
     };
 
-    private UnitsNet.Units.LengthUnit LengthUnit = Units.LengthUnitSection;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
     // for catalogue selection
     // Catalogues
-    readonly Tuple<List<string>, List<int>> Cataloguedata = SqlReader.GetCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"));
+    readonly Tuple<List<string>, List<int>> Cataloguedata = Helpers.SqlReader.GetCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"));
     List<int> CatalogueNumbers = new List<int>(); // internal db catalogue numbers
     List<string> CatalogueNames = new List<string>(); // list of displayed catalogues
     bool InclSS;
 
     // Types
-    Tuple<List<string>, List<int>> Typedata = SqlReader.GetTypesDataFromSQLite(-1, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), false);
+    Tuple<List<string>, List<int>> Typedata = Helpers.SqlReader.GetTypesDataFromSQLite(-1, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), false);
     List<int> TypeNumbers = new List<int>(); //  internal db type numbers
     List<string> TypeNames = new List<string>(); // list of displayed types
 
     // Sections
     // list of displayed sections
-    List<string> SectionList = SqlReader.GetSectionsDataFromSQLite(new List<int> { -1 }, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), false);
+    List<string> SectionList = Helpers.SqlReader.GetSectionsDataFromSQLite(new List<int> { -1 }, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), false);
     List<string> Filteredlist = new List<string>();
     int CatalogueIndex = -1; //-1 is all
     int TypeIndex = -1;
@@ -191,7 +191,7 @@ namespace ComposGH.Components
       this.SelectedItems.Add("Catalogue");
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.SetSelected(-1, 0);
@@ -236,12 +236,12 @@ namespace ComposGH.Components
           // set types to all
           this.TypeIndex = -1;
           // update typelist with all catalogues
-          this.Typedata = SqlReader.GetTypesDataFromSQLite(this.CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+          this.Typedata = Helpers.SqlReader.GetTypesDataFromSQLite(this.CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
           this.TypeNames = Typedata.Item1;
           this.TypeNumbers = Typedata.Item2;
 
           // update section list to all types
-          this.SectionList = SqlReader.GetSectionsDataFromSQLite(TypeNumbers, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+          this.SectionList = Helpers.SqlReader.GetSectionsDataFromSQLite(TypeNumbers, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
 
           // filter by search pattern
           this.Filteredlist = new List<string>();
@@ -291,14 +291,14 @@ namespace ComposGH.Components
           this.SelectedItems[1] = this.CatalogueNames[j];
 
           // update typelist with selected input catalogue
-          this.Typedata = SqlReader.GetTypesDataFromSQLite(CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+          this.Typedata = Helpers.SqlReader.GetTypesDataFromSQLite(CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
           this.TypeNames = this.Typedata.Item1;
           this.TypeNumbers = this.Typedata.Item2;
 
           // update section list from new types (all new types in catalogue)
           List<int> types = this.TypeNumbers.ToList();
           types.RemoveAt(0); // remove -1 from beginning of list
-          this.SectionList = SqlReader.GetSectionsDataFromSQLite(types, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+          this.SectionList = Helpers.SqlReader.GetSectionsDataFromSQLite(types, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
 
           // filter by search pattern
           this.Filteredlist = new List<string>();
@@ -350,7 +350,7 @@ namespace ComposGH.Components
 
 
           // section list with selected types (only types in selected type)
-          this.SectionList = SqlReader.GetSectionsDataFromSQLite(types, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+          this.SectionList = Helpers.SqlReader.GetSectionsDataFromSQLite(types, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
 
           // filter by search pattern
           this.Filteredlist = new List<string>();
@@ -406,7 +406,7 @@ namespace ComposGH.Components
             this.DropDownItems.RemoveAt(1);
 
           // add length measure dropdown list
-          this.DropDownItems.Add(Units.FilteredLengthUnits);
+          this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
 
           // set selected length
           this.SelectedItems[1] = this.LengthUnit.ToString();
@@ -421,7 +421,7 @@ namespace ComposGH.Components
         else
         {
           // change unit
-          this.LengthUnit = (UnitsNet.Units.LengthUnit)Enum.Parse(typeof(UnitsNet.Units.LengthUnit), SelectedItems[i]);
+          this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
 
           base.UpdateUI();
         }
@@ -440,7 +440,7 @@ namespace ComposGH.Components
 
         this.CatalogueNames = this.Cataloguedata.Item1;
         this.CatalogueNumbers = this.Cataloguedata.Item2;
-        this.Typedata = SqlReader.GetTypesDataFromSQLite(this.CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+        this.Typedata = Helpers.SqlReader.GetTypesDataFromSQLite(this.CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
         this.TypeNames = this.Typedata.Item1;
         this.TypeNumbers = this.Typedata.Item2;
 
@@ -1368,7 +1368,7 @@ namespace ComposGH.Components
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
       _mode = (FoldMode)Enum.Parse(typeof(FoldMode), reader.GetString("mode"));
-      LengthUnit = (UnitsNet.Units.LengthUnit)Enum.Parse(typeof(UnitsNet.Units.LengthUnit), reader.GetString("lengthUnit"));
+      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), reader.GetString("lengthUnit"));
 
       InclSS = reader.GetBoolean("inclSS");
       numberOfInputs = reader.GetInt32("NumberOfInputs");

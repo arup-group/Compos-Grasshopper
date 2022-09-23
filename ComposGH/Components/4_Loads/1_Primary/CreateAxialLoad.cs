@@ -4,10 +4,13 @@ using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposGH.Components
 {
@@ -17,15 +20,14 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("9dfed0d2-3ad1-49e6-a8d8-d5a5fd851a64");
+    public override GH_Exposure Exposure => GH_Exposure.primary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.AxialLoad;
     public CreateAxialLoad()
       : base("CreateAxialLoad", "AxialLoad", "Create an Axial Compos Load applied at both end positions.",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat4())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.primary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.AxialLoad;
     #endregion
 
     #region Input and output
@@ -60,16 +62,16 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Force constDead1 = GetInput.Force(this, DA, 0, this.ForceUnit);
-      Force constLive1 = GetInput.Force(this, DA, 1, this.ForceUnit);
-      Force finalDead1 = GetInput.Force(this, DA, 2, this.ForceUnit);
-      Force finalLive1 = GetInput.Force(this, DA, 3, this.ForceUnit);
-      Length pos1 = GetInput.Length(this, DA, 4, this.LengthUnit);
-      Force constDead2 = GetInput.Force(this, DA, 5, this.ForceUnit);
-      Force constLive2 = GetInput.Force(this, DA, 6, this.ForceUnit);
-      Force finalDead2 = GetInput.Force(this, DA, 7, this.ForceUnit);
-      Force finalLive2 = GetInput.Force(this, DA, 8, this.ForceUnit);
-      Length pos2 = GetInput.Length(this, DA, 9, this.LengthUnit);
+      Force constDead1 = (Force)Input.UnitNumber(this, DA, 0, this.ForceUnit);
+      Force constLive1 = (Force)Input.UnitNumber(this, DA, 1, this.ForceUnit);
+      Force finalDead1 = (Force)Input.UnitNumber(this, DA, 2, this.ForceUnit);
+      Force finalLive1 = (Force)Input.UnitNumber(this, DA, 3, this.ForceUnit);
+      Length pos1 = (Length)Input.UnitNumber(this, DA, 4, this.LengthUnit);
+      Force constDead2 = (Force)Input.UnitNumber(this, DA, 5, this.ForceUnit);
+      Force constLive2 = (Force)Input.UnitNumber(this, DA, 6, this.ForceUnit);
+      Force finalDead2 = (Force)Input.UnitNumber(this, DA, 7, this.ForceUnit);
+      Force finalLive2 = (Force)Input.UnitNumber(this, DA, 8, this.ForceUnit);
+      Length pos2 = (Length)Input.UnitNumber(this, DA, 9, this.LengthUnit);
 
       Load load = new AxialLoad(
         constDead1, constLive1, finalDead1, finalLive1, pos1, constDead2, constLive2, finalDead2, finalLive2, pos2);
@@ -77,8 +79,8 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    private ForceUnit ForceUnit = Units.ForceUnit;
-    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+    private ForceUnit ForceUnit = DefaultUnits.ForceUnit;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
 
     public override void InitialiseDropdowns()
     {
@@ -88,11 +90,11 @@ namespace ComposGH.Components
       this.SelectedItems = new List<string>();
 
       // force unit
-      this.DropDownItems.Add(Units.FilteredForceUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredForceUnits);
       this.SelectedItems.Add(this.ForceUnit.ToString());
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

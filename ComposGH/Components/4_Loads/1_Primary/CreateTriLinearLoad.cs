@@ -7,8 +7,11 @@ using ComposGH.Parameters;
 using ComposGH.Properties;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -18,16 +21,15 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("7dfed0d2-3ad1-49e6-a8d8-d5a5fd851a64");
+    public override GH_Exposure Exposure => GH_Exposure.primary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.TriLinearLoad;
     public CreateTriLinearLoad()
       : base("CreateTriLinearLoad", "TriLinearLoad", "Create a tri-linearly varying distributed Compos Load starting from left end of the beam and ending at the right." +
           Environment.NewLine + "The two peak load points can be defined at any positions along the span.",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat4())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.primary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.TriLinearLoad;
     #endregion
 
     #region Input and output
@@ -56,34 +58,34 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      IQuantity pos1 = GetInput.LengthOrRatio(this, DA, 4, this.LengthUnit);
-      IQuantity pos2 = GetInput.LengthOrRatio(this, DA, 9, this.LengthUnit);
+      IQuantity pos1 = Input.LengthOrRatio(this, DA, 4, this.LengthUnit);
+      IQuantity pos2 = Input.LengthOrRatio(this, DA, 9, this.LengthUnit);
 
       switch (DistributionType)
       {
         case LoadDistribution.Line:
-          ForcePerLength constDeadL1 = GetInput.ForcePerLength(this, DA, 0, this.ForcePerLengthUnit);
-          ForcePerLength constLiveL1 = GetInput.ForcePerLength(this, DA, 1, this.ForcePerLengthUnit);
-          ForcePerLength finalDeadL1 = GetInput.ForcePerLength(this, DA, 2, this.ForcePerLengthUnit);
-          ForcePerLength finalLiveL1 = GetInput.ForcePerLength(this, DA, 3, this.ForcePerLengthUnit);
-          ForcePerLength constDeadL2 = GetInput.ForcePerLength(this, DA, 5, this.ForcePerLengthUnit);
-          ForcePerLength constLiveL2 = GetInput.ForcePerLength(this, DA, 6, this.ForcePerLengthUnit);
-          ForcePerLength finalDeadL2 = GetInput.ForcePerLength(this, DA, 7, this.ForcePerLengthUnit);
-          ForcePerLength finalLiveL2 = GetInput.ForcePerLength(this, DA, 8, this.ForcePerLengthUnit);
+          ForcePerLength constDeadL1 = (ForcePerLength)Input.UnitNumber(this, DA, 0, this.ForcePerLengthUnit);
+          ForcePerLength constLiveL1 = (ForcePerLength)Input.UnitNumber(this, DA, 1, this.ForcePerLengthUnit);
+          ForcePerLength finalDeadL1 = (ForcePerLength)Input.UnitNumber(this, DA, 2, this.ForcePerLengthUnit);
+          ForcePerLength finalLiveL1 = (ForcePerLength)Input.UnitNumber(this, DA, 3, this.ForcePerLengthUnit);
+          ForcePerLength constDeadL2 = (ForcePerLength)Input.UnitNumber(this, DA, 5, this.ForcePerLengthUnit);
+          ForcePerLength constLiveL2 = (ForcePerLength)Input.UnitNumber(this, DA, 6, this.ForcePerLengthUnit);
+          ForcePerLength finalDeadL2 = (ForcePerLength)Input.UnitNumber(this, DA, 7, this.ForcePerLengthUnit);
+          ForcePerLength finalLiveL2 = (ForcePerLength)Input.UnitNumber(this, DA, 8, this.ForcePerLengthUnit);
           Load loadL = new TriLinearLoad(
             constDeadL1, constLiveL1, finalDeadL1, finalLiveL1, pos1, constDeadL2, constLiveL2, finalDeadL2, finalLiveL2, pos2);
           Output.SetItem(this, DA, 0, new LoadGoo(loadL));
           break;
 
         case LoadDistribution.Area:
-          Pressure constDeadA1 = GetInput.Stress(this, DA, 0, this.ForcePerAreaUnit);
-          Pressure constLiveA1 = GetInput.Stress(this, DA, 1, this.ForcePerAreaUnit);
-          Pressure finalDeadA1 = GetInput.Stress(this, DA, 2, this.ForcePerAreaUnit);
-          Pressure finalLiveA1 = GetInput.Stress(this, DA, 3, this.ForcePerAreaUnit);
-          Pressure constDeadA2 = GetInput.Stress(this, DA, 5, this.ForcePerAreaUnit);
-          Pressure constLiveA2 = GetInput.Stress(this, DA, 6, this.ForcePerAreaUnit);
-          Pressure finalDeadA2 = GetInput.Stress(this, DA, 7, this.ForcePerAreaUnit);
-          Pressure finalLiveA2 = GetInput.Stress(this, DA, 8, this.ForcePerAreaUnit);
+          Pressure constDeadA1 = (Pressure)Input.UnitNumber(this, DA, 0, this.ForcePerAreaUnit);
+          Pressure constLiveA1 = (Pressure)Input.UnitNumber(this, DA, 1, this.ForcePerAreaUnit);
+          Pressure finalDeadA1 = (Pressure)Input.UnitNumber(this, DA, 2, this.ForcePerAreaUnit);
+          Pressure finalLiveA1 = (Pressure)Input.UnitNumber(this, DA, 3, this.ForcePerAreaUnit);
+          Pressure constDeadA2 = (Pressure)Input.UnitNumber(this, DA, 5, this.ForcePerAreaUnit);
+          Pressure constLiveA2 = (Pressure)Input.UnitNumber(this, DA, 6, this.ForcePerAreaUnit);
+          Pressure finalDeadA2 = (Pressure)Input.UnitNumber(this, DA, 7, this.ForcePerAreaUnit);
+          Pressure finalLiveA2 = (Pressure)Input.UnitNumber(this, DA, 8, this.ForcePerAreaUnit);
           Load loadA = new TriLinearLoad(
             constDeadA1, constLiveA1, finalDeadA1, finalLiveA1, pos1, constDeadA2, constLiveA2, finalDeadA2, finalLiveA2, pos2);
           Output.SetItem(this, DA, 0, new LoadGoo(loadA));
@@ -92,9 +94,9 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    private ForcePerLengthUnit ForcePerLengthUnit = Units.ForcePerLengthUnit;
-    private PressureUnit ForcePerAreaUnit = Units.StressUnit;
-    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+    private ForcePerLengthUnit ForcePerLengthUnit = DefaultUnits.ForcePerLengthUnit;
+    private PressureUnit ForcePerAreaUnit = DefaultUnits.ForcePerAreaUnit;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
     private LoadDistribution DistributionType = LoadDistribution.Area;
 
     public override void InitialiseDropdowns()
@@ -112,11 +114,11 @@ namespace ComposGH.Components
       this.SelectedItems.Add(LoadDistribution.Area.ToString());
 
       // force unit
-      this.DropDownItems.Add(Units.FilteredForcePerAreaUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredForcePerAreaUnits);
       this.SelectedItems.Add(this.ForcePerAreaUnit.ToString());
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;
@@ -131,12 +133,12 @@ namespace ComposGH.Components
         this.DistributionType = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), this.SelectedItems[i]);
         if (this.DistributionType == LoadDistribution.Line)
         {
-          this.DropDownItems[1] = Units.FilteredForcePerLengthUnits;
+          this.DropDownItems[1] = FilteredUnits.FilteredForcePerLengthUnits;
           this.SelectedItems[1] = this.ForcePerLengthUnit.ToString();
         }
         else
         {
-          this.DropDownItems[1] = Units.FilteredForcePerAreaUnits;
+          this.DropDownItems[1] = FilteredUnits.FilteredForcePerAreaUnits;
           this.SelectedItems[1] = this.ForcePerAreaUnit.ToString();
         }
       }

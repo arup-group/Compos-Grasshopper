@@ -2,12 +2,8 @@
 using ComposGH.Components;
 using Xunit;
 using ComposGHTests.Helpers;
-using ComposAPI;
-using ComposGHTests.Member;
-using System.Collections.Generic;
 using System.IO;
 using System;
-using System.ComponentModel;
 using Grasshopper.Kernel;
 using OasysGH.Components;
 

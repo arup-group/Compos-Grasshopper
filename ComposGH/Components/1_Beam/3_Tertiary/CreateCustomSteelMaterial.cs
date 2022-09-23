@@ -7,8 +7,11 @@ using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -18,6 +21,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("2C3C07F4-C395-4747-A111-D5A67B250104");
+    public override GH_Exposure Exposure => GH_Exposure.tertiary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.CreateCustomSteelMaterial;
     public CreateCustomSteelMaterial()
       : base("Custom" + SteelMaterialGoo.Name.Replace(" ", string.Empty),
           SteelMaterialGoo.Name.Replace(" ", string.Empty), 
@@ -25,10 +31,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.tertiary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.CreateCustomSteelMaterial;
     #endregion
 
     #region Input and output
@@ -91,16 +93,16 @@ namespace ComposGH.Components
           AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Note that reduction factor only applies for EC4 DesignCode");
 
       Output.SetItem(this, DA, 0, new SteelMaterialGoo(new SteelMaterial(
-        GetInput.Stress(this, DA, 0, this.StressUnit), 
-        GetInput.Stress(this, DA, 1, this.StressUnit), 
-        GetInput.Density(this, DA, 2, this.DensityUnit), 
+        (Pressure)Input.UnitNumber(this, DA, 0, this.StressUnit),
+        (Pressure)Input.UnitNumber(this, DA, 1, this.StressUnit),
+        (Density)Input.UnitNumber(this, DA, 2, this.DensityUnit), 
         this.Grade, true, redFact)));
     }
 
     #region Custom UI
     List<bool> OverrideDropDownItems;
-    private PressureUnit StressUnit = Units.StressUnit;
-    private DensityUnit DensityUnit = Units.DensityUnit;
+    private PressureUnit StressUnit = DefaultUnits.MaterialStrengthUnit;
+    private DensityUnit DensityUnit = DefaultUnits.DensityUnit;
     private WeldMaterialGrade Grade = WeldMaterialGrade.Grade_35;
 
     public override void InitialiseDropdowns()
@@ -121,11 +123,11 @@ namespace ComposGH.Components
       this.SelectedItems.Add(Grade.ToString());
 
       // Stress
-      this.DropDownItems.Add(Units.FilteredStressUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredStressUnits);
       this.SelectedItems.Add(StressUnit.ToString());
 
       // Density
-      this.DropDownItems.Add(Units.FilteredDensityUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredDensityUnits);
       this.SelectedItems.Add(DensityUnit.ToString());
 
       this.OverrideDropDownItems = new List<bool>() { false, false, false };

@@ -4,10 +4,13 @@ using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposGH.Components
 {
@@ -17,6 +20,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("e70db6bb-b4bf-4033-a3d0-3ad131fe09b1");
+    public override GH_Exposure Exposure => GH_Exposure.secondary | GH_Exposure.obscure;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.CustomStudDims;
     public CreateCustomStudDimensions()
       : base("Custom" + StudDimensionsGoo.Name.Replace(" ", string.Empty),
           "StudDimsCustom",
@@ -24,10 +30,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.secondary | GH_Exposure.obscure;
-
-    protected override System.Drawing.Bitmap Icon => Resources.CustomStudDims;
     #endregion
     
     #region Input and output
@@ -48,15 +50,15 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Length dia = GetInput.Length(this, DA, 0, LengthUnit, true);
-      Length h = GetInput.Length(this, DA, 1, LengthUnit, true);
-      Force strengthF = GetInput.Force(this, DA, 2, ForceUnit);
+      Length dia = (Length)Input.UnitNumber(this, DA, 0, LengthUnit, true);
+      Length h = (Length)Input.UnitNumber(this, DA, 1, LengthUnit, true);
+      Force strengthF = (Force)Input.UnitNumber(this, DA, 2, ForceUnit);
       Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthF)));
     }
 
     #region Custom UI
-    private LengthUnit LengthUnit = Units.LengthUnitSection;
-    private ForceUnit ForceUnit = Units.ForceUnit;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
+    private ForceUnit ForceUnit = DefaultUnits.ForceUnit;
 
     public override void InitialiseDropdowns()
     {
@@ -66,11 +68,11 @@ namespace ComposGH.Components
       this.SelectedItems = new List<string>();
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       // strength
-      this.DropDownItems.Add(Units.FilteredForceUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredForceUnits);
       this.SelectedItems.Add(this.ForceUnit.ToString());
 
       this.IsInitialised = true;

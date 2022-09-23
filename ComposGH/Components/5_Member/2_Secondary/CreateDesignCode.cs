@@ -8,6 +8,7 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
 using OasysGH.Components;
 using OasysGH.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -17,6 +18,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("f89b420e-a35e-4197-9c64-87504fe02b59");
+    public override GH_Exposure Exposure => GH_Exposure.secondary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.CreateDesignCode;
     public CreateDesignCode()
       : base("Create" + DesignCodeGoo.Name.Replace(" ", string.Empty),
           DesignCodeGoo.Name.Replace(" ", string.Empty),
@@ -24,10 +28,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.secondary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.CreateDesignCode;
     #endregion
 
     #region Input and output
@@ -55,12 +55,12 @@ namespace ComposGH.Components
       ISafetyFactorsEN ec4safetyFactors = null;
       if (this.Code == Code.EN1994_1_1_2004)
       {
-        ec4safetyFactorsGoo = (SafetyFactorsENGoo)GetInput.GenericGoo<SafetyFactorsENGoo>(this, DA, 0);
+        ec4safetyFactorsGoo = (SafetyFactorsENGoo)Input.GenericGoo<SafetyFactorsENGoo>(this, DA, 0);
         ec4safetyFactors = (ec4safetyFactorsGoo == null) ? null : ec4safetyFactorsGoo.Value;
       }
       else
       {
-        safetyFactorsGoo = (SafetyFactorsGoo)GetInput.GenericGoo<SafetyFactorsGoo>(this, DA, 0);
+        safetyFactorsGoo = (SafetyFactorsGoo)Input.GenericGoo<SafetyFactorsGoo>(this, DA, 0);
         safetyFactors = (safetyFactorsGoo == null) ? null : safetyFactorsGoo.Value;
       }
 
@@ -89,10 +89,10 @@ namespace ComposGH.Components
           ec4.DesignOption = this.DesignOptions;
           ec4.CodeOptions = this.EC4CodeOptions;
 
-          CreepShrinkageParametersGoo shrink = (CreepShrinkageParametersGoo)GetInput.GenericGoo<CreepShrinkageParametersGoo>(this, DA, 1);
+          CreepShrinkageParametersGoo shrink = (CreepShrinkageParametersGoo)Input.GenericGoo<CreepShrinkageParametersGoo>(this, DA, 1);
           if (shrink != null)
             ec4.CodeOptions.ShortTerm = shrink.Value;
-          CreepShrinkageParametersGoo longt = (CreepShrinkageParametersGoo)GetInput.GenericGoo<CreepShrinkageParametersGoo>(this, DA, 2);
+          CreepShrinkageParametersGoo longt = (CreepShrinkageParametersGoo)Input.GenericGoo<CreepShrinkageParametersGoo>(this, DA, 2);
           if (longt != null)
             ec4.CodeOptions.LongTerm = longt.Value;
 
@@ -397,7 +397,6 @@ namespace ComposGH.Components
       }
     }
     #endregion
-
 
     #region (de)serialization
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)

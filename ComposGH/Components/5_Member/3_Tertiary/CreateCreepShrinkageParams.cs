@@ -4,6 +4,10 @@ using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using OasysGH.Components;
+using OasysUnits;
+using OasysGH.Helpers;
+using OasysUnits.Units;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -12,6 +16,9 @@ namespace ComposGH.Components
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("cbc950b0-0a13-40a1-be96-0fb8fac21101");
+    public override GH_Exposure Exposure => GH_Exposure.tertiary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.CreepShrinkageParams;
     public CreateCreepShrinkageParams()
       : base("Create" + CreepShrinkageParametersGoo.Name.Replace(" ", string.Empty),
           CreepShrinkageParametersGoo.Name.Replace(" ", string.Empty),
@@ -19,10 +26,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.tertiary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.CreepShrinkageParams;
     #endregion
 
     #region Input and output
@@ -59,7 +62,7 @@ namespace ComposGH.Components
         csparams.FinalConcreteAgeCreep = ageFinal;
       
       if (this.Params.Input[3].Sources.Count > 0)
-        csparams.RelativeHumidity = GetInput.Ratio(this, DA, 3, UnitsNet.Units.RatioUnit.DecimalFraction);
+        csparams.RelativeHumidity = (Ratio)Input.UnitNumber(this, DA, 3, RatioUnit.DecimalFraction);
       
       DA.SetData(0, new CreepShrinkageParametersGoo(csparams));
     }

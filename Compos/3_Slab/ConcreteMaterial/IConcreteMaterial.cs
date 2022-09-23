@@ -1,6 +1,4 @@
-﻿using UnitsNet;
-using Oasys.Units;
-using UnitsNet.Units;
+﻿using OasysUnits;
 using static ComposAPI.ConcreteMaterial;
 
 namespace ComposAPI

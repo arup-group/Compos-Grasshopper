@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnitsNet;
-using UnitsNet.Units;
+﻿using System.Collections.Generic;
+using OasysUnits;
+using OasysUnits.Units;
 using Xunit;
-using ComposAPI;
 using ComposAPI.Helpers;
-using ComposAPI.Tests;
 using ComposGHTests.Helpers;
 using OasysGH;
 
 namespace ComposAPI.Slabs.Tests
 {
-  public static class SlabDimensionMother
+    public static class SlabDimensionMother
   {
     public static ISlabDimension CreateSlabDimension()
     {

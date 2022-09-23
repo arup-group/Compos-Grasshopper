@@ -1,6 +1,7 @@
 ﻿using Grasshopper.Kernel.Types;
 using ComposAPI;
 using OasysGH.Parameters;
+using OasysGH;
 
 namespace ComposGH.Parameters
 {
@@ -14,5 +15,6 @@ namespace ComposGH.Parameters
     public static string Description => "Compos Steel to concrete Young´s modulus ratios";
     public ERatioGoo(IERatio item) : base(item) { }
     public override IGH_Goo Duplicate() => new ERatioGoo(this.Value);
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 }

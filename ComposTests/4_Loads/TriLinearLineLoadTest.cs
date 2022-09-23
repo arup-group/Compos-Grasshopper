@@ -1,16 +1,14 @@
 ﻿using System.Collections.Generic;
 using Xunit;
-using UnitsNet;
-using UnitsNet.Units;
-using static ComposAPI.Load;
-using ComposAPI.Tests;
+using OasysUnits;
+using OasysUnits.Units;
 using ComposGHTests.Helpers;
 using ComposAPI.Helpers;
 using OasysGH;
 
 namespace ComposAPI.Loads.Tests
 {
-  public partial class LoadTest
+    public partial class LoadTest
   {
     // 1 setup inputs
     [Theory]

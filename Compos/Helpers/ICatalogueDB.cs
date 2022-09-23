@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SQLite;
-using System.IO;
+﻿using System.Collections.Generic;
 
 namespace ComposAPI.Helpers
 {

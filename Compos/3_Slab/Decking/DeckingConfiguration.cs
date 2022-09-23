@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnitsNet;
+﻿using System.Collections.Generic;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposAPI
 {
@@ -17,7 +14,7 @@ namespace ComposAPI
     public DeckingConfiguration()
     {
       // default values:
-      this.Angle = new Angle(90, UnitsNet.Units.AngleUnit.Degree);
+      this.Angle = new Angle(90, AngleUnit.Degree);
       this.IsDiscontinous = false;
       this.IsWelded = false;
     }
@@ -31,7 +28,7 @@ namespace ComposAPI
 
     public override string ToString()
     {
-      string angle = (this.Angle.Value == 0) ? "" : this.Angle.ToUnit(UnitsNet.Units.AngleUnit.Degree).ToString().Replace(" ", string.Empty);
+      string angle = (this.Angle.Value == 0) ? "" : this.Angle.ToUnit(AngleUnit.Degree).ToString().Replace(" ", string.Empty);
       string isDiscontinous = (this.IsDiscontinous == true) ? "" : this.IsDiscontinous.ToString().Replace(" ", string.Empty);
       string isWelded = (this.IsWelded == true) ? "" : this.IsWelded.ToString().Replace(" ", string.Empty);
 
