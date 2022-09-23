@@ -541,11 +541,11 @@
       <Version>6.27.20176.5001</Version>
     </PackageReference>
     <PackageReference Include="OasysGH">
-      <Version>0.2.9-beta</Version>
+      <Version>0.3.0-beta</Version>
     </PackageReference>
     <PackageReference Include="Stub.System.Data.SQLite.Core.NetFramework">
       <Version>1.0.115.5</Version>
-	</PackageReference>
+    </PackageReference>
     <PackageReference Include="OasysUnits.Serialization.JsonNet">
       <Version>1.0.0</Version>
     </PackageReference>
@@ -568,5 +568,4 @@
     <PostBuildEvent>Copy "$(TargetPath)" "$(TargetDir)Compos.gha"
 Copy "$(ProjectDir)\Properties\Icons\ComposLogo64.png" "$(TargetDir)ComposIcon.png"</PostBuildEvent>
   </PropertyGroup>
-
 </Project>
