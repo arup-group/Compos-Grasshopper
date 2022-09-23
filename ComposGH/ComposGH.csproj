@@ -545,6 +545,7 @@
     </PackageReference>
     <PackageReference Include="Stub.System.Data.SQLite.Core.NetFramework">
       <Version>1.0.115.5</Version>
+	</PackageReference>
     <PackageReference Include="OasysUnits.Serialization.JsonNet">
       <Version>1.0.0</Version>
     </PackageReference>
