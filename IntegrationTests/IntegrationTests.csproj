@@ -34,6 +34,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <Import Project="PreBuild.targets" />
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="Copy &quot;$(TargetDir)ComposGH.dll&quot; &quot;$(TargetDir)Compos.gha&quot;" />
   </Target>

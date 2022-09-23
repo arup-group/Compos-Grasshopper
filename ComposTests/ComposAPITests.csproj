@@ -51,4 +51,6 @@
     <ProjectReference Include="..\Compos\ComposAPI.csproj" />
   </ItemGroup>
 
+  <Import Project="PreBuild.targets" />
+
 </Project>
