@@ -10,7 +10,7 @@ using OasysGH.Helpers;
 using OasysGH;
 using OasysGH.Units;
 using OasysGH.Units.Helpers;
-using OasysUnitsNet.Units;
+using OasysUnits.Units;
 
 namespace ComposGH.Components
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 
-using OasysUnitsNet;
-using OasysUnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposAPI
 {

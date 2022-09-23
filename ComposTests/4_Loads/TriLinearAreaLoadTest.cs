@@ -2,8 +2,8 @@
 using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
-using OasysUnitsNet;
-using OasysUnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
 using Xunit;
 
 namespace ComposAPI.Loads.Tests

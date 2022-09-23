@@ -2,8 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using OasysUnitsNet;
-using OasysUnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposAPI
 {

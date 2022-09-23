@@ -3,7 +3,7 @@ using Grasshopper.Kernel.Types;
 using OasysGH.Units;
 using ComposGH.Components;
 using ComposGHTests.Helpers;
-using OasysUnitsNet.Units;
+using OasysUnits.Units;
 
 namespace ComposGHTests.Beam
 {

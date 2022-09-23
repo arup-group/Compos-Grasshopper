@@ -1,6 +1,6 @@
 ﻿using Xunit;
-using OasysUnitsNet;
-using OasysUnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
 using ComposGHTests.Helpers;
 using OasysGH;
 

@@ -1,8 +1,8 @@
 using ComposAPI.Helpers;
 using System.Collections.Generic;
 using OasysGH;
-using OasysUnitsNet;
-using OasysUnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
 using Xunit;
 using ComposGHTests.Helpers;
 

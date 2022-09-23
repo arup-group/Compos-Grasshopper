@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using OasysUnitsNet;
-using OasysUnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
 using System.Globalization;
 using ComposAPI.Helpers;
 

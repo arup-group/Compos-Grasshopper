@@ -7,7 +7,7 @@ using ComposGH.Properties;
 using ComposGH.Parameters;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using OasysUnitsNet.Units;
+using OasysUnits.Units;
 using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysGH;

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using ComposAPI.Helpers;
-using OasysUnitsNet;
-using OasysUnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposAPI
 {
@@ -58,12 +58,12 @@ namespace ComposAPI
       Mass mass = new Mass(1.0, this.Mass);
       double massFactor = 1.0 / mass.ToUnit(standardUnits.Mass).Value;
 
-      string coaString = "UNIT_DATA\tFORCE\t" + OasysUnitsNet.Force.GetAbbreviation(this.Force) + "\t" + CoaHelper.FormatSignificantFigures(forceFactor, 6) + "\n";
-      coaString += "UNIT_DATA\tLENGTH\t" + OasysUnitsNet.Length.GetAbbreviation(this.Length) + "\t" + CoaHelper.FormatSignificantFigures(lengthFactor, 6) + "\n";
-      coaString += "UNIT_DATA\tDISP\t" + OasysUnitsNet.Length.GetAbbreviation(this.Displacement) + "\t" + CoaHelper.FormatSignificantFigures(displacementFactor, 6) + "\n";
-      coaString += "UNIT_DATA\tSECTION\t" + OasysUnitsNet.Length.GetAbbreviation(this.Section) + "\t" + CoaHelper.FormatSignificantFigures(sectionFactor, 6) + "\n";
-      coaString += "UNIT_DATA\tSTRESS\t" + OasysUnitsNet.Pressure.GetAbbreviation(this.Stress) + "\t" + CoaHelper.FormatSignificantFigures(stressFactor, 6) + "\n";
-      coaString += "UNIT_DATA\tMASS\t" + OasysUnitsNet.Mass.GetAbbreviation(this.Mass) + "\t" + CoaHelper.FormatSignificantFigures(massFactor, 6) + "\n";
+      string coaString = "UNIT_DATA\tFORCE\t" + OasysUnits.Force.GetAbbreviation(this.Force) + "\t" + CoaHelper.FormatSignificantFigures(forceFactor, 6) + "\n";
+      coaString += "UNIT_DATA\tLENGTH\t" + OasysUnits.Length.GetAbbreviation(this.Length) + "\t" + CoaHelper.FormatSignificantFigures(lengthFactor, 6) + "\n";
+      coaString += "UNIT_DATA\tDISP\t" + OasysUnits.Length.GetAbbreviation(this.Displacement) + "\t" + CoaHelper.FormatSignificantFigures(displacementFactor, 6) + "\n";
+      coaString += "UNIT_DATA\tSECTION\t" + OasysUnits.Length.GetAbbreviation(this.Section) + "\t" + CoaHelper.FormatSignificantFigures(sectionFactor, 6) + "\n";
+      coaString += "UNIT_DATA\tSTRESS\t" + OasysUnits.Pressure.GetAbbreviation(this.Stress) + "\t" + CoaHelper.FormatSignificantFigures(stressFactor, 6) + "\n";
+      coaString += "UNIT_DATA\tMASS\t" + OasysUnits.Mass.GetAbbreviation(this.Mass) + "\t" + CoaHelper.FormatSignificantFigures(massFactor, 6) + "\n";
       return coaString;
     }
 

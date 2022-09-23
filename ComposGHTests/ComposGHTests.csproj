@@ -23,9 +23,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
-    <PackageReference Include="OasysGH" Version="0.2.8" />
-    <PackageReference Include="OasysUnitsNet" Version="4.145.0" />
-    <PackageReference Include="OasysUnitsNet.Serialization.JsonNet" Version="4.6.0" />
+    <PackageReference Include="OasysGH" Version="0.2.9" />
+    <PackageReference Include="OasysUnits" Version="1.0.0" />
+    <PackageReference Include="OasysUnits.Serialization.JsonNet" Version="1.0.0" />
     <PackageReference Include="Rhino.Inside" Version="7.0.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
