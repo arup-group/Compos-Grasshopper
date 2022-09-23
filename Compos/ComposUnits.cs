@@ -62,7 +62,7 @@ namespace ComposAPI
       coaString += "UNIT_DATA\tLENGTH\t" + OasysUnits.Length.GetAbbreviation(this.Length) + "\t" + CoaHelper.FormatSignificantFigures(lengthFactor, 6) + "\n";
       coaString += "UNIT_DATA\tDISP\t" + OasysUnits.Length.GetAbbreviation(this.Displacement) + "\t" + CoaHelper.FormatSignificantFigures(displacementFactor, 6) + "\n";
       coaString += "UNIT_DATA\tSECTION\t" + OasysUnits.Length.GetAbbreviation(this.Section) + "\t" + CoaHelper.FormatSignificantFigures(sectionFactor, 6) + "\n";
-      coaString += "UNIT_DATA\tSTRESS\t" + OasysUnits.Pressure.GetAbbreviation(this.Stress) + "\t" + CoaHelper.FormatSignificantFigures(stressFactor, 6) + "\n";
+      coaString += "UNIT_DATA\tSTRESS\t" + Pressure.GetAbbreviation(this.Stress) + "\t" + CoaHelper.FormatSignificantFigures(stressFactor, 6) + "\n";
       coaString += "UNIT_DATA\tMASS\t" + OasysUnits.Mass.GetAbbreviation(this.Mass) + "\t" + CoaHelper.FormatSignificantFigures(massFactor, 6) + "\n";
       return coaString;
     }
