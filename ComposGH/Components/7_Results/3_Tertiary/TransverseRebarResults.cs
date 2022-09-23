@@ -1,14 +1,18 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using Grasshopper.Kernel;
+using System.Linq;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using Grasshopper.Kernel;
+using Grasshopper.Kernel.Types;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet.Units;
-using UnitsNet.GH;
+using OasysGH.Parameters;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysUnits.Units;
 
 namespace ComposGH.Components
 {
@@ -18,6 +22,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("6d88f397-b1da-421f-a8ba-97de100feab1");
+    public override GH_Exposure Exposure => GH_Exposure.tertiary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.TransverseRebarResults;
     public TransverseRebarResults()
       : base("Transverse Rebar Results",
           "RebarResults",
@@ -25,10 +32,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat7())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.tertiary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.TransverseRebarResults;
     #endregion
 
     #region Input and output
@@ -53,14 +56,14 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      IResult res = ((MemberGoo)GetInput.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
+      IResult res = ((MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
       ITransverseRebarResult result = res.TransverseRebarResults;
 
       int i = 0;
       Output.SetList(this, DA, i++, 
         result.Positions.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList());
       Output.SetList(this, DA, i++,
-        result.ControlSurface);
+        result.ControlSurface.Select(x => new GH_String(x)).ToList());
       Output.SetList(this, DA, i++,
         result.EffectiveShearPerimeter.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList());
       Output.SetList(this, DA, i++,
@@ -80,8 +83,8 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    private ForceUnit ForceUnit = Units.ForceUnit;
-    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+    private ForceUnit ForceUnit = DefaultUnits.ForceUnit;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
 
     public override void InitialiseDropdowns()
     {
@@ -91,11 +94,11 @@ namespace ComposGH.Components
       this.SelectedItems = new List<string>();
 
       // force
-      this.DropDownItems.Add(Units.FilteredForceUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredForceUnits);
       this.SelectedItems.Add(this.ForceUnit.ToString());
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

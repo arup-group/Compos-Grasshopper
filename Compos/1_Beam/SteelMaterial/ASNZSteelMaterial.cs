@@ -1,9 +1,8 @@
 ﻿using ComposAPI.Helpers;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposAPI
 {
@@ -148,7 +147,7 @@ namespace ComposAPI
     internal void SetValuesFromStandard(StandardASNZSteelMaterialGrade grade)
     {
       this.E = new Pressure(200, PressureUnit.Gigapascal);
-      this.Density = new Density(7850, UnitsNet.Units.DensityUnit.KilogramPerCubicMeter);
+      this.Density = new Density(7850, DensityUnit.KilogramPerCubicMeter);
       this.Grade = grade;
 
       switch (grade)

@@ -1,13 +1,11 @@
-using OasysGH.Parameters;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
 using Xunit;
 using OasysGH;
-using static ComposAPI.Load;
 
 namespace ComposAPI.Loads.Tests
 {
-  [Collection("ComposAPI Fixture collection")]
+    [Collection("ComposAPI Fixture collection")]
   public partial class LoadTest
   {
     [Fact]

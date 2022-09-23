@@ -6,6 +6,8 @@ using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using OasysGH.Components;
+using OasysGH.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -14,6 +16,10 @@ namespace ComposGH.Components
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
+    public override Guid ComponentGuid => new Guid("E832E3E8-1EF9-4F31-BC2A-683881E4BAC3");
+    public override GH_Exposure Exposure => GH_Exposure.quarternary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.TransverseReinforcement;
     public CreateTransverseReinforcement()
       : base("Create" + TransverseReinforcementGoo.Name.Replace(" ", string.Empty),
           TransverseReinforcementGoo.Name.Replace(" ", string.Empty),
@@ -21,11 +27,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override Guid ComponentGuid => new Guid("E832E3E8-1EF9-4F31-BC2A-683881E4BAC3");
-    public override GH_Exposure Exposure => GH_Exposure.quarternary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.TransverseReinforcement;
     #endregion
 
     #region Input and output
@@ -44,12 +45,12 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      ReinforcementMaterialGoo mat = (ReinforcementMaterialGoo)GetInput.GenericGoo<ReinforcementMaterialGoo>(this, DA, 0);
+      ReinforcementMaterialGoo mat = (ReinforcementMaterialGoo)Input.GenericGoo<ReinforcementMaterialGoo>(this, DA, 0);
       if (mat == null) { return; }
 
       if (this.Params.Input[1].Sources.Count > 0)
       {
-        List<CustomTransverseReinforcementLayoutGoo> transverseReinforcmentLayouts = GetInput.GenericGooList<CustomTransverseReinforcementLayoutGoo>(this, DA, 1);
+        List<CustomTransverseReinforcementLayoutGoo> transverseReinforcmentLayouts = Input.GenericGooList<CustomTransverseReinforcementLayoutGoo>(this, DA, 1);
         DA.SetData(0, new TransverseReinforcementGoo(new TransverseReinforcement(mat.Value, transverseReinforcmentLayouts.Select(x => x.Value).ToList())));
       }
       else

@@ -7,6 +7,7 @@ using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
 
@@ -21,14 +22,14 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("d2fa9fa1-9507-4f57-b383-8b573699906d");
+    public override GH_Exposure Exposure => GH_Exposure.primary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override Bitmap Icon => Resources.SaveModel;
     public SaveComposFile()
       : base("SaveCompos", "Save", "Saves your Compos File from this parametric nightmare",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat0())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-    public override GH_Exposure Exposure => GH_Exposure.primary;
-
-    protected override Bitmap Icon => Resources.SaveModel;
     #endregion
 
     #region Input and output
@@ -124,7 +125,7 @@ namespace ComposGH.Components
         case 0:
           this.CanOpen = true;
           this.Message = "File saved";
-          PostHog.ModelIO("saveCOA", (int)(new FileInfo(this.FileName).Length / 1024));
+          PostHog.ModelIO(PluginInfo, "saveCOA", (int)(new FileInfo(this.FileName).Length / 1024));
           return;
         case 1:
           this.Message = "No Compos file is open";

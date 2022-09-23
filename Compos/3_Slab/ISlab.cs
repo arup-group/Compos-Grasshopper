@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using Oasys.Units;
-using UnitsNet.Units;
 
 namespace ComposAPI
 {

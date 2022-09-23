@@ -1,6 +1,4 @@
-﻿using UnitsNet.Units;
-
-namespace ComposAPI
+﻿namespace ComposAPI
 {
   public interface ILoad
   {

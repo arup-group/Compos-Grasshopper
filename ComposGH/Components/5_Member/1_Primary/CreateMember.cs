@@ -6,6 +6,8 @@ using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using OasysGH.Components;
+using OasysGH.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -14,6 +16,9 @@ namespace ComposGH.Components
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("e7eafcec-ede6-4d60-9fcb-5392cb878581");
+    public override GH_Exposure Exposure => GH_Exposure.primary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.CreateMember;
     public CreateMember()
       : base("Create" + MemberGoo.Name.Replace(" ", string.Empty),
           MemberGoo.Name.Replace(" ", string.Empty),
@@ -21,10 +26,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
     { this.Hidden = false; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.primary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.CreateMember;
     #endregion
 
     #region Input and output
@@ -50,11 +51,11 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      BeamGoo beam = (BeamGoo)GetInput.GenericGoo<BeamGoo>(this, DA, 0);
-      StudGoo stud = (StudGoo)GetInput.GenericGoo<StudGoo>(this, DA, 1);
-      SlabGoo slab = (SlabGoo)GetInput.GenericGoo<SlabGoo>(this, DA, 2);
-      List<LoadGoo> loads = GetInput.GenericGooList<LoadGoo>(this, DA, 3);
-      DesignCodeGoo code = (DesignCodeGoo)GetInput.GenericGoo<DesignCodeGoo>(this, DA, 4);
+      BeamGoo beam = (BeamGoo)Input.GenericGoo<BeamGoo>(this, DA, 0);
+      StudGoo stud = (StudGoo)Input.GenericGoo<StudGoo>(this, DA, 1);
+      SlabGoo slab = (SlabGoo)Input.GenericGoo<SlabGoo>(this, DA, 2);
+      List<LoadGoo> loads = Input.GenericGooList<LoadGoo>(this, DA, 3);
+      DesignCodeGoo code = (DesignCodeGoo)Input.GenericGoo<DesignCodeGoo>(this, DA, 4);
 
       string name = "";
       DA.GetData(5, ref name);

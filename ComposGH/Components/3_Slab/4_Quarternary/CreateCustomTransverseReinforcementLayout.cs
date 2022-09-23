@@ -4,10 +4,13 @@ using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposGH.Components
 {
@@ -16,6 +19,10 @@ namespace ComposGH.Components
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
+    public override Guid ComponentGuid => new Guid("19322156-8b1a-4849-9772-813411af965c");
+    public override GH_Exposure Exposure => GH_Exposure.quarternary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.CustomRebarLayout;
     public CreateCustomTransverseReinforcementLayout()
       : base("Create" + CustomTransverseReinforcementLayoutGoo.Name.Replace(" ", string.Empty),
           CustomTransverseReinforcementLayoutGoo.Name.Replace(" ", string.Empty),
@@ -23,11 +30,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override Guid ComponentGuid => new Guid("19322156-8b1a-4849-9772-813411af965c");
-    public override GH_Exposure Exposure => GH_Exposure.quarternary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.CustomRebarLayout;
     #endregion
 
     #region Input and output
@@ -51,17 +53,17 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      IQuantity start = GetInput.LengthOrRatio(this, DA, 0, LengthUnit);
-      IQuantity end = GetInput.LengthOrRatio(this, DA, 1, LengthUnit);
-      Length dia = GetInput.Length(this, DA, 2, LengthUnit);
-      Length spacing = GetInput.Length(this, DA, 3, LengthUnit);
-      Length cov = GetInput.Length(this, DA, 4, LengthUnit);
+      IQuantity start = Input.LengthOrRatio(this, DA, 0, LengthUnit);
+      IQuantity end = Input.LengthOrRatio(this, DA, 1, LengthUnit);
+      Length dia = (Length)Input.UnitNumber(this, DA, 2, LengthUnit);
+      Length spacing = (Length)Input.UnitNumber(this, DA, 3, LengthUnit);
+      Length cov = (Length)Input.UnitNumber(this, DA, 4, LengthUnit);
 
       Output.SetItem(this, DA, 0, new CustomTransverseReinforcementLayoutGoo(new CustomTransverseReinforcementLayout(start, end, dia, spacing, cov)));
     }
 
     #region Custom UI
-    private LengthUnit LengthUnit = Units.LengthUnitSection;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
     public override void InitialiseDropdowns()
     {
@@ -71,7 +73,7 @@ namespace ComposGH.Components
       this.SelectedItems = new List<string>();
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

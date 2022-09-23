@@ -7,8 +7,11 @@ using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -17,6 +20,9 @@ namespace ComposGH.Components
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("6781ee34-494e-414c-9542-6be29f1a5696");
+    public override GH_Exposure Exposure => GH_Exposure.tertiary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.CreateConcreteMaterialHK;
     public CreateConcreteMaterialHKSUOS()
       : base("HK" + ConcreteMaterialGoo.Name.Replace(" ", string.Empty),
           "HK" + ConcreteMaterialGoo.NickName.Replace(" ", string.Empty),
@@ -24,10 +30,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.tertiary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.CreateConcreteMaterialHK;
     #endregion
 
     #region Input and output
@@ -91,13 +93,13 @@ namespace ComposGH.Components
       bool userDensity = false;
       if (this.Params.Input[0].Sources.Count > 0)
       {
-        dryDensity = GetInput.Density(this, DA, 0, this.DensityUnit);
+        dryDensity = (Density)Input.UnitNumber(this, DA, 0, this.DensityUnit);
         userDensity = true;
       }
 
-      Ratio imposedLoadPercentage = GetInput.Ratio(this, DA, 2, RatioUnit.DecimalFraction);
+      Ratio imposedLoadPercentage = (Ratio)Input.UnitNumber(this, DA, 2, RatioUnit.DecimalFraction);
 
-      ERatioGoo eRatio = (ERatioGoo)GetInput.GenericGoo<ERatioGoo>(this, DA, 1);
+      ERatioGoo eRatio = (ERatioGoo)Input.GenericGoo<ERatioGoo>(this, DA, 1);
 
       ConcreteMaterial concreteMaterial = new ConcreteMaterial(this.Grade, dryDensity, userDensity, (eRatio == null) ? new ERatio() : eRatio.Value, imposedLoadPercentage);
 
@@ -107,7 +109,7 @@ namespace ComposGH.Components
     #region Custom UI
     List<bool> OverrideDropDownItems;
     private ConcreteGrade Grade = ConcreteGrade.C25;
-    private DensityUnit DensityUnit = Units.DensityUnit;
+    private DensityUnit DensityUnit = DefaultUnits.DensityUnit;
 
     public override void InitialiseDropdowns()
     {
@@ -125,7 +127,7 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.Grade.ToString());
 
       // density unit
-      this.DropDownItems.Add(Units.FilteredDensityUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredDensityUnits);
       this.SelectedItems.Add(this.DensityUnit.ToString());
 
       this.OverrideDropDownItems = new List<bool>() { false, false };

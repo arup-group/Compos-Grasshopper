@@ -3,7 +3,7 @@ using ComposAPI;
 using OasysGH.Parameters;
 using Grasshopper.Kernel;
 using System;
-using static System.Collections.Specialized.BitVector32;
+using OasysGH;
 
 namespace ComposGH.Parameters
 {
@@ -18,6 +18,7 @@ namespace ComposGH.Parameters
     public BeamSectionGoo(IBeamSection item) : base(item) { }
     public BeamSectionGoo(string item) : base(new BeamSection(item)) { }
     public override IGH_Goo Duplicate() => new BeamSectionGoo(this.Value);
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
 
     public override bool CastTo<Q>(ref Q target)
     {

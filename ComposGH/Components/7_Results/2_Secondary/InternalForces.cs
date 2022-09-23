@@ -1,15 +1,17 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using Grasshopper.Kernel;
+using System.Linq;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
-using Oasys.Units;
+using Grasshopper.Kernel;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet.Units;
-using UnitsNet.GH;
+using OasysGH.Parameters;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysUnits.Units;
 
 namespace ComposGH.Components
 {
@@ -19,6 +21,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("ceece06d-48e7-4dd4-9d1e-895872080c12");
+    public override GH_Exposure Exposure => GH_Exposure.secondary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.InternalForceResults;
     public InternalForces()
       : base("Internal Force Results",
           "Internal Forces",
@@ -26,10 +31,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat7())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.secondary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.InternalForceResults;
     #endregion
 
     #region Input and output
@@ -49,7 +50,7 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      IResult res = ((MemberGoo)GetInput.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
+      IResult res = ((MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
       List<GH_UnitNumber> positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
       IInternalForceResult result = res.InternalForces;
 
@@ -141,9 +142,9 @@ namespace ComposGH.Components
       FinalUltimate
     }
     private Case SelectedCase = Case.FinalUltimate;
-    private MomentUnit MomentUnit = Units.MomentUnit;
-    private ForceUnit ForceUnit = Units.ForceUnit;
-    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+    private MomentUnit MomentUnit = DefaultUnits.MomentUnit;
+    private ForceUnit ForceUnit = DefaultUnits.ForceUnit;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
 
     public override void InitialiseDropdowns()
     {
@@ -157,15 +158,15 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.SelectedCase.ToString());
 
       // moment
-      this.DropDownItems.Add(Units.FilteredMomentUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredMomentUnits);
       this.SelectedItems.Add(this.MomentUnit.ToString());
 
       // force
-      this.DropDownItems.Add(Units.FilteredForceUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredForceUnits);
       this.SelectedItems.Add(this.ForceUnit.ToString());
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

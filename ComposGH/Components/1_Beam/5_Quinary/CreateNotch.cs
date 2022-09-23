@@ -7,8 +7,11 @@ using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -18,15 +21,14 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("de802051-ae6a-4249-8699-7ea0cfe8c528");
+    public override GH_Exposure Exposure => GH_Exposure.quinary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.Notch;
     public CreateNotch()
       : base("BeamNotch", "Notch", "Create Beam Notch for a " + BeamGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.quinary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.Notch;
     #endregion
 
     #region Input and output
@@ -47,9 +49,9 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Length width = GetInput.Length(this, DA, 0, LengthUnit);
-      Length height = GetInput.Length(this, DA, 1, LengthUnit);
-      WebOpeningStiffenersGoo stiff = (WebOpeningStiffenersGoo)GetInput.GenericGoo<WebOpeningStiffenersGoo>(this, DA, 2);
+      Length width = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
+      Length height = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
+      WebOpeningStiffenersGoo stiff = (WebOpeningStiffenersGoo)Input.GenericGoo<WebOpeningStiffenersGoo>(this, DA, 2);
       if (stiff != null)
       {
         if (stiff.Value.BottomStiffenerWidth != Length.Zero)
@@ -58,15 +60,15 @@ namespace ComposGH.Components
 
       switch (OpeningType)
       {
-        case notch_types.Start:
+        case NotchTypes.Start:
           Output.SetItem(this, DA, 0, new WebOpeningGoo(new WebOpening(width, height, NotchPosition.Start, stiff?.Value)));
           break;
 
-        case notch_types.End:
+        case NotchTypes.End:
           Output.SetItem(this, DA, 0, new WebOpeningGoo(new WebOpening(width, height, NotchPosition.End, stiff?.Value)));
           break;
 
-        case notch_types.Both_ends:
+        case NotchTypes.Both_ends:
           List<WebOpeningGoo> both = new List<WebOpeningGoo>();
           both.Add(new WebOpeningGoo(new WebOpening(width, height, NotchPosition.Start, (stiff == null) ? null : stiff.Value)));
           both.Add(new WebOpeningGoo(new WebOpening(width, height, NotchPosition.End, (stiff == null) ? null : stiff.Value)));
@@ -76,15 +78,15 @@ namespace ComposGH.Components
     }
     
     #region Custom UI
-    private enum notch_types
+    private enum NotchTypes
     {
       Both_ends,
       Start,
       End
     }
 
-    private notch_types OpeningType = notch_types.Both_ends;
-    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+    private NotchTypes OpeningType = NotchTypes.Both_ends;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
 
     public override void InitialiseDropdowns()
     {
@@ -94,12 +96,12 @@ namespace ComposGH.Components
       this.SelectedItems = new List<string>();
 
       // type
-      this.DropDownItems.Add(Enum.GetValues(typeof(notch_types)).Cast<notch_types>()
+      this.DropDownItems.Add(Enum.GetValues(typeof(NotchTypes)).Cast<NotchTypes>()
           .Select(x => x.ToString().Replace('_', ' ')).ToList());
-      this.SelectedItems.Add(notch_types.Both_ends.ToString().Replace('_', ' '));
+      this.SelectedItems.Add(NotchTypes.Both_ends.ToString().Replace('_', ' '));
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;
@@ -114,7 +116,7 @@ namespace ComposGH.Components
       {
         if (this.SelectedItems[i] == this.OpeningType.ToString().Replace('_', ' '))
           return;
-        this.OpeningType = (notch_types)Enum.Parse(typeof(notch_types), this.SelectedItems[i].Replace(' ', '_'));
+        this.OpeningType = (NotchTypes)Enum.Parse(typeof(NotchTypes), this.SelectedItems[i].Replace(' ', '_'));
       }
       else if (i == 1) // change is made to length unit
       {
@@ -126,7 +128,7 @@ namespace ComposGH.Components
 
     public override void UpdateUIFromSelectedItems()
     {
-      this.OpeningType = (notch_types)Enum.Parse(typeof(notch_types), this.SelectedItems[0].Replace(' ', '_'));
+      this.OpeningType = (NotchTypes)Enum.Parse(typeof(NotchTypes), this.SelectedItems[0].Replace(' ', '_'));
       this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
@@ -134,7 +136,7 @@ namespace ComposGH.Components
 
     public override void VariableParameterMaintenance()
     {
-      if (this.OpeningType == notch_types.Both_ends)
+      if (this.OpeningType == NotchTypes.Both_ends)
         Params.Output[0].Access = GH_ParamAccess.list;
       else
         Params.Output[0].Access = GH_ParamAccess.item;

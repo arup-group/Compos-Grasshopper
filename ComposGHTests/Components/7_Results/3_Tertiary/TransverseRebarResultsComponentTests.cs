@@ -1,10 +1,10 @@
-﻿using Xunit;
+﻿using ComposGH.Components;
 using ComposGH.Parameters;
-using ComposGH.Components;
 using ComposGHTests.Helpers;
-using UnitsNet.GH;
 using Grasshopper.Kernel.Types;
 using OasysGH.Components;
+using OasysGH.Parameters;
+using Xunit;
 
 namespace ComposGHTests.Result
 {

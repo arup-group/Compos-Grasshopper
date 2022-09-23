@@ -5,9 +5,10 @@ using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Parameters;
+using OasysGH;
 using OasysGH.Components;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposGH.Components
 {
@@ -17,6 +18,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("85E6A4A4-DD97-4780-A679-B733C4B4FE01");
+    public override GH_Exposure Exposure => GH_Exposure.quinary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.DeckingConfig;
     public CreateDeckingConfiguration()
       : base("Create" + DeckingConfigurationGoo.Name.Replace(" ", string.Empty),
           DeckingConfigurationGoo.Name.Replace(" ", string.Empty),
@@ -24,10 +28,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.quinary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.DeckingConfig;
     #endregion
 
     private AngleUnit angleUnit = AngleUnit.Radian;

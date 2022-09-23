@@ -1,15 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Grasshopper.Kernel;
-using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
-using UnitsNet;
-using ComposGH.Converters;
-using UnitsNet.Units;
 using System.Drawing;
-using Grasshopper;
-using ComposAPI;
 
 namespace ComposGH.Parameters
 {

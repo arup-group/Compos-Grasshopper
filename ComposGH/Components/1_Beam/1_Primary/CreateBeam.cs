@@ -6,11 +6,14 @@ using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
 using Rhino.Geometry;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposGH.Components
 {
@@ -20,6 +23,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("060641e49fc648eb8d7699f2d6697111");
+    public override GH_Exposure Exposure => GH_Exposure.primary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.CreateBeam;
     public CreateBeam()
       : base("Create"+ BeamGoo.Name.Replace(" ", string.Empty), 
           BeamGoo.Name.Replace(" ", string.Empty), 
@@ -27,10 +33,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = false; } // sets the initial state of the component to display
-
-    public override GH_Exposure Exposure => GH_Exposure.primary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.CreateBeam;
     #endregion
 
     #region Input and output
@@ -60,18 +62,18 @@ namespace ComposGH.Components
         Line ln = new Line();
         if (GH_Convert.ToLine(ghln, ref ln, GH_Conversion.Both))
         {
-          RestraintGoo res = (RestraintGoo)GetInput.GenericGoo<RestraintGoo>(this, DA, 1);
+          RestraintGoo res = (RestraintGoo)Input.GenericGoo<RestraintGoo>(this, DA, 1);
           if (res == null) { return; } // return here on non-optional inputs
 
-          SteelMaterialGoo mat = (SteelMaterialGoo)GetInput.GenericGoo<SteelMaterialGoo>(this, DA, 2);
+          SteelMaterialGoo mat = (SteelMaterialGoo)Input.GenericGoo<SteelMaterialGoo>(this, DA, 2);
           if (mat == null) { return; } // return here on non-optional inputs
 
-          List<BeamSectionGoo> beamSections = GetInput.GenericGooList<BeamSectionGoo>(this, DA, 3);
+          List<BeamSectionGoo> beamSections = Input.GenericGooList<BeamSectionGoo>(this, DA, 3);
           try
           {
             if (this.Params.Input[4].Sources.Count > 0)
             {
-              List<WebOpeningGoo> webOpenings = GetInput.GenericGooList<WebOpeningGoo>(this, DA, 4);
+              List<WebOpeningGoo> webOpenings = Input.GenericGooList<WebOpeningGoo>(this, DA, 4);
               Output.SetItem(this, DA, 0, new BeamGoo(new LineCurve(ln), this.LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value as IBeamSection).ToList(), webOpenings.Select(x => x.Value as IWebOpening).ToList()));
             }
             else
@@ -89,13 +91,13 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
 
     public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Unit" });
 
-      this.DropDownItems = new List<List<string>>() { Units.FilteredLengthUnits };
+      this.DropDownItems = new List<List<string>>() { FilteredUnits.FilteredLengthUnits };
       this.SelectedItems = new List<string>() { this.LengthUnit.ToString() };
 
       this.IsInitialised = true;

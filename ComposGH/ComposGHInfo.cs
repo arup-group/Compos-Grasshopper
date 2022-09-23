@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
-using System.Reflection;
 using ComposAPI;
-using System.Threading.Tasks;
-using ComposGH.Helpers;
 using Grasshopper.Kernel;
 using OasysGH;
 using OasysGH.Helpers;
@@ -32,21 +29,18 @@ namespace ComposGH
       Grasshopper.Instances.ComponentServer.AddCategorySymbolName("Compos", 'C');
       Grasshopper.Instances.ComponentServer.AddCategoryIcon("Compos", Properties.Resources.ComposLogo128);
 
-      // ### Setup OasysGH ###
-      GH_PluginInfo.PluginName = ComposGHInfo.PluginName;
-      GH_PluginInfo.ProductName = ComposGHInfo.ProductName;
-      GH_PluginInfo.PostHogApiKey = "phc_alOp3OccDM3D18xJTWDoW44Y1cJvbEScm5LJSX8qnhs";
-
-      // ### Setup Units ###
-      Units.SetupUnitsDuringLoad();
-
-      PostHog.PluginLoaded();
+      // ### Setup OasysGH and shared Units ###
+      Utility.InitialiseMainMenuAndDefaultUnits();
 
       // subscribe to rhino closing event
       Rhino.RhinoApp.Closing += CloseFile;
 
+      PostHog.PluginLoaded(PluginInfo.Instance);
+      
       return GH_LoadingInstruction.Proceed;
     }
+
+    
 
     public static string PluginPath;
     public static string InstallPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Oasys", "Compos 8.6");
@@ -99,12 +93,29 @@ namespace ComposGH
           Exception exception = new Exception(message);
           GH_LoadingException gH_LoadingException = new GH_LoadingException(ComposGHInfo.ProductName + ": " + keyword + " loading failed", exception);
           Grasshopper.Instances.ComponentServer.LoadingExceptions.Add(gH_LoadingException);
-          PostHog.PluginLoaded(message);
+          PostHog.PluginLoaded(PluginInfo.Instance, message);
           return false;
         }
       }
       PluginPath = Path.GetDirectoryName(path);
       return true;
+    }
+  }
+  internal sealed class PluginInfo
+  {
+    private static readonly Lazy<OasysPluginInfo> lazy =
+        new Lazy<OasysPluginInfo>(() => new OasysPluginInfo(
+          ComposGHInfo.ProductName,
+          ComposGHInfo.PluginName,
+          ComposGHInfo.Vers,
+          ComposGHInfo.isBeta,
+          "phc_alOp3OccDM3D18xJTWDoW44Y1cJvbEScm5LJSX8qnhs"
+          ));
+
+    public static OasysPluginInfo Instance { get { return lazy.Value; } }
+
+    private PluginInfo()
+    {
     }
   }
 

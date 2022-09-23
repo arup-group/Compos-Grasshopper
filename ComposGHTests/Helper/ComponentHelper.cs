@@ -85,6 +85,7 @@ namespace ComposGHTests.Helpers
       if (forceUpdate || component.Params.Output[index].VolatileDataCount == 0)
       {
         component.ExpireSolution(true);
+        component.Params.Output[index].ExpireSolution(true);
         component.Params.Output[index].CollectData();
       }
       return component.Params.Output[index].VolatileData.get_Branch(branch)[item];

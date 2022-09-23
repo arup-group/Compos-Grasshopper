@@ -5,10 +5,13 @@ using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposGH.Components
 {
@@ -18,6 +21,9 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("71c87cde-f442-475b-9131-8f2974c42499");
+    public override GH_Exposure Exposure => GH_Exposure.secondary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.CreateSupport;
     public CreateSupport()
       : base("Create" + SupportsGoo.Name.Replace(" ", string.Empty), 
           SupportsGoo.Name.Replace(" ", string.Empty), 
@@ -25,10 +31,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.secondary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.CreateSupport;
     #endregion
     
     #region Input and output
@@ -94,7 +96,7 @@ namespace ComposGH.Components
 
       if (this.Params.Input[2].Sources.Count > 0)
       {
-        List<IQuantity> restrs = GetInput.LengthsOrRatios(this, DA, 2, LengthUnit);
+        List<IQuantity> restrs = Input.LengthsOrRatios(this, DA, 2, LengthUnit);
         SelectedItems[0] = "Custom";
         Supports sup = new Supports(restrs, smir, ffre);
         Output.SetItem(this, DA, 0, new SupportsGoo(sup));
@@ -109,7 +111,7 @@ namespace ComposGH.Components
     #region Custom UI
     List<bool> OverrideDropDownItems;
     private IntermediateRestraint RestraintType = IntermediateRestraint.None;
-    private LengthUnit LengthUnit = Units.LengthUnitGeometry;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
     public override void InitialiseDropdowns()
     {
       this.SpacerDescriptions = new List<string>(new string[]
@@ -128,7 +130,7 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.DropDownItems[0][0]);
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(LengthUnit.ToString());
 
       this.OverrideDropDownItems = new List<bool>() { false, false };

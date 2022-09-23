@@ -1,11 +1,7 @@
-﻿using System;
-using System.Reflection;
-using System.Threading;
-using System.Timers;
+﻿using System.Threading;
 using System.Windows.Forms;
 using Grasshopper.GUI;
 using Grasshopper.GUI.Canvas;
-using Grasshopper.Kernel;
 
 namespace ComposGH.UI.Menu
 {
@@ -44,13 +40,6 @@ namespace ComposGH.UI.Menu
 
     private static void PopulateSub(ToolStripMenuItem menutItem)
     {
-      // add units
-      menutItem.DropDown.Items.Add("Compos Units", Properties.Resources.Units, (s, a) =>
-      {
-        UnitSettingsBox unitBox = new UnitSettingsBox();
-        unitBox.ShowDialog();
-      });
-      // add info
       menutItem.DropDown.Items.Add("Compos Info", Properties.Resources.ComposInfo, (s, a) =>
       {
         AboutBox aboutBox = new AboutBox();

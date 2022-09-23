@@ -1,11 +1,6 @@
-﻿using System;
-using System.Drawing;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using ComposAPI.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
-using Oasys.Units;
 
 namespace ComposAPI
 {

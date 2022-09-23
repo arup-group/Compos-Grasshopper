@@ -6,6 +6,7 @@ using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH;
 using OasysGH.Components;
+using OasysGH.Helpers;
 
 namespace ComposGH.Components
 {
@@ -18,14 +19,14 @@ namespace ComposGH.Components
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("c422ae16-b8c0-4203-86c7-43c3f2917075");
+    public override GH_Exposure Exposure => GH_Exposure.primary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override Bitmap Icon => Resources.DesignMember;
     public DesignMember()
       : base("DesignMember", "Design", "Design (size) the Steel Beam of a Compos Member",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat8())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-    public override GH_Exposure Exposure => GH_Exposure.primary;
-
-    protected override Bitmap Icon => Resources.DesignMember;
     #endregion
 
     #region Input and output
@@ -43,8 +44,8 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      MemberGoo memGoo = (MemberGoo)GetInput.GenericGoo<MemberGoo>(this, DA, 0);
-      DesignCriteriaGoo critGoo = (DesignCriteriaGoo)GetInput.GenericGoo<DesignCriteriaGoo>(this, DA, 1);
+      MemberGoo memGoo = (MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0);
+      DesignCriteriaGoo critGoo = (DesignCriteriaGoo)Input.GenericGoo<DesignCriteriaGoo>(this, DA, 1);
       this.Message = "";
       if (memGoo.Value != null)
       {

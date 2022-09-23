@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using UnitsNet;
-using UnitsNet.Units;
+using OasysGH.Units;
+using OasysGH.Units.Helpers;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposGH.Components
 {
@@ -17,6 +19,9 @@ namespace ComposGH.Components
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("a1c37716-886d-4816-afa3-ef0b9ab42f79");
+    public override GH_Exposure Exposure => GH_Exposure.tertiary;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.BeamSizeLimits;
     public CreateBeamSizeLimits()
       : base("Create" + BeamSizeLimitsGoo.Name.Replace(" ", string.Empty),
           BeamSizeLimitsGoo.Name.Replace(" ", string.Empty),
@@ -24,10 +29,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat8())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.tertiary;
-
-    protected override System.Drawing.Bitmap Icon => Resources.BeamSizeLimits;
     #endregion
 
     #region Input and output
@@ -54,19 +55,19 @@ namespace ComposGH.Components
     {
       Length minDepth = new Length(20, LengthUnit.Centimeter);
       if (this.Params.Input[0].Sources.Count > 0)
-        minDepth = GetInput.Length(this, DA, 0, this.LengthUnit);
+        minDepth = (Length)Input.UnitNumber(this, DA, 0, this.LengthUnit);
 
       Length maxDepth = new Length(100, LengthUnit.Centimeter);
       if (this.Params.Input[1].Sources.Count > 0)
-        maxDepth = GetInput.Length(this, DA, 1, this.LengthUnit);
+        maxDepth = (Length)Input.UnitNumber(this, DA, 1, this.LengthUnit);
 
       Length minWidth = new Length(10, LengthUnit.Centimeter);
       if (this.Params.Input[2].Sources.Count > 0)
-        minWidth = GetInput.Length(this, DA, 2, this.LengthUnit);
+        minWidth = (Length)Input.UnitNumber(this, DA, 2, this.LengthUnit);
 
       Length maxWidth = new Length(50, LengthUnit.Centimeter);
       if (this.Params.Input[3].Sources.Count > 0)
-        maxWidth = GetInput.Length(this, DA, 3, this.LengthUnit);
+        maxWidth = (Length)Input.UnitNumber(this, DA, 3, this.LengthUnit);
 
       BeamSizeLimits beamSizeLimits = new BeamSizeLimits()
       {
@@ -80,7 +81,7 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    private LengthUnit LengthUnit = Units.LengthUnitSection;
+    private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
     public override void InitialiseDropdowns()
     {
@@ -90,7 +91,7 @@ namespace ComposGH.Components
       this.SelectedItems = new List<string>();
 
       // length
-      this.DropDownItems.Add(Units.FilteredLengthUnits);
+      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
       this.SelectedItems.Add(this.LengthUnit.ToString());
 
       this.IsInitialised = true;

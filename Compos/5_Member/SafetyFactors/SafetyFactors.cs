@@ -1,10 +1,4 @@
-﻿using ComposAPI.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnitsNet;
-
-namespace ComposAPI
+﻿namespace ComposAPI
 {
   public class SafetyFactors : ISafetyFactors
   {

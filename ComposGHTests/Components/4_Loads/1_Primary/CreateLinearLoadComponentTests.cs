@@ -3,7 +3,7 @@ using ComposGH.Components;
 using Xunit;
 using ComposGHTests.Helpers;
 using ComposAPI;
-using UnitsNet.Units;
+using OasysUnits.Units;
 using OasysGH.Components;
 
 namespace ComposGHTests.Load

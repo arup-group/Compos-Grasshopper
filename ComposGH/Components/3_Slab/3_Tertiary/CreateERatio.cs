@@ -4,6 +4,7 @@ using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using OasysGH.Components;
+using OasysGH;
 
 namespace ComposGH.Components
 {
@@ -12,6 +13,9 @@ namespace ComposGH.Components
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("a49e5e5e-502d-400e-81a2-3644577b3404");
+    public override GH_Exposure Exposure => GH_Exposure.tertiary | GH_Exposure.obscure;
+    public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    protected override System.Drawing.Bitmap Icon => Resources.ERatio;
     public CreateERatio()
       : base("Create" + ERatioGoo.Name.Replace(" ", string.Empty),
           ERatioGoo.Name.Replace(" ", string.Empty),
@@ -19,10 +23,6 @@ namespace ComposGH.Components
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
     { this.Hidden = true; } // sets the initial state of the component to hidden
-
-    public override GH_Exposure Exposure => GH_Exposure.tertiary | GH_Exposure.obscure;
-
-    protected override System.Drawing.Bitmap Icon => Resources.ERatio;
     #endregion
 
     #region Input and output

@@ -1,21 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Metrics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using ComposAPI.Helpers;
-using ComposAPI.Tests;
-using ComposGH.Components;
-using ComposGH.Parameters;
-using ComposGHTests.Helpers;
-using ComposGHTests.Slab;
-using UnitsNet.Units;
 using Xunit;
 
 namespace ComposAPI.Results.Tests
 {
-  [Collection("ComposAPI Fixture collection")]
+    [Collection("ComposAPI Fixture collection")]
 
   public class BeamResultsTest
   {

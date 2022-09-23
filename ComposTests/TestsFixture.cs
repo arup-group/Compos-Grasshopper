@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using ComposAPI.Helpers;
-using Oasys.Units;
-using UnitsNet;
-using UnitsNet.Units;
 using Xunit;
 
 namespace ComposAPI.Tests
