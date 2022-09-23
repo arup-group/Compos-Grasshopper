@@ -19,12 +19,15 @@ namespace ComposGH.Components
   public class SaveComposFile : GH_OasysDropDownComponent
   {
     #region Name and Ribbon Layout
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("d2fa9fa1-9507-4f57-b383-8b573699906d");
     public override GH_Exposure Exposure => GH_Exposure.primary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+    string FileName = null;
+    ComposFile ComposFile;
+    bool CanOpen = false;
     protected override Bitmap Icon => Resources.SaveModel;
+
     public SaveComposFile()
       : base("SaveCompos", "Save", "Saves your Compos File from this parametric nightmare",
             Ribbon.CategoryName.Name(),
@@ -33,17 +36,13 @@ namespace ComposGH.Components
     #endregion
 
     #region Input and output
-    // This region handles input and output parameters
-    public string FileName = null;
-    ComposFile ComposFile;
-    bool CanOpen = false;
-
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       pManager.AddGenericParameter(MemberGoo.Name, MemberGoo.NickName, MemberGoo.Description + "s to save.", GH_ParamAccess.list);
       pManager.AddBooleanParameter("Save?", "Save", "Input 'True' to save or use button", GH_ParamAccess.item, false);
       pManager.AddTextParameter("File and Path", "File", "Filename and path", GH_ParamAccess.item);
       pManager[1].Optional = true;
+      pManager[2].Optional = true;
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
@@ -92,10 +91,8 @@ namespace ComposGH.Components
           }
         }
 
-
-        IComposFile composFile = ComposFile.Open(this.FileName);
         List<MemberGoo> savedMembers = new List<MemberGoo>();
-        foreach (IMember mem in composFile.GetMembers())
+        foreach (IMember mem in this.ComposFile.GetMembers())
           savedMembers.Add(new MemberGoo(mem));
         DA.SetDataList(0, savedMembers);
       }
@@ -182,7 +179,7 @@ namespace ComposGH.Components
       string fileName = programFiles + @"\Oasys\Compos 8.6\Compos.exe";
 
       if (this.FileName == null || this.FileName == "")
-        this.FileName = Path.GetTempPath() + ComposFile.Guid + ".coa";
+        this.FileName = Path.GetTempPath() + this.ComposFile.Guid + ".coa";
       this.SaveFile();
       if (this.CanOpen)
         System.Diagnostics.Process.Start(fileName, this.FileName);

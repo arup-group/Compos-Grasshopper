@@ -53,6 +53,7 @@ namespace ComposGH.Components
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       string profile = Helpers.Input.BeamSection(this, DA, 0, false);
+      profile = profile.Trim();
 
       IQuantity start = new Ratio(0, RatioUnit.Percent);
       if (this.Params.Input[1].Sources.Count > 0)
