@@ -13,7 +13,7 @@ namespace Rhino.Test
     private object _Doc { get; set; }
     private bool _isDisposed;
     private static string _linkFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Grasshopper", "Libraries");
-    private static string _linkFileName = "ComposGhTests.ghlink";
+    private static string _linkFileName = "IntegrationTests.ghlink";
     static GrasshopperFixture()
     {
       // This MUST be included in a static constructor to ensure that no Rhino DLLs
