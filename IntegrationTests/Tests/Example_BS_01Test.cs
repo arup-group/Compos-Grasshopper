@@ -30,6 +30,7 @@ namespace IntegrationTests
       GH_Document doc = Document();
       GH_Component comp = Helper.FindComponentInDocumentByGroup(doc, "CodeCheckFails");
       Assert.NotNull(comp);
+      comp.Params.Output[0].CollectData();
       GH_String output = (GH_String)ComponentTestHelper.GetOutput(comp);
       Assert.Equal("One or more code requirements are not met", output.Value);
     }
