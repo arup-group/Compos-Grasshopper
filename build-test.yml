@@ -65,6 +65,18 @@ steps:
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/results/composapi/**/coverage.cobertura.xml'
     pathToSources: '$(System.DefaultWorkingDirectory)'
 
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'cobertura'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/results/composgh/**/coverage.cobertura.xml'
+    pathToSources: '$(System.DefaultWorkingDirectory)'
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'cobertura'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/results/integration/**/coverage.cobertura.xml'
+    pathToSources: '$(System.DefaultWorkingDirectory)'
+
 - powershell: |
     $coverage_file_composapi = (Resolve-Path $(System.DefaultWorkingDirectory)/results/composapi/*/coverage.cobertura.xml).Path
     echo $coverage_file_composapi
