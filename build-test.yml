@@ -53,10 +53,10 @@ steps:
     MSBUILDDISABLENODEREUSE: 1
 
 - powershell: |
-    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.2\build --results-directory .\results\composapi --no-restore --logger trx .\ComposTests\bin\x64\Release\net6.0\ComposAPITests.dll
-    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.2\build --results-directory .\results\composgh --no-restore --logger trx .\ComposGHTests\bin\x64\Release\net48\ComposGHTests.dll
-    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.2\build --results-directory .\results\integration --no-restore --logger trx .\IntegrationTests\bin\x64\Release\net48\IntegrationTests.dll
-    # dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.1.2\build --results-directory .\results\3 --no-restore --logger trx .\ConverterTests\bin\x64\Release\net6.0\ConverterTests.dll
+    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.2.0\build --results-directory .\results\composapi .\ComposTests\bin\x64\Release\net6.0\ComposAPITests.dll
+    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.2.0\build --results-directory .\results\composgh .\ComposGHTests\bin\x64\Release\net48\ComposGHTests.dll
+    dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.2.0\build --results-directory .\results\integration .\IntegrationTests\bin\x64\Release\net48\IntegrationTests.dll
+    # dotnet test --collect:"XPlat Code Coverage" /TestAdapterPath:$env:UserProfile\.nuget\packages\coverlet.collector\3.2.0\build --results-directory .\results\3 --no-restore --logger trx .\ConverterTests\bin\x64\Release\net6.0\ConverterTests.dll
   displayName: dotnet test
 
 - task: PublishCodeCoverageResults@1
@@ -143,7 +143,7 @@ steps:
 
 - task: GitHubRelease@1
   inputs:
-    gitHubConnection: 'github.com_peterjgrainger'
+    gitHubConnection: 'github.com_MJCramp'
     repositoryName: 'arup-group/Compos-Grasshopper'
     action: 'edit'
     target: '$(Build.SourceVersion)'
