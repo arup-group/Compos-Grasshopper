@@ -75,10 +75,13 @@ steps:
     Copy-Item $coverage_file_composapi $(System.DefaultWorkingDirectory)\results\coverage_composapi.xml
     Copy-Item $coverage_file_composgh $(System.DefaultWorkingDirectory)\results\coverage_composgh.xml
     Copy-Item $coverage_file_integration $(System.DefaultWorkingDirectory)\results\coverage_integration.xml
-    ls $(System.DefaultWorkingDirectory)\results\
-    codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_composapi.xml -F composapi
-    codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_composgh.xml -F composgh
-    codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_integration.xml -F integration
+    $ProgressPreference = 'SilentlyContinue'
+    Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile codecov.exe
+    ls $(System.DefaultWorkingDirectory)\
+    cd $(System.DefaultWorkingDirectory)\
+    .\codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_composapi.xml -F composapi
+    .\codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_composgh.xml -F composgh
+    .\codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_integration.xml -F integration
   env:
     CODECOV_TOKEN: $(CODECOV_TOKEN)
   displayName: Upload Code Coverage to codecovio
@@ -132,12 +135,9 @@ steps:
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables.TAG_EXISTS, 'true'))
   displayName: Package yak
 
-- task: NuGetCommand@2
-  inputs:
-    command: 'pack'
-    packagesToPack: 'ComposGH/*.csproj'
-    versioningScheme: 'byEnvVar'
-    versionEnvVar: 'dotSeparatedTag'
+- powershell: |
+    cd ComposGH
+    & 'C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\amd64\MSBuild.exe' ComposGH.csproj /t:pack /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg /p:DebugType=portable /property:Configuration=Debug
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), ne(variables.TAG_EXISTS, 'true'))
   displayName: Package NuGet
 
@@ -154,8 +154,8 @@ steps:
       Created from commit https://github.com/arup-group/Compos-Grasshopper/commit/$(Build.SourceVersion)
     assets: |
       $(System.DefaultWorkingDirectory)/**/*.yak
-      $(Build.ArtifactStagingDirectory)/**/*.nupkg
-      $(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg
+      $(System.DefaultWorkingDirectory)/**/*.nupkg
+      $(System.DefaultWorkingDirectory)/**/*.snupkg
     assetUploadMode: 'replace'
     isDraft: true
     isPreRelease: true
