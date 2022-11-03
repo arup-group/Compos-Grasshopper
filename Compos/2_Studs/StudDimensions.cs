@@ -202,7 +202,7 @@ namespace ComposAPI
       string dia = this.Diameter.As(this.Height.Unit).ToString("g5");
       string h = this.Height.ToString("g5");
       string f = (this.Fu.Value == 0) ? this.CharacterStrength.ToString("g5") : Fu.ToString("g5");
-      
+
       return "Ø" + dia.Replace(" ", string.Empty) + "/" + h.Replace(" ", string.Empty) + ((this.IsStandard) ? "" : ", f:" + f.Replace(" ", string.Empty));
     }
     #endregion

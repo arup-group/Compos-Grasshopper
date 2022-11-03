@@ -204,12 +204,12 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.Grade.ToString());
 
       // density unit
-      this.DropDownItems.Add(FilteredUnits.FilteredDensityUnits);
-      this.SelectedItems.Add(this.DensityUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Density));
+      this.SelectedItems.Add(Density.GetAbbreviation(this.DensityUnit));
 
       // strain unit
-      this.DropDownItems.Add(FilteredUnits.FilteredStrainUnits);
-      this.SelectedItems.Add(this.StrainUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Strain));
+      this.SelectedItems.Add(Strain.GetAbbreviation(this.StrainUnit));
 
       this.OverrideDropDownItems = new List<bool>() { false, false, false, false };
 
@@ -256,10 +256,10 @@ namespace ComposGH.Components
         i++; // 
 
       else if (i == 2) // change is made to density unit
-        this.DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), this.SelectedItems[i]);
+        this.DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), this.SelectedItems[i]);
 
       else if (i == 3) // change is made to strain unit
-        this.StrainUnit = (StrainUnit)Enum.Parse(typeof(StrainUnit), this.SelectedItems[i]);
+        this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this.SelectedItems[i]);
 
       base.UpdateUI();
     }
@@ -272,8 +272,8 @@ namespace ComposGH.Components
       if (this.isLightWeight)
         this.DensityClass = (ConcreteMaterial.DensityClass)Enum.Parse(typeof(ConcreteMaterial.DensityClass), this.SelectedItems[i++]);
 
-      this.DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), this.SelectedItems[i++]);
-      this.StrainUnit = (StrainUnit)Enum.Parse(typeof(StrainUnit), this.SelectedItems[i++]);
+      this.DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), this.SelectedItems[i++]);
+      this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this.SelectedItems[i++]);
 
       base.UpdateUIFromSelectedItems();
     }

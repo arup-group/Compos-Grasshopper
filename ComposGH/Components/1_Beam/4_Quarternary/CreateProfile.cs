@@ -191,8 +191,8 @@ namespace ComposGH.Components
       this.SelectedItems.Add("Catalogue");
 
       // length
-      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
-      this.SelectedItems.Add(this.LengthUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      this.SelectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
 
       this.SetSelected(-1, 0);
 
@@ -406,10 +406,10 @@ namespace ComposGH.Components
             this.DropDownItems.RemoveAt(1);
 
           // add length measure dropdown list
-          this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
+          this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
 
           // set selected length
-          this.SelectedItems[1] = this.LengthUnit.ToString();
+          this.SelectedItems[1] = Length.GetAbbreviation(this.LengthUnit);
         }
 
         if (i == 0)
@@ -421,7 +421,7 @@ namespace ComposGH.Components
         else
         {
           // change unit
-          this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
+          this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), SelectedItems[i]);
 
           base.UpdateUI();
         }

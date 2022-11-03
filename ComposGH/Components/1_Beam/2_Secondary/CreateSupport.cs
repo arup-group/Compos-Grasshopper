@@ -130,8 +130,8 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.DropDownItems[0][0]);
 
       // length
-      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
-      this.SelectedItems.Add(LengthUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      this.SelectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
 
       this.OverrideDropDownItems = new List<bool>() { false, false };
       this.IsInitialised = true;
@@ -144,7 +144,7 @@ namespace ComposGH.Components
       if (i == 0)
         this.ParseRestraintType(this.SelectedItems[0]);
       if (i == 1)
-        this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[i]);
 
       base.UpdateUI();
     }
@@ -152,7 +152,7 @@ namespace ComposGH.Components
     public override void UpdateUIFromSelectedItems()
     {
       this.ParseRestraintType(this.SelectedItems[0]);
-      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[1]);
+      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
     }

@@ -139,12 +139,12 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.Grade.ToString());
 
       // density unit
-      this.DropDownItems.Add(FilteredUnits.FilteredDensityUnits);
-      this.SelectedItems.Add(this.DensityUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Density));
+      this.SelectedItems.Add(Density.GetAbbreviation(this.DensityUnit));
 
       // strain unit
-      this.DropDownItems.Add(FilteredUnits.FilteredStrainUnits);
-      this.SelectedItems.Add(this.StrainUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Strain));
+      this.SelectedItems.Add(Strain.GetAbbreviation(this.StrainUnit));
 
       this.OverrideDropDownItems = new List<bool>() { false, false, false };
 
@@ -160,10 +160,10 @@ namespace ComposGH.Components
         this.Grade = (ConcreteGrade)Enum.Parse(typeof(ConcreteGrade), this.SelectedItems[i]);
 
       else if (i == 1) // change is made to density unit
-        this.DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), this.SelectedItems[i]);
+        this.DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), this.SelectedItems[i]);
 
       else if (i == 2) // change is made to strain unit
-        this.StrainUnit = (StrainUnit)Enum.Parse(typeof(StrainUnit), this.SelectedItems[i]);
+        this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this.SelectedItems[i]);
 
       base.UpdateUI();
     }
@@ -172,8 +172,8 @@ namespace ComposGH.Components
     {
       if (this.SelectedItems[0] != "-")
         this.Grade = (ConcreteGrade)Enum.Parse(typeof(ConcreteGrade), this.SelectedItems[0]);
-      this.DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), this.SelectedItems[1]);
-      this.StrainUnit = (StrainUnit)Enum.Parse(typeof(StrainUnit), this.SelectedItems[2]);
+      this.DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), this.SelectedItems[1]);
+      this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this.SelectedItems[2]);
 
       base.UpdateUIFromSelectedItems();
     }

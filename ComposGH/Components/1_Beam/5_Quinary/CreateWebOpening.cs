@@ -99,8 +99,8 @@ namespace ComposGH.Components
       this.SelectedItems.Add(WebOpeningShape.Rectangular.ToString());
 
       // length
-      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
-      this.SelectedItems.Add(this.LengthUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      this.SelectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
 
       this.IsInitialised = true;
     }
@@ -118,18 +118,18 @@ namespace ComposGH.Components
         ModeChangeClicked();
       }
       else if (i == 1) // change is made to length unit
-        this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[i]);
 
       base.UpdateUI();
     }
 
     public override void UpdateUIFromSelectedItems()
     {
-      OpeningType = (WebOpeningShape)Enum.Parse(typeof(WebOpeningShape), SelectedItems[0]);
-      LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[1]);
+      this.OpeningType = (WebOpeningShape)Enum.Parse(typeof(WebOpeningShape), this.SelectedItems[0]);
+      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[1]);
 
-      CreateAttributes();
-      ModeChangeClicked();
+      this.CreateAttributes();
+      this.ModeChangeClicked();
       base.UpdateUI();
     }
 

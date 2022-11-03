@@ -73,8 +73,8 @@ namespace ComposGH.Components
       this.SelectedItems.Add(Grade.ToString());
 
       // strength
-      this.DropDownItems.Add(FilteredUnits.FilteredStressUnits);
-      this.SelectedItems.Add(StressUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Stress));
+      this.SelectedItems.Add(Pressure.GetAbbreviation(this.StressUnit));
 
       this.IsInitialised = true;
     }
@@ -86,7 +86,7 @@ namespace ComposGH.Components
       if (i == 0) // change is made to grade
         this.Grade = (RebarGrade)Enum.Parse(typeof(RebarGrade), this.SelectedItems[i]);
       if (i == 1) // change is made to unit
-        this.StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), this.SelectedItems[i]);
+        this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this.SelectedItems[i]);
 
       base.UpdateUI();
     }
@@ -96,7 +96,7 @@ namespace ComposGH.Components
       if (SelectedItems[0] != "Custom")
         this.Grade = (RebarGrade)Enum.Parse(typeof(RebarGrade), this.SelectedItems[0]);
 
-      this.StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), this.SelectedItems[1]);
+      this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this.SelectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
     }

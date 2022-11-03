@@ -11,9 +11,9 @@ using OasysGH.Components;
 using OasysGH.Helpers;
 using OasysGH.Units;
 using OasysGH.Units.Helpers;
-using Rhino.Geometry;
 using OasysUnits;
 using OasysUnits.Units;
+using Rhino.Geometry;
 
 namespace ComposGH.Components
 {
@@ -27,8 +27,8 @@ namespace ComposGH.Components
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override System.Drawing.Bitmap Icon => Resources.CreateBeam;
     public CreateBeam()
-      : base("Create"+ BeamGoo.Name.Replace(" ", string.Empty), 
-          BeamGoo.Name.Replace(" ", string.Empty), 
+      : base("Create" + BeamGoo.Name.Replace(" ", string.Empty),
+          BeamGoo.Name.Replace(" ", string.Empty),
           "Create a " + BeamGoo.Description + " for a " + MemberGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
@@ -97,8 +97,11 @@ namespace ComposGH.Components
     {
       this.SpacerDescriptions = new List<string>(new string[] { "Unit" });
 
-      this.DropDownItems = new List<List<string>>() { FilteredUnits.FilteredLengthUnits };
-      this.SelectedItems = new List<string>() { this.LengthUnit.ToString() };
+      this.DropDownItems = new List<List<string>>();
+      this.SelectedItems = new List<string>();
+
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      this.SelectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
 
       this.IsInitialised = true;
     }
@@ -107,14 +110,14 @@ namespace ComposGH.Components
     {
       this.SelectedItems[i] = this.DropDownItems[i][j];
 
-      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[i]);
 
       base.UpdateUI();
     }
 
     public override void UpdateUIFromSelectedItems()
     {
-      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[0]);
+      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[0]);
 
       base.UpdateUIFromSelectedItems();
     }

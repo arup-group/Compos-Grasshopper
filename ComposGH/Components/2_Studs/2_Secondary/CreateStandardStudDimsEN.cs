@@ -113,8 +113,8 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.StdGrd.ToString());
 
       // strength
-      this.DropDownItems.Add(FilteredUnits.FilteredStressUnits);
-      this.SelectedItems.Add(this.StressUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Stress));
+      this.SelectedItems.Add(Pressure.GetAbbreviation(this.StressUnit));
 
       this.IsInitialised = true;
     }
@@ -141,8 +141,8 @@ namespace ComposGH.Components
         else if (this.DropDownItems.Count < 4)
         {
           // add length dropdown
-          this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
-          this.SelectedItems.Add(this.LengthUnit.ToString());
+          this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+          this.SelectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
           this.SpacerDescriptions.Add("Length Unit");
           this.ModeChangeClicked();
         }
@@ -151,10 +151,10 @@ namespace ComposGH.Components
         this.StdGrd = (StandardStudGrade)Enum.Parse(typeof(StandardStudGrade), this.SelectedItems[i]);
 
       if (i == 2) // change is made to grade
-        this.StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), this.SelectedItems[i]);
+        this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this.SelectedItems[i]);
 
       if (i == 3) // change is made to length
-        this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[i]);
 
       base.UpdateUI();
     }
@@ -170,10 +170,10 @@ namespace ComposGH.Components
       else
       {
         this.ModeChangeClicked();
-        this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[3]);
+        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[3]);
       }
 
-      this.StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), this.SelectedItems[2]);
+      this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this.SelectedItems[2]);
 
       base.UpdateUIFromSelectedItems();
     }

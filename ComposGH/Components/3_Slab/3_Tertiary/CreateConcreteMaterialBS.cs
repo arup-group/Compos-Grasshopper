@@ -140,8 +140,8 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.Type.ToString());
 
       // density unit
-      this.DropDownItems.Add(FilteredUnits.FilteredDensityUnits);
-      this.SelectedItems.Add(this.DensityUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Density));
+      this.SelectedItems.Add(Density.GetAbbreviation(this.DensityUnit));
 
       this.OverrideDropDownItems = new List<bool>() { false, false, false };
 
@@ -160,7 +160,7 @@ namespace ComposGH.Components
         this.Type = (ConcreteMaterial.WeightType)Enum.Parse(typeof(ConcreteMaterial.WeightType), this.SelectedItems[i]);
 
       else if (i == 2) // change is made to density unit
-        this.DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), this.SelectedItems[i]);
+        this.DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), this.SelectedItems[i]);
 
       base.UpdateUI();
     }
@@ -170,7 +170,7 @@ namespace ComposGH.Components
       if (this.SelectedItems[0] != "-")
         this.Grade = (ConcreteGrade)Enum.Parse(typeof(ConcreteGrade), this.SelectedItems[0]);
       this.Type = (ConcreteMaterial.WeightType)Enum.Parse(typeof(ConcreteMaterial.WeightType), this.SelectedItems[1]);
-      this.DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), this.SelectedItems[2]);
+      this.DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), this.SelectedItems[2]);
 
       base.UpdateUIFromSelectedItems();
     }
