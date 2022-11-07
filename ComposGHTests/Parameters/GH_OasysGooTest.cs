@@ -92,7 +92,7 @@ namespace ComposGHTests.Parameters
         if (gooProperty.Name == "TypeName")
         {
           string typeName = (string)gooProperty.GetValue(objectGoo, null);
-          Assert.StartsWith("Compos " + typeName + " {", objectGoo.ToString());
+          Assert.StartsWith("Compos " + typeName + " (", objectGoo.ToString());
           hasToString = true;
         }
 

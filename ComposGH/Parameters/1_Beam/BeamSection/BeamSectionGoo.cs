@@ -74,11 +74,14 @@ namespace ComposGH.Parameters
     }
   }
 
-  /// <summary>
-  /// /// This class provides a Parameter interface for the CustomGoo type.
-  /// </summary>
   public class BeamSectionParam : GH_Param<BeamSectionGoo>
   {
+    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + BeamSectionGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => this.SourceCount == 0 ? BeamSectionGoo.Name : base.TypeName;
+    public override Guid ComponentGuid => new Guid("ed384b64-f147-483e-ae3d-a294016a90c3");
+    public override GH_Exposure Exposure => GH_Exposure.hidden;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.BeamSectionParam;
+
     public BeamSectionParam()
       : base(new GH_InstanceDescription(
         BeamSectionGoo.Name,
@@ -87,10 +90,5 @@ namespace ComposGH.Parameters
         Components.Ribbon.CategoryName.Name(),
         Components.Ribbon.SubCategoryName.Cat10()))
     { }
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + BeamSectionGoo.Name + " parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? BeamSectionGoo.Name : base.TypeName;
-    public override Guid ComponentGuid => new Guid("ed384b64-f147-483e-ae3d-a294016a90c3");
-    public override GH_Exposure Exposure => GH_Exposure.hidden;
-    protected override System.Drawing.Bitmap Icon => Properties.Resources.BeamSectionParam;
   }
 }
