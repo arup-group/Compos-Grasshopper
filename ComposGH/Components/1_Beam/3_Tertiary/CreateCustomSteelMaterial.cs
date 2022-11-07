@@ -123,12 +123,12 @@ namespace ComposGH.Components
       this.SelectedItems.Add(Grade.ToString());
 
       // Stress
-      this.DropDownItems.Add(FilteredUnits.FilteredStressUnits);
-      this.SelectedItems.Add(StressUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Stress));
+      this.SelectedItems.Add(Pressure.GetAbbreviation(this.StressUnit));
 
       // Density
-      this.DropDownItems.Add(FilteredUnits.FilteredDensityUnits);
-      this.SelectedItems.Add(DensityUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Density));
+      this.SelectedItems.Add(Density.GetAbbreviation(this.DensityUnit));
 
       this.OverrideDropDownItems = new List<bool>() { false, false, false };
       this.IsInitialised = true;
@@ -147,9 +147,9 @@ namespace ComposGH.Components
         this.Grade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), SelectedItems[i]);
       }
       if (i == 1)
-        this.StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), SelectedItems[i]);
+        this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), SelectedItems[i]);
       if (i == 2)
-        this.DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), SelectedItems[i]);
+        this.DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), SelectedItems[i]);
 
       base.UpdateUI();
     }
@@ -158,8 +158,8 @@ namespace ComposGH.Components
     {
       if (this.SelectedItems[0] != "-")
         this.Grade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), SelectedItems[0]);
-      this.StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), SelectedItems[1]);
-      this.DensityUnit = (DensityUnit)Enum.Parse(typeof(DensityUnit), SelectedItems[2]);
+      this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), SelectedItems[1]);
+      this.DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), SelectedItems[2]);
 
       base.UpdateUIFromSelectedItems();
     }

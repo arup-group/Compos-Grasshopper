@@ -74,8 +74,8 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.Mesh.ToString());
 
       // length
-      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
-      this.SelectedItems.Add(this.LengthUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      this.SelectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
 
       this.IsInitialised = true;
     }
@@ -91,7 +91,7 @@ namespace ComposGH.Components
         Mesh = (ReinforcementMeshType)Enum.Parse(typeof(ReinforcementMeshType), SelectedItems[i]);
       }
       else
-        LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[i]);
+        LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), SelectedItems[i]);
 
       base.UpdateUI();
     }
@@ -99,7 +99,7 @@ namespace ComposGH.Components
     public override void UpdateUIFromSelectedItems()
     {
       this.Mesh = (ReinforcementMeshType)Enum.Parse(typeof(ReinforcementMeshType), SelectedItems[0]);
-      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), SelectedItems[1]);
+      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), SelectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
     }

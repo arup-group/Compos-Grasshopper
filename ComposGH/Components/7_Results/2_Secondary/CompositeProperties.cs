@@ -11,6 +11,7 @@ using OasysGH.Helpers;
 using OasysGH.Parameters;
 using OasysGH.Units;
 using OasysGH.Units.Helpers;
+using OasysUnits;
 using OasysUnits.Units;
 
 namespace ComposGH.Components
@@ -133,8 +134,8 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.SelectedCase.ToString());
 
       // length
-      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
-      this.SelectedItems.Add(this.LengthUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      this.SelectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
 
       this.IsInitialised = true;
     }
@@ -145,7 +146,7 @@ namespace ComposGH.Components
       if (i == 0)
         this.SelectedCase = (Case)Enum.Parse(typeof(Case), this.SelectedItems[i]);
       else if (i == 1)
-        this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[i]);
 
       base.UpdateUI();
     }
@@ -153,7 +154,7 @@ namespace ComposGH.Components
     public override void UpdateUIFromSelectedItems()
     {
       this.SelectedCase = (Case)Enum.Parse(typeof(Case), this.SelectedItems[0]);
-      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[1]);
+      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
     }

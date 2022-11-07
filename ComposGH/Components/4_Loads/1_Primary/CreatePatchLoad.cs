@@ -113,12 +113,12 @@ namespace ComposGH.Components
       this.SelectedItems.Add(LoadDistribution.Area.ToString());
 
       // force unit
-      this.DropDownItems.Add(FilteredUnits.FilteredForcePerAreaUnits);
-      this.SelectedItems.Add(this.ForcePerAreaUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.ForcePerArea));
+      this.SelectedItems.Add(Pressure.GetAbbreviation(this.ForcePerAreaUnit));
 
       // length
-      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
-      this.SelectedItems.Add(this.LengthUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      this.SelectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
 
       this.IsInitialised = true;
     }
@@ -132,24 +132,24 @@ namespace ComposGH.Components
         this.DistributionType = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), this.SelectedItems[i]);
         if (this.DistributionType == LoadDistribution.Line)
         {
-          this.DropDownItems[1] = FilteredUnits.FilteredForcePerLengthUnits;
-          this.SelectedItems[1] = this.ForcePerLengthUnit.ToString();
+          this.DropDownItems[1] = UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.ForcePerLength);
+          this.SelectedItems[1] = ForcePerLength.GetAbbreviation(this.ForcePerLengthUnit);
         }
         else
         {
-          this.DropDownItems[1] = FilteredUnits.FilteredForcePerAreaUnits;
-          this.SelectedItems[1] = this.ForcePerAreaUnit.ToString();
+          this.DropDownItems[1] = UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.ForcePerArea);
+          this.SelectedItems[1] = Pressure.GetAbbreviation(this.ForcePerAreaUnit);
         }
       }
       if (i == 1)
       {
         if (this.DistributionType == LoadDistribution.Line)
-          this.ForcePerLengthUnit = (ForcePerLengthUnit)Enum.Parse(typeof(ForcePerLengthUnit), this.SelectedItems[i]);
+          this.ForcePerLengthUnit = (ForcePerLengthUnit)UnitsHelper.Parse(typeof(ForcePerLengthUnit), this.SelectedItems[i]);
         else
-          this.ForcePerAreaUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), this.SelectedItems[i]);
+          this.ForcePerAreaUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this.SelectedItems[i]);
       }
       if (i == 2)
-        this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[i]);
 
       base.UpdateUI();
     }
@@ -158,10 +158,10 @@ namespace ComposGH.Components
     {
       this.DistributionType = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), this.SelectedItems[0]);
       if (this.DistributionType == LoadDistribution.Line)
-        this.ForcePerLengthUnit = (ForcePerLengthUnit)Enum.Parse(typeof(ForcePerLengthUnit), this.SelectedItems[1]);
+        this.ForcePerLengthUnit = (ForcePerLengthUnit)UnitsHelper.Parse(typeof(ForcePerLengthUnit), this.SelectedItems[1]);
       else
-        this.ForcePerAreaUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), this.SelectedItems[1]);
-      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[2]);
+        this.ForcePerAreaUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this.SelectedItems[1]);
+      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[2]);
 
       base.UpdateUIFromSelectedItems();
     }

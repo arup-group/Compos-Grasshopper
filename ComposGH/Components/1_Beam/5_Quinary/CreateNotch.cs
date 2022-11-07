@@ -101,8 +101,8 @@ namespace ComposGH.Components
       this.SelectedItems.Add(NotchTypes.Both_ends.ToString().Replace('_', ' '));
 
       // length
-      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
-      this.SelectedItems.Add(this.LengthUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      this.SelectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
 
       this.IsInitialised = true;
     }
@@ -120,7 +120,7 @@ namespace ComposGH.Components
       }
       else if (i == 1) // change is made to length unit
       {
-        this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[i]);
       }
 
       base.UpdateUI();
@@ -129,7 +129,7 @@ namespace ComposGH.Components
     public override void UpdateUIFromSelectedItems()
     {
       this.OpeningType = (NotchTypes)Enum.Parse(typeof(NotchTypes), this.SelectedItems[0].Replace(' ', '_'));
-      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[1]);
+      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
     }

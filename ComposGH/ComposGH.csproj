@@ -541,7 +541,7 @@
       <Version>6.27.20176.5001</Version>
     </PackageReference>
     <PackageReference Include="OasysGH">
-      <Version>0.3.1-beta</Version>
+      <Version>0.4.0-beta</Version>
     </PackageReference>
     <PackageReference Include="Stub.System.Data.SQLite.Core.NetFramework">
       <Version>1.0.115.5</Version>

@@ -11,6 +11,7 @@ using OasysGH.Helpers;
 using OasysGH.Parameters;
 using OasysGH.Units;
 using OasysGH.Units.Helpers;
+using OasysUnits;
 using OasysUnits.Units;
 
 namespace ComposGH.Components
@@ -110,16 +111,16 @@ namespace ComposGH.Components
       this.SelectedItems.Add(this.SelectedLoad.ToString());
 
       // stress
-      this.DropDownItems.Add(FilteredUnits.FilteredStressUnits);
-      this.SelectedItems.Add(this.StressUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Stress));
+      this.SelectedItems.Add(Pressure.GetAbbreviation(this.StressUnit));
 
       // strain
-      this.DropDownItems.Add(FilteredUnits.FilteredStrainUnits);
-      this.SelectedItems.Add(this.StrainUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Strain));
+      this.SelectedItems.Add(Strain.GetAbbreviation(this.StrainUnit));
 
       // length
-      this.DropDownItems.Add(FilteredUnits.FilteredLengthUnits);
-      this.SelectedItems.Add(this.LengthUnit.ToString());
+      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      this.SelectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
 
       this.IsInitialised = true;
     }
@@ -131,11 +132,11 @@ namespace ComposGH.Components
       if (i == 0)
         this.SelectedLoad = (Load)Enum.Parse(typeof(Load), this.SelectedItems[i]);
       else if (i == 1)
-        this.StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), this.SelectedItems[i]);
+        this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this.SelectedItems[i]);
       else if (i == 2)
-        this.StrainUnit = (StrainUnit)Enum.Parse(typeof(StrainUnit), this.SelectedItems[i]);
+        this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this.SelectedItems[i]);
       else if (i == 3)
-        this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[i]);
 
       base.UpdateUI();
     }
@@ -143,9 +144,9 @@ namespace ComposGH.Components
     public override void UpdateUIFromSelectedItems()
     {
       this.SelectedLoad = (Load)Enum.Parse(typeof(Load), this.SelectedItems[0]);
-      this.StressUnit = (PressureUnit)Enum.Parse(typeof(PressureUnit), this.SelectedItems[1]);
-      this.StrainUnit = (StrainUnit)Enum.Parse(typeof(StrainUnit), this.SelectedItems[2]);
-      this.LengthUnit = (LengthUnit)Enum.Parse(typeof(LengthUnit), this.SelectedItems[3]);
+      this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this.SelectedItems[1]);
+      this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this.SelectedItems[2]);
+      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[3]);
 
       base.UpdateUIFromSelectedItems();
     }
