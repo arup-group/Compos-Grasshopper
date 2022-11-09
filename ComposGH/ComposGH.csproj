@@ -105,6 +105,6 @@ Copyright © Oasys 1985 - 2022</Description>
     <StartAction>Program</StartAction>
   </PropertyGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="Copy &quot;$(TargetPath)&quot; &quot;$(TargetDir)Compos.gha&quot;" />
+    <Exec Command="Copy &quot;$(TargetPath)&quot; &quot;$(TargetDir)Compos.gha&quot;&#xD;&#xA;Copy &quot;Resources\ComposLogo64.png&quot; &quot;$(TargetDir)ComposIcon.png&quot;" />
   </Target>
 </Project>
