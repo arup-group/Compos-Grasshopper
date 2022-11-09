@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "Integra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConverterTests", "ConverterTests\ConverterTests.csproj", "{F842C439-BE53-46F5-B86B-FC62700E2347}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComposGHConverter", "ComposGHConverter\ComposGHConverter.csproj", "{00F230FA-0D3B-4C3E-8C7D-5DBBC025F678}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
