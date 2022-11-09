@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
-
-using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
-using Rhino.Geometry;
-using Rhino;
-using Grasshopper.Documentation;
-using Rhino.Collections;
+using OasysGH;
 
 namespace ComposGH.Parameters
 {
-    /// <summary>
-    /// Model class, this class defines the basic properties and methods for any Compos Model
-    /// </summary>
-    [Serializable]
+  /// <summary>
+  /// Model class, this class defines the basic properties and methods for any Compos Model
+  /// </summary>
+  [Serializable]
     public class ComposModel
     {
         public dynamic Model

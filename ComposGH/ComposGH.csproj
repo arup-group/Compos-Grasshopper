@@ -1,20 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{5274EA0F-5CF8-4F74-ACE6-A273F4196522}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ComposGH</RootNamespace>
-    <AssemblyName>ComposGH</AssemblyName>
     <TargetFramework>net48</TargetFramework>
-    <FileAlignment>512</FileAlignment>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
+    <Version>0.9.2</Version>
+    <Title>B2S</Title>
+    <Description>Description </Description>
+    <PlatformTarget>x64</PlatformTarget>
+    <Platforms>x64</Platforms>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -31,350 +23,12 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="licenses\EntityFramework" />
     <None Include="licenses\Newtonsoft" />
     <None Include="licenses\UnitsNet" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\Icons\CreateProfile.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\OpenModel.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SaveModel.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SteelMaterialParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ComposLogo128.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Parameters\0_File\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\RebarMesh.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\BeamParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ConvertUnitNumber.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateBeam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateDesignCode.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateStud.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateUnitNumber.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CustomDecking.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CustomStudSpacing.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\DeckingParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\DesignCodeParameter.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\MeshReinforcement.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ModelParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\Notch.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\RebarMaterial.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ReinforcementParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SlabParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StandardDecking.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StandardStudDims.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StandardStudDimsEN.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StandardStudSpecs.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StandardStudSpecsBS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StandardStudSpecsEN.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\Stiffener.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StudParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\TransverseReinforcement.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\UnitParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\Units.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\WebOpening.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\WebOpeningParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CustomStudDims.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\AxialLoad.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\LinearLoad.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\LoadParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\PatchLoad.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\PointLoad.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\TriLinearLoad.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\UniformLoad.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\BeamSection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateConcreteMaterial.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateRestraint.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateSupport.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\RestraintParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateConcreteMaterialAZ.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateConcreteMaterialBS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateConcreteMaterialEN.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateConcreteMaterialHK.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ERatio.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\DeckingConfig.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Compos\ComposAPI.csproj" />
-    <ProjectReference Include="Converters\Converters.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateSlab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SlabDimensions.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\EC4SafetyFactors.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SafetyFactors.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreepShrinkageParams.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CustomRebarLayout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateMember.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\MemberParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateCustomSteelMaterial.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StandardASNZSteelMaterial.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StandardSteelMaterial.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ReadResult.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StandardENSteelMaterial.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ComposInfo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ComposLogo64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\BeamSizeLimits.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CatalogueID.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\DeflectionLimit.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\DesignCriteria.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\DesignCriteriaParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\FrequencyLimit.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\DesignMember.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CodeReqMet.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CodeReqNotAvailable.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CodeReqNotMet.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ProfileProperties.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\BeamClassification.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\BeamStressResults.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CapacityResults.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ComposLogo64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\DeflectionResults.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\InternalForceResults.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SectionProperties.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SlabStressResults.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StudResults.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\TransverseRebarResults.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\Utilisation.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\TransverseRebarLayout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\UtilisationHigh.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\UtilisationLow.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\UtilisationMedium.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\UtilisationOver.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SectionPropertiesConstant.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ComposInfo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\BeamSectionParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ConcreteMaterialParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SupportParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\WebOpeningStiffenerParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StudDimParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StudGrpDimParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StudSpecParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\MeshReinforcementParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\RebarLayoutParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\TransverseReinforcementParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\RebarMaterialParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SlabDimensionParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SafetyFactorParam.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Grasshopper">
@@ -395,6 +49,22 @@
     <PackageReference Include="System.ValueTuple">
       <Version>4.5.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="PreBuild.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

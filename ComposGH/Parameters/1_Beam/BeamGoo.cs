@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using ComposAPI;
-using ComposGH.Converters;
 using Grasshopper;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
@@ -189,30 +188,30 @@ namespace ComposGH.Parameters
       try
       {
         // Cast from GsaGH
-        if (GsaGHConverter.IsPresent())
-        {
-          Type type = GsaGHConverter.GetTypeFor(typeof(IComposBeam));
-          if (type.IsAssignableFrom(source.GetType()))
-          {
-            Value = (Beam)GsaGHConverter.CastToComposBeam(source);
-            return true;
-          }
-        }
-        // Cast from AdSecGH
-        if (AdSecGHConverter.IsPresent())
-        {
-          Type type = AdSecGHConverter.GetTypeFor(typeof(IComposBeam));
-          if (type.IsAssignableFrom(source.GetType()))
-          {
-            Value = (Beam)AdSecGHConverter.CastToComposBeam(source);
-            return true;
-          }
-        }
-        // Cast from Speckle
-        if (SpeckleConverter.IsPresent())
-        {
-          // todo: implement
-        }
+        //if (GsaGHConverter.IsPresent())
+        //{
+        //  Type type = GsaGHConverter.GetTypeFor(typeof(IComposBeam));
+        //  if (type.IsAssignableFrom(source.GetType()))
+        //  {
+        //    Value = (Beam)GsaGHConverter.CastToComposBeam(source);
+        //    return true;
+        //  }
+        //}
+        //// Cast from AdSecGH
+        //if (AdSecGHConverter.IsPresent())
+        //{
+        //  Type type = AdSecGHConverter.GetTypeFor(typeof(IComposBeam));
+        //  if (type.IsAssignableFrom(source.GetType()))
+        //  {
+        //    Value = (Beam)AdSecGHConverter.CastToComposBeam(source);
+        //    return true;
+        //  }
+        //}
+        //// Cast from Speckle
+        //if (SpeckleConverter.IsPresent())
+        //{
+        //  // todo: implement
+        //}
 
       }
       catch (Exception)
