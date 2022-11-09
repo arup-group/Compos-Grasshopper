@@ -160,7 +160,7 @@ namespace ComposGH
     {
       get
       {
-        //Return a short string describing the purpose of this GHA library.
+        // Return a short string describing the purpose of this GHA library.
         return "Official Oasys Compos Grasshopper Plugin" + Environment.NewLine
           + (isBeta ? Disclaimer : "")
         + Environment.NewLine + "The plugin requires a licensed version of Compos to load."
