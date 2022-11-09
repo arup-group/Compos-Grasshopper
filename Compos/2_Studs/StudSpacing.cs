@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using UnitsNet;
+using ComposAPI.Helpers;
+using OasysUnits;
 
 namespace ComposAPI
 {
@@ -16,20 +16,21 @@ namespace ComposAPI
   /// <summary>
   /// Object for setting custom spacing/layout for a <see cref="Stud"/>
   /// </summary>
-  public class StudGroupSpacing
+  public class StudSpacing
   {
     public Length DistanceFromStart { get; set; }
     public int NumberOfRows { get; set; } = 2;
     public int NumberOfLines { get; set; } = 1;
     public Length Spacing { get; set; }
 
+
     #region constructors
-    public StudGroupSpacing()
+    public StudSpacing()
     {
       // empty constructor
     }
 
-    public StudGroupSpacing(Length distanceFromStart, int numberOfRows, int numberOfLines, Length spacing)
+    public StudSpacing(Length distanceFromStart, int numberOfRows, int numberOfLines, Length spacing)
     {
       this.DistanceFromStart = distanceFromStart;
       if (numberOfRows < 1)
@@ -46,10 +47,10 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      string start = (this.DistanceFromStart.Value == 0) ? "" : "From:" + this.DistanceFromStart.ToUnit(Units.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
+      string start = (this.DistanceFromStart.Value == 0) ? "" : "From:" + this.DistanceFromStart.ToUnit(UnitsHelper.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
       string rows = NumberOfRows + "R";
       string lines = NumberOfLines + "L";
-      string spacing = "@" + this.Spacing.ToUnit(Units.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
+      string spacing = "@" + this.Spacing.ToUnit(UnitsHelper.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
 
       string joined = string.Join(" ", new List<string>() { start, rows, lines, spacing });
       return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');

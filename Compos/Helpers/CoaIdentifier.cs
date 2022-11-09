@@ -103,6 +103,7 @@
       public const string StudLayoutCustom = "USER_DEFINED";
       public const string StudLayoutCheckCustom = "CHECK_SPACE_YES";
     }
+
     internal class StudDimensions
     {
       public const string StudDefinition = "STUD_DEFINITION";

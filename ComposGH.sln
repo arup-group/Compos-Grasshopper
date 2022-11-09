@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComposGH", "ComposGH\ComposGH.csproj", "{5274EA0F-5CF8-4F74-ACE6-A273F4196522}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComposGH", "ComposGH\ComposGH.csproj", "{5274EA0F-5CF8-4F74-ACE6-A273F4196522}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Converters", "ComposGH\Converters\Converters.csproj", "{0BF1ED34-39F9-4842-B788-31D8BEA0825E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Converters", "ComposGH\Converters\Converters.csproj", "{0BF1ED34-39F9-4842-B788-31D8BEA0825E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComposAPI", "Compos\ComposAPI.csproj", "{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComposAPI", "Compos\ComposAPI.csproj", "{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComposGHTests", "ComposGHTests\ComposGHTests.csproj", "{35B5560B-87F2-4A01-A378-1CDD3A6EEEA0}"
 EndProject
@@ -23,18 +23,18 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5274EA0F-5CF8-4F74-ACE6-A273F4196522}.Debug|x64.ActiveCfg = Debug|x64
-		{5274EA0F-5CF8-4F74-ACE6-A273F4196522}.Debug|x64.Build.0 = Debug|x64
-		{5274EA0F-5CF8-4F74-ACE6-A273F4196522}.Release|x64.ActiveCfg = Release|x64
-		{5274EA0F-5CF8-4F74-ACE6-A273F4196522}.Release|x64.Build.0 = Release|x64
-		{0BF1ED34-39F9-4842-B788-31D8BEA0825E}.Debug|x64.ActiveCfg = Debug|x64
-		{0BF1ED34-39F9-4842-B788-31D8BEA0825E}.Debug|x64.Build.0 = Debug|x64
-		{0BF1ED34-39F9-4842-B788-31D8BEA0825E}.Release|x64.ActiveCfg = Release|x64
-		{0BF1ED34-39F9-4842-B788-31D8BEA0825E}.Release|x64.Build.0 = Release|x64
-		{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}.Debug|x64.ActiveCfg = Debug|x64
-		{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}.Debug|x64.Build.0 = Debug|x64
-		{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}.Release|x64.ActiveCfg = Release|x64
-		{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}.Release|x64.Build.0 = Release|x64
+		{5274EA0F-5CF8-4F74-ACE6-A273F4196522}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5274EA0F-5CF8-4F74-ACE6-A273F4196522}.Debug|x64.Build.0 = Debug|Any CPU
+		{5274EA0F-5CF8-4F74-ACE6-A273F4196522}.Release|x64.ActiveCfg = Release|Any CPU
+		{5274EA0F-5CF8-4F74-ACE6-A273F4196522}.Release|x64.Build.0 = Release|Any CPU
+		{0BF1ED34-39F9-4842-B788-31D8BEA0825E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0BF1ED34-39F9-4842-B788-31D8BEA0825E}.Debug|x64.Build.0 = Debug|Any CPU
+		{0BF1ED34-39F9-4842-B788-31D8BEA0825E}.Release|x64.ActiveCfg = Release|Any CPU
+		{0BF1ED34-39F9-4842-B788-31D8BEA0825E}.Release|x64.Build.0 = Release|Any CPU
+		{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}.Debug|x64.Build.0 = Debug|Any CPU
+		{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}.Release|x64.ActiveCfg = Release|Any CPU
+		{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}.Release|x64.Build.0 = Release|Any CPU
 		{35B5560B-87F2-4A01-A378-1CDD3A6EEEA0}.Debug|x64.ActiveCfg = Debug|x64
 		{35B5560B-87F2-4A01-A378-1CDD3A6EEEA0}.Debug|x64.Build.0 = Debug|x64
 		{35B5560B-87F2-4A01-A378-1CDD3A6EEEA0}.Release|x64.ActiveCfg = Release|x64
