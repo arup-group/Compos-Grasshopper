@@ -17,7 +17,7 @@ Copyright © Oasys 1985 - 2022</Description>
     <OutputType>Library</OutputType>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/arup-group/Compos-Grasshopper</RepositoryUrl>
-    <PackageIcon>ComposLogo64.png</PackageIcon>
+    <PackageIcon>ComposLogo128.png</PackageIcon>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <IncludeSymbols>True</IncludeSymbols>
@@ -91,6 +91,9 @@ Copyright © Oasys 1985 - 2022</Description>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ComposLogo128.png" Pack="true" PackagePath=""/>
   </ItemGroup>
   <ItemGroup>
     <None Update="Resources\ComposLogo64.png">
