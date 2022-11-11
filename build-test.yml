@@ -133,10 +133,10 @@ steps:
     ignoreLASTEXITCODE: true
 
 - powershell: |
-    cd ComposGH\bin\x64
+    cd ComposGH\bin\x64\Release
     curl https://files.mcneel.com/yak/tools/latest/yak.exe -o yak.exe
     .\yak version
-    cd Release
+    cd net48
     ..\yak spec
     Add-Content manifest.yml 'icon: ComposIcon.png'
     ..\yak build --platform win
