@@ -104,7 +104,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-        $versionInfo = $(Get-Item .\ComposGH\bin\x64\Release\ComposGH.dll).VersionInfo
+        $versionInfo = $(Get-Item .\ComposGH\bin\x64\Release\net48\ComposGH.dll).VersionInfo
         echo $versionInfo
         $fullVersion = [array]${versionInfo}.FileVersion.split('.')
         $currentTime = $(Get-Date -Format "dddd MM/dd/yyyy HH:mm")
