@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using ComposAPI;
 using ComposGH.Parameters;
-using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH;
 using OasysGH.Components;
@@ -23,7 +22,7 @@ namespace ComposGH.Components
     public override Guid ComponentGuid => new Guid("7dfed0d2-3ad1-49e6-a8d8-d5a5fd851a64");
     public override GH_Exposure Exposure => GH_Exposure.primary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
-    protected override System.Drawing.Bitmap Icon => Resources.TriLinearLoad;
+    protected override System.Drawing.Bitmap Icon => Properties.Resources.TriLinearLoad;
     public CreateTriLinearLoad()
       : base("CreateTriLinearLoad", "TriLinearLoad", "Create a tri-linearly varying distributed Compos Load starting from left end of the beam and ending at the right." +
           Environment.NewLine + "The two peak load points can be defined at any positions along the span.",

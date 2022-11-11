@@ -7,14 +7,6 @@ using OasysUnits.Units;
 
 namespace ComposAPI
 {
-  public enum StudSpacingType
-  {
-    Automatic,
-    Partial_Interaction,
-    Min_Num_of_Studs,
-    Custom
-  }
-
   /// <summary>
   /// Object for setting custom spacing/layout for a <see cref="Stud"/>
   /// </summary>

@@ -1,39 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
-    <ProjectGuid>{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ComposAPI</RootNamespace>
-    <AssemblyName>ComposAPI</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
+    <TargetFramework>net48</TargetFramework>
+    <Version>0.9.2-beta</Version>
+    <Title>ComposAPI</Title>
+    <Description>Description</Description>
     <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
+    <Platforms>x64</Platforms>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>ComposAPITests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="6_Analysis\**" />
+    <Compile Remove="8_Design\**" />
+    <EmbeddedResource Remove="6_Analysis\**" />
+    <EmbeddedResource Remove="8_Design\**" />
+    <None Remove="6_Analysis\**" />
+    <None Remove="8_Design\**" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,139 +31,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="0_File\IComposFile.cs" />
-    <Compile Include="0_File\ComposFile.cs" />
-    <Compile Include="1_Beam\IBeam.cs" />
-    <Compile Include="1_Beam\SteelMaterial\ASNZSteelMaterial.cs" />
-    <Compile Include="4_Loads\LinearLoad.cs" />
-    <Compile Include="4_Loads\AxialLoad.cs" />
-    <Compile Include="4_Loads\MemberLoad.cs" />
-    <Compile Include="4_Loads\PatchLoad.cs" />
-    <Compile Include="4_Loads\TriLinearLoad.cs" />
-    <Compile Include="4_Loads\UniformLoad.cs" />
-    <Compile Include="4_Loads\PointLoad.cs" />
-    <Compile Include="5_Member\DesignCode\EN\CodeOptionsEN.cs" />
-    <Compile Include="5_Member\DesignCode\EN\CreepShrinkageParametersEN.cs" />
-    <Compile Include="5_Member\DesignCode\ASNZ\CreepShrinkageParametersASNZ.cs" />
-    <Compile Include="5_Member\DesignCode\ASNZ\DesignCodeASNZ.cs" />
-    <Compile Include="5_Member\DesignCode\EN\DesignCodeEN.cs" />
-    <Compile Include="5_Member\DesignCriteria\DesignCriteria.cs" />
-    <Compile Include="5_Member\DesignCriteria\FrequencyLimits.cs" />
-    <Compile Include="5_Member\DesignCriteria\DeflectionLimit.cs" />
-    <Compile Include="5_Member\DesignCriteria\BeamSizeLimits.cs" />
-    <Compile Include="5_Member\DesignCriteria\IFrequencyLimits.cs" />
-    <Compile Include="5_Member\DesignCriteria\IDeflectionLimit.cs" />
-    <Compile Include="5_Member\DesignCriteria\IBeamSizeLimits.cs" />
-    <Compile Include="5_Member\DesignCriteria\IDesignCriteria.cs" />
-    <Compile Include="5_Member\SafetyFactors\EN\IMaterialPartialFactors.cs" />
-    <Compile Include="5_Member\SafetyFactors\EN\ISafetyFactorsEN.cs" />
-    <Compile Include="5_Member\SafetyFactors\EN\LoadCombinationFactors.cs" />
-    <Compile Include="5_Member\SafetyFactors\EN\MaterialPartialFactors.cs" />
-    <Compile Include="5_Member\SafetyFactors\EN\SafetyFactorsEN.cs" />
-    <Compile Include="5_Member\IMember.cs" />
-    <Compile Include="5_Member\SafetyFactors\MaterialFactors.cs" />
-    <Compile Include="5_Member\SafetyFactors\LoadFactors.cs" />
-    <Compile Include="7_Results\5_1_CompositeProperties\CompositeSectionProperties.cs" />
-    <Compile Include="7_Results\1_BeamResults\BeamClassification.cs" />
-    <Compile Include="7_Results\3_SlabResults\TransverseRebarResult.cs" />
-    <Compile Include="7_Results\1_BeamResults\IBeamClassification.cs" />
-    <Compile Include="7_Results\3_SlabResults\ITransverseRebarResult.cs" />
-    <Compile Include="7_Results\5_4_Utilisations\Utilisation.cs" />
-    <Compile Include="7_Results\5_4_Utilisations\IUtilisation.cs" />
-    <Compile Include="7_Results\5_3_Capacities\ICapacityResult.cs" />
-    <Compile Include="7_Results\5_1_CompositeProperties\ICompositeSectionProperties.cs" />
-    <Compile Include="7_Results\5_5_Deflection\IDeflectionResult.cs" />
-    <Compile Include="7_Results\5_5_Deflection\DeflectionResult.cs" />
-    <Compile Include="7_Results\5_3_Capacities\CapacityResult.cs" />
-    <Compile Include="7_Results\2_StudResults\IStudResult.cs" />
-    <Compile Include="7_Results\2_StudResults\StudResult.cs" />
-    <Compile Include="7_Results\3_SlabResults\SlabStressResult.cs" />
-    <Compile Include="7_Results\3_SlabResults\ISlabStressResult.cs" />
-    <Compile Include="7_Results\1_BeamResults\BeamStressResult.cs" />
-    <Compile Include="7_Results\1_BeamResults\IBeamStressResult.cs" />
-    <Compile Include="7_Results\5_2_InternalForces\IInternalForceResult.cs" />
-    <Compile Include="7_Results\SubResult.cs" />
-    <Compile Include="7_Results\IResult.cs" />
-    <Compile Include="7_Results\5_2_InternalForces\InternalForceResult.cs" />
-    <Compile Include="7_Results\Result.cs" />
-    <Compile Include="ComposUnits.cs" />
-    <Compile Include="Helpers\CatalogueTypeIdNames.cs" />
-    <Compile Include="Helpers\ICatalogueDB.cs" />
-    <Compile Include="Helpers\CoaHelper.cs" />
-    <Compile Include="1_Beam\BeamSection\IBeamSection.cs" />
-    <Compile Include="1_Beam\Restraints\IRestraint.cs" />
-    <Compile Include="1_Beam\Restraints\ISupports.cs" />
-    <Compile Include="1_Beam\SteelMaterial\ISteelMaterial.cs" />
-    <Compile Include="1_Beam\WebOpening\IWebOpening.cs" />
-    <Compile Include="1_Beam\WebOpening\IWebOpeningStiffeners.cs" />
-    <Compile Include="2_Studs\IStud.cs" />
-    <Compile Include="2_Studs\IStudDimensions.cs" />
-    <Compile Include="2_Studs\IStudSpecification.cs" />
-    <Compile Include="2_Studs\IStudGroupSpacing.cs" />
-    <Compile Include="3_Slab\ConcreteMaterial\IConcreteMaterial.cs" />
-    <Compile Include="3_Slab\ConcreteMaterial\IERatio.cs" />
-    <Compile Include="3_Slab\Decking\IDecking.cs" />
-    <Compile Include="3_Slab\Decking\IDeckingConfiguration.cs" />
-    <Compile Include="3_Slab\Reinforcement\ICustomTransverseReinforcementLayout.cs" />
-    <Compile Include="3_Slab\Reinforcement\IReinforcementMaterial.cs" />
-    <Compile Include="3_Slab\ISlab.cs" />
-    <Compile Include="3_Slab\Reinforcement\IMeshReinforcement.cs" />
-    <Compile Include="3_Slab\Reinforcement\ITransverseReinforcement.cs" />
-    <Compile Include="3_Slab\SlabDimension\ISlabDimension.cs" />
-    <Compile Include="4_Loads\ILoad.cs" />
-    <Compile Include="5_Member\DesignCode\IDesignOptions.cs" />
-    <Compile Include="5_Member\DesignCode\IDesignCode.cs" />
-    <Compile Include="5_Member\DesignCode\ICreepShrinkageParameters.cs" />
-    <Compile Include="5_Member\DesignCode\ICodeOptions.cs" />
-    <Compile Include="5_Member\SafetyFactors\EN\ILoadCombinationFactors.cs" />
-    <Compile Include="5_Member\SafetyFactors\ILoadFactors.cs" />
-    <Compile Include="5_Member\SafetyFactors\IMaterialFactors.cs" />
-    <Compile Include="5_Member\SafetyFactors\ISafetyFactors.cs" />
-    <Compile Include="Helpers\CoaIdentifier.cs" />
-    <Compile Include="Helpers\ComposIO.cs" />
-    <Compile Include="Helpers\SqlDBconnection.cs" />
-    <Compile Include="Helpers\UnitsHelper.cs" />
-    <Compile Include="ICoaObject.cs" />
-    <Compile Include="Helpers\CatalogueDB.cs" />
-    <Compile Include="1_Beam\BeamSection\BeamSection.cs" />
-    <Compile Include="1_Beam\Beam.cs" />
-    <Compile Include="1_Beam\Restraints\Restraint.cs" />
-    <Compile Include="1_Beam\Restraints\Supports.cs" />
-    <Compile Include="1_Beam\SteelMaterial\SteelMaterial.cs" />
-    <Compile Include="1_Beam\WebOpening\WebOpening.cs" />
-    <Compile Include="1_Beam\WebOpening\WebOpeningStiffeners.cs" />
-    <Compile Include="2_Studs\Stud.cs" />
-    <Compile Include="2_Studs\StudDimensions.cs" />
-    <Compile Include="2_Studs\StudGroupSpacing.cs" />
-    <Compile Include="2_Studs\StudSpecification.cs" />
-    <Compile Include="3_Slab\ConcreteMaterial\ConcreteMaterial.cs" />
-    <Compile Include="3_Slab\Slab.cs" />
-    <Compile Include="3_Slab\SlabDimension\SlabDimension.cs" />
-    <Compile Include="3_Slab\ConcreteMaterial\ERatio.cs" />
-    <Compile Include="3_Slab\Decking\CustomDecking.cs" />
-    <Compile Include="3_Slab\Decking\Decking.cs" />
-    <Compile Include="3_Slab\Decking\CatalogueDecking.cs" />
-    <Compile Include="3_Slab\Decking\DeckingConfiguration.cs" />
-    <Compile Include="3_Slab\Reinforcement\MeshReinforcement.cs" />
-    <Compile Include="3_Slab\Reinforcement\ReinforcementMaterial.cs" />
-    <Compile Include="3_Slab\Reinforcement\CustomTransverseReinforcementLayout.cs" />
-    <Compile Include="3_Slab\Reinforcement\TransverseReinforcement.cs" />
-    <Compile Include="4_Loads\Load.cs" />
-    <Compile Include="4_Loads\LoadValues.cs" />
-    <Compile Include="5_Member\DesignCode\DesignCode.cs" />
-    <Compile Include="5_Member\DesignCode\ASNZ\CodeOptionsASNZ.cs" />
-    <Compile Include="5_Member\SafetyFactors\SafetyFactors.cs" />
-    <Compile Include="5_Member\DesignCode\DesignOption.cs" />
-    <Compile Include="5_Member\Member.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="ClassDiagram.cd" />
     <None Include="licenses\UnitsNet" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="6_Analysis\" />
-    <Folder Include="8_Design\" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Compos_8_6">
@@ -199,5 +54,4 @@
       <Version>1.0.115.5</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

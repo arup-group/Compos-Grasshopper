@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComposGH", "ComposGH\ComposGH.csproj", "{5274EA0F-5CF8-4F74-ACE6-A273F4196522}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComposGH", "ComposGH\ComposGH.csproj", "{5274EA0F-5CF8-4F74-ACE6-A273F4196522}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Converters", "ComposGH\Converters\Converters.csproj", "{0BF1ED34-39F9-4842-B788-31D8BEA0825E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComposAPI", "Compos\ComposAPI.csproj", "{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComposAPI", "Compos\ComposAPI.csproj", "{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComposGHTests", "ComposGHTests\ComposGHTests.csproj", "{35B5560B-87F2-4A01-A378-1CDD3A6EEEA0}"
 EndProject
@@ -16,6 +14,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{98C1EAE3-9930-4816-8C2D-26B82CA2100B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConverterTests", "ConverterTests\ConverterTests.csproj", "{F842C439-BE53-46F5-B86B-FC62700E2347}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComposGHConverter", "ComposGHConverter\ComposGHConverter.csproj", "{00F230FA-0D3B-4C3E-8C7D-5DBBC025F678}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,10 +27,6 @@ Global
 		{5274EA0F-5CF8-4F74-ACE6-A273F4196522}.Debug|x64.Build.0 = Debug|x64
 		{5274EA0F-5CF8-4F74-ACE6-A273F4196522}.Release|x64.ActiveCfg = Release|x64
 		{5274EA0F-5CF8-4F74-ACE6-A273F4196522}.Release|x64.Build.0 = Release|x64
-		{0BF1ED34-39F9-4842-B788-31D8BEA0825E}.Debug|x64.ActiveCfg = Debug|x64
-		{0BF1ED34-39F9-4842-B788-31D8BEA0825E}.Debug|x64.Build.0 = Debug|x64
-		{0BF1ED34-39F9-4842-B788-31D8BEA0825E}.Release|x64.ActiveCfg = Release|x64
-		{0BF1ED34-39F9-4842-B788-31D8BEA0825E}.Release|x64.Build.0 = Release|x64
 		{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}.Debug|x64.ActiveCfg = Debug|x64
 		{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}.Debug|x64.Build.0 = Debug|x64
 		{A9E78D60-33B5-4EA1-A779-154FB2D4A9E1}.Release|x64.ActiveCfg = Release|x64
@@ -51,6 +47,10 @@ Global
 		{F842C439-BE53-46F5-B86B-FC62700E2347}.Debug|x64.Build.0 = Debug|x64
 		{F842C439-BE53-46F5-B86B-FC62700E2347}.Release|x64.ActiveCfg = Release|x64
 		{F842C439-BE53-46F5-B86B-FC62700E2347}.Release|x64.Build.0 = Release|x64
+		{00F230FA-0D3B-4C3E-8C7D-5DBBC025F678}.Debug|x64.ActiveCfg = Debug|x64
+		{00F230FA-0D3B-4C3E-8C7D-5DBBC025F678}.Debug|x64.Build.0 = Debug|x64
+		{00F230FA-0D3B-4C3E-8C7D-5DBBC025F678}.Release|x64.ActiveCfg = Release|x64
+		{00F230FA-0D3B-4C3E-8C7D-5DBBC025F678}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

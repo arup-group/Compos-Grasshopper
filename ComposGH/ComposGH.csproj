@@ -1,41 +1,34 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{5274EA0F-5CF8-4F74-ACE6-A273F4196522}</ProjectGuid>
+    <TargetFramework>net48</TargetFramework>
+    <Version>0.9.3-beta</Version>
+    <Title>Compos</Title>
+    <Description>Official Oasys Compos Grasshopper Plugin
+
+ComposGH is pre-release and under active development, including further testing to be undertaken. It is provided "as-is" and you bear the risk of using it. Future versions may contain breaking changes. Any files, results, or other types of output information created using ComposGH should not be relied upon without thorough and independent checking.
+
+The plugin requires a licensed version of Compos to load.
+
+Contact oasys@arup.com to request a free trial version.
+
+Copyright © Oasys 1985 - 2022</Description>
+    <PlatformTarget>x64</PlatformTarget>
+    <Platforms>x64</Platforms>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ComposGH</RootNamespace>
-    <AssemblyName>ComposGH</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/arup-group/Compos-Grasshopper</RepositoryUrl>
+    <PackageIcon>ComposLogo64.png</PackageIcon>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Authors>Oasys</Authors>
+    <Copyright>Copyright © Oasys 1985 - 2022</Copyright>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Resources\ComposLogo64.png" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
@@ -51,490 +44,20 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\0_File\OpenComposFile.cs" />
-    <Compile Include="Components\0_File\SaveComposFile.cs" />
-    <Compile Include="Components\1_Beam\1_Primary\CreateBeam.cs" />
-    <Compile Include="Components\1_Beam\2_Secondary\CreateRestraint.cs" />
-    <Compile Include="Components\1_Beam\3_Tertiary\CreateStandardENSteelMaterial.cs" />
-    <Compile Include="Components\1_Beam\3_Tertiary\CreateStandardASNZSteelMaterial.cs" />
-    <Compile Include="Components\1_Beam\3_Tertiary\CreateStandardSteelMaterial.cs" />
-    <Compile Include="Components\1_Beam\3_Tertiary\CreateCustomSteelMaterial.cs" />
-    <Compile Include="Components\1_Beam\2_Secondary\CreateSupport.cs" />
-    <Compile Include="Components\1_Beam\4_Quarternary\BeamSectionProperties.cs" />
-    <Compile Include="Components\1_Beam\4_Quarternary\CreateBeamSection.cs" />
-    <Compile Include="Components\3_Slab\1_Primary\CreateSlab.cs" />
-    <Compile Include="Components\3_Slab\2_Secondary\CreateSlabDimension.cs" />
-    <Compile Include="Components\1_Beam\5_Quinary\CreateWebOpeningStiffener.cs" />
-    <Compile Include="Components\1_Beam\4_Quarternary\CreateProfile.cs" />
-    <Compile Include="Components\1_Beam\5_Quinary\CreateNotch.cs" />
-    <Compile Include="Components\1_Beam\5_Quinary\CreateWebOpening.cs" />
-    <Compile Include="Components\2_Studs\4_Quarternary\CreateCustomStudSpacing.cs" />
-    <Compile Include="Components\2_Studs\2_Secondary\CreateCustomStudDims.cs" />
-    <Compile Include="Components\2_Studs\2_Secondary\CreateStandardStudDimsEN.cs" />
-    <Compile Include="Components\2_Studs\3_Tertiary\CreateStudSpecBS.cs" />
-    <Compile Include="Components\2_Studs\3_Tertiary\CreateStudSpecEN.cs" />
-    <Compile Include="Components\2_Studs\3_Tertiary\CreateStudSpecAZNZHK.cs" />
-    <Compile Include="Components\2_Studs\2_Secondary\CreateStandardStudDims.cs" />
-    <Compile Include="Components\2_Studs\1_Primary\CreateStud.cs" />
-    <Compile Include="Components\3_Slab\5_Quinary\CreateDeckingConfiguration.cs" />
-    <Compile Include="Components\3_Slab\5_Quinary\CreateCatalogueDeck.cs" />
-    <Compile Include="Components\3_Slab\5_Quinary\CreateCustomDeck.cs" />
-    <Compile Include="Components\3_Slab\3_Tertiary\CreateConcreteMaterialASNZ.cs" />
-    <Compile Include="Components\3_Slab\3_Tertiary\CreateConcreteMaterialHKSUOS.cs" />
-    <Compile Include="Components\3_Slab\3_Tertiary\CreateConcreteMaterialEN.cs" />
-    <Compile Include="Components\3_Slab\3_Tertiary\CreateERatio.cs" />
-    <Compile Include="Components\3_Slab\4_Quarternary\CreateRebarMaterial.cs" />
-    <Compile Include="Components\3_Slab\4_Quarternary\CreateCustomTransverseReinforcementLayout.cs" />
-    <Compile Include="Components\3_Slab\4_Quarternary\CreateTransverseReinforcement.cs" />
-    <Compile Include="Components\3_Slab\4_Quarternary\CreateMeshReinforcement.cs" />
-    <Compile Include="Components\4_Loads\1_Primary\CreatePatchLoad.cs" />
-    <Compile Include="Components\4_Loads\1_Primary\CreateAxialLoad.cs" />
-    <Compile Include="Components\4_Loads\1_Primary\CreateTriLinearLoad.cs" />
-    <Compile Include="Components\4_Loads\1_Primary\CreateLinearLoad.cs" />
-    <Compile Include="Components\4_Loads\1_Primary\CreateUniformLoad.cs" />
-    <Compile Include="Components\4_Loads\1_Primary\CreatePointLoad.cs" />
-    <Compile Include="Components\3_Slab\3_Tertiary\CreateConcreteMaterialBS.cs" />
-    <Compile Include="Components\5_Member\1_Primary\CreateMember.cs" />
-    <Compile Include="Components\5_Member\2_Secondary\CreateDesignCode.cs" />
-    <Compile Include="Components\5_Member\3_Tertiary\CreateSafetyFactorsEN.cs" />
-    <Compile Include="Components\5_Member\3_Tertiary\CreateCreepShrinkageParams.cs" />
-    <Compile Include="Components\5_Member\3_Tertiary\CreateSafetyFactors.cs" />
-    <Compile Include="Components\7_Results\1_Primary\Utilisations.cs" />
-    <Compile Include="Components\7_Results\1_Primary\CodeSatisfied.cs" />
-    <Compile Include="Components\7_Results\2_Secondary\DeflectionResults.cs" />
-    <Compile Include="Components\7_Results\2_Secondary\InternalForces.cs" />
-    <Compile Include="Components\7_Results\2_Secondary\CapacityResults.cs" />
-    <Compile Include="Components\7_Results\2_Secondary\ConstantCompositeProperties.cs" />
-    <Compile Include="Components\7_Results\2_Secondary\CompositeProperties.cs" />
-    <Compile Include="Components\7_Results\3_Tertiary\TransverseRebarResults.cs" />
-    <Compile Include="Components\7_Results\3_Tertiary\TransverseRebarLayout.cs" />
-    <Compile Include="Components\7_Results\3_Tertiary\StudResults.cs" />
-    <Compile Include="Components\7_Results\3_Tertiary\SlabStressResults.cs" />
-    <Compile Include="Components\7_Results\3_Tertiary\BeamStressResults.cs" />
-    <Compile Include="Components\8_Design\1_Primary\DesignMember.cs" />
-    <Compile Include="Components\8_Design\2_Secondary\CreateDesignCriteria.cs" />
-    <Compile Include="Components\8_Design\3_Tertiary\CataloguesSections.cs" />
-    <Compile Include="Components\8_Design\3_Tertiary\CreateFrequencyLimits.cs" />
-    <Compile Include="Components\8_Design\3_Tertiary\CreateBeamSizeLimits.cs" />
-    <Compile Include="Components\8_Design\3_Tertiary\CreateDeflectionLimit.cs" />
-    <Compile Include="ComposGHInfo.cs" />
-    <Compile Include="Helpers\GhRibbonLayout.cs" />
-    <Compile Include="Helpers\Input.cs" />
-    <Compile Include="Helpers\LoadMainMenu.cs" />
-    <Compile Include="Helpers\_ComposResultsHelper.cs" />
-    <Compile Include="Helpers\_SqlReaderValues.cs" />
-    <Compile Include="Helpers\_SqlReader.cs" />
-    <Compile Include="Parameters\1_Beam\ComposBeamParameter.cs" />
-    <Compile Include="Parameters\1_Beam\BeamGoo.cs" />
-    <Compile Include="Parameters\1_Beam\WebOpening\ComposWebOpeningParameter.cs" />
-    <Compile Include="Parameters\2_Studs\ComposStudParameter.cs" />
-    <Compile Include="Parameters\2_Studs\StudGoo.cs" />
-    <Compile Include="Parameters\3_Slab\ConcreteMaterial\ConcreteMaterialGoo.cs" />
-    <Compile Include="Parameters\3_Slab\ConcreteMaterial\ERatioGoo.cs" />
-    <Compile Include="Parameters\3_Slab\Decking\ComposDeckingParameter.cs" />
-    <Compile Include="Parameters\3_Slab\Reinforcement\MeshReinforcementGoo.cs" />
-    <Compile Include="Parameters\3_Slab\Reinforcement\TransverseReinforcementGoo.cs" />
-    <Compile Include="Parameters\3_Slab\ComposSlabParameter.cs" />
-    <Compile Include="Parameters\3_Slab\SlabGoo.cs" />
-    <Compile Include="Parameters\3_Slab\SlabDimension\SlabDimensionGoo.cs" />
-    <Compile Include="Parameters\1_Beam\Restraints\RestraintGoo.cs" />
-    <Compile Include="Parameters\3_Slab\Reinforcement\CustomTransverseReinforcementLayoutGoo.cs" />
-    <Compile Include="Parameters\4_Loads\ComposLoadParameter.cs" />
-    <Compile Include="Parameters\4_Loads\LoadGoo.cs" />
-    <Compile Include="Parameters\3_Slab\Reinforcement\ReinforcementMaterialGoo.cs" />
-    <Compile Include="Parameters\1_Beam\SteelMaterial\SteelMaterialGoo.cs" />
-    <Compile Include="Parameters\1_Beam\WebOpening\WebOpeningGoo.cs" />
-    <Compile Include="Parameters\2_Studs\StudDimensionsGoo.cs" />
-    <Compile Include="Parameters\1_Beam\BeamSection\BeamSectionGoo.cs" />
-    <Compile Include="Parameters\1_Beam\Restraints\SupportsGoo.cs" />
-    <Compile Include="Parameters\1_Beam\WebOpening\WebOpeningStiffenersGoo.cs" />
-    <Compile Include="Parameters\2_Studs\StudSpecificationGoo.cs" />
-    <Compile Include="Parameters\2_Studs\StudGroupSpacingGoo.cs" />
-    <Compile Include="Parameters\5_Member\DesignCode\SafetyFactorsENGoo.cs" />
-    <Compile Include="Parameters\5_Member\DesignCriteria\FrequencyLimitsGoo.cs" />
-    <Compile Include="Parameters\5_Member\DesignCriteria\DeflectionLimitGoo.cs" />
-    <Compile Include="Parameters\5_Member\DesignCriteria\BeamSizeLimitsGoo.cs" />
-    <Compile Include="Parameters\5_Member\DesignCriteria\DesignCriteriaGoo.cs" />
-    <Compile Include="Parameters\5_Member\MemberGoo.cs" />
-    <Compile Include="Parameters\5_Member\DesignCode\CreepShrinkageParametersGoo.cs" />
-    <Compile Include="Parameters\5_Member\DesignCode\SafetyFactorsGoo.cs" />
-    <Compile Include="Parameters\5_Member\DesignCode\DesignCodeGoo.cs" />
-    <Compile Include="Parameters\3_Slab\Decking\DeckingConfigurationGoo.cs" />
-    <Compile Include="Parameters\3_Slab\Decking\DeckingGoo.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="UI\AboutBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\AboutBox.Designer.cs">
-      <DependentUpon>AboutBox.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="licenses\EntityFramework" />
     <None Include="licenses\Newtonsoft" />
     <None Include="licenses\UnitsNet" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\Icons\CreateProfile.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\AboutBox.resx">
-      <DependentUpon>AboutBox.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\OpenModel.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SaveModel.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SteelMaterialParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ComposLogo128.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Parameters\0_File\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\RebarMesh.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\BeamParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ConvertUnitNumber.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateBeam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateDesignCode.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateStud.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateUnitNumber.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CustomDecking.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CustomStudSpacing.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\DeckingParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\DesignCodeParameter.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\MeshReinforcement.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ModelParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\Notch.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\RebarMaterial.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ReinforcementParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SlabParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StandardDecking.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StandardStudDims.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StandardStudDimsEN.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StandardStudSpecs.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StandardStudSpecsBS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StandardStudSpecsEN.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\Stiffener.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StudParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\TransverseReinforcement.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\UnitParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\Units.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\WebOpening.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\WebOpeningParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CustomStudDims.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\AxialLoad.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\LinearLoad.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\LoadParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\PatchLoad.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\PointLoad.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\TriLinearLoad.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\UniformLoad.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\BeamSection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateConcreteMaterial.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateRestraint.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateSupport.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\RestraintParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateConcreteMaterialAZ.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateConcreteMaterialBS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateConcreteMaterialEN.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateConcreteMaterialHK.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ERatio.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\DeckingConfig.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Compos\ComposAPI.csproj">
-      <Project>{a9e78d60-33b5-4ea1-a779-154fb2d4a9e1}</Project>
-      <Name>ComposAPI</Name>
-    </ProjectReference>
-    <ProjectReference Include="Converters\Converters.csproj">
-      <Project>{0BF1ED34-39F9-4842-B788-31D8BEA0825E}</Project>
-      <Name>Converters</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateSlab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SlabDimensions.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\EC4SafetyFactors.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SafetyFactors.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreepShrinkageParams.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CustomRebarLayout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateMember.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\MemberParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CreateCustomSteelMaterial.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StandardASNZSteelMaterial.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StandardSteelMaterial.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ReadResult.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StandardENSteelMaterial.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ComposInfo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ComposLogo64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\BeamSizeLimits.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CatalogueID.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\DeflectionLimit.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\DesignCriteria.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\DesignCriteriaParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\FrequencyLimit.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\DesignMember.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CodeReqMet.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CodeReqNotAvailable.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CodeReqNotMet.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ProfileProperties.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\BeamClassification.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\BeamStressResults.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\CapacityResults.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ComposLogo64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\DeflectionResults.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\InternalForceResults.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SectionProperties.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SlabStressResults.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StudResults.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\TransverseRebarResults.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\Utilisation.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\TransverseRebarLayout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\UtilisationHigh.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\UtilisationLow.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\UtilisationMedium.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\UtilisationOver.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SectionPropertiesConstant.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ComposInfo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\BeamSectionParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\ConcreteMaterialParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SupportParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\WebOpeningStiffenerParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StudDimParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StudGrpDimParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\StudSpecParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\MeshReinforcementParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\RebarLayoutParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\TransverseReinforcementParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\RebarMaterialParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SlabDimensionParam.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\Icons\SafetyFactorParam.png" />
+    <ProjectReference Include="..\Compos\ComposAPI.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Grasshopper">
@@ -556,17 +79,32 @@
       <Version>4.5.0</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Resources\ComposLogo64.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
   <Import Project="PreBuild.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <PropertyGroup>
-    <PostBuildEvent>Copy "$(TargetPath)" "$(TargetDir)Compos.gha"
-Copy "$(ProjectDir)\Properties\Icons\ComposLogo64.png" "$(TargetDir)ComposIcon.png"</PostBuildEvent>
+  <PropertyGroup Condition="$(Configuration) == 'Debug' AND $([MSBuild]::IsOSPlatform(Windows))">
+    <StartProgram>C:\Program Files\Rhino 7\System\Rhino.exe</StartProgram>
+    <StartArguments></StartArguments>
+    <StartAction>Program</StartAction>
   </PropertyGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="Copy &quot;$(TargetPath)&quot; &quot;$(TargetDir)Compos.gha&quot;&#xD;&#xA;Copy &quot;Resources\ComposLogo64.png&quot; &quot;$(TargetDir)ComposIcon.png&quot;" />
+  </Target>
 </Project>
