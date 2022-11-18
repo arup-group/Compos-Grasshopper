@@ -7,7 +7,7 @@ using OasysGH;
 
 namespace ComposAPI.Slabs.Tests
 {
-    public static class DeckingConfigurationMother
+  public static class DeckingConfigurationMother
   {
     public static DeckingConfiguration CreateDeckingConfiguration()
     {
