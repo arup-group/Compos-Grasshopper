@@ -20,7 +20,7 @@ jobs:
           file: /.*\.yak/
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Push yak file
-        run: |
-          curl https://files.mcneel.com/yak/tools/latest/yak.exe -o yak.exe
-          #ls *.yak |% {.\yak push $_.FullName}
+#      - name: Push yak file
+#        run: |
+#          curl https://files.mcneel.com/yak/tools/latest/yak.exe -o yak.exe
+#          #ls *.yak |% {.\yak push $_.FullName}
