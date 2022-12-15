@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using ComposAPI;
 using Grasshopper.Kernel;
 using OasysGH;
@@ -15,12 +18,12 @@ namespace ComposGH
       if (!TryFindPluginPath("Compos.gha"))
         return GH_LoadingInstruction.Abort;
 
-      // ### Set system environment variables to allow user rights to read above dll ###
+      // ### Set system environment variables to allow user rights to read below dlls ###
       const string name = "PATH";
-      string pathvar = Environment.GetEnvironmentVariable(name);
-      var value = pathvar + ";" + InstallPath;
+      string pathvar = System.Environment.GetEnvironmentVariable(name);
+      var value = InstallPath + ";" + pathvar;
       var target = EnvironmentVariableTarget.Process;
-      Environment.SetEnvironmentVariable(name, value, target);
+      System.Environment.SetEnvironmentVariable(name, value, target);
 
       // ### Queue up Main menu loader ###
       Grasshopper.Instances.CanvasCreated += UI.Menu.MenuLoad.OnStartup;
@@ -36,11 +39,9 @@ namespace ComposGH
       Rhino.RhinoApp.Closing += CloseFile;
 
       PostHog.PluginLoaded(PluginInfo.Instance);
-      
+
       return GH_LoadingInstruction.Proceed;
     }
-
-    
 
     public static string PluginPath;
     public static string InstallPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Oasys", "Compos 8.6");
