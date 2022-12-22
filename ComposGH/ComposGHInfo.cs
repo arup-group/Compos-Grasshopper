@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using ComposAPI;
 using Grasshopper.Kernel;
 using OasysGH;
@@ -15,12 +18,12 @@ namespace ComposGH
       if (!TryFindPluginPath("Compos.gha"))
         return GH_LoadingInstruction.Abort;
 
-      // ### Set system environment variables to allow user rights to read above dll ###
+      // ### Set system environment variables to allow user rights to read below dlls ###
       const string name = "PATH";
-      string pathvar = Environment.GetEnvironmentVariable(name);
-      var value = pathvar + ";" + InstallPath;
+      string pathvar = System.Environment.GetEnvironmentVariable(name);
+      var value = InstallPath + ";" + pathvar;
       var target = EnvironmentVariableTarget.Process;
-      Environment.SetEnvironmentVariable(name, value, target);
+      System.Environment.SetEnvironmentVariable(name, value, target);
 
       // ### Queue up Main menu loader ###
       Grasshopper.Instances.CanvasCreated += UI.Menu.MenuLoad.OnStartup;
@@ -36,11 +39,9 @@ namespace ComposGH
       Rhino.RhinoApp.Closing += CloseFile;
 
       PostHog.PluginLoaded(PluginInfo.Instance);
-      
+
       return GH_LoadingInstruction.Proceed;
     }
-
-    
 
     public static string PluginPath;
     public static string InstallPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Oasys", "Compos 8.6");
@@ -125,7 +126,7 @@ namespace ComposGH
     public const string Company = "Oasys";
     public const string Copyright = "Copyright © Oasys 1985 - 2022";
     public const string Contact = "https://www.oasys-software.com/";
-    public const string Vers = "0.9.5";
+    public const string Vers = "0.9.6";
     public static bool isBeta = true;
     public static string Disclaimer = PluginName + " is pre-release and under active development, including further testing to be undertaken. It is provided \"as-is\" and you bear the risk of using it. Future versions may contain breaking changes. Any files, results, or other types of output information created using " + PluginName + " should not be relied upon without thorough and independent checking.";
     public const string ProductName = "Compos";
