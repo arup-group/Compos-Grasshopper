@@ -5,13 +5,14 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using ComposAPI;
+using ComposGH.UI;
 using Grasshopper.Kernel;
 using OasysGH;
 using OasysGH.Helpers;
 
 namespace ComposGH
 {
-  public class AddReferencePriority : GH_AssemblyPriority
+    public class AddReferencePriority : GH_AssemblyPriority
   {
     public override GH_LoadingInstruction PriorityLoad()
     {
@@ -26,7 +27,7 @@ namespace ComposGH
       System.Environment.SetEnvironmentVariable(name, value, target);
 
       // ### Queue up Main menu loader ###
-      Grasshopper.Instances.CanvasCreated += UI.Menu.MenuLoad.OnStartup;
+      Grasshopper.Instances.CanvasCreated += MenuLoad.OnStartup;
 
       // ### Create Ribbon Category name and icon ###
       Grasshopper.Instances.ComponentServer.AddCategorySymbolName("Compos", 'C');
