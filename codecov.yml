@@ -10,3 +10,12 @@ flags:
     carryforward: false
 ignore:
   - "ComposGHTests"  # ignore folders and all its contents
+  - "ComposGH/Components/GraveyardComp"  # ignore old versions of components in
+  - "ComposGH/UI"  # ignore UI about box
+  - "ComposGH/Properties" # ignore icons etc
+  - "ComposGH/Resources" # ignore icons etc
+  - "ComposGH/Parameters/**/*Parameter.cs" # ignore all files ending with *Parameter.cs (scaffolding for params, no logic should be placed here)
+  - "ComposGH/Parameters/**/*Goo.cs" # ignore all files ending with *Goo.cs (scaffolding for params, no logic should be placed here)
+comment:     # this is a top-level key
+  layout: "reach, diff, tree"
+  behavior: new
