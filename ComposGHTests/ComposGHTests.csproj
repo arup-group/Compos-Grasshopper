@@ -41,7 +41,6 @@
     <ProjectReference Include="..\ComposGH\ComposGH.csproj">
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\Compos\ComposAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
