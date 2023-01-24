@@ -130,7 +130,7 @@ namespace ComposAPI
     {
       string str = "";
       if (this.AbsoluteDeflection != Length.Zero)
-        str += "δ:" + this.AbsoluteDeflection.ToUnit(UnitsHelper.LengthUnitResult).ToString("f0").Replace(" ", string.Empty) + ", ";
+        str += "δ:" + this.AbsoluteDeflection.ToUnit(ComposUnitsHelper.LengthUnitResult).ToString("f0").Replace(" ", string.Empty) + ", ";
 
       if (this.SpanOverDeflectionRatio != Ratio.Zero)
       {

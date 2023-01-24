@@ -443,14 +443,14 @@ namespace ComposAPI
         this.Units = new ComposUnits
         {
           Angle = AngleUnit.Degree,
-          Density = UnitsHelper.DensityUnit,
-          Force = UnitsHelper.ForceUnit,
-          Length = UnitsHelper.LengthUnitGeometry,
-          Displacement = UnitsHelper.LengthUnitResult,
-          Section = UnitsHelper.LengthUnitSection,
-          Stress = UnitsHelper.StressUnit,
-          Strain = UnitsHelper.StrainUnit,
-          Mass = UnitsHelper.MassUnit,
+          Density = ComposUnitsHelper.DensityUnit,
+          Force = ComposUnitsHelper.ForceUnit,
+          Length = ComposUnitsHelper.LengthUnitGeometry,
+          Displacement = ComposUnitsHelper.LengthUnitResult,
+          Section = ComposUnitsHelper.LengthUnitSection,
+          Stress = ComposUnitsHelper.StressUnit,
+          Strain = ComposUnitsHelper.StrainUnit,
+          Mass = ComposUnitsHelper.MassUnit,
         };
       }
 

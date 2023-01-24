@@ -152,7 +152,7 @@ namespace ComposAPI
       }
       else
         mat = this.Material.ToString();
-      string line = "L:" + this.Length.ToUnit(UnitsHelper.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
+      string line = "L:" + this.Length.ToUnit(ComposUnitsHelper.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
 
       return invalid + line + ", " + profile + ", " + mat;
     }

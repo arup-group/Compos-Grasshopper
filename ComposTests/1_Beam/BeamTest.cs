@@ -7,7 +7,7 @@ using Xunit;
 
 namespace ComposAPI.Beams.Tests
 {
-    public static class BeamMother
+  public static class BeamMother
   {
     public static string Example1CoaString()
     {
@@ -53,7 +53,7 @@ namespace ComposAPI.Beams.Tests
       section3.TaperedToNext = true;
       section3.StartPosition = new Ratio(100, RatioUnit.Percent);
 
-      List<IBeamSection> sections = new() { section1, section2, section3 };
+      List<IBeamSection> sections = new List<IBeamSection>() { section1, section2, section3 };
 
       WebOpening rect1 = new WebOpening(new Length(0.4, LengthUnit.Meter), new Length(0.3, LengthUnit.Meter), new Ratio(20, RatioUnit.Percent), new Ratio(50, RatioUnit.Percent));
 
@@ -71,7 +71,7 @@ namespace ComposAPI.Beams.Tests
 
       WebOpening circ2 = new WebOpening(new Length(0.3, LengthUnit.Meter), new Ratio(80, RatioUnit.Percent), new Length(0.35, LengthUnit.Meter), bothSideStiffener);
 
-      List<IWebOpening> webOpenings = new() { rect1, circ1, rightNotch, leftNotch, rect2, circ2 };
+      List<IWebOpening> webOpenings = new List<IWebOpening>() { rect1, circ1, rightNotch, leftNotch, rect2, circ2 };
 
       return new Beam(new Length(9, LengthUnit.Meter), restraint, steelMaterial, sections, webOpenings);
     }
@@ -111,7 +111,7 @@ namespace ComposAPI.Beams.Tests
 
       // Act
       string coaString = beam.ToCoaString("MEMBER-1", Code.EN1994_1_1_2004, ComposUnits.GetStandardUnits());
-      
+
       // Assert
       Assert.Equal(BeamMother.Example1CoaString(), coaString);
     }

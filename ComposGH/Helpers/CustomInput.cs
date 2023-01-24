@@ -1,7 +1,7 @@
-﻿using ComposGH.Parameters;
+﻿using System;
+using ComposGH.Parameters;
 using Grasshopper.Kernel.Types;
 using Grasshopper.Kernel;
-using System;
 
 namespace ComposGH.Helpers
 {

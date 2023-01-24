@@ -10,6 +10,9 @@ using OasysGH.Components;
 using OasysGH.Helpers;
 using OasysGH;
 using ComposGH.Helpers;
+using ComposAPI.Helpers;
+using OasysUnits.Units;
+using OasysUnits;
 
 namespace ComposGH.Components
 {
@@ -43,14 +46,27 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
+      List<double> sqlValues = SqlReader.Instance.GetCatalogueDeckingValues(Path.Combine(ComposIO.InstallPath, "decking.db3"), this.Catalogue, this.Profile);
+      LengthUnit unit = LengthUnit.Meter;
+      Length depth = new Length(sqlValues[0], unit);
+      Length b1 = new Length(sqlValues[1], unit);
+      Length b2 = new Length(sqlValues[2], unit);
+      Length b3 = new Length(sqlValues[3], unit);
+      Length b4 = new Length(sqlValues[4], unit);
+      Length b5 = new Length(sqlValues[5], unit);
+      Length thickness = new Length(sqlValues[6], unit);
+
       if (this.Params.Input[0].Sources.Count > 0)
       {
         DeckingConfigurationGoo dconf = (DeckingConfigurationGoo)Input.GenericGoo<DeckingConfigurationGoo>(this, DA, 0);
-        if (dconf == null) { return; }
-        DA.SetData(0, new DeckingGoo(new CatalogueDecking(this.Catalogue, this.Profile, this.SteelGrade, dconf.Value)));
+        if (dconf == null)
+        {
+          return;
+        }
+        DA.SetData(0, new DeckingGoo(new CatalogueDecking(this.Catalogue, this.Profile, this.SteelGrade, dconf.Value, depth, b1, b2, b3, b4, b5, thickness)));
       }
       else
-        Output.SetItem(this, DA, 0, new DeckingGoo(new CatalogueDecking(this.Catalogue, this.Profile, this.SteelGrade, new DeckingConfiguration())));
+        Output.SetItem(this, DA, 0, new DeckingGoo(new CatalogueDecking(this.Catalogue, this.Profile, this.SteelGrade, new DeckingConfiguration(), depth, b1, b2, b3, b4, b5, thickness)));
     }
 
     #region Custom UI

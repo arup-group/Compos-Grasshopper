@@ -9,7 +9,7 @@ namespace ComposAPI.Helpers
   /// <summary>
   /// Get or Set global units in this static class
   /// </summary>
-  public static class UnitsHelper
+  public static class ComposUnitsHelper
   {
     public enum ComposUnits
     {

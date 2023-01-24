@@ -4,6 +4,7 @@ using OasysUnits;
 using OasysUnits.Units;
 using System.Globalization;
 using ComposAPI.Helpers;
+using System.IO;
 
 namespace ComposAPI
 {
@@ -56,8 +57,6 @@ namespace ComposAPI
     public bool isCatalogue { get; set; }
 
     public string SectionDescription { get; set; }
-
-    internal static ICatalogueDB catalogueDB { get; set; } = new CatalogueDB();
 
     #region constructors
     public BeamSection()
@@ -208,7 +207,8 @@ namespace ComposAPI
       {
         string prof = profile.Split(' ')[2];
 
-        List<double> sqlValues = catalogueDB.GetCatalogueProfileValues(prof);
+        SqlReader reader = new SqlReader();
+        List<double> sqlValues = reader.GetCatalogueProfileValues(Path.Combine(ComposIO.InstallPath, "sectlib.db3"), prof);
 
         LengthUnit unit = LengthUnit.Meter;
         this.Depth = new Length(sqlValues[0], unit);

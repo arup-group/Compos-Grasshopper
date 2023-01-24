@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using ComposAPI.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
@@ -17,30 +18,26 @@ namespace ComposAPI
     public string Catalogue { get; set; } //	catalogue name of the decking
     public string Profile { get; set; } // decking name
     public DeckingSteelGrade Grade { get; set; } //	decking material grade
-    internal static ICatalogueDB catalogueDB { get; set; } = new CatalogueDB();
 
     public CatalogueDecking()
     {
       this.m_type = DeckingType.Catalogue;
     }
 
-    public CatalogueDecking(string catalogue, string profile, DeckingSteelGrade deckingSteelGrade, IDeckingConfiguration deckingConfiguration)
+    public CatalogueDecking(string catalogue, string profile, DeckingSteelGrade deckingSteelGrade, IDeckingConfiguration deckingConfiguration, Length depth, Length b1, Length b2, Length b3, Length b4, Length b5, Length thickness)
     {
       this.Catalogue = catalogue;
       this.Profile = profile;
       this.Grade = deckingSteelGrade;
       this.DeckingConfiguration = deckingConfiguration;
       this.m_type = DeckingType.Catalogue;
-
-      List<double> sqlValues = catalogueDB.GetCatalogueDeckingValues(catalogue, profile);
-      LengthUnit unit = LengthUnit.Meter;
-      this.Depth = new Length(sqlValues[0], unit);
-      this.b1 = new Length(sqlValues[1], unit);
-      this.b2 = new Length(sqlValues[2], unit);
-      this.b3 = new Length(sqlValues[3], unit);
-      this.b4 = new Length(sqlValues[4], unit);
-      this.b5 = new Length(sqlValues[5], unit);
-      this.Thickness = new Length(sqlValues[6], unit);
+      this.Depth = depth;
+      this.b1 = b1;
+      this.b2 = b2;
+      this.b3 = b3;
+      this.b4 = b4;
+      this.b5 = b5;
+      this.Thickness = thickness;
     }
 
     #region coa interop

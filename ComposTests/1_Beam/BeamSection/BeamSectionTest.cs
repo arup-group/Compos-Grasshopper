@@ -93,7 +93,7 @@ namespace ComposAPI.Beams.Tests
       //mock.Setup(x => x.catalogueDB = new MockCatalogueDB())
 
       // 2 create object instance with constructor
-      BeamSection.catalogueDB = new MockCatalogueDB();
+      //MockCatalogueDB mock = new MockCatalogueDB();
       BeamSection beam = new BeamSection(profile);
 
       // 3 check that inputs are set in object's members

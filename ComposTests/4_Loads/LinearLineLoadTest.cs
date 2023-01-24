@@ -71,7 +71,7 @@ namespace ComposAPI.Loads.Tests
       ComposUnits units = ComposUnits.GetStandardUnits();
       units.Force = forceUnit;
       units.Length = lengthUnit;
-      ForcePerLengthUnit forcePerLengthUnit = UnitsHelper.GetForcePerLengthUnit(forceUnit, lengthUnit);
+      ForcePerLengthUnit forcePerLengthUnit = ComposUnitsHelper.GetForcePerLengthUnit(forceUnit, lengthUnit);
 
       // Arrange
       string coaString = "LOAD	MEMBER-1	Linear	Line	4.50000	6.00000	7.00000	8.00000	8.90000	10.0000	11.0000	12.0000\n";
