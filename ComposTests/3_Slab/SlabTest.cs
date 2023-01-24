@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
 using OasysUnits;

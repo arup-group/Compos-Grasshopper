@@ -19,7 +19,7 @@ namespace ComposAPI.Slabs.Tests
     [InlineData("RLD", "Ribdeck E60 (0.9)", DeckingSteelGrade.S350, 93, false, false, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck E60 (0.9)	S350	93.0000	DECKING_CONTINUE	JOINT_NOT_WELD\n")]
     public void CatalogueDeckingToCoaStringTest(string catalogue, string profile, DeckingSteelGrade deckingSteelGrade, double angle, bool isDiscontinous, bool isWelded, string expected_coaString)
     {
-      ComposGHTests.Helpers.SqlReader reader = new ComposGHTests.Helpers.SqlReader();
+      SqlReader reader = new SqlReader();
       List<double> sqlValues = reader.GetCatalogueDeckingValues(Path.Combine(ComposIO.InstallPath, "decking.db3"), catalogue, profile);
       LengthUnit unit = LengthUnit.Meter;
       Length depth = new Length(sqlValues[0], unit);
@@ -62,7 +62,7 @@ namespace ComposAPI.Slabs.Tests
       double b1_expected, double b2_expected, double b3_expected, double b4_expected, double b5_expected, double depth_expected, double thickness_expected)
     {
       // 2 create object instance with constructor
-      ComposGHTests.Helpers.SqlReader reader = new ComposGHTests.Helpers.SqlReader();
+      SqlReader reader = new SqlReader();
       List<double> sqlValues = reader.GetCatalogueDeckingValues(Path.Combine(ComposIO.InstallPath, "decking.db3"), catalogue, profile);
       LengthUnit unit = LengthUnit.Meter;
       Length depth = new Length(sqlValues[0], unit);
