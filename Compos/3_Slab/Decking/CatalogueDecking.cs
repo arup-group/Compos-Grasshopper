@@ -32,8 +32,7 @@ namespace ComposAPI
       this.DeckingConfiguration = deckingConfiguration;
       this.m_type = DeckingType.Catalogue;
 
-      SqlReader reader = new SqlReader();
-      List<double> sqlValues = reader.GetCatalogueDeckingValues(Path.Combine(ComposIO.InstallPath, "decking.db3"), catalogue, profile);
+      List<double> sqlValues = SqlReader.Instance.GetCatalogueDeckingValues(Path.Combine(ComposIO.InstallPath, "decking.db3"), catalogue, profile);
       LengthUnit unit = LengthUnit.Meter;
       this.Depth = new Length(sqlValues[0], unit);
       this.b1 = new Length(sqlValues[1], unit);

@@ -207,8 +207,7 @@ namespace ComposAPI
       {
         string prof = profile.Split(' ')[2];
 
-        SqlReader reader = new SqlReader();
-        List<double> sqlValues = reader.GetCatalogueProfileValues(Path.Combine(ComposIO.InstallPath, "sectlib.db3"), prof);
+        List<double> sqlValues = SqlReader.Instance.GetCatalogueProfileValues(Path.Combine(ComposIO.InstallPath, "sectlib.db3"), prof);
 
         LengthUnit unit = LengthUnit.Meter;
         this.Depth = new Length(sqlValues[0], unit);
