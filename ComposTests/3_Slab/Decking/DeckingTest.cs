@@ -19,18 +19,7 @@ namespace ComposAPI.Slabs.Tests
     [InlineData("RLD", "Ribdeck E60 (0.9)", DeckingSteelGrade.S350, 93, false, false, "DECKING_CATALOGUE	MEMBER-1	RLD	Ribdeck E60 (0.9)	S350	93.0000	DECKING_CONTINUE	JOINT_NOT_WELD\n")]
     public void CatalogueDeckingToCoaStringTest(string catalogue, string profile, DeckingSteelGrade deckingSteelGrade, double angle, bool isDiscontinous, bool isWelded, string expected_coaString)
     {
-      SqlReader reader = new SqlReader();
-      List<double> sqlValues = reader.GetCatalogueDeckingValues(Path.Combine(ComposIO.InstallPath, "decking.db3"), catalogue, profile);
-      LengthUnit unit = LengthUnit.Meter;
-      Length depth = new Length(sqlValues[0], unit);
-      Length b1 = new Length(sqlValues[1], unit);
-      Length b2 = new Length(sqlValues[2], unit);
-      Length b3 = new Length(sqlValues[3], unit);
-      Length b4 = new Length(sqlValues[4], unit);
-      Length b5 = new Length(sqlValues[5], unit);
-      Length thickness = new Length(sqlValues[6], unit);
-
-      Decking decking = new CatalogueDecking(catalogue, profile, deckingSteelGrade, new DeckingConfiguration(new Angle(angle, AngleUnit.Degree), isDiscontinous, isWelded), depth, b1, b2, b3, b4, b5, thickness);
+      Decking decking = new CatalogueDecking(catalogue, profile, deckingSteelGrade, new DeckingConfiguration(new Angle(angle, AngleUnit.Degree), isDiscontinous, isWelded));
       string coaString = decking.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_coaString, coaString);
@@ -62,20 +51,8 @@ namespace ComposAPI.Slabs.Tests
       double b1_expected, double b2_expected, double b3_expected, double b4_expected, double b5_expected, double depth_expected, double thickness_expected)
     {
       // 2 create object instance with constructor
-      SqlReader reader = new SqlReader();
-      List<double> sqlValues = reader.GetCatalogueDeckingValues(Path.Combine(ComposIO.InstallPath, "decking.db3"), catalogue, profile);
-      LengthUnit unit = LengthUnit.Meter;
-      Length depth = new Length(sqlValues[0], unit);
-      Length b1 = new Length(sqlValues[1], unit);
-      Length b2 = new Length(sqlValues[2], unit);
-      Length b3 = new Length(sqlValues[3], unit);
-      Length b4 = new Length(sqlValues[4], unit);
-      Length b5 = new Length(sqlValues[5], unit);
-      Length thickness = new Length(sqlValues[6], unit);
-
       DeckingConfiguration configuration = new DeckingConfiguration();
-
-      CatalogueDecking decking = new CatalogueDecking(catalogue, profile, deckingSteelGrade, configuration, depth, b1, b2, b3, b4, b5, thickness);
+      CatalogueDecking decking = new CatalogueDecking(catalogue, profile, deckingSteelGrade, configuration);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(b1_expected, decking.b1.Millimeters);

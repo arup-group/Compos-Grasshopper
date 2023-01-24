@@ -40,19 +40,8 @@ namespace ComposAPI.Slabs.Tests
 
       IMeshReinforcement mesh = new MeshReinforcement(new Length(0.025, LengthUnit.Meter), ReinforcementMeshType.A142, false);
 
-      SqlReader reader = new SqlReader();
-      List<double> sqlValues = reader.GetCatalogueDeckingValues(Path.Combine(ComposIO.InstallPath, "decking.db3"), "Kingspan", "Multideck 50 (0.85)");
-      LengthUnit unit = LengthUnit.Meter;
-      Length depth = new Length(sqlValues[0], unit);
-      Length b1 = new Length(sqlValues[1], unit);
-      Length b2 = new Length(sqlValues[2], unit);
-      Length b3 = new Length(sqlValues[3], unit);
-      Length b4 = new Length(sqlValues[4], unit);
-      Length b5 = new Length(sqlValues[5], unit);
-      Length thickness = new Length(sqlValues[6], unit);
-
       IDeckingConfiguration deckingConfiguration = new DeckingConfiguration(new Angle(90, AngleUnit.Degree), true, false);
-      IDecking decking = new CatalogueDecking("Kingspan", "Multideck 50 (0.85)", DeckingSteelGrade.S280, deckingConfiguration, depth, b1, b2, b3, b4, b5, thickness);
+      IDecking decking = new CatalogueDecking("Kingspan", "Multideck 50 (0.85)", DeckingSteelGrade.S280, deckingConfiguration);
 
       return new Slab(material, slabDimensions, transverseReinforcement, mesh, decking);
     }
