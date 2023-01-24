@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using ComposAPI;
 using ComposAPI.Helpers;
-using ComposGH.Helpers;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
