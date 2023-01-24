@@ -88,11 +88,7 @@ namespace ComposAPI.Beams.Tests
     [InlineData("CAT IPE IPE100", 100, 55, 55, 4.1, 5.7, 5.7)] // issue with loading GH referencing in testing environment
     public BeamSection BeamSectionConstructorProfileTest(string profile, double expDepth, double expTopFlangeWidth, double expBottomFlangeWidth, double expWebThickness, double expTopFlangeThickness, double expBottomFlangeThickness)
     {
-      //var mock = new Mock<BeamSection>();
-      //mock.Setup(x => x.catalogueDB = new MockCatalogueDB())
-
       // 2 create object instance with constructor
-      //MockCatalogueDB mock = new MockCatalogueDB();
       BeamSection beam = new BeamSection(profile);
 
       // 3 check that inputs are set in object's members
@@ -127,7 +123,7 @@ namespace ComposAPI.Beams.Tests
       double expTopFlangeThickness, double expBottomFlangeThickness, string expProfile)
     {
       LengthUnit unit = LengthUnit.Millimeter;
-      // 
+
       // 2 create object instance with constructor
       BeamSection beam = new BeamSection(new Length(depth, unit), new Length(flangeWidth, unit), new Length(webThickness, unit), new Length(flangeThickness, unit), taperToNext);
 
@@ -155,7 +151,7 @@ namespace ComposAPI.Beams.Tests
       double expTopFlangeThickness, double expBottomFlangeThickness, string expProfile)
     {
       LengthUnit unit = LengthUnit.Millimeter;
-      // 
+
       // 2 create object instance with constructor
       BeamSection beam = new BeamSection(new Length(depth, unit), new Length(topFlangeWidth, unit),
         new Length(bottomFlangeWidth, unit), new Length(webThickness, unit),
@@ -182,7 +178,7 @@ namespace ComposAPI.Beams.Tests
       string expProfile)
     {
       LengthUnit unit = LengthUnit.Centimeter;
-      // 
+
       // 2 create object instance with constructor
       BeamSection beam = new BeamSection(new Length(depth, unit), new Length(flangeWidth, unit), new Length(webThickness, unit), new Length(flangeThickness, unit), taperToNext);
 
@@ -200,7 +196,7 @@ namespace ComposAPI.Beams.Tests
       string expProfile)
     {
       LengthUnit unit = LengthUnit.Centimeter;
-      // 
+
       // 2 create object instance with constructor
       BeamSection beam = new BeamSection(new Length(depth, unit), new Length(topFlangeWidth, unit),
         new Length(bottomFlangeWidth, unit), new Length(webThickness, unit),
