@@ -75,7 +75,7 @@ namespace ComposAPI
       parameters.Add(this.Grade.ToString());
       parameters.Add(
         CoaHelper.FormatSignificantFigures(
-          this.DeckingConfiguration.Angle.ToUnit(AngleUnit.Degree).Value, 6).ToString()); 
+          this.DeckingConfiguration.Angle.ToUnit(AngleUnit.Degree).Value, 6).ToString());
       // COA string always in degrees
 
       if (this.DeckingConfiguration.IsDiscontinous)

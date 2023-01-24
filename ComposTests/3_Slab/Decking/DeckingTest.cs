@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using OasysUnits;
-using OasysUnits.Units;
-using Xunit;
-using ComposAPITests.Helpers;
+using System.IO;
 using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
-using System.IO;
+using OasysUnits;
+using OasysUnits.Units;
+using Xunit;
 
 namespace ComposAPI.Slabs.Tests
 {

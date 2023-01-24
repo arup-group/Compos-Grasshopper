@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using ComposAPI.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System.Globalization;
-using ComposAPI.Helpers;
-using System.IO;
 
 namespace ComposAPI
 {
@@ -282,7 +282,7 @@ namespace ComposAPI
         // start position in percent
         Ratio p = (Ratio)this.StartPosition;
         // percentage in coa string for beam section is a negative decimal fraction!
-        parameters.Add(CoaHelper.FormatSignificantFigures(p.As(RatioUnit.DecimalFraction) * -1, p.DecimalFractions == 1? 5 : 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(p.As(RatioUnit.DecimalFraction) * -1, p.DecimalFractions == 1 ? 5 : 6));
       }
       else
         parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(units.Length).Value, 6));
@@ -324,7 +324,7 @@ namespace ComposAPI
         {
           // remove the catalogue date if exist:
           sect = sect.Split(' ')[0] + " " + sect.Split(' ')[1] + " " + sect.Split(' ')[2];
-        }  
+        }
       }
 
       return (this.SectionDescription == null) ? "Null profile" : sect + start + tapered;
