@@ -5,7 +5,7 @@ using System;
 
 namespace ComposGH.Helpers
 {
-  internal class Input
+  internal class CustomInput
   {
     internal static string BeamSection(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false)
     {

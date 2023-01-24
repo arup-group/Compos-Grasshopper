@@ -2,21 +2,61 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Data;
+using System.IO;
+using System.Reflection;
 
 namespace ComposGH.Helpers
 {
   /// <summary>
   /// Class containing functions to interface with SQLite db files.
+  /// Singleton makes sure this class is executed in a separate AppDomain to avoid conflicts with different SQLite versions in main AppDomain.
   /// </summary>
-  public class SqlReader
+  public class SqlReader : MarshalByRefObject
   {
+    public static SqlReader Instance { get { return lazy.Value; } }
+    private static readonly Lazy<SqlReader> lazy = new Lazy<SqlReader>(() => Initialize());
+
+    public static SqlReader Initialize()
+    {
+      // Get the full name of the EXE assembly.
+      string exeAssembly = Assembly.GetCallingAssembly().FullName;
+      string codeBase = Assembly.GetCallingAssembly().CodeBase;
+      UriBuilder uri = new UriBuilder(codeBase);
+      string path = Uri.UnescapeDataString(uri.Path);
+
+      // Construct and initialize settings for a second AppDomain.
+      AppDomainSetup ads = new AppDomainSetup();
+      ads.ApplicationBase = Path.GetDirectoryName(path);
+      ads.DisallowBindingRedirects = false;
+      ads.DisallowCodeDownload = true;
+      ads.ConfigurationFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+
+      // Create the second AppDomain.
+      AppDomain ad = AppDomain.CreateDomain("SQLite AppDomain", null, ads);
+
+      // Create an instance of MarshalbyRefType in the second AppDomain.
+      // A proxy to the object is returned.
+      SqlReader reader = (SqlReader)ad.CreateInstanceAndUnwrap(exeAssembly, typeof(SqlReader).FullName);
+      return reader;
+    }
+
+    public override object InitializeLifetimeService()
+    {
+      // disable the leasing and then the object is only reclaimed when the AppDomain is unloaded
+      return null;
+    }
+
+    public SqlReader()
+    {
+    }
+
     /// <summary>
     /// Method to set up a SQLite Connection to a specified .db3 file.
     /// Will return a SQLite connection to the aforementioned .db3 file database.
     /// </summary>
     /// <param name="filePath"></param>
     /// <returns></returns>
-    public static SQLiteConnection Connection(string filePath)
+    public SQLiteConnection Connection(string filePath)
     {
       return new SQLiteConnection($"URI=file:{filePath};mode=ReadOnly");
     }
@@ -30,13 +70,13 @@ namespace ComposGH.Helpers
     /// </summary>
     /// <param name="filePath">Path to SecLib.db3</param>
     /// <returns></returns>
-    public static Tuple<List<string>, List<int>> GetCataloguesDataFromSQLite(string filePath)
+    public Tuple<List<string>, List<int>> GetCataloguesDataFromSQLite(string filePath)
     {
       // Create empty lists to work on:
       List<string> catNames = new List<string>();
       List<int> catNumber = new List<int>();
 
-      using (var db = Connection(filePath))
+      using (var db = this.Connection(filePath))
       {
         db.Open();
         SQLiteCommand cmd = db.CreateCommand();
@@ -72,7 +112,7 @@ namespace ComposGH.Helpers
     /// <param name="filePath">Path to SecLib.db3</param>
     /// <param name="inclSuperseded">True if you want to include superseded items</param>
     /// <returns></returns>
-    public static Tuple<List<string>, List<int>> GetTypesDataFromSQLite(int catalogue_number, string filePath, bool inclSuperseded = false)
+    public Tuple<List<string>, List<int>> GetTypesDataFromSQLite(int catalogue_number, string filePath, bool inclSuperseded = false)
     {
       // Create empty lists to work on:
       List<string> typeNames = new List<string>();
@@ -82,14 +122,14 @@ namespace ComposGH.Helpers
       List<int> catNumbers = new List<int>();
       if (catalogue_number == -1)
       {
-        Tuple<List<string>, List<int>> catalogueData = GetCataloguesDataFromSQLite(filePath);
+        Tuple<List<string>, List<int>> catalogueData = this.GetCataloguesDataFromSQLite(filePath);
         catNumbers = catalogueData.Item2;
         catNumbers.RemoveAt(0); // remove -1 from beginning of list
       }
       else
         catNumbers.Add(catalogue_number);
 
-      using (var db = Connection(filePath))
+      using (var db = this.Connection(filePath))
       {
         for (int i = 0; i < catNumbers.Count; i++)
         {
@@ -124,7 +164,6 @@ namespace ComposGH.Helpers
       return new Tuple<List<string>, List<int>>(typeNames, typeNumber);
     }
 
-
     /// <summary>
     /// Get a list of section profile strings from SQLite file (.db3). The method returns a string that includes type abbriviation as accepted by GSA. 
     /// </summary>
@@ -132,7 +171,7 @@ namespace ComposGH.Helpers
     /// <param name="filePath">Path to SecLib.db3</param>
     /// <param name="inclSuperseded">True if you want to include superseded items</param>
     /// <returns></returns>
-    public static List<string> GetSectionsDataFromSQLite(List<int> type_numbers, string filePath, bool inclSuperseded = false)
+    public List<string> GetSectionsDataFromSQLite(List<int> type_numbers, string filePath, bool inclSuperseded = false)
     {
       // Create empty list to work on:
       List<string> section = new List<string>();
@@ -140,14 +179,14 @@ namespace ComposGH.Helpers
       List<int> types = new List<int>();
       if (type_numbers[0] == -1)
       {
-        Tuple<List<string>, List<int>> typeData = GetTypesDataFromSQLite(-1, filePath, inclSuperseded);
+        Tuple<List<string>, List<int>> typeData = this.GetTypesDataFromSQLite(-1, filePath, inclSuperseded);
         types = typeData.Item2;
         types.RemoveAt(0); // remove -1 from beginning of list
       }
       else
         types = type_numbers;
 
-      using (var db = Connection(filePath))
+      using (var db = this.Connection(filePath))
       {
         // get section name
         for (int i = 0; i < types.Count; i++)
@@ -181,7 +220,6 @@ namespace ComposGH.Helpers
               // BSI-IPE IPEAA80                           
               section.Add(profile);
             }
-
           }
           db.Close();
         }
@@ -189,58 +227,132 @@ namespace ComposGH.Helpers
       return section;
     }
 
+    public List<string> GetDeckCataloguesDataFromSQLite(string filePath)
+    {
+      // Create empty lists to work on:
+      List<string> catNames = new List<string>();
 
-    public static List<string> GetDeckCataloguesDataFromSQLite(string filePath)
+      using (var db = this.Connection(filePath))
+      {
+        db.Open();
+        SQLiteCommand cmd = db.CreateCommand();
+        cmd.CommandText = @"Select Catalogue_Name || ' -- ' || Catalogue_ID as Catalogue_Name from Catalogue";
+
+        cmd.CommandType = CommandType.Text;
+        SQLiteDataReader r = cmd.ExecuteReader();
+        while (r.Read())
         {
-            // Create empty lists to work on:
-            List<string> catNames = new List<string>();
+          // get data
+          string sqlData = System.Convert.ToString(r["Catalogue_Name"]);
 
-            using (var db = Connection(filePath))
-            {
-                db.Open();
-                SQLiteCommand cmd = db.CreateCommand();
-                cmd.CommandText = @"Select Catalogue_Name || ' -- ' || Catalogue_ID as Catalogue_Name from Catalogue";
-
-                cmd.CommandType = CommandType.Text;
-                SQLiteDataReader r = cmd.ExecuteReader();
-                while (r.Read())
-                {
-                    // get data
-                    string sqlData = System.Convert.ToString(r["Catalogue_Name"]);
-
-                    // split text string
-                    catNames.Add(sqlData.Split(new string[] { " -- " }, StringSplitOptions.None)[0]);
-                }
-                db.Close();
-            }
-            return new List<string>(catNames);
+          // split text string
+          catNames.Add(sqlData.Split(new string[] { " -- " }, StringSplitOptions.None)[0]);
         }
-
-    public static List<string> GetDeckingDataFromSQLite(string filePath, string cat)
-        {
-            // Create empty lists to work on:
-            List<string> catNames = new List<string>();
-
-            using (var db = Connection(filePath))
-            {
-                db.Open();
-                SQLiteCommand cmd = db.CreateCommand();
-                //cmd.CommandText = $"Select Type_{cat}.TYPE_ABR || ' ' || Deck_Name as Deck_Name from Deck_{cat} INNER JOIN Type_{cat} ON Deck_{cat}.Deck_Type_ID = Type_{cat}.TYPE_ID ORDER BY Deck_Thickness";
-                cmd.CommandText = $"Select Deck_Name from Deck_{cat} ORDER BY Deck_Thickness";
-                cmd.CommandType = CommandType.Text;
-                SQLiteDataReader r = cmd.ExecuteReader();
-                while (r.Read())
-                {
-                    // get data
-                    string sqlData = System.Convert.ToString(r["Deck_Name"]);
-
-                    // split text string
-                    catNames.Add(sqlData);
-                }
-                db.Close();
-            }
-            return new List<string>(catNames);
-        }
-
+        db.Close();
+      }
+      return new List<string>(catNames);
     }
+
+    public List<string> GetDeckingDataFromSQLite(string filePath, string cat)
+    {
+      // Create empty lists to work on:
+      List<string> catNames = new List<string>();
+
+      using (var db = this.Connection(filePath))
+      {
+        db.Open();
+        SQLiteCommand cmd = db.CreateCommand();
+        //cmd.CommandText = $"Select Type_{cat}.TYPE_ABR || ' ' || Deck_Name as Deck_Name from Deck_{cat} INNER JOIN Type_{cat} ON Deck_{cat}.Deck_Type_ID = Type_{cat}.TYPE_ID ORDER BY Deck_Thickness";
+        cmd.CommandText = $"Select Deck_Name from Deck_{cat} ORDER BY Deck_Thickness";
+        cmd.CommandType = CommandType.Text;
+        SQLiteDataReader r = cmd.ExecuteReader();
+        while (r.Read())
+        {
+          // get data
+          string sqlData = System.Convert.ToString(r["Deck_Name"]);
+
+          // split text string
+          catNames.Add(sqlData);
+        }
+        db.Close();
+      }
+      return new List<string>(catNames);
+    }
+
+    /// <summary>
+    /// Get catalogue data from SQLite file (.db3). The method returns a tuple with:
+    /// Item1 = list of catalogue name (string)
+    /// where first item will be "All"
+    /// Item2 = list of catalogue number (int)
+    /// where first item will be "-1" representing All
+    /// </summary>
+    /// <param name="filePath">Path to SecLib.db3</param>
+    /// <returns></returns>
+    public List<double> GetProfileValuesFromSQLite(string filePath, string profileString)
+    {
+      // Create empty lists to work on:
+      List<double> values = new List<double>();
+
+      using (var db = this.Connection(filePath))
+      {
+        db.Open();
+        SQLiteCommand cmd = db.CreateCommand();
+        cmd.CommandText = $"Select SECT_DEPTH_DIAM || ' -- ' || SECT_WIDTH || ' -- ' || SECT_WEB_THICK || ' -- ' || SECT_FLG_THICK || ' -- ' || SECT_ROOT_RAD as SECT_NAME from Sect INNER JOIN Types ON Sect.SECT_TYPE_NUM = Types.TYPE_NUM where SECT_NAME = \"{profileString}\" ORDER BY SECT_DATE_ADDED";
+
+        List<string> data = new List<string>();
+
+        cmd.CommandType = CommandType.Text;
+        SQLiteDataReader r = cmd.ExecuteReader();
+        while (r.Read())
+        {
+          // get data
+          string sqlData = Convert.ToString(r["SECT_NAME"]);
+
+          // split text string
+          // example (IPE100): 0.1 --  0.055 -- 0.0041 -- 0.0057 -- 0.007
+          data.Add(sqlData);
+        }
+        db.Close();
+
+        string[] vals = data[0].Split(new string[] { " -- " }, StringSplitOptions.None);
+
+        foreach (string val in vals)
+          values.Add(double.Parse(val));
+      }
+      return values;
+    }
+
+    public List<double> GetDeckingValuesFromSQLite(string filePath, string cat, string profileString)
+    {
+      // Create empty lists to work on:
+      List<double> values = new List<double>();
+
+      using (var db = this.Connection(filePath))
+      {
+        db.Open();
+        SQLiteCommand cmd = db.CreateCommand();
+        cmd.CommandText = $"Select Deck_Spacing || ' -- ' || Deck_UpperWidth|| ' -- ' || Deck_LowerWidth || ' -- ' || Deck_Proj_Height || ' -- ' || Deck_Proj_width || ' -- ' || Deck_depth || ' -- ' || Deck_thickness as Deck_Name from Deck_{cat} where Deck_Name = \"{profileString}\" ";
+
+        List<string> data = new List<string>();
+
+        cmd.CommandType = CommandType.Text;
+        SQLiteDataReader r = cmd.ExecuteReader();
+        while (r.Read())
+        {
+          // get data
+          string sqlData = Convert.ToString(r["Deck_Name"]);
+
+          // split text string
+          data.Add(sqlData);
+        }
+        db.Close();
+
+        string[] vals = data[0].Split(new string[] { " -- " }, StringSplitOptions.None);
+
+        foreach (string val in vals)
+          values.Add(double.Parse(val));
+      }
+      return values;
+    }
+  }
 }

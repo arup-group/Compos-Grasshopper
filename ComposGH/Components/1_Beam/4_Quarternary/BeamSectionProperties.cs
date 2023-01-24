@@ -55,7 +55,7 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      BeamSection profile = new BeamSection(Input.BeamSection(this, DA, 0, false));
+      BeamSection profile = new BeamSection(CustomInput.BeamSection(this, DA, 0, false));
 
       int i = 0;
       DA.SetData(i++, new GH_UnitNumber(profile.Depth.ToUnit(this.LengthUnit)));

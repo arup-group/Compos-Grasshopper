@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using ComposAPI;
+using ComposGH.Helpers;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -19,7 +20,7 @@ using OasysUnits.Units;
 namespace ComposGH.Components
 {
   /// <summary>
-  /// Component to create AdSec profile
+  /// Component to create profile
   /// </summary>
   public class CreateProfile : GH_OasysDropDownComponent
   {
@@ -160,19 +161,19 @@ namespace ComposGH.Components
 
     // for catalogue selection
     // Catalogues
-    readonly Tuple<List<string>, List<int>> Cataloguedata = Helpers.SqlReader.GetCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"));
+    readonly Tuple<List<string>, List<int>> Cataloguedata = SqlReader.Instance.GetCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"));
     List<int> CatalogueNumbers = new List<int>(); // internal db catalogue numbers
     List<string> CatalogueNames = new List<string>(); // list of displayed catalogues
     bool InclSS;
 
     // Types
-    Tuple<List<string>, List<int>> Typedata = Helpers.SqlReader.GetTypesDataFromSQLite(-1, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), false);
+    Tuple<List<string>, List<int>> Typedata = SqlReader.Instance.GetTypesDataFromSQLite(-1, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), false);
     List<int> TypeNumbers = new List<int>(); //  internal db type numbers
     List<string> TypeNames = new List<string>(); // list of displayed types
 
     // Sections
     // list of displayed sections
-    List<string> SectionList = Helpers.SqlReader.GetSectionsDataFromSQLite(new List<int> { -1 }, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), false);
+    List<string> SectionList = SqlReader.Instance.GetSectionsDataFromSQLite(new List<int> { -1 }, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), false);
     List<string> Filteredlist = new List<string>();
     int CatalogueIndex = -1; //-1 is all
     int TypeIndex = -1;
@@ -236,12 +237,12 @@ namespace ComposGH.Components
           // set types to all
           this.TypeIndex = -1;
           // update typelist with all catalogues
-          this.Typedata = Helpers.SqlReader.GetTypesDataFromSQLite(this.CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+          this.Typedata = SqlReader.Instance.GetTypesDataFromSQLite(this.CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
           this.TypeNames = Typedata.Item1;
           this.TypeNumbers = Typedata.Item2;
 
           // update section list to all types
-          this.SectionList = Helpers.SqlReader.GetSectionsDataFromSQLite(TypeNumbers, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+          this.SectionList = SqlReader.Instance.GetSectionsDataFromSQLite(TypeNumbers, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
 
           // filter by search pattern
           this.Filteredlist = new List<string>();
@@ -291,14 +292,14 @@ namespace ComposGH.Components
           this.SelectedItems[1] = this.CatalogueNames[j];
 
           // update typelist with selected input catalogue
-          this.Typedata = Helpers.SqlReader.GetTypesDataFromSQLite(CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+          this.Typedata = SqlReader.Instance.GetTypesDataFromSQLite(CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
           this.TypeNames = this.Typedata.Item1;
           this.TypeNumbers = this.Typedata.Item2;
 
           // update section list from new types (all new types in catalogue)
           List<int> types = this.TypeNumbers.ToList();
           types.RemoveAt(0); // remove -1 from beginning of list
-          this.SectionList = Helpers.SqlReader.GetSectionsDataFromSQLite(types, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+          this.SectionList = SqlReader.Instance.GetSectionsDataFromSQLite(types, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
 
           // filter by search pattern
           this.Filteredlist = new List<string>();
@@ -350,7 +351,7 @@ namespace ComposGH.Components
 
 
           // section list with selected types (only types in selected type)
-          this.SectionList = Helpers.SqlReader.GetSectionsDataFromSQLite(types, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+          this.SectionList = SqlReader.Instance.GetSectionsDataFromSQLite(types, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
 
           // filter by search pattern
           this.Filteredlist = new List<string>();
@@ -440,7 +441,7 @@ namespace ComposGH.Components
 
         this.CatalogueNames = this.Cataloguedata.Item1;
         this.CatalogueNumbers = this.Cataloguedata.Item2;
-        this.Typedata = Helpers.SqlReader.GetTypesDataFromSQLite(this.CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+        this.Typedata = SqlReader.Instance.GetTypesDataFromSQLite(this.CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
         this.TypeNames = this.Typedata.Item1;
         this.TypeNumbers = this.Typedata.Item2;
 
