@@ -154,36 +154,36 @@ namespace ComposGH.Components
 
     public override void CreateAttributes()
     {
-      if (!this.IsInitialised)
+      if (!this._isInitialised)
         this.InitialiseDropdowns();
 
-      m_attributes = new OasysGH.UI.DropDownCheckBoxesComponentAttributes(this, SetSelected, this.DropDownItems, this.SelectedItems, CheckBoxToggles, this.Checkboxes, this.CheckboxNames, this.SpacerDescriptions);
+      m_attributes = new OasysGH.UI.DropDownCheckBoxesComponentAttributes(this, SetSelected, this._dropDownItems, this._selectedItems, CheckBoxToggles, this.Checkboxes, this.CheckboxNames, this._spacerDescriptions);
     }
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] {
+      this._spacerDescriptions = new List<string>(new string[] {
         "Code",
         "National Annex",
         "Cement Type",
         "Settings" });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
       // code
-      this.DropDownItems.Add(this.DesignCodePretty);
-      this.SelectedItems.Add(this.DesignCodePretty[2]); //EC4 default
+      this._dropDownItems.Add(this.DesignCodePretty);
+      this._selectedItems.Add(this.DesignCodePretty[2]); //EC4 default
 
       // national annex
-      this.DropDownItems.Add(Enum.GetValues(typeof(NationalAnnex)).Cast<NationalAnnex>()
+      this._dropDownItems.Add(Enum.GetValues(typeof(NationalAnnex)).Cast<NationalAnnex>()
           .Select(x => x.ToString().Replace("_", " ")).ToList());
-      this.SelectedItems.Add(this.DropDownItems[1][0]); // Generic default
+      this._selectedItems.Add(this._dropDownItems[1][0]); // Generic default
 
       // cement type
-      this.DropDownItems.Add(Enum.GetValues(typeof(CementClass)).Cast<CementClass>()
+      this._dropDownItems.Add(Enum.GetValues(typeof(CementClass)).Cast<CementClass>()
           .Select(x => "Cement class " + x.ToString()).ToList());
-      this.SelectedItems.Add("Cement class " + this.EC4CodeOptions.CementType.ToString()); // Class N default
+      this._selectedItems.Add("Cement class " + this.EC4CodeOptions.CementType.ToString()); // Class N default
 
       this.Checkboxes = new List<bool>();
       this.Checkboxes.Add(this.DesignOptions.ProppedDuringConstruction);
@@ -195,18 +195,18 @@ namespace ComposGH.Components
       this.Checkboxes.Add(this.EC4CodeOptions.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
       this.Checkboxes.Add(this.EC4CodeOptions.ApproxModularRatios);
 
-      this.IsInitialised = true;
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this.SelectedItems[i] = this.DropDownItems[i][j];
+      this._selectedItems[i] = this._dropDownItems[i][j];
 
       if (i == 0)
       {
         for (int k = 0; k < this.DesignCodePretty.Count; k++)
         {
-          if (this.SelectedItems[i] == this.DesignCodePretty[k])
+          if (this._selectedItems[i] == this.DesignCodePretty[k])
           {
             if (this.Code == (Code)k)
               return;
@@ -221,10 +221,10 @@ namespace ComposGH.Components
           case Code.HKSUOS_2005:
           case Code.HKSUOS_2011:
             // change dropdown content
-            while (DropDownItems.Count > 1)
-              DropDownItems.RemoveAt(1);
-            while (SelectedItems.Count > 1)
-              SelectedItems.RemoveAt(1);
+            while (_dropDownItems.Count > 1)
+              _dropDownItems.RemoveAt(1);
+            while (_selectedItems.Count > 1)
+              _selectedItems.RemoveAt(1);
             while (Checkboxes.Count > 5)
               Checkboxes.RemoveAt(5);
             while (CheckboxNames.Count > 5)
@@ -233,18 +233,18 @@ namespace ComposGH.Components
 
           case Code.EN1994_1_1_2004:
             // change dropdown content
-            while (this.DropDownItems.Count > 1)
-              this.DropDownItems.RemoveAt(1);
-            while (SelectedItems.Count > 1)
-              this.SelectedItems.RemoveAt(1);
+            while (this._dropDownItems.Count > 1)
+              this._dropDownItems.RemoveAt(1);
+            while (_selectedItems.Count > 1)
+              this._selectedItems.RemoveAt(1);
             // national annex
-            this.DropDownItems.Add(Enum.GetValues(typeof(NationalAnnex)).Cast<NationalAnnex>()
+            this._dropDownItems.Add(Enum.GetValues(typeof(NationalAnnex)).Cast<NationalAnnex>()
                 .Select(x => x.ToString().Replace("_", " ")).ToList());
-            this.SelectedItems.Add(NA.ToString().Replace("_", " "));
+            this._selectedItems.Add(NA.ToString().Replace("_", " "));
             // cement type
-            this.DropDownItems.Add(Enum.GetValues(typeof(CementClass)).Cast<CementClass>()
+            this._dropDownItems.Add(Enum.GetValues(typeof(CementClass)).Cast<CementClass>()
                 .Select(x => "Cement class " + x.ToString()).ToList());
-            this.SelectedItems.Add("Cement class " + this.EC4CodeOptions.CementType.ToString());
+            this._selectedItems.Add("Cement class " + this.EC4CodeOptions.CementType.ToString());
 
             while (this.Checkboxes.Count > 5)
               this.Checkboxes.RemoveAt(5);
@@ -261,10 +261,10 @@ namespace ComposGH.Components
 
           case Code.AS_NZS2327_2017:
             // change dropdown content
-            while (this.DropDownItems.Count > 1)
-              this.DropDownItems.RemoveAt(1);
-            while (this.SelectedItems.Count > 1)
-              this.SelectedItems.RemoveAt(1);
+            while (this._dropDownItems.Count > 1)
+              this._dropDownItems.RemoveAt(1);
+            while (this._selectedItems.Count > 1)
+              this._selectedItems.RemoveAt(1);
             while (this.Checkboxes.Count > 5)
               this.Checkboxes.RemoveAt(5);
             while (this.CheckboxNames.Count > 5)
@@ -280,26 +280,26 @@ namespace ComposGH.Components
         }
       }
       if (i == 1)
-        this.NA = (NationalAnnex)Enum.Parse(typeof(NationalAnnex), this.SelectedItems[i].Replace(" ", "_"));
+        this.NA = (NationalAnnex)Enum.Parse(typeof(NationalAnnex), this._selectedItems[i].Replace(" ", "_"));
       if (i == 2)
-        this.EC4CodeOptions.CementType = (CementClass)Enum.Parse(typeof(CementClass), this.SelectedItems[i].Last().ToString());
+        this.EC4CodeOptions.CementType = (CementClass)Enum.Parse(typeof(CementClass), this._selectedItems[i].Last().ToString());
 
       ModeChangeClicked();
 
       base.UpdateUI();
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
       for (int i = 0; i < this.DesignCodePretty.Count; i++)
       {
-        if (this.SelectedItems[0] == this.DesignCodePretty[i])
+        if (this._selectedItems[0] == this.DesignCodePretty[i])
           this.Code = (Code)i;
       }
       if (this.Code == Code.EN1994_1_1_2004)
       {
-        this.NA = (NationalAnnex)Enum.Parse(typeof(NationalAnnex), this.SelectedItems[1].Replace(" ", "_"));
-        this.EC4CodeOptions.CementType = (CementClass)Enum.Parse(typeof(CementClass), this.SelectedItems[2].Last().ToString());
+        this.NA = (NationalAnnex)Enum.Parse(typeof(NationalAnnex), this._selectedItems[1].Replace(" ", "_"));
+        this.EC4CodeOptions.CementType = (CementClass)Enum.Parse(typeof(CementClass), this._selectedItems[2].Last().ToString());
       }
 
       base.UpdateUIFromSelectedItems();

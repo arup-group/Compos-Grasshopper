@@ -65,9 +65,9 @@ namespace ComposGH.Components
         try
         {
           this.ParseRestraintType(restraintType);
-          this.DropDownItems[0] = new List<string>();
-          this.SelectedItems[0] = "-";
-          this.OverrideDropDownItems[0] = true;
+          this._dropDownItems[0] = new List<string>();
+          this._selectedItems[0] = "-";
+          this.Override_dropDownItems[0] = true;
         }
         catch (ArgumentException)
         {
@@ -77,16 +77,16 @@ namespace ComposGH.Components
           foreach (string g in Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
             .Select(x => x.ToString().Replace("__", "-").Replace("_", " ")).ToList())
             AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, g);
-          this.DropDownItems[0] = Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
+          this._dropDownItems[0] = Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
             .Select(x => x.ToString().Replace("__", "-").Replace("_", " ")).ToList();
         }
       }
-      else if (this.OverrideDropDownItems[0])
+      else if (this.Override_dropDownItems[0])
       {
-        this.DropDownItems[0] = Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
+        this._dropDownItems[0] = Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
             .Select(x => x.ToString().Replace("__", "-").Replace("_", " ")).ToList();
-        this.SelectedItems[0] = RestraintType.ToString().Replace("__", "-").Replace("_", " ");
-        this.OverrideDropDownItems[0] = false;
+        this._selectedItems[0] = RestraintType.ToString().Replace("__", "-").Replace("_", " ");
+        this.Override_dropDownItems[0] = false;
       }
 
       bool smir = true;
@@ -97,7 +97,7 @@ namespace ComposGH.Components
       if (this.Params.Input[2].Sources.Count > 0)
       {
         List<IQuantity> restrs = Input.LengthsOrRatios(this, DA, 2, LengthUnit);
-        SelectedItems[0] = "Custom";
+        _selectedItems[0] = "Custom";
         Supports sup = new Supports(restrs, smir, ffre);
         Output.SetItem(this, DA, 0, new SupportsGoo(sup));
       }
@@ -109,50 +109,50 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    List<bool> OverrideDropDownItems;
+    List<bool> Override_dropDownItems;
     private IntermediateRestraint RestraintType = IntermediateRestraint.None;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[]
+      this._spacerDescriptions = new List<string>(new string[]
         {
           "Intermediate Sup.",
           "Unit"
         });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
       // type
-      this.DropDownItems.Add(Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
+      this._dropDownItems.Add(Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
           .Select(x => x.ToString().Replace("__", "-").Replace("_", " ")).ToList());
-      this.DropDownItems[0].RemoveAt(this.DropDownItems[0].Count - 1);
-      this.SelectedItems.Add(this.DropDownItems[0][0]);
+      this._dropDownItems[0].RemoveAt(this._dropDownItems[0].Count - 1);
+      this._selectedItems.Add(this._dropDownItems[0][0]);
 
       // length
-      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this.SelectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
 
-      this.OverrideDropDownItems = new List<bool>() { false, false };
-      this.IsInitialised = true;
+      this.Override_dropDownItems = new List<bool>() { false, false };
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this.SelectedItems[i] = this.DropDownItems[i][j];
+      this._selectedItems[i] = this._dropDownItems[i][j];
 
       if (i == 0)
-        this.ParseRestraintType(this.SelectedItems[0]);
+        this.ParseRestraintType(this._selectedItems[0]);
       if (i == 1)
-        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
 
       base.UpdateUI();
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
-      this.ParseRestraintType(this.SelectedItems[0]);
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[1]);
+      this.ParseRestraintType(this._selectedItems[0]);
+      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
     }

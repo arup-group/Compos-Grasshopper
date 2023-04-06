@@ -71,7 +71,7 @@ namespace ComposGH.Components
 
         if (catIDs.Count > 1)
         {
-          SelectedItems[0] = " - ";
+          _selectedItems[0] = " - ";
           DA.SetDataList(0, catIDs);
           AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Found the following catalogues:");
           foreach (int i in catIDs)
@@ -79,7 +79,7 @@ namespace ComposGH.Components
         }
         else if (catIDs.Count == 1)
         {
-          SelectedItems[0] = catDic[catIDs[0]];
+          _selectedItems[0] = catDic[catIDs[0]];
           DA.SetDataList(0, catIDs);
         }
         else
@@ -90,33 +90,33 @@ namespace ComposGH.Components
       }
       else
       {
-        if (SelectedItems[0] == " - ")
-          SelectedItems[0] = Catalogues[4];
+        if (_selectedItems[0] == " - ")
+          _selectedItems[0] = Catalogues[4];
 
-        Output.SetItem(this, DA, 0, new GH_Integer(catDic.FirstOrDefault(x => x.Value == SelectedItems[0]).Key));
+        Output.SetItem(this, DA, 0, new GH_Integer(catDic.FirstOrDefault(x => x.Value == _selectedItems[0]).Key));
       }
     }
 
     #region Custom UI
     List<string> Catalogues = ComposAPI.Helpers.CatalogueSectionType.CatalogueSectionTypes.Values.Select(x => x.ToString()).ToList();
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] { "Catalogue" });
+      this._spacerDescriptions = new List<string>(new string[] { "Catalogue" });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
-      DropDownItems.Add(Catalogues);
-      SelectedItems.Add(DropDownItems[0][4]); // Europe IPEs
+      _dropDownItems.Add(Catalogues);
+      _selectedItems.Add(_dropDownItems[0][4]); // Europe IPEs
 
-      this.IsInitialised = true;
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
       // change selected item
-      this.SelectedItems[i] = this.DropDownItems[i][j];
+      this._selectedItems[i] = this._dropDownItems[i][j];
 
       base.UpdateUI();
     }

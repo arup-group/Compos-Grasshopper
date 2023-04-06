@@ -90,60 +90,60 @@ namespace ComposGH.Components
     private PressureUnit ForcePerAreaUnit = DefaultUnits.ForcePerAreaUnit;
     private LoadDistribution DistributionType = LoadDistribution.Area;
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] { "Distribution", "Unit" });
+      this._spacerDescriptions = new List<string>(new string[] { "Distribution", "Unit" });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
       // type
-      this.DropDownItems.Add(Enum.GetValues(typeof(LoadDistribution)).Cast<LoadDistribution>().Select(x => x.ToString()).ToList());
-      this.SelectedItems.Add(LoadDistribution.Area.ToString());
+      this._dropDownItems.Add(Enum.GetValues(typeof(LoadDistribution)).Cast<LoadDistribution>().Select(x => x.ToString()).ToList());
+      this._selectedItems.Add(LoadDistribution.Area.ToString());
 
       // force unit
-      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.ForcePerArea));
-      this.SelectedItems.Add(Pressure.GetAbbreviation(this.ForcePerAreaUnit));
+      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.ForcePerArea));
+      this._selectedItems.Add(Pressure.GetAbbreviation(this.ForcePerAreaUnit));
 
-      this.IsInitialised = true;
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this.SelectedItems[i] = this.DropDownItems[i][j];
+      this._selectedItems[i] = this._dropDownItems[i][j];
 
       if (i == 0)
       {
-        this.DistributionType = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), this.SelectedItems[i]);
+        this.DistributionType = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), this._selectedItems[i]);
         if (this.DistributionType == LoadDistribution.Line)
         {
-          this.DropDownItems[1] = UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.ForcePerLength);
-          this.SelectedItems[1] = ForcePerLength.GetAbbreviation(this.ForcePerLengthUnit);
+          this._dropDownItems[1] = UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.ForcePerLength);
+          this._selectedItems[1] = ForcePerLength.GetAbbreviation(this.ForcePerLengthUnit);
         }
         else
         {
-          this.DropDownItems[1] = UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.ForcePerArea);
-          this.SelectedItems[1] = Pressure.GetAbbreviation(this.ForcePerAreaUnit);
+          this._dropDownItems[1] = UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.ForcePerArea);
+          this._selectedItems[1] = Pressure.GetAbbreviation(this.ForcePerAreaUnit);
         }
       }
       if (i == 1)
       {
         if (this.DistributionType == LoadDistribution.Line)
-          this.ForcePerLengthUnit = (ForcePerLengthUnit)UnitsHelper.Parse(typeof(ForcePerLengthUnit), this.SelectedItems[i]);
+          this.ForcePerLengthUnit = (ForcePerLengthUnit)UnitsHelper.Parse(typeof(ForcePerLengthUnit), this._selectedItems[i]);
         else
-          this.ForcePerAreaUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this.SelectedItems[i]);
+          this.ForcePerAreaUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this._selectedItems[i]);
       }
 
       base.UpdateUI();
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
-      this.DistributionType = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), this.SelectedItems[0]);
+      this.DistributionType = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), this._selectedItems[0]);
       if (this.DistributionType == LoadDistribution.Line)
-        this.ForcePerLengthUnit = (ForcePerLengthUnit)UnitsHelper.Parse(typeof(ForcePerLengthUnit), this.SelectedItems[1]);
+        this.ForcePerLengthUnit = (ForcePerLengthUnit)UnitsHelper.Parse(typeof(ForcePerLengthUnit), this._selectedItems[1]);
       else
-        this.ForcePerAreaUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this.SelectedItems[1]);
+        this.ForcePerAreaUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this._selectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
     }

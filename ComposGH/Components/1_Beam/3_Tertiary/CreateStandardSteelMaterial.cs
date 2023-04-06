@@ -53,9 +53,9 @@ namespace ComposGH.Components
           if (Char.IsDigit(grade[0]))
             grade = "S" + grade;
           this.SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), grade);
-          this.DropDownItems[0] = new List<string>();
-          this.SelectedItems[0] = " -- ";
-          this.OverrideDropDownItems[0] = true;
+          this._dropDownItems[0] = new List<string>();
+          this._selectedItems[0] = " -- ";
+          this.Override_dropDownItems[0] = true;
         }
         catch (ArgumentException)
         {
@@ -66,60 +66,60 @@ namespace ComposGH.Components
           }
           text = text.Remove(text.Length - 2);
           text += ".";
-          this.DropDownItems[0] = Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList();
+          this._dropDownItems[0] = Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList();
           AddRuntimeMessage(GH_RuntimeMessageLevel.Error, text);
           return;
         }
       }
-      else if (this.OverrideDropDownItems[0])
+      else if (this.Override_dropDownItems[0])
       {
-        this.DropDownItems[0] = Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList();
-        this.OverrideDropDownItems[0] = false;
+        this._dropDownItems[0] = Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList();
+        this.Override_dropDownItems[0] = false;
       }
 
       Output.SetItem(this, DA, 0, new SteelMaterialGoo(new SteelMaterial(SteelGrade, Code.BS5950_3_1_1990_A1_2010))); //any code other than EN or ASNZ will do...
     }
 
     #region Custom UI
-    List<bool> OverrideDropDownItems;
+    List<bool> Override_dropDownItems;
     private StandardSteelGrade SteelGrade = StandardSteelGrade.S235;
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] { "Grade" });
+      this._spacerDescriptions = new List<string>(new string[] { "Grade" });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
       // SteelType
-      this.DropDownItems.Add(Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList());
-      this.SelectedItems.Add(SteelGrade.ToString());
+      this._dropDownItems.Add(Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList());
+      this._selectedItems.Add(SteelGrade.ToString());
 
-      this.OverrideDropDownItems = new List<bool>() { false };
+      this.Override_dropDownItems = new List<bool>() { false };
 
-      this.IsInitialised = true;
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
       // change selected item
-      this.SelectedItems[i] = this.DropDownItems[i][j];
+      this._selectedItems[i] = this._dropDownItems[i][j];
 
       if (i == 0)  // change is made to code 
       {
-        if (this.SteelGrade.ToString() == this.SelectedItems[i])
+        if (this.SteelGrade.ToString() == this._selectedItems[i])
           return; // return if selected value is same as before
 
-        this.SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), this.SelectedItems[i]);
+        this.SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), this._selectedItems[i]);
       }
 
       base.UpdateUI();
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
-      if (this.SelectedItems[0] != " -- ")
-        this.SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), this.SelectedItems[0]);
+      if (this._selectedItems[0] != " -- ")
+        this.SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), this._selectedItems[0]);
 
       base.UpdateUIFromSelectedItems();
     }

@@ -71,9 +71,9 @@ namespace ComposGH.Components
         {
           grade = grade.Replace(" ", "_").Replace("/", "_"); // C30/37 -> C30_37
           this.Grade = (ConcreteGradeEN)Enum.Parse(typeof(ConcreteGradeEN), grade);
-          this.DropDownItems[0] = new List<string>();
-          this.SelectedItems[0] = "-";
-          this.OverrideDropDownItems[0] = true;
+          this._dropDownItems[0] = new List<string>();
+          this._selectedItems[0] = "-";
+          this.Override_dropDownItems[0] = true;
         }
         catch (ArgumentException)
         {
@@ -84,15 +84,15 @@ namespace ComposGH.Components
           }
           text = text.Remove(text.Length - 2);
           text += ".";
-          this.DropDownItems[0] = Enum.GetValues(typeof(ConcreteGradeEN)).Cast<ConcreteGradeEN>().Select(x => x.ToString()).ToList();
+          this._dropDownItems[0] = Enum.GetValues(typeof(ConcreteGradeEN)).Cast<ConcreteGradeEN>().Select(x => x.ToString()).ToList();
           AddRuntimeMessage(GH_RuntimeMessageLevel.Error, text);
           return;
         }
       }
-      else if (this.OverrideDropDownItems[0])
+      else if (this.Override_dropDownItems[0])
       {
-        this.DropDownItems[0] = Enum.GetValues(typeof(ConcreteGradeEN)).Cast<ConcreteGradeEN>().Select(x => x.ToString()).ToList();
-        this.OverrideDropDownItems[0] = false;
+        this._dropDownItems[0] = Enum.GetValues(typeof(ConcreteGradeEN)).Cast<ConcreteGradeEN>().Select(x => x.ToString()).ToList();
+        this.Override_dropDownItems[0] = false;
       }
       // override density class?
       if (this.Params.Input[5].Sources.Count > 0)
@@ -102,9 +102,9 @@ namespace ComposGH.Components
         try
         {
           this.DensityClass = (ConcreteMaterial.DensityClass)Enum.Parse(typeof(ConcreteMaterial.DensityClass), densityClass);
-          this.DropDownItems[1] = new List<string>();
-          this.SelectedItems[1] = "-";
-          this.OverrideDropDownItems[1] = true;
+          this._dropDownItems[1] = new List<string>();
+          this._selectedItems[1] = "-";
+          this.Override_dropDownItems[1] = true;
         }
         catch (ArgumentException)
         {
@@ -115,14 +115,14 @@ namespace ComposGH.Components
           }
           text = text.Remove(text.Length - 2);
           text += ".";
-          this.DropDownItems[1] = Enum.GetValues(typeof(ConcreteMaterial.DensityClass)).Cast<ConcreteMaterial.DensityClass>().Select(x => x.ToString()).ToList();
+          this._dropDownItems[1] = Enum.GetValues(typeof(ConcreteMaterial.DensityClass)).Cast<ConcreteMaterial.DensityClass>().Select(x => x.ToString()).ToList();
           AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
         }
       }
-      else if (this.OverrideDropDownItems[1])
+      else if (this.Override_dropDownItems[1])
       {
-        this.DropDownItems[1] = Enum.GetValues(typeof(ConcreteMaterial.DensityClass)).Cast<ConcreteMaterial.DensityClass>().Select(x => x.ToString()).ToList();
-        this.OverrideDropDownItems[1] = false;
+        this._dropDownItems[1] = Enum.GetValues(typeof(ConcreteMaterial.DensityClass)).Cast<ConcreteMaterial.DensityClass>().Select(x => x.ToString()).ToList();
+        this.Override_dropDownItems[1] = false;
       }
 
       Density dryDensity = new Density(2400, DensityUnit.KilogramPerCubicMeter);
@@ -132,7 +132,7 @@ namespace ComposGH.Components
         dryDensity = (Density)Input.UnitNumber(this, DA, 0, this.DensityUnit);
         userDensity = true;
         if (this.isLightWeight)
-          SelectedItems[1] = "NOT_APPLY";
+          _selectedItems[1] = "NOT_APPLY";
       }
       else if (this.Grade.ToString().StartsWith("L"))
       {
@@ -181,99 +181,99 @@ namespace ComposGH.Components
 
 
     #region Custom UI
-    List<bool> OverrideDropDownItems;
+    List<bool> Override_dropDownItems;
     private ConcreteGradeEN Grade = ConcreteGradeEN.C20_25;
     private ConcreteMaterial.DensityClass DensityClass = ConcreteMaterial.DensityClass.DC801_1000;
     private DensityUnit DensityUnit = DefaultUnits.DensityUnit;
     private StrainUnit StrainUnit = StrainUnit.MilliStrain;
     private bool isLightWeight = false;
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] {
+      this._spacerDescriptions = new List<string>(new string[] {
         "Grade",
         "Density Unit",
         "Strain Unit" });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
       // grade
       List<string> concreteGrades = Enum.GetValues(typeof(ConcreteGradeEN)).Cast<ConcreteGradeEN>().Select(x => x.ToString()).ToList();
-      this.DropDownItems.Add(concreteGrades);
-      this.SelectedItems.Add(this.Grade.ToString());
+      this._dropDownItems.Add(concreteGrades);
+      this._selectedItems.Add(this.Grade.ToString());
 
       // density unit
-      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Density));
-      this.SelectedItems.Add(Density.GetAbbreviation(this.DensityUnit));
+      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Density));
+      this._selectedItems.Add(Density.GetAbbreviation(this.DensityUnit));
 
       // strain unit
-      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Strain));
-      this.SelectedItems.Add(Strain.GetAbbreviation(this.StrainUnit));
+      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Strain));
+      this._selectedItems.Add(Strain.GetAbbreviation(this.StrainUnit));
 
-      this.OverrideDropDownItems = new List<bool>() { false, false, false, false };
+      this.Override_dropDownItems = new List<bool>() { false, false, false, false };
 
-      this.IsInitialised = true;
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
       // change selected item
-      this.SelectedItems[i] = this.DropDownItems[i][j];
+      this._selectedItems[i] = this._dropDownItems[i][j];
 
       if (i == 0) // change is made to grade
       {
-        this.Grade = (ConcreteGradeEN)Enum.Parse(typeof(ConcreteGradeEN), this.SelectedItems[i]);
+        this.Grade = (ConcreteGradeEN)Enum.Parse(typeof(ConcreteGradeEN), this._selectedItems[i]);
         if (this.Grade.ToString().StartsWith("LC"))
         {
           this.isLightWeight = true;
-          if (this.DropDownItems.Count < 4)
+          if (this._dropDownItems.Count < 4)
           {
             // density class
             List<string> densityClasses = Enum.GetValues(typeof(ConcreteMaterial.DensityClass)).Cast<ConcreteMaterial.DensityClass>().Select(x => x.ToString()).ToList();
             densityClasses.RemoveAt(0);
-            this.DropDownItems.Insert(1, densityClasses);
-            this.SelectedItems.Insert(1, this.DensityClass.ToString());
-            this.SpacerDescriptions.Insert(1, "Density Class");
+            this._dropDownItems.Insert(1, densityClasses);
+            this._selectedItems.Insert(1, this.DensityClass.ToString());
+            this._spacerDescriptions.Insert(1, "Density Class");
           }
         }
         else
         {
           this.isLightWeight = false;
-          if (this.DropDownItems.Count > 3)
+          if (this._dropDownItems.Count > 3)
           {
-            this.DropDownItems.RemoveAt(1);
-            this.SelectedItems.RemoveAt(1);
-            this.SpacerDescriptions.RemoveAt(1);
+            this._dropDownItems.RemoveAt(1);
+            this._selectedItems.RemoveAt(1);
+            this._spacerDescriptions.RemoveAt(1);
           }
         }
       }
 
       else if (this.isLightWeight & i == 1) // change is made to density class
-        this.DensityClass = (ConcreteMaterial.DensityClass)Enum.Parse(typeof(ConcreteMaterial.DensityClass), this.SelectedItems[i]);
+        this.DensityClass = (ConcreteMaterial.DensityClass)Enum.Parse(typeof(ConcreteMaterial.DensityClass), this._selectedItems[i]);
 
       if (!this.isLightWeight)
         i++; // 
 
       else if (i == 2) // change is made to density unit
-        this.DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), this.SelectedItems[i]);
+        this.DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), this._selectedItems[i]);
 
       else if (i == 3) // change is made to strain unit
-        this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this.SelectedItems[i]);
+        this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this._selectedItems[i]);
 
       base.UpdateUI();
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
-      if (this.SelectedItems[0] != "-")
-        this.Grade = (ConcreteGradeEN)Enum.Parse(typeof(ConcreteGradeEN), this.SelectedItems[0]);
+      if (this._selectedItems[0] != "-")
+        this.Grade = (ConcreteGradeEN)Enum.Parse(typeof(ConcreteGradeEN), this._selectedItems[0]);
       int i = 1;
       if (this.isLightWeight)
-        this.DensityClass = (ConcreteMaterial.DensityClass)Enum.Parse(typeof(ConcreteMaterial.DensityClass), this.SelectedItems[i++]);
+        this.DensityClass = (ConcreteMaterial.DensityClass)Enum.Parse(typeof(ConcreteMaterial.DensityClass), this._selectedItems[i++]);
 
-      this.DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), this.SelectedItems[i++]);
-      this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this.SelectedItems[i++]);
+      this.DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), this._selectedItems[i++]);
+      this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this._selectedItems[i++]);
 
       base.UpdateUIFromSelectedItems();
     }

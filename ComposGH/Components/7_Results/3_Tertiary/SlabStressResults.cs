@@ -99,54 +99,54 @@ namespace ComposGH.Components
     private StrainUnit StrainUnit = DefaultUnits.StrainUnitResult;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] { "Load", "Stress Unit", "Strain Unit", "Length Unit" });
+      this._spacerDescriptions = new List<string>(new string[] { "Load", "Stress Unit", "Strain Unit", "Length Unit" });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
       // load
-      this.DropDownItems.Add(Enum.GetNames(typeof(Load)).ToList());
-      this.SelectedItems.Add(this.SelectedLoad.ToString());
+      this._dropDownItems.Add(Enum.GetNames(typeof(Load)).ToList());
+      this._selectedItems.Add(this.SelectedLoad.ToString());
 
       // stress
-      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Stress));
-      this.SelectedItems.Add(Pressure.GetAbbreviation(this.StressUnit));
+      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Stress));
+      this._selectedItems.Add(Pressure.GetAbbreviation(this.StressUnit));
 
       // strain
-      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Strain));
-      this.SelectedItems.Add(Strain.GetAbbreviation(this.StrainUnit));
+      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Strain));
+      this._selectedItems.Add(Strain.GetAbbreviation(this.StrainUnit));
 
       // length
-      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this.SelectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
 
-      this.IsInitialised = true;
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this.SelectedItems[i] = this.DropDownItems[i][j];
+      this._selectedItems[i] = this._dropDownItems[i][j];
 
       if (i == 0)
-        this.SelectedLoad = (Load)Enum.Parse(typeof(Load), this.SelectedItems[i]);
+        this.SelectedLoad = (Load)Enum.Parse(typeof(Load), this._selectedItems[i]);
       else if (i == 1)
-        this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this.SelectedItems[i]);
+        this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this._selectedItems[i]);
       else if (i == 2)
-        this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this.SelectedItems[i]);
+        this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this._selectedItems[i]);
       else if (i == 3)
-        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
 
       base.UpdateUI();
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
-      this.SelectedLoad = (Load)Enum.Parse(typeof(Load), this.SelectedItems[0]);
-      this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this.SelectedItems[1]);
-      this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this.SelectedItems[2]);
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[3]);
+      this.SelectedLoad = (Load)Enum.Parse(typeof(Load), this._selectedItems[0]);
+      this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this._selectedItems[1]);
+      this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this._selectedItems[2]);
+      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[3]);
 
       base.UpdateUIFromSelectedItems();
     }

@@ -46,40 +46,40 @@ namespace ComposGH.Components
     #region Custom UI
     private StandardStudSize StdSize = StandardStudSize.D19mmH100mm;
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] { "Standard Size" });
+      this._spacerDescriptions = new List<string>(new string[] { "Standard Size" });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
       // spacing
-      this.DropDownItems.Add(Enum.GetValues(typeof(StandardStudSize)).Cast<StandardStudSize>()
+      this._dropDownItems.Add(Enum.GetValues(typeof(StandardStudSize)).Cast<StandardStudSize>()
           .Select(x => x.ToString()).ToList());
-      for (int i = 0; i < DropDownItems[0].Count; i++)
-        this.DropDownItems[0][i] = DropDownItems[0][i].Replace("D", "Ø").Replace("mmH", "/");
+      for (int i = 0; i < _dropDownItems[0].Count; i++)
+        this._dropDownItems[0][i] = _dropDownItems[0][i].Replace("D", "Ø").Replace("mmH", "/");
 
-      this.SelectedItems.Add(this.StdSize.ToString().Replace("D", "Ø").Replace("mmH", "/"));
+      this._selectedItems.Add(this.StdSize.ToString().Replace("D", "Ø").Replace("mmH", "/"));
 
-      this.IsInitialised = true;
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this.SelectedItems[i] = this.DropDownItems[i][j];
+      this._selectedItems[i] = this._dropDownItems[i][j];
 
       if (i == 0) // change is made to size
       {
-        string sz = this.SelectedItems[i].Replace("Ø", "D").Replace("/", "mmH");
+        string sz = this._selectedItems[i].Replace("Ø", "D").Replace("/", "mmH");
         this.StdSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), sz);
       }
 
       base.UpdateUI();
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
-      string sz = this.SelectedItems[0].Replace("Ø", "D").Replace("/", "mmH");
+      string sz = this._selectedItems[0].Replace("Ø", "D").Replace("/", "mmH");
       this.StdSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), sz);
 
       base.UpdateUIFromSelectedItems();

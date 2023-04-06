@@ -97,11 +97,11 @@ namespace ComposGH.Components
           "Load combination factors following Equation 6.10 will be used" :
           "Load combination factors for the worse of Equation 6.10a and 6.10b will be used (not applicable for storage structures)";
         AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, remark);
-        this.SelectedItems[0] = LoadCombinationType.ToString().Replace("__", " or ").Replace("_", ".");
+        this._selectedItems[0] = LoadCombinationType.ToString().Replace("__", " or ").Replace("_", ".");
       }
       else
       {
-        this.SelectedItems[0] = "Custom";
+        this._selectedItems[0] = "Custom";
       }
 
       MaterialPartialFactors mf = new MaterialPartialFactors();
@@ -156,38 +156,38 @@ namespace ComposGH.Components
     #region Custom UI
     private LoadCombination LoadCombinationType = LoadCombination.Equation6_10;
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] { "Load Combination" });
+      this._spacerDescriptions = new List<string>(new string[] { "Load Combination" });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
       // spacing
-      this.DropDownItems.Add(Enum.GetValues(typeof(LoadCombination)).Cast<LoadCombination>()
+      this._dropDownItems.Add(Enum.GetValues(typeof(LoadCombination)).Cast<LoadCombination>()
           .Select(x => x.ToString().Replace("__", " or ").Replace("_", ".")).ToList());
-      this.DropDownItems[0].RemoveAt(2); // remove 'Custom'
-      this.SelectedItems.Add(LoadCombination.Equation6_10.ToString().Replace("__", " or ").Replace("_", "."));
+      this._dropDownItems[0].RemoveAt(2); // remove 'Custom'
+      this._selectedItems.Add(LoadCombination.Equation6_10.ToString().Replace("__", " or ").Replace("_", "."));
 
-      this.IsInitialised = true;
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
       // change selected item
-      this.SelectedItems[i] = this.DropDownItems[i][j];
+      this._selectedItems[i] = this._dropDownItems[i][j];
 
-      if (this.LoadCombinationType.ToString().Replace("__", " or ").Replace("_", ".") == this.SelectedItems[i])
+      if (this.LoadCombinationType.ToString().Replace("__", " or ").Replace("_", ".") == this._selectedItems[i])
         return;
 
-      this.LoadCombinationType = (LoadCombination)Enum.Parse(typeof(LoadCombination), this.SelectedItems[i].Replace(" or ", "__").Replace(".", "_"));
+      this.LoadCombinationType = (LoadCombination)Enum.Parse(typeof(LoadCombination), this._selectedItems[i].Replace(" or ", "__").Replace(".", "_"));
 
       base.UpdateUI();
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
-      this.LoadCombinationType = (LoadCombination)Enum.Parse(typeof(LoadCombination), this.SelectedItems[0].Replace(" or ", "__").Replace(".", "_"));
+      this.LoadCombinationType = (LoadCombination)Enum.Parse(typeof(LoadCombination), this._selectedItems[0].Replace(" or ", "__").Replace(".", "_"));
 
       base.UpdateUIFromSelectedItems();
     }

@@ -122,39 +122,39 @@ namespace ComposGH.Components
     private Case SelectedCase = Case.LongTerm;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] { "Case", "Unit" });
+      this._spacerDescriptions = new List<string>(new string[] { "Case", "Unit" });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
       // case
-      this.DropDownItems.Add(Enum.GetNames(typeof(Case)).ToList());
-      this.SelectedItems.Add(this.SelectedCase.ToString());
+      this._dropDownItems.Add(Enum.GetNames(typeof(Case)).ToList());
+      this._selectedItems.Add(this.SelectedCase.ToString());
 
       // length
-      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this.SelectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
 
-      this.IsInitialised = true;
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this.SelectedItems[i] = this.DropDownItems[i][j];
+      this._selectedItems[i] = this._dropDownItems[i][j];
       if (i == 0)
-        this.SelectedCase = (Case)Enum.Parse(typeof(Case), this.SelectedItems[i]);
+        this.SelectedCase = (Case)Enum.Parse(typeof(Case), this._selectedItems[i]);
       else if (i == 1)
-        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
 
       base.UpdateUI();
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
-      this.SelectedCase = (Case)Enum.Parse(typeof(Case), this.SelectedItems[0]);
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[1]);
+      this.SelectedCase = (Case)Enum.Parse(typeof(Case), this._selectedItems[0]);
+      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
     }

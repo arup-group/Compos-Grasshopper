@@ -88,48 +88,48 @@ namespace ComposGH.Components
     private NotchTypes OpeningType = NotchTypes.Both_ends;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] { "Position", "Unit" });
+      this._spacerDescriptions = new List<string>(new string[] { "Position", "Unit" });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
       // type
-      this.DropDownItems.Add(Enum.GetValues(typeof(NotchTypes)).Cast<NotchTypes>()
+      this._dropDownItems.Add(Enum.GetValues(typeof(NotchTypes)).Cast<NotchTypes>()
           .Select(x => x.ToString().Replace('_', ' ')).ToList());
-      this.SelectedItems.Add(NotchTypes.Both_ends.ToString().Replace('_', ' '));
+      this._selectedItems.Add(NotchTypes.Both_ends.ToString().Replace('_', ' '));
 
       // length
-      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this.SelectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
 
-      this.IsInitialised = true;
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
       // change selected item
-      this.SelectedItems[i] = this.DropDownItems[i][j];
+      this._selectedItems[i] = this._dropDownItems[i][j];
 
       if (i == 0)
       {
-        if (this.SelectedItems[i] == this.OpeningType.ToString().Replace('_', ' '))
+        if (this._selectedItems[i] == this.OpeningType.ToString().Replace('_', ' '))
           return;
-        this.OpeningType = (NotchTypes)Enum.Parse(typeof(NotchTypes), this.SelectedItems[i].Replace(' ', '_'));
+        this.OpeningType = (NotchTypes)Enum.Parse(typeof(NotchTypes), this._selectedItems[i].Replace(' ', '_'));
       }
       else if (i == 1) // change is made to length unit
       {
-        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
       }
 
       base.UpdateUI();
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
-      this.OpeningType = (NotchTypes)Enum.Parse(typeof(NotchTypes), this.SelectedItems[0].Replace(' ', '_'));
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[1]);
+      this.OpeningType = (NotchTypes)Enum.Parse(typeof(NotchTypes), this._selectedItems[0].Replace(' ', '_'));
+      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
     }

@@ -51,9 +51,9 @@ namespace ComposGH.Components
         try
         {
           this.SteelGrade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), grade.Replace(" ", "_"));
-          this.DropDownItems[0] = new List<string>();
-          this.SelectedItems[0] = "-";
-          this.OverrideDropDownItems[0] = true;
+          this._dropDownItems[0] = new List<string>();
+          this._selectedItems[0] = "-";
+          this.Override_dropDownItems[0] = true;
         }
         catch (ArgumentException)
         {
@@ -64,63 +64,63 @@ namespace ComposGH.Components
           }
           text = text.Remove(text.Length - 2);
           text += ".";
-          this.DropDownItems[0] = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().Select(x => x.ToString()).ToList();
+          this._dropDownItems[0] = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().Select(x => x.ToString()).ToList();
           AddRuntimeMessage(GH_RuntimeMessageLevel.Error, text);
           return;
         }
       }
-      else if (this.OverrideDropDownItems[0])
+      else if (this.Override_dropDownItems[0])
       {
-        this.DropDownItems[0] = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().Select(x => x.ToString()).ToList();
-        this.OverrideDropDownItems[0] = false;
+        this._dropDownItems[0] = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().Select(x => x.ToString()).ToList();
+        this.Override_dropDownItems[0] = false;
       }
 
       Output.SetItem(this, DA, 0, new SteelMaterialGoo(new ASNZSteelMaterial(SteelGrade)));
     }
 
     #region Custom UI
-    List<bool> OverrideDropDownItems;
+    List<bool> Override_dropDownItems;
     private StandardASNZSteelMaterialGrade SteelGrade = StandardASNZSteelMaterialGrade.C450_AS1163;
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] { "Grade" });
+      this._spacerDescriptions = new List<string>(new string[] { "Grade" });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
       // SteelType
       List<StandardASNZSteelMaterialGrade> grades = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().ToList();
       
-      this.DropDownItems.Add(grades.Select(x => x.ToString().Replace("_", " ")).ToList());
-      this.SelectedItems.Add(DropDownItems[0][0]);
+      this._dropDownItems.Add(grades.Select(x => x.ToString().Replace("_", " ")).ToList());
+      this._selectedItems.Add(_dropDownItems[0][0]);
 
-      this.OverrideDropDownItems = new List<bool>() { false };
+      this.Override_dropDownItems = new List<bool>() { false };
 
-      this.IsInitialised = true;
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
       // change selected item
-      this.SelectedItems[i] = this.DropDownItems[i][j];
+      this._selectedItems[i] = this._dropDownItems[i][j];
 
       if (i == 0)  // change is made to code 
       {
-        if (this.SteelGrade.ToString().Replace("_", " ") == this.SelectedItems[i])
+        if (this.SteelGrade.ToString().Replace("_", " ") == this._selectedItems[i])
           return; // return if selected value is same as before
-        StandardASNZSteelMaterialGrade grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), this.SelectedItems[i].Replace(" ", "_"));
+        StandardASNZSteelMaterialGrade grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), this._selectedItems[i].Replace(" ", "_"));
         this.SteelGrade = grade;
       }
 
       base.UpdateUI();
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
-      if (this.SelectedItems[0] != "-")
+      if (this._selectedItems[0] != "-")
       {
-        StandardASNZSteelMaterialGrade grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), this.SelectedItems[0].Replace(" ", "_"));
+        StandardASNZSteelMaterialGrade grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), this._selectedItems[0].Replace(" ", "_"));
         this.SteelGrade = grade;
       }
 

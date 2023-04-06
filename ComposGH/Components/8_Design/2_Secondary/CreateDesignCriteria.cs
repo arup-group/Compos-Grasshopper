@@ -120,31 +120,31 @@ namespace ComposGH.Components
     #region Custom UI
     private OptimiseOption OptOption = OptimiseOption.MinimumWeight;
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] { "Optimise Option" });
+      this._spacerDescriptions = new List<string>(new string[] { "Optimise Option" });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
-      DropDownItems.Add(new List<string>() { "Min. Weight", "Min. Height" });
-      SelectedItems.Add(DropDownItems[0][0]);
+      _dropDownItems.Add(new List<string>() { "Min. Weight", "Min. Height" });
+      _selectedItems.Add(_dropDownItems[0][0]);
 
-      this.IsInitialised = true;
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this.SelectedItems[i] = this.DropDownItems[i][j];
+      this._selectedItems[i] = this._dropDownItems[i][j];
 
-      this.OptOption = this.SelectedItems[0] == "Min. Weight" ? OptimiseOption.MinimumWeight : OptimiseOption.MinimumHeight;
+      this.OptOption = this._selectedItems[0] == "Min. Weight" ? OptimiseOption.MinimumWeight : OptimiseOption.MinimumHeight;
 
       base.UpdateUI();
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
-      this.OptOption = this.SelectedItems[0] == "Min. Weight" ? OptimiseOption.MinimumWeight : OptimiseOption.MinimumHeight;
+      this.OptOption = this._selectedItems[0] == "Min. Weight" ? OptimiseOption.MinimumWeight : OptimiseOption.MinimumHeight;
 
       base.UpdateUIFromSelectedItems();
     }

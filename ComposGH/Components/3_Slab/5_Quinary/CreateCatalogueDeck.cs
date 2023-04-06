@@ -62,63 +62,63 @@ namespace ComposGH.Components
     string Catalogue = null;
     string Profile = null;
     private DeckingSteelGrade SteelGrade = DeckingSteelGrade.S350;
-    List<string> CatalogueNames = SqlReader.Instance.GetDeckCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"));
+    List<string> CatalogueNames = ComposAPI.Helpers.SqlReader.Instance.GetDeckCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"));
     List<string> SectionList = null;
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] {
+      this._spacerDescriptions = new List<string>(new string[] {
         "Type",
         "Decking",
         "Steel Type" });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
       // catalogue
-      this.DropDownItems.Add(this.CatalogueNames);
-      this.SelectedItems.Add(this.CatalogueNames[0]);
-      this.Catalogue = this.SelectedItems[0];
+      this._dropDownItems.Add(this.CatalogueNames);
+      this._selectedItems.Add(this.CatalogueNames[0]);
+      this.Catalogue = this._selectedItems[0];
 
       // decking
-      this.SectionList = SqlReader.Instance.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
-      this.DropDownItems.Add(this.SectionList);
-      this.SelectedItems.Add(this.SectionList[0]);
-      this.Profile = this.SelectedItems[1];
+      this.SectionList = ComposAPI.Helpers.SqlReader.Instance.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
+      this._dropDownItems.Add(this.SectionList);
+      this._selectedItems.Add(this.SectionList[0]);
+      this.Profile = this._selectedItems[1];
 
       // steel
-      this.DropDownItems.Add(Enum.GetValues(typeof(DeckingSteelGrade)).Cast<DeckingSteelGrade>().Select(x => x.ToString()).ToList());
-      this.SelectedItems.Add(SteelGrade.ToString());
+      this._dropDownItems.Add(Enum.GetValues(typeof(DeckingSteelGrade)).Cast<DeckingSteelGrade>().Select(x => x.ToString()).ToList());
+      this._selectedItems.Add(SteelGrade.ToString());
 
-      this.IsInitialised = true;
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this.SelectedItems[i] = this.DropDownItems[i][j];
+      this._selectedItems[i] = this._dropDownItems[i][j];
 
       if (i == 0)  // change is made to code 
       {
         // update selected section to be all
-        this.Catalogue = SelectedItems[0];
-        this.DropDownItems[1] = SqlReader.Instance.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
+        this.Catalogue = _selectedItems[0];
+        this._dropDownItems[1] = ComposAPI.Helpers.SqlReader.Instance.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
       }
 
       if (i == 1)
-        this.Profile = this.SelectedItems[1];
+        this.Profile = this._selectedItems[1];
 
       if (i == 2)
-        this.SteelGrade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), this.SelectedItems[i]);
+        this.SteelGrade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), this._selectedItems[i]);
 
       base.UpdateUI();
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
-      this.SectionList = SqlReader.Instance.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
-      this.Catalogue = this.SelectedItems[0];
-      this.Profile = this.SelectedItems[1];
-      this.SteelGrade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), this.SelectedItems[2]);
+      this.SectionList = ComposAPI.Helpers.SqlReader.Instance.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
+      this.Catalogue = this._selectedItems[0];
+      this.Profile = this._selectedItems[1];
+      this.SteelGrade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), this._selectedItems[2]);
 
       base.UpdateUIFromSelectedItems();
     }
