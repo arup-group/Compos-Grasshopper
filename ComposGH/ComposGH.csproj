@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <Version>0.9.7-beta</Version>
+    <Version>0.9.9-beta</Version>
     <Title>Compos</Title>
     <Description>Official Oasys Compos Grasshopper Plugin
 
