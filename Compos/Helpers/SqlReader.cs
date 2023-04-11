@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
 using System.Data;
 using System.IO;
 using System.Reflection;
 using System.Globalization;
+using Microsoft.Data.Sqlite;
 
 namespace ComposAPI.Helpers
 {
   /// <summary>
   /// Class containing functions to interface with SQLite db files.
-  /// Singleton makes sure this class is executed in a separate AppDomain to avoid conflicts with different SQLite versions in main AppDomain.
   /// </summary>
   public class SqlReader : MarshalByRefObject
   {
@@ -19,26 +18,13 @@ namespace ComposAPI.Helpers
 
     public static SqlReader Initialize()
     {
-      // Get the full name of the EXE assembly.
-      string exeAssembly = Assembly.GetCallingAssembly().FullName;
       string codeBase = Assembly.GetCallingAssembly().CodeBase;
-      UriBuilder uri = new UriBuilder(codeBase);
-      string path = Uri.UnescapeDataString(uri.Path);
+      var uri = new UriBuilder(codeBase);
+      string codeBasePath = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
 
-      // Construct and initialize settings for a second AppDomain.
-      AppDomainSetup ads = new AppDomainSetup();
-      ads.ApplicationBase = Path.GetDirectoryName(path);
-      ads.DisallowBindingRedirects = false;
-      ads.DisallowCodeDownload = true;
-      ads.ConfigurationFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+      Assembly.LoadFile(codeBasePath + @"\Microsoft.Data.Sqlite.dll");
 
-      // Create the second AppDomain.
-      AppDomain ad = AppDomain.CreateDomain("SQLite AppDomain", null, ads);
-
-      // Create an instance of MarshalbyRefType in the second AppDomain.
-      // A proxy to the object is returned.
-      SqlReader reader = (SqlReader)ad.CreateInstanceAndUnwrap(exeAssembly, typeof(SqlReader).FullName);
-      return reader;
+      return new SqlReader();
     }
 
     public override object InitializeLifetimeService()
@@ -57,9 +43,10 @@ namespace ComposAPI.Helpers
     /// </summary>
     /// <param name="filePath"></param>
     /// <returns></returns>
-    public SQLiteConnection Connection(string filePath)
+    public SqliteConnection Connection(string filePath)
     {
-      return new SQLiteConnection($"URI=file:{filePath};mode=ReadOnly");
+      string connectionString = $"Data Source={filePath};Mode=ReadOnly";
+      return new SqliteConnection(connectionString);
     }
 
     /// <summary>
@@ -80,11 +67,11 @@ namespace ComposAPI.Helpers
       using (var db = this.Connection(filePath))
       {
         db.Open();
-        SQLiteCommand cmd = db.CreateCommand();
+        SqliteCommand cmd = db.CreateCommand();
         cmd.CommandText = @"Select CAT_NAME || ' -- ' || CAT_NUM as CAT_NAME from Catalogues";
 
         cmd.CommandType = CommandType.Text;
-        SQLiteDataReader r = cmd.ExecuteReader();
+        SqliteDataReader r = cmd.ExecuteReader();
         while (r.Read())
         {
           // get data
@@ -137,13 +124,13 @@ namespace ComposAPI.Helpers
           int cat = catNumbers[i];
 
           db.Open();
-          SQLiteCommand cmd = db.CreateCommand();
+          SqliteCommand cmd = db.CreateCommand();
           if (inclSuperseded)
             cmd.CommandText = $"Select TYPE_NAME || ' -- ' || TYPE_NUM as TYPE_NAME from Types where TYPE_CAT_NUM = {cat}";
           else
             cmd.CommandText = $"Select TYPE_NAME || ' -- ' || TYPE_NUM as TYPE_NAME from Types where TYPE_CAT_NUM = {cat} and not (TYPE_SUPERSEDED = True or TYPE_SUPERSEDED = TRUE or TYPE_SUPERSEDED = 1)";
           cmd.CommandType = CommandType.Text;
-          SQLiteDataReader r = cmd.ExecuteReader();
+          SqliteDataReader r = cmd.ExecuteReader();
           while (r.Read())
           {
             // get data
@@ -194,7 +181,7 @@ namespace ComposAPI.Helpers
         {
           int type = types[i];
           db.Open();
-          SQLiteCommand cmd = db.CreateCommand();
+          SqliteCommand cmd = db.CreateCommand();
 
           if (inclSuperseded)
             cmd.CommandText = $"Select Types.TYPE_ABR || ' ' || SECT_NAME || ' -- ' || SECT_DATE_ADDED as SECT_NAME from Sect INNER JOIN Types ON Sect.SECT_TYPE_NUM = Types.TYPE_NUM where SECT_TYPE_NUM = {type} ORDER BY SECT_AREA";
@@ -202,7 +189,7 @@ namespace ComposAPI.Helpers
             cmd.CommandText = $"Select Types.TYPE_ABR || ' ' || SECT_NAME as SECT_NAME from Sect INNER JOIN Types ON Sect.SECT_TYPE_NUM = Types.TYPE_NUM where SECT_TYPE_NUM = {type} and not (SECT_SUPERSEDED = True or SECT_SUPERSEDED = TRUE or SECT_SUPERSEDED = 1) ORDER BY SECT_AREA";
 
           cmd.CommandType = CommandType.Text;
-          SQLiteDataReader r = cmd.ExecuteReader();
+          SqliteDataReader r = cmd.ExecuteReader();
           while (r.Read())
           {
             if (inclSuperseded)
@@ -236,11 +223,11 @@ namespace ComposAPI.Helpers
       using (var db = this.Connection(filePath))
       {
         db.Open();
-        SQLiteCommand cmd = db.CreateCommand();
+        SqliteCommand cmd = db.CreateCommand();
         cmd.CommandText = @"Select Catalogue_Name || ' -- ' || Catalogue_ID as Catalogue_Name from Catalogue";
 
         cmd.CommandType = CommandType.Text;
-        SQLiteDataReader r = cmd.ExecuteReader();
+        SqliteDataReader r = cmd.ExecuteReader();
         while (r.Read())
         {
           // get data
@@ -262,11 +249,11 @@ namespace ComposAPI.Helpers
       using (var db = this.Connection(filePath))
       {
         db.Open();
-        SQLiteCommand cmd = db.CreateCommand();
+        SqliteCommand cmd = db.CreateCommand();
         //cmd.CommandText = $"Select Type_{cat}.TYPE_ABR || ' ' || Deck_Name as Deck_Name from Deck_{cat} INNER JOIN Type_{cat} ON Deck_{cat}.Deck_Type_ID = Type_{cat}.TYPE_ID ORDER BY Deck_Thickness";
         cmd.CommandText = $"Select Deck_Name from Deck_{cat} ORDER BY Deck_Thickness";
         cmd.CommandType = CommandType.Text;
-        SQLiteDataReader r = cmd.ExecuteReader();
+        SqliteDataReader r = cmd.ExecuteReader();
         while (r.Read())
         {
           // get data
@@ -297,13 +284,13 @@ namespace ComposAPI.Helpers
       using (var db = this.Connection(filePath))
       {
         db.Open();
-        SQLiteCommand cmd = db.CreateCommand();
+        SqliteCommand cmd = db.CreateCommand();
         cmd.CommandText = $"Select SECT_DEPTH_DIAM || ' -- ' || SECT_WIDTH || ' -- ' || SECT_WEB_THICK || ' -- ' || SECT_FLG_THICK || ' -- ' || SECT_ROOT_RAD as SECT_NAME from Sect INNER JOIN Types ON Sect.SECT_TYPE_NUM = Types.TYPE_NUM where SECT_NAME = \"{profileString}\" ORDER BY SECT_DATE_ADDED";
 
         List<string> data = new List<string>();
 
         cmd.CommandType = CommandType.Text;
-        SQLiteDataReader r = cmd.ExecuteReader();
+        SqliteDataReader r = cmd.ExecuteReader();
         while (r.Read())
         {
           // get data
@@ -331,13 +318,13 @@ namespace ComposAPI.Helpers
       using (var db = this.Connection(filePath))
       {
         db.Open();
-        SQLiteCommand cmd = db.CreateCommand();
+        SqliteCommand cmd = db.CreateCommand();
         cmd.CommandText = $"Select Deck_Spacing || ' -- ' || Deck_UpperWidth|| ' -- ' || Deck_LowerWidth || ' -- ' || Deck_Proj_Height || ' -- ' || Deck_Proj_width || ' -- ' || Deck_depth || ' -- ' || Deck_thickness as Deck_Name from Deck_{cat} where Deck_Name = \"{profileString}\" ";
 
         List<string> data = new List<string>();
 
         cmd.CommandType = CommandType.Text;
-        SQLiteDataReader r = cmd.ExecuteReader();
+        SqliteDataReader r = cmd.ExecuteReader();
         while (r.Read())
         {
           // get data
@@ -374,7 +361,7 @@ namespace ComposAPI.Helpers
       using (var db = this.Connection(filePath))
       {
         db.Open();
-        SQLiteCommand cmd = db.CreateCommand();
+        SqliteCommand cmd = db.CreateCommand();
         cmd.CommandText = $"Select " +
           $"SECT_DEPTH_DIAM || ' -- ' || " +
           $"SECT_WIDTH || ' -- ' || " +
@@ -386,7 +373,7 @@ namespace ComposAPI.Helpers
         List<string> data = new List<string>();
 
         cmd.CommandType = CommandType.Text;
-        SQLiteDataReader r = cmd.ExecuteReader();
+        SqliteDataReader r = cmd.ExecuteReader();
         while (r.Read())
         {
           // get data
@@ -430,7 +417,7 @@ namespace ComposAPI.Helpers
       using (var db = this.Connection(filePath))
       {
         db.Open();
-        SQLiteCommand cmd = db.CreateCommand();
+        SqliteCommand cmd = db.CreateCommand();
         cmd.CommandText = $"Select " +
           $"Deck_Depth || ' -- ' || " +
           $"Deck_Spacing || ' -- ' || " +
@@ -444,7 +431,7 @@ namespace ComposAPI.Helpers
         List<string> data = new List<string>();
 
         cmd.CommandType = CommandType.Text;
-        SQLiteDataReader r = cmd.ExecuteReader();
+        SqliteDataReader r = cmd.ExecuteReader();
         while (r.Read())
         {
           // get data
