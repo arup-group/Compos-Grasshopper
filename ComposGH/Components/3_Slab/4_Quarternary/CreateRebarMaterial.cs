@@ -50,7 +50,7 @@ namespace ComposGH.Components
     {
       if (this.Params.Input[0].Sources.Count > 0)
       {
-        SelectedItems[0] = "Custom";
+        _selectedItems[0] = "Custom";
         Output.SetItem(this, DA, 0, new ReinforcementMaterialGoo(new ReinforcementMaterial((Pressure)Input.UnitNumber(this, DA, 0, StressUnit))));
       }
       else
@@ -61,42 +61,42 @@ namespace ComposGH.Components
     private PressureUnit StressUnit = DefaultUnits.MaterialStrengthUnit;
     private RebarGrade Grade = RebarGrade.EN_500B;
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] { "Grade", "Unit" });
+      this._spacerDescriptions = new List<string>(new string[] { "Grade", "Unit" });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
       // grade
-      this.DropDownItems.Add(Enum.GetValues(typeof(RebarGrade)).Cast<RebarGrade>().Select(x => x.ToString()).ToList());
-      this.SelectedItems.Add(Grade.ToString());
+      this._dropDownItems.Add(Enum.GetValues(typeof(RebarGrade)).Cast<RebarGrade>().Select(x => x.ToString()).ToList());
+      this._selectedItems.Add(Grade.ToString());
 
       // strength
-      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Stress));
-      this.SelectedItems.Add(Pressure.GetAbbreviation(this.StressUnit));
+      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Stress));
+      this._selectedItems.Add(Pressure.GetAbbreviation(this.StressUnit));
 
-      this.IsInitialised = true;
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this.SelectedItems[i] = this.DropDownItems[i][j];
+      this._selectedItems[i] = this._dropDownItems[i][j];
 
       if (i == 0) // change is made to grade
-        this.Grade = (RebarGrade)Enum.Parse(typeof(RebarGrade), this.SelectedItems[i]);
+        this.Grade = (RebarGrade)Enum.Parse(typeof(RebarGrade), this._selectedItems[i]);
       if (i == 1) // change is made to unit
-        this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this.SelectedItems[i]);
+        this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this._selectedItems[i]);
 
       base.UpdateUI();
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
-      if (SelectedItems[0] != "Custom")
-        this.Grade = (RebarGrade)Enum.Parse(typeof(RebarGrade), this.SelectedItems[0]);
+      if (_selectedItems[0] != "Custom")
+        this.Grade = (RebarGrade)Enum.Parse(typeof(RebarGrade), this._selectedItems[0]);
 
-      this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this.SelectedItems[1]);
+      this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this._selectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
     }

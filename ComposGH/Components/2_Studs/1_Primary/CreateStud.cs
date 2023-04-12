@@ -82,32 +82,32 @@ namespace ComposGH.Components
     #region Custom UI
     private StudSpacingType SpacingType = StudSpacingType.Min_Num_of_Studs;
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] { "Spacing Type" });
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._spacerDescriptions = new List<string>(new string[] { "Spacing Type" });
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
       // spacing
-      this.DropDownItems.Add(Enum.GetValues(typeof(StudSpacingType)).Cast<StudSpacingType>()
+      this._dropDownItems.Add(Enum.GetValues(typeof(StudSpacingType)).Cast<StudSpacingType>()
           .Select(x => x.ToString().Replace("_", " ")).ToList());
-      this.SelectedItems.Add(SpacingType.ToString().Replace("_", " "));
-      this.IsInitialised = true;
+      this._selectedItems.Add(SpacingType.ToString().Replace("_", " "));
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
       // change selected item
-      this.SelectedItems[i] = this.DropDownItems[i][j];
-      if (SpacingType.ToString().Replace("_", " ") == this.SelectedItems[i])
+      this._selectedItems[i] = this._dropDownItems[i][j];
+      if (SpacingType.ToString().Replace("_", " ") == this._selectedItems[i])
         return;
-      this.SpacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), this.SelectedItems[i].Replace(" ", "_"));
+      this.SpacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), this._selectedItems[i].Replace(" ", "_"));
       this.ModeChangeClicked();
       base.UpdateUI();
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
-      this.SpacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), this.SelectedItems[0].Replace(" ", "_"));
+      this.SpacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), this._selectedItems[0].Replace(" ", "_"));
       this.ModeChangeClicked();
       base.UpdateUIFromSelectedItems();
     }

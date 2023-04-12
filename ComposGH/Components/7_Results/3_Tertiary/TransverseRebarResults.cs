@@ -87,40 +87,40 @@ namespace ComposGH.Components
     private ForceUnit ForceUnit = DefaultUnits.ForceUnit;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] { "Force Unit", "Length Unit" });
+      this._spacerDescriptions = new List<string>(new string[] { "Force Unit", "Length Unit" });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
       // force
-      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Force));
-      this.SelectedItems.Add(Force.GetAbbreviation(this.ForceUnit));
+      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Force));
+      this._selectedItems.Add(Force.GetAbbreviation(this.ForceUnit));
 
       // length
-      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this.SelectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
 
-      this.IsInitialised = true;
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this.SelectedItems[i] = this.DropDownItems[i][j];
+      this._selectedItems[i] = this._dropDownItems[i][j];
 
       if (i == 0)
-        this.ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), this.SelectedItems[i]);
+        this.ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), this._selectedItems[i]);
       else if (i == 1)
-        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
 
       base.UpdateUI();
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
-      this.ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), this.SelectedItems[0]);
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[1]);
+      this.ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), this._selectedItems[0]);
+      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
     }

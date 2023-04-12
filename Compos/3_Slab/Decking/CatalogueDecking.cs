@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using ComposAPI.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
@@ -17,7 +18,6 @@ namespace ComposAPI
     public string Catalogue { get; set; } //	catalogue name of the decking
     public string Profile { get; set; } // decking name
     public DeckingSteelGrade Grade { get; set; } //	decking material grade
-    internal static ICatalogueDB catalogueDB { get; set; } = new CatalogueDB();
 
     public CatalogueDecking()
     {
@@ -32,7 +32,7 @@ namespace ComposAPI
       this.DeckingConfiguration = deckingConfiguration;
       this.m_type = DeckingType.Catalogue;
 
-      List<double> sqlValues = catalogueDB.GetCatalogueDeckingValues(catalogue, profile);
+      List<double> sqlValues = SqlReader.Instance.GetCatalogueDeckingValues(Path.Combine(ComposIO.InstallPath, "decking.db3"), catalogue, profile);
       LengthUnit unit = LengthUnit.Meter;
       this.Depth = new Length(sqlValues[0], unit);
       this.b1 = new Length(sqlValues[1], unit);
@@ -78,7 +78,7 @@ namespace ComposAPI
       parameters.Add(this.Grade.ToString());
       parameters.Add(
         CoaHelper.FormatSignificantFigures(
-          this.DeckingConfiguration.Angle.ToUnit(AngleUnit.Degree).Value, 6).ToString()); 
+          this.DeckingConfiguration.Angle.ToUnit(AngleUnit.Degree).Value, 6).ToString());
       // COA string always in degrees
 
       if (this.DeckingConfiguration.IsDiscontinous)

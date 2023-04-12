@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using ComposAPI;
+using ComposAPI.Helpers;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -19,7 +20,7 @@ using OasysUnits.Units;
 namespace ComposGH.Components
 {
   /// <summary>
-  /// Component to create AdSec profile
+  /// Component to create profile
   /// </summary>
   public class CreateProfile : GH_OasysDropDownComponent
   {
@@ -160,19 +161,19 @@ namespace ComposGH.Components
 
     // for catalogue selection
     // Catalogues
-    readonly Tuple<List<string>, List<int>> Cataloguedata = Helpers.SqlReader.GetCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"));
+    readonly Tuple<List<string>, List<int>> Cataloguedata = ComposAPI.Helpers.SqlReader.Instance.GetCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"));
     List<int> CatalogueNumbers = new List<int>(); // internal db catalogue numbers
     List<string> CatalogueNames = new List<string>(); // list of displayed catalogues
     bool InclSS;
 
     // Types
-    Tuple<List<string>, List<int>> Typedata = Helpers.SqlReader.GetTypesDataFromSQLite(-1, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), false);
+    Tuple<List<string>, List<int>> Typedata = ComposAPI.Helpers.SqlReader.Instance.GetTypesDataFromSQLite(-1, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), false);
     List<int> TypeNumbers = new List<int>(); //  internal db type numbers
     List<string> TypeNames = new List<string>(); // list of displayed types
 
     // Sections
     // list of displayed sections
-    List<string> SectionList = Helpers.SqlReader.GetSectionsDataFromSQLite(new List<int> { -1 }, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), false);
+    List<string> SectionList = ComposAPI.Helpers.SqlReader.Instance.GetSectionsDataFromSQLite(new List<int> { -1 }, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), false);
     List<string> Filteredlist = new List<string>();
     int CatalogueIndex = -1; //-1 is all
     int TypeIndex = -1;
@@ -180,23 +181,23 @@ namespace ComposGH.Components
     string ProfileString = "HE HE600.B";
     string Search = "";
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] { "Profile type", "Measure", "Type", "Profile" });
+      this._spacerDescriptions = new List<string>(new string[] { "Profile type", "Measure", "Type", "Profile" });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
-      this.DropDownItems.Add(ProfileTypes.Keys.ToList());
-      this.SelectedItems.Add("Catalogue");
+      this._dropDownItems.Add(ProfileTypes.Keys.ToList());
+      this._selectedItems.Add("Catalogue");
 
       // length
-      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this.SelectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
 
       this.SetSelected(-1, 0);
 
-      this.IsInitialised = true;
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
@@ -205,27 +206,27 @@ namespace ComposGH.Components
       bool updateCat = false;
       if (i == -1)
       {
-        SelectedItems[0] = "Catalogue";
+        _selectedItems[0] = "Catalogue";
         updateCat = true;
         i = 0;
       }
       else
       {
         // change selected item
-        this.SelectedItems[i] = this.DropDownItems[i][j];
+        this._selectedItems[i] = this._dropDownItems[i][j];
       }
 
-      if (this.SelectedItems[0] == "Catalogue")
+      if (this._selectedItems[0] == "Catalogue")
       {
         // update spacer description to match catalogue dropdowns
-        this.SpacerDescriptions[1] = "Catalogue";
+        this._spacerDescriptions[1] = "Catalogue";
 
         // if FoldMode is not currently catalogue state, then we update all lists
         if (this._mode != FoldMode.Catalogue | updateCat)
         {
           // remove any existing selections
-          while (SelectedItems.Count > 1)
-            this.SelectedItems.RemoveAt(1);
+          while (_selectedItems.Count > 1)
+            this._selectedItems.RemoveAt(1);
 
           // set catalogue selection to all
           this.CatalogueIndex = -1;
@@ -236,12 +237,12 @@ namespace ComposGH.Components
           // set types to all
           this.TypeIndex = -1;
           // update typelist with all catalogues
-          this.Typedata = Helpers.SqlReader.GetTypesDataFromSQLite(this.CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+          this.Typedata = ComposAPI.Helpers.SqlReader.Instance.GetTypesDataFromSQLite(this.CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
           this.TypeNames = Typedata.Item1;
           this.TypeNumbers = Typedata.Item2;
 
           // update section list to all types
-          this.SectionList = Helpers.SqlReader.GetSectionsDataFromSQLite(TypeNumbers, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+          this.SectionList = ComposAPI.Helpers.SqlReader.Instance.GetSectionsDataFromSQLite(TypeNumbers, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
 
           // filter by search pattern
           this.Filteredlist = new List<string>();
@@ -267,20 +268,20 @@ namespace ComposGH.Components
           }
 
           // update displayed selections to all
-          this.SelectedItems.Add(this.CatalogueNames[0]);
-          this.SelectedItems.Add(this.TypeNames[0]);
-          this.SelectedItems.Add(this.Filteredlist[0]);
+          this._selectedItems.Add(this.CatalogueNames[0]);
+          this._selectedItems.Add(this.TypeNames[0]);
+          this._selectedItems.Add(this.Filteredlist[0]);
 
           // call graphics update
           Mode1Clicked();
         }
 
         // update dropdown lists
-        while (this.DropDownItems.Count > 1)
-          this.DropDownItems.RemoveAt(1);
+        while (this._dropDownItems.Count > 1)
+          this._dropDownItems.RemoveAt(1);
 
         // add catalogues (they will always be the same so no need to rerun sql call)
-        this.DropDownItems.Add(this.CatalogueNames);
+        this._dropDownItems.Add(this.CatalogueNames);
 
         // type list
         // if second list (i.e. catalogue list) is changed, update types list to account for that catalogue
@@ -288,17 +289,17 @@ namespace ComposGH.Components
         {
           // update catalogue index with the selected catalogue
           this.CatalogueIndex = this.CatalogueNumbers[j];
-          this.SelectedItems[1] = this.CatalogueNames[j];
+          this._selectedItems[1] = this.CatalogueNames[j];
 
           // update typelist with selected input catalogue
-          this.Typedata = Helpers.SqlReader.GetTypesDataFromSQLite(CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+          this.Typedata = ComposAPI.Helpers.SqlReader.Instance.GetTypesDataFromSQLite(CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
           this.TypeNames = this.Typedata.Item1;
           this.TypeNumbers = this.Typedata.Item2;
 
           // update section list from new types (all new types in catalogue)
           List<int> types = this.TypeNumbers.ToList();
           types.RemoveAt(0); // remove -1 from beginning of list
-          this.SectionList = Helpers.SqlReader.GetSectionsDataFromSQLite(types, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+          this.SectionList = ComposAPI.Helpers.SqlReader.Instance.GetSectionsDataFromSQLite(types, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
 
           // filter by search pattern
           this.Filteredlist = new List<string>();
@@ -324,10 +325,10 @@ namespace ComposGH.Components
           }
 
           // update selections to display first item in new list
-          this.SelectedItems[2] = this.TypeNames[0];
-          this.SelectedItems[3] = this.Filteredlist[0];
+          this._selectedItems[2] = this.TypeNames[0];
+          this._selectedItems[3] = this.Filteredlist[0];
         }
-        this.DropDownItems.Add(this.TypeNames);
+        this._dropDownItems.Add(this.TypeNames);
 
         // section list
         // if third list (i.e. types list) is changed, update sections list to account for these section types
@@ -336,7 +337,7 @@ namespace ComposGH.Components
         {
           // update catalogue index with the selected catalogue
           this.TypeIndex = this.TypeNumbers[j];
-          this.SelectedItems[2] = this.TypeNames[j];
+          this._selectedItems[2] = this.TypeNames[j];
 
           // create type list
           List<int> types = new List<int>();
@@ -350,7 +351,7 @@ namespace ComposGH.Components
 
 
           // section list with selected types (only types in selected type)
-          this.SectionList = Helpers.SqlReader.GetSectionsDataFromSQLite(types, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+          this.SectionList = ComposAPI.Helpers.SqlReader.Instance.GetSectionsDataFromSQLite(types, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
 
           // filter by search pattern
           this.Filteredlist = new List<string>();
@@ -378,69 +379,69 @@ namespace ComposGH.Components
           }
 
           // update selected section to be all
-          this.SelectedItems[3] = this.Filteredlist[0];
+          this._selectedItems[3] = this.Filteredlist[0];
         }
-        this.DropDownItems.Add(this.Filteredlist);
+        this._dropDownItems.Add(this.Filteredlist);
 
         // selected profile
         // if fourth list (i.e. section list) is changed, updated the sections list to only be that single profile
         if (i == 3)
         {
           // update displayed selected
-          this.SelectedItems[3] = this.Filteredlist[j];
+          this._selectedItems[3] = this.Filteredlist[j];
         }
-        this.ProfileString = this.SelectedItems[3];
+        this.ProfileString = this._selectedItems[3];
 
-        if (!IsInitialised) { return; }
+        if (!_isInitialised) { return; }
         base.UpdateUI();
       }
       else
       {
         // update spacer description to match none-catalogue dropdowns
-        this.SpacerDescriptions[1] = "Measure";// = new List<string>(new string[]
+        this._spacerDescriptions[1] = "Measure";// = new List<string>(new string[]
 
         if (_mode != FoldMode.Other)
         {
           // remove all catalogue dropdowns
-          while (this.DropDownItems.Count > 1)
-            this.DropDownItems.RemoveAt(1);
+          while (this._dropDownItems.Count > 1)
+            this._dropDownItems.RemoveAt(1);
 
           // add length measure dropdown list
-          this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+          this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
 
           // set selected length
-          this.SelectedItems[1] = Length.GetAbbreviation(this.LengthUnit);
+          this._selectedItems[1] = Length.GetAbbreviation(this.LengthUnit);
         }
 
         if (i == 0)
         {
           // update profile type if change is made to first dropdown menu
-          this.Typ = this.ProfileTypes[SelectedItems[0]];
+          this.Typ = this.ProfileTypes[_selectedItems[0]];
           Mode2Clicked();
         }
         else
         {
           // change unit
-          this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), SelectedItems[i]);
+          this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
           base.UpdateUI();
         }
       }
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
-      if (this.SelectedItems[0] == "Catalogue")
+      if (this._selectedItems[0] == "Catalogue")
       {
         // update spacer description to match catalogue dropdowns
-        this.SpacerDescriptions = new List<string>(new string[]
+        this._spacerDescriptions = new List<string>(new string[]
         {
           "Profile type", "Catalogue", "Type", "Profile"
         });
 
         this.CatalogueNames = this.Cataloguedata.Item1;
         this.CatalogueNumbers = this.Cataloguedata.Item2;
-        this.Typedata = Helpers.SqlReader.GetTypesDataFromSQLite(this.CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+        this.Typedata = ComposAPI.Helpers.SqlReader.Instance.GetTypesDataFromSQLite(this.CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
         this.TypeNames = this.Typedata.Item1;
         this.TypeNumbers = this.Typedata.Item2;
 
@@ -449,17 +450,17 @@ namespace ComposGH.Components
         Mode1Clicked();
         this.comingFromSave = false;
 
-        this.ProfileString = SelectedItems[3];
+        this.ProfileString = _selectedItems[3];
       }
       else
       {
         // update spacer description to match none-catalogue dropdowns
-        this.SpacerDescriptions = new List<string>(new string[]
+        this._spacerDescriptions = new List<string>(new string[]
         {
           "Profile type", "Measure", "Type", "Profile"
         });
 
-        this.Typ = this.ProfileTypes[SelectedItems[0]];
+        this.Typ = this.ProfileTypes[_selectedItems[0]];
         Mode2Clicked();
       }
 

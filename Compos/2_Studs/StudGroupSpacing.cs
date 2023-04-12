@@ -84,7 +84,7 @@ namespace ComposAPI
       }
       string rows = NumberOfRows + "R";
       string lines = NumberOfLines + "L";
-      string spacing = "@" + this.Spacing.ToUnit(UnitsHelper.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
+      string spacing = "@" + this.Spacing.ToUnit(ComposUnitsHelper.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
 
       string joined = string.Join(" ", new List<string>() { start, rows, lines, spacing });
       return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');

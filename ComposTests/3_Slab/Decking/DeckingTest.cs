@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
-using OasysUnits;
-using OasysUnits.Units;
-using Xunit;
-using ComposAPITests.Helpers;
+using System.IO;
 using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
+using OasysUnits;
+using OasysUnits.Units;
+using Xunit;
 
 namespace ComposAPI.Slabs.Tests
 {
-    [Collection("ComposAPI Fixture collection")]
+  [Collection("ComposAPI Fixture collection")]
   public class DeckingTest
   {
     [Theory]
@@ -52,7 +52,6 @@ namespace ComposAPI.Slabs.Tests
     {
       // 2 create object instance with constructor
       DeckingConfiguration configuration = new DeckingConfiguration();
-      CatalogueDecking.catalogueDB = new MockCatalogueDB();
       CatalogueDecking decking = new CatalogueDecking(catalogue, profile, deckingSteelGrade, configuration);
 
       // 3 check that inputs are set in object's members
@@ -118,7 +117,7 @@ namespace ComposAPI.Slabs.Tests
       // Assemble
       List<string> parameters = CoaHelper.Split(expected_coaString);
       ComposUnits units = ComposUnits.GetStandardUnits();
-      
+
       // Act
       CatalogueDecking decking = (CatalogueDecking)CatalogueDecking.FromCoaString(parameters, units);
 

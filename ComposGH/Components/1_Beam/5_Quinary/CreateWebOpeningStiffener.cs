@@ -82,46 +82,46 @@ namespace ComposGH.Components
     private Stiff_types OpeningType = Stiff_types.Web_Opening;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] { "Type", "Unit" });
+      this._spacerDescriptions = new List<string>(new string[] { "Type", "Unit" });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
       // type
-      this.DropDownItems.Add(Enum.GetValues(typeof(Stiff_types)).Cast<Stiff_types>()
+      this._dropDownItems.Add(Enum.GetValues(typeof(Stiff_types)).Cast<Stiff_types>()
           .Select(x => x.ToString().Replace('_', ' ')).ToList());
-      this.SelectedItems.Add(Stiff_types.Web_Opening.ToString().Replace('_', ' '));
+      this._selectedItems.Add(Stiff_types.Web_Opening.ToString().Replace('_', ' '));
 
       // length
-      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this.SelectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
 
-      this.IsInitialised = true;
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this.SelectedItems[i] = this.DropDownItems[i][j];
+      this._selectedItems[i] = this._dropDownItems[i][j];
 
       if (i == 0)
       {
-        if (this.SelectedItems[i] == this.OpeningType.ToString().Replace('_', ' '))
+        if (this._selectedItems[i] == this.OpeningType.ToString().Replace('_', ' '))
           return;
-        this.OpeningType = (Stiff_types)Enum.Parse(typeof(Stiff_types), this.SelectedItems[i].Replace(' ', '_'));
+        this.OpeningType = (Stiff_types)Enum.Parse(typeof(Stiff_types), this._selectedItems[i].Replace(' ', '_'));
         ModeChangeClicked();
       }
       else if (i == 1) // change is made to length unit
-        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
 
       base.UpdateUI();
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
-      this.OpeningType = (Stiff_types)Enum.Parse(typeof(Stiff_types), this.SelectedItems[0].Replace(' ', '_'));
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[1]);
+      this.OpeningType = (Stiff_types)Enum.Parse(typeof(Stiff_types), this._selectedItems[0].Replace(' ', '_'));
+      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[1]);
 
       CreateAttributes();
       ModeChangeClicked();

@@ -112,47 +112,47 @@ namespace ComposGH.Components
     private PressureUnit StressUnit = DefaultUnits.StressUnitResult;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] { "Case", "Stress Unit", "Length Unit" });
+      this._spacerDescriptions = new List<string>(new string[] { "Case", "Stress Unit", "Length Unit" });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
       // Case
-      this.DropDownItems.Add(Enum.GetNames(typeof(Case)).ToList());
-      this.SelectedItems.Add(this.SelectedCase.ToString());
+      this._dropDownItems.Add(Enum.GetNames(typeof(Case)).ToList());
+      this._selectedItems.Add(this.SelectedCase.ToString());
 
       // stress
-      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Stress));
-      this.SelectedItems.Add(Pressure.GetAbbreviation(this.StressUnit));
+      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Stress));
+      this._selectedItems.Add(Pressure.GetAbbreviation(this.StressUnit));
 
       // length
-      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this.SelectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
 
-      this.IsInitialised = true;
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this.SelectedItems[i] = this.DropDownItems[i][j];
+      this._selectedItems[i] = this._dropDownItems[i][j];
 
       if (i == 0)
-        this.SelectedCase = (Case)Enum.Parse(typeof(Case), this.SelectedItems[i]);
+        this.SelectedCase = (Case)Enum.Parse(typeof(Case), this._selectedItems[i]);
       else if (i == 1)
-        this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this.SelectedItems[i]);
+        this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this._selectedItems[i]);
       else if (i == 2)
-        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[i]);
+        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
 
       base.UpdateUI();
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
-      this.SelectedCase = (Case)Enum.Parse(typeof(Case), this.SelectedItems[0]);
-      this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this.SelectedItems[1]);
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this.SelectedItems[2]);
+      this.SelectedCase = (Case)Enum.Parse(typeof(Case), this._selectedItems[0]);
+      this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this._selectedItems[1]);
+      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[2]);
 
       base.UpdateUIFromSelectedItems();
     }

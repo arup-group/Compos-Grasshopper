@@ -147,7 +147,7 @@ namespace ComposAPI
     {
       if (this.UserDefined)
       {
-        string str = Fy.ToUnit(UnitsHelper.StressUnit).ToString("f0");
+        string str = Fy.ToUnit(ComposUnitsHelper.StressUnit).ToString("f0");
         return str.Replace(" ", string.Empty);
       }
       else

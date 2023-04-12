@@ -68,9 +68,9 @@ namespace ComposGH.Components
         try
         {
           this.Grade = (ConcreteGrade)Enum.Parse(typeof(ConcreteGrade), grade);
-          this.DropDownItems[0] = new List<string>();
-          this.SelectedItems[0] = "-";
-          this.OverrideDropDownItems[0] = true;
+          this._dropDownItems[0] = new List<string>();
+          this._selectedItems[0] = "-";
+          this.Override_dropDownItems[0] = true;
         }
         catch (ArgumentException)
         {
@@ -81,15 +81,15 @@ namespace ComposGH.Components
           }
           text = text.Remove(text.Length - 2);
           text += ".";
-          this.DropDownItems[0] = Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList();
+          this._dropDownItems[0] = Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList();
           AddRuntimeMessage(GH_RuntimeMessageLevel.Error, text);
           return;
         }
       }
-      else if (this.OverrideDropDownItems[0])
+      else if (this.Override_dropDownItems[0])
       {
-        this.DropDownItems[0] = Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList();
-        this.OverrideDropDownItems[0] = false;
+        this._dropDownItems[0] = Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList();
+        this.Override_dropDownItems[0] = false;
       }
 
       Density dryDensity = new Density(2450, DensityUnit.KilogramPerCubicMeter);
@@ -118,62 +118,62 @@ namespace ComposGH.Components
     }
 
     #region Custom UI
-    List<bool> OverrideDropDownItems;
+    List<bool> Override_dropDownItems;
     private ConcreteGrade Grade = ConcreteGrade.C20;
     private DensityUnit DensityUnit = DefaultUnits.DensityUnit;
     private StrainUnit StrainUnit = StrainUnit.MilliStrain;
 
-    public override void InitialiseDropdowns()
+    protected override void InitialiseDropdowns()
     {
-      this.SpacerDescriptions = new List<string>(new string[] {
+      this._spacerDescriptions = new List<string>(new string[] {
         "Grade",
         "Density Unit",
         "Strain Unit" });
 
-      this.DropDownItems = new List<List<string>>();
-      this.SelectedItems = new List<string>();
+      this._dropDownItems = new List<List<string>>();
+      this._selectedItems = new List<string>();
 
       // grade
       List<string> concreteGrades = Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList();
-      this.DropDownItems.Add(concreteGrades);
-      this.SelectedItems.Add(this.Grade.ToString());
+      this._dropDownItems.Add(concreteGrades);
+      this._selectedItems.Add(this.Grade.ToString());
 
       // density unit
-      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Density));
-      this.SelectedItems.Add(Density.GetAbbreviation(this.DensityUnit));
+      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Density));
+      this._selectedItems.Add(Density.GetAbbreviation(this.DensityUnit));
 
       // strain unit
-      this.DropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Strain));
-      this.SelectedItems.Add(Strain.GetAbbreviation(this.StrainUnit));
+      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Strain));
+      this._selectedItems.Add(Strain.GetAbbreviation(this.StrainUnit));
 
-      this.OverrideDropDownItems = new List<bool>() { false, false, false };
+      this.Override_dropDownItems = new List<bool>() { false, false, false };
 
-      this.IsInitialised = true;
+      this._isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
       // change selected item
-      this.SelectedItems[i] = this.DropDownItems[i][j];
+      this._selectedItems[i] = this._dropDownItems[i][j];
 
       if (i == 0) // change is made to grade
-        this.Grade = (ConcreteGrade)Enum.Parse(typeof(ConcreteGrade), this.SelectedItems[i]);
+        this.Grade = (ConcreteGrade)Enum.Parse(typeof(ConcreteGrade), this._selectedItems[i]);
 
       else if (i == 1) // change is made to density unit
-        this.DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), this.SelectedItems[i]);
+        this.DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), this._selectedItems[i]);
 
       else if (i == 2) // change is made to strain unit
-        this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this.SelectedItems[i]);
+        this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this._selectedItems[i]);
 
       base.UpdateUI();
     }
 
-    public override void UpdateUIFromSelectedItems()
+    protected override void UpdateUIFromSelectedItems()
     {
-      if (this.SelectedItems[0] != "-")
-        this.Grade = (ConcreteGrade)Enum.Parse(typeof(ConcreteGrade), this.SelectedItems[0]);
-      this.DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), this.SelectedItems[1]);
-      this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this.SelectedItems[2]);
+      if (this._selectedItems[0] != "-")
+        this.Grade = (ConcreteGrade)Enum.Parse(typeof(ConcreteGrade), this._selectedItems[0]);
+      this.DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), this._selectedItems[1]);
+      this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this._selectedItems[2]);
 
       base.UpdateUIFromSelectedItems();
     }

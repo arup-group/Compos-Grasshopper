@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using ComposAPI.Helpers;
+using ComposGHTests.Helpers;
+using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
 using Xunit;
-using ComposGHTests.Helpers;
-using OasysGH;
 
 namespace ComposAPI.Slabs.Tests
 {
-    public static class SlabMother
+  public static class SlabMother
   {
     public static string Example1CoaString()
     {
@@ -27,17 +29,17 @@ namespace ComposAPI.Slabs.Tests
     {
       ConcreteMaterial material = (ConcreteMaterial)ConcreteMaterialMother.CreateConcreteMaterial();
       material.Grade = ConcreteGrade.C40.ToString();
-      
+
       ISlabDimension slabDimension1 = new SlabDimension(Length.Zero, new Length(0.13, LengthUnit.Meter), new Length(1.5, LengthUnit.Meter), new Length(1.5, LengthUnit.Meter), true);
       ISlabDimension slabDimension2 = new SlabDimension(new Ratio(15, RatioUnit.Percent), new Length(0.15, LengthUnit.Meter), new Length(1.0, LengthUnit.Meter), new Length(1.0, LengthUnit.Meter), false);
       ISlabDimension slabDimension3 = new SlabDimension(new Length(9, LengthUnit.Meter), new Length(0.15, LengthUnit.Meter), new Length(1.0, LengthUnit.Meter), new Length(1.0, LengthUnit.Meter), new Length(1, LengthUnit.Meter), new Length(1, LengthUnit.Meter), true);
-      List<ISlabDimension> slabDimensions = new () { slabDimension1, slabDimension2, slabDimension3 };
+      List<ISlabDimension> slabDimensions = new List<ISlabDimension>() { slabDimension1, slabDimension2, slabDimension3 };
 
       IReinforcementMaterial rebarMat = new ReinforcementMaterial(RebarGrade.BS_460T);
       ITransverseReinforcement transverseReinforcement = new TransverseReinforcement(rebarMat);
 
       IMeshReinforcement mesh = new MeshReinforcement(new Length(0.025, LengthUnit.Meter), ReinforcementMeshType.A142, false);
-      
+
       IDeckingConfiguration deckingConfiguration = new DeckingConfiguration(new Angle(90, AngleUnit.Degree), true, false);
       IDecking decking = new CatalogueDecking("Kingspan", "Multideck 50 (0.85)", DeckingSteelGrade.S280, deckingConfiguration);
 
