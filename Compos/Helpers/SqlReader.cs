@@ -64,7 +64,7 @@ namespace ComposAPI.Helpers
       List<string> catNames = new List<string>();
       List<int> catNumber = new List<int>();
 
-      using (var db = this.Connection(filePath))
+      using (var db = Connection(filePath))
       {
         db.Open();
         SqliteCommand cmd = db.CreateCommand();
@@ -110,14 +110,14 @@ namespace ComposAPI.Helpers
       List<int> catNumbers = new List<int>();
       if (catalogue_number == -1)
       {
-        Tuple<List<string>, List<int>> catalogueData = this.GetCataloguesDataFromSQLite(filePath);
+        Tuple<List<string>, List<int>> catalogueData = GetCataloguesDataFromSQLite(filePath);
         catNumbers = catalogueData.Item2;
         catNumbers.RemoveAt(0); // remove -1 from beginning of list
       }
       else
         catNumbers.Add(catalogue_number);
 
-      using (var db = this.Connection(filePath))
+      using (var db = Connection(filePath))
       {
         for (int i = 0; i < catNumbers.Count; i++)
         {
@@ -167,14 +167,14 @@ namespace ComposAPI.Helpers
       List<int> types = new List<int>();
       if (type_numbers[0] == -1)
       {
-        Tuple<List<string>, List<int>> typeData = this.GetTypesDataFromSQLite(-1, filePath, inclSuperseded);
+        Tuple<List<string>, List<int>> typeData = GetTypesDataFromSQLite(-1, filePath, inclSuperseded);
         types = typeData.Item2;
         types.RemoveAt(0); // remove -1 from beginning of list
       }
       else
         types = type_numbers;
 
-      using (var db = this.Connection(filePath))
+      using (var db = Connection(filePath))
       {
         // get section name
         for (int i = 0; i < types.Count; i++)
@@ -220,7 +220,7 @@ namespace ComposAPI.Helpers
       // Create empty lists to work on:
       List<string> catNames = new List<string>();
 
-      using (var db = this.Connection(filePath))
+      using (var db = Connection(filePath))
       {
         db.Open();
         SqliteCommand cmd = db.CreateCommand();
@@ -246,7 +246,7 @@ namespace ComposAPI.Helpers
       // Create empty lists to work on:
       List<string> catNames = new List<string>();
 
-      using (var db = this.Connection(filePath))
+      using (var db = Connection(filePath))
       {
         db.Open();
         SqliteCommand cmd = db.CreateCommand();
@@ -281,7 +281,7 @@ namespace ComposAPI.Helpers
       // Create empty lists to work on:
       List<double> values = new List<double>();
 
-      using (var db = this.Connection(filePath))
+      using (var db = Connection(filePath))
       {
         db.Open();
         SqliteCommand cmd = db.CreateCommand();
@@ -315,7 +315,7 @@ namespace ComposAPI.Helpers
       // Create empty lists to work on:
       List<double> values = new List<double>();
 
-      using (var db = this.Connection(filePath))
+      using (var db = Connection(filePath))
       {
         db.Open();
         SqliteCommand cmd = db.CreateCommand();
@@ -358,7 +358,7 @@ namespace ComposAPI.Helpers
       // Create empty lists to work on:
       List<double> values = new List<double>();
 
-      using (var db = this.Connection(filePath))
+      using (var db = Connection(filePath))
       {
         db.Open();
         SqliteCommand cmd = db.CreateCommand();
@@ -414,7 +414,7 @@ namespace ComposAPI.Helpers
       // Create empty lists to work on:
       List<double> values = new List<double>();
 
-      using (var db = this.Connection(filePath))
+      using (var db = Connection(filePath))
       {
         db.Open();
         SqliteCommand cmd = db.CreateCommand();

@@ -19,21 +19,21 @@ namespace ComposAPI
     {
       get
       {
-        if (this.isCatalogue)
+        if (isCatalogue)
           return false;
         else
           return m_taper;
       }
       set
       {
-        if (!this.isCatalogue)
+        if (!isCatalogue)
           m_taper = value;
       }
     }
     private bool m_taper;
     public IQuantity StartPosition
     {
-      get { return this.m_StartPosition; }
+      get { return m_StartPosition; }
       set
       {
         if (value == null) return;
@@ -41,7 +41,7 @@ namespace ComposAPI
           & value.QuantityInfo.UnitType != typeof(RatioUnit))
           throw new ArgumentException("Start Position must be either Length or Ratio");
         else
-          this.m_StartPosition = value;
+          m_StartPosition = value;
       }
     }
     private IQuantity m_StartPosition = Length.Zero;
@@ -76,29 +76,29 @@ namespace ComposAPI
     public BeamSection(Length depth, Length topFlangeWidth, Length bottomFlangeWidth, Length webThickness,
       Length topFlangeThickness, Length bottomFlangeThickness, bool taperToNext = false)
     {
-      this.Depth = depth;
-      this.TopFlangeWidth = topFlangeWidth;
-      this.BottomFlangeWidth = bottomFlangeWidth;
-      this.WebThickness = webThickness;
-      this.TopFlangeThickness = topFlangeThickness;
-      this.BottomFlangeThickness = bottomFlangeThickness;
-      this.isCatalogue = false;
-      this.TaperedToNext = taperToNext;
+      Depth = depth;
+      TopFlangeWidth = topFlangeWidth;
+      BottomFlangeWidth = bottomFlangeWidth;
+      WebThickness = webThickness;
+      TopFlangeThickness = topFlangeThickness;
+      BottomFlangeThickness = bottomFlangeThickness;
+      isCatalogue = false;
+      TaperedToNext = taperToNext;
 
-      LengthUnit unit = this.Depth.Unit;
+      LengthUnit unit = Depth.Unit;
       string u = " ";
       try { u = unitString(unit); }
       catch (Exception) { unit = LengthUnit.Millimeter; }
 
       string dims = string.Join(" ",
-        this.Depth.As(unit).ToString(),
-        this.TopFlangeWidth.As(unit).ToString(),
-        this.BottomFlangeWidth.As(unit).ToString(),
-        this.WebThickness.As(unit).ToString(),
-        this.TopFlangeThickness.As(unit).ToString(),
-        this.BottomFlangeThickness.As(unit).ToString());
+        Depth.As(unit).ToString(),
+        TopFlangeWidth.As(unit).ToString(),
+        BottomFlangeWidth.As(unit).ToString(),
+        WebThickness.As(unit).ToString(),
+        TopFlangeThickness.As(unit).ToString(),
+        BottomFlangeThickness.As(unit).ToString());
 
-      this.SectionDescription = "STD GI" + u + dims.Replace(',', '.');
+      SectionDescription = "STD GI" + u + dims.Replace(',', '.');
     }
 
     /// <summary>
@@ -110,27 +110,27 @@ namespace ComposAPI
     /// <param name="flangeThickness"></param>
     public BeamSection(Length depth, Length flangeWidth, Length webThickness, Length flangeThickness, bool taperToNext = false)
     {
-      this.Depth = depth;
-      this.TopFlangeWidth = flangeWidth;
-      this.BottomFlangeWidth = TopFlangeWidth;
-      this.WebThickness = webThickness;
-      this.TopFlangeThickness = flangeThickness;
-      this.BottomFlangeThickness = TopFlangeThickness;
-      this.isCatalogue = false;
-      this.m_taper = taperToNext;
+      Depth = depth;
+      TopFlangeWidth = flangeWidth;
+      BottomFlangeWidth = TopFlangeWidth;
+      WebThickness = webThickness;
+      TopFlangeThickness = flangeThickness;
+      BottomFlangeThickness = TopFlangeThickness;
+      isCatalogue = false;
+      m_taper = taperToNext;
 
-      LengthUnit unit = this.Depth.Unit;
+      LengthUnit unit = Depth.Unit;
       string u = " ";
       try { u = unitString(unit); }
       catch (Exception) { unit = LengthUnit.Millimeter; }
 
       string dims = string.Join(" ",
-        this.Depth.As(unit).ToString(),
-        this.TopFlangeWidth.As(unit).ToString(),
-        this.WebThickness.As(unit).ToString(),
-        this.TopFlangeThickness.As(unit).ToString());
+        Depth.As(unit).ToString(),
+        TopFlangeWidth.As(unit).ToString(),
+        WebThickness.As(unit).ToString(),
+        TopFlangeThickness.As(unit).ToString());
 
-      this.SectionDescription = "STD I" + u + dims.Replace(',', '.');
+      SectionDescription = "STD I" + u + dims.Replace(',', '.');
     }
 
     public BeamSection(string profile)
@@ -158,14 +158,14 @@ namespace ComposAPI
         }
         try
         {
-          this.Depth = new Length(double.Parse(parts[2], CultureInfo.InvariantCulture), unit);
-          this.TopFlangeWidth = new Length(double.Parse(parts[3], CultureInfo.InvariantCulture), unit);
-          this.BottomFlangeWidth = TopFlangeWidth;
-          this.WebThickness = new Length(double.Parse(parts[4], CultureInfo.InvariantCulture), unit);
-          this.TopFlangeThickness = new Length(double.Parse(parts[5], CultureInfo.InvariantCulture), unit);
-          this.BottomFlangeThickness = TopFlangeThickness;
-          this.SectionDescription = profile;
-          this.isCatalogue = false;
+          Depth = new Length(double.Parse(parts[2], CultureInfo.InvariantCulture), unit);
+          TopFlangeWidth = new Length(double.Parse(parts[3], CultureInfo.InvariantCulture), unit);
+          BottomFlangeWidth = TopFlangeWidth;
+          WebThickness = new Length(double.Parse(parts[4], CultureInfo.InvariantCulture), unit);
+          TopFlangeThickness = new Length(double.Parse(parts[5], CultureInfo.InvariantCulture), unit);
+          BottomFlangeThickness = TopFlangeThickness;
+          SectionDescription = profile;
+          isCatalogue = false;
         }
         catch (Exception)
         {
@@ -189,14 +189,14 @@ namespace ComposAPI
         }
         try
         {
-          this.Depth = new Length(double.Parse(parts[2], CultureInfo.InvariantCulture), unit);
-          this.TopFlangeWidth = new Length(double.Parse(parts[3], CultureInfo.InvariantCulture), unit);
-          this.BottomFlangeWidth = new Length(double.Parse(parts[4], CultureInfo.InvariantCulture), unit);
-          this.WebThickness = new Length(double.Parse(parts[5], CultureInfo.InvariantCulture), unit);
-          this.TopFlangeThickness = new Length(double.Parse(parts[6], CultureInfo.InvariantCulture), unit);
-          this.BottomFlangeThickness = new Length(double.Parse(parts[7], CultureInfo.InvariantCulture), unit);
-          this.SectionDescription = profile;
-          this.isCatalogue = false;
+          Depth = new Length(double.Parse(parts[2], CultureInfo.InvariantCulture), unit);
+          TopFlangeWidth = new Length(double.Parse(parts[3], CultureInfo.InvariantCulture), unit);
+          BottomFlangeWidth = new Length(double.Parse(parts[4], CultureInfo.InvariantCulture), unit);
+          WebThickness = new Length(double.Parse(parts[5], CultureInfo.InvariantCulture), unit);
+          TopFlangeThickness = new Length(double.Parse(parts[6], CultureInfo.InvariantCulture), unit);
+          BottomFlangeThickness = new Length(double.Parse(parts[7], CultureInfo.InvariantCulture), unit);
+          SectionDescription = profile;
+          isCatalogue = false;
         }
         catch (Exception)
         {
@@ -210,16 +210,16 @@ namespace ComposAPI
         List<double> sqlValues = SqlReader.Instance.GetCatalogueProfileValues(Path.Combine(ComposIO.InstallPath, "sectlib.db3"), prof);
 
         LengthUnit unit = LengthUnit.Meter;
-        this.Depth = new Length(sqlValues[0], unit);
-        this.TopFlangeWidth = new Length(sqlValues[1], unit);
-        this.BottomFlangeWidth = new Length(sqlValues[1], unit);
-        this.WebThickness = new Length(sqlValues[2], unit);
-        this.TopFlangeThickness = new Length(sqlValues[3], unit);
-        this.BottomFlangeThickness = new Length(sqlValues[3], unit);
-        this.RootRadius = new Length(sqlValues[4], unit);
-        this.SectionDescription = profile;
-        this.isCatalogue = true;
-        this.m_taper = false;
+        Depth = new Length(sqlValues[0], unit);
+        TopFlangeWidth = new Length(sqlValues[1], unit);
+        BottomFlangeWidth = new Length(sqlValues[1], unit);
+        WebThickness = new Length(sqlValues[2], unit);
+        TopFlangeThickness = new Length(sqlValues[3], unit);
+        BottomFlangeThickness = new Length(sqlValues[3], unit);
+        RootRadius = new Length(sqlValues[4], unit);
+        SectionDescription = profile;
+        isCatalogue = true;
+        m_taper = false;
       }
       else
         throw new ArgumentException("Unrecognisable profile type. String must start with 'STD I', 'STD GI' or 'CAT'.");
@@ -276,17 +276,17 @@ namespace ComposAPI
       parameters.Add(name);
       parameters.Add(Convert.ToString(num));
       parameters.Add(Convert.ToString(index));
-      if (this.StartPosition.QuantityInfo.UnitType == typeof(RatioUnit))
+      if (StartPosition.QuantityInfo.UnitType == typeof(RatioUnit))
       {
         // start position in percent
-        Ratio p = (Ratio)this.StartPosition;
+        Ratio p = (Ratio)StartPosition;
         // percentage in coa string for beam section is a negative decimal fraction!
         parameters.Add(CoaHelper.FormatSignificantFigures(p.As(RatioUnit.DecimalFraction) * -1, p.DecimalFractions == 1 ? 5 : 6));
       }
       else
-        parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(units.Length).Value, 6));
-      parameters.Add(this.SectionDescription);
-      CoaHelper.AddParameter(parameters, "TAPERED", this.TaperedToNext);
+        parameters.Add(CoaHelper.FormatSignificantFigures(StartPosition.ToUnit(units.Length).Value, 6));
+      parameters.Add(SectionDescription);
+      CoaHelper.AddParameter(parameters, "TAPERED", TaperedToNext);
 
       string coaString = CoaHelper.CreateString(parameters);
 
@@ -298,35 +298,35 @@ namespace ComposAPI
     public override string ToString()
     {
       string start = "";
-      if (this.StartPosition.QuantityInfo.UnitType == typeof(LengthUnit))
+      if (StartPosition.QuantityInfo.UnitType == typeof(LengthUnit))
       {
-        Length l = (Length)this.StartPosition;
+        Length l = (Length)StartPosition;
         if (l != Length.Zero)
           start = ", Px:" + l.ToString("g2").Replace(" ", string.Empty);
       }
       else
       {
-        Ratio p = (Ratio)this.StartPosition;
+        Ratio p = (Ratio)StartPosition;
         if (p != Ratio.Zero)
           start = ", Px:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
       }
 
       string tapered = "";
-      if (this.TaperedToNext)
+      if (TaperedToNext)
         tapered = ", Tapered";
 
       string sect = "";
-      if (this.SectionDescription != null)
+      if (SectionDescription != null)
       {
-        sect = this.SectionDescription;
-        if (this.isCatalogue)
+        sect = SectionDescription;
+        if (isCatalogue)
         {
           // remove the catalogue date if exist:
           sect = sect.Split(' ')[0] + " " + sect.Split(' ')[1] + " " + sect.Split(' ')[2];
         }
       }
 
-      return (this.SectionDescription == null) ? "Null profile" : sect + start + tapered;
+      return (SectionDescription == null) ? "Null profile" : sect + start + tapered;
     }
     #endregion
   }

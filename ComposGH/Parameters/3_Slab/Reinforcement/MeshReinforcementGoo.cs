@@ -16,7 +16,7 @@ namespace ComposGH.Parameters
     public static string NickName => "RfM";
     public static string Description => "Compos Mesh Reinforcement";
     public MeshReinforcementGoo(IMeshReinforcement item) : base(item) { }
-    public override IGH_Goo Duplicate() => new MeshReinforcementGoo(this.Value);
+    public override IGH_Goo Duplicate() => new MeshReinforcementGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 
@@ -33,8 +33,8 @@ namespace ComposGH.Parameters
         Components.Ribbon.CategoryName.Name(),
         Components.Ribbon.SubCategoryName.Cat10()))
     { }
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + MeshReinforcementGoo.Name + " parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? MeshReinforcementGoo.Name : base.TypeName;
+    public override string InstanceDescription => m_data.DataCount == 0 ? "Empty " + MeshReinforcementGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => SourceCount == 0 ? MeshReinforcementGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("5600a6c7-9c7f-4f5b-9e7c-e04945719a21");
     public override GH_Exposure Exposure => GH_Exposure.hidden;
     protected override System.Drawing.Bitmap Icon => Properties.Resources.MeshReinforcementParam;

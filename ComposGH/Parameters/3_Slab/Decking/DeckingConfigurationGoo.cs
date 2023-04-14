@@ -14,7 +14,7 @@ namespace ComposGH.Parameters
     public static string NickName => "DCf";
     public static string Description => "Compos Steel Decking Configurations";
     public DeckingConfigurationGoo(IDeckingConfiguration item) : base(item) { }
-    public override IGH_Goo Duplicate() => new DeckingConfigurationGoo(this.Value);
+    public override IGH_Goo Duplicate() => new DeckingConfigurationGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 }

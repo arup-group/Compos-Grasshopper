@@ -82,7 +82,7 @@ namespace ComposAPI.Beams.Tests
       // 3 check that inputs are set in object's members
       Assert.Equal(new Pressure(200, PressureUnit.Gigapascal), material.E);
       Assert.Equal(new Density(7850, DensityUnit.KilogramPerCubicMeter), material.Density);
-      Assert.Equal(material.fy.Megapascals, fy_expected);
+      Assert.Equal(material.Fy.Megapascals, fy_expected);
       Assert.Equal(weldGrade_expected, material.WeldGrade);
     }
 

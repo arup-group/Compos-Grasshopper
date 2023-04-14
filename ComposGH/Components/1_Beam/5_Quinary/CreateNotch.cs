@@ -28,13 +28,13 @@ namespace ComposGH.Components
       : base("BeamNotch", "Notch", "Create Beam Notch for a " + BeamGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
 
       pManager.AddGenericParameter("Width [" + unitAbbreviation + "]", "B", "Web Opening Width", GH_ParamAccess.item);
       pManager.AddGenericParameter("Height [" + unitAbbreviation + "]", "H", "Web Opening Height", GH_ParamAccess.item);
@@ -90,37 +90,37 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Position", "Unit" });
+      _spacerDescriptions = new List<string>(new string[] { "Position", "Unit" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // type
-      this._dropDownItems.Add(Enum.GetValues(typeof(NotchTypes)).Cast<NotchTypes>()
+      _dropDownItems.Add(Enum.GetValues(typeof(NotchTypes)).Cast<NotchTypes>()
           .Select(x => x.ToString().Replace('_', ' ')).ToList());
-      this._selectedItems.Add(NotchTypes.Both_ends.ToString().Replace('_', ' '));
+      _selectedItems.Add(NotchTypes.Both_ends.ToString().Replace('_', ' '));
 
       // length
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
       // change selected item
-      this._selectedItems[i] = this._dropDownItems[i][j];
+      _selectedItems[i] = _dropDownItems[i][j];
 
       if (i == 0)
       {
-        if (this._selectedItems[i] == this.OpeningType.ToString().Replace('_', ' '))
+        if (_selectedItems[i] == OpeningType.ToString().Replace('_', ' '))
           return;
-        this.OpeningType = (NotchTypes)Enum.Parse(typeof(NotchTypes), this._selectedItems[i].Replace(' ', '_'));
+        OpeningType = (NotchTypes)Enum.Parse(typeof(NotchTypes), _selectedItems[i].Replace(' ', '_'));
       }
       else if (i == 1) // change is made to length unit
       {
-        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
+        LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
       }
 
       base.UpdateUI();
@@ -128,20 +128,20 @@ namespace ComposGH.Components
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.OpeningType = (NotchTypes)Enum.Parse(typeof(NotchTypes), this._selectedItems[0].Replace(' ', '_'));
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[1]);
+      OpeningType = (NotchTypes)Enum.Parse(typeof(NotchTypes), _selectedItems[0].Replace(' ', '_'));
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
     }
 
     public override void VariableParameterMaintenance()
     {
-      if (this.OpeningType == NotchTypes.Both_ends)
+      if (OpeningType == NotchTypes.Both_ends)
         Params.Output[0].Access = GH_ParamAccess.list;
       else
         Params.Output[0].Access = GH_ParamAccess.item;
 
-      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
       Params.Input[0].Name = "Width [" + unitAbbreviation + "]";
       Params.Input[1].Name = "Height [" + unitAbbreviation + "]";
     }

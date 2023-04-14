@@ -32,7 +32,7 @@ namespace ComposGHTests.Beam
       GH_OasysDropDownComponent comp = ComponentMother();
 
       SteelMaterialGoo output = (SteelMaterialGoo)ComponentTestHelper.GetOutput(comp);
-      Assert.Equal(500, output.Value.fy.Value);
+      Assert.Equal(500, output.Value.Fy.Value);
       Assert.Equal(205000, output.Value.E.Value);
       Assert.Equal(7850, output.Value.Density.Value);
       Assert.False(output.Value.ReductionFactorMpl);

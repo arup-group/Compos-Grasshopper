@@ -14,7 +14,7 @@ namespace ComposAPI
   {
     public IQuantity DistanceFromStart
     {
-      get { return this.m_StartPosition; }
+      get { return m_StartPosition; }
       set
       {
         if (value == null) return;
@@ -22,7 +22,7 @@ namespace ComposAPI
           & value.QuantityInfo.UnitType != typeof(RatioUnit))
           throw new ArgumentException("Start Position must be either Length or Ratio");
         else
-          this.m_StartPosition = value;
+          m_StartPosition = value;
       }
     }
     private IQuantity m_StartPosition = Length.Zero;
@@ -38,14 +38,14 @@ namespace ComposAPI
 
     public StudGroupSpacing(IQuantity distanceFromStart, int numberOfRows, int numberOfLines, Length spacing)
     {
-      this.DistanceFromStart = distanceFromStart;
+      DistanceFromStart = distanceFromStart;
       if (numberOfRows < 1)
         throw new ArgumentException("Number of rows must be bigger or equal to 1");
-      this.NumberOfRows = numberOfRows;
+      NumberOfRows = numberOfRows;
       if (numberOfLines < 1)
         throw new ArgumentException("Number of lines must be bigger or equal to 1");
-      this.NumberOfLines = numberOfLines;
-      this.Spacing = spacing;
+      NumberOfLines = numberOfLines;
+      Spacing = spacing;
     }
 
     #endregion
@@ -70,21 +70,21 @@ namespace ComposAPI
     public override string ToString()
     {
       string start = "";
-      if (this.DistanceFromStart.QuantityInfo.UnitType == typeof(LengthUnit))
+      if (DistanceFromStart.QuantityInfo.UnitType == typeof(LengthUnit))
       {
-        Length l = (Length)this.DistanceFromStart;
+        Length l = (Length)DistanceFromStart;
         if (l != Length.Zero)
           start = "From:" + l.ToString("g2").Replace(" ", string.Empty);
       }
       else
       {
-        Ratio p = (Ratio)this.DistanceFromStart;
+        Ratio p = (Ratio)DistanceFromStart;
         if (p != Ratio.Zero)
           start = "From:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
       }
       string rows = NumberOfRows + "R";
       string lines = NumberOfLines + "L";
-      string spacing = "@" + this.Spacing.ToUnit(ComposUnitsHelper.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
+      string spacing = "@" + Spacing.ToUnit(ComposUnitsHelper.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
 
       string joined = string.Join(" ", new List<string>() { start, rows, lines, spacing });
       return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');

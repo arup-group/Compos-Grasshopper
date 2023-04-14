@@ -100,13 +100,13 @@ namespace ComposAPI
     /// <param name="imposedLoadPercentage"></param>
     public ConcreteMaterial(ConcreteGrade grade, WeightType type, Density dryDensity, bool userDensity, IERatio eRatio, Ratio imposedLoadPercentage)
     {
-      this.Grade = grade.ToString();
-      this.Type = type;
-      this.DryDensity = dryDensity;
-      this.UserDensity = userDensity;
-      this.ERatio = eRatio;
-      this.ImposedLoadPercentage = imposedLoadPercentage;
-      this.ShrinkageStrain = new Strain(-0.325, StrainUnit.MilliStrain);
+      Grade = grade.ToString();
+      Type = type;
+      DryDensity = dryDensity;
+      UserDensity = userDensity;
+      ERatio = eRatio;
+      ImposedLoadPercentage = imposedLoadPercentage;
+      ShrinkageStrain = new Strain(-0.325, StrainUnit.MilliStrain);
     }
 
     /// <summary>
@@ -122,16 +122,16 @@ namespace ComposAPI
     /// <param name="userStrain"></param>
     public ConcreteMaterial(ConcreteGradeEN grade, DensityClass densityClass, Density dryDensity, bool userDensity, IERatio eRatio, Ratio imposedLoadPercentage, Strain shrinkageStrain, bool userStrain)
     {
-      this.Grade = grade.ToString();
-      if (this.Grade.StartsWith("L"))
-        this.Type = WeightType.LightWeight;
-      this.Class = densityClass;
-      this.DryDensity = dryDensity;
-      this.UserDensity = userDensity;
-      this.ERatio = eRatio;
-      this.ImposedLoadPercentage = imposedLoadPercentage;
-      this.ShrinkageStrain = shrinkageStrain;
-      this.UserStrain = userStrain;
+      Grade = grade.ToString();
+      if (Grade.StartsWith("L"))
+        Type = WeightType.LightWeight;
+      Class = densityClass;
+      DryDensity = dryDensity;
+      UserDensity = userDensity;
+      ERatio = eRatio;
+      ImposedLoadPercentage = imposedLoadPercentage;
+      ShrinkageStrain = shrinkageStrain;
+      UserStrain = userStrain;
     }
 
     /// <summary>
@@ -144,12 +144,12 @@ namespace ComposAPI
     /// <param name="imposedLoadPercentage"></param>
     public ConcreteMaterial(ConcreteGrade grade, Density dryDensity, bool userDensity, IERatio eRatio, Ratio imposedLoadPercentage)
     {
-      this.Grade = grade.ToString();
-      this.DryDensity = dryDensity;
-      this.UserDensity = userDensity;
-      this.ERatio = eRatio;
-      this.ImposedLoadPercentage = imposedLoadPercentage;
-      this.ShrinkageStrain = Strain.Zero;
+      Grade = grade.ToString();
+      DryDensity = dryDensity;
+      UserDensity = userDensity;
+      ERatio = eRatio;
+      ImposedLoadPercentage = imposedLoadPercentage;
+      ShrinkageStrain = Strain.Zero;
     }
 
     /// <summary>
@@ -162,13 +162,13 @@ namespace ComposAPI
     /// <param name="imposedLoadPercentage"></param>
     public ConcreteMaterial(ConcreteGrade grade, Density dryDensity, bool userDensity, IERatio eRatio, Ratio imposedLoadPercentage, Strain shrinkageStrain, bool userStrain)
     {
-      this.Grade = grade.ToString();
-      this.DryDensity = dryDensity;
-      this.UserDensity = userDensity;
-      this.ERatio = eRatio;
-      this.ImposedLoadPercentage = imposedLoadPercentage;
-      this.ShrinkageStrain = shrinkageStrain;
-      this.UserStrain = userStrain;
+      Grade = grade.ToString();
+      DryDensity = dryDensity;
+      UserDensity = userDensity;
+      ERatio = eRatio;
+      ImposedLoadPercentage = imposedLoadPercentage;
+      ShrinkageStrain = shrinkageStrain;
+      UserStrain = userStrain;
     }
     #endregion
 
@@ -243,37 +243,37 @@ namespace ComposAPI
       List<string> parameters = new List<string>();
       parameters.Add(CoaIdentifier.SlabConcreteMaterial);
       parameters.Add(name);
-      parameters.Add(this.Grade.Replace("_", "/"));
-      if (this.Type == WeightType.Normal)
+      parameters.Add(Grade.Replace("_", "/"));
+      if (Type == WeightType.Normal)
         parameters.Add("NORMAL");
       else
         parameters.Add("LIGHT");
-      if (this.UserDensity)
+      if (UserDensity)
       {
         parameters.Add("USER_DENSITY");
-        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00}", this.DryDensity.ToUnit(units.Density).Value));
+        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00}", DryDensity.ToUnit(units.Density).Value));
       }
       else
       {
         parameters.Add("CODE_DENSITY");
-        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00}", this.DryDensity.ToUnit(units.Density).Value));
-        parameters.Add(this.Class.ToString().Replace("DC", ""));
+        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00}", DryDensity.ToUnit(units.Density).Value));
+        parameters.Add(Class.ToString().Replace("DC", ""));
       }
-      parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.000000}", this.ImposedLoadPercentage.DecimalFractions));
-      if (this.ERatio.UserDefined)
+      parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.000000}", ImposedLoadPercentage.DecimalFractions));
+      if (ERatio.UserDefined)
       {
         parameters.Add("USER_E_RATIO");
-        parameters.Add(CoaHelper.FormatSignificantFigures(this.ERatio.ShortTerm, 6));
-        parameters.Add(CoaHelper.FormatSignificantFigures(this.ERatio.LongTerm, 6));
-        parameters.Add(CoaHelper.FormatSignificantFigures(this.ERatio.Vibration, 6));
-        parameters.Add(CoaHelper.FormatSignificantFigures(this.ERatio.Shrinkage, 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(ERatio.ShortTerm, 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(ERatio.LongTerm, 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(ERatio.Vibration, 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(ERatio.Shrinkage, 6));
       }
       else
         parameters.Add("CODE_E_RATIO");
-      if (this.UserStrain)
+      if (UserStrain)
       {
         parameters.Add("USER_STRAIN");
-        parameters.Add(CoaHelper.FormatSignificantFigures(this.ShrinkageStrain.Ratio, 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(ShrinkageStrain.Ratio, 6));
       }
       else
         parameters.Add("CODE_STRAIN");
@@ -286,11 +286,11 @@ namespace ComposAPI
     public override string ToString()
     {
       string str;
-      if (this.Grade == null)
+      if (Grade == null)
         str = "(Grade not set)";
       else
-        str = this.Grade.ToString().Replace("_", "/");
-      str += " " + this.Type + ", D: " + this.DryDensity.As(ComposUnitsHelper.DensityUnit).ToString().Replace(" ", string.Empty);
+        str = Grade.ToString().Replace("_", "/");
+      str += " " + Type + ", D: " + DryDensity.As(ComposUnitsHelper.DensityUnit).ToString().Replace(" ", string.Empty);
       return str;
     }
     #endregion

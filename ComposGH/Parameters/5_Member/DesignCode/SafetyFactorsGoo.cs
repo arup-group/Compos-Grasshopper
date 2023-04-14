@@ -16,7 +16,7 @@ namespace ComposGH.Parameters
     public static string NickName => "Saf";
     public static string Description => "Compos Material and Load Safety Factors";
     public SafetyFactorsGoo(ISafetyFactors item) : base(item) { }
-    public override IGH_Goo Duplicate() => new SafetyFactorsGoo(this.Value);
+    public override IGH_Goo Duplicate() => new SafetyFactorsGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 
@@ -33,8 +33,8 @@ namespace ComposGH.Parameters
         Components.Ribbon.CategoryName.Name(),
         Components.Ribbon.SubCategoryName.Cat10()))
     { }
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + SafetyFactorsGoo.Name + " parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? SafetyFactorsGoo.Name : base.TypeName;
+    public override string InstanceDescription => m_data.DataCount == 0 ? "Empty " + SafetyFactorsGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => SourceCount == 0 ? SafetyFactorsGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("57c67486-4ba0-4396-b62c-822e192328b6");
     public override GH_Exposure Exposure => GH_Exposure.hidden;
     protected override System.Drawing.Bitmap Icon => Properties.Resources.SafetyFactorParam;

@@ -32,14 +32,14 @@ namespace ComposAPI
     public string ToCoaString(string name)
     {
       string str = "SAFETY_FACTOR_MATERIAL" + '\t' + name + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.gamma_M0, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.gamma_M1, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.gamma_M2, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.gamma_C, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(gamma_M0, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(gamma_M1, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(gamma_M2, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(gamma_C, 6) + '\t';
       str += CoaHelper.FormatSignificantFigures(1.25, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.gamma_Deck, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.gamma_vs, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.gamma_S, 6) + '\n';
+      str += CoaHelper.FormatSignificantFigures(gamma_Deck, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(gamma_vs, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(gamma_S, 6) + '\n';
       return str;
     }
   }

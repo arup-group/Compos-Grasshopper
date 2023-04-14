@@ -9,7 +9,7 @@
 
     public ASNZS2327()
     {
-      this.Code = Code.AS_NZS2327_2017;
+      Code = Code.AS_NZS2327_2017;
     }
   }
 }

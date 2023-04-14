@@ -31,7 +31,7 @@ namespace ComposGH.Components
           "Get case indifferent calculated composite section properties for a " + MemberGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat7())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -53,18 +53,18 @@ namespace ComposGH.Components
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       IResult res = ((MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
-      List<GH_UnitNumber> positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
+      List<GH_UnitNumber> positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
       ICompositeSectionProperties result = res.SectionProperties;
 
       int i = 0;
       Output.SetList(this, DA, i++, result.EffectiveSlabWidthLeft
-        .Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList());
+        .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
       Output.SetList(this, DA, i++, result.EffectiveSlabWidthRight
-        .Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList());
+        .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
       Output.SetList(this, DA, i++, result.GirderWeldThicknessTop
-        .Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList());
+        .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
       Output.SetList(this, DA, i++, result.GirderWeldThicknessBottom
-        .Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList());
+        .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
       Output.SetItem(this, DA, i++, new GH_UnitNumber(result.NaturalFrequency));
       Output.SetList(this, DA, i, positions);
     }
@@ -74,28 +74,28 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Unit" });
+      _spacerDescriptions = new List<string>(new string[] { "Unit" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // length
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this._selectedItems[i] = this._dropDownItems[i][j];
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
+      _selectedItems[i] = _dropDownItems[i][j];
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[0]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[0]);
       base.UpdateUIFromSelectedItems();
     }
     #endregion

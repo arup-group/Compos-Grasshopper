@@ -40,30 +40,30 @@ namespace ComposAPI
     {
       ComposUnits standardUnits = ComposUnits.GetStandardUnits();
 
-      Force force = new Force(1.0, this.Force);
+      Force force = new Force(1.0, Force);
       double forceFactor = 1.0 / force.ToUnit(standardUnits.Force).Value;
 
-      Length length = new Length(1.0, this.Length);
+      Length length = new Length(1.0, Length);
       double lengthFactor = 1.0 / length.ToUnit(standardUnits.Length).Value;
 
-      Length displacement = new Length(1.0, this.Displacement);
+      Length displacement = new Length(1.0, Displacement);
       double displacementFactor = 1.0 / displacement.ToUnit(standardUnits.Displacement).Value;
 
-      Length section = new Length(1.0, this.Section);
+      Length section = new Length(1.0, Section);
       double sectionFactor = 1.0 / section.ToUnit(standardUnits.Section).Value;
 
-      Pressure stress = new Pressure(1.0, this.Stress);
+      Pressure stress = new Pressure(1.0, Stress);
       double stressFactor = 1.0 / stress.ToUnit(standardUnits.Stress).Value;
 
-      Mass mass = new Mass(1.0, this.Mass);
+      Mass mass = new Mass(1.0, Mass);
       double massFactor = 1.0 / mass.ToUnit(standardUnits.Mass).Value;
 
-      string coaString = "UNIT_DATA\tFORCE\t" + OasysUnits.Force.GetAbbreviation(this.Force) + "\t" + CoaHelper.FormatSignificantFigures(forceFactor, 6) + "\n";
-      coaString += "UNIT_DATA\tLENGTH\t" + OasysUnits.Length.GetAbbreviation(this.Length) + "\t" + CoaHelper.FormatSignificantFigures(lengthFactor, 6) + "\n";
-      coaString += "UNIT_DATA\tDISP\t" + OasysUnits.Length.GetAbbreviation(this.Displacement) + "\t" + CoaHelper.FormatSignificantFigures(displacementFactor, 6) + "\n";
-      coaString += "UNIT_DATA\tSECTION\t" + OasysUnits.Length.GetAbbreviation(this.Section) + "\t" + CoaHelper.FormatSignificantFigures(sectionFactor, 6) + "\n";
-      coaString += "UNIT_DATA\tSTRESS\t" + Pressure.GetAbbreviation(this.Stress) + "\t" + CoaHelper.FormatSignificantFigures(stressFactor, 6) + "\n";
-      coaString += "UNIT_DATA\tMASS\t" + OasysUnits.Mass.GetAbbreviation(this.Mass) + "\t" + CoaHelper.FormatSignificantFigures(massFactor, 6) + "\n";
+      string coaString = "UNIT_DATA\tFORCE\t" + OasysUnits.Force.GetAbbreviation(Force) + "\t" + CoaHelper.FormatSignificantFigures(forceFactor, 6) + "\n";
+      coaString += "UNIT_DATA\tLENGTH\t" + OasysUnits.Length.GetAbbreviation(Length) + "\t" + CoaHelper.FormatSignificantFigures(lengthFactor, 6) + "\n";
+      coaString += "UNIT_DATA\tDISP\t" + OasysUnits.Length.GetAbbreviation(Displacement) + "\t" + CoaHelper.FormatSignificantFigures(displacementFactor, 6) + "\n";
+      coaString += "UNIT_DATA\tSECTION\t" + OasysUnits.Length.GetAbbreviation(Section) + "\t" + CoaHelper.FormatSignificantFigures(sectionFactor, 6) + "\n";
+      coaString += "UNIT_DATA\tSTRESS\t" + Pressure.GetAbbreviation(Stress) + "\t" + CoaHelper.FormatSignificantFigures(stressFactor, 6) + "\n";
+      coaString += "UNIT_DATA\tMASS\t" + OasysUnits.Mass.GetAbbreviation(Mass) + "\t" + CoaHelper.FormatSignificantFigures(massFactor, 6) + "\n";
       return coaString;
     }
 
@@ -72,22 +72,22 @@ namespace ComposAPI
       switch (parameters[1])
       {
         case CoaIdentifier.Units.Force:
-          this.Force = (ForceUnit)UnitParser.Default.Parse(parameters[2], typeof(ForceUnit));
+          Force = (ForceUnit)UnitParser.Default.Parse(parameters[2], typeof(ForceUnit));
           break;
         case CoaIdentifier.Units.Length:
-          this.Length = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
+          Length = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
           break;
         case CoaIdentifier.Units.Displacement:
-          this.Displacement = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
+          Displacement = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
           break;
         case CoaIdentifier.Units.Section:
-          this.Section = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
+          Section = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
           break;
         case CoaIdentifier.Units.Stress:
-          this.Stress = (PressureUnit)UnitParser.Default.Parse(parameters[2], typeof(PressureUnit));
+          Stress = (PressureUnit)UnitParser.Default.Parse(parameters[2], typeof(PressureUnit));
           break;
         case CoaIdentifier.Units.Mass:
-          this.Mass = (MassUnit)UnitParser.Default.Parse(parameters[2], typeof(MassUnit));
+          Mass = (MassUnit)UnitParser.Default.Parse(parameters[2], typeof(MassUnit));
           break;
       }
     }

@@ -16,7 +16,7 @@ namespace ComposGH.Parameters
     public static string NickName => "Sup";
     public static string Description => "Compos Support conditions";
     public SupportsGoo(ISupports item) : base(item) { }
-    public override IGH_Goo Duplicate() => new SupportsGoo(this.Value);
+    public override IGH_Goo Duplicate() => new SupportsGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 
@@ -33,8 +33,8 @@ namespace ComposGH.Parameters
         Components.Ribbon.CategoryName.Name(),
         Components.Ribbon.SubCategoryName.Cat10()))
     { }
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + SupportsGoo.Name + " parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? SupportsGoo.Name : base.TypeName;
+    public override string InstanceDescription => m_data.DataCount == 0 ? "Empty " + SupportsGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => SourceCount == 0 ? SupportsGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("e1de523d-a6db-400c-8550-49e25cfcd9bd");
     public override GH_Exposure Exposure => GH_Exposure.hidden;
     protected override System.Drawing.Bitmap Icon => Properties.Resources.SupportParam;

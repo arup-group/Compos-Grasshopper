@@ -88,16 +88,16 @@ namespace ComposAPI
       parameters.Add(CoaIdentifier.EC4DesignOption); // 0
       parameters.Add(name); // 1
 
-      CoaHelper.AddParameter(parameters, "SHRINKAGE_DEFORM_EC4", this.ConsiderShrinkageDeflection); // 2
-      CoaHelper.AddParameter(parameters, "IGNORE_SHRINKAGE_DEFORM", this.IgnoreShrinkageDeflectionForLowLengthToDepthRatios); // 3
-      CoaHelper.AddParameter(parameters, "APPROXIMATE_E_RATIO", this.ApproxModularRatios); // 4
+      CoaHelper.AddParameter(parameters, "SHRINKAGE_DEFORM_EC4", ConsiderShrinkageDeflection); // 2
+      CoaHelper.AddParameter(parameters, "IGNORE_SHRINKAGE_DEFORM", IgnoreShrinkageDeflectionForLowLengthToDepthRatios); // 3
+      CoaHelper.AddParameter(parameters, "APPROXIMATE_E_RATIO", ApproxModularRatios); // 4
 
       if(nationalAnnex == NationalAnnex.United_Kingdom) // 5
         parameters.Add("United Kingdom");
       else
         parameters.Add("Generic");
 
-      switch(this.CementType) // 6
+      switch(CementType) // 6
       {
         case CementClass.S:
           parameters.Add("CLASS_S");

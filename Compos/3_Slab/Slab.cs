@@ -1,74 +1,69 @@
-﻿using System.Collections.Generic;
+﻿using ComposAPI.Helpers;
+using System.Collections.Generic;
 using System.Linq;
-using ComposAPI.Helpers;
 
-namespace ComposAPI
-{
-  public class Slab : ISlab
-  {
+namespace ComposAPI {
+  public class Slab : ISlab {
     public IConcreteMaterial Material { get; set; }
     public IList<ISlabDimension> Dimensions { get; set; } = new List<ISlabDimension>();
     public ITransverseReinforcement Transverse { get; set; }
     public IMeshReinforcement Mesh { get; set; } = null;
     public IDecking Decking { get; set; } = null; // null, if option "No decking (solid slab)" is selected
 
-    #region constructors
-    public Slab()
-    {
+    public Slab() {
       // empty constructor
     }
 
-    public Slab(IConcreteMaterial material, List<ISlabDimension> dimensions, ITransverseReinforcement transverseReinforcement, IMeshReinforcement meshReinforcement = null, IDecking decking = null)
-    {
-      this.Material = material;
-      this.Dimensions = dimensions;
-      this.Transverse = transverseReinforcement;
-      this.Mesh = meshReinforcement;
-      this.Decking = decking;
+    public Slab(IConcreteMaterial material, List<ISlabDimension> dimensions, ITransverseReinforcement transverseReinforcement, IMeshReinforcement meshReinforcement = null, IDecking decking = null) {
+      Material = material;
+      Dimensions = dimensions;
+      Transverse = transverseReinforcement;
+      Mesh = meshReinforcement;
+      Decking = decking;
     }
-    #endregion
 
     #region coa interop
-    internal static ISlab FromCoaString(string coaString, string name, Code code, ComposUnits units)
-    {
-      Slab slab = new Slab();
+    internal static ISlab FromCoaString(string coaString, string name, Code code, ComposUnits units) {
+      var slab = new Slab();
 
       List<string> lines = CoaHelper.SplitAndStripLines(coaString);
-      foreach (string line in lines)
-      {
+      foreach (string line in lines) {
         List<string> parameters = CoaHelper.Split(line);
 
-        if (parameters[0] == "END")
+        if (parameters[0] == "END") {
           goto transverse;
+        }
 
-        if (parameters[0] == CoaIdentifier.UnitData)
+        if (parameters[0] == CoaIdentifier.UnitData) {
           units.FromCoaString(parameters);
+        }
 
-        if (parameters[1] != name)
+        if (parameters[1] != name) {
           continue;
+        }
 
-        switch (parameters[0])
-        {
-          case (CoaIdentifier.SlabConcreteMaterial):
+        switch (parameters[0]) {
+          case CoaIdentifier.SlabConcreteMaterial:
             slab.Material = ConcreteMaterial.FromCoaString(parameters, units);
             break;
 
-          case (CoaIdentifier.SlabDimension):
+          case CoaIdentifier.SlabDimension:
             ISlabDimension dimension = SlabDimension.FromCoaString(parameters, units);
             slab.Dimensions.Add(dimension);
             break;
 
-          case (CoaIdentifier.RebarMesh):
+          case CoaIdentifier.RebarMesh:
             slab.Mesh = MeshReinforcement.FromCoaString(parameters, units);
             break;
 
-          case (CoaIdentifier.DeckingCatalogue):
+          case CoaIdentifier.DeckingCatalogue:
             slab.Decking = CatalogueDecking.FromCoaString(parameters, units);
             break;
 
-          case (CoaIdentifier.DeckingUser):
-            if (parameters[2] == "USER_DEFINED")
+          case CoaIdentifier.DeckingUser:
+            if (parameters[2] == "USER_DEFINED") {
               slab.Decking = CustomDecking.FromCoaString(parameters, units);
+            }
             // else
             // do nothing
             break;
@@ -78,66 +73,62 @@ namespace ComposAPI
             break;
         }
       }
-    transverse:
+      transverse:
       slab.Transverse = TransverseReinforcement.FromCoaString(coaString, name, code, units);
 
       return slab;
     }
 
-    public string ToCoaString(string name, ComposUnits units)
-    {
-      string str = this.Material.ToCoaString(name, units);
-      int num = this.Dimensions.Count;
+    public string ToCoaString(string name, ComposUnits units) {
+      string str = Material.ToCoaString(name, units);
+      int num = Dimensions.Count;
       int index = 1;
-      foreach (SlabDimension dimension in this.Dimensions)
-      {
+      foreach (SlabDimension dimension in Dimensions.Cast<SlabDimension>()) {
         str += dimension.ToCoaString(name, num, index, units);
         index++;
       }
-      if (this.Mesh != null)
-        str += this.Mesh.ToCoaString(name, units);
-      str += this.Transverse.ToCoaString(name, units);
-      if (this.Decking != null)
-      {
-        str += this.Decking.ToCoaString(name, units);
+      if (Mesh != null && Mesh.MeshType != ReinforcementMeshType.None) {
+        str += Mesh.ToCoaString(name, units);
+      }
+      str += Transverse.ToCoaString(name, units);
+      if (Decking != null) {
+        str += Decking.ToCoaString(name, units);
       }
       return str;
     }
     #endregion
 
-    #region methods
-    public override string ToString()
-    {
+    public override string ToString() {
       string invalid = "";
       string dim = "";
-      if (this.Dimensions.Count == 0)
-      {
+      if (Dimensions.Count == 0) {
         invalid = "Invalid Slab ";
         dim = "(no dimensions set)";
       }
-      else
-        dim = (this.Dimensions.Count > 1) ? string.Join(" : ", this.Dimensions.Select(x => x.ToString()).ToArray()) : this.Dimensions[0].ToString();
+      else {
+        dim = (Dimensions.Count > 1) ? string.Join(" : ", Dimensions.Select(x => x.ToString()).ToArray()) : Dimensions[0].ToString();
+      }
 
       string mat = "";
-      if (this.Material == null)
-      {
+      if (Material == null) {
         invalid = "Invalid Slab ";
         mat = "(no material set)";
       }
-      else
-        mat = this.Material.ToString();
+      else {
+        mat = Material.ToString();
+      }
       string reinf = "";
-      if (this.Mesh != null)
-        reinf = this.Mesh.ToString() + " / ";
-      if (this.Transverse == null)
-      {
+      if (Mesh != null) {
+        reinf = Mesh.ToString() + " / ";
+      }
+      if (Transverse == null) {
         invalid = "Invalid Slab ";
         reinf = "(no reinforcement set)";
       }
-      else
-        reinf += this.Transverse.ToString();
+      else {
+        reinf += Transverse.ToString();
+      }
       return invalid + dim + ", " + mat + ", " + reinf;
     }
-    #endregion
   }
 }

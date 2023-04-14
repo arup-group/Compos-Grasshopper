@@ -31,13 +31,13 @@ namespace ComposGH.Components
           "Create a " + WebOpeningStiffenersGoo.Description + " for a " + WebOpeningGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
 
       pManager.AddBooleanParameter("Both Sides", "BS", "Set to true to apply horizontal stiffeners on both sides of web", GH_ParamAccess.item);
       pManager.AddGenericParameter("Dist. z [" + unitAbbreviation + "]", "Dz", "Vertical distance above/below opening edge to centre of stiffener (beam local z-axis)", GH_ParamAccess.item);
@@ -84,44 +84,44 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Type", "Unit" });
+      _spacerDescriptions = new List<string>(new string[] { "Type", "Unit" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // type
-      this._dropDownItems.Add(Enum.GetValues(typeof(Stiff_types)).Cast<Stiff_types>()
+      _dropDownItems.Add(Enum.GetValues(typeof(Stiff_types)).Cast<Stiff_types>()
           .Select(x => x.ToString().Replace('_', ' ')).ToList());
-      this._selectedItems.Add(Stiff_types.Web_Opening.ToString().Replace('_', ' '));
+      _selectedItems.Add(Stiff_types.Web_Opening.ToString().Replace('_', ' '));
 
       // length
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this._selectedItems[i] = this._dropDownItems[i][j];
+      _selectedItems[i] = _dropDownItems[i][j];
 
       if (i == 0)
       {
-        if (this._selectedItems[i] == this.OpeningType.ToString().Replace('_', ' '))
+        if (_selectedItems[i] == OpeningType.ToString().Replace('_', ' '))
           return;
-        this.OpeningType = (Stiff_types)Enum.Parse(typeof(Stiff_types), this._selectedItems[i].Replace(' ', '_'));
+        OpeningType = (Stiff_types)Enum.Parse(typeof(Stiff_types), _selectedItems[i].Replace(' ', '_'));
         ModeChangeClicked();
       }
       else if (i == 1) // change is made to length unit
-        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
+        LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.OpeningType = (Stiff_types)Enum.Parse(typeof(Stiff_types), this._selectedItems[0].Replace(' ', '_'));
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[1]);
+      OpeningType = (Stiff_types)Enum.Parse(typeof(Stiff_types), _selectedItems[0].Replace(' ', '_'));
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[1]);
 
       CreateAttributes();
       ModeChangeClicked();
@@ -132,17 +132,17 @@ namespace ComposGH.Components
     {
       RecordUndoEvent("Changed Parameters");
 
-      if (this.OpeningType == Stiff_types.Web_Opening)
+      if (OpeningType == Stiff_types.Web_Opening)
       {
-        if (this.Params.Input.Count == 6)
+        if (Params.Input.Count == 6)
           return;
 
         Params.RegisterInputParam(new Param_GenericObject());
         Params.RegisterInputParam(new Param_GenericObject());
       }
-      if (this.OpeningType == Stiff_types.Notch)
+      if (OpeningType == Stiff_types.Notch)
       {
-        if (this.Params.Input.Count == 4)
+        if (Params.Input.Count == 4)
           return;
 
         Params.UnregisterInputParameter(Params.Input[Params.Input.Count - 1], true);
@@ -152,7 +152,7 @@ namespace ComposGH.Components
 
     public override void VariableParameterMaintenance()
     {
-      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
 
       Params.Input[1].Name = "Dist. z [" + unitAbbreviation + "]";
       Params.Input[2].Name = "Top Width [" + unitAbbreviation + "]";

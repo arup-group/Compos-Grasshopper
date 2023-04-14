@@ -14,7 +14,7 @@ namespace ComposGH.Parameters
     public static string NickName => "Ld";
     public static string Description => "Compos Load";
     public LoadGoo(ILoad item) : base(item) { }
-    public override IGH_Goo Duplicate() => new LoadGoo(this.Value);
+    public override IGH_Goo Duplicate() => new LoadGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 }

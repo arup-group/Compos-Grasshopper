@@ -10,7 +10,7 @@ namespace ComposAPI
   {
     public IQuantity StartPosition
     {
-      get { return this.m_StartPosition; }
+      get { return m_StartPosition; }
       set
       {
         if (value == null) return;
@@ -18,14 +18,14 @@ namespace ComposAPI
           & value.QuantityInfo.UnitType != typeof(RatioUnit))
           throw new ArgumentException("Start Position must be either Length or Ratio");
         else
-          this.m_StartPosition = value;
+          m_StartPosition = value;
       }
     }
     private IQuantity m_StartPosition = Length.Zero;
     // end x of the reinforcement
     public IQuantity EndPosition
     {
-      get { return this.m_EndPosition; }
+      get { return m_EndPosition; }
       set
       {
         if (value == null) return;
@@ -33,7 +33,7 @@ namespace ComposAPI
           & value.QuantityInfo.UnitType != typeof(RatioUnit))
           throw new ArgumentException("Start Position must be either Length or Ratio");
         else
-          this.m_EndPosition = value;
+          m_EndPosition = value;
       }
     }
     private IQuantity m_EndPosition = new Ratio(100, RatioUnit.Percent);
@@ -45,11 +45,11 @@ namespace ComposAPI
 
     public CustomTransverseReinforcementLayout(IQuantity distanceFromStart, IQuantity distanceFromEnd, Length diameter, Length spacing, Length cover)
     {
-      this.StartPosition = distanceFromStart;
-      this.EndPosition = distanceFromEnd;
-      this.Diameter = diameter;
-      this.Spacing = spacing;
-      this.Cover = cover;
+      StartPosition = distanceFromStart;
+      EndPosition = distanceFromEnd;
+      Diameter = diameter;
+      Spacing = spacing;
+      Cover = cover;
     }
 
     #region coa interop
@@ -72,27 +72,27 @@ namespace ComposAPI
       parameters.Add(CoaIdentifier.RebarTransverse);
       parameters.Add(name);
       parameters.Add("USER_DEFINED");
-      if (this.StartPosition.QuantityInfo.UnitType == typeof(RatioUnit))
+      if (StartPosition.QuantityInfo.UnitType == typeof(RatioUnit))
       {
         // start position in percent
-        Ratio p = (Ratio)this.StartPosition;
+        Ratio p = (Ratio)StartPosition;
         // percentage in coa string for beam section is a negative decimal fraction!
         parameters.Add(CoaHelper.FormatSignificantFigures(p.As(RatioUnit.DecimalFraction) * -1, p.DecimalFractions == 1 ? 5 : 6));
       }
       else
-        parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition.ToUnit(units.Length).Value, 6));
-      if (this.EndPosition.QuantityInfo.UnitType == typeof(RatioUnit))
+        parameters.Add(CoaHelper.FormatSignificantFigures(StartPosition.ToUnit(units.Length).Value, 6));
+      if (EndPosition.QuantityInfo.UnitType == typeof(RatioUnit))
       {
         // start position in percent
-        Ratio p = (Ratio)this.EndPosition;
+        Ratio p = (Ratio)EndPosition;
         // percentage in coa string for beam section is a negative decimal fraction!
         parameters.Add(CoaHelper.FormatSignificantFigures(p.As(RatioUnit.DecimalFraction) * -1, p.DecimalFractions == 1 ? 5 : 6));
       }
       else
-        parameters.Add(CoaHelper.FormatSignificantFigures(this.EndPosition.ToUnit(units.Length).Value, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.Diameter.ToUnit(units.Length).Value, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.Spacing.ToUnit(units.Length).Value, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.Cover.ToUnit(units.Length).Value, 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(EndPosition.ToUnit(units.Length).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(Diameter.ToUnit(units.Length).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(Spacing.ToUnit(units.Length).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(Cover.ToUnit(units.Length).Value, 6));
 
       return CoaHelper.CreateString(parameters);
     }
@@ -102,34 +102,34 @@ namespace ComposAPI
     public override string ToString()
     {
       string start = "";
-      if (this.StartPosition.QuantityInfo.UnitType == typeof(LengthUnit))
+      if (StartPosition.QuantityInfo.UnitType == typeof(LengthUnit))
       {
-        Length l = (Length)this.StartPosition;
+        Length l = (Length)StartPosition;
         start = l.ToString("g2").Replace(" ", string.Empty);
       }
       else
       {
-        Ratio p = (Ratio)this.StartPosition;
+        Ratio p = (Ratio)StartPosition;
         start = p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
       }
 
       string end = "";
-      if (this.EndPosition.QuantityInfo.UnitType == typeof(LengthUnit))
+      if (EndPosition.QuantityInfo.UnitType == typeof(LengthUnit))
       {
-        Length l = (Length)this.EndPosition;
+        Length l = (Length)EndPosition;
         end = l.ToString("g2").Replace(" ", string.Empty);
       }
       else
       {
-        Ratio p = (Ratio)this.EndPosition;
+        Ratio p = (Ratio)EndPosition;
         end = p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
       }
 
       string startend = start + "->" + end;
 
-      string dia = "Ø" + this.Diameter.ToString("f0").Replace(" ", string.Empty);
-      string spacing = "/" + this.Spacing.ToString("f0").Replace(" ", string.Empty);
-      string cov = ", c:" + this.Cover.ToString("f0").Replace(" ", string.Empty);
+      string dia = "Ø" + Diameter.ToString("f0").Replace(" ", string.Empty);
+      string spacing = "/" + Spacing.ToString("f0").Replace(" ", string.Empty);
+      string cov = ", c:" + Cover.ToString("f0").Replace(" ", string.Empty);
       string diaspacingcov = dia + spacing + cov;
       string joined = string.Join(", ", new List<string>() { startend, diaspacingcov });
       return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');

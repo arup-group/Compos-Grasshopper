@@ -20,20 +20,20 @@
 
     public ERatio(double shortTerm, double longTerm, double vibration, double shrinkage)
     {
-      this.ShortTerm = shortTerm;
-      this.LongTerm = longTerm;
-      this.Vibration = vibration;
-      this.Shrinkage = shrinkage;
-      this.UserDefined = true;
+      ShortTerm = shortTerm;
+      LongTerm = longTerm;
+      Vibration = vibration;
+      Shrinkage = shrinkage;
+      UserDefined = true;
     }
     #endregion
 
     #region methods
     public override string ToString()
     {
-      string str = "ST: " + this.ShortTerm + ", LT: " + this.LongTerm + ", V: " + this.Vibration;
-      if (this.Shrinkage > 0)
-        str += ", S: " + this.Shrinkage;
+      string str = "ST: " + ShortTerm + ", LT: " + LongTerm + ", V: " + Vibration;
+      if (Shrinkage > 0)
+        str += ", S: " + Shrinkage;
       return str;
     }
     #endregion

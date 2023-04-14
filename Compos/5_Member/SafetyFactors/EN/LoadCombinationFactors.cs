@@ -39,41 +39,41 @@ namespace ComposAPI
     // from CoaString happens in SafetyFactorsEN class
     public string ToCoaString(string name)
     {
-      if (this.LoadCombination == LoadCombination.Custom)
+      if (LoadCombination == LoadCombination.Custom)
       {
         string str = "SAFETY_FACTOR_LOAD" + '\t' + name + '\t';
-        str += CoaHelper.FormatSignificantFigures(this.Constantgamma_G, 6) + '\t';
-        str += CoaHelper.FormatSignificantFigures(this.Finalgamma_G, 6) + '\t';
-        str += CoaHelper.FormatSignificantFigures(this.Constantgamma_Q, 6) + '\t';
-        str += CoaHelper.FormatSignificantFigures(this.Finalgamma_Q, 6) + '\n';
+        str += CoaHelper.FormatSignificantFigures(Constantgamma_G, 6) + '\t';
+        str += CoaHelper.FormatSignificantFigures(Finalgamma_G, 6) + '\t';
+        str += CoaHelper.FormatSignificantFigures(Constantgamma_Q, 6) + '\t';
+        str += CoaHelper.FormatSignificantFigures(Finalgamma_Q, 6) + '\n';
 
         str += "EC4_LOAD_COMB_FACTORS" + '\t' + name + '\t' + "USER_DEFINED" + '\t';
-        str += CoaHelper.FormatSignificantFigures(this.ConstantXi, 6) + '\t';
-        str += CoaHelper.FormatSignificantFigures(this.FinalXi, 6) + '\t';
-        str += CoaHelper.FormatSignificantFigures(this.ConstantPsi, 6) + '\t';
-        str += CoaHelper.FormatSignificantFigures(this.FinalPsi, 6) + '\n';
+        str += CoaHelper.FormatSignificantFigures(ConstantXi, 6) + '\t';
+        str += CoaHelper.FormatSignificantFigures(FinalXi, 6) + '\t';
+        str += CoaHelper.FormatSignificantFigures(ConstantPsi, 6) + '\t';
+        str += CoaHelper.FormatSignificantFigures(FinalPsi, 6) + '\n';
         return str;
       }
       else
       {
         string str = "EC4_LOAD_COMB_FACTORS" + '\t';
         str += name + '\t';
-        switch (this.LoadCombination)
+        switch (LoadCombination)
         {
           case (LoadCombination.Equation6_10a__6_10b):
             str += "EC0_WORST_6_10A_10B" + '\t';
-            str += CoaHelper.FormatSignificantFigures(this.ConstantXi, 6) + '\t';
-            str += CoaHelper.FormatSignificantFigures(this.FinalXi, 6) + '\t';
-            str += CoaHelper.FormatSignificantFigures(this.ConstantPsi, 6) + '\t';
-            str += CoaHelper.FormatSignificantFigures(this.FinalPsi, 6) + '\n';
+            str += CoaHelper.FormatSignificantFigures(ConstantXi, 6) + '\t';
+            str += CoaHelper.FormatSignificantFigures(FinalXi, 6) + '\t';
+            str += CoaHelper.FormatSignificantFigures(ConstantPsi, 6) + '\t';
+            str += CoaHelper.FormatSignificantFigures(FinalPsi, 6) + '\n';
             break;
           case (LoadCombination.Equation6_10):
           default:
             str += "EC0_6_10" + '\t';
-            str += CoaHelper.FormatSignificantFigures(this.ConstantXi, 6) + '\t';
-            str += CoaHelper.FormatSignificantFigures(this.FinalXi, 6) + '\t';
-            str += CoaHelper.FormatSignificantFigures(this.ConstantPsi, 6) + '\t';
-            str += CoaHelper.FormatSignificantFigures(this.FinalPsi, 6) + '\n';
+            str += CoaHelper.FormatSignificantFigures(ConstantXi, 6) + '\t';
+            str += CoaHelper.FormatSignificantFigures(FinalXi, 6) + '\t';
+            str += CoaHelper.FormatSignificantFigures(ConstantPsi, 6) + '\t';
+            str += CoaHelper.FormatSignificantFigures(FinalPsi, 6) + '\n';
             break;
         }
         return str;

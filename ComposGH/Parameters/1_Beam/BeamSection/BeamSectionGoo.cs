@@ -17,7 +17,7 @@ namespace ComposGH.Parameters
     public static string Description => "Compos Beam Section";
     public BeamSectionGoo(IBeamSection item) : base(item) { }
     public BeamSectionGoo(string item) : base(new BeamSection(item)) { }
-    public override IGH_Goo Duplicate() => new BeamSectionGoo(this.Value);
+    public override IGH_Goo Duplicate() => new BeamSectionGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
 
     public override bool CastTo<Q>(ref Q target)
@@ -76,8 +76,8 @@ namespace ComposGH.Parameters
 
   public class BeamSectionParam : GH_Param<BeamSectionGoo>
   {
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + BeamSectionGoo.Name + " parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? BeamSectionGoo.Name : base.TypeName;
+    public override string InstanceDescription => m_data.DataCount == 0 ? "Empty " + BeamSectionGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => SourceCount == 0 ? BeamSectionGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("ed384b64-f147-483e-ae3d-a294016a90c3");
     public override GH_Exposure Exposure => GH_Exposure.hidden;
     protected override System.Drawing.Bitmap Icon => Properties.Resources.BeamSectionParam;

@@ -16,10 +16,10 @@ namespace ComposAPI
 
     public BeamSizeLimits(double minDepth, double maxDepth, double minWidth, double maxWidth, LengthUnit lengthUnit)
     {
-      this.MinDepth = new Length(minDepth, lengthUnit);
-      this.MaxDepth = new Length(maxDepth, lengthUnit);
-      this.MinWidth = new Length(minWidth, lengthUnit);
-      this.MaxWidth = new Length(maxWidth, lengthUnit);
+      MinDepth = new Length(minDepth, lengthUnit);
+      MaxDepth = new Length(maxDepth, lengthUnit);
+      MinWidth = new Length(minWidth, lengthUnit);
+      MaxWidth = new Length(maxWidth, lengthUnit);
     }
 
     #region coa interop
@@ -42,10 +42,10 @@ namespace ComposAPI
       List<string> parameters = new List<string>();
       parameters.Add(CoaIdentifier.DesignCriteria.BeamSizeLimit);
       parameters.Add(name);
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.MinDepth.ToUnit(units.Section).Value, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.MaxDepth.ToUnit(units.Section).Value, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.MinWidth.ToUnit(units.Section).Value, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.MaxWidth.ToUnit(units.Section).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(MinDepth.ToUnit(units.Section).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(MaxDepth.ToUnit(units.Section).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(MinWidth.ToUnit(units.Section).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(MaxWidth.ToUnit(units.Section).Value, 6));
 
       string coaString = CoaHelper.CreateString(parameters);
 
@@ -57,10 +57,10 @@ namespace ComposAPI
     public override string ToString()
     {
       string str = "";
-      str += "Dmin:" + this.MinDepth.ToString("g7").Replace(" ", string.Empty);
-      str += ", Dmax:" + this.MaxDepth.ToString("g7").Replace(" ", string.Empty);
-      str += ", Wmin:" + this.MinWidth.ToString("g7").Replace(" ", string.Empty);
-      str += ", Wmax:" + this.MaxWidth.ToString("g7").Replace(" ", string.Empty);
+      str += "Dmin:" + MinDepth.ToString("g7").Replace(" ", string.Empty);
+      str += ", Dmax:" + MaxDepth.ToString("g7").Replace(" ", string.Empty);
+      str += ", Wmin:" + MinWidth.ToString("g7").Replace(" ", string.Empty);
+      str += ", Wmax:" + MaxWidth.ToString("g7").Replace(" ", string.Empty);
       return str;
     }
     #endregion

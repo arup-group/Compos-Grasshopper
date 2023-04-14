@@ -13,21 +13,21 @@ namespace ComposAPI
 
     public CustomDecking()
     {
-      this.m_type = DeckingType.Custom;
+      m_type = DeckingType.Custom;
     }
 
     public CustomDecking(Length distanceB1, Length distanceB2, Length distanceB3, Length distanceB4, Length distanceB5, Length depth, Length thickness, Pressure strength, IDeckingConfiguration configuration)
     {
-      this.b1 = distanceB1;
-      this.b2 = distanceB2;
-      this.b3 = distanceB3;
-      this.b4 = distanceB4;
-      this.b5 = distanceB5;
-      this.Depth = depth;
-      this.Thickness = thickness;
-      this.Strength = strength;
-      this.DeckingConfiguration = configuration;
-      this.m_type = DeckingType.Custom;
+      b1 = distanceB1;
+      b2 = distanceB2;
+      b3 = distanceB3;
+      b4 = distanceB4;
+      b5 = distanceB5;
+      Depth = depth;
+      Thickness = thickness;
+      Strength = strength;
+      DeckingConfiguration = configuration;
+      m_type = DeckingType.Custom;
     }
 
     #region coa interop
@@ -69,22 +69,22 @@ namespace ComposAPI
 
       // NO_DECKING ??
       parameters.Add("USER_DEFINED");
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.Strength.ToUnit(units.Stress).Value, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.DeckingConfiguration.Angle.ToUnit(AngleUnit.Degree).Value, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.b1.ToUnit(units.Section).Value, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.b2.ToUnit(units.Section).Value, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.b3.ToUnit(units.Section).Value, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.Depth.ToUnit(units.Section).Value, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.Thickness.ToUnit(units.Section).Value, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.b4.ToUnit(units.Section).Value, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.b5.ToUnit(units.Section).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(Strength.ToUnit(units.Stress).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(DeckingConfiguration.Angle.ToUnit(AngleUnit.Degree).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(b1.ToUnit(units.Section).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(b2.ToUnit(units.Section).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(b3.ToUnit(units.Section).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(Depth.ToUnit(units.Section).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(Thickness.ToUnit(units.Section).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(b4.ToUnit(units.Section).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(b5.ToUnit(units.Section).Value, 6));
 
-      if (this.DeckingConfiguration.IsDiscontinous)
+      if (DeckingConfiguration.IsDiscontinous)
         parameters.Add("DECKING_JOINTED");
       else
         parameters.Add("DECKING_CONTINUED");
 
-      if (this.DeckingConfiguration.IsWelded)
+      if (DeckingConfiguration.IsWelded)
         parameters.Add("JOINT_WELDED");
       else
         parameters.Add("JOINT_NOT_WELD");
@@ -96,14 +96,14 @@ namespace ComposAPI
     #region
     public override string ToString()
     {
-      string distanceB1 = (this.b1.Value == 0) ? "" : "b1:" + this.b1.ToString().Replace(" ", string.Empty);
-      string distanceB2 = (this.b2.Value == 0) ? "" : "b2:" + this.b2.ToString().Replace(" ", string.Empty);
-      string distanceB3 = (this.b3.Value == 0) ? "" : "b3:" + this.b3.ToString().Replace(" ", string.Empty);
-      string distanceB4 = (this.b4.Value == 0) ? "" : "b4:" + this.b4.ToString().Replace(" ", string.Empty);
-      string distanceB5 = (this.b5.Value == 0) ? "" : "b5:" + this.b5.ToString().Replace(" ", string.Empty);
-      string depth = (this.Depth.Value == 0) ? "" : "d:" + this.Depth.ToString().Replace(" ", string.Empty);
-      string thickness = (this.Thickness.Value == 0) ? "" : "th:" + this.Thickness.ToString().Replace(" ", string.Empty);
-      string stress = (this.Strength.Value == 0) ? "" : "stress:" + this.Strength.ToString().Replace(" ", string.Empty);
+      string distanceB1 = (b1.Value == 0) ? "" : "b1:" + b1.ToString().Replace(" ", string.Empty);
+      string distanceB2 = (b2.Value == 0) ? "" : "b2:" + b2.ToString().Replace(" ", string.Empty);
+      string distanceB3 = (b3.Value == 0) ? "" : "b3:" + b3.ToString().Replace(" ", string.Empty);
+      string distanceB4 = (b4.Value == 0) ? "" : "b4:" + b4.ToString().Replace(" ", string.Empty);
+      string distanceB5 = (b5.Value == 0) ? "" : "b5:" + b5.ToString().Replace(" ", string.Empty);
+      string depth = (Depth.Value == 0) ? "" : "d:" + Depth.ToString().Replace(" ", string.Empty);
+      string thickness = (Thickness.Value == 0) ? "" : "th:" + Thickness.ToString().Replace(" ", string.Empty);
+      string stress = (Strength.Value == 0) ? "" : "stress:" + Strength.ToString().Replace(" ", string.Empty);
 
       string joined = string.Join(" ", new List<string>() { distanceB1, distanceB2, distanceB3, distanceB4, distanceB5, depth, thickness, stress });
       return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');

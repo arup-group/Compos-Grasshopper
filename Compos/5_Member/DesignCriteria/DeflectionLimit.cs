@@ -22,11 +22,11 @@ namespace ComposAPI
 
     public DeflectionLimit(double absoluteDeflection, LengthUnit lengthUnit)
     {
-      this.AbsoluteDeflection = new Length(absoluteDeflection, lengthUnit);
+      AbsoluteDeflection = new Length(absoluteDeflection, lengthUnit);
     }
     public DeflectionLimit(double spanDeflectionRatio)
     {
-      this.SpanOverDeflectionRatio = new Ratio(spanDeflectionRatio, RatioUnit.DecimalFraction);
+      SpanOverDeflectionRatio = new Ratio(spanDeflectionRatio, RatioUnit.DecimalFraction);
     }
     
     #region coa interop
@@ -97,26 +97,26 @@ namespace ComposAPI
     {
       string coaString = "";
 
-      if (this.AbsoluteDeflection != Length.Zero)
+      if (AbsoluteDeflection != Length.Zero)
       {
         List<string> parameters = new List<string>();
         parameters.Add(CoaIdentifier.DesignCriteria.DeflectionLimit);
         parameters.Add(name);
         parameters.Add(GetLoadTypeCoaString(type));
         parameters.Add("ABSOLUTE");
-        parameters.Add(CoaHelper.FormatSignificantFigures(this.AbsoluteDeflection.ToUnit(units.Displacement).Value, 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(AbsoluteDeflection.ToUnit(units.Displacement).Value, 6));
 
         coaString += CoaHelper.CreateString(parameters);
       }
 
-      if (this.SpanOverDeflectionRatio != Ratio.Zero)
+      if (SpanOverDeflectionRatio != Ratio.Zero)
       {
         List<string> parameters = new List<string>();
         parameters.Add(CoaIdentifier.DesignCriteria.DeflectionLimit);
         parameters.Add(name);
         parameters.Add(GetLoadTypeCoaString(type));
         parameters.Add("SPAN/DEF_RATIO");
-        parameters.Add(CoaHelper.FormatSignificantFigures(this.SpanOverDeflectionRatio.DecimalFractions, 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(SpanOverDeflectionRatio.DecimalFractions, 6));
 
         coaString += CoaHelper.CreateString(parameters);
       }
@@ -129,12 +129,12 @@ namespace ComposAPI
     public override string ToString()
     {
       string str = "";
-      if (this.AbsoluteDeflection != Length.Zero)
-        str += "δ:" + this.AbsoluteDeflection.ToUnit(ComposUnitsHelper.LengthUnitResult).ToString("f0").Replace(" ", string.Empty) + ", ";
+      if (AbsoluteDeflection != Length.Zero)
+        str += "δ:" + AbsoluteDeflection.ToUnit(ComposUnitsHelper.LengthUnitResult).ToString("f0").Replace(" ", string.Empty) + ", ";
 
-      if (this.SpanOverDeflectionRatio != Ratio.Zero)
+      if (SpanOverDeflectionRatio != Ratio.Zero)
       {
-        str += "δ:1/" + this.SpanOverDeflectionRatio.DecimalFractions.ToString("f0").Replace(" ", string.Empty);
+        str += "δ:1/" + SpanOverDeflectionRatio.DecimalFractions.ToString("f0").Replace(" ", string.Empty);
       }
       return str.TrimEnd(' ').TrimEnd(',');
     }

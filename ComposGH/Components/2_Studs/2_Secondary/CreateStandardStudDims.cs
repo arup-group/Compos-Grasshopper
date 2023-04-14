@@ -26,7 +26,7 @@ namespace ComposGH.Components
           "Look up a Standard " + StudDimensionsGoo.Description + " for a " + StudGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -40,7 +40,7 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(this.StdSize)));
+      Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(StdSize)));
     }
 
     #region Custom UI
@@ -48,30 +48,30 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Standard Size" });
+      _spacerDescriptions = new List<string>(new string[] { "Standard Size" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // spacing
-      this._dropDownItems.Add(Enum.GetValues(typeof(StandardStudSize)).Cast<StandardStudSize>()
+      _dropDownItems.Add(Enum.GetValues(typeof(StandardStudSize)).Cast<StandardStudSize>()
           .Select(x => x.ToString()).ToList());
       for (int i = 0; i < _dropDownItems[0].Count; i++)
-        this._dropDownItems[0][i] = _dropDownItems[0][i].Replace("D", "Ø").Replace("mmH", "/");
+        _dropDownItems[0][i] = _dropDownItems[0][i].Replace("D", "Ø").Replace("mmH", "/");
 
-      this._selectedItems.Add(this.StdSize.ToString().Replace("D", "Ø").Replace("mmH", "/"));
+      _selectedItems.Add(StdSize.ToString().Replace("D", "Ø").Replace("mmH", "/"));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this._selectedItems[i] = this._dropDownItems[i][j];
+      _selectedItems[i] = _dropDownItems[i][j];
 
       if (i == 0) // change is made to size
       {
-        string sz = this._selectedItems[i].Replace("Ø", "D").Replace("/", "mmH");
-        this.StdSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), sz);
+        string sz = _selectedItems[i].Replace("Ø", "D").Replace("/", "mmH");
+        StdSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), sz);
       }
 
       base.UpdateUI();
@@ -79,8 +79,8 @@ namespace ComposGH.Components
 
     protected override void UpdateUIFromSelectedItems()
     {
-      string sz = this._selectedItems[0].Replace("Ø", "D").Replace("/", "mmH");
-      this.StdSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), sz);
+      string sz = _selectedItems[0].Replace("Ø", "D").Replace("/", "mmH");
+      StdSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), sz);
 
       base.UpdateUIFromSelectedItems();
     }

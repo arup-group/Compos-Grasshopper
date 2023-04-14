@@ -5,8 +5,8 @@ namespace ComposAPI
   {
     public SubResult(Member member, int numIntermediatePos)
     {
-      this.Member = member;
-      this.NumIntermediatePos = numIntermediatePos;
+      Member = member;
+      NumIntermediatePos = numIntermediatePos;
     }
     internal Member Member;
     internal int NumIntermediatePos;

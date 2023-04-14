@@ -31,7 +31,7 @@ namespace ComposGH.Components
           "Get " + BeamSectionGoo.Description + " Properties",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -41,7 +41,7 @@ namespace ComposGH.Components
     }
     protected override void RegisterOutputParams(GH_OutputParamManager pManager)
     {
-      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
       pManager.AddGenericParameter("Depth [" + unitAbbreviation + "]", "D", "Profile Depth", GH_ParamAccess.item);
       pManager.AddGenericParameter("TopWidth [" + unitAbbreviation + "]", "Wt", "Profile's Top Flange Width", GH_ParamAccess.item);
       pManager.AddGenericParameter("BotWidth [" + unitAbbreviation + "]", "Wb", "Profile's Bottom Flange Width", GH_ParamAccess.item);
@@ -58,13 +58,13 @@ namespace ComposGH.Components
       BeamSection profile = new BeamSection(CustomInput.BeamSection(this, DA, 0, false));
 
       int i = 0;
-      DA.SetData(i++, new GH_UnitNumber(profile.Depth.ToUnit(this.LengthUnit)));
-      DA.SetData(i++, new GH_UnitNumber(profile.TopFlangeWidth.ToUnit(this.LengthUnit)));
-      DA.SetData(i++, new GH_UnitNumber(profile.BottomFlangeWidth.ToUnit(this.LengthUnit)));
-      DA.SetData(i++, new GH_UnitNumber(profile.WebThickness.ToUnit(this.LengthUnit)));
-      DA.SetData(i++, new GH_UnitNumber(profile.TopFlangeThickness.ToUnit(this.LengthUnit)));
-      DA.SetData(i++, new GH_UnitNumber(profile.BottomFlangeThickness.ToUnit(this.LengthUnit)));
-      DA.SetData(i++, new GH_UnitNumber(profile.RootRadius.ToUnit(this.LengthUnit)));
+      DA.SetData(i++, new GH_UnitNumber(profile.Depth.ToUnit(LengthUnit)));
+      DA.SetData(i++, new GH_UnitNumber(profile.TopFlangeWidth.ToUnit(LengthUnit)));
+      DA.SetData(i++, new GH_UnitNumber(profile.BottomFlangeWidth.ToUnit(LengthUnit)));
+      DA.SetData(i++, new GH_UnitNumber(profile.WebThickness.ToUnit(LengthUnit)));
+      DA.SetData(i++, new GH_UnitNumber(profile.TopFlangeThickness.ToUnit(LengthUnit)));
+      DA.SetData(i++, new GH_UnitNumber(profile.BottomFlangeThickness.ToUnit(LengthUnit)));
+      DA.SetData(i++, new GH_UnitNumber(profile.RootRadius.ToUnit(LengthUnit)));
       DA.SetData(i++, profile.isCatalogue);
     }
 
@@ -74,38 +74,38 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Unit" });
+      _spacerDescriptions = new List<string>(new string[] { "Unit" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // length
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
       // change selected item
-      this._selectedItems[i] = this._dropDownItems[i][j];
+      _selectedItems[i] = _dropDownItems[i][j];
 
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[0]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[0]);
 
       base.UpdateUIFromSelectedItems();
     }
 
     public override void VariableParameterMaintenance()
     {
-      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
       int i = 0;
       Params.Output[i++].Name = "Depth [" + unitAbbreviation + "]";
       Params.Output[i++].Name = "TopWidth [" + unitAbbreviation + "]";

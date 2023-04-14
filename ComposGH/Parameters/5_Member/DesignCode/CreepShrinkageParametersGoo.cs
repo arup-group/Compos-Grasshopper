@@ -14,7 +14,7 @@ namespace ComposGH.Parameters
     public static string NickName => "CSP";
     public static string Description => "Compos Creep and Shrinkage Parameters";
     public CreepShrinkageParametersGoo(ICreepShrinkageParameters item) : base(item) { }
-    public override IGH_Goo Duplicate() => new CreepShrinkageParametersGoo(this.Value);
+    public override IGH_Goo Duplicate() => new CreepShrinkageParametersGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 }

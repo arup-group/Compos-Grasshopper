@@ -13,10 +13,10 @@
     public string ToCoaString(string name)
     {
       string str = "";
-      if (this.LoadFactors != null)
-        str = this.LoadFactors.ToCoaString(name);
-      if (this.MaterialFactors != null)
-        str += this.MaterialFactors.ToCoaString(name);
+      if (LoadFactors != null)
+        str = LoadFactors.ToCoaString(name);
+      if (MaterialFactors != null)
+        str += MaterialFactors.ToCoaString(name);
       return str;
     }
   }

@@ -14,7 +14,7 @@ namespace ComposGH.Parameters
     public static string NickName => "Dec";
     public static string Description => "Compos Steel Decking";
     public DeckingGoo(IDecking item) : base(item) { }
-    public override IGH_Goo Duplicate() => new DeckingGoo(this.Value);
+    public override IGH_Goo Duplicate() => new DeckingGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 }

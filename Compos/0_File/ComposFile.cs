@@ -33,7 +33,7 @@ namespace ComposAPI
     {
       foreach (IMember member in members)
       {
-        this.AddMember(member);
+        AddMember(member);
       }
     }
     #endregion
@@ -42,12 +42,12 @@ namespace ComposAPI
     public void AddMember(IMember member)
     {
       ((Member)member).Register(this);
-      this.Members.Add(member);
+      Members.Add(member);
     }
 
     public IList<IMember> GetMembers()
     {
-      return this.Members;
+      return Members;
     }
 
     /// <summary>
@@ -62,9 +62,9 @@ namespace ComposAPI
       ComposFile.Counter++;
 
       short status = 0;
-      foreach (Member member in this.Members)
+      foreach (Member member in Members)
       {
-        if (this.Analyse(member.Name) == 1)
+        if (Analyse(member.Name) == 1)
           status = 1;
       }
       return status;
@@ -109,7 +109,7 @@ namespace ComposAPI
     /// </returns>
     public short CodeSatisfied(string memberName)
     {
-      this.Initialise();
+      Initialise();
       return ComposFile.ComposCOM.CodeSatisfied(memberName);
     }
 
@@ -122,11 +122,11 @@ namespace ComposAPI
     /// </returns>
     internal short Design()
     {
-      this.Initialise();
+      Initialise();
       short status = 0;
-      foreach (Member member in this.Members)
+      foreach (Member member in Members)
       {
-        if (this.Design(member.Name) == 1)
+        if (Design(member.Name) == 1)
           status = 1;
       }
       return status;
@@ -142,7 +142,7 @@ namespace ComposAPI
     /// </returns>
     public short Design(string memberName)
     {
-      this.Initialise();
+      Initialise();
       return ComposFile.ComposCOM.Design(memberName);
     }
 
@@ -153,7 +153,7 @@ namespace ComposAPI
 
     public IMember GetMember(string name)
     {
-      return this.Members.First(x => x.Name == name);
+      return Members.First(x => x.Name == name);
     }
 
     public static ComposFile Open(string fileName)
@@ -183,7 +183,7 @@ namespace ComposAPI
 
     public string MemberName(int index)
     {
-      this.Initialise();
+      Initialise();
       return ComposFile.ComposCOM.MemberName(index);
     }
 
@@ -197,7 +197,7 @@ namespace ComposAPI
     /// </returns>
     public short NumIntermediatePos(string memberName)
     {
-      this.Initialise();
+      Initialise();
       return ComposFile.ComposCOM.NumIntermediatePos(memberName);
     }
 
@@ -210,7 +210,7 @@ namespace ComposAPI
     /// <returns></returns>
     public float Result(string memberName, string option, short position)
     {
-      this.Initialise();
+      Initialise();
       return ComposFile.ComposCOM.Result(memberName, option, position);
     }
 
@@ -223,7 +223,7 @@ namespace ComposAPI
     /// <returns></returns>
     public float MaxResult(string memberName, string option, short position)
     {
-      this.Initialise();
+      Initialise();
       return ComposFile.ComposCOM.MaxResult(memberName, option.ToString(), out position);
     }
 
@@ -236,7 +236,7 @@ namespace ComposAPI
     /// <returns></returns>
     public short MaxResultPosition(string memberName, string option, short position)
     {
-      this.Initialise();
+      Initialise();
       ComposFile.ComposCOM.MaxResult(memberName, option.ToString(), out position);
       return position;
     }
@@ -250,7 +250,7 @@ namespace ComposAPI
     /// <returns></returns>
     public float MinResult(string memberName, string option, short position)
     {
-      this.Initialise();
+      Initialise();
       return ComposFile.ComposCOM.MinResult(memberName, option.ToString(), out position);
     }
 
@@ -263,7 +263,7 @@ namespace ComposAPI
     /// <returns></returns>
     public short MinResultPosition(string memberName, string option, short position)
     {
-      this.Initialise();
+      Initialise();
       ComposFile.ComposCOM.MinResult(memberName, option.ToString(), out position);
       return position;
     }
@@ -278,7 +278,7 @@ namespace ComposAPI
     /// </returns>
     public short NumTranRebar(string memberName)
     {
-      this.Initialise();
+      Initialise();
       return ComposFile.ComposCOM.NumTranRebar(memberName);
     }
 
@@ -291,7 +291,7 @@ namespace ComposAPI
     /// <returns></returns>
     internal float TranRebarProp(string memberName, TransverseRebarOption option, short rebarnum)
     {
-      this.Initialise();
+      Initialise();
       return ComposFile.ComposCOM.TranRebarProp(memberName, option.ToString(), rebarnum);
     }
 
@@ -330,7 +330,7 @@ namespace ComposAPI
     {
       if (checkGUID)
       {
-        if (this.Guid == ComposFile.CurrentGuid)
+        if (Guid == ComposFile.CurrentGuid)
           return -1;
       }
 
@@ -340,18 +340,18 @@ namespace ComposAPI
         ComposFile.ComposCOM.Close();
         ComposFile.ComposCOM = null;
       }
-      ComposFile.CurrentGuid = this.Guid;
+      ComposFile.CurrentGuid = Guid;
 
       // create coastring from members
       string coaString = ToCoaString();
 
       // save coa string to a temp to coa file (ASCII format)
-      string tempCoa = Path.GetTempPath() + this.Guid + ".coa";
+      string tempCoa = Path.GetTempPath() + Guid + ".coa";
       File.WriteAllLines(tempCoa, new string[] { coaString }, Encoding.Default);
 
       ComposFile.ComposCOM = new Automation();
       status = ComposFile.ComposCOM.Open(tempCoa);
-      this.Analyse();
+      Analyse();
 
       return status;
     }
@@ -373,7 +373,7 @@ namespace ComposAPI
     /// <returns></returns>
     internal float UtilisationFactor(string memberName, UtilisationFactorOption option)
     {
-      this.Initialise();
+      Initialise();
       return ComposFile.ComposCOM.UtilisationFactor(memberName, option.ToString());
     }
 
@@ -438,9 +438,9 @@ namespace ComposAPI
 
     public string ToCoaString()
     {
-      if (this.Units == null)
+      if (Units == null)
       {
-        this.Units = new ComposUnits
+        Units = new ComposUnits
         {
           Angle = AngleUnit.Degree,
           Density = ComposUnitsHelper.DensityUnit,
@@ -472,18 +472,18 @@ namespace ComposAPI
       coaString += "!   bearing that name will be assumed.\n";
       coaString += "!\n";
       coaString += "COMPOS_FILE_VERSION\t1\n";
-      coaString += "TITLE\t" + this.JobTitle + "\t" + this.JobSubTitle + "\t" + this.CalculationHeader + "\t" + this.JobNumber + "\t" + this.Initials + "\n";
+      coaString += "TITLE\t" + JobTitle + "\t" + JobSubTitle + "\t" + CalculationHeader + "\t" + JobNumber + "\t" + Initials + "\n";
 
-      coaString += this.Units.ToCoaString();
+      coaString += Units.ToCoaString();
 
-      foreach (IMember member in this.Members)
+      foreach (IMember member in Members)
       {
-        coaString += member.ToCoaString(this.Units);
+        coaString += member.ToCoaString(Units);
         coaString += "FLOOR_RESPONSE\t" + member.Name + "\tFLOOR_RESPONSE_ANALYSIS_NO\n";
       }
 
       coaString += "GROUP\tALL\tDefault group containing all the members\t1";
-      foreach (IMember member in this.Members)
+      foreach (IMember member in Members)
         coaString += "\t" + member.Name;
       coaString += "\nEND\n";
 

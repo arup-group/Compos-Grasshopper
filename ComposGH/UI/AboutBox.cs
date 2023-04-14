@@ -17,15 +17,15 @@ namespace ComposGH.UI
       string pluginloc = composPlugin.Location;
 
       InitializeComponent();
-      this.Text = String.Format("About {0}", ComposGHInfo.PluginName);
-      this.labelProductName.Text = ComposGHInfo.ProductName + " Grasshopper plugin";
-      this.labelVersion.Text = String.Format("Version {0}", pluginvers);
-      this.labelApiVersion.Text = String.Format("API Version {0}", api);
-      this.labelCompanyName.Text = AssemblyCompany;
-      this.linkWebsite.Text = @"www.oasys-software.com";
-      this.labelContact.Text = "Contact and support:";
-      this.linkEmail.Text = @"oasys@arup.com";
-      this.disclaimer.Text = ComposGHInfo.Disclaimer;
+      Text = String.Format("About {0}", ComposGHInfo.PluginName);
+      labelProductName.Text = ComposGHInfo.ProductName + " Grasshopper plugin";
+      labelVersion.Text = String.Format("Version {0}", pluginvers);
+      labelApiVersion.Text = String.Format("API Version {0}", api);
+      labelCompanyName.Text = AssemblyCompany;
+      linkWebsite.Text = @"www.oasys-software.com";
+      labelContact.Text = "Contact and support:";
+      linkEmail.Text = @"oasys@arup.com";
+      disclaimer.Text = ComposGHInfo.Disclaimer;
     }
 
     #region Assembly Attribute Accessors
@@ -87,7 +87,7 @@ namespace ComposGH.UI
 
     private void okButton_Click(object sender, EventArgs e)
     {
-      this.Close();
+      Close();
     }
 
 

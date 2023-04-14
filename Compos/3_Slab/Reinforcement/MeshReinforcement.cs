@@ -1,12 +1,11 @@
 ﻿using ComposAPI.Helpers;
+using OasysUnits;
 using System;
 using System.Collections.Generic;
-using OasysUnits;
 
-namespace ComposAPI
-{
-  public enum ReinforcementMeshType
-  {
+namespace ComposAPI {
+  public enum ReinforcementMeshType {
+    None,
     A393,
     A252,
     A193,
@@ -25,8 +24,7 @@ namespace ComposAPI
     C283
   }
 
-  public class MeshReinforcement : IMeshReinforcement
-  {
+  public class MeshReinforcement : IMeshReinforcement {
     public Length Cover { get; set; } // cover of mesh reinforcement
     public ReinforcementMeshType MeshType { get; set; } // name of mesh reinforcement
     public bool Rotated { get; set; } // direction of mesh reinforcement
@@ -34,52 +32,53 @@ namespace ComposAPI
     #region constructors
     public MeshReinforcement() { }
 
-    public MeshReinforcement(Length cover, ReinforcementMeshType meshType = ReinforcementMeshType.A393, bool rotated = false)
-    {
-      this.Cover = cover;
-      this.MeshType = meshType;
-      this.Rotated = rotated;
+    public MeshReinforcement(Length cover, ReinforcementMeshType meshType = ReinforcementMeshType.A393, bool rotated = false) {
+      Cover = cover;
+      MeshType = meshType;
+      Rotated = rotated;
     }
     #endregion
 
     #region coa interop
-    internal static IMeshReinforcement FromCoaString(List<string> parameters, ComposUnits units)
-    {
-      MeshReinforcement reinforcement = new MeshReinforcement();
-
-      reinforcement.MeshType = (ReinforcementMeshType)Enum.Parse(typeof(ReinforcementMeshType), parameters[2]);
-      reinforcement.Cover = CoaHelper.ConvertToLength(parameters[3], units.Length);
-      if (parameters[4] == "PARALLEL")
+    internal static IMeshReinforcement FromCoaString(List<string> parameters, ComposUnits units) {
+      var reinforcement = new MeshReinforcement {
+        MeshType = (ReinforcementMeshType)Enum.Parse(typeof(ReinforcementMeshType), parameters[2]),
+        Cover = CoaHelper.ConvertToLength(parameters[3], units.Length)
+      };
+      if (parameters[4] == "PARALLEL") {
         reinforcement.Rotated = false;
-      else
+      }
+      else {
         reinforcement.Rotated = true;
+      }
 
       return reinforcement;
     }
 
-    public string ToCoaString(string name, ComposUnits units)
-    {
-      List<string> parameters = new List<string>();
-      parameters.Add(CoaIdentifier.RebarMesh);
-      parameters.Add(name);
-      parameters.Add(this.MeshType.ToString());
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.Cover.ToUnit(units.Length).Value, 6));
-      if (this.Rotated)
+    public string ToCoaString(string name, ComposUnits units) {
+      var parameters = new List<string> {
+        CoaIdentifier.RebarMesh,
+        name,
+        MeshType.ToString(),
+        CoaHelper.FormatSignificantFigures(Cover.ToUnit(units.Length).Value, 6)
+      };
+      if (Rotated) {
         parameters.Add("PERPENDICULAR");
-      else
+      }
+      else {
         parameters.Add("PARALLEL");
+      }
 
       return CoaHelper.CreateString(parameters);
     }
     #endregion
 
     #region methods
-    public override string ToString()
-    {
+    public override string ToString() {
       string cov = Cover.ToString("g4");
       string msh = MeshType.ToString();
 
-      string rotated = (this.Rotated == true) ? " (rotated)" : "";
+      string rotated = (Rotated == true) ? " (rotated)" : "";
 
       return msh.Replace(" ", string.Empty) + rotated + ", c:" + cov.Replace(" ", string.Empty);
     }

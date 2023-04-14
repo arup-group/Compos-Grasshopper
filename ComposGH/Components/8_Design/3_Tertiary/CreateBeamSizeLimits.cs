@@ -28,13 +28,13 @@ namespace ComposGH.Components
           "Create a " + BeamSizeLimitsGoo.Description + " for a " + DesignCriteriaGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat8())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbb = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbb = Length.GetAbbreviation(LengthUnit);
       pManager.AddGenericParameter("Min Depth [" + unitAbb + "]", "Dmin", "(Optional) Minimum Depth (default ≥ 20 cm)", GH_ParamAccess.item);
       pManager.AddGenericParameter("Max Depth [" + unitAbb + "]", "Dmax", "(Optional) Maximum Depth  (default ≤ 100 cm)", GH_ParamAccess.item);
       pManager.AddGenericParameter("Min Width [" + unitAbb + "]", "Wmin", "(Optional) Minimum Width  (default ≥ 10 cm)", GH_ParamAccess.item);
@@ -54,20 +54,20 @@ namespace ComposGH.Components
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       Length minDepth = new Length(20, LengthUnit.Centimeter);
-      if (this.Params.Input[0].Sources.Count > 0)
-        minDepth = (Length)Input.UnitNumber(this, DA, 0, this.LengthUnit);
+      if (Params.Input[0].Sources.Count > 0)
+        minDepth = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
 
       Length maxDepth = new Length(100, LengthUnit.Centimeter);
-      if (this.Params.Input[1].Sources.Count > 0)
-        maxDepth = (Length)Input.UnitNumber(this, DA, 1, this.LengthUnit);
+      if (Params.Input[1].Sources.Count > 0)
+        maxDepth = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
 
       Length minWidth = new Length(10, LengthUnit.Centimeter);
-      if (this.Params.Input[2].Sources.Count > 0)
-        minWidth = (Length)Input.UnitNumber(this, DA, 2, this.LengthUnit);
+      if (Params.Input[2].Sources.Count > 0)
+        minWidth = (Length)Input.UnitNumber(this, DA, 2, LengthUnit);
 
       Length maxWidth = new Length(50, LengthUnit.Centimeter);
-      if (this.Params.Input[3].Sources.Count > 0)
-        maxWidth = (Length)Input.UnitNumber(this, DA, 3, this.LengthUnit);
+      if (Params.Input[3].Sources.Count > 0)
+        maxWidth = (Length)Input.UnitNumber(this, DA, 3, LengthUnit);
 
       BeamSizeLimits beamSizeLimits = new BeamSizeLimits()
       {
@@ -85,40 +85,40 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Unit" });
+      _spacerDescriptions = new List<string>(new string[] { "Unit" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // length
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
       // change selected item
-      this._selectedItems[i] = this._dropDownItems[i][j];
-      if (this.LengthUnit.ToString() == this._selectedItems[i])
+      _selectedItems[i] = _dropDownItems[i][j];
+      if (LengthUnit.ToString() == _selectedItems[i])
         return;
 
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[0]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[0]);
 
       base.UpdateUIFromSelectedItems();
     }
 
     public override void VariableParameterMaintenance()
     {
-      string unitAbb = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbb = Length.GetAbbreviation(LengthUnit);
       int i = 0;
       Params.Input[i++].Name = "Min Depth [" + unitAbb + "]";
       Params.Input[i++].Name = "Max Depth [" + unitAbb + "]";

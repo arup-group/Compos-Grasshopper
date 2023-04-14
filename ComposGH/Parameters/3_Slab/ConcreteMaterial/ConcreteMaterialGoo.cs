@@ -16,7 +16,7 @@ namespace ComposGH.Parameters
     public static string NickName => "CMt";
     public static string Description => "Compos Concrete Material";
     public ConcreteMaterialGoo(IConcreteMaterial item) : base(item) { }
-    public override IGH_Goo Duplicate() => new ConcreteMaterialGoo(this.Value);
+    public override IGH_Goo Duplicate() => new ConcreteMaterialGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 
@@ -33,8 +33,8 @@ namespace ComposGH.Parameters
         Components.Ribbon.CategoryName.Name(),
         Components.Ribbon.SubCategoryName.Cat10()))
     { }
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + ConcreteMaterialGoo.Name + " parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? ConcreteMaterialGoo.Name : base.TypeName;
+    public override string InstanceDescription => m_data.DataCount == 0 ? "Empty " + ConcreteMaterialGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => SourceCount == 0 ? ConcreteMaterialGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("fd8b76b2-67a9-4a4f-ada5-c0c70f49a38e");
     public override GH_Exposure Exposure => GH_Exposure.hidden;
     protected override System.Drawing.Bitmap Icon => Properties.Resources.ConcreteMaterialParam;

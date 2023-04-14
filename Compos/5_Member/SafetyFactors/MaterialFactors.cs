@@ -33,14 +33,14 @@ namespace ComposAPI
     public string ToCoaString(string name)
     {
       string str = CoaIdentifier.SafetyFactorMaterial + '\t' + name + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.SteelBeam, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(SteelBeam, 6) + '\t';
       str += CoaHelper.FormatSignificantFigures(1.0, 6) + '\t';
       str += CoaHelper.FormatSignificantFigures(1.0, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.ConcreteCompression, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.ConcreteShear, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.MetalDecking, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.ShearStud, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.Reinforcement, 6) + '\n';
+      str += CoaHelper.FormatSignificantFigures(ConcreteCompression, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(ConcreteShear, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(MetalDecking, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(ShearStud, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(Reinforcement, 6) + '\n';
       return str;
     }
     #endregion

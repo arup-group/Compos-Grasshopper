@@ -28,7 +28,7 @@ namespace ComposGH.Components
           "Look up a Catalogue " + DeckingGoo.Description + " for a " + SlabGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
-    { this.Hidden = true; }
+    { Hidden = true; }
     #endregion
 
     #region Input and output
@@ -45,17 +45,17 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      if (this.Params.Input[0].Sources.Count > 0)
+      if (Params.Input[0].Sources.Count > 0)
       {
         DeckingConfigurationGoo dconf = (DeckingConfigurationGoo)Input.GenericGoo<DeckingConfigurationGoo>(this, DA, 0);
         if (dconf == null)
         {
           return;
         }
-        DA.SetData(0, new DeckingGoo(new CatalogueDecking(this.Catalogue, this.Profile, this.SteelGrade, dconf.Value)));
+        DA.SetData(0, new DeckingGoo(new CatalogueDecking(Catalogue, Profile, SteelGrade, dconf.Value)));
       }
       else
-        Output.SetItem(this, DA, 0, new DeckingGoo(new CatalogueDecking(this.Catalogue, this.Profile, this.SteelGrade, new DeckingConfiguration())));
+        Output.SetItem(this, DA, 0, new DeckingGoo(new CatalogueDecking(Catalogue, Profile, SteelGrade, new DeckingConfiguration())));
     }
 
     #region Custom UI
@@ -67,58 +67,58 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] {
+      _spacerDescriptions = new List<string>(new string[] {
         "Type",
         "Decking",
         "Steel Type" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // catalogue
-      this._dropDownItems.Add(this.CatalogueNames);
-      this._selectedItems.Add(this.CatalogueNames[0]);
-      this.Catalogue = this._selectedItems[0];
+      _dropDownItems.Add(CatalogueNames);
+      _selectedItems.Add(CatalogueNames[0]);
+      Catalogue = _selectedItems[0];
 
       // decking
-      this.SectionList = ComposAPI.Helpers.SqlReader.Instance.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
-      this._dropDownItems.Add(this.SectionList);
-      this._selectedItems.Add(this.SectionList[0]);
-      this.Profile = this._selectedItems[1];
+      SectionList = ComposAPI.Helpers.SqlReader.Instance.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), Catalogue);
+      _dropDownItems.Add(SectionList);
+      _selectedItems.Add(SectionList[0]);
+      Profile = _selectedItems[1];
 
       // steel
-      this._dropDownItems.Add(Enum.GetValues(typeof(DeckingSteelGrade)).Cast<DeckingSteelGrade>().Select(x => x.ToString()).ToList());
-      this._selectedItems.Add(SteelGrade.ToString());
+      _dropDownItems.Add(Enum.GetValues(typeof(DeckingSteelGrade)).Cast<DeckingSteelGrade>().Select(x => x.ToString()).ToList());
+      _selectedItems.Add(SteelGrade.ToString());
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this._selectedItems[i] = this._dropDownItems[i][j];
+      _selectedItems[i] = _dropDownItems[i][j];
 
       if (i == 0)  // change is made to code 
       {
         // update selected section to be all
-        this.Catalogue = _selectedItems[0];
-        this._dropDownItems[1] = ComposAPI.Helpers.SqlReader.Instance.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
+        Catalogue = _selectedItems[0];
+        _dropDownItems[1] = ComposAPI.Helpers.SqlReader.Instance.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), Catalogue);
       }
 
       if (i == 1)
-        this.Profile = this._selectedItems[1];
+        Profile = _selectedItems[1];
 
       if (i == 2)
-        this.SteelGrade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), this._selectedItems[i]);
+        SteelGrade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), _selectedItems[i]);
 
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.SectionList = ComposAPI.Helpers.SqlReader.Instance.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), this.Catalogue);
-      this.Catalogue = this._selectedItems[0];
-      this.Profile = this._selectedItems[1];
-      this.SteelGrade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), this._selectedItems[2]);
+      SectionList = ComposAPI.Helpers.SqlReader.Instance.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), Catalogue);
+      Catalogue = _selectedItems[0];
+      Profile = _selectedItems[1];
+      SteelGrade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), _selectedItems[2]);
 
       base.UpdateUIFromSelectedItems();
     }

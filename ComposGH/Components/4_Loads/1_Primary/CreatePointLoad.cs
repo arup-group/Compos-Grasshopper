@@ -27,14 +27,14 @@ namespace ComposGH.Components
       : base("CreatePointLoad", "PointLoad", "Create a concentrated Compos Point Load.",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat4())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       string unitAbbreviation = Force.GetAbbreviation(ForceUnit);
-      string lengthunitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+      string lengthunitAbbreviation = Length.GetAbbreviation(LengthUnit);
       pManager.AddGenericParameter("Const. Dead [" + unitAbbreviation + "]", "dl", "Constant dead load; construction stage dead load which are used for construction stage analysis", GH_ParamAccess.item);
       pManager.AddGenericParameter("Const. Live [" + unitAbbreviation + "]", "ll", "Constant live load; construction stage live load which are used for construction stage analysis", GH_ParamAccess.item);
       pManager.AddGenericParameter("Final Dead [" + unitAbbreviation + "]", "DL", "Final Dead Load", GH_ParamAccess.item);
@@ -50,11 +50,11 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Force constDead = (Force)Input.UnitNumber(this, DA, 0, this.ForceUnit);
-      Force constLive = (Force)Input.UnitNumber(this, DA, 1, this.ForceUnit);
-      Force finalDead = (Force)Input.UnitNumber(this, DA, 2, this.ForceUnit);
-      Force finalLive = (Force)Input.UnitNumber(this, DA, 3, this.ForceUnit);
-      IQuantity pos = Input.LengthOrRatio(this, DA, 4, this.LengthUnit);
+      Force constDead = (Force)Input.UnitNumber(this, DA, 0, ForceUnit);
+      Force constLive = (Force)Input.UnitNumber(this, DA, 1, ForceUnit);
+      Force finalDead = (Force)Input.UnitNumber(this, DA, 2, ForceUnit);
+      Force finalLive = (Force)Input.UnitNumber(this, DA, 3, ForceUnit);
+      IQuantity pos = Input.LengthOrRatio(this, DA, 4, LengthUnit);
 
       Load load = new PointLoad(constDead, constLive, finalDead, finalLive, pos);
       Output.SetItem(this, DA, 0, new LoadGoo(load));
@@ -66,46 +66,46 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Force Unit", "Length Unit" });
+      _spacerDescriptions = new List<string>(new string[] { "Force Unit", "Length Unit" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // force unit
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Force));
-      this._selectedItems.Add(Force.GetAbbreviation(this.ForceUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Force));
+      _selectedItems.Add(Force.GetAbbreviation(ForceUnit));
 
       // length
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this._selectedItems[i] = this._dropDownItems[i][j];
+      _selectedItems[i] = _dropDownItems[i][j];
 
       if (i == 0)
-        this.ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), this._selectedItems[i]);
+        ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), _selectedItems[i]);
       if (i == 1)
-        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
+        LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), this._selectedItems[0]);
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[1]);
+      ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), _selectedItems[0]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
     }
     
     public override void VariableParameterMaintenance()
     {
-      string unitAbbreviation = Force.GetAbbreviation(this.ForceUnit);
-      string lengthunitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbbreviation = Force.GetAbbreviation(ForceUnit);
+      string lengthunitAbbreviation = Length.GetAbbreviation(LengthUnit);
       int i = 0;
       Params.Input[i++].Name = "Const. Dead [" + unitAbbreviation + "]";
       Params.Input[i++].Name = "Const. Live [" + unitAbbreviation + "]";

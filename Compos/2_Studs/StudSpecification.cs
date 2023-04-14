@@ -23,7 +23,7 @@ namespace ComposAPI
     public bool EC4_Limit { get; set; }
     public IQuantity NoStudZoneStart
     {
-      get { return this.m_StartPosition; }
+      get { return m_StartPosition; }
       set
       {
         if (value == null) return;
@@ -31,13 +31,13 @@ namespace ComposAPI
           & value.QuantityInfo.UnitType != typeof(RatioUnit))
           throw new ArgumentException("Start Position must be either Length or Ratio");
         else
-          this.m_StartPosition = value;
+          m_StartPosition = value;
       }
     }
     private IQuantity m_StartPosition = Length.Zero;
     public IQuantity NoStudZoneEnd
     {
-      get { return this.m_EndPosition; }
+      get { return m_EndPosition; }
       set
       {
         if (value == null) return;
@@ -45,7 +45,7 @@ namespace ComposAPI
           & value.QuantityInfo.UnitType != typeof(RatioUnit))
           throw new ArgumentException("Start Position must be either Length or Ratio");
         else
-          this.m_EndPosition = value;
+          m_EndPosition = value;
       }
     }
     private IQuantity m_EndPosition = Length.Zero;
@@ -68,12 +68,12 @@ namespace ComposAPI
     /// <param name="ncci"></param>
     public StudSpecification(IQuantity noStudZoneStart, IQuantity noStudZoneEnd, Length reinforcementPosition, bool welding, bool ncci)
     {
-      this.NoStudZoneStart = noStudZoneStart;
-      this.NoStudZoneEnd = noStudZoneEnd;
-      this.ReinforcementPosition = reinforcementPosition;
-      this.Welding = welding;
-      this.NCCI = ncci;
-      this.SpecType = StudSpecType.EC4;
+      NoStudZoneStart = noStudZoneStart;
+      NoStudZoneEnd = noStudZoneEnd;
+      ReinforcementPosition = reinforcementPosition;
+      Welding = welding;
+      NCCI = ncci;
+      SpecType = StudSpecType.EC4;
     }
 
     /// <summary>
@@ -85,11 +85,11 @@ namespace ComposAPI
     /// <param name=""></param>
     public StudSpecification(bool useEC4Limit, IQuantity noStudZoneStart, IQuantity noStudZoneEnd)
     {
-      this.NoStudZoneStart = noStudZoneStart;
-      this.NoStudZoneEnd = noStudZoneEnd;
-      this.EC4_Limit = useEC4Limit;
-      this.SpecType = StudSpecType.BS5950;
-      this.Welding = true;
+      NoStudZoneStart = noStudZoneStart;
+      NoStudZoneEnd = noStudZoneEnd;
+      EC4_Limit = useEC4Limit;
+      SpecType = StudSpecType.BS5950;
+      Welding = true;
     }
 
     /// <summary>
@@ -100,10 +100,10 @@ namespace ComposAPI
     /// <param name="welding"></param>
     public StudSpecification(IQuantity noStudZoneStart, IQuantity noStudZoneEnd, bool welding)
     {
-      this.NoStudZoneStart = noStudZoneStart;
-      this.NoStudZoneEnd = noStudZoneEnd;
-      this.Welding = welding;
-      this.SpecType = StudSpecType.Other;
+      NoStudZoneStart = noStudZoneStart;
+      NoStudZoneEnd = noStudZoneEnd;
+      Welding = welding;
+      SpecType = StudSpecType.Other;
     }
 
     #endregion
@@ -112,35 +112,35 @@ namespace ComposAPI
     public override string ToString()
     {
       string noStudStart = "";
-      if (this.NoStudZoneStart.QuantityInfo.UnitType == typeof(LengthUnit))
+      if (NoStudZoneStart.QuantityInfo.UnitType == typeof(LengthUnit))
       {
-        Length l = (Length)this.NoStudZoneStart;
+        Length l = (Length)NoStudZoneStart;
         if (l != Length.Zero)
           noStudStart = "NoStudStart:" + l.ToString("g2").Replace(" ", string.Empty);
       }
       else
       {
-        Ratio p = (Ratio)this.NoStudZoneStart;
+        Ratio p = (Ratio)NoStudZoneStart;
         if (p != Ratio.Zero)
           noStudStart = "NoStudStart:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
       }
       string noStudEnd = "";
-      if (this.NoStudZoneEnd.QuantityInfo.UnitType == typeof(LengthUnit))
+      if (NoStudZoneEnd.QuantityInfo.UnitType == typeof(LengthUnit))
       {
-        Length l = (Length)this.NoStudZoneEnd;
+        Length l = (Length)NoStudZoneEnd;
         if (l != Length.Zero)
           noStudEnd = "NoStudEnd:" + l.ToString("g2").Replace(" ", string.Empty);
       }
       else
       {
-        Ratio p = (Ratio)this.NoStudZoneEnd;
+        Ratio p = (Ratio)NoStudZoneEnd;
         if (p != Ratio.Zero)
           noStudEnd = "NoStudEnd:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
       }
-      string rebarPos = (this.ReinforcementPosition.Value == 0) ? "" : "RbP:" + this.ReinforcementPosition.ToString("g4").Replace(" ", string.Empty);
-      string welding = (this.Welding == true) ? "Welded" : "";
-      string ncci = (this.NCCI == true) ? "NCCI Limit" : "";
-      string ec4 = (this.EC4_Limit == true) ? "EC4 Limit" : "";
+      string rebarPos = (ReinforcementPosition.Value == 0) ? "" : "RbP:" + ReinforcementPosition.ToString("g4").Replace(" ", string.Empty);
+      string welding = (Welding == true) ? "Welded" : "";
+      string ncci = (NCCI == true) ? "NCCI Limit" : "";
+      string ec4 = (EC4_Limit == true) ? "EC4 Limit" : "";
       string joined = string.Join(" ", new List<string>() { noStudStart, noStudEnd, rebarPos, welding, ncci, ec4 });
       return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');
     }

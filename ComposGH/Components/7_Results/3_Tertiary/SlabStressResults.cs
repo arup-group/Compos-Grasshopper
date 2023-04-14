@@ -31,7 +31,7 @@ namespace ComposGH.Components
           "Get slab stress and strain results for a " + MemberGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat7())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -50,32 +50,32 @@ namespace ComposGH.Components
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       IResult res = ((MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
-      List<GH_UnitNumber> positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
+      List<GH_UnitNumber> positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
       ISlabStressResult result = res.SlabStresses;
 
       List<GH_UnitNumber> outputs0 = null;
       List<GH_UnitNumber> outputs1 = null;
 
-      switch (this.SelectedLoad)
+      switch (SelectedLoad)
       {
         case Load.AdditionalDead:
-          outputs0 = result.ConcreteStressAdditionalDeadLoad.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
-          outputs1 = result.ConcreteStrainAdditionalDeadLoad.Select(x => new GH_UnitNumber(x.ToUnit(this.StrainUnit))).ToList();
+          outputs0 = result.ConcreteStressAdditionalDeadLoad.Select(x => new GH_UnitNumber(x.ToUnit(StressUnit))).ToList();
+          outputs1 = result.ConcreteStrainAdditionalDeadLoad.Select(x => new GH_UnitNumber(x.ToUnit(StrainUnit))).ToList();
           break;
 
         case Load.LiveLoad:
-          outputs0 = result.ConcreteStressFinalLiveLoad.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
-          outputs1 = result.ConcreteStrainFinalLiveLoad.Select(x => new GH_UnitNumber(x.ToUnit(this.StrainUnit))).ToList();
+          outputs0 = result.ConcreteStressFinalLiveLoad.Select(x => new GH_UnitNumber(x.ToUnit(StressUnit))).ToList();
+          outputs1 = result.ConcreteStrainFinalLiveLoad.Select(x => new GH_UnitNumber(x.ToUnit(StrainUnit))).ToList();
           break;
 
         case Load.Shrinkage:
-          outputs0 = result.ConcreteStressFinalShrinkage.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
-          outputs1 = result.ConcreteStrainFinalShrinkage.Select(x => new GH_UnitNumber(x.ToUnit(this.StrainUnit))).ToList();
+          outputs0 = result.ConcreteStressFinalShrinkage.Select(x => new GH_UnitNumber(x.ToUnit(StressUnit))).ToList();
+          outputs1 = result.ConcreteStrainFinalShrinkage.Select(x => new GH_UnitNumber(x.ToUnit(StrainUnit))).ToList();
           break;
 
         case Load.Final:
-          outputs0 = result.ConcreteStressFinal.Select(x => new GH_UnitNumber(x.ToUnit(this.StressUnit))).ToList();
-          outputs1 = result.ConcreteStrainFinal.Select(x => new GH_UnitNumber(x.ToUnit(this.StrainUnit))).ToList();
+          outputs0 = result.ConcreteStressFinal.Select(x => new GH_UnitNumber(x.ToUnit(StressUnit))).ToList();
+          outputs1 = result.ConcreteStrainFinal.Select(x => new GH_UnitNumber(x.ToUnit(StrainUnit))).ToList();
           break;
       }
 
@@ -101,52 +101,52 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Load", "Stress Unit", "Strain Unit", "Length Unit" });
+      _spacerDescriptions = new List<string>(new string[] { "Load", "Stress Unit", "Strain Unit", "Length Unit" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // load
-      this._dropDownItems.Add(Enum.GetNames(typeof(Load)).ToList());
-      this._selectedItems.Add(this.SelectedLoad.ToString());
+      _dropDownItems.Add(Enum.GetNames(typeof(Load)).ToList());
+      _selectedItems.Add(SelectedLoad.ToString());
 
       // stress
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Stress));
-      this._selectedItems.Add(Pressure.GetAbbreviation(this.StressUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Stress));
+      _selectedItems.Add(Pressure.GetAbbreviation(StressUnit));
 
       // strain
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Strain));
-      this._selectedItems.Add(Strain.GetAbbreviation(this.StrainUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Strain));
+      _selectedItems.Add(Strain.GetAbbreviation(StrainUnit));
 
       // length
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this._selectedItems[i] = this._dropDownItems[i][j];
+      _selectedItems[i] = _dropDownItems[i][j];
 
       if (i == 0)
-        this.SelectedLoad = (Load)Enum.Parse(typeof(Load), this._selectedItems[i]);
+        SelectedLoad = (Load)Enum.Parse(typeof(Load), _selectedItems[i]);
       else if (i == 1)
-        this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this._selectedItems[i]);
+        StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), _selectedItems[i]);
       else if (i == 2)
-        this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this._selectedItems[i]);
+        StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), _selectedItems[i]);
       else if (i == 3)
-        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
+        LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.SelectedLoad = (Load)Enum.Parse(typeof(Load), this._selectedItems[0]);
-      this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this._selectedItems[1]);
-      this.StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), this._selectedItems[2]);
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[3]);
+      SelectedLoad = (Load)Enum.Parse(typeof(Load), _selectedItems[0]);
+      StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), _selectedItems[1]);
+      StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), _selectedItems[2]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[3]);
 
       base.UpdateUIFromSelectedItems();
     }

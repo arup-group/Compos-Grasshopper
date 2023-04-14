@@ -28,13 +28,13 @@ namespace ComposGH.Components
           "Create a " + DeflectionLimitGoo.Description + " for a " + DesignCriteriaGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat8())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbb = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbb = Length.GetAbbreviation(LengthUnit);
       pManager.AddGenericParameter("Absolute Deflection [" + unitAbb + "]", "Abs", "Absolute Deflection", GH_ParamAccess.item);
       pManager.AddGenericParameter("Span/Deflection Ratio [L/x]", "L/δ", "Span over Deflection ratio, for instance input '500' for 'L/500'", GH_ParamAccess.item);
       pManager[0].Optional = true;
@@ -49,8 +49,8 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      if (this.Params.Input[0].Sources.Count == 0 &
-        this.Params.Input[1].Sources.Count == 0)
+      if (Params.Input[0].Sources.Count == 0 &
+        Params.Input[1].Sources.Count == 0)
       {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Inputs failed to collect data.");
         return;
@@ -58,10 +58,10 @@ namespace ComposGH.Components
 
       DeflectionLimit deflectionLimit = new DeflectionLimit();
 
-      if (this.Params.Input[0].Sources.Count > 0)
-        deflectionLimit.AbsoluteDeflection = (Length)Input.UnitNumber(this, DA, 0, this.LengthUnit, true);
+      if (Params.Input[0].Sources.Count > 0)
+        deflectionLimit.AbsoluteDeflection = (Length)Input.UnitNumber(this, DA, 0, LengthUnit, true);
 
-      if (this.Params.Input[1].Sources.Count > 0)
+      if (Params.Input[1].Sources.Count > 0)
         deflectionLimit.SpanOverDeflectionRatio = (Ratio)Input.UnitNumber(this, DA, 1, RatioUnit.DecimalFraction);
 
       Output.SetItem(this, DA, 0, new DeflectionLimitGoo(deflectionLimit));
@@ -72,40 +72,40 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Unit" });
+      _spacerDescriptions = new List<string>(new string[] { "Unit" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // length
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
       // change selected item
-      this._selectedItems[i] = this._dropDownItems[i][j];
-      if (this.LengthUnit.ToString() == this._selectedItems[i])
+      _selectedItems[i] = _dropDownItems[i][j];
+      if (LengthUnit.ToString() == _selectedItems[i])
         return;
 
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[0]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[0]);
 
       base.UpdateUIFromSelectedItems();
     }
 
     public override void VariableParameterMaintenance()
     {
-      string unitAbb = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbb = Length.GetAbbreviation(LengthUnit);
       Params.Input[0].Name = "Absolute Deflection [" + unitAbb + "]";
     }
     #endregion

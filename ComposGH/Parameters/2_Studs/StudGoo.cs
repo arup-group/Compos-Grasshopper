@@ -14,7 +14,7 @@ namespace ComposGH.Parameters
     public static string NickName => "Stu";
     public static string Description => "Compos Shear Stud";
     public StudGoo(IStud item) : base(item) { }
-    public override IGH_Goo Duplicate() => new StudGoo(this.Value);
+    public override IGH_Goo Duplicate() => new StudGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 }

@@ -40,7 +40,7 @@ namespace ComposGH.Components
       : base("CreateProfile", "Profile", "Create or look up a Profile text-string for a " + BeamGoo.Description + " or a " + BeamSectionGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -58,12 +58,12 @@ namespace ComposGH.Components
     #endregion
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      this.ClearRuntimeMessages();
-      for (int i = 0; i < this.Params.Input.Count; i++)
-        this.Params.Input[i].ClearRuntimeMessages();
+      ClearRuntimeMessages();
+      for (int i = 0; i < Params.Input.Count; i++)
+        Params.Input[i].ClearRuntimeMessages();
 
       #region catalogue
-      this.ClearRuntimeMessages();
+      ClearRuntimeMessages();
       if (_mode == FoldMode.Catalogue)
       {
         // get user input filter search string
@@ -73,7 +73,7 @@ namespace ComposGH.Components
           if (InclSS != incl)
           {
             SetSelected(-1, 0);
-            this.ExpireSolution(true);
+            ExpireSolution(true);
           }
         }
 
@@ -87,7 +87,7 @@ namespace ComposGH.Components
         {
           Search = inSearch;
           SetSelected(-1, 0);
-          this.ExpireSolution(true);
+          ExpireSolution(true);
         }
 
         Output.SetItem(this, DA, 0, new BeamSectionGoo(new BeamSection("CAT " + ProfileString)));
@@ -99,7 +99,7 @@ namespace ComposGH.Components
       #region other
       if (_mode == FoldMode.Other)
       {
-        string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+        string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
 
         //IProfile profile = null;
         string unit = "(" + unitAbbreviation + ") ";
@@ -183,21 +183,21 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Profile type", "Measure", "Type", "Profile" });
+      _spacerDescriptions = new List<string>(new string[] { "Profile type", "Measure", "Type", "Profile" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
-      this._dropDownItems.Add(ProfileTypes.Keys.ToList());
-      this._selectedItems.Add("Catalogue");
+      _dropDownItems.Add(ProfileTypes.Keys.ToList());
+      _selectedItems.Add("Catalogue");
 
       // length
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
 
-      this.SetSelected(-1, 0);
+      SetSelected(-1, 0);
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
@@ -213,122 +213,122 @@ namespace ComposGH.Components
       else
       {
         // change selected item
-        this._selectedItems[i] = this._dropDownItems[i][j];
+        _selectedItems[i] = _dropDownItems[i][j];
       }
 
-      if (this._selectedItems[0] == "Catalogue")
+      if (_selectedItems[0] == "Catalogue")
       {
         // update spacer description to match catalogue dropdowns
-        this._spacerDescriptions[1] = "Catalogue";
+        _spacerDescriptions[1] = "Catalogue";
 
         // if FoldMode is not currently catalogue state, then we update all lists
-        if (this._mode != FoldMode.Catalogue | updateCat)
+        if (_mode != FoldMode.Catalogue | updateCat)
         {
           // remove any existing selections
           while (_selectedItems.Count > 1)
-            this._selectedItems.RemoveAt(1);
+            _selectedItems.RemoveAt(1);
 
           // set catalogue selection to all
-          this.CatalogueIndex = -1;
+          CatalogueIndex = -1;
 
-          this.CatalogueNames = this.Cataloguedata.Item1;
-          this.CatalogueNumbers = this.Cataloguedata.Item2;
+          CatalogueNames = Cataloguedata.Item1;
+          CatalogueNumbers = Cataloguedata.Item2;
 
           // set types to all
-          this.TypeIndex = -1;
+          TypeIndex = -1;
           // update typelist with all catalogues
-          this.Typedata = ComposAPI.Helpers.SqlReader.Instance.GetTypesDataFromSQLite(this.CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
-          this.TypeNames = Typedata.Item1;
-          this.TypeNumbers = Typedata.Item2;
+          Typedata = ComposAPI.Helpers.SqlReader.Instance.GetTypesDataFromSQLite(CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), InclSS);
+          TypeNames = Typedata.Item1;
+          TypeNumbers = Typedata.Item2;
 
           // update section list to all types
-          this.SectionList = ComposAPI.Helpers.SqlReader.Instance.GetSectionsDataFromSQLite(TypeNumbers, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+          SectionList = ComposAPI.Helpers.SqlReader.Instance.GetSectionsDataFromSQLite(TypeNumbers, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), InclSS);
 
           // filter by search pattern
-          this.Filteredlist = new List<string>();
-          if (this.Search == "")
-            this.Filteredlist = this.SectionList;
+          Filteredlist = new List<string>();
+          if (Search == "")
+            Filteredlist = SectionList;
           else
           {
-            for (int k = 0; k < this.SectionList.Count; k++)
+            for (int k = 0; k < SectionList.Count; k++)
             {
-              if (this.SectionList[k].ToLower().Contains(this.Search))
-                this.Filteredlist.Add(this.SectionList[k]);
-              if (!this.Search.Any(char.IsDigit))
+              if (SectionList[k].ToLower().Contains(Search))
+                Filteredlist.Add(SectionList[k]);
+              if (!Search.Any(char.IsDigit))
               {
-                string test = this.SectionList[k].ToString();
+                string test = SectionList[k].ToString();
                 test = Regex.Replace(test, "[0-9]", string.Empty);
                 test = test.Replace(".", string.Empty);
                 test = test.Replace("-", string.Empty);
                 test = test.ToLower();
-                if (test.Contains(this.Search))
-                  this.Filteredlist.Add(this.SectionList[k]);
+                if (test.Contains(Search))
+                  Filteredlist.Add(SectionList[k]);
               }
             }
           }
 
           // update displayed selections to all
-          this._selectedItems.Add(this.CatalogueNames[0]);
-          this._selectedItems.Add(this.TypeNames[0]);
-          this._selectedItems.Add(this.Filteredlist[0]);
+          _selectedItems.Add(CatalogueNames[0]);
+          _selectedItems.Add(TypeNames[0]);
+          _selectedItems.Add(Filteredlist[0]);
 
           // call graphics update
           Mode1Clicked();
         }
 
         // update dropdown lists
-        while (this._dropDownItems.Count > 1)
-          this._dropDownItems.RemoveAt(1);
+        while (_dropDownItems.Count > 1)
+          _dropDownItems.RemoveAt(1);
 
         // add catalogues (they will always be the same so no need to rerun sql call)
-        this._dropDownItems.Add(this.CatalogueNames);
+        _dropDownItems.Add(CatalogueNames);
 
         // type list
         // if second list (i.e. catalogue list) is changed, update types list to account for that catalogue
         if (i == 1)
         {
           // update catalogue index with the selected catalogue
-          this.CatalogueIndex = this.CatalogueNumbers[j];
-          this._selectedItems[1] = this.CatalogueNames[j];
+          CatalogueIndex = CatalogueNumbers[j];
+          _selectedItems[1] = CatalogueNames[j];
 
           // update typelist with selected input catalogue
-          this.Typedata = ComposAPI.Helpers.SqlReader.Instance.GetTypesDataFromSQLite(CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
-          this.TypeNames = this.Typedata.Item1;
-          this.TypeNumbers = this.Typedata.Item2;
+          Typedata = ComposAPI.Helpers.SqlReader.Instance.GetTypesDataFromSQLite(CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), InclSS);
+          TypeNames = Typedata.Item1;
+          TypeNumbers = Typedata.Item2;
 
           // update section list from new types (all new types in catalogue)
-          List<int> types = this.TypeNumbers.ToList();
+          List<int> types = TypeNumbers.ToList();
           types.RemoveAt(0); // remove -1 from beginning of list
-          this.SectionList = ComposAPI.Helpers.SqlReader.Instance.GetSectionsDataFromSQLite(types, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+          SectionList = ComposAPI.Helpers.SqlReader.Instance.GetSectionsDataFromSQLite(types, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), InclSS);
 
           // filter by search pattern
-          this.Filteredlist = new List<string>();
-          if (this.Search == "")
-            this.Filteredlist = this.SectionList;
+          Filteredlist = new List<string>();
+          if (Search == "")
+            Filteredlist = SectionList;
           else
           {
-            for (int k = 0; k < this.SectionList.Count; k++)
+            for (int k = 0; k < SectionList.Count; k++)
             {
-              if (this.SectionList[k].ToLower().Contains(this.Search))
-                this.Filteredlist.Add(this.SectionList[k]);
-              if (!this.Search.Any(char.IsDigit))
+              if (SectionList[k].ToLower().Contains(Search))
+                Filteredlist.Add(SectionList[k]);
+              if (!Search.Any(char.IsDigit))
               {
-                string test = this.SectionList[k].ToString();
+                string test = SectionList[k].ToString();
                 test = Regex.Replace(test, "[0-9]", string.Empty);
                 test = test.Replace(".", string.Empty);
                 test = test.Replace("-", string.Empty);
                 test = test.ToLower();
-                if (test.Contains(this.Search))
-                  this.Filteredlist.Add(SectionList[k]);
+                if (test.Contains(Search))
+                  Filteredlist.Add(SectionList[k]);
               }
             }
           }
 
           // update selections to display first item in new list
-          this._selectedItems[2] = this.TypeNames[0];
-          this._selectedItems[3] = this.Filteredlist[0];
+          _selectedItems[2] = TypeNames[0];
+          _selectedItems[3] = Filteredlist[0];
         }
-        this._dropDownItems.Add(this.TypeNames);
+        _dropDownItems.Add(TypeNames);
 
         // section list
         // if third list (i.e. types list) is changed, update sections list to account for these section types
@@ -336,61 +336,61 @@ namespace ComposGH.Components
         if (i == 2)
         {
           // update catalogue index with the selected catalogue
-          this.TypeIndex = this.TypeNumbers[j];
-          this._selectedItems[2] = this.TypeNames[j];
+          TypeIndex = TypeNumbers[j];
+          _selectedItems[2] = TypeNames[j];
 
           // create type list
           List<int> types = new List<int>();
-          if (this.TypeIndex == -1) // if all
+          if (TypeIndex == -1) // if all
           {
-            types = this.TypeNumbers.ToList(); // use current selected list of type numbers
+            types = TypeNumbers.ToList(); // use current selected list of type numbers
             types.RemoveAt(0); // remove -1 from beginning of list
           }
           else
-            types = new List<int> { this.TypeIndex }; // create empty list and add the single selected type 
+            types = new List<int> { TypeIndex }; // create empty list and add the single selected type 
 
 
           // section list with selected types (only types in selected type)
-          this.SectionList = ComposAPI.Helpers.SqlReader.Instance.GetSectionsDataFromSQLite(types, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
+          SectionList = ComposAPI.Helpers.SqlReader.Instance.GetSectionsDataFromSQLite(types, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), InclSS);
 
           // filter by search pattern
-          this.Filteredlist = new List<string>();
-          if (this.Search == "")
-            this.Filteredlist = this.SectionList;
+          Filteredlist = new List<string>();
+          if (Search == "")
+            Filteredlist = SectionList;
           else
           {
             for (int k = 0; k < SectionList.Count; k++)
             {
-              if (this.SectionList[k].ToLower().Contains(Search))
+              if (SectionList[k].ToLower().Contains(Search))
               {
-                this.Filteredlist.Add(this.SectionList[k]);
+                Filteredlist.Add(SectionList[k]);
               }
-              if (!this.Search.Any(char.IsDigit))
+              if (!Search.Any(char.IsDigit))
               {
-                string test = this.SectionList[k].ToString();
+                string test = SectionList[k].ToString();
                 test = Regex.Replace(test, "[0-9]", string.Empty);
                 test = test.Replace(".", string.Empty);
                 test = test.Replace("-", string.Empty);
                 test = test.ToLower();
-                if (test.Contains(this.Search))
-                  this.Filteredlist.Add(this.SectionList[k]);
+                if (test.Contains(Search))
+                  Filteredlist.Add(SectionList[k]);
               }
             }
           }
 
           // update selected section to be all
-          this._selectedItems[3] = this.Filteredlist[0];
+          _selectedItems[3] = Filteredlist[0];
         }
-        this._dropDownItems.Add(this.Filteredlist);
+        _dropDownItems.Add(Filteredlist);
 
         // selected profile
         // if fourth list (i.e. section list) is changed, updated the sections list to only be that single profile
         if (i == 3)
         {
           // update displayed selected
-          this._selectedItems[3] = this.Filteredlist[j];
+          _selectedItems[3] = Filteredlist[j];
         }
-        this.ProfileString = this._selectedItems[3];
+        ProfileString = _selectedItems[3];
 
         if (!_isInitialised) { return; }
         base.UpdateUI();
@@ -398,31 +398,31 @@ namespace ComposGH.Components
       else
       {
         // update spacer description to match none-catalogue dropdowns
-        this._spacerDescriptions[1] = "Measure";// = new List<string>(new string[]
+        _spacerDescriptions[1] = "Measure";// = new List<string>(new string[]
 
         if (_mode != FoldMode.Other)
         {
           // remove all catalogue dropdowns
-          while (this._dropDownItems.Count > 1)
-            this._dropDownItems.RemoveAt(1);
+          while (_dropDownItems.Count > 1)
+            _dropDownItems.RemoveAt(1);
 
           // add length measure dropdown list
-          this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+          _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
 
           // set selected length
-          this._selectedItems[1] = Length.GetAbbreviation(this.LengthUnit);
+          _selectedItems[1] = Length.GetAbbreviation(LengthUnit);
         }
 
         if (i == 0)
         {
           // update profile type if change is made to first dropdown menu
-          this.Typ = this.ProfileTypes[_selectedItems[0]];
+          Typ = ProfileTypes[_selectedItems[0]];
           Mode2Clicked();
         }
         else
         {
           // change unit
-          this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
+          LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
           base.UpdateUI();
         }
@@ -431,36 +431,36 @@ namespace ComposGH.Components
 
     protected override void UpdateUIFromSelectedItems()
     {
-      if (this._selectedItems[0] == "Catalogue")
+      if (_selectedItems[0] == "Catalogue")
       {
         // update spacer description to match catalogue dropdowns
-        this._spacerDescriptions = new List<string>(new string[]
+        _spacerDescriptions = new List<string>(new string[]
         {
           "Profile type", "Catalogue", "Type", "Profile"
         });
 
-        this.CatalogueNames = this.Cataloguedata.Item1;
-        this.CatalogueNumbers = this.Cataloguedata.Item2;
-        this.Typedata = ComposAPI.Helpers.SqlReader.Instance.GetTypesDataFromSQLite(this.CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), this.InclSS);
-        this.TypeNames = this.Typedata.Item1;
-        this.TypeNumbers = this.Typedata.Item2;
+        CatalogueNames = Cataloguedata.Item1;
+        CatalogueNumbers = Cataloguedata.Item2;
+        Typedata = ComposAPI.Helpers.SqlReader.Instance.GetTypesDataFromSQLite(CatalogueIndex, Path.Combine(AddReferencePriority.InstallPath, "sectlib.db3"), InclSS);
+        TypeNames = Typedata.Item1;
+        TypeNumbers = Typedata.Item2;
 
         // call graphics update
-        this.comingFromSave = true;
+        comingFromSave = true;
         Mode1Clicked();
-        this.comingFromSave = false;
+        comingFromSave = false;
 
-        this.ProfileString = _selectedItems[3];
+        ProfileString = _selectedItems[3];
       }
       else
       {
         // update spacer description to match none-catalogue dropdowns
-        this._spacerDescriptions = new List<string>(new string[]
+        _spacerDescriptions = new List<string>(new string[]
         {
           "Profile type", "Measure", "Type", "Profile"
         });
 
-        this.Typ = this.ProfileTypes[_selectedItems[0]];
+        Typ = ProfileTypes[_selectedItems[0]];
         Mode2Clicked();
       }
 
@@ -487,7 +487,7 @@ namespace ComposGH.Components
       }
       else
       {
-        string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+        string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
 
         int i = 0;
         //// angle

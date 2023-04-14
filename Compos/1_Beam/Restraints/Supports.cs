@@ -32,7 +32,7 @@ namespace ComposAPI
       }
       set
       {
-        this.m_intermediateRestraints = value;
+        m_intermediateRestraints = value;
       }
     }
     private IntermediateRestraint m_intermediateRestraints;
@@ -40,29 +40,29 @@ namespace ComposAPI
     #region constructors
     public Supports()
     {
-      this.IntermediateRestraintPositions = IntermediateRestraint.None;
+      IntermediateRestraintPositions = IntermediateRestraint.None;
     }
     public Supports(List<IQuantity> customIntermediateRestraintPositions, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds)
     {
-      this.CustomIntermediateRestraintPositions = customIntermediateRestraintPositions;
-      this.SecondaryMemberAsIntermediateRestraint = secondaryMemberIntermediateRestraint;
-      this.BothFlangesFreeToRotateOnPlanAtEnds = bothFlangesFreeToRotateOnPlanAtEnds;
-      this.IntermediateRestraintPositions = IntermediateRestraint.Custom;
+      CustomIntermediateRestraintPositions = customIntermediateRestraintPositions;
+      SecondaryMemberAsIntermediateRestraint = secondaryMemberIntermediateRestraint;
+      BothFlangesFreeToRotateOnPlanAtEnds = bothFlangesFreeToRotateOnPlanAtEnds;
+      IntermediateRestraintPositions = IntermediateRestraint.Custom;
     }
     public Supports(IntermediateRestraint intermediateRestraintPositions, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds)
     {
-      this.IntermediateRestraintPositions = intermediateRestraintPositions;
-      this.SecondaryMemberAsIntermediateRestraint = secondaryMemberIntermediateRestraint;
-      this.BothFlangesFreeToRotateOnPlanAtEnds = bothFlangesFreeToRotateOnPlanAtEnds;
+      IntermediateRestraintPositions = intermediateRestraintPositions;
+      SecondaryMemberAsIntermediateRestraint = secondaryMemberIntermediateRestraint;
+      BothFlangesFreeToRotateOnPlanAtEnds = bothFlangesFreeToRotateOnPlanAtEnds;
     }
     #endregion
 
     #region methods
     public override string ToString()
     {
-      string sec = (this.SecondaryMemberAsIntermediateRestraint) ? ", SMIR" : "";
-      string flange = (this.BothFlangesFreeToRotateOnPlanAtEnds) ? ", FFRE" : "";
-      string res = this.IntermediateRestraintPositions.ToString().Replace("__", "-").Replace("_", " ");
+      string sec = (SecondaryMemberAsIntermediateRestraint) ? ", SMIR" : "";
+      string flange = (BothFlangesFreeToRotateOnPlanAtEnds) ? ", FFRE" : "";
+      string res = IntermediateRestraintPositions.ToString().Replace("__", "-").Replace("_", " ");
       if (CustomIntermediateRestraintPositions != null)
       {
         res = "Custom:{";

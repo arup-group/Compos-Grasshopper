@@ -31,7 +31,7 @@ namespace ComposGH.Components
           "Get the moment and shear resistance/capacity results for a " + MemberGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat7())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -53,68 +53,68 @@ namespace ComposGH.Components
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       IResult res = ((MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
-      List<GH_UnitNumber> positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
+      List<GH_UnitNumber> positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
       ICapacityResult result = res.Capacities;
 
       List<GH_UnitNumber> outputs0 = null;
       List<GH_UnitNumber> outputs1 = null;
 
-      switch (this.SelectedCase)
+      switch (SelectedCase)
       {
         case Case.HoggingConstruction:
           outputs0 = result.MomentHoggingConstruction
-            .Select(x => new GH_UnitNumber(x.ToUnit(this.MomentUnit))).ToList();
+            .Select(x => new GH_UnitNumber(x.ToUnit(MomentUnit))).ToList();
           outputs1 = result.NeutralAxisHoggingConstruction
-            .Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
+            .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
           break;
 
         case Case.SaggingConstruction:
           outputs0 = result.MomentConstruction
-            .Select(x => new GH_UnitNumber(x.ToUnit(this.MomentUnit))).ToList();
+            .Select(x => new GH_UnitNumber(x.ToUnit(MomentUnit))).ToList();
           outputs1 = result.NeutralAxisConstruction
-            .Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
+            .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
           break;
 
         case Case.Hogging:
           outputs0 = result.MomentHoggingFinal
-            .Select(x => new GH_UnitNumber(x.ToUnit(this.MomentUnit))).ToList();
+            .Select(x => new GH_UnitNumber(x.ToUnit(MomentUnit))).ToList();
           outputs1 = result.NeutralAxisHoggingFinal
-            .Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
+            .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
           break;
 
         case Case.Sagging:
           outputs0 = result.Moment
-            .Select(x => new GH_UnitNumber(x.ToUnit(this.MomentUnit))).ToList();
+            .Select(x => new GH_UnitNumber(x.ToUnit(MomentUnit))).ToList();
           outputs1 = result.NeutralAxis
-            .Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
+            .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
           break;
 
         case Case.PlasticSteelHogging:
           outputs0 = result.AssumedBeamPlasticMomentHogging
-            .Select(x => new GH_UnitNumber(x.ToUnit(this.MomentUnit))).ToList();
+            .Select(x => new GH_UnitNumber(x.ToUnit(MomentUnit))).ToList();
           outputs1 = result.AssumedPlasticNeutralAxisHogging
-            .Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
+            .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
           break;
 
         case Case.PlasticSteel:
           outputs0 = result.AssumedBeamPlasticMoment
-            .Select(x => new GH_UnitNumber(x.ToUnit(this.MomentUnit))).ToList();
+            .Select(x => new GH_UnitNumber(x.ToUnit(MomentUnit))).ToList();
           outputs1 = result.AssumedPlasticNeutralAxis
-            .Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
+            .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
           break;
 
         case Case.FullInteractHogging:
           outputs0 = result.AssumedMomentFullShearInteractionHogging
-            .Select(x => new GH_UnitNumber(x.ToUnit(this.MomentUnit))).ToList();
+            .Select(x => new GH_UnitNumber(x.ToUnit(MomentUnit))).ToList();
           outputs1 = result.AssumedNeutralAxisFullShearInteractionHogging
-            .Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
+            .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
           break;
 
         case Case.FullInteraction:
           outputs0 = result.AssumedMomentFullShearInteraction
-            .Select(x => new GH_UnitNumber(x.ToUnit(this.MomentUnit))).ToList();
+            .Select(x => new GH_UnitNumber(x.ToUnit(MomentUnit))).ToList();
           outputs1 = result.AssumedNeutralAxisFullShearInteraction
-            .Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
+            .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
           break;
       }
 
@@ -123,11 +123,11 @@ namespace ComposGH.Components
       Output.SetList(this, DA, i++, outputs1);
 
       Output.SetList(this, DA, i++, result.Shear
-        .Select(x => new GH_UnitNumber(x.ToUnit(this.ForceUnit))).ToList());
+        .Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
       Output.SetList(this, DA, i++, result.ShearBuckling
-        .Select(x => new GH_UnitNumber(x.ToUnit(this.ForceUnit))).ToList());
+        .Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
       Output.SetList(this, DA, i++, result.ShearRequired
-        .Select(x => new GH_UnitNumber(x.ToUnit(this.ForceUnit))).ToList());
+        .Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
       
       Output.SetList(this, DA, i, positions);
     }
@@ -151,51 +151,51 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Case", "Moment Unit", "Force Unit", "Length Unit" });
+      _spacerDescriptions = new List<string>(new string[] { "Case", "Moment Unit", "Force Unit", "Length Unit" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // case
-      this._dropDownItems.Add(Enum.GetNames(typeof(Case)).ToList());
-      this._selectedItems.Add(this.SelectedCase.ToString());
+      _dropDownItems.Add(Enum.GetNames(typeof(Case)).ToList());
+      _selectedItems.Add(SelectedCase.ToString());
 
       // moment
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Moment));
-      this._selectedItems.Add(Moment.GetAbbreviation(this.MomentUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Moment));
+      _selectedItems.Add(Moment.GetAbbreviation(MomentUnit));
 
       // force
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Force));
-      this._selectedItems.Add(Force.GetAbbreviation(this.ForceUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Force));
+      _selectedItems.Add(Force.GetAbbreviation(ForceUnit));
 
       // length
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this._selectedItems[i] = this._dropDownItems[i][j];
+      _selectedItems[i] = _dropDownItems[i][j];
       if (i == 0)
-        this.SelectedCase = (Case)Enum.Parse(typeof(Case), this._selectedItems[i]);
+        SelectedCase = (Case)Enum.Parse(typeof(Case), _selectedItems[i]);
       else if (i == 1)
-        this.MomentUnit = (MomentUnit)UnitsHelper.Parse(typeof(MomentUnit), this._selectedItems[i]);
+        MomentUnit = (MomentUnit)UnitsHelper.Parse(typeof(MomentUnit), _selectedItems[i]);
       else if (i == 2)
-        this.ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), this._selectedItems[i]);
+        ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), _selectedItems[i]);
       else if (i == 3)
-        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
+        LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.SelectedCase = (Case)Enum.Parse(typeof(Case), this._selectedItems[0]);
-      this.MomentUnit = (MomentUnit)UnitsHelper.Parse(typeof(MomentUnit), this._selectedItems[1]);
-      this.ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), this._selectedItems[2]);
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[3]);
+      SelectedCase = (Case)Enum.Parse(typeof(Case), _selectedItems[0]);
+      MomentUnit = (MomentUnit)UnitsHelper.Parse(typeof(MomentUnit), _selectedItems[1]);
+      ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), _selectedItems[2]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[3]);
 
       base.UpdateUIFromSelectedItems();
     }

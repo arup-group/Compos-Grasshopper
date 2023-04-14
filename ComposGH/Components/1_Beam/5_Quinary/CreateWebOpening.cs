@@ -31,13 +31,13 @@ namespace ComposGH.Components
           "Create a " + WebOpeningGoo.Description + " for a " + BeamGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
 
       pManager.AddGenericParameter("Width [" + unitAbbreviation + "]", "B", "Web Opening Width", GH_ParamAccess.item);
       pManager.AddGenericParameter("Height [" + unitAbbreviation + "]", "H", "Web Opening Height", GH_ParamAccess.item);
@@ -56,21 +56,21 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Length width_dia = (Length)Input.UnitNumber(this, DA, 0, this.LengthUnit);
+      Length width_dia = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
       
       int i = 1;
 
       Length height = Length.Zero;
-      if (this.OpeningType == WebOpeningShape.Rectangular)
-        height = (Length)Input.UnitNumber(this, DA, i++, this.LengthUnit);
+      if (OpeningType == WebOpeningShape.Rectangular)
+        height = (Length)Input.UnitNumber(this, DA, i++, LengthUnit);
       
-      IQuantity x = Input.LengthOrRatio(this, DA, i++, this.LengthUnit);
+      IQuantity x = Input.LengthOrRatio(this, DA, i++, LengthUnit);
       
-      IQuantity z = Input.LengthOrRatio(this, DA, i++, this.LengthUnit);
+      IQuantity z = Input.LengthOrRatio(this, DA, i++, LengthUnit);
       
       WebOpeningStiffenersGoo stiff = (WebOpeningStiffenersGoo)Input.GenericGoo<WebOpeningStiffenersGoo>(this, DA, i++);
 
-      switch (this.OpeningType)
+      switch (OpeningType)
       {
         case WebOpeningShape.Rectangular:
           Output.SetItem(this, DA, 0, new WebOpeningGoo(new WebOpening(width_dia, height, x, z, (stiff == null) ? null : stiff.Value)));
@@ -88,48 +88,48 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Shape", "Unit" });
+      _spacerDescriptions = new List<string>(new string[] { "Shape", "Unit" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // type
-      this._dropDownItems.Add(Enum.GetValues(typeof(WebOpeningShape)).Cast<WebOpeningShape>()
+      _dropDownItems.Add(Enum.GetValues(typeof(WebOpeningShape)).Cast<WebOpeningShape>()
           .Select(x => x.ToString()).ToList());
-      this._selectedItems.Add(WebOpeningShape.Rectangular.ToString());
+      _selectedItems.Add(WebOpeningShape.Rectangular.ToString());
 
       // length
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
       // change selected item
-      this._selectedItems[i] = this._dropDownItems[i][j];
+      _selectedItems[i] = _dropDownItems[i][j];
 
       if (i == 0)
       {
-        if (this._selectedItems[i] == OpeningType.ToString())
+        if (_selectedItems[i] == OpeningType.ToString())
           return;
-        this.OpeningType = (WebOpeningShape)Enum.Parse(typeof(WebOpeningShape), this._selectedItems[i]);
+        OpeningType = (WebOpeningShape)Enum.Parse(typeof(WebOpeningShape), _selectedItems[i]);
         ModeChangeClicked();
       }
       else if (i == 1) // change is made to length unit
-        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
+        LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.OpeningType = (WebOpeningShape)Enum.Parse(typeof(WebOpeningShape), this._selectedItems[0]);
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[1]);
+      OpeningType = (WebOpeningShape)Enum.Parse(typeof(WebOpeningShape), _selectedItems[0]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[1]);
 
-      this.CreateAttributes();
-      this.ModeChangeClicked();
+      CreateAttributes();
+      ModeChangeClicked();
       base.UpdateUI();
     }
 
@@ -139,7 +139,7 @@ namespace ComposGH.Components
 
       if (OpeningType == WebOpeningShape.Rectangular)
       {
-        if (this.Params.Input.Count == 5)
+        if (Params.Input.Count == 5)
           return;
 
         // remove parameters until first
@@ -160,7 +160,7 @@ namespace ComposGH.Components
       }
       if (OpeningType == WebOpeningShape.Circular)
       {
-        if (this.Params.Input.Count == 4)
+        if (Params.Input.Count == 4)
           return;
 
         // remove height param
@@ -169,7 +169,7 @@ namespace ComposGH.Components
     }
     public override void VariableParameterMaintenance()
     {
-      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
 
       if (OpeningType == WebOpeningShape.Rectangular)
       {

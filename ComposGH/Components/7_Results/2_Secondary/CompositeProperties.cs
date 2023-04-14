@@ -31,7 +31,7 @@ namespace ComposGH.Components
           "Get calculated, case dependent, composite section properties for a " + MemberGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat7())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -51,51 +51,51 @@ namespace ComposGH.Components
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       IResult res = ((MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
-      List<GH_UnitNumber> positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
+      List<GH_UnitNumber> positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
       ICompositeSectionProperties result = res.SectionProperties;
 
-      AreaUnit areaUnit = UnitsHelper.GetAreaUnit(this.LengthUnit);
-      AreaMomentOfInertiaUnit inertiaUnit = UnitsHelper.GetAreaMomentOfInertiaUnit(this.LengthUnit);
+      AreaUnit areaUnit = UnitsHelper.GetAreaUnit(LengthUnit);
+      AreaMomentOfInertiaUnit inertiaUnit = UnitsHelper.GetAreaMomentOfInertiaUnit(LengthUnit);
 
       List<GH_UnitNumber> outputs0 = null;
       List<GH_UnitNumber> outputs1 = null;
       List<GH_UnitNumber> outputs2 = null;
 
-      switch (this.SelectedCase)
+      switch (SelectedCase)
       {
         case Case.BeamOnly:
           outputs0 = result.BeamMomentOfInertia.Select(x => new GH_UnitNumber(x.ToUnit(inertiaUnit))).ToList();
-          outputs1 = result.BeamNeutralAxisPosition.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
+          outputs1 = result.BeamNeutralAxisPosition.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
           outputs2 = result.BeamArea.Select(x => new GH_UnitNumber(x.ToUnit(areaUnit))).ToList();
           break;
 
         case Case.LongTerm:
           outputs0 = result.MomentOfInertiaLongTerm.Select(x => new GH_UnitNumber(x.ToUnit(inertiaUnit))).ToList();
-          outputs1 = result.NeutralAxisPositionLongTerm.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
+          outputs1 = result.NeutralAxisPositionLongTerm.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
           outputs2 = result.AreaLongTerm.Select(x => new GH_UnitNumber(x.ToUnit(areaUnit))).ToList();
           break;
 
         case Case.ShortTerm:
           outputs0 = result.MomentOfInertiaShortTerm.Select(x => new GH_UnitNumber(x.ToUnit(inertiaUnit))).ToList();
-          outputs1 = result.NeutralAxisPositionShortTerm.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
+          outputs1 = result.NeutralAxisPositionShortTerm.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
           outputs2 = result.AreaShortTerm.Select(x => new GH_UnitNumber(x.ToUnit(areaUnit))).ToList();
           break;
 
         case Case.Shrinkage:
           outputs0 = result.MomentOfInertiaShrinkage.Select(x => new GH_UnitNumber(x.ToUnit(inertiaUnit))).ToList();
-          outputs1 = result.NeutralAxisPositionShrinkage.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
+          outputs1 = result.NeutralAxisPositionShrinkage.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
           outputs2 = result.AreaShrinkage.Select(x => new GH_UnitNumber(x.ToUnit(areaUnit))).ToList();
           break;
 
         case Case.Effective:
           outputs0 = result.MomentOfInertiaEffective.Select(x => new GH_UnitNumber(x.ToUnit(inertiaUnit))).ToList();
-          outputs1 = result.NeutralAxisPositionEffective.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
+          outputs1 = result.NeutralAxisPositionEffective.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
           outputs2 = result.AreaEffective.Select(x => new GH_UnitNumber(x.ToUnit(areaUnit))).ToList();
           break;
 
         case Case.Vibration:
           outputs0 = result.MomentOfInertiaVibration.Select(x => new GH_UnitNumber(x.ToUnit(inertiaUnit))).ToList();
-          outputs1 = result.NeutralAxisPositionVibration.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
+          outputs1 = result.NeutralAxisPositionVibration.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
           outputs2 = result.AreaVibration.Select(x => new GH_UnitNumber(x.ToUnit(areaUnit))).ToList();
           break;
 
@@ -124,37 +124,37 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Case", "Unit" });
+      _spacerDescriptions = new List<string>(new string[] { "Case", "Unit" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // case
-      this._dropDownItems.Add(Enum.GetNames(typeof(Case)).ToList());
-      this._selectedItems.Add(this.SelectedCase.ToString());
+      _dropDownItems.Add(Enum.GetNames(typeof(Case)).ToList());
+      _selectedItems.Add(SelectedCase.ToString());
 
       // length
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this._selectedItems[i] = this._dropDownItems[i][j];
+      _selectedItems[i] = _dropDownItems[i][j];
       if (i == 0)
-        this.SelectedCase = (Case)Enum.Parse(typeof(Case), this._selectedItems[i]);
+        SelectedCase = (Case)Enum.Parse(typeof(Case), _selectedItems[i]);
       else if (i == 1)
-        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
+        LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.SelectedCase = (Case)Enum.Parse(typeof(Case), this._selectedItems[0]);
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[1]);
+      SelectedCase = (Case)Enum.Parse(typeof(Case), _selectedItems[0]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
     }

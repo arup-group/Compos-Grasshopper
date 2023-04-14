@@ -25,7 +25,7 @@ namespace ComposGH.Components
           "Create a " + MemberGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
-    { this.Hidden = false; } // sets the initial state of the component to hidden
+    { Hidden = false; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output

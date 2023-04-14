@@ -16,7 +16,7 @@ namespace ComposGH.Parameters
     public static string NickName => "DLm";
     public static string Description => "Compos Deflection Limit Criteria";
     public DeflectionLimitGoo(IDeflectionLimit item) : base(item) { }
-    public override IGH_Goo Duplicate() => new DeflectionLimitGoo(this.Value);
+    public override IGH_Goo Duplicate() => new DeflectionLimitGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 
@@ -33,8 +33,8 @@ namespace ComposGH.Parameters
         Components.Ribbon.CategoryName.Name(),
         Components.Ribbon.SubCategoryName.Cat10()))
     { }
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + DeflectionLimitGoo.Name + " parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? DeflectionLimitGoo.Name : base.TypeName;
+    public override string InstanceDescription => m_data.DataCount == 0 ? "Empty " + DeflectionLimitGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => SourceCount == 0 ? DeflectionLimitGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("f226c2c8-6524-45a2-8579-77bfa8d0542e");
     public override GH_Exposure Exposure => GH_Exposure.hidden;
     protected override System.Drawing.Bitmap Icon => Properties.Resources.DeflectionLimit;

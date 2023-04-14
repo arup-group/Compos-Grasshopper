@@ -32,7 +32,7 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.FinalMoment;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -44,7 +44,7 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.FinalShear;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -56,7 +56,7 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.FinalDeflection;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -68,7 +68,7 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.ConstructionMoment;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -80,7 +80,7 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.ConstructionShear;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -92,7 +92,7 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.ConstructionDeflection;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -104,7 +104,7 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.ConstructionBuckling;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -116,7 +116,7 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.TransverseShear;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -128,7 +128,7 @@ namespace ComposAPI
       get
       {
         UtilisationFactorOption resultType = UtilisationFactorOption.WebOpening;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -136,13 +136,13 @@ namespace ComposAPI
 
     private Ratio GetResults(UtilisationFactorOption resultType)
     {
-      if (!this.ResultsCache.ContainsKey(resultType))
+      if (!ResultsCache.ContainsKey(resultType))
       {
-        float value = this.Member.UtilisationFactor(resultType);
+        float value = Member.UtilisationFactor(resultType);
         Ratio utilisation = new Ratio(value, RatioUnit.DecimalFraction);
-        this.ResultsCache.Add(resultType, utilisation);
+        ResultsCache.Add(resultType, utilisation);
       }
-      return this.ResultsCache[resultType];
+      return ResultsCache[resultType];
     }
   }
 }

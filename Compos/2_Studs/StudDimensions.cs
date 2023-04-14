@@ -39,69 +39,69 @@ namespace ComposAPI
 
     public void SetSizeFromStandard(StandardStudSize size)
     {
-      this.IsStandard = true;
+      IsStandard = true;
       switch (size)
       {
         case StandardStudSize.D13mmH65mm:
-          this.Diameter = new Length(13, LengthUnit.Millimeter);
-          this.Height = new Length(65, LengthUnit.Millimeter);
+          Diameter = new Length(13, LengthUnit.Millimeter);
+          Height = new Length(65, LengthUnit.Millimeter);
           break;
         case StandardStudSize.D16mmH75mm:
-          this.Diameter = new Length(16, LengthUnit.Millimeter);
-          this.Height = new Length(75, LengthUnit.Millimeter);
+          Diameter = new Length(16, LengthUnit.Millimeter);
+          Height = new Length(75, LengthUnit.Millimeter);
           break;
         case StandardStudSize.D19mmH75mm:
-          this.Diameter = new Length(19, LengthUnit.Millimeter);
-          this.Height = new Length(75, LengthUnit.Millimeter);
+          Diameter = new Length(19, LengthUnit.Millimeter);
+          Height = new Length(75, LengthUnit.Millimeter);
           break;
         case StandardStudSize.D19mmH100mm:
-          this.Diameter = new Length(19, LengthUnit.Millimeter);
-          this.Height = new Length(100, LengthUnit.Millimeter);
+          Diameter = new Length(19, LengthUnit.Millimeter);
+          Height = new Length(100, LengthUnit.Millimeter);
           break;
         case StandardStudSize.D19mmH125mm:
-          this.Diameter = new Length(19, LengthUnit.Millimeter);
-          this.Height = new Length(125, LengthUnit.Millimeter);
+          Diameter = new Length(19, LengthUnit.Millimeter);
+          Height = new Length(125, LengthUnit.Millimeter);
           break;
         case StandardStudSize.D22mmH100mm:
-          this.Diameter = new Length(22, LengthUnit.Millimeter);
-          this.Height = new Length(100, LengthUnit.Millimeter);
+          Diameter = new Length(22, LengthUnit.Millimeter);
+          Height = new Length(100, LengthUnit.Millimeter);
           break;
         case StandardStudSize.D25mmH100mm:
-          this.Diameter = new Length(25, LengthUnit.Millimeter);
-          this.Height = new Length(100, LengthUnit.Millimeter);
+          Diameter = new Length(25, LengthUnit.Millimeter);
+          Height = new Length(100, LengthUnit.Millimeter);
           break;
         case StandardStudSize.D16mmH70mm:
-          this.Diameter = new Length(16, LengthUnit.Millimeter);
-          this.Height = new Length(70, LengthUnit.Millimeter);
+          Diameter = new Length(16, LengthUnit.Millimeter);
+          Height = new Length(70, LengthUnit.Millimeter);
           break;
         case StandardStudSize.D19mmH95mm:
-          this.Diameter = new Length(19, LengthUnit.Millimeter);
-          this.Height = new Length(95, LengthUnit.Millimeter);
+          Diameter = new Length(19, LengthUnit.Millimeter);
+          Height = new Length(95, LengthUnit.Millimeter);
           break;
         case StandardStudSize.D22mmH95mm:
-          this.Diameter = new Length(22, LengthUnit.Millimeter);
-          this.Height = new Length(95, LengthUnit.Millimeter);
+          Diameter = new Length(22, LengthUnit.Millimeter);
+          Height = new Length(95, LengthUnit.Millimeter);
           break;
         case StandardStudSize.D25mmH95mm:
-          this.Diameter = new Length(25, LengthUnit.Millimeter);
-          this.Height = new Length(95, LengthUnit.Millimeter);
+          Diameter = new Length(25, LengthUnit.Millimeter);
+          Height = new Length(95, LengthUnit.Millimeter);
           break;
       }
     }
 
     public void SetGradeFromStandard(StandardStudGrade standardGrade)
     {
-      this.IsStandardENGrade = true;
+      IsStandardENGrade = true;
       switch (standardGrade)
       {
         case StandardStudGrade.SD1_EN13918:
-          this.Fu = new Pressure(400, PressureUnit.NewtonPerSquareMillimeter);
+          Fu = new Pressure(400, PressureUnit.NewtonPerSquareMillimeter);
           break;
         case StandardStudGrade.SD2_EN13918:
-          this.Fu = new Pressure(450, PressureUnit.NewtonPerSquareMillimeter);
+          Fu = new Pressure(450, PressureUnit.NewtonPerSquareMillimeter);
           break;
         case StandardStudGrade.SD3_EN13918:
-          this.Fu = new Pressure(500, PressureUnit.NewtonPerSquareMillimeter);
+          Fu = new Pressure(500, PressureUnit.NewtonPerSquareMillimeter);
           break;
       }
     }
@@ -120,9 +120,9 @@ namespace ComposAPI
     /// <param name="fu"></param>
     public StudDimensions(Length diameter, Length height, Pressure fu)
     {
-      this.Diameter = diameter;
-      this.Height = height;
-      this.Fu = fu;
+      Diameter = diameter;
+      Height = height;
+      Fu = fu;
     }
 
     /// <summary>
@@ -133,9 +133,9 @@ namespace ComposAPI
     /// <param name="strength"></param>
     public StudDimensions(Length diameter, Length height, Force strength)
     {
-      this.Diameter = diameter;
-      this.Height = height;
-      this.CharacterStrength = strength;
+      Diameter = diameter;
+      Height = height;
+      CharacterStrength = strength;
     }
 
     /// <summary>
@@ -145,7 +145,7 @@ namespace ComposAPI
     /// <param name="strength"></param>
     public StudDimensions(StandardStudSize size)
     {
-      this.SetSizeFromStandard(size);
+      SetSizeFromStandard(size);
     }
 
     /// <summary>
@@ -155,8 +155,8 @@ namespace ComposAPI
     /// <param name="strength"></param>
     public StudDimensions(StandardStudSize size, Force strength)
     {
-      this.SetSizeFromStandard(size);
-      this.CharacterStrength = strength;
+      SetSizeFromStandard(size);
+      CharacterStrength = strength;
     }
 
     /// <summary>
@@ -166,8 +166,8 @@ namespace ComposAPI
     /// <param name="fu"></param>
     public StudDimensions(StandardStudSize size, Pressure fu)
     {
-      this.SetSizeFromStandard(size);
-      this.Fu = fu;
+      SetSizeFromStandard(size);
+      Fu = fu;
     }
 
     /// <summary>
@@ -177,9 +177,9 @@ namespace ComposAPI
     /// <param name="standardGrade"></param>
     public StudDimensions(StandardStudSize size, StandardStudGrade standardGrade)
     {
-      this.SetSizeFromStandard(size);
-      this.SetGradeFromStandard(standardGrade);
-      this.IsStandardENGrade = true;
+      SetSizeFromStandard(size);
+      SetGradeFromStandard(standardGrade);
+      IsStandardENGrade = true;
     }
 
     /// <summary>
@@ -190,20 +190,20 @@ namespace ComposAPI
     /// <param name="standardGrade"></param>
     public StudDimensions(Length diameter, Length height, StandardStudGrade standardGrade)
     {
-      this.Diameter = diameter;
-      this.Height = height;
-      this.SetGradeFromStandard(standardGrade);
+      Diameter = diameter;
+      Height = height;
+      SetGradeFromStandard(standardGrade);
     }
     #endregion
 
     #region methods
     public override string ToString()
     {
-      string dia = this.Diameter.As(this.Height.Unit).ToString("g5");
-      string h = this.Height.ToString("g5");
-      string f = (this.Fu.Value == 0) ? this.CharacterStrength.ToString("g5") : Fu.ToString("g5");
+      string dia = Diameter.As(Height.Unit).ToString("g5");
+      string h = Height.ToString("g5");
+      string f = (Fu.Value == 0) ? CharacterStrength.ToString("g5") : Fu.ToString("g5");
 
-      return "Ø" + dia.Replace(" ", string.Empty) + "/" + h.Replace(" ", string.Empty) + ((this.IsStandard) ? "" : ", f:" + f.Replace(" ", string.Empty));
+      return "Ø" + dia.Replace(" ", string.Empty) + "/" + h.Replace(" ", string.Empty) + ((IsStandard) ? "" : ", f:" + f.Replace(" ", string.Empty));
     }
     #endregion
   }

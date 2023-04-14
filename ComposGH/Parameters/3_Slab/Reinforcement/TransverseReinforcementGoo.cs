@@ -16,7 +16,7 @@ namespace ComposGH.Parameters
     public static string NickName => "RfT";
     public static string Description => "Compos Transverse Reinforcement";
     public TransverseReinforcementGoo(ITransverseReinforcement item) : base(item) { }
-    public override IGH_Goo Duplicate() => new TransverseReinforcementGoo(this.Value);
+    public override IGH_Goo Duplicate() => new TransverseReinforcementGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 
@@ -33,8 +33,8 @@ namespace ComposGH.Parameters
         Components.Ribbon.CategoryName.Name(),
         Components.Ribbon.SubCategoryName.Cat10()))
     { }
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + TransverseReinforcementGoo.Name + " parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? TransverseReinforcementGoo.Name : base.TypeName;
+    public override string InstanceDescription => m_data.DataCount == 0 ? "Empty " + TransverseReinforcementGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => SourceCount == 0 ? TransverseReinforcementGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("85fae3b5-8b00-47b0-9ff1-ec874b89ab3f");
     public override GH_Exposure Exposure => GH_Exposure.hidden;
     protected override System.Drawing.Bitmap Icon => Properties.Resources.TransverseReinforcementParam;

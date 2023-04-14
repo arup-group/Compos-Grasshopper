@@ -26,17 +26,17 @@ namespace ComposAPI
     }
     public Restraint(bool topFlangeRestrained, ISupports constructionStageSupports, ISupports finalStageSupports)
     {
-      this.TopFlangeRestrained = topFlangeRestrained;
-      this.ConstructionStageSupports = constructionStageSupports;
-      this.FinalStageSupports = finalStageSupports;
-      this.finalSupportsSet = true;
+      TopFlangeRestrained = topFlangeRestrained;
+      ConstructionStageSupports = constructionStageSupports;
+      FinalStageSupports = finalStageSupports;
+      finalSupportsSet = true;
     }
     public Restraint(bool topFlangeRestrained, ISupports constructionStageSupports)
     {
-      this.TopFlangeRestrained = topFlangeRestrained;
-      this.ConstructionStageSupports = constructionStageSupports;
-      this.FinalStageSupports = new Supports(IntermediateRestraint.None, true, true);
-      this.finalSupportsSet = false;
+      TopFlangeRestrained = topFlangeRestrained;
+      ConstructionStageSupports = constructionStageSupports;
+      FinalStageSupports = new Supports(IntermediateRestraint.None, true, true);
+      finalSupportsSet = false;
     }
     #endregion
 
@@ -69,10 +69,10 @@ namespace ComposAPI
               default:
                 throw new Exception("Unknown number of intermediate restraints for construction stage support");
             }
-            if (this.ConstructionStageSupports == null)
-              this.ConstructionStageSupports = new Supports();
-            this.ConstructionStageSupports = new Supports(intermediateRestraint,
-                this.ConstructionStageSupports.SecondaryMemberAsIntermediateRestraint, this.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+            if (ConstructionStageSupports == null)
+              ConstructionStageSupports = new Supports();
+            ConstructionStageSupports = new Supports(intermediateRestraint,
+                ConstructionStageSupports.SecondaryMemberAsIntermediateRestraint, ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
           }
           else if (parameters[2] == "USER_DEFINED")
           {
@@ -83,47 +83,47 @@ namespace ComposAPI
             //RESTRAINT_POINT	MEMBER-1	USER_DEFINED	3	2	50.0000%	F1L TP MINV
             //RESTRAINT_POINT	MEMBER-1	USER_DEFINED	3	3	100.000%	F12LW TR MAJV MINV
             List<IQuantity> positions = new List<IQuantity>();
-            if (this.ConstructionStageSupports == null)
-              this.ConstructionStageSupports = new Supports();
-            if (this.ConstructionStageSupports.CustomIntermediateRestraintPositions != null && this.ConstructionStageSupports.CustomIntermediateRestraintPositions.Count != 0)
-              positions = this.ConstructionStageSupports.CustomIntermediateRestraintPositions.ToList();
+            if (ConstructionStageSupports == null)
+              ConstructionStageSupports = new Supports();
+            if (ConstructionStageSupports.CustomIntermediateRestraintPositions != null && ConstructionStageSupports.CustomIntermediateRestraintPositions.Count != 0)
+              positions = ConstructionStageSupports.CustomIntermediateRestraintPositions.ToList();
             if (parameters[5].EndsWith("%"))
               positions.Add(new Ratio(Convert.ToDouble(parameters[5].Replace("%", string.Empty), noComma), RatioUnit.Percent));
             else
               positions.Add(new Length(Convert.ToDouble(parameters[5], noComma), units.Length));
 
-            this.ConstructionStageSupports = new Supports(positions,
-                this.ConstructionStageSupports.SecondaryMemberAsIntermediateRestraint, this.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+            ConstructionStageSupports = new Supports(positions,
+                ConstructionStageSupports.SecondaryMemberAsIntermediateRestraint, ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
           }
           break;
 
         case CoaIdentifier.RestraintTopFlange:
           if (parameters[2] == "TOP_FLANGE_FIXED")
-            this.TopFlangeRestrained = true;
+            TopFlangeRestrained = true;
           else if (parameters[2] == "TOP_FLANGE_FREE")
-            this.TopFlangeRestrained = false;
+            TopFlangeRestrained = false;
           break;
 
         case CoaIdentifier.Restraint2ndBeam:
-          if (this.ConstructionStageSupports == null)
-            this.ConstructionStageSupports = new Supports();
-          Supports construction1 = this.ConstructionStageSupports as Supports;
+          if (ConstructionStageSupports == null)
+            ConstructionStageSupports = new Supports();
+          Supports construction1 = ConstructionStageSupports as Supports;
           if (parameters[2] == "SEC_BEAM_AS_REST")
             construction1.SecondaryMemberAsIntermediateRestraint = true;
           else if (parameters[2] == "2ND_BEAM_NOT_AS_REST")
             construction1.SecondaryMemberAsIntermediateRestraint = false;
-          this.ConstructionStageSupports = construction1;
+          ConstructionStageSupports = construction1;
           break;
 
         case CoaIdentifier.EndFlangeFreeRotate:
-          if (this.ConstructionStageSupports == null)
-            this.ConstructionStageSupports = new Supports();
-          Supports construction2 = this.ConstructionStageSupports as Supports;
+          if (ConstructionStageSupports == null)
+            ConstructionStageSupports = new Supports();
+          Supports construction2 = ConstructionStageSupports as Supports;
           if (parameters[2] == "FREE_TO_ROTATE")
             construction2.BothFlangesFreeToRotateOnPlanAtEnds = true;
           else if (parameters[2] == "NOT_FREE_TO_ROTATE")
             construction2.BothFlangesFreeToRotateOnPlanAtEnds = false;
-          this.ConstructionStageSupports = construction2;
+          ConstructionStageSupports = construction2;
           break;
 
         case CoaIdentifier.FinalRestraintPoint:
@@ -148,10 +148,10 @@ namespace ComposAPI
               default:
                 throw new Exception("Unknown number of intermediate restraints for construction stage support");
             }
-            if (this.FinalStageSupports == null)
-              this.FinalStageSupports = new Supports();
-            this.FinalStageSupports = new Supports(intermediateRestraint,
-                this.FinalStageSupports.SecondaryMemberAsIntermediateRestraint, this.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+            if (FinalStageSupports == null)
+              FinalStageSupports = new Supports();
+            FinalStageSupports = new Supports(intermediateRestraint,
+                FinalStageSupports.SecondaryMemberAsIntermediateRestraint, FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
           }
           else if (parameters[2] == "USER_DEFINED")
           {
@@ -159,47 +159,47 @@ namespace ComposAPI
             //FINAL_RESTRAINT_POINT MEMBER-2 USER_DEFINED 3 2 5.00000 F1L TP MINV
             //FINAL_RESTRAINT_POINT MEMBER-2 USER_DEFINED 3 3 6.00000 F1L TP MINV
             List<IQuantity> positions = new List<IQuantity>();
-            if (this.FinalStageSupports == null)
-              this.FinalStageSupports = new Supports();
-            if (this.FinalStageSupports.CustomIntermediateRestraintPositions != null & this.FinalStageSupports.CustomIntermediateRestraintPositions.Count != 0)
-              positions = this.FinalStageSupports.CustomIntermediateRestraintPositions.ToList();
+            if (FinalStageSupports == null)
+              FinalStageSupports = new Supports();
+            if (FinalStageSupports.CustomIntermediateRestraintPositions != null & FinalStageSupports.CustomIntermediateRestraintPositions.Count != 0)
+              positions = FinalStageSupports.CustomIntermediateRestraintPositions.ToList();
             if (parameters[5].EndsWith("%"))
               positions.Add(new Ratio(Convert.ToDouble(parameters[5].Replace("%", string.Empty), noComma), RatioUnit.Percent));
             else
               positions.Add(new Length(Convert.ToDouble(parameters[5], noComma), units.Length));
 
-            this.FinalStageSupports = new Supports(positions,
-                this.FinalStageSupports.SecondaryMemberAsIntermediateRestraint, this.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
+            FinalStageSupports = new Supports(positions,
+                FinalStageSupports.SecondaryMemberAsIntermediateRestraint, FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds);
           }
           break;
 
         case CoaIdentifier.FinalRestraintNoStud:
           if (parameters[2] == "NOSTUD_ZONE_LATERAL_FIXED")
-            this.finalSupportsSet = false;
+            finalSupportsSet = false;
           else if (parameters[2] == "NOSTUD_ZONE_LATERAL_FREE")
-            this.finalSupportsSet = true;
+            finalSupportsSet = true;
           break;
 
         case CoaIdentifier.FinalRestraint2ndBeam:
-          if (this.FinalStageSupports == null)
-            this.FinalStageSupports = new Supports();
-          Supports final1 = this.FinalStageSupports as Supports;
+          if (FinalStageSupports == null)
+            FinalStageSupports = new Supports();
+          Supports final1 = FinalStageSupports as Supports;
           if (parameters[2] == "SEC_BEAM_AS_REST")
             final1.SecondaryMemberAsIntermediateRestraint = true;
           else if (parameters[2] == "2ND_BEAM_NOT_AS_REST")
             final1.SecondaryMemberAsIntermediateRestraint = false;
-          this.FinalStageSupports = final1;
+          FinalStageSupports = final1;
           break;
 
         case CoaIdentifier.FinalEndFlangeFreeRotate:
-          if (this.FinalStageSupports == null)
-            this.FinalStageSupports = new Supports();
-          Supports final2 = this.FinalStageSupports as Supports;
+          if (FinalStageSupports == null)
+            FinalStageSupports = new Supports();
+          Supports final2 = FinalStageSupports as Supports;
           if (parameters[2] == "FREE_TO_ROTATE")
             final2.BothFlangesFreeToRotateOnPlanAtEnds = true;
           else if (parameters[2] == "NOT_FREE_TO_ROTATE")
             final2.BothFlangesFreeToRotateOnPlanAtEnds = false;
-          this.FinalStageSupports = final2;
+          FinalStageSupports = final2;
           break;
       }
     }
@@ -208,7 +208,7 @@ namespace ComposAPI
     {
       string str = "";
       // Construction stage support
-      if (this.TopFlangeRestrained)
+      if (TopFlangeRestrained)
       {
         //RESTRAINT_POINT	MEMBER-1	STANDARD	0
         List<string> parameters = new List<string>();
@@ -226,14 +226,14 @@ namespace ComposAPI
       }
       else
       {
-        if (this.ConstructionStageSupports.IntermediateRestraintPositions != IntermediateRestraint.Custom)
+        if (ConstructionStageSupports.IntermediateRestraintPositions != IntermediateRestraint.Custom)
         {
           //RESTRAINT_POINT	MEMBER-1	STANDARD	3
           List<string> parameters = new List<string>();
           parameters.Add("RESTRAINT_POINT");
           parameters.Add(name);
 
-          switch (this.ConstructionStageSupports.IntermediateRestraintPositions)
+          switch (ConstructionStageSupports.IntermediateRestraintPositions)
           {
 
             case IntermediateRestraint.None:
@@ -262,7 +262,7 @@ namespace ComposAPI
           //RESTRAINT_POINT	MEMBER-2	USER_DEFINED	3	1	0.000000	F12LW TR MAJV MINV
           //RESTRAINT_POINT MEMBER-2 USER_DEFINED 3 2 5.00000 F1L TP MINV
           //RESTRAINT_POINT MEMBER-2 USER_DEFINED 3 3 6.00000 F1L TP MINV
-          int count = this.ConstructionStageSupports.CustomIntermediateRestraintPositions.Count;
+          int count = ConstructionStageSupports.CustomIntermediateRestraintPositions.Count;
           for (int i = 0; i < count; i++)
           {
             List<string> parameters = new List<string>();
@@ -271,7 +271,7 @@ namespace ComposAPI
             parameters.Add("USER_DEFINED");
             parameters.Add(count.ToString());
             parameters.Add((i + 1).ToString());
-            parameters.Add(CoaHelper.FormatSignificantFigures(this.ConstructionStageSupports.CustomIntermediateRestraintPositions[i], units.Length, 6));
+            parameters.Add(CoaHelper.FormatSignificantFigures(ConstructionStageSupports.CustomIntermediateRestraintPositions[i], units.Length, 6));
             str += CoaHelper.CreateString(parameters);
           }
         }
@@ -281,21 +281,21 @@ namespace ComposAPI
 
         //RESTRAINT_2ND_BEAM	MEMBER-1	2ND_BEAM_NOT_AS_REST
         //RESTRAINT_2ND_BEAM	MEMBER-1	SEC_BEAM_AS_REST
-        if (this.ConstructionStageSupports.SecondaryMemberAsIntermediateRestraint)
+        if (ConstructionStageSupports.SecondaryMemberAsIntermediateRestraint)
           str += "RESTRAINT_2ND_BEAM" + '\t' + name + '\t' + "SEC_BEAM_AS_REST" + '\n';
         else
           str += "RESTRAINT_2ND_BEAM" + '\t' + name + '\t' + "2ND_BEAM_NOT_AS_REST" + '\n';
 
         //END_FLANGE_FREE_ROTATE	MEMBER-1	FREE_TO_ROTATE
         //END_FLANGE_FREE_ROTATE	MEMBER-1	NOT_FREE_TO_ROTATE
-        if (this.ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds)
+        if (ConstructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds)
           str += "END_FLANGE_FREE_ROTATE" + '\t' + name + '\t' + "FREE_TO_ROTATE" + '\n';
         else
           str += "END_FLANGE_FREE_ROTATE" + '\t' + name + '\t' + "NOT_FREE_TO_ROTATE" + '\n';
       }
 
       // Final stage support
-      if (!this.finalSupportsSet)
+      if (!finalSupportsSet)
       {
         //FINAL_RESTRAINT_POINT	MEMBER-1	STANDARD	0
         List<string> parameters = new List<string>();
@@ -313,14 +313,14 @@ namespace ComposAPI
       }
       else
       {
-        if (this.FinalStageSupports.IntermediateRestraintPositions != IntermediateRestraint.Custom)
+        if (FinalStageSupports.IntermediateRestraintPositions != IntermediateRestraint.Custom)
         {
           //FINAL_RESTRAINT_POINT	MEMBER-1	STANDARD	3
           List<string> parameters = new List<string>();
           parameters.Add("FINAL_RESTRAINT_POINT");
           parameters.Add(name);
 
-          switch (this.FinalStageSupports.IntermediateRestraintPositions)
+          switch (FinalStageSupports.IntermediateRestraintPositions)
           {
 
             case IntermediateRestraint.None:
@@ -349,7 +349,7 @@ namespace ComposAPI
           //FINAL_RESTRAINT_POINT	MEMBER-2	USER_DEFINED	3	1	0.000000	F12LW TR MAJV MINV
           //FINAL_RESTRAINT_POINT MEMBER-2 USER_DEFINED 3 2 5.00000 F1L TP MINV
           //FINAL_RESTRAINT_POINT MEMBER-2 USER_DEFINED 3 3 6.00000 F1L TP MINV
-          int count = this.FinalStageSupports.CustomIntermediateRestraintPositions.Count;
+          int count = FinalStageSupports.CustomIntermediateRestraintPositions.Count;
           for (int i = 0; i < count; i++)
           {
             List<string> parameters = new List<string>();
@@ -358,7 +358,7 @@ namespace ComposAPI
             parameters.Add("USER_DEFINED");
             parameters.Add(count.ToString());
             parameters.Add((i + 1).ToString());
-            parameters.Add(CoaHelper.FormatSignificantFigures(this.FinalStageSupports.CustomIntermediateRestraintPositions[i], units.Length, 6));
+            parameters.Add(CoaHelper.FormatSignificantFigures(FinalStageSupports.CustomIntermediateRestraintPositions[i], units.Length, 6));
             str += CoaHelper.CreateString(parameters);
           }
         }
@@ -367,14 +367,14 @@ namespace ComposAPI
         str += "FINAL_RESTRAINT_NOSTUD" + '\t' + name + '\t' + "NOSTUD_ZONE_LATERAL_FREE" + '\n';
 
         //FINAL_RESTRAINT_2ND_BEAM	MEMBER-1	SEC_BEAM_AS_REST
-        if (this.FinalStageSupports.SecondaryMemberAsIntermediateRestraint)
+        if (FinalStageSupports.SecondaryMemberAsIntermediateRestraint)
           str += "FINAL_RESTRAINT_2ND_BEAM" + '\t' + name + '\t' + "SEC_BEAM_AS_REST" + '\n';
         else
           str += "FINAL_RESTRAINT_2ND_BEAM" + '\t' + name + '\t' + "2ND_BEAM_NOT_AS_REST" + '\n';
 
         //FINAL_END_FLANGE_FREE_ROTATE	MEMBER-1	FREE_TO_ROTATE
         //FINAL_END_FLANGE_FREE_ROTATE	MEMBER-1	NOT_FREE_TO_ROTATE
-        if (this.FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds)
+        if (FinalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds)
           str += "FINAL_END_FLANGE_FREE_ROTATE" + '\t' + name + '\t' + "FREE_TO_ROTATE" + '\n';
         else
           str += "FINAL_END_FLANGE_FREE_ROTATE" + '\t' + name + '\t' + "NOT_FREE_TO_ROTATE" + '\n';
@@ -387,17 +387,17 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      if (this.FinalStageSupports == null && this.ConstructionStageSupports == null && this.TopFlangeRestrained)
+      if (FinalStageSupports == null && ConstructionStageSupports == null && TopFlangeRestrained)
         return "Simply supported";
       string top = (TopFlangeRestrained) ? "TFLR, " : "";
 
       string con = "Constr.: simply supported";
-      if (!this.TopFlangeRestrained && this.ConstructionStageSupports != null)
-        con = "Constr.: " + this.ConstructionStageSupports.ToString();
+      if (!TopFlangeRestrained && ConstructionStageSupports != null)
+        con = "Constr.: " + ConstructionStageSupports.ToString();
       
       string fin = ", Final: simply supported";
-      if (this.FinalStageSupports != null)
-        fin = ", Final: " + this.FinalStageSupports.ToString();
+      if (FinalStageSupports != null)
+        fin = ", Final: " + FinalStageSupports.ToString();
       return top + con + fin;
     }
 

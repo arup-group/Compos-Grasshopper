@@ -22,7 +22,7 @@ namespace ComposGH.Components
           "Create a " + SafetyFactorsGoo.Description + " for a " + DesignCodeGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -64,10 +64,10 @@ namespace ComposGH.Components
         lf.ConstantLive = ll;
       if (DA.GetData(3, ref LL))
         lf.FinalLive = LL;
-      if (this.Params.Input[0].Sources.Count == 0
-        & this.Params.Input[1].Sources.Count == 0
-        & this.Params.Input[2].Sources.Count == 0
-        & this.Params.Input[3].Sources.Count == 0)
+      if (Params.Input[0].Sources.Count == 0
+        & Params.Input[1].Sources.Count == 0
+        & Params.Input[2].Sources.Count == 0
+        & Params.Input[3].Sources.Count == 0)
       {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Default Load Factor values from BS5950-1.1:1990+A1:2010");
       }
@@ -93,12 +93,12 @@ namespace ComposGH.Components
         mf.Reinforcement = reb;
 
 
-      if (this.Params.Input[4].Sources.Count == 0
-        & this.Params.Input[5].Sources.Count == 0
-        & this.Params.Input[6].Sources.Count == 0
-        & this.Params.Input[7].Sources.Count == 0
-        & this.Params.Input[8].Sources.Count == 0
-        & this.Params.Input[9].Sources.Count == 0)
+      if (Params.Input[4].Sources.Count == 0
+        & Params.Input[5].Sources.Count == 0
+        & Params.Input[6].Sources.Count == 0
+        & Params.Input[7].Sources.Count == 0
+        & Params.Input[8].Sources.Count == 0
+        & Params.Input[9].Sources.Count == 0)
       {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Default Material Partial Safety Factor values from BS5950-1.1:1990+A1:2010");
       }

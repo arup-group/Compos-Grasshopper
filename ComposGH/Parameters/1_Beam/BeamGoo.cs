@@ -27,41 +27,41 @@ namespace ComposGH.Parameters
     #region constructors
     public BeamGoo(LineCurve line, LengthUnit lengthUnit, IRestraint restraint, ISteelMaterial material, List<IBeamSection> beamSections, List<IWebOpening> webOpenings = null)
     {
-      this.Line = line;
-      this.LengthUnit = lengthUnit;
+      Line = line;
+      LengthUnit = lengthUnit;
       Length length = new Length(line.GetLength(), lengthUnit);
-      this.Value = new Beam(length, restraint, material, beamSections, webOpenings);
+      Value = new Beam(length, restraint, material, beamSections, webOpenings);
       UpdatePreview();
     }
 
     public BeamGoo()
     {
-      this.Value = new Beam();
+      Value = new Beam();
     }
 
     public BeamGoo(LineCurve line, LengthUnit lengthUnit, IBeam item)
     {
       if (item == null)
         item = new Beam();
-      this.Line = (LineCurve)line.DuplicateShallow();
-      this.LengthUnit = lengthUnit;
-      this.Value = item.Duplicate() as IBeam;
+      Line = (LineCurve)line.DuplicateShallow();
+      LengthUnit = lengthUnit;
+      Value = item.Duplicate() as IBeam;
       UpdatePreview();
     }
 
     private BeamGoo(BeamGoo goo)
     {
-      this.Line = (LineCurve)goo.Line.Duplicate();
-      this.LengthUnit = goo.LengthUnit;
-      this.Value = goo.Value.Duplicate() as IBeam;
+      Line = (LineCurve)goo.Line.Duplicate();
+      LengthUnit = goo.LengthUnit;
+      Value = goo.Value.Duplicate() as IBeam;
     }
 
     public override IGH_Goo Duplicate()
     {
       BeamGoo dup = new BeamGoo();
-      dup.Line = (LineCurve)this.Line.DuplicateShallow();
-      dup.LengthUnit = this.LengthUnit;
-      dup.Value = this.Value.Duplicate() as IBeam;
+      dup.Line = (LineCurve)Line.DuplicateShallow();
+      dup.LengthUnit = LengthUnit;
+      dup.Value = Value.Duplicate() as IBeam;
       dup.UpdatePreview();
       return dup;
     }
@@ -71,14 +71,14 @@ namespace ComposGH.Parameters
       if (Value == null)
         return null;
       else
-        return (IGH_GeometricGoo)this.Duplicate();
+        return (IGH_GeometricGoo)Duplicate();
     }
     #endregion
 
     #region properties
-    public override bool IsValid => (this.Value == null) ? false : true;
+    public override bool IsValid => (Value == null) ? false : true;
     public override string TypeName => "Beam";
-    public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
+    public override string TypeDescription => "Compos " + TypeName + " Parameter";
     public override string IsValidWhyNot
     {
       get
@@ -133,7 +133,7 @@ namespace ComposGH.Parameters
         if (Value == null)
           target = default;
         else
-          target = (Q)(object)this.Line;
+          target = (Q)(object)Line;
         return true;
       }
       if (typeof(Q).IsAssignableFrom(typeof(GH_Line)))
@@ -143,7 +143,7 @@ namespace ComposGH.Parameters
         else
         {
           GH_Line ghLine = new GH_Line();
-          GH_Convert.ToGHLine(this.Line, GH_Conversion.Both, ref ghLine);
+          GH_Convert.ToGHLine(Line, GH_Conversion.Both, ref ghLine);
           target = (Q)(object)ghLine;
         }
 
@@ -154,7 +154,7 @@ namespace ComposGH.Parameters
         if (Value == null)
           target = default;
         else
-          target = (Q)(object)this.Line;
+          target = (Q)(object)Line;
         return true;
       }
       if (typeof(Q).IsAssignableFrom(typeof(GH_Curve)))
@@ -163,7 +163,7 @@ namespace ComposGH.Parameters
           target = default;
         else
         {
-          target = (Q)(object)new GH_Curve(this.Line);
+          target = (Q)(object)new GH_Curve(Line);
         }
         return true;
       }
@@ -247,7 +247,7 @@ namespace ComposGH.Parameters
       LineCurve xLn = dup.Line;
       xmorph.Morph(xLn);
       dup.Line = xLn;
-      dup.LengthUnit = this.LengthUnit;
+      dup.LengthUnit = LengthUnit;
       dup.UpdatePreview();
 
       return dup;
@@ -264,7 +264,7 @@ namespace ComposGH.Parameters
       return;
     //  profileOutlines = new List<PolyCurve>();
     //  profileExtrusions = new List<Brep>();
-    //  List<IBeamSection> beamSectionsSorted = SortBeamSections(this.Value.Sections.ToList());
+    //  List<IBeamSection> beamSectionsSorted = SortBeamSections(Value.Sections.ToList());
 
     //  for (int i = 0; i < beamSectionsSorted.Count; i++)
     //  {
@@ -319,10 +319,10 @@ namespace ComposGH.Parameters
     //  }
     //  profileExtrusions = Brep.CreateBooleanUnion(profileExtrusions, Units.Tolerance.As(LengthUnit)).ToList();
 
-    //  if (this.Value.WebOpenings != null)
+    //  if (Value.WebOpenings != null)
     //  {
-    //    Length maxWebThickness = new Length(this.Value.Sections.Max(x => x.WebThickness.As(LengthUnit)), LengthUnit);
-    //    foreach (WebOpening webOpening in this.Value.WebOpenings)
+    //    Length maxWebThickness = new Length(Value.Sections.Max(x => x.WebThickness.As(LengthUnit)), LengthUnit);
+    //    foreach (WebOpening webOpening in Value.WebOpenings)
     //    {
     //      Brep cutter = OpeningCutter(webOpening, maxWebThickness, beamSectionsSorted);
     //      bool found = false;
@@ -374,11 +374,11 @@ namespace ComposGH.Parameters
 
     //  double t = webOpening.CentroidPosFromStart.As(LengthUnit);
     //  if (webOpening.WebOpeningType == OpeningType.End_notch)
-    //    t = this.Value.Length.As(LengthUnit);
+    //    t = Value.Length.As(LengthUnit);
 
-    //  if (t > this.Value.Length.As(LengthUnit))
+    //  if (t > Value.Length.As(LengthUnit))
     //    throw new Exception("Web Opening Start Position lies outside the Beam's domain");
-    //  this.Line.PerpendicularFrameAt(t, out local);
+    //  Line.PerpendicularFrameAt(t, out local);
 
     //  // rotate perpendicular plane to be parallel to beam
     //  local.Rotate(Math.PI / 2, local.YAxis);
@@ -625,7 +625,7 @@ namespace ComposGH.Parameters
     //  Circle m_crv = new Circle();
     //  if (webOpening != null)
     //  {
-    //    LengthUnit unit = this.LengthUnit;
+    //    LengthUnit unit = LengthUnit;
 
     //    if (webOpening.WebOpeningType == OpeningType.Circular)
     //    {
@@ -648,11 +648,11 @@ namespace ComposGH.Parameters
     //  //  newStart.TaperedToNext = true;
     //  //  beamSectionsSorted.Insert(0, newStart);
     //  //}
-    //  //if (beamSectionsSorted.Last().StartPosition != this.Value.Length)
+    //  //if (beamSectionsSorted.Last().StartPosition != Value.Length)
     //  //{
     //  //  beamSectionsSorted.Last().TaperedToNext = true;
     //  //  IBeamSection newEnd = beamSectionsSorted.Last().Duplicate() as IBeamSection;
-    //  //  newEnd.StartPosition = this.Value.Length;
+    //  //  newEnd.StartPosition = Value.Length;
     //  //  beamSectionsSorted.Add(newEnd);
     //  //}
     //  return beamSectionsSorted;
@@ -679,11 +679,11 @@ namespace ComposGH.Parameters
     //  if (beamSection.StartPosition.QuantityInfo.UnitType == typeof(LengthUnit))
     //    t = beamSection.StartPosition.As(LengthUnit);
     //  else
-    //    t = beamSection.StartPosition.As(RatioUnit.DecimalFraction) * this.Value.Length.As(LengthUnit);
+    //    t = beamSection.StartPosition.As(RatioUnit.DecimalFraction) * Value.Length.As(LengthUnit);
 
-    //  if (t > this.Value.Length.As(LengthUnit))
+    //  if (t > Value.Length.As(LengthUnit))
     //    throw new Exception("Beam Section Start Position lies outside the Beam's domain");
-    //  this.Line.PerpendicularFrameAt(t, out local);
+    //  Line.PerpendicularFrameAt(t, out local);
 
     //  // transform outline to local plane
     //  Transform maptToLocal = Rhino.Geometry.Transform.PlaneToPlane(Plane.WorldXY, local);
