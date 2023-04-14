@@ -1,12 +1,11 @@
 ﻿using ComposAPI.Helpers;
+using OasysUnits;
 using System;
 using System.Collections.Generic;
-using OasysUnits;
 
-namespace ComposAPI
-{
-  public enum ReinforcementMeshType
-  {
+namespace ComposAPI {
+  public enum ReinforcementMeshType {
+    None,
     A393,
     A252,
     A193,
@@ -25,8 +24,7 @@ namespace ComposAPI
     C283
   }
 
-  public class MeshReinforcement : IMeshReinforcement
-  {
+  public class MeshReinforcement : IMeshReinforcement {
     public Length Cover { get; set; } // cover of mesh reinforcement
     public ReinforcementMeshType MeshType { get; set; } // name of mesh reinforcement
     public bool Rotated { get; set; } // direction of mesh reinforcement
@@ -34,8 +32,7 @@ namespace ComposAPI
     #region constructors
     public MeshReinforcement() { }
 
-    public MeshReinforcement(Length cover, ReinforcementMeshType meshType = ReinforcementMeshType.A393, bool rotated = false)
-    {
+    public MeshReinforcement(Length cover, ReinforcementMeshType meshType = ReinforcementMeshType.A393, bool rotated = false) {
       Cover = cover;
       MeshType = meshType;
       Rotated = rotated;
@@ -43,8 +40,7 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal static IMeshReinforcement FromCoaString(List<string> parameters, ComposUnits units)
-    {
+    internal static IMeshReinforcement FromCoaString(List<string> parameters, ComposUnits units) {
       MeshReinforcement reinforcement = new MeshReinforcement();
 
       reinforcement.MeshType = (ReinforcementMeshType)Enum.Parse(typeof(ReinforcementMeshType), parameters[2]);
@@ -57,8 +53,7 @@ namespace ComposAPI
       return reinforcement;
     }
 
-    public string ToCoaString(string name, ComposUnits units)
-    {
+    public string ToCoaString(string name, ComposUnits units) {
       List<string> parameters = new List<string>();
       parameters.Add(CoaIdentifier.RebarMesh);
       parameters.Add(name);
@@ -74,8 +69,7 @@ namespace ComposAPI
     #endregion
 
     #region methods
-    public override string ToString()
-    {
+    public override string ToString() {
       string cov = Cover.ToString("g4");
       string msh = MeshType.ToString();
 
