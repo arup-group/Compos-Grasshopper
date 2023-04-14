@@ -7,7 +7,7 @@ namespace ComposAPI
   /// </summary>
   public interface ISteelMaterial
   {
-    Pressure fy { get; }
+    Pressure Fy { get; }
     Pressure E { get; }
     Density Density { get; }
     bool IsCustom { get; }
