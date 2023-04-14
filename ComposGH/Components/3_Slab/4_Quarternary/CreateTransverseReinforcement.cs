@@ -26,7 +26,7 @@ namespace ComposGH.Components
           "Create a " + TransverseReinforcementGoo.Description + " for a " + SlabGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -48,7 +48,7 @@ namespace ComposGH.Components
       ReinforcementMaterialGoo mat = (ReinforcementMaterialGoo)Input.GenericGoo<ReinforcementMaterialGoo>(this, DA, 0);
       if (mat == null) { return; }
 
-      if (this.Params.Input[1].Sources.Count > 0)
+      if (Params.Input[1].Sources.Count > 0)
       {
         List<CustomTransverseReinforcementLayoutGoo> transverseReinforcmentLayouts = Input.GenericGooList<CustomTransverseReinforcementLayoutGoo>(this, DA, 1);
         DA.SetData(0, new TransverseReinforcementGoo(new TransverseReinforcement(mat.Value, transverseReinforcmentLayouts.Select(x => x.Value).ToList())));

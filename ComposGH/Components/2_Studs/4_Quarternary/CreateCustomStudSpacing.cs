@@ -29,13 +29,13 @@ namespace ComposGH.Components
           "Create a Custom " + StudGroupSpacingGoo.Description + " for a " + StudGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
 
       pManager.AddGenericParameter("Pos x [" + unitAbbreviation + "]", "Px", "Start Position where this Stud Spacing Groups begins on Beam (beam local x-axis)"
         + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set position as percentage", GH_ParamAccess.item);
@@ -51,12 +51,12 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      IQuantity start = Input.LengthOrRatio(this, DA, 0, this.LengthUnit);
+      IQuantity start = Input.LengthOrRatio(this, DA, 0, LengthUnit);
       int rows = 1;
       DA.GetData(1, ref rows);
       int lines = 1;
       DA.GetData(2, ref lines);
-      Length spacing = (Length)Input.UnitNumber(this, DA, 3, this.LengthUnit);
+      Length spacing = (Length)Input.UnitNumber(this, DA, 3, LengthUnit);
 
       Output.SetItem(this, DA, 0, new StudGroupSpacingGoo(new StudGroupSpacing(start, rows, lines, spacing)));
     }
@@ -66,40 +66,40 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Unit" });
+      _spacerDescriptions = new List<string>(new string[] { "Unit" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // length
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
       // change selected item
-      this._selectedItems[i] = this._dropDownItems[i][j];
-      if (this.LengthUnit.ToString() == this._selectedItems[i])
+      _selectedItems[i] = _dropDownItems[i][j];
+      if (LengthUnit.ToString() == _selectedItems[i])
         return;
 
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[0]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[0]);
 
       base.UpdateUIFromSelectedItems();
     }
 
     public override void VariableParameterMaintenance()
     {
-      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
       Params.Input[0].Name = "Pos x [" + unitAbbreviation + "]";
       Params.Input[3].Name = "Spacing [" + unitAbbreviation + "]";
     }

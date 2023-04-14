@@ -16,7 +16,7 @@ namespace ComposGH.Parameters
     public static string NickName => "StD";
     public static string Description => "Compos Shear Stud Dimensions";
     public StudDimensionsGoo(IStudDimensions item) : base(item) { }
-    public override IGH_Goo Duplicate() => new StudDimensionsGoo(this.Value);
+    public override IGH_Goo Duplicate() => new StudDimensionsGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 
@@ -33,8 +33,8 @@ namespace ComposGH.Parameters
         Components.Ribbon.CategoryName.Name(),
         Components.Ribbon.SubCategoryName.Cat10()))
     { }
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + StudDimensionsGoo.Name + " parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? StudDimensionsGoo.Name : base.TypeName;
+    public override string InstanceDescription => m_data.DataCount == 0 ? "Empty " + StudDimensionsGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => SourceCount == 0 ? StudDimensionsGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("573cbc43-c33a-4047-82c2-f0aeb700513d");
     public override GH_Exposure Exposure => GH_Exposure.hidden;
     protected override System.Drawing.Bitmap Icon => Properties.Resources.StudDimParam;

@@ -16,7 +16,7 @@ namespace ComposGH.Parameters
     public static string NickName => "RMt";
     public static string Description => "Compos Reinforcement Material";
     public ReinforcementMaterialGoo(IReinforcementMaterial item) : base(item) { }
-    public override IGH_Goo Duplicate() => new ReinforcementMaterialGoo(this.Value);
+    public override IGH_Goo Duplicate() => new ReinforcementMaterialGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 
@@ -33,8 +33,8 @@ namespace ComposGH.Parameters
         Components.Ribbon.CategoryName.Name(),
         Components.Ribbon.SubCategoryName.Cat10()))
     { }
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + ReinforcementMaterialGoo.Name + " parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? ReinforcementMaterialGoo.Name : base.TypeName;
+    public override string InstanceDescription => m_data.DataCount == 0 ? "Empty " + ReinforcementMaterialGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => SourceCount == 0 ? ReinforcementMaterialGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("9fd80717-a8db-4f42-9900-b0cfcf164fc0");
     public override GH_Exposure Exposure => GH_Exposure.hidden;
     protected override System.Drawing.Bitmap Icon => Properties.Resources.RebarMaterialParam;

@@ -216,7 +216,7 @@ namespace ComposAPI
 
       Enum unit;
 
-      switch (this.Type)
+      switch (Type)
       {
         case LoadType.Point:
           // | LOAD | name | type | ConsDead1 | ConsLive1 | FinalDead1 | FinalLive1 | Dist1(for load types of "Point")
@@ -412,7 +412,7 @@ namespace ComposAPI
     public override string ToString()
     {
       // update with better naming
-      return this.Type.ToString() + " Load";
+      return Type.ToString() + " Load";
     }
     #endregion
   }

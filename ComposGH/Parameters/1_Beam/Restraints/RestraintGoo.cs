@@ -16,7 +16,7 @@ namespace ComposGH.Parameters
     public static string NickName => "Res";
     public static string Description => "Compos Restraints";
     public RestraintGoo(IRestraint item) : base(item) { }
-    public override IGH_Goo Duplicate() => new RestraintGoo(this.Value);
+    public override IGH_Goo Duplicate() => new RestraintGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 
@@ -33,8 +33,8 @@ namespace ComposGH.Parameters
         Components.Ribbon.CategoryName.Name(),
         Components.Ribbon.SubCategoryName.Cat10()))
     { }
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + RestraintGoo.Name + " parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? RestraintGoo.Name : base.TypeName;
+    public override string InstanceDescription => m_data.DataCount == 0 ? "Empty " + RestraintGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => SourceCount == 0 ? RestraintGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("55ba5231-c519-45a3-b326-afccbe55bd3e");
     public override GH_Exposure Exposure => GH_Exposure.hidden;
     protected override System.Drawing.Bitmap Icon => Properties.Resources.RestraintParam;

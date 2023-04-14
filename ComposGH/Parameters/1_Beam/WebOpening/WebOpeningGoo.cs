@@ -14,7 +14,7 @@ namespace ComposGH.Parameters
     public static string NickName => "WO";
     public static string Description => "Compos Web Opening or Notch";
     public WebOpeningGoo(IWebOpening item) : base(item) { }
-    public override IGH_Goo Duplicate() => new WebOpeningGoo(this.Value);
+    public override IGH_Goo Duplicate() => new WebOpeningGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 }

@@ -29,14 +29,14 @@ namespace ComposGH.Components
           "Create a Custom " + StudDimensionsGoo.Description + " for a " + StudGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
     
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
       string forceunitAbbreviation = Force.GetAbbreviation(ForceUnit);
-      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
 
       pManager.AddGenericParameter("Diameter [" + unitAbbreviation + "]", "Ø", "Diameter of stud head", GH_ParamAccess.item);
       pManager.AddGenericParameter("Height [" + unitAbbreviation + "]", "H", "Height of stud", GH_ParamAccess.item);
@@ -62,44 +62,44 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Length Unit", "Strength Unit" });
+      _spacerDescriptions = new List<string>(new string[] { "Length Unit", "Strength Unit" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // length
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
 
       // strength
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Force));
-      this._selectedItems.Add(Force.GetAbbreviation(this.ForceUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Force));
+      _selectedItems.Add(Force.GetAbbreviation(ForceUnit));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this._selectedItems[i] = this._dropDownItems[i][j];
+      _selectedItems[i] = _dropDownItems[i][j];
 
       if (i == 0) // change is made to length unit
-        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
+        LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
       if (i == 1)
-        this.ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), this._selectedItems[i]);
+        ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), _selectedItems[i]);
 
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[0]);
-      this.ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), this._selectedItems[1]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[0]);
+      ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), _selectedItems[1]);
       base.UpdateUIFromSelectedItems();
     }
 
     public override void VariableParameterMaintenance()
     {
-      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
       Params.Input[0].Name = "Diameter [" + unitAbbreviation + "]";
       Params.Input[1].Name = "Height [" + unitAbbreviation + "]";
 

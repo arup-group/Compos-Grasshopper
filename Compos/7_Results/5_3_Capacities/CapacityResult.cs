@@ -43,7 +43,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_MOM_ULTI_FINA_SAG;
-        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
+        return GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -55,7 +55,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.NEUTRAL_X_ULTI_FINA_SAG;
-        return this.GetResults(resultType).Select(x => (Length)x).ToList();
+        return GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -67,7 +67,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_MOM_ULTI_CONS_SAG;
-        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
+        return GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -79,7 +79,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.NEUTRAL_X_ULTI_CONS_SAG;
-        return this.GetResults(resultType).Select(x => (Length)x).ToList();
+        return GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -91,7 +91,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_MOM_ULTI_CONS_HOG;
-        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
+        return GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -103,7 +103,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.NEUTRAL_X_ULTI_CONS_HOG;
-        return this.GetResults(resultType).Select(x => (Length)x).ToList();
+        return GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -115,7 +115,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_MOM_ULTI_FINA_HOG;
-        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
+        return GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -127,7 +127,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.NEUTRAL_X_ULTI_FINA_HOG;
-        return this.GetResults(resultType).Select(x => (Length)x).ToList();
+        return GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -139,7 +139,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_SHE_SHEAR;
-        return this.GetResults(resultType).Select(x => (Force)x).ToList();
+        return GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -151,7 +151,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_SHE_BUCLE;
-        return this.GetResults(resultType).Select(x => (Force)x).ToList();
+        return GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -163,7 +163,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_SHE_PV;
-        return this.GetResults(resultType).Select(x => (Force)x).ToList();
+        return GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -175,7 +175,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_MOM_BEAM_PLAS_SAG;
-        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
+        return GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -187,7 +187,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.NEUTRAL_X_BEAM_PLAS_SAG;
-        return this.GetResults(resultType).Select(x => (Length)x).ToList();
+        return GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -199,7 +199,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_MOM_100_INTER_SAG;
-        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
+        return GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -211,7 +211,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.NEUTRAL_X_100_INTER_SAG;
-        return this.GetResults(resultType).Select(x => (Length)x).ToList();
+        return GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -223,7 +223,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_MOM_BEAM_PLAS_HOG;
-        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
+        return GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -235,7 +235,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.NEUTRAL_X_BEAM_PLAS_HOG;
-        return this.GetResults(resultType).Select(x => (Length)x).ToList();
+        return GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -247,7 +247,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.CAPA_MOM_100_INTER_HOG;
-        return this.GetResults(resultType).Select(x => (Moment)x).ToList();
+        return GetResults(resultType).Select(x => (Moment)x).ToList();
       }
     }
 
@@ -259,7 +259,7 @@ namespace ComposAPI
       get
       {
         CapacityOption resultType = CapacityOption.NEUTRAL_X_100_INTER_HOG;
-        return this.GetResults(resultType).Select(x => (Length)x).ToList();
+        return GetResults(resultType).Select(x => (Length)x).ToList();
       }
     }
 
@@ -267,12 +267,12 @@ namespace ComposAPI
 
     private List<IQuantity> GetResults(CapacityOption resultType)
     {
-      if (!this.ResultsCache.ContainsKey(resultType))
+      if (!ResultsCache.ContainsKey(resultType))
       {
         List<IQuantity> results = new List<IQuantity>();
-        for (short pos = 0; pos < this.NumIntermediatePos; pos++)
+        for (short pos = 0; pos < NumIntermediatePos; pos++)
         {
-          float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
+          float value = Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
 
           switch (resultType)
           {
@@ -303,9 +303,9 @@ namespace ComposAPI
               break;
           }
         }
-        this.ResultsCache.Add(resultType, results);
+        ResultsCache.Add(resultType, results);
       }
-      return this.ResultsCache[resultType];
+      return ResultsCache[resultType];
     }
   }
 }

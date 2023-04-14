@@ -24,7 +24,7 @@ namespace ComposGH.Components
           "Create a " + DesignCriteriaGoo.Description + " for a " + MemberGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat8())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -72,42 +72,42 @@ namespace ComposGH.Components
       }
 
       // 2 Constr limits
-      if (this.Params.Input[i].Sources.Count > 0)
+      if (Params.Input[i].Sources.Count > 0)
       {
         DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.ConstructionDeadLoad = dlGoo.Value;
       }
 
       // 3 Add limits
-      if (this.Params.Input[i].Sources.Count > 0)
+      if (Params.Input[i].Sources.Count > 0)
       {
         DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.AdditionalDeadLoad = dlGoo.Value;
       }
 
       // 4 final limits
-      if (this.Params.Input[i].Sources.Count > 0)
+      if (Params.Input[i].Sources.Count > 0)
       {
         DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.FinalLiveLoad = dlGoo.Value;
       }
 
       // 5 total limits
-      if (this.Params.Input[i].Sources.Count > 0)
+      if (Params.Input[i].Sources.Count > 0)
       {
         DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.TotalLoads = dlGoo.Value;
       }
 
       // 6 post limits
-      if (this.Params.Input[i].Sources.Count > 0)
+      if (Params.Input[i].Sources.Count > 0)
       {
         DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.PostConstruction = dlGoo.Value;
       }
 
       // 7 freq limits
-      if (this.Params.Input[i].Sources.Count > 0)
+      if (Params.Input[i].Sources.Count > 0)
       {
         FrequencyLimitsGoo dlGoo = (FrequencyLimitsGoo)Input.GenericGoo<FrequencyLimitsGoo>(this, DA, i++);
         designCriteria.FrequencyLimits = dlGoo.Value;
@@ -122,29 +122,29 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Optimise Option" });
+      _spacerDescriptions = new List<string>(new string[] { "Optimise Option" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       _dropDownItems.Add(new List<string>() { "Min. Weight", "Min. Height" });
       _selectedItems.Add(_dropDownItems[0][0]);
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this._selectedItems[i] = this._dropDownItems[i][j];
+      _selectedItems[i] = _dropDownItems[i][j];
 
-      this.OptOption = this._selectedItems[0] == "Min. Weight" ? OptimiseOption.MinimumWeight : OptimiseOption.MinimumHeight;
+      OptOption = _selectedItems[0] == "Min. Weight" ? OptimiseOption.MinimumWeight : OptimiseOption.MinimumHeight;
 
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.OptOption = this._selectedItems[0] == "Min. Weight" ? OptimiseOption.MinimumWeight : OptimiseOption.MinimumHeight;
+      OptOption = _selectedItems[0] == "Min. Weight" ? OptimiseOption.MinimumWeight : OptimiseOption.MinimumHeight;
 
       base.UpdateUIFromSelectedItems();
     }

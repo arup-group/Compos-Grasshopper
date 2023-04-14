@@ -16,8 +16,8 @@ namespace ComposGH.Parameters
         Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + WebOpeningGoo.Name + " parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? WebOpeningGoo.Name : base.TypeName;
+    public override string InstanceDescription => m_data.DataCount == 0 ? "Empty " + WebOpeningGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => SourceCount == 0 ? WebOpeningGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("eb70e868-29d9-4fae-9ef7-c465f3762a43");
 
     public override GH_Exposure Exposure => GH_Exposure.secondary;

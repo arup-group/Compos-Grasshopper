@@ -37,12 +37,12 @@ namespace ComposAPI
       if (startPosition.QuantityInfo.UnitType != typeof(LengthUnit) &&
         startPosition.QuantityInfo.UnitType != typeof(RatioUnit))
         throw new Exception("Start Position must be either Length or Ratio");
-      this.StartPosition = startPosition;
-      this.OverallDepth = overallDepth;
-      this.AvailableWidthLeft = availableWidthLeft;
-      this.AvailableWidthRight = availableWidthRight;
-      this.UserEffectiveWidth = false;
-      this.TaperedToNext = taperedToNext;
+      StartPosition = startPosition;
+      OverallDepth = overallDepth;
+      AvailableWidthLeft = availableWidthLeft;
+      AvailableWidthRight = availableWidthRight;
+      UserEffectiveWidth = false;
+      TaperedToNext = taperedToNext;
     }
 
     public SlabDimension(IQuantity startPosition, Length overallDepth, Length availableWidthLeft, Length availableWidthRight,
@@ -51,14 +51,14 @@ namespace ComposAPI
       if (startPosition.QuantityInfo.UnitType != typeof(LengthUnit) &&
         startPosition.QuantityInfo.UnitType != typeof(RatioUnit))
         throw new Exception("Start Position must be either Length or Ratio");
-      this.StartPosition = startPosition;
-      this.OverallDepth = overallDepth;
-      this.AvailableWidthLeft = availableWidthLeft;
-      this.AvailableWidthRight = availableWidthRight;
-      this.UserEffectiveWidth = true;
-      this.EffectiveWidthLeft = effectiveWidthLeft;
-      this.EffectiveWidthRight = effectiveWidthRight;
-      this.TaperedToNext = taperedToNext;
+      StartPosition = startPosition;
+      OverallDepth = overallDepth;
+      AvailableWidthLeft = availableWidthLeft;
+      AvailableWidthRight = availableWidthRight;
+      UserEffectiveWidth = true;
+      EffectiveWidthLeft = effectiveWidthLeft;
+      EffectiveWidthRight = effectiveWidthRight;
+      TaperedToNext = taperedToNext;
     }
     #endregion
 
@@ -118,16 +118,16 @@ namespace ComposAPI
       parameters.Add(name);
       parameters.Add(Convert.ToString(num));
       parameters.Add(Convert.ToString(index));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.StartPosition, units.Length, 6));
-      parameters.Add(String.Format(noComma, "{0:0.000000}", this.OverallDepth.ToUnit(units.Length).Value));
-      parameters.Add(String.Format(noComma, "{0:0.00000}", this.AvailableWidthLeft.ToUnit(units.Length).Value));
-      parameters.Add(String.Format(noComma, "{0:0.00000}", this.AvailableWidthRight.ToUnit(units.Length).Value));
-      CoaHelper.AddParameter(parameters, "TAPERED", this.TaperedToNext);
-      CoaHelper.AddParameter(parameters, "EFFECTIVE_WIDTH", this.UserEffectiveWidth);
-      if (this.UserEffectiveWidth)
+      parameters.Add(CoaHelper.FormatSignificantFigures(StartPosition, units.Length, 6));
+      parameters.Add(String.Format(noComma, "{0:0.000000}", OverallDepth.ToUnit(units.Length).Value));
+      parameters.Add(String.Format(noComma, "{0:0.00000}", AvailableWidthLeft.ToUnit(units.Length).Value));
+      parameters.Add(String.Format(noComma, "{0:0.00000}", AvailableWidthRight.ToUnit(units.Length).Value));
+      CoaHelper.AddParameter(parameters, "TAPERED", TaperedToNext);
+      CoaHelper.AddParameter(parameters, "EFFECTIVE_WIDTH", UserEffectiveWidth);
+      if (UserEffectiveWidth)
       {
-        parameters.Add(String.Format(noComma, "{0:0.00000}", this.EffectiveWidthLeft.ToUnit(units.Length).Value));
-        parameters.Add(String.Format(noComma, "{0:0.00000}", this.EffectiveWidthRight.ToUnit(units.Length).Value));
+        parameters.Add(String.Format(noComma, "{0:0.00000}", EffectiveWidthLeft.ToUnit(units.Length).Value));
+        parameters.Add(String.Format(noComma, "{0:0.00000}", EffectiveWidthRight.ToUnit(units.Length).Value));
       }
       return CoaHelper.CreateString(parameters);
     }
@@ -137,27 +137,27 @@ namespace ComposAPI
     public override string ToString()
     {
       string start = "";
-      if (this.StartPosition.QuantityInfo.UnitType == typeof(LengthUnit))
+      if (StartPosition.QuantityInfo.UnitType == typeof(LengthUnit))
       {
-        Length l = (Length)this.StartPosition;
+        Length l = (Length)StartPosition;
         if (l != Length.Zero)
           start = ", s:" + l.ToUnit(ComposUnitsHelper.LengthUnitGeometry).ToString("g2").Replace(" ", string.Empty);
       }
       else
       {
-        Ratio p = (Ratio)this.StartPosition;
+        Ratio p = (Ratio)StartPosition;
         if (p != Ratio.Zero)
           start = ", s:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
       }
       
       string tapered = "";
-      if (this.TaperedToNext)
+      if (TaperedToNext)
         tapered = ", Tapered";
 
-      string d = "d:" + this.OverallDepth.ToUnit(ComposUnitsHelper.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
-      string w = ", w:" + new Length(this.AvailableWidthLeft.As(ComposUnitsHelper.LengthUnitGeometry) + this.AvailableWidthRight.As(ComposUnitsHelper.LengthUnitGeometry), ComposUnitsHelper.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
-      if (this.UserEffectiveWidth)
-        w = ", weff:" + new Length(this.EffectiveWidthLeft.As(ComposUnitsHelper.LengthUnitGeometry) + this.EffectiveWidthRight.As(ComposUnitsHelper.LengthUnitGeometry), ComposUnitsHelper.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
+      string d = "d:" + OverallDepth.ToUnit(ComposUnitsHelper.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
+      string w = ", w:" + new Length(AvailableWidthLeft.As(ComposUnitsHelper.LengthUnitGeometry) + AvailableWidthRight.As(ComposUnitsHelper.LengthUnitGeometry), ComposUnitsHelper.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
+      if (UserEffectiveWidth)
+        w = ", weff:" + new Length(EffectiveWidthLeft.As(ComposUnitsHelper.LengthUnitGeometry) + EffectiveWidthRight.As(ComposUnitsHelper.LengthUnitGeometry), ComposUnitsHelper.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
       return d + w + start + tapered;
     }
     #endregion

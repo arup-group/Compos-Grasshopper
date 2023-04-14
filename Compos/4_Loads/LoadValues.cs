@@ -16,10 +16,10 @@ namespace ComposAPI
 
     public LoadValues(IQuantity consDead, IQuantity consLive, IQuantity finalDead, IQuantity finalLive)
     {
-      this.ConstantDead = consDead;
-      this.ConstantLive = consLive;
-      this.FinalDead = finalDead;
-      this.FinalLive = finalLive;
+      ConstantDead = consDead;
+      ConstantLive = consLive;
+      FinalDead = finalDead;
+      FinalLive = finalLive;
     }
   }
 
@@ -34,7 +34,7 @@ namespace ComposAPI
         position.QuantityInfo.UnitType != typeof(RatioUnit))
         throw new Exception("Position must be either Length or Ratio");
       
-      this.Position = position;
+      Position = position;
     }
 
     public NonConstantLoad() { }

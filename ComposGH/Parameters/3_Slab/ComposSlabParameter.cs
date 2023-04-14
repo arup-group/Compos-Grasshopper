@@ -18,8 +18,8 @@ namespace ComposGH.Parameters
         Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + SlabGoo.Name + " parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? SlabGoo.Name : base.TypeName;
+    public override string InstanceDescription => m_data.DataCount == 0 ? "Empty " + SlabGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => SourceCount == 0 ? SlabGoo.Name : base.TypeName;
 
     public override Guid ComponentGuid => new Guid("e1c8e010-a55d-4f41-8f37-8d6e56976975");
 

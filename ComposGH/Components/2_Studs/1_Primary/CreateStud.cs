@@ -27,7 +27,7 @@ namespace ComposGH.Components
           "Create a " + StudGoo.Description + " for a " + MemberGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat2())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -84,31 +84,31 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Spacing Type" });
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _spacerDescriptions = new List<string>(new string[] { "Spacing Type" });
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
       // spacing
-      this._dropDownItems.Add(Enum.GetValues(typeof(StudSpacingType)).Cast<StudSpacingType>()
+      _dropDownItems.Add(Enum.GetValues(typeof(StudSpacingType)).Cast<StudSpacingType>()
           .Select(x => x.ToString().Replace("_", " ")).ToList());
-      this._selectedItems.Add(SpacingType.ToString().Replace("_", " "));
-      this._isInitialised = true;
+      _selectedItems.Add(SpacingType.ToString().Replace("_", " "));
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
       // change selected item
-      this._selectedItems[i] = this._dropDownItems[i][j];
-      if (SpacingType.ToString().Replace("_", " ") == this._selectedItems[i])
+      _selectedItems[i] = _dropDownItems[i][j];
+      if (SpacingType.ToString().Replace("_", " ") == _selectedItems[i])
         return;
-      this.SpacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), this._selectedItems[i].Replace(" ", "_"));
-      this.ModeChangeClicked();
+      SpacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), _selectedItems[i].Replace(" ", "_"));
+      ModeChangeClicked();
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.SpacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), this._selectedItems[0].Replace(" ", "_"));
-      this.ModeChangeClicked();
+      SpacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), _selectedItems[0].Replace(" ", "_"));
+      ModeChangeClicked();
       base.UpdateUIFromSelectedItems();
     }
 
@@ -116,7 +116,7 @@ namespace ComposGH.Components
     {
       RecordUndoEvent("Changed Parameters");
 
-      switch (this.SpacingType)
+      switch (SpacingType)
       {
         case StudSpacingType.Automatic:
         case StudSpacingType.Min_Num_of_Studs:
@@ -152,7 +152,7 @@ namespace ComposGH.Components
 
     public override void VariableParameterMaintenance()
     {
-      switch (this.SpacingType)
+      switch (SpacingType)
       {
         case StudSpacingType.Automatic:
         case StudSpacingType.Min_Num_of_Studs:

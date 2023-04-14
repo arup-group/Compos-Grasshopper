@@ -29,13 +29,13 @@ namespace ComposGH.Components
           "Create a " + CustomTransverseReinforcementLayoutGoo.Description + " for a " + TransverseReinforcementGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
 
       pManager.AddGenericParameter("Start Pos x [" + unitAbbreviation + "]", "PxS", "Start Position where this Rebar Spacing Groups begins on Beam (beam local x-axis)" 
         + System.Environment.NewLine + "HINT: You can input a negative decimal fraction value to set positions as percentage (-0.5 => 50%)", GH_ParamAccess.item);
@@ -67,39 +67,39 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Unit" });
+      _spacerDescriptions = new List<string>(new string[] { "Unit" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // length
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
       // change selected item
-      this._selectedItems[i] = this._dropDownItems[i][j];
-      if (this.LengthUnit.ToString() == this._selectedItems[i])
+      _selectedItems[i] = _dropDownItems[i][j];
+      if (LengthUnit.ToString() == _selectedItems[i])
         return;
 
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[0]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[0]);
 
       base.UpdateUIFromSelectedItems();
     }
     public override void VariableParameterMaintenance()
     {
-      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
       int i = 0;
       Params.Input[i++].Name = "Start Pos x [" + unitAbbreviation + "]";
       Params.Input[i++].Name = "End Pos x [" + unitAbbreviation + "]";

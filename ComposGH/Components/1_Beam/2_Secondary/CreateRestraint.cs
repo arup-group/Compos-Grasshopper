@@ -24,7 +24,7 @@ namespace ComposGH.Components
           "Create a " + RestraintGoo.Description + " for a " + BeamGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -49,12 +49,12 @@ namespace ComposGH.Components
       ISupports construction;
       IRestraint res;
 
-      if (this.Params.Input[1].Sources.Count > 0)
+      if (Params.Input[1].Sources.Count > 0)
       {
         SupportsGoo constructionGoo = (SupportsGoo)Input.GenericGoo<SupportsGoo>(this, DA, 1);
         construction = constructionGoo.Value;
 
-        if (this.Params.Input[0].Sources.Count > 0)
+        if (Params.Input[0].Sources.Count > 0)
         {
           AddRuntimeMessage(tflr ? GH_RuntimeMessageLevel.Warning : GH_RuntimeMessageLevel.Remark, "When setting Construction Stage supports it is assumed Top Flange is not laterally restrained");
         }
@@ -63,7 +63,7 @@ namespace ComposGH.Components
       else
         construction = new Supports();
 
-      if (this.Params.Input[2].Sources.Count > 0)
+      if (Params.Input[2].Sources.Count > 0)
       {
         SupportsGoo final = (SupportsGoo)Input.GenericGoo<SupportsGoo>(this, DA, 2);
         if (final == null) { return; }

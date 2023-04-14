@@ -16,7 +16,7 @@ namespace ComposGH.Parameters
     public static string NickName => "RfL";
     public static string Description => "Compos Custom Transverse Reinforcement Layout";
     public CustomTransverseReinforcementLayoutGoo(ICustomTransverseReinforcementLayout item) : base(item) { }
-    public override IGH_Goo Duplicate() => new CustomTransverseReinforcementLayoutGoo(this.Value);
+    public override IGH_Goo Duplicate() => new CustomTransverseReinforcementLayoutGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 
@@ -33,8 +33,8 @@ namespace ComposGH.Parameters
         Components.Ribbon.CategoryName.Name(),
         Components.Ribbon.SubCategoryName.Cat10()))
     { }
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + CustomTransverseReinforcementLayoutGoo.Name + " parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? CustomTransverseReinforcementLayoutGoo.Name : base.TypeName;
+    public override string InstanceDescription => m_data.DataCount == 0 ? "Empty " + CustomTransverseReinforcementLayoutGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => SourceCount == 0 ? CustomTransverseReinforcementLayoutGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("ddf7f5e0-b6f2-4e69-adc0-b76c3a0b235c");
     public override GH_Exposure Exposure => GH_Exposure.hidden;
     protected override System.Drawing.Bitmap Icon => Properties.Resources.RebarLayoutParam;

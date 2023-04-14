@@ -36,9 +36,9 @@ namespace ComposAPI
 
     public MeshReinforcement(Length cover, ReinforcementMeshType meshType = ReinforcementMeshType.A393, bool rotated = false)
     {
-      this.Cover = cover;
-      this.MeshType = meshType;
-      this.Rotated = rotated;
+      Cover = cover;
+      MeshType = meshType;
+      Rotated = rotated;
     }
     #endregion
 
@@ -62,9 +62,9 @@ namespace ComposAPI
       List<string> parameters = new List<string>();
       parameters.Add(CoaIdentifier.RebarMesh);
       parameters.Add(name);
-      parameters.Add(this.MeshType.ToString());
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.Cover.ToUnit(units.Length).Value, 6));
-      if (this.Rotated)
+      parameters.Add(MeshType.ToString());
+      parameters.Add(CoaHelper.FormatSignificantFigures(Cover.ToUnit(units.Length).Value, 6));
+      if (Rotated)
         parameters.Add("PERPENDICULAR");
       else
         parameters.Add("PARALLEL");
@@ -79,7 +79,7 @@ namespace ComposAPI
       string cov = Cover.ToString("g4");
       string msh = MeshType.ToString();
 
-      string rotated = (this.Rotated == true) ? " (rotated)" : "";
+      string rotated = (Rotated == true) ? " (rotated)" : "";
 
       return msh.Replace(" ", string.Empty) + rotated + ", c:" + cov.Replace(" ", string.Empty);
     }

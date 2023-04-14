@@ -16,7 +16,7 @@ namespace ComposGH.Parameters
     public static string NickName => "Spc";
     public static string Description => "Compos Shear Stud Specifications";
     public StudSpecificationGoo(IStudSpecification item) : base(item) { }
-    public override IGH_Goo Duplicate() => new StudSpecificationGoo(this.Value);
+    public override IGH_Goo Duplicate() => new StudSpecificationGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 
@@ -33,8 +33,8 @@ namespace ComposGH.Parameters
         Components.Ribbon.CategoryName.Name(),
         Components.Ribbon.SubCategoryName.Cat10()))
     { }
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + StudSpecificationGoo.Name + " parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? StudSpecificationGoo.Name : base.TypeName;
+    public override string InstanceDescription => m_data.DataCount == 0 ? "Empty " + StudSpecificationGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => SourceCount == 0 ? StudSpecificationGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("632f67ea-1fa2-4062-998b-5232029086f3");
     public override GH_Exposure Exposure => GH_Exposure.hidden;
     protected override System.Drawing.Bitmap Icon => Properties.Resources.StudSpecParam;

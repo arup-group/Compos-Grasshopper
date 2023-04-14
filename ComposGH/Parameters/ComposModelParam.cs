@@ -102,13 +102,13 @@ namespace ComposGH.Parameters
         #region constructors
         public ComposModelGoo()
         {
-            this.Value = new ComposModel();
+            Value = new ComposModel();
         }
         public ComposModelGoo(ComposModel model)
         {
             if (model == null)
                 model = new ComposModel();
-            this.Value = model; //model.Duplicate();
+            Value = model; //model.Duplicate();
         }
 
         public override IGH_Goo Duplicate()

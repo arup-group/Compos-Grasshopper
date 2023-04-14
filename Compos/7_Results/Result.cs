@@ -22,15 +22,15 @@ namespace ComposAPI
 
     internal Result(Member member)
     {
-      this.m_Member = member;
+      m_Member = member;
       
-      this.Positions = new List<Length>();
-      this.m_NumIntermediatePos = member.NumIntermediatePos();
-      for (int i = 0; i < this.m_NumIntermediatePos; i++)
+      Positions = new List<Length>();
+      m_NumIntermediatePos = member.NumIntermediatePos();
+      for (int i = 0; i < m_NumIntermediatePos; i++)
       {
         float value = member.GetResult(ResultOption.CRITI_SECT_DIST.ToString(), Convert.ToInt16(i));
         Length pos = new Length(value, LengthUnit.Meter);
-        this.Positions.Add(pos);
+        Positions.Add(pos);
       }
     }
 
@@ -116,7 +116,7 @@ namespace ComposAPI
       get
       {
         if (m_NumTranRebar < 0)
-          m_NumTranRebar = this.m_Member.NumTranRebar();
+          m_NumTranRebar = m_Member.NumTranRebar();
         if (m_TransverseRebarResult == null)
           m_TransverseRebarResult = new TransverseRebarResult(m_Member, m_NumTranRebar);
         return m_TransverseRebarResult;

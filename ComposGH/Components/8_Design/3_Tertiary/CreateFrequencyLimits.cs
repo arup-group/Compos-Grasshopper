@@ -25,7 +25,7 @@ namespace ComposGH.Components
           "Create a " + FrequencyLimitsGoo.Description + " for a " + DesignCriteriaGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat8())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -49,10 +49,10 @@ namespace ComposGH.Components
       FrequencyLimits frequencyLimits = new FrequencyLimits()
       { MinimumRequired = (Frequency)Input.UnitNumber(this, DA, 0, FrequencyUnit.Hertz) };
       
-      if (this.Params.Input[1].Sources.Count > 0)
+      if (Params.Input[1].Sources.Count > 0)
         frequencyLimits.DeadLoadIncl = (Ratio)Input.UnitNumber(this, DA, 1, RatioUnit.DecimalFraction);
 
-      if (this.Params.Input[2].Sources.Count > 0)
+      if (Params.Input[2].Sources.Count > 0)
         frequencyLimits.LiveLoadIncl = (Ratio)Input.UnitNumber(this, DA, 2, RatioUnit.DecimalFraction);
 
       DA.SetData(0, new FrequencyLimitsGoo(frequencyLimits));

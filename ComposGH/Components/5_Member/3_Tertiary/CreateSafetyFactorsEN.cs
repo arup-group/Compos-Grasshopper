@@ -26,7 +26,7 @@ namespace ComposGH.Components
           "Create a " + SafetyFactorsENGoo.Description + " for a " + DesignCodeGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -84,24 +84,24 @@ namespace ComposGH.Components
         combinationFactors.Finalgamma_G = fgammaG;
       if (DA.GetData(7, ref fgammaQ))
         combinationFactors.Finalgamma_Q = fgammaQ;
-      if (this.Params.Input[0].Sources.Count == 0
-        & this.Params.Input[1].Sources.Count == 0
-        & this.Params.Input[2].Sources.Count == 0
-        & this.Params.Input[3].Sources.Count == 0
-        & this.Params.Input[4].Sources.Count == 0
-        & this.Params.Input[5].Sources.Count == 0
-        & this.Params.Input[6].Sources.Count == 0
-        & this.Params.Input[7].Sources.Count == 0)
+      if (Params.Input[0].Sources.Count == 0
+        & Params.Input[1].Sources.Count == 0
+        & Params.Input[2].Sources.Count == 0
+        & Params.Input[3].Sources.Count == 0
+        & Params.Input[4].Sources.Count == 0
+        & Params.Input[5].Sources.Count == 0
+        & Params.Input[6].Sources.Count == 0
+        & Params.Input[7].Sources.Count == 0)
       {
         string remark = (LoadCombinationType == LoadCombination.Equation6_10) ?
           "Load combination factors following Equation 6.10 will be used" :
           "Load combination factors for the worse of Equation 6.10a and 6.10b will be used (not applicable for storage structures)";
         AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, remark);
-        this._selectedItems[0] = LoadCombinationType.ToString().Replace("__", " or ").Replace("_", ".");
+        _selectedItems[0] = LoadCombinationType.ToString().Replace("__", " or ").Replace("_", ".");
       }
       else
       {
-        this._selectedItems[0] = "Custom";
+        _selectedItems[0] = "Custom";
       }
 
       MaterialPartialFactors mf = new MaterialPartialFactors();
@@ -128,20 +128,20 @@ namespace ComposGH.Components
         mf.gamma_S = gS;
 
 
-      if (this.Params.Input[8].Sources.Count == 0
-        & this.Params.Input[9].Sources.Count == 0
-        & this.Params.Input[10].Sources.Count == 0
-        & this.Params.Input[11].Sources.Count == 0
-        & this.Params.Input[12].Sources.Count == 0
-        & this.Params.Input[13].Sources.Count == 0
-        & this.Params.Input[14].Sources.Count == 0)
+      if (Params.Input[8].Sources.Count == 0
+        & Params.Input[9].Sources.Count == 0
+        & Params.Input[10].Sources.Count == 0
+        & Params.Input[11].Sources.Count == 0
+        & Params.Input[12].Sources.Count == 0
+        & Params.Input[13].Sources.Count == 0
+        & Params.Input[14].Sources.Count == 0)
       {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Default Material Partial Safety Factor values from EN1994-1-1 will be used");
       }
 
       SafetyFactorsEN safetyFactors = new SafetyFactorsEN();
       if (combinationFactors == null)
-        safetyFactors.LoadCombinationFactors.LoadCombination = this.LoadCombinationType;
+        safetyFactors.LoadCombinationFactors.LoadCombination = LoadCombinationType;
       else
         safetyFactors.LoadCombinationFactors.LoadCombination = LoadCombination.Custom;
 
@@ -158,36 +158,36 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Load Combination" });
+      _spacerDescriptions = new List<string>(new string[] { "Load Combination" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // spacing
-      this._dropDownItems.Add(Enum.GetValues(typeof(LoadCombination)).Cast<LoadCombination>()
+      _dropDownItems.Add(Enum.GetValues(typeof(LoadCombination)).Cast<LoadCombination>()
           .Select(x => x.ToString().Replace("__", " or ").Replace("_", ".")).ToList());
-      this._dropDownItems[0].RemoveAt(2); // remove 'Custom'
-      this._selectedItems.Add(LoadCombination.Equation6_10.ToString().Replace("__", " or ").Replace("_", "."));
+      _dropDownItems[0].RemoveAt(2); // remove 'Custom'
+      _selectedItems.Add(LoadCombination.Equation6_10.ToString().Replace("__", " or ").Replace("_", "."));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
       // change selected item
-      this._selectedItems[i] = this._dropDownItems[i][j];
+      _selectedItems[i] = _dropDownItems[i][j];
 
-      if (this.LoadCombinationType.ToString().Replace("__", " or ").Replace("_", ".") == this._selectedItems[i])
+      if (LoadCombinationType.ToString().Replace("__", " or ").Replace("_", ".") == _selectedItems[i])
         return;
 
-      this.LoadCombinationType = (LoadCombination)Enum.Parse(typeof(LoadCombination), this._selectedItems[i].Replace(" or ", "__").Replace(".", "_"));
+      LoadCombinationType = (LoadCombination)Enum.Parse(typeof(LoadCombination), _selectedItems[i].Replace(" or ", "__").Replace(".", "_"));
 
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.LoadCombinationType = (LoadCombination)Enum.Parse(typeof(LoadCombination), this._selectedItems[0].Replace(" or ", "__").Replace(".", "_"));
+      LoadCombinationType = (LoadCombination)Enum.Parse(typeof(LoadCombination), _selectedItems[0].Replace(" or ", "__").Replace(".", "_"));
 
       base.UpdateUIFromSelectedItems();
     }

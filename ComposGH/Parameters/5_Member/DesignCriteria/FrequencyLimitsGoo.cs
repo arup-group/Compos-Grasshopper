@@ -16,7 +16,7 @@ namespace ComposGH.Parameters
     public static string NickName => "fLm";
     public static string Description => "Compos Frequency Limit Criteria";
     public FrequencyLimitsGoo(IFrequencyLimits item) : base(item) { }
-    public override IGH_Goo Duplicate() => new FrequencyLimitsGoo(this.Value);
+    public override IGH_Goo Duplicate() => new FrequencyLimitsGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 
@@ -33,8 +33,8 @@ namespace ComposGH.Parameters
         Components.Ribbon.CategoryName.Name(),
         Components.Ribbon.SubCategoryName.Cat10()))
     { }
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + FrequencyLimitsGoo.Name + " parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? FrequencyLimitsGoo.Name : base.TypeName;
+    public override string InstanceDescription => m_data.DataCount == 0 ? "Empty " + FrequencyLimitsGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => SourceCount == 0 ? FrequencyLimitsGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("becd58f8-ab27-4e5f-944c-f7b9806c8e73");
     public override GH_Exposure Exposure => GH_Exposure.hidden;
     protected override System.Drawing.Bitmap Icon => Properties.Resources.FrequencyLimit;

@@ -20,8 +20,8 @@ namespace ComposGH.Parameters
         Components.Ribbon.SubCategoryName.Cat10()))
     {
     }
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + BeamGoo.Name + " parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? BeamGoo.Name : base.TypeName;
+    public override string InstanceDescription => m_data.DataCount == 0 ? "Empty " + BeamGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => SourceCount == 0 ? BeamGoo.Name : base.TypeName;
 
     public override Guid ComponentGuid => new Guid("dc61e94b-c326-4789-92f2-e0fe3caea4c7");
 
@@ -68,12 +68,12 @@ namespace ComposGH.Parameters
     }
     public void DrawViewportMeshes(IGH_PreviewArgs args)
     {
-      //Use a standard method to draw gunk, you don't have to specifically implement this.
+      //Use a standard method to draw gunk, you don't have to specifically implement 
       Preview_DrawMeshes(args);
     }
     public void DrawViewportWires(IGH_PreviewArgs args)
     {
-      //Use a standard method to draw gunk, you don't have to specifically implement this.
+      //Use a standard method to draw gunk, you don't have to specifically implement 
       Preview_DrawWires(args);
     }
 

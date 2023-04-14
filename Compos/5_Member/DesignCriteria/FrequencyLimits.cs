@@ -14,9 +14,9 @@ namespace ComposAPI
     public FrequencyLimits() { }
     public FrequencyLimits(double minReqFrequencyHertz, double deadLoadInclPercentage, double liveLoadInclPercentage) 
     { 
-      this.MinimumRequired = new Frequency(minReqFrequencyHertz, FrequencyUnit.Hertz);
-      this.DeadLoadIncl = new Ratio(deadLoadInclPercentage, RatioUnit.Percent);
-      this.LiveLoadIncl = new Ratio(liveLoadInclPercentage, RatioUnit.Percent);
+      MinimumRequired = new Frequency(minReqFrequencyHertz, FrequencyUnit.Hertz);
+      DeadLoadIncl = new Ratio(deadLoadInclPercentage, RatioUnit.Percent);
+      LiveLoadIncl = new Ratio(liveLoadInclPercentage, RatioUnit.Percent);
     }
 
     #region coa interop
@@ -39,9 +39,9 @@ namespace ComposAPI
       parameters.Add(CoaIdentifier.DesignCriteria.Frequency);
       parameters.Add(name);
       parameters.Add("CHECK_NATURAL_FREQUENCY");
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.MinimumRequired.Hertz, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.DeadLoadIncl.DecimalFractions, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.LiveLoadIncl.DecimalFractions, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(MinimumRequired.Hertz, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(DeadLoadIncl.DecimalFractions, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(LiveLoadIncl.DecimalFractions, 6));
 
       string coaString = CoaHelper.CreateString(parameters);
 
@@ -52,10 +52,10 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      string str = "Min:" + this.MinimumRequired.ToUnit(FrequencyUnit.Hertz).ToString("f0").Replace(" ", string.Empty);
+      string str = "Min:" + MinimumRequired.ToUnit(FrequencyUnit.Hertz).ToString("f0").Replace(" ", string.Empty);
 
-      str += ", " + this.DeadLoadIncl.ToUnit(RatioUnit.Percent).ToString("f0").Replace(" ", string.Empty) + " DL";
-      str += ", " + this.LiveLoadIncl.ToUnit(RatioUnit.Percent).ToString("f0").Replace(" ", string.Empty) + " LL";
+      str += ", " + DeadLoadIncl.ToUnit(RatioUnit.Percent).ToString("f0").Replace(" ", string.Empty) + " DL";
+      str += ", " + LiveLoadIncl.ToUnit(RatioUnit.Percent).ToString("f0").Replace(" ", string.Empty) + " LL";
       return str;
     }
     #endregion

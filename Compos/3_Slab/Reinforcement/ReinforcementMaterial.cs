@@ -38,15 +38,15 @@ namespace ComposAPI
 
     public ReinforcementMaterial(Pressure fy)
     {
-      this.UserDefined = true;
-      this.Fy = fy;
+      UserDefined = true;
+      Fy = fy;
     }
 
     public ReinforcementMaterial(RebarGrade grade)
     {
-      this.Grade = grade;
-      this.UserDefined = false;
-      this.SetFy();
+      Grade = grade;
+      UserDefined = false;
+      SetFy();
     }
     #endregion
 
@@ -100,15 +100,15 @@ namespace ComposAPI
       List<string> parameters = new List<string>();
       parameters.Add(CoaIdentifier.RebarMaterial);
       parameters.Add(name);
-      if (this.UserDefined)
+      if (UserDefined)
       {
         parameters.Add("USER_DEFINED");
-        parameters.Add(CoaHelper.FormatSignificantFigures(this.Fy.ToUnit(PressureUnit.NewtonPerSquareMeter).Value, 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(Fy.ToUnit(PressureUnit.NewtonPerSquareMeter).Value, 6));
       }
       else
       {
         parameters.Add("STANDARD");
-        parameters.Add(this.Grade.ToString().Remove(0, 3));
+        parameters.Add(Grade.ToString().Remove(0, 3));
       }
 
       return CoaHelper.CreateString(parameters);
@@ -118,16 +118,16 @@ namespace ComposAPI
     #region methods
     internal void SetFy()
     {
-      switch (this.Grade)
+      switch (Grade)
       {
         case RebarGrade.BS_250R:
         case RebarGrade.HK_250:
         case RebarGrade.AS_R250N:
-          this.Fy = new Pressure(250, PressureUnit.Megapascal);
+          Fy = new Pressure(250, PressureUnit.Megapascal);
           break;
         case RebarGrade.BS_460T:
         case RebarGrade.HK_460:
-          this.Fy = new Pressure(460, PressureUnit.Megapascal);
+          Fy = new Pressure(460, PressureUnit.Megapascal);
           break;
         case RebarGrade.BS_500X:
         case RebarGrade.AS_D500L:
@@ -136,23 +136,23 @@ namespace ComposAPI
         case RebarGrade.EN_500A:
         case RebarGrade.EN_500B:
         case RebarGrade.EN_500C:
-          this.Fy = new Pressure(500, PressureUnit.Megapascal);
+          Fy = new Pressure(500, PressureUnit.Megapascal);
           break;
         case RebarGrade.BS_1770:
-          this.Fy = new Pressure(1770, PressureUnit.Megapascal);
+          Fy = new Pressure(1770, PressureUnit.Megapascal);
           break;
       }
     }
     public override string ToString()
     {
-      if (this.UserDefined)
+      if (UserDefined)
       {
         string str = Fy.ToUnit(ComposUnitsHelper.StressUnit).ToString("f0");
         return str.Replace(" ", string.Empty);
       }
       else
       {
-        return this.Grade.ToString().Remove(0, 3);
+        return Grade.ToString().Remove(0, 3);
       }
     }
     #endregion

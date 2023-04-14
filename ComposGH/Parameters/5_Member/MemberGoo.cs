@@ -24,13 +24,13 @@ namespace ComposGH.Parameters
     #region constructors
     public MemberGoo()
     {
-      this.Value = new Member();
+      Value = new Member();
     }
     public MemberGoo(IMember item)
     {
       if (item == null)
         item = new Member();
-      this.Value = item; //.Duplicate() as SafetyFactors;
+      Value = item; //.Duplicate() as SafetyFactors;
     }
 
     public override IGH_Goo Duplicate()
@@ -47,14 +47,14 @@ namespace ComposGH.Parameters
       if (Value == null)
         return null;
       else
-        return (IGH_GeometricGoo)this.Duplicate();
+        return (IGH_GeometricGoo)Duplicate();
     }
     #endregion
 
     #region properties
-    public override bool IsValid => (this.Value == null) ? false : true;
+    public override bool IsValid => (Value == null) ? false : true;
     public override string TypeName => "Member";
-    public override string TypeDescription => "Compos " + this.TypeName + " Parameter";
+    public override string TypeDescription => "Compos " + TypeName + " Parameter";
     public override string IsValidWhyNot
     {
       get
@@ -111,7 +111,7 @@ namespace ComposGH.Parameters
       //  if (Value == null)
       //    target = default;
       //  else
-      //    target = (Q)(object)this.Line;
+      //    target = (Q)(object)Line;
       //  return true;
       //}
       //if (typeof(Q).IsAssignableFrom(typeof(GH_Line)))
@@ -121,7 +121,7 @@ namespace ComposGH.Parameters
       //  else
       //  {
       //    GH_Line ghLine = new GH_Line();
-      //    GH_Convert.ToGHLine(this.Line, GH_Conversion.Both, ref ghLine);
+      //    GH_Convert.ToGHLine(Line, GH_Conversion.Both, ref ghLine);
       //    target = (Q)(object)ghLine;
       //  }
 
@@ -132,7 +132,7 @@ namespace ComposGH.Parameters
       //  if (Value == null)
       //    target = default;
       //  else
-      //    target = (Q)(object)this.Line;
+      //    target = (Q)(object)Line;
       //  return true;
       //}
       //if (typeof(Q).IsAssignableFrom(typeof(GH_Curve)))
@@ -141,7 +141,7 @@ namespace ComposGH.Parameters
       //    target = default;
       //  else
       //  {
-      //    target = (Q)(object)new GH_Curve(this.Line);
+      //    target = (Q)(object)new GH_Curve(Line);
       //  }
       //  return true;
       //}
@@ -230,7 +230,7 @@ namespace ComposGH.Parameters
       //LineCurve xLn = dup.Line;
       //xmorph.Morph(xLn);
       //dup.Line = xLn;
-      //dup.LengthUnit = this.LengthUnit;
+      //dup.LengthUnit = LengthUnit;
       //dup.UpdatePreview();
 
       //return dup;
@@ -320,8 +320,8 @@ namespace ComposGH.Parameters
         Components.Ribbon.CategoryName.Name(), 
         Components.Ribbon.SubCategoryName.Cat10()))
     { }
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty Member parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? "Member" : base.TypeName;
+    public override string InstanceDescription => m_data.DataCount == 0 ? "Empty Member parameter" : base.InstanceDescription;
+    public override string TypeName => SourceCount == 0 ? "Member" : base.TypeName;
     public override Guid ComponentGuid => new Guid("a94f9373-e1a3-49d9-9b98-d3a2618fb9f8");
 
     public override GH_Exposure Exposure => GH_Exposure.primary;
@@ -367,12 +367,12 @@ namespace ComposGH.Parameters
     }
     public void DrawViewportMeshes(IGH_PreviewArgs args)
     {
-      //Use a standard method to draw gunk, you don't have to specifically implement this.
+      //Use a standard method to draw gunk, you don't have to specifically implement 
       Preview_DrawMeshes(args);
     }
     public void DrawViewportWires(IGH_PreviewArgs args)
     {
-      //Use a standard method to draw gunk, you don't have to specifically implement this.
+      //Use a standard method to draw gunk, you don't have to specifically implement 
       Preview_DrawWires(args);
     }
 

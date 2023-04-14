@@ -16,7 +16,7 @@ namespace ComposGH.Parameters
     public static string NickName => "BLm";
     public static string Description => "Compos Beam Size Limit Criteria";
     public BeamSizeLimitsGoo(IBeamSizeLimits item) : base(item) { }
-    public override IGH_Goo Duplicate() => new BeamSizeLimitsGoo(this.Value);
+    public override IGH_Goo Duplicate() => new BeamSizeLimitsGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 
@@ -33,8 +33,8 @@ namespace ComposGH.Parameters
         Components.Ribbon.CategoryName.Name(),
         Components.Ribbon.SubCategoryName.Cat10()))
     { }
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + BeamSizeLimitsGoo.Name + " parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? BeamSizeLimitsGoo.Name : base.TypeName;
+    public override string InstanceDescription => m_data.DataCount == 0 ? "Empty " + BeamSizeLimitsGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => SourceCount == 0 ? BeamSizeLimitsGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("bef8188b-0874-43c4-94b1-4285fbbdec2e");
     public override GH_Exposure Exposure => GH_Exposure.hidden;
     protected override System.Drawing.Bitmap Icon => Properties.Resources.BeamSizeLimits;

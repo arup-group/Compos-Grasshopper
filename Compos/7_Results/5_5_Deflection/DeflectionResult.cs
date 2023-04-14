@@ -30,7 +30,7 @@ namespace ComposAPI
       get
       {
         DeflectionOption resultType = DeflectionOption.DEFL_CONS_DEAD_LOAD;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -43,7 +43,7 @@ namespace ComposAPI
       get
       {
         DeflectionOption resultType = DeflectionOption.DEFL_ADDI_DEAD_LOAD;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -56,7 +56,7 @@ namespace ComposAPI
       get
       {
         DeflectionOption resultType = DeflectionOption.DEFL_FINA_LIVE_LOAD;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -69,7 +69,7 @@ namespace ComposAPI
       get
       {
         DeflectionOption resultType = DeflectionOption.DEFL_SHRINK;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -82,7 +82,7 @@ namespace ComposAPI
       get
       {
         DeflectionOption resultType = DeflectionOption.DEFL_POST_CONS;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -95,7 +95,7 @@ namespace ComposAPI
       get
       {
         DeflectionOption resultType = DeflectionOption.DEFL_FINA_TOTAL;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -108,9 +108,9 @@ namespace ComposAPI
     //  get
     //  {
     //    DeflectionOption resultType = DeflectionOption.MODAL_SHAPE;
-    //    if (!this.ResultsCache.ContainsKey(resultType))
-    //      this.GetResults(resultType);
-    //    return this.ResultsCache[resultType];
+    //    if (!ResultsCache.ContainsKey(resultType))
+    //      GetResults(resultType);
+    //    return ResultsCache[resultType];
     //  }
     //}
 
@@ -118,17 +118,17 @@ namespace ComposAPI
 
     private List<Length> GetResults(DeflectionOption resultType)
     {
-      if (!this.ResultsCache.ContainsKey(resultType))
+      if (!ResultsCache.ContainsKey(resultType))
       {
         List<Length> results = new List<Length>();
-        for (short pos = 0; pos < this.NumIntermediatePos; pos++)
+        for (short pos = 0; pos < NumIntermediatePos; pos++)
         {
-          float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
+          float value = Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
           results.Add(new Length(value, LengthUnit.Meter));
         }
-        this.ResultsCache.Add(resultType, results);
+        ResultsCache.Add(resultType, results);
       }
-      return this.ResultsCache[resultType];
+      return ResultsCache[resultType];
     }
   }
 }

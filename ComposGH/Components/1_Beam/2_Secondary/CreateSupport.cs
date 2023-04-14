@@ -30,13 +30,13 @@ namespace ComposGH.Components
           "Create a " + SupportsGoo.Description + " for a " + RestraintGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat1())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
     
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
 
       pManager.AddBooleanParameter("Sec. mem. interm. res.", "SMIR", "Take secondary member as intermediate restraint (default = true)", GH_ParamAccess.item, true);
       pManager.AddBooleanParameter("Flngs. free rot. ends", "FFRE", "Both flanges are free to rotate on plan at end restraints (default = true)", GH_ParamAccess.item, true);
@@ -58,16 +58,16 @@ namespace ComposGH.Components
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       // override intermediate support?
-      if (this.Params.Input[3].Sources.Count > 0)
+      if (Params.Input[3].Sources.Count > 0)
       {
         string restraintType = "";
         DA.GetData(3, ref restraintType);
         try
         {
-          this.ParseRestraintType(restraintType);
-          this._dropDownItems[0] = new List<string>();
-          this._selectedItems[0] = "-";
-          this.Override_dropDownItems[0] = true;
+          ParseRestraintType(restraintType);
+          _dropDownItems[0] = new List<string>();
+          _selectedItems[0] = "-";
+          Override_dropDownItems[0] = true;
         }
         catch (ArgumentException)
         {
@@ -77,16 +77,16 @@ namespace ComposGH.Components
           foreach (string g in Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
             .Select(x => x.ToString().Replace("__", "-").Replace("_", " ")).ToList())
             AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, g);
-          this._dropDownItems[0] = Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
+          _dropDownItems[0] = Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
             .Select(x => x.ToString().Replace("__", "-").Replace("_", " ")).ToList();
         }
       }
-      else if (this.Override_dropDownItems[0])
+      else if (Override_dropDownItems[0])
       {
-        this._dropDownItems[0] = Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
+        _dropDownItems[0] = Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
             .Select(x => x.ToString().Replace("__", "-").Replace("_", " ")).ToList();
-        this._selectedItems[0] = RestraintType.ToString().Replace("__", "-").Replace("_", " ");
-        this.Override_dropDownItems[0] = false;
+        _selectedItems[0] = RestraintType.ToString().Replace("__", "-").Replace("_", " ");
+        Override_dropDownItems[0] = false;
       }
 
       bool smir = true;
@@ -94,7 +94,7 @@ namespace ComposGH.Components
       bool ffre = true;
       DA.GetData(1, ref ffre);
 
-      if (this.Params.Input[2].Sources.Count > 0)
+      if (Params.Input[2].Sources.Count > 0)
       {
         List<IQuantity> restrs = Input.LengthsOrRatios(this, DA, 2, LengthUnit);
         _selectedItems[0] = "Custom";
@@ -114,45 +114,45 @@ namespace ComposGH.Components
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[]
+      _spacerDescriptions = new List<string>(new string[]
         {
           "Intermediate Sup.",
           "Unit"
         });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // type
-      this._dropDownItems.Add(Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
+      _dropDownItems.Add(Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
           .Select(x => x.ToString().Replace("__", "-").Replace("_", " ")).ToList());
-      this._dropDownItems[0].RemoveAt(this._dropDownItems[0].Count - 1);
-      this._selectedItems.Add(this._dropDownItems[0][0]);
+      _dropDownItems[0].RemoveAt(_dropDownItems[0].Count - 1);
+      _selectedItems.Add(_dropDownItems[0][0]);
 
       // length
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
 
-      this.Override_dropDownItems = new List<bool>() { false, false };
-      this._isInitialised = true;
+      Override_dropDownItems = new List<bool>() { false, false };
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this._selectedItems[i] = this._dropDownItems[i][j];
+      _selectedItems[i] = _dropDownItems[i][j];
 
       if (i == 0)
-        this.ParseRestraintType(this._selectedItems[0]);
+        ParseRestraintType(_selectedItems[0]);
       if (i == 1)
-        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
+        LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.ParseRestraintType(this._selectedItems[0]);
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[1]);
+      ParseRestraintType(_selectedItems[0]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
     }
@@ -162,13 +162,13 @@ namespace ComposGH.Components
       if (value != "-")
       {
         value = value.ToString().Replace("-", "__").Replace(" ", "_");
-        this.RestraintType = (IntermediateRestraint)Enum.Parse(typeof(IntermediateRestraint), value);
+        RestraintType = (IntermediateRestraint)Enum.Parse(typeof(IntermediateRestraint), value);
       }
     }
 
     public override void VariableParameterMaintenance()
     {
-      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
       Params.Input[2].Name = "Restraint Pos [" + unitAbbreviation + "]";
     }
     #endregion

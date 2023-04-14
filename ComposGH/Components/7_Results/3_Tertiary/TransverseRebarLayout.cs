@@ -31,7 +31,7 @@ namespace ComposGH.Components
           "Get transverse rebar layout automatically designed for a " + MemberGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat7())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -57,17 +57,17 @@ namespace ComposGH.Components
 
       int i = 0;
       Output.SetList(this, DA, i++, 
-        result.StartPosition.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList());
+        result.StartPosition.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
       Output.SetList(this, DA, i++,
-        result.EndPosition.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList());
+        result.EndPosition.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
       Output.SetList(this, DA, i++,
-        result.Diameter.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList());
+        result.Diameter.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
       Output.SetList(this, DA, i++,
-        result.Spacing.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList());
+        result.Spacing.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
       Output.SetList(this, DA, i++,
-        result.Cover.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList());
+        result.Cover.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
       Output.SetList(this, DA, i,
-        result.Area.Select(x => new GH_UnitNumber(x.ToUnit(UnitsHelper.GetAreaUnit(this.LengthUnit)))).ToList());
+        result.Area.Select(x => new GH_UnitNumber(x.ToUnit(UnitsHelper.GetAreaUnit(LengthUnit)))).ToList());
     }
 
     #region Custom UI
@@ -75,30 +75,30 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Unit" });
+      _spacerDescriptions = new List<string>(new string[] { "Unit" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // length
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this._selectedItems[i] = this._dropDownItems[i][j];
+      _selectedItems[i] = _dropDownItems[i][j];
 
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[0]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[0]);
 
       base.UpdateUIFromSelectedItems();
     }

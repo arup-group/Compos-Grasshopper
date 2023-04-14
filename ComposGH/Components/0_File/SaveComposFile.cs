@@ -32,7 +32,7 @@ namespace ComposGH.Components
       : base("SaveCompos", "Save", "Saves your Compos File from this parametric nightmare",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat0())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -67,7 +67,7 @@ namespace ComposGH.Components
             members.Add(member);
             Message = "";
           }
-          this.ComposFile = new ComposFile(members);
+          ComposFile = new ComposFile(members);
         }
         else
         {
@@ -75,11 +75,11 @@ namespace ComposGH.Components
           return;
         }
 
-        this.FileName = null;
+        FileName = null;
 
         string tempfile = "";
         if (DA.GetData(2, ref tempfile))
-          this.FileName = tempfile;
+          FileName = tempfile;
 
         bool save = false;
         if (DA.GetData(1, ref save))
@@ -87,12 +87,12 @@ namespace ComposGH.Components
           if (save)
           {
             SaveFile();
-            this.Message = this.FileName;
+            Message = FileName;
           }
         }
 
         List<MemberGoo> savedMembers = new List<MemberGoo>();
-        foreach (IMember mem in this.ComposFile.GetMembers())
+        foreach (IMember mem in ComposFile.GetMembers())
           savedMembers.Add(new MemberGoo(mem));
         DA.SetDataList(0, savedMembers);
       }
@@ -110,29 +110,29 @@ namespace ComposGH.Components
 
     internal void SaveFile()
     {
-      if (this.FileName == null)
+      if (FileName == null)
       {
-        this.Message = "Please provide filename and path";
+        Message = "Please provide filename and path";
         return;
       }
-      this.CanOpen = false;
-      int status = this.ComposFile.SaveAs(this.FileName);
+      CanOpen = false;
+      int status = ComposFile.SaveAs(FileName);
       switch (status)
       {
         case 0:
-          this.CanOpen = true;
-          this.Message = "File saved";
-          PostHog.ModelIO(PluginInfo, "saveCOA", (int)(new FileInfo(this.FileName).Length / 1024));
+          CanOpen = true;
+          Message = "File saved";
+          PostHog.ModelIO(PluginInfo, "saveCOA", (int)(new FileInfo(FileName).Length / 1024));
           return;
         case 1:
-          this.Message = "No Compos file is open";
+          Message = "No Compos file is open";
           return;
         case 2:
-          this.Message = "Invalid file extension";
+          Message = "Invalid file extension";
           return;
         case 3:
         default:
-          this.Message = "Failed to save";
+          Message = "Failed to save";
           return;
       }
     }
@@ -143,7 +143,7 @@ namespace ComposGH.Components
       var res = fdi.ShowSaveDialog();
       if (res) // == DialogResult.OK)
       {
-        this.FileName = fdi.FileName;
+        FileName = fdi.FileName;
 
         SaveFile();
 
@@ -160,7 +160,7 @@ namespace ComposGH.Components
             panel.Attributes.Bounds.Width - 40, (float)Attributes.DocObject.Attributes.Bounds.Bottom - panel.Attributes.Bounds.Height);
 
         // populate value list with our own data
-        panel.UserText = this.FileName;
+        panel.UserText = FileName;
 
         // Until now, the panel is a hypothetical object.
         // This command makes it 'real' and adds it to the canvas.
@@ -178,27 +178,27 @@ namespace ComposGH.Components
       string programFiles = Environment.ExpandEnvironmentVariables("%ProgramW6432%");
       string fileName = programFiles + @"\Oasys\Compos 8.6\Compos.exe";
 
-      if (this.FileName == null || this.FileName == "")
-        this.FileName = Path.GetTempPath() + this.ComposFile.Guid + ".coa";
-      this.SaveFile();
-      if (this.CanOpen)
-        System.Diagnostics.Process.Start(fileName, this.FileName);
+      if (FileName == null || FileName == "")
+        FileName = Path.GetTempPath() + ComposFile.Guid + ".coa";
+      SaveFile();
+      if (CanOpen)
+        System.Diagnostics.Process.Start(fileName, FileName);
     }
 
     public override void VariableParameterMaintenance()
     {
-      Params.Input[0].Optional = this.FileName != null; //filename can have input from user input
+      Params.Input[0].Optional = FileName != null; //filename can have input from user input
       Params.Input[0].ClearRuntimeMessages(); // this needs to be called to avoid having a runtime warning message after changed to optional
     }
 
     public override bool Write(GH_IO.Serialization.GH_IWriter writer)
     {
-      writer.SetString("File", (string)this.FileName);
+      writer.SetString("File", (string)FileName);
       return base.Write(writer);
     }
     public override bool Read(GH_IO.Serialization.GH_IReader reader)
     {
-      this.FileName = (string)reader.GetString("File");
+      FileName = (string)reader.GetString("File");
       return base.Read(reader);
     }
     #endregion

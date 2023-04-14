@@ -25,12 +25,12 @@ namespace ComposAPI
 
     public Beam(Length length, IRestraint restraint, ISteelMaterial material, List<IBeamSection> sections, List<IWebOpening> webOpenings = null)
     {
-      this.Length = length;
-      this.Restraint = restraint;
-      this.Material = material;
-      this.Sections = sections;
+      Length = length;
+      Restraint = restraint;
+      Material = material;
+      Sections = sections;
       if (webOpenings != null)
-        this.WebOpenings = webOpenings;
+        WebOpenings = webOpenings;
     }
 
     #endregion
@@ -104,25 +104,25 @@ namespace ComposAPI
     {
       List<string> parameters = new List<string>();
       
-      string str = this.Material.ToCoaString(name, code, units);
+      string str = Material.ToCoaString(name, code, units);
       
       parameters.Add(CoaIdentifier.BeamSpanLength);
       parameters.Add(name);
       // span number always 1 - placeholder for future feature in Compos to have continuous beams.
       parameters.Add(Convert.ToString(1));
-      parameters.Add(CoaHelper.FormatSignificantFigures(this.Length.ToUnit(units.Length).Value, 6));
+      parameters.Add(CoaHelper.FormatSignificantFigures(Length.ToUnit(units.Length).Value, 6));
 
       str += CoaHelper.CreateString(parameters);
 
       int num = 1;
-      foreach (IBeamSection section in this.Sections)
-        str += section.ToCoaString(name, this.Sections.Count, num++, units);
+      foreach (IBeamSection section in Sections)
+        str += section.ToCoaString(name, Sections.Count, num++, units);
 
-      str += this.Restraint.ToCoaString(name, units);
+      str += Restraint.ToCoaString(name, units);
 
-      if (this.WebOpenings != null)
+      if (WebOpenings != null)
       {
-        foreach (IWebOpening webOpening in this.WebOpenings)
+        foreach (IWebOpening webOpening in WebOpenings)
         {
           str += webOpening.ToCoaString(name, units);
         }
@@ -136,23 +136,23 @@ namespace ComposAPI
     {
       string invalid = "";
       string profile = "";
-      if (this.Sections.Count == 0)
+      if (Sections.Count == 0)
       {
         invalid = "Invalid Beam ";
         profile = "(no profile set)";
       }
       else
-        profile = (this.Sections.Count > 1) ? string.Join(" : ", this.Sections.Select(x => x.SectionDescription).ToArray()) : this.Sections[0].SectionDescription;
+        profile = (Sections.Count > 1) ? string.Join(" : ", Sections.Select(x => x.SectionDescription).ToArray()) : Sections[0].SectionDescription;
 
       string mat = "";
-      if (this.Material == null)
+      if (Material == null)
       {
         invalid = "Invalid Beam ";
         mat = "(no material set)";
       }
       else
-        mat = this.Material.ToString();
-      string line = "L:" + this.Length.ToUnit(ComposUnitsHelper.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
+        mat = Material.ToString();
+      string line = "L:" + Length.ToUnit(ComposUnitsHelper.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
 
       return invalid + line + ", " + profile + ", " + mat;
     }

@@ -29,10 +29,10 @@ namespace ComposAPI
     public string ToCoaString(string name)
     {
       string str = CoaIdentifier.SafetyFactorLoad + '\t' + name + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.ConstantDead, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.FinalDead, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.ConstantLive, 6) + '\t';
-      str += CoaHelper.FormatSignificantFigures(this.FinalLive, 6) + '\n';
+      str += CoaHelper.FormatSignificantFigures(ConstantDead, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(FinalDead, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(ConstantLive, 6) + '\t';
+      str += CoaHelper.FormatSignificantFigures(FinalLive, 6) + '\n';
       return str;
     }
     #endregion

@@ -14,23 +14,23 @@ namespace ComposAPI
     public DeckingConfiguration()
     {
       // default values:
-      this.Angle = new Angle(90, AngleUnit.Degree);
-      this.IsDiscontinous = false;
-      this.IsWelded = false;
+      Angle = new Angle(90, AngleUnit.Degree);
+      IsDiscontinous = false;
+      IsWelded = false;
     }
 
     public DeckingConfiguration(Angle angle, bool isDiscontinous, bool isWelded)
     {
-      this.Angle = angle;
-      this.IsDiscontinous = isDiscontinous;
-      this.IsWelded = isWelded;
+      Angle = angle;
+      IsDiscontinous = isDiscontinous;
+      IsWelded = isWelded;
     }
 
     public override string ToString()
     {
-      string angle = (this.Angle.Value == 0) ? "" : this.Angle.ToUnit(AngleUnit.Degree).ToString().Replace(" ", string.Empty);
-      string isDiscontinous = (this.IsDiscontinous == true) ? "" : this.IsDiscontinous.ToString().Replace(" ", string.Empty);
-      string isWelded = (this.IsWelded == true) ? "" : this.IsWelded.ToString().Replace(" ", string.Empty);
+      string angle = (Angle.Value == 0) ? "" : Angle.ToUnit(AngleUnit.Degree).ToString().Replace(" ", string.Empty);
+      string isDiscontinous = (IsDiscontinous == true) ? "" : IsDiscontinous.ToString().Replace(" ", string.Empty);
+      string isWelded = (IsWelded == true) ? "" : IsWelded.ToString().Replace(" ", string.Empty);
 
       string joined = string.Join(" ", new List<string>() { angle, isDiscontinous, isWelded });
       return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');

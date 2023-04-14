@@ -52,7 +52,7 @@ namespace ComposAPI
 
     public ASNZSteelMaterial(StandardASNZSteelMaterialGrade grade)
     {
-      this.SetValuesFromStandard(grade);
+      SetValuesFromStandard(grade);
     }
     #endregion
 
@@ -130,13 +130,13 @@ namespace ComposAPI
       List<string> steelParameters = new List<string>();
       steelParameters.Add("BEAM_STEEL_MATERIAL_STD");
       steelParameters.Add(name);
-      steelParameters.Add(this.ToString());
+      steelParameters.Add(ToString());
       string coaString = CoaHelper.CreateString(steelParameters);
 
       List<string> weldingParameters = new List<string>();
       weldingParameters.Add("BEAM_WELDING_MATERIAL");
       weldingParameters.Add(name);
-      weldingParameters.Add(this.WeldGrade.ToString().Replace('_', ' '));
+      weldingParameters.Add(WeldGrade.ToString().Replace('_', ' '));
       coaString += CoaHelper.CreateString(weldingParameters);
 
       return coaString;
@@ -146,131 +146,131 @@ namespace ComposAPI
     #region methods
     internal void SetValuesFromStandard(StandardASNZSteelMaterialGrade grade)
     {
-      this.E = new Pressure(200, PressureUnit.Gigapascal);
-      this.Density = new Density(7850, DensityUnit.KilogramPerCubicMeter);
-      this.Grade = grade;
+      E = new Pressure(200, PressureUnit.Gigapascal);
+      Density = new Density(7850, DensityUnit.KilogramPerCubicMeter);
+      Grade = grade;
 
       switch (grade)
       {
         case StandardASNZSteelMaterialGrade.C450_AS1163:
-          this.fy = new Pressure(450, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(450, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.C350_AS1163:
-          this.fy = new Pressure(350, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(350, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.C250_AS1163:
-          this.fy = new Pressure(250, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_42;
+          fy = new Pressure(250, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_42;
           break;
         case StandardASNZSteelMaterialGrade.HA400_AS1594:
-          this.fy = new Pressure(380, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_50;
+          fy = new Pressure(380, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_50;
           break;
         case StandardASNZSteelMaterialGrade.HW350_AS1594:
-          this.fy = new Pressure(340, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_50;
+          fy = new Pressure(340, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_50;
           break;
         case StandardASNZSteelMaterialGrade.HA350_AS1594:
-          this.fy = new Pressure(350, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(350, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.HA300_1_AS1594:
-          this.fy = new Pressure(300, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(300, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.HA_HU300_AS1594:
-          this.fy = new Pressure(300, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_42;
+          fy = new Pressure(300, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_42;
           break;
         case StandardASNZSteelMaterialGrade.HA_HU250_AS1594:
-          this.fy = new Pressure(250, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_50;
+          fy = new Pressure(250, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_50;
           break;
         case StandardASNZSteelMaterialGrade.HA200_AS1594:
-          this.fy = new Pressure(200, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_50;
+          fy = new Pressure(200, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_50;
           break;
         case StandardASNZSteelMaterialGrade.HA4N_AS1594:
-          this.fy = new Pressure(170, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(170, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.HA3_AS1594:
-          this.fy = new Pressure(200, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(200, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.XF400_AS1594:
-          this.fy = new Pressure(380, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(380, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.XF300_AS1594:
-          this.fy = new Pressure(300, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(300, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.Gr450_AS3678:
-          this.fy = new Pressure(450, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(450, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.Gr400_AS3678:
-          this.fy = new Pressure(400, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(400, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.Gr350_AS3678:
-          this.fy = new Pressure(360, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(360, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.WR350_AS3678:
-          this.fy = new Pressure(340, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(340, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.Gr300_AS3678:
-          this.fy = new Pressure(320, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(320, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.Gr250_AS3678:
-          this.fy = new Pressure(280, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(280, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.Gr250L15_AS3678:
-          this.fy = new Pressure(280, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(280, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.Gr200_AS3678:
-          this.fy = new Pressure(200, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(200, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.Gr400_AS3679_1_Flats:
-          this.fy = new Pressure(400, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(400, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.Gr350_AS3679_1_Flats:
-          this.fy = new Pressure(360, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(360, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.Gr300_AS3679_1_Flats:
-          this.fy = new Pressure(320, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(320, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.Gr250_AS3679_1_Flats:
-          this.fy = new Pressure(260, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(260, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.Gr400_AS3679_1_Hollow:
-          this.fy = new Pressure(400, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(400, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.Gr350_AS3679_1_Hollow:
-          this.fy = new Pressure(340, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(340, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.Gr300_AS3679_1_Hollow:
-          this.fy = new Pressure(300, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(300, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         case StandardASNZSteelMaterialGrade.Gr250_AS3679_1_Hollow:
-          this.fy = new Pressure(250, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(250, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
         default:
           throw new Exception("unknown grade");
@@ -279,7 +279,7 @@ namespace ComposAPI
 
     public override string ToString()
     {
-      switch (this.Grade)
+      switch (Grade)
       {
         case StandardASNZSteelMaterialGrade.C450_AS1163:
           return "C450(AS1163)";

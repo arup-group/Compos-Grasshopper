@@ -28,13 +28,13 @@ namespace ComposGH.Components
       : base("CreateUniformLoad", "UniformLoad", "Create a uniformly distributed Compos Load.",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat4())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = Pressure.GetAbbreviation(this.ForcePerAreaUnit);
+      string unitAbbreviation = Pressure.GetAbbreviation(ForcePerAreaUnit);
       pManager.AddGenericParameter("Const. Dead [" + unitAbbreviation + "]", "dl", "Constant dead load; construction stage dead load which are used for construction stage analysis", GH_ParamAccess.item);
       pManager.AddGenericParameter("Const. Live [" + unitAbbreviation + "]", "ll", "Constant live load; construction stage live load which are used for construction stage analysis", GH_ParamAccess.item);
       pManager.AddGenericParameter("Final Dead [" + unitAbbreviation + "]", "DL", "Final Dead Load", GH_ParamAccess.item);
@@ -51,19 +51,19 @@ namespace ComposGH.Components
       switch (DistributionType)
       {
         case LoadDistribution.Line:
-          ForcePerLength constDeadL = (ForcePerLength)Input.UnitNumber(this, DA, 0, this.ForcePerLengthUnit);
-          ForcePerLength constLiveL = (ForcePerLength)Input.UnitNumber(this, DA, 1, this.ForcePerLengthUnit);
-          ForcePerLength finalDeadL = (ForcePerLength)Input.UnitNumber(this, DA, 2, this.ForcePerLengthUnit);
-          ForcePerLength finalLiveL = (ForcePerLength)Input.UnitNumber(this, DA, 3, this.ForcePerLengthUnit);
+          ForcePerLength constDeadL = (ForcePerLength)Input.UnitNumber(this, DA, 0, ForcePerLengthUnit);
+          ForcePerLength constLiveL = (ForcePerLength)Input.UnitNumber(this, DA, 1, ForcePerLengthUnit);
+          ForcePerLength finalDeadL = (ForcePerLength)Input.UnitNumber(this, DA, 2, ForcePerLengthUnit);
+          ForcePerLength finalLiveL = (ForcePerLength)Input.UnitNumber(this, DA, 3, ForcePerLengthUnit);
           Load loadL = new UniformLoad(constDeadL, constLiveL, finalDeadL, finalLiveL);
           Output.SetItem(this, DA, 0, new LoadGoo(loadL));
           break;
 
         case LoadDistribution.Area:
-          Pressure constDeadA = (Pressure)Input.UnitNumber(this, DA, 0, this.ForcePerAreaUnit);
-          Pressure constLiveA = (Pressure)Input.UnitNumber(this, DA, 1, this.ForcePerAreaUnit);
-          Pressure finalDeadA = (Pressure)Input.UnitNumber(this, DA, 2, this.ForcePerAreaUnit);
-          Pressure finalLiveA = (Pressure)Input.UnitNumber(this, DA, 3, this.ForcePerAreaUnit);
+          Pressure constDeadA = (Pressure)Input.UnitNumber(this, DA, 0, ForcePerAreaUnit);
+          Pressure constLiveA = (Pressure)Input.UnitNumber(this, DA, 1, ForcePerAreaUnit);
+          Pressure finalDeadA = (Pressure)Input.UnitNumber(this, DA, 2, ForcePerAreaUnit);
+          Pressure finalLiveA = (Pressure)Input.UnitNumber(this, DA, 3, ForcePerAreaUnit);
           Load loadA = new UniformLoad(constDeadA, constLiveA, finalDeadA, finalLiveA);
           Output.SetItem(this, DA, 0, new LoadGoo(loadA));
           break;
@@ -77,46 +77,46 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Distribution", "Unit" });
+      _spacerDescriptions = new List<string>(new string[] { "Distribution", "Unit" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // type
-      this._dropDownItems.Add(Enum.GetValues(typeof(LoadDistribution)).Cast<LoadDistribution>().Select(x => x.ToString()).ToList());
-      this._selectedItems.Add(LoadDistribution.Area.ToString());
+      _dropDownItems.Add(Enum.GetValues(typeof(LoadDistribution)).Cast<LoadDistribution>().Select(x => x.ToString()).ToList());
+      _selectedItems.Add(LoadDistribution.Area.ToString());
 
       // force unit
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.ForcePerArea));
-      this._selectedItems.Add(Pressure.GetAbbreviation(this.ForcePerAreaUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.ForcePerArea));
+      _selectedItems.Add(Pressure.GetAbbreviation(ForcePerAreaUnit));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this._selectedItems[i] = this._dropDownItems[i][j];
+      _selectedItems[i] = _dropDownItems[i][j];
 
       if (i == 0)
       {
-        this.DistributionType = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), this._selectedItems[i]);
-        if (this.DistributionType == LoadDistribution.Line)
+        DistributionType = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), _selectedItems[i]);
+        if (DistributionType == LoadDistribution.Line)
         {
-          this._dropDownItems[1] = UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.ForcePerLength);
-          this._selectedItems[1] = ForcePerLength.GetAbbreviation(this.ForcePerLengthUnit);
+          _dropDownItems[1] = UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.ForcePerLength);
+          _selectedItems[1] = ForcePerLength.GetAbbreviation(ForcePerLengthUnit);
         }
         else
         {
-          this._dropDownItems[1] = UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.ForcePerArea);
-          this._selectedItems[1] = Pressure.GetAbbreviation(this.ForcePerAreaUnit);
+          _dropDownItems[1] = UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.ForcePerArea);
+          _selectedItems[1] = Pressure.GetAbbreviation(ForcePerAreaUnit);
         }
       }
       if (i == 1)
       {
-        if (this.DistributionType == LoadDistribution.Line)
-          this.ForcePerLengthUnit = (ForcePerLengthUnit)UnitsHelper.Parse(typeof(ForcePerLengthUnit), this._selectedItems[i]);
+        if (DistributionType == LoadDistribution.Line)
+          ForcePerLengthUnit = (ForcePerLengthUnit)UnitsHelper.Parse(typeof(ForcePerLengthUnit), _selectedItems[i]);
         else
-          this.ForcePerAreaUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this._selectedItems[i]);
+          ForcePerAreaUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), _selectedItems[i]);
       }
 
       base.UpdateUI();
@@ -124,11 +124,11 @@ namespace ComposGH.Components
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.DistributionType = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), this._selectedItems[0]);
-      if (this.DistributionType == LoadDistribution.Line)
-        this.ForcePerLengthUnit = (ForcePerLengthUnit)UnitsHelper.Parse(typeof(ForcePerLengthUnit), this._selectedItems[1]);
+      DistributionType = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), _selectedItems[0]);
+      if (DistributionType == LoadDistribution.Line)
+        ForcePerLengthUnit = (ForcePerLengthUnit)UnitsHelper.Parse(typeof(ForcePerLengthUnit), _selectedItems[1]);
       else
-        this.ForcePerAreaUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this._selectedItems[1]);
+        ForcePerAreaUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), _selectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
     }
@@ -137,9 +137,9 @@ namespace ComposGH.Components
     {
       string unitAbbreviation;
       if (DistributionType == LoadDistribution.Line)
-        unitAbbreviation = ForcePerLength.GetAbbreviation(this.ForcePerLengthUnit);
+        unitAbbreviation = ForcePerLength.GetAbbreviation(ForcePerLengthUnit);
       else
-        unitAbbreviation = Pressure.GetAbbreviation(this.ForcePerAreaUnit);
+        unitAbbreviation = Pressure.GetAbbreviation(ForcePerAreaUnit);
       int i = 0;
       Params.Input[i++].Name = "Const. Dead [" + unitAbbreviation + "]";
       Params.Input[i++].Name = "Const. Live [" + unitAbbreviation + "]";

@@ -45,52 +45,52 @@ namespace ComposAPI
 
     public SteelMaterial(Pressure fy, Pressure E, Density density, WeldMaterialGrade weldGrade, bool isCustom, bool reductionFacorMpl)
     {
-      this.fy = fy;
-      this.E = E;
-      this.Density = density;
-      this.IsCustom = isCustom;
-      this.WeldGrade = weldGrade;
-      this.ReductionFactorMpl = reductionFacorMpl;
+      fy = fy;
+      E = E;
+      Density = density;
+      IsCustom = isCustom;
+      WeldGrade = weldGrade;
+      ReductionFactorMpl = reductionFacorMpl;
     }
 
     public SteelMaterial(StandardSteelGrade grade, Code code)
     {
       bool EN = (code == Code.EN1994_1_1_2004);
-      this.SetValuesFromStandard(grade, EN);
+      SetValuesFromStandard(grade, EN);
     }
 
     internal void SetValuesFromStandard(StandardSteelGrade grade, bool EN)
     {
-      this.E = new Pressure(EN ? 210 : 205, PressureUnit.Gigapascal);
-      this.Density = new Density(7850, DensityUnit.KilogramPerCubicMeter);
-      this.Grade = grade;
-      this.IsCustom = false;
+      E = new Pressure(EN ? 210 : 205, PressureUnit.Gigapascal);
+      Density = new Density(7850, DensityUnit.KilogramPerCubicMeter);
+      Grade = grade;
+      IsCustom = false;
 
       switch (grade)
       {
         case StandardSteelGrade.S235:
-          this.fy = new Pressure(235, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(235, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
 
         case StandardSteelGrade.S275:
-          this.fy = new Pressure(275, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_35;
+          fy = new Pressure(275, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_35;
           break;
 
         case StandardSteelGrade.S355:
-          this.fy = new Pressure(355, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_42;
+          fy = new Pressure(355, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_42;
           break;
 
         case StandardSteelGrade.S450:
-          this.fy = new Pressure(450, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_50;
+          fy = new Pressure(450, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_50;
           break;
 
         case StandardSteelGrade.S460:
-          this.fy = new Pressure(460, PressureUnit.Megapascal);
-          this.WeldGrade = WeldMaterialGrade.Grade_50;
+          fy = new Pressure(460, PressureUnit.Megapascal);
+          WeldGrade = WeldMaterialGrade.Grade_50;
           break;
 
         default:
@@ -152,17 +152,17 @@ namespace ComposAPI
     public virtual string ToCoaString(string name, Code code, ComposUnits units)
     {
       List<string> steelParameters = new List<string>();
-      if (this.IsCustom)
+      if (IsCustom)
       {
         steelParameters.Add("BEAM_STEEL_MATERIAL_USER");
         steelParameters.Add(name);
-        steelParameters.Add(CoaHelper.FormatSignificantFigures(this.fy.ToUnit(units.Stress).Value, 6));
-        steelParameters.Add(CoaHelper.FormatSignificantFigures(this.E.ToUnit(units.Stress).Value, 6));
-        steelParameters.Add(CoaHelper.FormatSignificantFigures(this.Density.ToUnit(units.Density).Value, 6));
+        steelParameters.Add(CoaHelper.FormatSignificantFigures(fy.ToUnit(units.Stress).Value, 6));
+        steelParameters.Add(CoaHelper.FormatSignificantFigures(E.ToUnit(units.Stress).Value, 6));
+        steelParameters.Add(CoaHelper.FormatSignificantFigures(Density.ToUnit(units.Density).Value, 6));
 
         if (code == Code.EN1994_1_1_2004)
         {
-          if (this.ReductionFactorMpl)
+          if (ReductionFactorMpl)
             steelParameters.Add("TRUE");
           else
             steelParameters.Add("FALSE");
@@ -173,16 +173,16 @@ namespace ComposAPI
         steelParameters.Add("BEAM_STEEL_MATERIAL_STD");
         steelParameters.Add(name);
         if (code == Code.EN1994_1_1_2004)
-          steelParameters.Add(this.Grade.ToString() + " (EN)");
+          steelParameters.Add(Grade.ToString() + " (EN)");
         else
-          steelParameters.Add(this.Grade.ToString());
+          steelParameters.Add(Grade.ToString());
       }
       string coaString = CoaHelper.CreateString(steelParameters);
 
       List<string> weldingParameters = new List<string>();
       weldingParameters.Add("BEAM_WELDING_MATERIAL");
       weldingParameters.Add(name);
-      weldingParameters.Add(this.WeldGrade.ToString().Replace('_', ' '));
+      weldingParameters.Add(WeldGrade.ToString().Replace('_', ' '));
       coaString += CoaHelper.CreateString(weldingParameters);
 
       return coaString;
@@ -200,7 +200,7 @@ namespace ComposAPI
 
       if (IsCustom == false)
       {
-        return this.Grade.ToString();
+        return Grade.ToString();
       }
       else
       {

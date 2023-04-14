@@ -29,14 +29,14 @@ namespace ComposGH.Components
           "Create a " + DeckingGoo.Description + " for a " + SlabGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
     protected override void RegisterInputParams(GH_InputParamManager pManager)
     {
-      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
-      string stressunitAbbreviation = Pressure.GetAbbreviation(this.StressUnit);
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
+      string stressunitAbbreviation = Pressure.GetAbbreviation(StressUnit);
 
       pManager.AddGenericParameter("b1 [" + unitAbbreviation + "]", "b1", "Lenght of b1 deck parameter(Deck_Spacing). See the decking picture in helps", GH_ParamAccess.item);
       pManager.AddGenericParameter("b2 [" + unitAbbreviation + "]", "b2", "Lenght of b2 deck parameter(Deck_UpperWidth). See the decking picture in helps", GH_ParamAccess.item);
@@ -57,14 +57,14 @@ namespace ComposGH.Components
 
     protected override void SolveInstance(IGH_DataAccess DA)
     {
-      Length distB1 = (Length)Input.UnitNumber(this, DA, 0, this.LengthUnit);
-      Length distB2 = (Length)Input.UnitNumber(this, DA, 1, this.LengthUnit);
-      Length distB3 = (Length)Input.UnitNumber(this, DA, 2, this.LengthUnit);
-      Length distB4 = (Length)Input.UnitNumber(this, DA, 3, this.LengthUnit);
-      Length distB5 = (Length)Input.UnitNumber(this, DA, 4, this.LengthUnit);
-      Length depth = (Length)Input.UnitNumber(this, DA, 5, this.LengthUnit);
-      Length thickness = (Length)Input.UnitNumber(this, DA, 6, this.LengthUnit);
-      Pressure stress = (Pressure)Input.UnitNumber(this, DA, 7, this.StressUnit);
+      Length distB1 = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
+      Length distB2 = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
+      Length distB3 = (Length)Input.UnitNumber(this, DA, 2, LengthUnit);
+      Length distB4 = (Length)Input.UnitNumber(this, DA, 3, LengthUnit);
+      Length distB5 = (Length)Input.UnitNumber(this, DA, 4, LengthUnit);
+      Length depth = (Length)Input.UnitNumber(this, DA, 5, LengthUnit);
+      Length thickness = (Length)Input.UnitNumber(this, DA, 6, LengthUnit);
+      Pressure stress = (Pressure)Input.UnitNumber(this, DA, 7, StressUnit);
       DeckingConfigurationGoo dconf = (DeckingConfigurationGoo)Input.GenericGoo<DeckingConfigurationGoo>(this, DA, 8);
 
       Output.SetItem(this, DA, 0, new DeckingGoo(new CustomDecking(distB1, distB2, distB3, distB4, distB5, depth, thickness, stress, (dconf == null) ? new DeckingConfiguration() : dconf.Value)));
@@ -76,46 +76,46 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Length Unit", "Strength Unit" });
+      _spacerDescriptions = new List<string>(new string[] { "Length Unit", "Strength Unit" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // length
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
 
       // strength
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Stress));
-      this._selectedItems.Add(Pressure.GetAbbreviation(this.StressUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Stress));
+      _selectedItems.Add(Pressure.GetAbbreviation(StressUnit));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this._selectedItems[i] = this._dropDownItems[i][j];
+      _selectedItems[i] = _dropDownItems[i][j];
 
       if (i == 0) // change is made to length unit
-        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
+        LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
       else
-        this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this._selectedItems[i]);
+        StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), _selectedItems[i]);
 
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[0]);
-      this.StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), this._selectedItems[1]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[0]);
+      StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), _selectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
     }
 
     public override void VariableParameterMaintenance()
     {
-      string unitAbbreviation = Length.GetAbbreviation(this.LengthUnit);
-      string stressunitAbbreviation = Pressure.GetAbbreviation(this.StressUnit);
+      string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
+      string stressunitAbbreviation = Pressure.GetAbbreviation(StressUnit);
 
       Params.Input[0].Name = "b1 [" + unitAbbreviation + "]";
       Params.Input[1].Name = "b2 [" + unitAbbreviation + "]";

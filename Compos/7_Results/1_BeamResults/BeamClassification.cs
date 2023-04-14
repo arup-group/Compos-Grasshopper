@@ -27,7 +27,7 @@ namespace ComposAPI
       get
       {
         ClassResultOption resultType = ClassResultOption.CLAS_CONS_FLAN_CLASS;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -39,7 +39,7 @@ namespace ComposAPI
       get
       {
         ClassResultOption resultType = ClassResultOption.CLAS_CONS_WEB_CLASS;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -51,7 +51,7 @@ namespace ComposAPI
       get
       {
         ClassResultOption resultType = ClassResultOption.CLAS_CONS_SECTION;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -63,7 +63,7 @@ namespace ComposAPI
       get
       {
         ClassResultOption resultType = ClassResultOption.CLAS_FINA_FLAN_CLASS;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -75,7 +75,7 @@ namespace ComposAPI
       get
       {
         ClassResultOption resultType = ClassResultOption.CLAS_FINA_WEB_CLASS;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -87,7 +87,7 @@ namespace ComposAPI
       get
       {
         ClassResultOption resultType = ClassResultOption.CLAS_FINA_SECTION;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -95,13 +95,13 @@ namespace ComposAPI
 
     private List<string> GetResults(ClassResultOption resultType)
     {
-      if (!this.ResultsCache.ContainsKey(resultType))
+      if (!ResultsCache.ContainsKey(resultType))
       {
         List<string> results = new List<string>();
-        for (short pos = 0; pos < this.NumIntermediatePos; pos++)
+        for (short pos = 0; pos < NumIntermediatePos; pos++)
         {
-          float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
-          switch (this.Member.DesignCode.Code)
+          float value = Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
+          switch (Member.DesignCode.Code)
           {
             case Code.BS5950_3_1_1990_Superseded:
             case Code.BS5950_3_1_1990_A1_2010:
@@ -153,9 +153,9 @@ namespace ComposAPI
               break;
           }
         }
-        this.ResultsCache.Add(resultType, results);
+        ResultsCache.Add(resultType, results);
       }
-      return this.ResultsCache[resultType];
+      return ResultsCache[resultType];
     }
   }
 }

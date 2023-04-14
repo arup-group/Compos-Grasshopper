@@ -22,7 +22,7 @@ namespace ComposGH.Components
           "Create a " + ERatioGoo.Description + " for a " + ConcreteMaterialGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat3())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -50,10 +50,10 @@ namespace ComposGH.Components
       DA.GetData(1, ref longTerm);
       DA.GetData(2, ref vibration);
       DA.GetData(3, ref shrinkage);
-      if (this.Params.Input[0].Sources.Count == 0
-        & this.Params.Input[1].Sources.Count == 0
-        & this.Params.Input[2].Sources.Count == 0
-        & this.Params.Input[3].Sources.Count == 0)
+      if (Params.Input[0].Sources.Count == 0
+        & Params.Input[1].Sources.Count == 0
+        & Params.Input[2].Sources.Count == 0
+        & Params.Input[3].Sources.Count == 0)
       {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Default values for EC4 C30/37 concrete");
       }

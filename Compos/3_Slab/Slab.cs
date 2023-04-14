@@ -20,11 +20,11 @@ namespace ComposAPI
 
     public Slab(IConcreteMaterial material, List<ISlabDimension> dimensions, ITransverseReinforcement transverseReinforcement, IMeshReinforcement meshReinforcement = null, IDecking decking = null)
     {
-      this.Material = material;
-      this.Dimensions = dimensions;
-      this.Transverse = transverseReinforcement;
-      this.Mesh = meshReinforcement;
-      this.Decking = decking;
+      Material = material;
+      Dimensions = dimensions;
+      Transverse = transverseReinforcement;
+      Mesh = meshReinforcement;
+      Decking = decking;
     }
     #endregion
 
@@ -86,20 +86,20 @@ namespace ComposAPI
 
     public string ToCoaString(string name, ComposUnits units)
     {
-      string str = this.Material.ToCoaString(name, units);
-      int num = this.Dimensions.Count;
+      string str = Material.ToCoaString(name, units);
+      int num = Dimensions.Count;
       int index = 1;
-      foreach (SlabDimension dimension in this.Dimensions)
+      foreach (SlabDimension dimension in Dimensions)
       {
         str += dimension.ToCoaString(name, num, index, units);
         index++;
       }
-      if (this.Mesh != null)
-        str += this.Mesh.ToCoaString(name, units);
-      str += this.Transverse.ToCoaString(name, units);
-      if (this.Decking != null)
+      if (Mesh != null)
+        str += Mesh.ToCoaString(name, units);
+      str += Transverse.ToCoaString(name, units);
+      if (Decking != null)
       {
-        str += this.Decking.ToCoaString(name, units);
+        str += Decking.ToCoaString(name, units);
       }
       return str;
     }
@@ -110,32 +110,32 @@ namespace ComposAPI
     {
       string invalid = "";
       string dim = "";
-      if (this.Dimensions.Count == 0)
+      if (Dimensions.Count == 0)
       {
         invalid = "Invalid Slab ";
         dim = "(no dimensions set)";
       }
       else
-        dim = (this.Dimensions.Count > 1) ? string.Join(" : ", this.Dimensions.Select(x => x.ToString()).ToArray()) : this.Dimensions[0].ToString();
+        dim = (Dimensions.Count > 1) ? string.Join(" : ", Dimensions.Select(x => x.ToString()).ToArray()) : Dimensions[0].ToString();
 
       string mat = "";
-      if (this.Material == null)
+      if (Material == null)
       {
         invalid = "Invalid Slab ";
         mat = "(no material set)";
       }
       else
-        mat = this.Material.ToString();
+        mat = Material.ToString();
       string reinf = "";
-      if (this.Mesh != null)
-        reinf = this.Mesh.ToString() + " / ";
-      if (this.Transverse == null)
+      if (Mesh != null)
+        reinf = Mesh.ToString() + " / ";
+      if (Transverse == null)
       {
         invalid = "Invalid Slab ";
         reinf = "(no reinforcement set)";
       }
       else
-        reinf += this.Transverse.ToString();
+        reinf += Transverse.ToString();
       return invalid + dim + ", " + mat + ", " + reinf;
     }
     #endregion

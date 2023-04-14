@@ -32,14 +32,14 @@ namespace ComposAPI
 
     public StudSpacing(Length distanceFromStart, int numberOfRows, int numberOfLines, Length spacing)
     {
-      this.DistanceFromStart = distanceFromStart;
+      DistanceFromStart = distanceFromStart;
       if (numberOfRows < 1)
         throw new ArgumentException("Number of rows must be bigger or equal to 1");
-      this.NumberOfRows = numberOfRows;
+      NumberOfRows = numberOfRows;
       if (numberOfLines < 1)
         throw new ArgumentException("Number of lines must be bigger or equal to 1");
-      this.NumberOfLines = numberOfLines;
-      this.Spacing = spacing;
+      NumberOfLines = numberOfLines;
+      Spacing = spacing;
     }
 
     #endregion
@@ -47,10 +47,10 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      string start = (this.DistanceFromStart.Value == 0) ? "" : "From:" + this.DistanceFromStart.ToUnit(ComposUnitsHelper.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
+      string start = (DistanceFromStart.Value == 0) ? "" : "From:" + DistanceFromStart.ToUnit(ComposUnitsHelper.LengthUnitGeometry).ToString("f0").Replace(" ", string.Empty);
       string rows = NumberOfRows + "R";
       string lines = NumberOfLines + "L";
-      string spacing = "@" + this.Spacing.ToUnit(ComposUnitsHelper.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
+      string spacing = "@" + Spacing.ToUnit(ComposUnitsHelper.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
 
       string joined = string.Join(" ", new List<string>() { start, rows, lines, spacing });
       return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');

@@ -41,17 +41,17 @@ namespace ComposAPI
         switch (value)
         {
           case OpeningType.Rectangular:
-            this.Diameter = Length.Zero;
+            Diameter = Length.Zero;
             break;
           case OpeningType.Circular:
-            this.Width = Length.Zero;
-            this.Height = Length.Zero;
+            Width = Length.Zero;
+            Height = Length.Zero;
             break;
           case OpeningType.Start_notch:
           case OpeningType.End_notch:
-            this.Diameter = Length.Zero;
-            this.CentroidPosFromStart = Length.Zero;
-            this.CentroidPosFromTop = Length.Zero;
+            Diameter = Length.Zero;
+            CentroidPosFromStart = Length.Zero;
+            CentroidPosFromTop = Length.Zero;
             break;
         }
       }
@@ -63,7 +63,7 @@ namespace ComposAPI
     public Length Diameter { get; set; }
     public IQuantity CentroidPosFromStart
     {
-      get { return this.m_CentroidPosFromStart; }
+      get { return m_CentroidPosFromStart; }
       set
       {
         if (value == null) return;
@@ -71,13 +71,13 @@ namespace ComposAPI
           & value.QuantityInfo.UnitType != typeof(RatioUnit))
           throw new ArgumentException("Centroid Position From Start must be either Length or Ratio");
         else
-          this.m_CentroidPosFromStart = value;
+          m_CentroidPosFromStart = value;
       }
     }
     private IQuantity m_CentroidPosFromStart;
     public IQuantity CentroidPosFromTop
     {
-      get { return this.m_CentroidPosFromTop; }
+      get { return m_CentroidPosFromTop; }
       set
       {
         if (value == null) return;
@@ -85,7 +85,7 @@ namespace ComposAPI
           & value.QuantityInfo.UnitType != typeof(RatioUnit))
           throw new ArgumentException("Centroid Position From Top must be either Length or Ratio");
         else
-          this.m_CentroidPosFromTop = value;
+          m_CentroidPosFromTop = value;
       }
     }
     private IQuantity m_CentroidPosFromTop;
@@ -107,17 +107,17 @@ namespace ComposAPI
     public WebOpening(Length width, Length height, IQuantity positionCentroidFromStart, IQuantity positionCentroidFromTop, IWebOpeningStiffeners stiffeners = null)
     {
       // static type for this constructor
-      this.WebOpeningType = OpeningType.Rectangular;
+      WebOpeningType = OpeningType.Rectangular;
       // inputs
-      this.Width = width;
-      this.Height = height;
-      this.CentroidPosFromStart = positionCentroidFromStart;
-      this.CentroidPosFromTop = positionCentroidFromTop;
-      this.OpeningStiffeners = stiffeners;
+      Width = width;
+      Height = height;
+      CentroidPosFromStart = positionCentroidFromStart;
+      CentroidPosFromTop = positionCentroidFromTop;
+      OpeningStiffeners = stiffeners;
       // set stiffeners properties
-      if (this.OpeningStiffeners != null)
+      if (OpeningStiffeners != null)
       {
-        this.OpeningStiffeners = new WebOpeningStiffeners(
+        OpeningStiffeners = new WebOpeningStiffeners(
             stiffeners.DistanceFrom, stiffeners.TopStiffenerWidth, stiffeners.TopStiffenerThickness,
             stiffeners.BottomStiffenerWidth, stiffeners.BottomStiffenerThickness, stiffeners.isBothSides);
       }
@@ -132,16 +132,16 @@ namespace ComposAPI
     public WebOpening(Length diameter, IQuantity positionCentroidFromStart, IQuantity positionCentroidFromTop, IWebOpeningStiffeners stiffeners = null)
     {
       // static type for this constructor
-      this.WebOpeningType = OpeningType.Circular;
+      WebOpeningType = OpeningType.Circular;
       // inputs
-      this.Diameter = diameter;
-      this.CentroidPosFromStart = positionCentroidFromStart;
-      this.CentroidPosFromTop = positionCentroidFromTop;
-      this.OpeningStiffeners = stiffeners;
+      Diameter = diameter;
+      CentroidPosFromStart = positionCentroidFromStart;
+      CentroidPosFromTop = positionCentroidFromTop;
+      OpeningStiffeners = stiffeners;
       // set stiffeners properties
-      if (this.OpeningStiffeners != null)
+      if (OpeningStiffeners != null)
       {
-        this.OpeningStiffeners = new WebOpeningStiffeners(
+        OpeningStiffeners = new WebOpeningStiffeners(
             stiffeners.DistanceFrom, stiffeners.TopStiffenerWidth, stiffeners.TopStiffenerThickness,
             stiffeners.BottomStiffenerWidth, stiffeners.BottomStiffenerThickness, stiffeners.isBothSides);
       }
@@ -156,17 +156,17 @@ namespace ComposAPI
     {
       // static type for this constructor
       if (position == NotchPosition.Start)
-        this.WebOpeningType = OpeningType.Start_notch;
+        WebOpeningType = OpeningType.Start_notch;
       else
-        this.WebOpeningType = OpeningType.End_notch;
+        WebOpeningType = OpeningType.End_notch;
       // inputs
-      this.Width = width;
-      this.Height = height;
-      this.OpeningStiffeners = stiffeners;
+      Width = width;
+      Height = height;
+      OpeningStiffeners = stiffeners;
       // set stiffeners properties
-      if (this.OpeningStiffeners != null)
+      if (OpeningStiffeners != null)
       {
-        this.OpeningStiffeners = new WebOpeningStiffeners(
+        OpeningStiffeners = new WebOpeningStiffeners(
             stiffeners.DistanceFrom, stiffeners.TopStiffenerWidth,
             stiffeners.TopStiffenerThickness, stiffeners.isBothSides);
       }
@@ -257,64 +257,64 @@ namespace ComposAPI
       List<string> parameters = new List<string>();
       parameters.Add(CoaIdentifier.WebOpeningDimension);
       parameters.Add(name);
-      switch (this.WebOpeningType)
+      switch (WebOpeningType)
       {
         case OpeningType.Start_notch:
           parameters.Add("LEFT_NOTCH");
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.Width.ToUnit(units.Section).Value, 6));
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.Height.ToUnit(units.Section).Value, 6));
+          parameters.Add(CoaHelper.FormatSignificantFigures(Width.ToUnit(units.Section).Value, 6));
+          parameters.Add(CoaHelper.FormatSignificantFigures(Height.ToUnit(units.Section).Value, 6));
           parameters.Add("50.0000%");
           parameters.Add("50.0000%");
           break;
 
         case OpeningType.End_notch:
           parameters.Add("RIGHT_NOTCH");
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.Width.ToUnit(units.Section).Value, 6));
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.Height.ToUnit(units.Section).Value, 6));
+          parameters.Add(CoaHelper.FormatSignificantFigures(Width.ToUnit(units.Section).Value, 6));
+          parameters.Add(CoaHelper.FormatSignificantFigures(Height.ToUnit(units.Section).Value, 6));
           parameters.Add("50.0000%");
           parameters.Add("50.0000%");
           break;
 
         case OpeningType.Rectangular:
           parameters.Add("RECTANGULAR");
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.Width.ToUnit(units.Section).Value, 6));
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.Height.ToUnit(units.Section).Value, 6));
+          parameters.Add(CoaHelper.FormatSignificantFigures(Width.ToUnit(units.Section).Value, 6));
+          parameters.Add(CoaHelper.FormatSignificantFigures(Height.ToUnit(units.Section).Value, 6));
 
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.CentroidPosFromStart, units.Section, 6));
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.CentroidPosFromTop, units.Section, 6));
+          parameters.Add(CoaHelper.FormatSignificantFigures(CentroidPosFromStart, units.Section, 6));
+          parameters.Add(CoaHelper.FormatSignificantFigures(CentroidPosFromTop, units.Section, 6));
           break;
 
         case OpeningType.Circular:
           parameters.Add("CIRCULAR");
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.Diameter.ToUnit(units.Section).Value, 6));
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.Diameter.ToUnit(units.Section).Value, 6));
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.CentroidPosFromStart, units.Section, 6));
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.CentroidPosFromTop, units.Section, 6));
+          parameters.Add(CoaHelper.FormatSignificantFigures(Diameter.ToUnit(units.Section).Value, 6));
+          parameters.Add(CoaHelper.FormatSignificantFigures(Diameter.ToUnit(units.Section).Value, 6));
+          parameters.Add(CoaHelper.FormatSignificantFigures(CentroidPosFromStart, units.Section, 6));
+          parameters.Add(CoaHelper.FormatSignificantFigures(CentroidPosFromTop, units.Section, 6));
           break;
       }
-      if (this.OpeningStiffeners == null)
+      if (OpeningStiffeners == null)
         parameters.Add("STIFFENER_NO");
       else
       {
         parameters.Add("STIFFENER_YES");
 
-        if (!this.OpeningStiffeners.isBothSides | this.OpeningStiffeners.isNotch)
+        if (!OpeningStiffeners.isBothSides | OpeningStiffeners.isNotch)
           parameters.Add("ONE_SIDE_STIFFENER");
         else
           parameters.Add("BOTH_SIDE_STIFFENER");
 
-        parameters.Add(CoaHelper.FormatSignificantFigures(this.OpeningStiffeners.DistanceFrom.ToUnit(units.Section).Value, 6));
-        parameters.Add(CoaHelper.FormatSignificantFigures(this.OpeningStiffeners.TopStiffenerWidth.ToUnit(units.Section).Value, 6));
-        parameters.Add(CoaHelper.FormatSignificantFigures(this.OpeningStiffeners.TopStiffenerThickness.ToUnit(units.Section).Value, 6));
-        if (this.OpeningStiffeners.isNotch)
+        parameters.Add(CoaHelper.FormatSignificantFigures(OpeningStiffeners.DistanceFrom.ToUnit(units.Section).Value, 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(OpeningStiffeners.TopStiffenerWidth.ToUnit(units.Section).Value, 6));
+        parameters.Add(CoaHelper.FormatSignificantFigures(OpeningStiffeners.TopStiffenerThickness.ToUnit(units.Section).Value, 6));
+        if (OpeningStiffeners.isNotch)
         {
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.OpeningStiffeners.TopStiffenerWidth.ToUnit(units.Section).Value, 6));
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.OpeningStiffeners.TopStiffenerThickness.ToUnit(units.Section).Value, 6));
+          parameters.Add(CoaHelper.FormatSignificantFigures(OpeningStiffeners.TopStiffenerWidth.ToUnit(units.Section).Value, 6));
+          parameters.Add(CoaHelper.FormatSignificantFigures(OpeningStiffeners.TopStiffenerThickness.ToUnit(units.Section).Value, 6));
         }
         else
         {
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.OpeningStiffeners.BottomStiffenerWidth.ToUnit(units.Section).Value, 6));
-          parameters.Add(CoaHelper.FormatSignificantFigures(this.OpeningStiffeners.BottomStiffenerThickness.ToUnit(units.Section).Value, 6));
+          parameters.Add(CoaHelper.FormatSignificantFigures(OpeningStiffeners.BottomStiffenerWidth.ToUnit(units.Section).Value, 6));
+          parameters.Add(CoaHelper.FormatSignificantFigures(OpeningStiffeners.BottomStiffenerThickness.ToUnit(units.Section).Value, 6));
         }
       }
 
@@ -327,28 +327,28 @@ namespace ComposAPI
     {
       string size = "";
       
-      switch (this.WebOpeningType)
+      switch (WebOpeningType)
       {
         case OpeningType.Start_notch:
         case OpeningType.End_notch:
         case OpeningType.Rectangular:
-          if (this.Width == null || this.Height == null)
+          if (Width == null || Height == null)
           {
             return "Invalid Webopening";
           }
-          size = this.Width.As(Height.Unit).ToString("g2") + "x" + this.Height.ToString("g2").Replace(" ", string.Empty);
+          size = Width.As(Height.Unit).ToString("g2") + "x" + Height.ToString("g2").Replace(" ", string.Empty);
           break;
         case OpeningType.Circular:
-          if (this.Diameter == null)
+          if (Diameter == null)
           {
             return "Invalid Webopening";
           }
-          size = "Ø" + this.Diameter.ToString("g2").Replace(" ", string.Empty);
+          size = "Ø" + Diameter.ToString("g2").Replace(" ", string.Empty);
           break;
       }
 
       string typ = "";
-      switch (this.WebOpeningType)
+      switch (WebOpeningType)
       {
         case OpeningType.Start_notch:
           typ = " Start Notch";
@@ -359,46 +359,46 @@ namespace ComposAPI
         case OpeningType.Rectangular:
         case OpeningType.Circular:
           string x = "";
-          if (this.CentroidPosFromStart == null)
+          if (CentroidPosFromStart == null)
           {
             return "Invalid Webopening";
           }
           else
           {
-            if (this.CentroidPosFromStart.QuantityInfo.UnitType == typeof(LengthUnit))
+            if (CentroidPosFromStart.QuantityInfo.UnitType == typeof(LengthUnit))
             {
-              Length l = (Length)this.CentroidPosFromStart;
+              Length l = (Length)CentroidPosFromStart;
               x = l.ToString("f2").Replace(" ", string.Empty);
             }
             else
             {
-              Ratio p = (Ratio)this.CentroidPosFromStart;
+              Ratio p = (Ratio)CentroidPosFromStart;
               x = p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
             }
           }
           
           string z = "";
-          if (this.CentroidPosFromStart == null)
+          if (CentroidPosFromStart == null)
           {
             return "Invalid Webopening";
           }
           else
           {
-            if (this.CentroidPosFromTop.QuantityInfo.UnitType == typeof(LengthUnit))
+            if (CentroidPosFromTop.QuantityInfo.UnitType == typeof(LengthUnit))
             {
-              Length l = (Length)this.CentroidPosFromTop;
+              Length l = (Length)CentroidPosFromTop;
               z = l.ToString("g2").Replace(" ", string.Empty);
             }
             else
             {
-              Ratio p = (Ratio)this.CentroidPosFromTop;
+              Ratio p = (Ratio)CentroidPosFromTop;
               z = p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
             }
           }
           typ = ", Pos:(x:" + x + ", z:" + z + ")";
           break;
       }
-      if (this.OpeningStiffeners != null)
+      if (OpeningStiffeners != null)
         typ += " w/Stiff.";
 
       return size + typ;

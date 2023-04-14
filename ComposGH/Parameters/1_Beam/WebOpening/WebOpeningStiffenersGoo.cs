@@ -16,7 +16,7 @@ namespace ComposGH.Parameters
     public static string NickName => "Stf";
     public static string Description => "Compos Web Opening Stiffener";
     public WebOpeningStiffenersGoo(IWebOpeningStiffeners item) : base(item) { }
-    public override IGH_Goo Duplicate() => new WebOpeningStiffenersGoo(this.Value);
+    public override IGH_Goo Duplicate() => new WebOpeningStiffenersGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 
@@ -33,8 +33,8 @@ namespace ComposGH.Parameters
         Components.Ribbon.CategoryName.Name(),
         Components.Ribbon.SubCategoryName.Cat10()))
     { }
-    public override string InstanceDescription => this.m_data.DataCount == 0 ? "Empty " + WebOpeningStiffenersGoo.Name + " parameter" : base.InstanceDescription;
-    public override string TypeName => this.SourceCount == 0 ? WebOpeningStiffenersGoo.Name : base.TypeName;
+    public override string InstanceDescription => m_data.DataCount == 0 ? "Empty " + WebOpeningStiffenersGoo.Name + " parameter" : base.InstanceDescription;
+    public override string TypeName => SourceCount == 0 ? WebOpeningStiffenersGoo.Name : base.TypeName;
     public override Guid ComponentGuid => new Guid("8c6de6af-baae-40b0-aaba-4273051e0265");
     public override GH_Exposure Exposure => GH_Exposure.hidden;
     protected override System.Drawing.Bitmap Icon => Properties.Resources.WebOpeningStiffenerParam;

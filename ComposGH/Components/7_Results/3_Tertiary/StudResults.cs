@@ -32,7 +32,7 @@ namespace ComposGH.Components
           "Get stud results for a " + MemberGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat7())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -60,12 +60,12 @@ namespace ComposGH.Components
     protected override void SolveInstance(IGH_DataAccess DA)
     {
       IResult res = ((MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
-      List<GH_UnitNumber> positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(this.LengthUnit))).ToList();
+      List<GH_UnitNumber> positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
       IStudResult result = res.StudResults;
 
       int i = 0;
       Output.SetList(this, DA, i++, 
-        result.StudCapacity.Select(x => new GH_UnitNumber(x.ToUnit(this.ForceUnit))).ToList());
+        result.StudCapacity.Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
       
       Output.SetList(this, DA, i++,
         result.NumberOfStudsStart.Select(x => new GH_Integer(x)).ToList());
@@ -80,22 +80,22 @@ namespace ComposGH.Components
         result.NumberOfStudsRequiredEnd.Select(x => new GH_Integer(x)).ToList());
 
       Output.SetList(this, DA, i++,
-        result.StudCapacityRequiredForFullShearInteraction.Select(x => new GH_UnitNumber(x.ToUnit(this.ForceUnit))).ToList());
+        result.StudCapacityRequiredForFullShearInteraction.Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
 
       Output.SetList(this, DA, i++,
         result.ShearInteractionRequired.Select(x => new GH_UnitNumber(x.ToUnit(RatioUnit.DecimalFraction))).ToList());
 
       Output.SetItem(this, DA, i++, new GH_UnitNumber(
-        result.SingleStudCapacity.ToUnit(this.ForceUnit)));
+        result.SingleStudCapacity.ToUnit(ForceUnit)));
 
       Output.SetList(this, DA, i++,
         result.ShearInteraction.Select(x => new GH_UnitNumber(x.ToUnit(RatioUnit.DecimalFraction))).ToList());
 
       Output.SetList(this, DA, i++,
-        result.StudCapacityStart.Select(x => new GH_UnitNumber(x.ToUnit(this.ForceUnit))).ToList());
+        result.StudCapacityStart.Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
 
       Output.SetList(this, DA, i++,
-        result.StudCapacityEnd.Select(x => new GH_UnitNumber(x.ToUnit(this.ForceUnit))).ToList());
+        result.StudCapacityEnd.Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
 
       Output.SetList(this, DA, i, positions);
     }
@@ -106,38 +106,38 @@ namespace ComposGH.Components
 
     protected override void InitialiseDropdowns()
     {
-      this._spacerDescriptions = new List<string>(new string[] { "Force Unit", "Length Unit" });
+      _spacerDescriptions = new List<string>(new string[] { "Force Unit", "Length Unit" });
 
-      this._dropDownItems = new List<List<string>>();
-      this._selectedItems = new List<string>();
+      _dropDownItems = new List<List<string>>();
+      _selectedItems = new List<string>();
 
       // force
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Force));
-      this._selectedItems.Add(Force.GetAbbreviation(this.ForceUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Force));
+      _selectedItems.Add(Force.GetAbbreviation(ForceUnit));
 
       // length
-      this._dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
-      this._selectedItems.Add(Length.GetAbbreviation(this.LengthUnit));
+      _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
+      _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
 
-      this._isInitialised = true;
+      _isInitialised = true;
     }
 
     public override void SetSelected(int i, int j)
     {
-      this._selectedItems[i] = this._dropDownItems[i][j];
+      _selectedItems[i] = _dropDownItems[i][j];
 
       if (i == 0)
-        this.ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), this._selectedItems[i]);
+        ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), _selectedItems[i]);
       else if (i == 1)
-        this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[i]);
+        LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
       base.UpdateUI();
     }
 
     protected override void UpdateUIFromSelectedItems()
     {
-      this.ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), this._selectedItems[0]);
-      this.LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), this._selectedItems[1]);
+      ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), _selectedItems[0]);
+      LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[1]);
 
       base.UpdateUIFromSelectedItems();
     }

@@ -21,7 +21,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_CONS_BEAM_BOT;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -33,7 +33,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_ADDI_BEAM_BOT;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -45,7 +45,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_LIVE_BEAM_BOT;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -57,7 +57,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_SHRINK_BEAM_BOT;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -69,7 +69,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_TOTL_BEAM_BOT;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
     #endregion
@@ -82,7 +82,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_CONS_BEAM_WEB;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -94,7 +94,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_ADDI_BEAM_WEB;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -106,7 +106,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_LIVE_BEAM_WEB;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -118,7 +118,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_SHRINK_BEAM_WEB;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -130,7 +130,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_TOTL_BEAM_WEB;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
     #endregion
@@ -143,7 +143,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_CONS_BEAM_TOP;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -155,7 +155,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_ADDI_BEAM_TOP;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -167,7 +167,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_LIVE_BEAM_TOP;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -179,7 +179,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_SHRINK_BEAM_TOP;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
 
@@ -191,7 +191,7 @@ namespace ComposAPI
       get
       {
         StressOption resultType = StressOption.STRESS_FINA_TOTL_BEAM_TOP;
-        return this.GetResults(resultType);
+        return GetResults(resultType);
       }
     }
     #endregion
@@ -199,17 +199,17 @@ namespace ComposAPI
     private Dictionary<StressOption, List<Pressure>> ResultsCache = new Dictionary<StressOption, List<Pressure>>();
     private List<Pressure> GetResults(StressOption resultType)
     {
-      if (!this.ResultsCache.ContainsKey(resultType))
+      if (!ResultsCache.ContainsKey(resultType))
       {
         List<Pressure> results = new List<Pressure>();
-        for (short pos = 0; pos < this.NumIntermediatePos; pos++)
+        for (short pos = 0; pos < NumIntermediatePos; pos++)
         {
-          float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
+          float value = Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
           results.Add(new Pressure(value, PressureUnit.Pascal));
         }
-        this.ResultsCache.Add(resultType, results);
+        ResultsCache.Add(resultType, results);
       }
-      return this.ResultsCache[resultType];
+      return ResultsCache[resultType];
     }
   }
 }

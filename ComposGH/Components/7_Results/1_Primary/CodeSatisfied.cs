@@ -24,7 +24,7 @@ namespace ComposGH.Components
       : base("Code Satisfied?", "Code", "Check if a Compos model satisfies the chosen code",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat7())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -51,15 +51,15 @@ namespace ComposGH.Components
         {
           MemberGoo goo = (MemberGoo)gh_typ.Value;
           member = (IMember)goo.Value;
-          this.Message = "";
+          Message = "";
         }
         base.DestroyIconCache();
       }
       if (member != null)
       {
-        this.Message = member.DesignCode.Code.ToString();
-        this.Status = member.CodeSatisfied();
-        if(this.Status == 1)
+        Message = member.DesignCode.Code.ToString();
+        Status = member.CodeSatisfied();
+        if(Status == 1)
             AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "The natural frequency is lower than that required");
         DA.SetData(0, member.GetCodeSatisfiedMessage());
       }

@@ -14,7 +14,7 @@ namespace ComposGH.Parameters
     public static string NickName => "ER";
     public static string Description => "Compos Steel to concrete Young´s modulus ratios";
     public ERatioGoo(IERatio item) : base(item) { }
-    public override IGH_Goo Duplicate() => new ERatioGoo(this.Value);
+    public override IGH_Goo Duplicate() => new ERatioGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 }

@@ -14,7 +14,7 @@ namespace ComposGH.Parameters
     public static string NickName => "Sla";
     public static string Description => "Compos Concrete Slab";
     public SlabGoo(ISlab item) : base(item) { }
-    public override IGH_Goo Duplicate() => new SlabGoo(this.Value);
+    public override IGH_Goo Duplicate() => new SlabGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
   }
 }

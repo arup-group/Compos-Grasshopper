@@ -16,11 +16,11 @@ namespace ComposAPI
     public IBeamSizeLimits BeamSizeLimits { get; set; } = new BeamSizeLimits();
     public IList<int> CatalogueSectionTypes
     {
-      get { return this.m_CatalogueSections; }
+      get { return m_CatalogueSections; }
       set
       {
-        this.m_CatalogueSections = value;
-        this.CheckCatalogueTypeIDs();
+        m_CatalogueSections = value;
+        CheckCatalogueTypeIDs();
       }
     }
     private IList<int> m_CatalogueSections = new List<int>();
@@ -39,21 +39,21 @@ namespace ComposAPI
 
     public DesignCriteria(BeamSizeLimits beamSizeLimits, OptimiseOption optimiseOption, List<int> catalogues, DeflectionLimit constructionDL = null, DeflectionLimit additionalDL = null, DeflectionLimit finalLL = null, DeflectionLimit total = null, DeflectionLimit postConstr = null, FrequencyLimits frequencyLimits = null)
     {
-      this.BeamSizeLimits = beamSizeLimits;
-      this.OptimiseOption = optimiseOption;
-      this.CatalogueSectionTypes = catalogues;
-      this.CheckCatalogueTypeIDs();
-      this.ConstructionDeadLoad = constructionDL;
-      this.AdditionalDeadLoad = additionalDL;
-      this.FinalLiveLoad = finalLL;
-      this.TotalLoads = total;
-      this.PostConstruction = postConstr;
-      this.FrequencyLimits = frequencyLimits;
+      BeamSizeLimits = beamSizeLimits;
+      OptimiseOption = optimiseOption;
+      CatalogueSectionTypes = catalogues;
+      CheckCatalogueTypeIDs();
+      ConstructionDeadLoad = constructionDL;
+      AdditionalDeadLoad = additionalDL;
+      FinalLiveLoad = finalLL;
+      TotalLoads = total;
+      PostConstruction = postConstr;
+      FrequencyLimits = frequencyLimits;
     }
 
     internal void CheckCatalogueTypeIDs()
     {
-      foreach (int id in this.m_CatalogueSections)
+      foreach (int id in m_CatalogueSections)
       {
         if (!CatalogueSectionType.CatalogueSectionTypes.ContainsKey(id))
           throw new Exception("Catalogue Section Type of ID: " + id + " does not exist in Compos Catalogue Section Library");
@@ -154,34 +154,34 @@ namespace ComposAPI
     {
       string coaString = "";
 
-      if (this.ConstructionDeadLoad != null)
-        coaString += this.ConstructionDeadLoad.ToCoaString(name, DeflectionLimitLoadType.ConstructionDeadLoad, units);
-      if (this.AdditionalDeadLoad != null)
-        coaString += this.AdditionalDeadLoad.ToCoaString(name, DeflectionLimitLoadType.AdditionalDeadLoad, units);
-      if (this.FinalLiveLoad != null)
-        coaString += this.FinalLiveLoad.ToCoaString(name, DeflectionLimitLoadType.FinalLiveLoad, units);
-      if (this.TotalLoads != null)
-        coaString += this.TotalLoads.ToCoaString(name, DeflectionLimitLoadType.Total, units);
-      if (this.PostConstruction != null)
-        coaString += this.PostConstruction.ToCoaString(name, DeflectionLimitLoadType.PostConstruction, units);
+      if (ConstructionDeadLoad != null)
+        coaString += ConstructionDeadLoad.ToCoaString(name, DeflectionLimitLoadType.ConstructionDeadLoad, units);
+      if (AdditionalDeadLoad != null)
+        coaString += AdditionalDeadLoad.ToCoaString(name, DeflectionLimitLoadType.AdditionalDeadLoad, units);
+      if (FinalLiveLoad != null)
+        coaString += FinalLiveLoad.ToCoaString(name, DeflectionLimitLoadType.FinalLiveLoad, units);
+      if (TotalLoads != null)
+        coaString += TotalLoads.ToCoaString(name, DeflectionLimitLoadType.Total, units);
+      if (PostConstruction != null)
+        coaString += PostConstruction.ToCoaString(name, DeflectionLimitLoadType.PostConstruction, units);
 
-      coaString += this.BeamSizeLimits.ToCoaString(name, units);
+      coaString += BeamSizeLimits.ToCoaString(name, units);
 
       List<string> parameters = new List<string>();
       parameters.Add(CoaIdentifier.DesignCriteria.OptimiseOption);
       parameters.Add(name);
-      parameters.Add(GetOptionCoaString(this.OptimiseOption));
+      parameters.Add(GetOptionCoaString(OptimiseOption));
       coaString += CoaHelper.CreateString(parameters);
 
       parameters = new List<string>();
       parameters.Add(CoaIdentifier.DesignCriteria.SectionType);
       parameters.Add(name);
-      parameters.Add(string.Join(" ", this.CatalogueSectionTypes));
+      parameters.Add(string.Join(" ", CatalogueSectionTypes));
       coaString += CoaHelper.CreateString(parameters);
 
-      if (this.FrequencyLimits != null)
+      if (FrequencyLimits != null)
       {
-        coaString += this.FrequencyLimits.ToCoaString(name);
+        coaString += FrequencyLimits.ToCoaString(name);
       }
 
       return coaString;

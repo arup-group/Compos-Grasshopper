@@ -25,7 +25,7 @@ namespace ComposGH.Components
           "Create a " + CreepShrinkageParametersGoo.Description + " for a (EN) " + DesignCodeGoo.Description,
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat5())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -61,7 +61,7 @@ namespace ComposGH.Components
       if (DA.GetData(2, ref ageFinal))
         csparams.FinalConcreteAgeCreep = ageFinal;
       
-      if (this.Params.Input[3].Sources.Count > 0)
+      if (Params.Input[3].Sources.Count > 0)
         csparams.RelativeHumidity = (Ratio)Input.UnitNumber(this, DA, 3, RatioUnit.DecimalFraction);
       
       DA.SetData(0, new CreepShrinkageParametersGoo(csparams));

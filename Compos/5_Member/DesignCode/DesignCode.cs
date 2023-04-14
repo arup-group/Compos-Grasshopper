@@ -32,7 +32,7 @@ namespace ComposAPI
         throw new Exception("Must use the EN1994 class to create a EN 1994-1-1:2004 DesignCode");
       if (designcode == Code.AS_NZS2327_2017)
         throw new Exception("Must use the ASNZS2327 class to create a AS/NZS2327:2017 DesignCode");
-      this.Code = designcode;
+      Code = designcode;
     }
 
     #region coa interop
@@ -151,7 +151,7 @@ namespace ComposAPI
     public virtual string ToCoaString(string name)
     {
       string str = CoaIdentifier.DesignOption + '\t' + name + '\t';
-      switch (this.Code)
+      switch (Code)
       {
         case Code.BS5950_3_1_1990_Superseded:
           str += CoaIdentifier.DesignCode.BS_Superseded + '\t';
@@ -180,13 +180,13 @@ namespace ComposAPI
         default:
           throw new Exception("Code not recognised");
       }
-      str += ((this.DesignOption.ProppedDuringConstruction) ? "PROPPED" : "UNPROPPED") + '\t';
-      str += ((this.DesignOption.InclSteelBeamWeight) ? "BEAM_WEIGHT_YES" : "BEAM_WEIGHT_NO") + '\t';
-      str += ((this.DesignOption.InclConcreteSlabWeight) ? "SLAB_WEIGHT_YES" : "SLAB_WEIGHT_NO") + '\t';
-      str += ((this.DesignOption.ConsiderShearDeflection) ? "SHEAR_DEFORM_YES" : "SHEAR_DEFORM_NO") + '\t';
-      str += ((this.DesignOption.InclThinFlangeSections) ? "THIN_SECTION_YES" : "THIN_SECTION_NO") + '\t';
+      str += ((DesignOption.ProppedDuringConstruction) ? "PROPPED" : "UNPROPPED") + '\t';
+      str += ((DesignOption.InclSteelBeamWeight) ? "BEAM_WEIGHT_YES" : "BEAM_WEIGHT_NO") + '\t';
+      str += ((DesignOption.InclConcreteSlabWeight) ? "SLAB_WEIGHT_YES" : "SLAB_WEIGHT_NO") + '\t';
+      str += ((DesignOption.ConsiderShearDeflection) ? "SHEAR_DEFORM_YES" : "SHEAR_DEFORM_NO") + '\t';
+      str += ((DesignOption.InclThinFlangeSections) ? "THIN_SECTION_YES" : "THIN_SECTION_NO") + '\t';
 
-      if (this.Code == Code.AS_NZS2327_2017)
+      if (Code == Code.AS_NZS2327_2017)
       {
         // because the coa string for "DESIGN_OPTION" includes two values in the end
         // only for ASNZ code creep multipliers this is included here
@@ -200,7 +200,7 @@ namespace ComposAPI
         str += CoaHelper.FormatSignificantFigures(2.0, 6) + '\n';
       }
 
-      str += this.SafetyFactors.ToCoaString(name);
+      str += SafetyFactors.ToCoaString(name);
 
       return str;
     }
@@ -209,7 +209,7 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      switch (this.Code)
+      switch (Code)
       {
         case Code.BS5950_3_1_1990_Superseded:
           return CoaIdentifier.DesignCode.BS_Superseded;

@@ -26,7 +26,7 @@ namespace ComposGH.Components
       : base("DesignMember", "Design", "Design (size) the Steel Beam of a Compos Member",
             Ribbon.CategoryName.Name(),
             Ribbon.SubCategoryName.Cat8())
-    { this.Hidden = true; } // sets the initial state of the component to hidden
+    { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
@@ -46,12 +46,12 @@ namespace ComposGH.Components
     {
       MemberGoo memGoo = (MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0);
       DesignCriteriaGoo critGoo = (DesignCriteriaGoo)Input.GenericGoo<DesignCriteriaGoo>(this, DA, 1);
-      this.Message = "";
+      Message = "";
       if (memGoo.Value != null)
       {
         Member designedMember = (Member)memGoo.Value.Duplicate();
         designedMember.DesignCriteria = critGoo.Value;
-        this.Message = designedMember.GetCodeSatisfiedMessage();
+        Message = designedMember.GetCodeSatisfiedMessage();
         if (!designedMember.Design())
         {
           AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Failed to design member");
@@ -64,7 +64,7 @@ namespace ComposGH.Components
           AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Failed to design member");
           return;
         }
-        this.Message = newProfile[2];
+        Message = newProfile[2];
         DA.SetData(0, new MemberGoo(designedMember));
       }
     }

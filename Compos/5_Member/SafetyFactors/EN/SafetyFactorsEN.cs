@@ -73,11 +73,11 @@ namespace ComposAPI
     public string ToCoaString(string name)
     {
       string str = "";
-      if (this.MaterialFactors != null)
-        str = this.MaterialFactors.ToCoaString(name);
+      if (MaterialFactors != null)
+        str = MaterialFactors.ToCoaString(name);
 
-      if (this.LoadCombinationFactors != null)
-        str += this.LoadCombinationFactors.ToCoaString(name);
+      if (LoadCombinationFactors != null)
+        str += LoadCombinationFactors.ToCoaString(name);
 
       return str;
     }

@@ -36,7 +36,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_CONCRTE_FORCE;
-        return this.GetResults(resultType).Select(x => (Force)x).ToList();
+        return GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -48,7 +48,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_ONE_CAPACITY;
-        return this.GetResults(resultType).Select(x => (Force)x).ToList().Max();
+        return GetResults(resultType).Select(x => (Force)x).ToList().Max();
       }
     }
 
@@ -60,7 +60,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_CONCRTE_FORCE_REQ;
-        return this.GetResults(resultType).Select(x => (Force)x).ToList();
+        return GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -72,7 +72,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_CONCRTE_FORCE_100;
-        return this.GetResults(resultType).Select(x => (Force)x).ToList();
+        return GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -84,7 +84,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_CAPACITY_LEFT;
-        return this.GetResults(resultType).Select(x => (Force)x).ToList();
+        return GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -96,7 +96,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_CAPACITY_RIGHT;
-        return this.GetResults(resultType).Select(x => (Force)x).ToList();
+        return GetResults(resultType).Select(x => (Force)x).ToList();
       }
     }
 
@@ -108,7 +108,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_PERCENT_INTERACTION;
-        return this.GetResults(resultType).Select(x => (Ratio)x).ToList();
+        return GetResults(resultType).Select(x => (Ratio)x).ToList();
       }
     }
 
@@ -120,7 +120,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_INTERACT_REQ;
-        return this.GetResults(resultType).Select(x => (Ratio)x).ToList();
+        return GetResults(resultType).Select(x => (Ratio)x).ToList();
       }
     }
 
@@ -132,7 +132,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_NUM_LEFT_PROV;
-        return this.GetResults(resultType).Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
+        return GetResults(resultType).Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
       }
     }
     /// <summary>
@@ -143,7 +143,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_NUM_LEFT_USED;
-        return this.GetResults(resultType).Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
+        return GetResults(resultType).Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
       }
     }
 
@@ -155,7 +155,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_NUM_RIGHT_PROV;
-        return this.GetResults(resultType).Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
+        return GetResults(resultType).Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
       }
     }
 
@@ -167,7 +167,7 @@ namespace ComposAPI
       get
       {
         StudResultOption resultType = StudResultOption.STUD_NUM_RIGHT_USED;
-        return this.GetResults(resultType).Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
+        return GetResults(resultType).Select(x => (int)x.As(ScalarUnit.Amount)).ToList();
       }
     }
 
@@ -175,12 +175,12 @@ namespace ComposAPI
 
     private List<IQuantity> GetResults(StudResultOption resultType)
     {
-      if(!this.ResultsCache.ContainsKey(resultType))
+      if(!ResultsCache.ContainsKey(resultType))
       {
         List<IQuantity> results = new List<IQuantity>();
-        for (short pos = 0; pos < this.NumIntermediatePos; pos++)
+        for (short pos = 0; pos < NumIntermediatePos; pos++)
         {
-          float value = this.Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
+          float value = Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
 
           switch (resultType)
           {
@@ -204,9 +204,9 @@ namespace ComposAPI
               break;
           }
         }
-        this.ResultsCache.Add(resultType, results);
+        ResultsCache.Add(resultType, results);
       }
-      return this.ResultsCache[resultType];
+      return ResultsCache[resultType];
     }
   }
 }

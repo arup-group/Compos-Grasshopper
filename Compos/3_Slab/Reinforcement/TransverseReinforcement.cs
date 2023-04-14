@@ -18,20 +18,20 @@ namespace ComposAPI
 
     public TransverseReinforcement()
     {
-      this.LayoutMethod = LayoutMethod.Automatic;
+      LayoutMethod = LayoutMethod.Automatic;
     }
 
     public TransverseReinforcement(IReinforcementMaterial material)
     {
-      this.Material = material;
-      this.LayoutMethod = LayoutMethod.Automatic;
+      Material = material;
+      LayoutMethod = LayoutMethod.Automatic;
     }
 
     public TransverseReinforcement(IReinforcementMaterial material, List<ICustomTransverseReinforcementLayout> transverseReinforcmentLayout)
     {
-      this.Material = material;
-      this.LayoutMethod = LayoutMethod.Custom;
-      this.CustomReinforcementLayouts = transverseReinforcmentLayout;
+      Material = material;
+      LayoutMethod = LayoutMethod.Custom;
+      CustomReinforcementLayouts = transverseReinforcmentLayout;
     }
 
     #region coa interop
@@ -82,7 +82,7 @@ namespace ComposAPI
 
     public string ToCoaString(string name, ComposUnits units)
     {
-      string str = this.Material.ToCoaString(name);
+      string str = Material.ToCoaString(name);
       
       str += "REBAR_LONGITUDINAL" + '\t' + name + '\t' + "PROGRAM_DESIGNED" + '\n';
       
@@ -96,7 +96,7 @@ namespace ComposAPI
       }
       else
       {
-        foreach (ICustomTransverseReinforcementLayout layout in this.CustomReinforcementLayouts)
+        foreach (ICustomTransverseReinforcementLayout layout in CustomReinforcementLayouts)
         {
           str += layout.ToCoaString(name, units);
         }
@@ -108,15 +108,15 @@ namespace ComposAPI
     #region methods
     public override string ToString()
     {
-      if (this.Material == null) { return "Invalid material"; }
-      string mat = this.Material.ToString();
-      if (this.LayoutMethod == LayoutMethod.Automatic)
+      if (Material == null) { return "Invalid material"; }
+      string mat = Material.ToString();
+      if (LayoutMethod == LayoutMethod.Automatic)
       {
         return mat + ", Automatic layout";
       }
       else
       {
-        string rebar = string.Join(":", this.CustomReinforcementLayouts.Select(x => x.ToString()).ToList());
+        string rebar = string.Join(":", CustomReinforcementLayouts.Select(x => x.ToString()).ToList());
         return mat + ", " + rebar;
       }
     }
