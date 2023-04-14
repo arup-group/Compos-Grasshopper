@@ -41,28 +41,33 @@ namespace ComposAPI {
 
     #region coa interop
     internal static IMeshReinforcement FromCoaString(List<string> parameters, ComposUnits units) {
-      MeshReinforcement reinforcement = new MeshReinforcement();
-
-      reinforcement.MeshType = (ReinforcementMeshType)Enum.Parse(typeof(ReinforcementMeshType), parameters[2]);
-      reinforcement.Cover = CoaHelper.ConvertToLength(parameters[3], units.Length);
-      if (parameters[4] == "PARALLEL")
+      var reinforcement = new MeshReinforcement {
+        MeshType = (ReinforcementMeshType)Enum.Parse(typeof(ReinforcementMeshType), parameters[2]),
+        Cover = CoaHelper.ConvertToLength(parameters[3], units.Length)
+      };
+      if (parameters[4] == "PARALLEL") {
         reinforcement.Rotated = false;
-      else
+      }
+      else {
         reinforcement.Rotated = true;
+      }
 
       return reinforcement;
     }
 
     public string ToCoaString(string name, ComposUnits units) {
-      List<string> parameters = new List<string>();
-      parameters.Add(CoaIdentifier.RebarMesh);
-      parameters.Add(name);
-      parameters.Add(MeshType.ToString());
-      parameters.Add(CoaHelper.FormatSignificantFigures(Cover.ToUnit(units.Length).Value, 6));
-      if (Rotated)
+      var parameters = new List<string> {
+        CoaIdentifier.RebarMesh,
+        name,
+        MeshType.ToString(),
+        CoaHelper.FormatSignificantFigures(Cover.ToUnit(units.Length).Value, 6)
+      };
+      if (Rotated) {
         parameters.Add("PERPENDICULAR");
-      else
+      }
+      else {
         parameters.Add("PARALLEL");
+      }
 
       return CoaHelper.CreateString(parameters);
     }
