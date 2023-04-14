@@ -1,15 +1,13 @@
 ﻿using ComposAPI.Helpers;
-using System.Collections.Generic;
-using OasysUnits;
-using Xunit;
 using ComposGHTests.Helpers;
 using OasysGH;
+using OasysUnits;
+using System.Collections.Generic;
+using Xunit;
 
-namespace ComposAPI.Slabs.Tests
-{
-    [Collection("ComposAPI Fixture collection")]
-  public class MeshReinforcementTest
-  {
+namespace ComposAPI.Slabs.Tests {
+  [Collection("ComposAPI Fixture collection")]
+  public class MeshReinforcementTest {
     [Theory]
     [InlineData(35, ReinforcementMeshType.A142, false, "REBAR_WESH	MEMBER-1	A142	35.0000	PARALLEL\n")]
     [InlineData(35, ReinforcementMeshType.A193, false, "REBAR_WESH	MEMBER-1	A193	35.0000	PARALLEL\n")]
@@ -27,9 +25,8 @@ namespace ComposAPI.Slabs.Tests
     [InlineData(35, ReinforcementMeshType.C503, true, "REBAR_WESH	MEMBER-1	C503	35.0000	PERPENDICULAR\n")]
     [InlineData(50, ReinforcementMeshType.C636, true, "REBAR_WESH	MEMBER-1	C636	50.0000	PERPENDICULAR\n")]
     [InlineData(100, ReinforcementMeshType.C785, true, "REBAR_WESH	MEMBER-1	C785	100.000	PERPENDICULAR\n")]
-    public void ToCoaStringTest(double cover, ReinforcementMeshType meshType, bool rotated, string expected_coaString)
-    {
-      ComposUnits units = ComposUnits.GetStandardUnits();
+    public void ToCoaStringTest(double cover, ReinforcementMeshType meshType, bool rotated, string expected_coaString) {
+      var units = ComposUnits.GetStandardUnits();
       IMeshReinforcement reinforcement = new MeshReinforcement(new Length(cover, units.Length), meshType, rotated);
 
       string coaString = reinforcement.ToCoaString("MEMBER-1", units);
@@ -54,10 +51,9 @@ namespace ComposAPI.Slabs.Tests
     [InlineData("REBAR_WESH	MEMBER-1	C503	35.0000	PERPENDICULAR\n", 35, ReinforcementMeshType.C503, true)]
     [InlineData("REBAR_WESH	MEMBER-1	C636	50.0000	PERPENDICULAR\n", 50, ReinforcementMeshType.C636, true)]
     [InlineData("REBAR_WESH	MEMBER-1	C785	100.000	PERPENDICULAR\n", 100, ReinforcementMeshType.C785, true)]
-    public void FromCoaStringTest(string coaString, double expected_cover, ReinforcementMeshType expected_meshType, bool expected_rotated)
-    {
+    public void FromCoaStringTest(string coaString, double expected_cover, ReinforcementMeshType expected_meshType, bool expected_rotated) {
       List<string> parameters = CoaHelper.Split(coaString);
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
 
       IMeshReinforcement reinforcement = MeshReinforcement.FromCoaString(parameters, units);
 
@@ -69,12 +65,11 @@ namespace ComposAPI.Slabs.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(35)]
-    public MeshReinforcement ConstructorTest1(double cover)
-    {
-      ComposUnits units = ComposUnits.GetStandardUnits();
+    public MeshReinforcement ConstructorTest1(double cover) {
+      var units = ComposUnits.GetStandardUnits();
 
       // 2 create object instance with constructor
-      MeshReinforcement mesh = new MeshReinforcement(new Length(cover, units.Length));
+      var mesh = new MeshReinforcement(new Length(cover, units.Length));
 
       // 3 check that inputs are set in object's members
       Assert.Equal(cover, mesh.Cover.Value);
@@ -85,11 +80,10 @@ namespace ComposAPI.Slabs.Tests
     }
 
     [Fact]
-    public void DuplicateTest()
-    {
+    public void DuplicateTest() {
       // 1 create with constructor and duplicate
       MeshReinforcement original = ConstructorTest1(30);
-      MeshReinforcement duplicate = (MeshReinforcement)original.Duplicate();
+      var duplicate = (MeshReinforcement)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -105,12 +99,11 @@ namespace ComposAPI.Slabs.Tests
     [InlineData(20, ReinforcementMeshType.A252, false)]
     [InlineData(30, ReinforcementMeshType.A393, true)]
     [InlineData(35, ReinforcementMeshType.A98, false)]
-    public void ConstructorTest2(double cover, ReinforcementMeshType meshType, bool rotated)
-    {
-      ComposUnits units = ComposUnits.GetStandardUnits();
-  
+    public void ConstructorTest2(double cover, ReinforcementMeshType meshType, bool rotated) {
+      var units = ComposUnits.GetStandardUnits();
+
       // 2 create object instance with constructor
-      MeshReinforcement mesh = new MeshReinforcement(new Length(cover, units.Length), meshType, rotated);
+      var mesh = new MeshReinforcement(new Length(cover, units.Length), meshType, rotated);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(cover, mesh.Cover.Value);

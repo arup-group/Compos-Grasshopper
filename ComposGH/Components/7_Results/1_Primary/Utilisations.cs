@@ -49,84 +49,107 @@ namespace ComposGH.Components {
 
       int i = 0;
       double output = result.Moment.DecimalFractions;
-      if (output > 1)
+      if (output > 1) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Moment utilisation is bigger than 100%");
-      if (output > maxUtil)
+      }
+      if (output > maxUtil) {
         maxUtil = output;
+      }
       DA.SetData(i++, output);
 
       output = result.Shear.DecimalFractions;
-      if (output > 1)
+      if (output > 1) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Shear utilisation is bigger than 100%");
-      if (output > maxUtil)
+      }
+      if (output > maxUtil) {
         maxUtil = output;
+      }
       DA.SetData(i++, output);
 
       output = result.MomentConstruction.DecimalFractions;
-      if (output > 1)
+      if (output > 1) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Moment Construction stage utilisation is bigger than 100%");
-      if (output > maxUtil)
+      }
+      if (output > maxUtil) {
         maxUtil = output;
+      }
       DA.SetData(i++, output);
 
       output = result.ShearConstruction.DecimalFractions;
-      if (output > 1)
+      if (output > 1) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Shaer Construction stage utilisation is bigger than 100%");
-      if (output > maxUtil)
+      }
+      if (output > maxUtil) {
         maxUtil = output;
+      }
       DA.SetData(i++, output);
 
       output = result.BucklingConstruction.DecimalFractions;
-      if (output > 1)
+      if (output > 1) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Buckling Construction stage utilisation is bigger than 100%");
-      if (output > maxUtil)
+      }
+      if (output > maxUtil) {
         maxUtil = output;
+      }
       DA.SetData(i++, output);
 
       output = result.DeflectionConstruction.DecimalFractions;
-      if (output > 1)
+      if (output > 1) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Deflection Construction stage utilisation is bigger than 100%");
-      if (output > maxUtil)
+      }
+      if (output > maxUtil) {
         maxUtil = output;
+      }
       DA.SetData(i++, output);
 
       output = result.Deflection.DecimalFractions;
-      if (output > 1)
+      if (output > 1) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Deflection utilisation is bigger than 100%");
-      if (output > maxUtil)
+      }
+      if (output > maxUtil) {
         maxUtil = output;
+      }
       DA.SetData(i++, output);
 
       output = result.TransverseShear.DecimalFractions;
-      if (output > 1)
+      if (output > 1) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Transverse Shear utilisation is bigger than 100%");
-      if (output > maxUtil)
+      }
+      if (output > maxUtil) {
         maxUtil = output;
+      }
       DA.SetData(i++, output);
 
       output = result.WebOpening.DecimalFractions;
-      if (output > 1)
+      if (output > 1) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Web Opening utilisation is bigger than 100%");
-      if (output > maxUtil)
+      }
+      if (output > maxUtil) {
         maxUtil = output;
+      }
       DA.SetData(i, output);
 
       base.DestroyIconCache();
     }
 
-    double maxUtil = -1;
+    private double maxUtil = -1;
     protected override Bitmap Icon {
       get {
-        if (maxUtil < 0)
+        if (maxUtil < 0) {
           return Resources.Utilisation;
-        else if (maxUtil < 0.50)
+        }
+        else if (maxUtil < 0.50) {
           return Resources.UtilisationLow;
-        else if (maxUtil < 0.80)
+        }
+        else if (maxUtil < 0.80) {
           return Resources.UtilisationMedium;
-        else if (maxUtil <= 1)
+        }
+        else if (maxUtil <= 1) {
           return Resources.UtilisationHigh;
-        else
+        }
+        else {
           return Resources.UtilisationOver;
+        }
       }
     }
     #region IGH_VariableParameterComponent null implementation

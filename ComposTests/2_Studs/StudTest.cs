@@ -1,27 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using ComposGHTests.Helpers;
+using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
+using System.Collections.Generic;
 using Xunit;
-using ComposGHTests.Helpers;
-using OasysGH;
 
-namespace ComposAPI.Studs.Tests
-{
-    [Collection("ComposAPI Fixture collection")]
-  public partial class StudTest
-  {
+namespace ComposAPI.Studs.Tests {
+  [Collection("ComposAPI Fixture collection")]
+  public partial class StudTest {
     [Fact]
-    public Stud TestConstructorStudCustomSpacing()
-    {
+    public Stud TestConstructorStudCustomSpacing() {
       // 1 setup inputs
       IStudDimensions dimensions = new StudDimensions(StandardStudSize.D13mmH65mm, StandardStudGrade.SD1_EN13918);
       IStudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
-      List<IStudGroupSpacing> studSpacings = new List<IStudGroupSpacing>();
-      studSpacings.Add(new StudGroupSpacing(Length.Zero, 2, 1, new Length(25, LengthUnit.Centimeter)));
-      studSpacings.Add(new StudGroupSpacing(Length.Zero, 1, 2, new Length(35, LengthUnit.Centimeter)));
+      var studSpacings = new List<IStudGroupSpacing> {
+        new StudGroupSpacing(Length.Zero, 2, 1, new Length(25, LengthUnit.Centimeter)),
+        new StudGroupSpacing(Length.Zero, 1, 2, new Length(35, LengthUnit.Centimeter))
+      };
 
       // 2 create object instance with constructor
-      Stud stud = new Stud(dimensions, specification, studSpacings, true);
+      var stud = new Stud(dimensions, specification, studSpacings, true);
 
       // 3 check that inputs are set in object's members
       // dimensions
@@ -57,11 +55,10 @@ namespace ComposAPI.Studs.Tests
       return stud;
     }
     [Fact]
-    public void DuplicateStudCustomSpacingTest()
-    {
+    public void DuplicateStudCustomSpacingTest() {
       // 1 create with constructor and duplicate
       Stud original = TestConstructorStudCustomSpacing();
-      Stud duplicate = (Stud)original.Duplicate();
+      var duplicate = (Stud)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -74,14 +71,13 @@ namespace ComposAPI.Studs.Tests
     [Theory]
     [InlineData(StudSpacingType.Min_Num_of_Studs, 0.2)]
     [InlineData(StudSpacingType.Automatic, 0.3)]
-    public Stud TestConstructorStudAutomaticOrMinSpacing(StudSpacingType type, double minSaving)
-    {
+    public Stud TestConstructorStudAutomaticOrMinSpacing(StudSpacingType type, double minSaving) {
       // 1b setup inputs
       IStudDimensions dimensions = new StudDimensions(StandardStudSize.D13mmH65mm, StandardStudGrade.SD1_EN13918);
       IStudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
 
       // 2 create object instance with constructor
-      Stud stud = new Stud(dimensions, specification, minSaving, type);
+      var stud = new Stud(dimensions, specification, minSaving, type);
 
       // 3 check that inputs are set in object's members
       // dimensions
@@ -108,8 +104,7 @@ namespace ComposAPI.Studs.Tests
     [Theory]
     [InlineData(StudSpacingType.Custom)]
     [InlineData(StudSpacingType.Partial_Interaction)]
-    public void TestConstructorStudAutomaticOrMinSpacingExceptions(StudSpacingType type)
-    {
+    public void TestConstructorStudAutomaticOrMinSpacingExceptions(StudSpacingType type) {
       // check that exceptions are thrown if inputs does not comply with allowed
       Assert.Throws<System.ArgumentException>(() => TestConstructorStudAutomaticOrMinSpacing(type, 0.2));
     }
@@ -118,14 +113,13 @@ namespace ComposAPI.Studs.Tests
     [Theory]
     [InlineData(0.2, 0.95)]
     [InlineData(0.3, 0.85)]
-    public Stud TestConstructorStudPartialSpacing(double minSaving, double interaction)
-    {
+    public Stud TestConstructorStudPartialSpacing(double minSaving, double interaction) {
       // 1b setup inputs
       IStudDimensions dimensions = new StudDimensions(StandardStudSize.D13mmH65mm, StandardStudGrade.SD1_EN13918);
       IStudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
 
       // 2 create object instance with constructor
-      Stud stud = new Stud(dimensions, specification, minSaving, interaction);
+      var stud = new Stud(dimensions, specification, minSaving, interaction);
 
       // 3 check that inputs are set in object's members
       // dimensions
@@ -150,11 +144,10 @@ namespace ComposAPI.Studs.Tests
     }
 
     [Fact]
-    public void TestStudDuplicate()
-    {
+    public void TestStudDuplicate() {
       // 1 create with constructor and duplicate
       Stud original = TestConstructorStudCustomSpacing();
-      Stud duplicate = (Stud)original.Duplicate();
+      var duplicate = (Stud)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       // dimensions
@@ -192,8 +185,9 @@ namespace ComposAPI.Studs.Tests
       // 3 make some changes to duplicate
       IStudDimensions dimensions = new StudDimensions(StandardStudSize.D25mmH100mm, StandardStudGrade.SD3_EN13918);
       IStudSpecification specification = new StudSpecification(new Length(25, LengthUnit.Centimeter), new Length(35, LengthUnit.Centimeter), false);
-      List<IStudGroupSpacing> studSpacings = new List<IStudGroupSpacing>();
-      studSpacings.Add(new StudGroupSpacing(Length.Zero, 3, 2, new Length(10, LengthUnit.Centimeter)));
+      var studSpacings = new List<IStudGroupSpacing> {
+        new StudGroupSpacing(Length.Zero, 3, 2, new Length(10, LengthUnit.Centimeter))
+      };
 
       duplicate.Dimensions = dimensions;
       duplicate.Specification = specification;
@@ -259,11 +253,10 @@ namespace ComposAPI.Studs.Tests
     }
 
     [Fact]
-    public void TestStudDuplicate2()
-    {
+    public void TestStudDuplicate2() {
       // 1 create with constructor and duplicate
       Stud original = TestConstructorStudAutomaticOrMinSpacing(StudSpacingType.Automatic, 0.2);
-      Stud duplicate = (Stud)original.Duplicate();
+      var duplicate = (Stud)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(StudSpacingType.Automatic, duplicate.StudSpacingType);
@@ -304,8 +297,7 @@ namespace ComposAPI.Studs.Tests
     }
 
     [Fact]
-    public void TestBS5950ssToCoa()
-    {
+    public void TestBS5950ssToCoa() {
       // Arrange
       string expected_coaString =
         "STUD_DEFINITION	MEMBER-1	STANDARD	19mm/100mm	WELDED_YES" + '\n' +
@@ -315,7 +307,7 @@ namespace ComposAPI.Studs.Tests
 
       IStudDimensions dimensions = new StudDimensions(StandardStudSize.D19mmH100mm);
       IStudSpecification specs = new StudSpecification(true, Length.Zero, Length.Zero);
-      Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
+      var stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
 
       // Act
       string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.BS5950_3_1_1990_Superseded);
@@ -325,8 +317,7 @@ namespace ComposAPI.Studs.Tests
     }
 
     [Fact]
-    public void TestBS5950ToCoa()
-    {
+    public void TestBS5950ToCoa() {
       // Arrange
       string expected_coaString =
         "STUD_DEFINITION	MEMBER-1	USER_DEFINED	0.0210000	0.105000	95000.0	REDUCED_NO	WELDED_YES" + '\n' +
@@ -334,9 +325,9 @@ namespace ComposAPI.Studs.Tests
         "STUD_NO_STUD_ZONE	MEMBER-1	1.00000	5.00000" + '\n' +
         "STUD_EC4_APPLY	MEMBER-1	NO" + '\n';
 
-      IStudDimensions dimensions = new StudDimensions(new Length(21, LengthUnit.Millimeter), new Length(105, LengthUnit.Millimeter), new Force(95000, ForceUnit.Newton));
+      IStudDimensions dimensions = new StudDimensions(new Length(21, LengthUnit.Millimeter), new Length(105, LengthUnit.Millimeter), new Force(95000, ForceUnit.Newton), StudSpecType.EC4);
       IStudSpecification specs = new StudSpecification(false, new Length(1, LengthUnit.Meter), new Length(5, LengthUnit.Meter));
-      Stud stud = new Stud(dimensions, specs, 0.2, 0.85);
+      var stud = new Stud(dimensions, specs, 0.2, 0.85);
 
       // Act
       string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.BS5950_3_1_1990_A1_2010);
@@ -346,8 +337,7 @@ namespace ComposAPI.Studs.Tests
     }
 
     [Fact]
-    public void TestEC4StdGrdToCoa()
-    {
+    public void TestEC4StdGrdToCoa() {
       // Arrange
       string expected_coaString =
         "STUD_DEFINITION	MEMBER-1	STANDARD	19mm/100mm	WELDED_NO" + '\n' +
@@ -360,7 +350,7 @@ namespace ComposAPI.Studs.Tests
 
       IStudDimensions dimensions = new StudDimensions(StandardStudSize.D19mmH100mm, StandardStudGrade.SD2_EN13918);
       IStudSpecification specs = new StudSpecification(new Length(0, LengthUnit.Meter), new Length(0, LengthUnit.Meter), new Length(30, LengthUnit.Millimeter), false, false);
-      Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
+      var stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
 
       // Act
       string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.EN1994_1_1_2004);
@@ -370,8 +360,7 @@ namespace ComposAPI.Studs.Tests
     }
 
     [Fact]
-    public void TestEC4CustomGrdToCoa()
-    {
+    public void TestEC4CustomGrdToCoa() {
       // Arrange
       string expected_coaString =
         "STUD_DEFINITION	MEMBER-1	STANDARD	25mm/100mm	WELDED_YES" + '\n' +
@@ -384,7 +373,7 @@ namespace ComposAPI.Studs.Tests
 
       IStudDimensions dimensions = new StudDimensions(StandardStudSize.D25mmH100mm, new Pressure(440, PressureUnit.Megapascal));
       IStudSpecification specs = new StudSpecification(new Length(0, LengthUnit.Meter), new Length(0, LengthUnit.Meter), new Length(30, LengthUnit.Millimeter), true, true);
-      Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Min_Num_of_Studs);
+      var stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Min_Num_of_Studs);
 
       // Act
       string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.EN1994_1_1_2004);
@@ -394,8 +383,7 @@ namespace ComposAPI.Studs.Tests
     }
 
     [Fact]
-    public void TestHK05CustomSpacingToCoa()
-    {
+    public void TestHK05CustomSpacingToCoa() {
       // Arrange
       string expected_coaString =
         "STUD_DEFINITION	MEMBER-1	STANDARD	13mm/65mm	WELDED_YES" + '\n' +
@@ -411,8 +399,8 @@ namespace ComposAPI.Studs.Tests
       IStudGroupSpacing spacing2 = new StudGroupSpacing(new Length(4.5, LengthUnit.Meter), 3, 2, new Length(250, LengthUnit.Millimeter));
       IStudGroupSpacing spacing3 = new StudGroupSpacing(new Length(9, LengthUnit.Meter), 4, 3, new Length(350, LengthUnit.Millimeter));
 
-      List<IStudGroupSpacing> spacing = new List<IStudGroupSpacing>() { spacing1, spacing2, spacing3 };
-      Stud stud = new Stud(dimensions, specs, spacing, true);
+      var spacing = new List<IStudGroupSpacing>() { spacing1, spacing2, spacing3 };
+      var stud = new Stud(dimensions, specs, spacing, true);
 
       // Act
       string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.HKSUOS_2005);
@@ -422,8 +410,7 @@ namespace ComposAPI.Studs.Tests
     }
 
     [Fact]
-    public void TestHK11ToCoa()
-    {
+    public void TestHK11ToCoa() {
       // Arrange
       string expected_coaString =
         "STUD_DEFINITION	MEMBER-1	STANDARD	19mm/95mm	WELDED_YES" + '\n' +
@@ -433,7 +420,7 @@ namespace ComposAPI.Studs.Tests
 
       IStudDimensions dimensions = new StudDimensions(StandardStudSize.D19mmH95mm);
       IStudSpecification specs = new StudSpecification(Length.Zero, Length.Zero, true);
-      Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
+      var stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
 
       // Act
       string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.HKSUOS_2011);
@@ -443,8 +430,7 @@ namespace ComposAPI.Studs.Tests
     }
 
     [Fact]
-    public void TestASNZCustomSpacingToCoa()
-    {
+    public void TestASNZCustomSpacingToCoa() {
       // Arrange
       string expected_coaString =
         "STUD_DEFINITION	MEMBER-1	STANDARD	19mm/100mm	WELDED_YES" + '\n' +
@@ -458,8 +444,8 @@ namespace ComposAPI.Studs.Tests
       IStudGroupSpacing spacing1 = new StudGroupSpacing(Length.Zero, 2, 1, new Length(150, LengthUnit.Millimeter));
       IStudGroupSpacing spacing2 = new StudGroupSpacing(new Length(8, LengthUnit.Meter), 3, 2, new Length(250, LengthUnit.Millimeter));
 
-      List<IStudGroupSpacing> spacing = new List<IStudGroupSpacing>() { spacing1, spacing2 };
-      Stud stud = new Stud(dimensions, specs, spacing, false);
+      var spacing = new List<IStudGroupSpacing>() { spacing1, spacing2 };
+      var stud = new Stud(dimensions, specs, spacing, false);
 
       // Act
       string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.AS_NZS2327_2017);
@@ -469,8 +455,7 @@ namespace ComposAPI.Studs.Tests
     }
 
     [Fact]
-    public void TestFileCoaStringForStudParts()
-    {
+    public void TestFileCoaStringForStudParts() {
       // Arrange 
       string coaString =
 "UNIT_DATA\tFORCE\tN\t1.00000" + '\n' +
@@ -538,7 +523,7 @@ namespace ComposAPI.Studs.Tests
 "STUD_EC4_APPLY\tMEMBER-7\tYES" + '\n';
 
       // Act
-      ComposFile composFile = ComposFile.FromCoaString(coaString);
+      var composFile = ComposFile.FromCoaString(coaString);
 
       //// Assert
       Assert.Equal(7, composFile.GetMembers().Count);
@@ -550,7 +535,7 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(0.2, composFile.GetMembers()[i].Stud.MinSavingMultipleZones);
       Assert.Equal(Length.Zero, composFile.GetMembers()[i].Stud.Specification.NoStudZoneStart);
       Assert.Equal(Length.Zero, composFile.GetMembers()[i].Stud.Specification.NoStudZoneEnd);
-      Assert.True(composFile.GetMembers()[i].Stud.Specification.EC4_Limit);
+      Assert.True(composFile.GetMembers()[i].Stud.Specification.Ec4Limit);
       i++;
       Assert.Equal(21, composFile.GetMembers()[i].Stud.Dimensions.Diameter.Millimeters);
       Assert.Equal(131, composFile.GetMembers()[i].Stud.Dimensions.Height.Millimeters);
@@ -561,7 +546,7 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(0.2, composFile.GetMembers()[i].Stud.MinSavingMultipleZones);
       Assert.Equal(Length.Zero, composFile.GetMembers()[i].Stud.Specification.NoStudZoneStart);
       Assert.Equal(Length.Zero, composFile.GetMembers()[i].Stud.Specification.NoStudZoneEnd);
-      Assert.False(composFile.GetMembers()[i].Stud.Specification.EC4_Limit);
+      Assert.False(composFile.GetMembers()[i].Stud.Specification.Ec4Limit);
       i++;
       Assert.Equal(19, composFile.GetMembers()[i].Stud.Dimensions.Diameter.Millimeters);
       Assert.Equal(100, composFile.GetMembers()[i].Stud.Dimensions.Height.Millimeters);
@@ -571,8 +556,8 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(Length.Zero, composFile.GetMembers()[i].Stud.Specification.NoStudZoneStart);
       Assert.Equal(Length.Zero, composFile.GetMembers()[i].Stud.Specification.NoStudZoneEnd);
       Assert.Equal(30, composFile.GetMembers()[i].Stud.Specification.ReinforcementPosition.Millimeters);
-      Assert.True(composFile.GetMembers()[i].Stud.Specification.EC4_Limit);
-      Assert.True(composFile.GetMembers()[i].Stud.Specification.NCCI);
+      Assert.True(composFile.GetMembers()[i].Stud.Specification.Ec4Limit);
+      Assert.True(composFile.GetMembers()[i].Stud.Specification.Ncci);
       i++;
       Assert.Equal(19, composFile.GetMembers()[i].Stud.Dimensions.Diameter.Millimeters);
       Assert.Equal(100, composFile.GetMembers()[i].Stud.Dimensions.Height.Millimeters);
@@ -582,8 +567,8 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(Length.Zero, composFile.GetMembers()[i].Stud.Specification.NoStudZoneStart);
       Assert.Equal(Length.Zero, composFile.GetMembers()[i].Stud.Specification.NoStudZoneEnd);
       Assert.Equal(30, composFile.GetMembers()[i].Stud.Specification.ReinforcementPosition.Millimeters);
-      Assert.True(composFile.GetMembers()[i].Stud.Specification.EC4_Limit);
-      Assert.False(composFile.GetMembers()[i].Stud.Specification.NCCI);
+      Assert.True(composFile.GetMembers()[i].Stud.Specification.Ec4Limit);
+      Assert.False(composFile.GetMembers()[i].Stud.Specification.Ncci);
       i++;
       Assert.Equal(19, composFile.GetMembers()[i].Stud.Dimensions.Diameter.Millimeters);
       Assert.Equal(100, composFile.GetMembers()[i].Stud.Dimensions.Height.Millimeters);
@@ -604,7 +589,7 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(4, composFile.GetMembers()[i].Stud.CustomSpacing[2].NumberOfRows);
       Assert.Equal(3, composFile.GetMembers()[i].Stud.CustomSpacing[2].NumberOfLines);
       Assert.Equal(350, composFile.GetMembers()[i].Stud.CustomSpacing[2].Spacing.Millimeters, 6);
-      Assert.True(composFile.GetMembers()[i].Stud.Specification.EC4_Limit);
+      Assert.True(composFile.GetMembers()[i].Stud.Specification.Ec4Limit);
       i++;
       Assert.Equal(19, composFile.GetMembers()[i].Stud.Dimensions.Diameter.Millimeters);
       Assert.Equal(95, composFile.GetMembers()[i].Stud.Dimensions.Height.Millimeters);
@@ -613,7 +598,7 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(0.2, composFile.GetMembers()[i].Stud.MinSavingMultipleZones);
       Assert.Equal(Length.Zero, composFile.GetMembers()[i].Stud.Specification.NoStudZoneStart);
       Assert.Equal(Length.Zero, composFile.GetMembers()[i].Stud.Specification.NoStudZoneEnd);
-      Assert.True(composFile.GetMembers()[i].Stud.Specification.EC4_Limit);
+      Assert.True(composFile.GetMembers()[i].Stud.Specification.Ec4Limit);
       i++;
       Assert.Equal(19, composFile.GetMembers()[i].Stud.Dimensions.Diameter.Millimeters);
       Assert.Equal(100, composFile.GetMembers()[i].Stud.Dimensions.Height.Millimeters);
@@ -630,7 +615,7 @@ namespace ComposAPI.Studs.Tests
       Assert.Equal(3, composFile.GetMembers()[i].Stud.CustomSpacing[1].NumberOfRows);
       Assert.Equal(2, composFile.GetMembers()[i].Stud.CustomSpacing[1].NumberOfLines);
       Assert.Equal(250, composFile.GetMembers()[i].Stud.CustomSpacing[1].Spacing.Millimeters);
-      Assert.True(composFile.GetMembers()[i].Stud.Specification.EC4_Limit);
+      Assert.True(composFile.GetMembers()[i].Stud.Specification.Ec4Limit);
     }
   }
 }
