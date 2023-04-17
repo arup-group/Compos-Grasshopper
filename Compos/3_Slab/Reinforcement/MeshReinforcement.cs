@@ -7,6 +7,7 @@ namespace ComposAPI
 {
   public enum ReinforcementMeshType
   {
+    None,
     A393,
     A252,
     A193,
