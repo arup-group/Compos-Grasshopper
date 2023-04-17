@@ -95,7 +95,7 @@ namespace ComposGH.Components {
 
     protected override void SolveInstance(IGH_DataAccess DA) {
 
-      // we need to eventually add a check here! 
+      // we need to eventually add a check if dimensions and specification fit together here! 
 
       var studDimensions = (StudDimensionsGoo)Input.GenericGoo<StudDimensionsGoo>(this, DA, 0);
       if (studDimensions == null) {
