@@ -158,7 +158,7 @@ namespace ComposGH.Components {
         if (Params.Input[2].Sources.Count > 0) {
           _selectedItems[1] = "Custom";
           var strengthS = (Pressure)Input.UnitNumber(this, DA, 2, _stressUnit);
-          Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthS, StudSpecType.EC4)));
+          Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthS)));
         }
         else {
           Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(dia, h, _stdGrd)));
@@ -168,10 +168,10 @@ namespace ComposGH.Components {
         if (Params.Input[0].Sources.Count > 0) {
           _selectedItems[1] = "Custom";
           var strengthS = (Pressure)Input.UnitNumber(this, DA, 0, _stressUnit);
-          Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(_stdSize, strengthS, StudSpecType.EC4)));
+          Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(_stdSize, strengthS)));
         }
         else {
-          Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(_stdSize, _stdGrd, StudSpecType.EC4)));
+          Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(_stdSize, _stdGrd)));
         }
       }
     }

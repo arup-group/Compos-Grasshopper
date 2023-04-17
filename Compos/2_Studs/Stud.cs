@@ -131,7 +131,7 @@ namespace ComposAPI {
 
       var stud = new Stud {
         Specification = new StudSpecification(),
-        Dimensions = new StudDimensions(specType)
+        Dimensions = new StudDimensions()
       };
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
 
@@ -199,7 +199,7 @@ namespace ComposAPI {
             if (parameters[2] == CoaIdentifier.StudDimensions.StudGradeEC4Standard) {
               var standardGrade = (StandardStudGrade)Enum.Parse(typeof(StandardStudGrade), parameters[3]);
               stud.Dimensions.SetGradeFromStandard(standardGrade);
-              stud.Dimensions.SpecType = StudSpecType.EC4;
+              stud.Dimensions.IsStandardENGrade = true;
             }
             else if (parameters[2] == CoaIdentifier.StudDimensions.StudGradeEC4Custom) {
               stud.Dimensions.Fu = new Pressure(Convert.ToDouble(parameters[3], noComma), units.Stress);

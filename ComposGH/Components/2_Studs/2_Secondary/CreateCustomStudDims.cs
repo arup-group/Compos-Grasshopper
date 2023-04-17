@@ -39,7 +39,7 @@ namespace ComposGH.Components {
       var dia = (Length)Input.UnitNumber(this, DA, 0, LengthUnit, true);
       var h = (Length)Input.UnitNumber(this, DA, 1, LengthUnit, true);
       var strengthF = (Force)Input.UnitNumber(this, DA, 2, ForceUnit);
-      Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthF, StudSpecType.Other)));
+      Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthF)));
     }
 
     #region Custom UI
