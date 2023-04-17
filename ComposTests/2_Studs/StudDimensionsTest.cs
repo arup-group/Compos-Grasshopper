@@ -14,7 +14,7 @@ namespace ComposAPI.Studs.Tests {
       PressureUnit stress = PressureUnit.Megapascal;
 
       // 2 create object instance with constructor
-      var studDims = new StudDimensions(new Length(diameter, length), new Length(height, length), new Pressure(fu, stress), StudSpecType.EC4);
+      var studDims = new StudDimensions(new Length(diameter, length), new Length(height, length), new Pressure(fu, stress), StudSpecType.Other);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(diameter, studDims.Diameter.Millimeters);
@@ -33,7 +33,7 @@ namespace ComposAPI.Studs.Tests {
       ForceUnit force = ForceUnit.Kilonewton;
 
       // 2 create object instance with constructor
-      var studDims = new StudDimensions(new Length(diameter, length), new Length(height, length), new Force(strength, force), StudSpecType.EC4);
+      var studDims = new StudDimensions(new Length(diameter, length), new Length(height, length), new Force(strength, force), StudSpecType.Other);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(diameter, studDims.Diameter.Millimeters);
@@ -62,7 +62,7 @@ namespace ComposAPI.Studs.Tests {
       ForceUnit force = ForceUnit.Kilonewton;
 
       // 2 create object instance with constructor
-      var studDims = new StudDimensions(size, new Force(strength, force));
+      var studDims = new StudDimensions(size, new Force(strength, force), StudSpecType.Other);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(expectedDiameter, studDims.Diameter.Millimeters);
@@ -104,7 +104,7 @@ namespace ComposAPI.Studs.Tests {
       PressureUnit stress = PressureUnit.Megapascal;
 
       // 2 create object instance with constructor
-      var studDims = new StudDimensions(size, new Pressure(fu, stress));
+      var studDims = new StudDimensions(size, new Pressure(fu, stress), StudSpecType.Other);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(expectedDiameter, studDims.Diameter.Millimeters);

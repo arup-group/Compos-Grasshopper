@@ -32,8 +32,10 @@ namespace ComposAPI {
     public Length Height { get; set; } // welded height of stud
                                        // characteristic strength of stud
     public bool IsStandard { get; set; }
-    public bool IsStandardENGrade { get; set; }
+    //public bool IsStandardENGrade { get; set; }
     public StudSpecType SpecType { get; set; }
+
+    public StudDimensions() { }
 
     public StudDimensions(StudSpecType specType) {
       SpecType = specType;
@@ -70,8 +72,9 @@ namespace ComposAPI {
     /// </summary>
     /// <param name="size"></param>
     /// <param name="strength"></param>
-    public StudDimensions(StandardStudSize size) {
+    public StudDimensions(StandardStudSize size, StudSpecType specType) {
       SetSizeFromStandard(size);
+      SpecType = specType;
     }
 
     /// <summary>
@@ -79,9 +82,10 @@ namespace ComposAPI {
     /// </summary>
     /// <param name="size"></param>
     /// <param name="strength"></param>
-    public StudDimensions(StandardStudSize size, Force strength) {
-      SetSizeFromStandard(size);
+    public StudDimensions(StandardStudSize size, Force strength, StudSpecType specType) {
       CharacterStrength = strength;
+      SpecType = specType;
+      SetSizeFromStandard(size);
     }
 
     /// <summary>
@@ -89,9 +93,10 @@ namespace ComposAPI {
     /// </summary>
     /// <param name="size"></param>
     /// <param name="fu"></param>
-    public StudDimensions(StandardStudSize size, Pressure fu) {
-      SetSizeFromStandard(size);
+    public StudDimensions(StandardStudSize size, Pressure fu, StudSpecType specType) {
       Fu = fu;
+      SpecType = specType;
+      SetSizeFromStandard(size);
     }
 
     /// <summary>
@@ -99,10 +104,10 @@ namespace ComposAPI {
     /// </summary>
     /// <param name="size"></param>
     /// <param name="standardGrade"></param>
-    public StudDimensions(StandardStudSize size, StandardStudGrade standardGrade) {
+    public StudDimensions(StandardStudSize size, StandardStudGrade standardGrade, StudSpecType specType = StudSpecType.EC4) {
+      SpecType = specType;
       SetSizeFromStandard(size);
       SetGradeFromStandard(standardGrade);
-      IsStandardENGrade = true;
     }
 
     /// <summary>
@@ -111,14 +116,14 @@ namespace ComposAPI {
     /// <param name="diameter"></param>
     /// <param name="height"></param>
     /// <param name="standardGrade"></param>
-    public StudDimensions(Length diameter, Length height, StandardStudGrade standardGrade) {
+    public StudDimensions(Length diameter, Length height, StandardStudGrade standardGrade, StudSpecType specType = StudSpecType.EC4) {
       Diameter = diameter;
       Height = height;
+      SpecType = specType;
       SetGradeFromStandard(standardGrade);
     }
 
     public void SetGradeFromStandard(StandardStudGrade standardGrade) {
-      IsStandardENGrade = true;
       switch (standardGrade) {
         case StandardStudGrade.SD1_EN13918:
           Fu = new Pressure(400, PressureUnit.NewtonPerSquareMillimeter);

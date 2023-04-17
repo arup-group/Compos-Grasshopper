@@ -199,7 +199,7 @@ namespace ComposAPI {
             if (parameters[2] == CoaIdentifier.StudDimensions.StudGradeEC4Standard) {
               var standardGrade = (StandardStudGrade)Enum.Parse(typeof(StandardStudGrade), parameters[3]);
               stud.Dimensions.SetGradeFromStandard(standardGrade);
-              stud.Dimensions.IsStandardENGrade = true;
+              stud.Dimensions.SpecType = StudSpecType.EC4;
             }
             else if (parameters[2] == CoaIdentifier.StudDimensions.StudGradeEC4Custom) {
               stud.Dimensions.Fu = new Pressure(Convert.ToDouble(parameters[3], noComma), units.Stress);

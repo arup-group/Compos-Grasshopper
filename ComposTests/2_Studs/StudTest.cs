@@ -305,7 +305,7 @@ namespace ComposAPI.Studs.Tests {
         "STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000" + '\n' +
         "STUD_EC4_APPLY	MEMBER-1	YES" + '\n';
 
-      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D19mmH100mm);
+      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D19mmH100mm, StudSpecType.Other);
       IStudSpecification specs = new StudSpecification(true, Length.Zero, Length.Zero);
       var stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
 
@@ -325,7 +325,7 @@ namespace ComposAPI.Studs.Tests {
         "STUD_NO_STUD_ZONE	MEMBER-1	1.00000	5.00000" + '\n' +
         "STUD_EC4_APPLY	MEMBER-1	NO" + '\n';
 
-      IStudDimensions dimensions = new StudDimensions(new Length(21, LengthUnit.Millimeter), new Length(105, LengthUnit.Millimeter), new Force(95000, ForceUnit.Newton), StudSpecType.EC4);
+      IStudDimensions dimensions = new StudDimensions(new Length(21, LengthUnit.Millimeter), new Length(105, LengthUnit.Millimeter), new Force(95000, ForceUnit.Newton), StudSpecType.Other);
       IStudSpecification specs = new StudSpecification(false, new Length(1, LengthUnit.Meter), new Length(5, LengthUnit.Meter));
       var stud = new Stud(dimensions, specs, 0.2, 0.85);
 
@@ -371,7 +371,7 @@ namespace ComposAPI.Studs.Tests {
         "STUD_EC4_RFT_POS	MEMBER-1	0.0300000" + '\n' +
         "EC4_STUD_GRADE	MEMBER-1	CODE_GRADE_NO	4.40000e+008" + '\n';
 
-      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D25mmH100mm, new Pressure(440, PressureUnit.Megapascal));
+      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D25mmH100mm, new Pressure(440, PressureUnit.Megapascal), StudSpecType.Other);
       IStudSpecification specs = new StudSpecification(new Length(0, LengthUnit.Meter), new Length(0, LengthUnit.Meter), new Length(30, LengthUnit.Millimeter), true, true);
       var stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Min_Num_of_Studs);
 
@@ -393,7 +393,7 @@ namespace ComposAPI.Studs.Tests {
         "STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000" + '\n' +
         "STUD_EC4_APPLY	MEMBER-1	YES" + '\n';
 
-      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D13mmH65mm);
+      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D13mmH65mm, StudSpecType.Other);
       IStudSpecification specs = new StudSpecification(new Length(0, LengthUnit.Meter), new Length(0, LengthUnit.Meter), true);
       IStudGroupSpacing spacing1 = new StudGroupSpacing(Length.Zero, 2, 1, new Length(150, LengthUnit.Millimeter));
       IStudGroupSpacing spacing2 = new StudGroupSpacing(new Length(4.5, LengthUnit.Meter), 3, 2, new Length(250, LengthUnit.Millimeter));
@@ -418,7 +418,7 @@ namespace ComposAPI.Studs.Tests {
         "STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000" + '\n' +
         "STUD_EC4_APPLY	MEMBER-1	YES" + '\n';
 
-      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D19mmH95mm);
+      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D19mmH95mm, StudSpecType.Other);
       IStudSpecification specs = new StudSpecification(Length.Zero, Length.Zero, true);
       var stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
 
@@ -439,7 +439,7 @@ namespace ComposAPI.Studs.Tests {
         "STUD_NO_STUD_ZONE	MEMBER-1	0.000000	0.000000" + '\n' +
         "STUD_EC4_APPLY	MEMBER-1	YES" + '\n';
 
-      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D19mmH100mm);
+      IStudDimensions dimensions = new StudDimensions(StandardStudSize.D19mmH100mm, StudSpecType.Other);
       IStudSpecification specs = new StudSpecification(new Length(0, LengthUnit.Meter), new Length(0, LengthUnit.Meter), true);
       IStudGroupSpacing spacing1 = new StudGroupSpacing(Length.Zero, 2, 1, new Length(150, LengthUnit.Millimeter));
       IStudGroupSpacing spacing2 = new StudGroupSpacing(new Length(8, LengthUnit.Meter), 3, 2, new Length(250, LengthUnit.Millimeter));

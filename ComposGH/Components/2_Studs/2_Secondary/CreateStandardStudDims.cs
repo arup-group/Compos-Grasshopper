@@ -34,7 +34,7 @@ namespace ComposGH.Components {
     #endregion
 
     protected override void SolveInstance(IGH_DataAccess DA) {
-      Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(StdSize)));
+      Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(StdSize, StudSpecType.Other)));
     }
 
     #region Custom UI

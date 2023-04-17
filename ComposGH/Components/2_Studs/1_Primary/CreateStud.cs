@@ -42,10 +42,6 @@ namespace ComposGH.Components {
 
       IStudDimensions studDimensions = studDimensionsGoo.Value;
 
-      //switch (studDimensions) {
-      //  case
-      //}
-
       if (studDimensionsGoo == null) {
         // return here on non-optional inputs
         return;

@@ -10,7 +10,6 @@ namespace ComposAPI {
     Pressure Fu { get; set; }
     Length Height { get; set; }
     bool IsStandard { get; set; }
-    bool IsStandardENGrade { get; set; }
     StudSpecType SpecType { get; set; }
 
     void SetGradeFromStandard(StandardStudGrade standardGrade);
