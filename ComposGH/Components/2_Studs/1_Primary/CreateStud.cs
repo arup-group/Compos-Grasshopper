@@ -42,6 +42,10 @@ namespace ComposGH.Components {
 
       IStudDimensions studDimensions = studDimensionsGoo.Value;
 
+
+      // we need to eventually add a check if dimensions and specification fit together here! 
+
+
       if (studDimensionsGoo == null) {
         // return here on non-optional inputs
         return;
