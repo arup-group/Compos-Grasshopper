@@ -1,17 +1,15 @@
 ﻿using ComposAPI;
-using ComposGH.Parameters;
 using ComposGH.Components;
-using Xunit;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
 using OasysGH.Components;
+using Xunit;
 
-namespace ComposGHTests.Stud
-{
+namespace ComposGHTests.Stud {
   [Collection("GrasshopperFixture collection")]
-  public class CreateStudComponentTests
-  {
-    public static GH_OasysDropDownComponent ComponentMother()
-    {
+  public class CreateStudComponentTests {
+
+    public static GH_OasysDropDownComponent ComponentMother() {
       var comp = new CreateStud();
       comp.CreateAttributes();
 
@@ -25,14 +23,19 @@ namespace ComposGHTests.Stud
     }
 
     [Fact]
-    public void CreateComponentTest()
-    {
+    public void ChangeDropDownTest() {
       var comp = ComponentMother();
-      
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponentTest() {
+      var comp = ComponentMother();
+
       StudGoo output = (StudGoo)ComponentTestHelper.GetOutput(comp);
-      
+
       Assert.Equal(StudSpacingType.Min_Num_of_Studs, output.Value.StudSpacingType);
-      
+
       StudDimensionsGoo input1 = (StudDimensionsGoo)ComponentTestHelper.GetOutput(CreateStandardStudDimsComponentTests.ComponentMother());
       ComponentTestHelper.SetInput(comp, input1, 0);
       Duplicates.AreEqual(input1.Value, output.Value.Dimensions);
@@ -44,8 +47,7 @@ namespace ComposGHTests.Stud
     }
 
     [Fact]
-    public void CreateComponentWithInputsTest1()
-    {
+    public void CreateComponentWithInputsTest1() {
       var comp = ComponentMother();
       Assert.Equal(3, comp.Params.Input.Count);
       comp.SetSelected(0, 1); // change the dropdown to Partial_Interaction
@@ -71,14 +73,14 @@ namespace ComposGHTests.Stud
       Assert.Equal(0.80, output.Value.Interaction);
 
       // change the dropdown to Min_Num_of_Studs
-      comp.SetSelected(0, 2); 
+      comp.SetSelected(0, 2);
       Assert.Equal(3, comp.Params.Input.Count);
       ComponentTestHelper.SetInput(comp, 0.1, 2);
       output = (StudGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(0.1, output.Value.MinSavingMultipleZones);
 
       // change the dropdown to Custom
-      comp.SetSelected(0, 3); 
+      comp.SetSelected(0, 3);
       Assert.Equal(4, comp.Params.Input.Count);
       StudGroupSpacingGoo input3_1 = (StudGroupSpacingGoo)ComponentTestHelper.GetOutput(CreateCustomStudSpacingComponentTests.ComponentMother());
       StudGroupSpacingGoo input3_2 = (StudGroupSpacingGoo)input3_1.Duplicate();
@@ -91,7 +93,7 @@ namespace ComposGHTests.Stud
       Duplicates.AreEqual(input3_2.Value, output.Value.CustomSpacing[1]);
       Assert.False(output.Value.CheckStudSpacing);
       output = (StudGoo)ComponentTestHelper.GetOutput(comp);
-      
+
       ComponentTestHelper.SetInput(comp, true, 3);
       output = (StudGoo)ComponentTestHelper.GetOutput(comp);
       Assert.True(output.Value.CheckStudSpacing);
@@ -101,17 +103,9 @@ namespace ComposGHTests.Stud
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void DeserializeTest() {
       var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      var comp = ComponentMother();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

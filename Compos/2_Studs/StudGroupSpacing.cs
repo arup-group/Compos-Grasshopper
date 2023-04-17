@@ -1,22 +1,18 @@
 ﻿using ComposAPI.Helpers;
+using OasysUnits;
+using OasysUnits.Units;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using OasysUnits;
-using OasysUnits.Units;
 
-namespace ComposAPI
-{
+namespace ComposAPI {
   /// <summary>
   /// Object for setting custom spacing/layout for a <see cref="Stud"/>
   /// </summary>
-  public class StudGroupSpacing : IStudGroupSpacing
-  {
-    public IQuantity DistanceFromStart
-    {
+  public class StudGroupSpacing : IStudGroupSpacing {
+    public IQuantity DistanceFromStart {
       get { return m_StartPosition; }
-      set
-      {
+      set {
         if (value == null) return;
         if (value.QuantityInfo.UnitType != typeof(LengthUnit)
           & value.QuantityInfo.UnitType != typeof(RatioUnit))
@@ -25,19 +21,16 @@ namespace ComposAPI
           m_StartPosition = value;
       }
     }
-    private IQuantity m_StartPosition = Length.Zero;
-    public int NumberOfRows { get; set; } = 2;
     public int NumberOfLines { get; set; } = 1;
+    public int NumberOfRows { get; set; } = 2;
     public Length Spacing { get; set; }
+    private IQuantity m_StartPosition = Length.Zero;
 
-    #region constructors
-    public StudGroupSpacing()
-    {
+    public StudGroupSpacing() {
       // empty constructor
     }
 
-    public StudGroupSpacing(IQuantity distanceFromStart, int numberOfRows, int numberOfLines, Length spacing)
-    {
+    public StudGroupSpacing(IQuantity distanceFromStart, int numberOfRows, int numberOfLines, Length spacing) {
       DistanceFromStart = distanceFromStart;
       if (numberOfRows < 1)
         throw new ArgumentException("Number of rows must be bigger or equal to 1");
@@ -48,10 +41,27 @@ namespace ComposAPI
       Spacing = spacing;
     }
 
-    #endregion
+    public override string ToString() {
+      string start = "";
+      if (DistanceFromStart.QuantityInfo.UnitType == typeof(LengthUnit)) {
+        Length l = (Length)DistanceFromStart;
+        if (l != Length.Zero)
+          start = "From:" + l.ToString("g2").Replace(" ", string.Empty);
+      }
+      else {
+        Ratio p = (Ratio)DistanceFromStart;
+        if (p != Ratio.Zero)
+          start = "From:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
+      }
+      string rows = NumberOfRows + "R";
+      string lines = NumberOfLines + "L";
+      string spacing = "@" + Spacing.ToUnit(ComposUnitsHelper.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
 
-    internal static StudGroupSpacing FromCoaString(List<string> parameters, ComposUnits units)
-    {
+      string joined = string.Join(" ", new List<string>() { start, rows, lines, spacing });
+      return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');
+    }
+
+    internal static StudGroupSpacing FromCoaString(List<string> parameters, ComposUnits units) {
       //STUD_LAYOUT	MEMBER-1	USER_DEFINED	3	1	0.000000	2	1	0.0760000	0.0950000	0.150000	CHECK_SPACE_NO
       //STUD_LAYOUT	MEMBER-1	USER_DEFINED	2	1	0.000000	2	1	0.0570000	0.0950000	0.150000	CHECK_SPACE_NO
       //STUD_LAYOUT MEMBER-1 USER_DEFINED 2 2 8.000000 3 2 0.0570000 0.0950000 0.250000 CHECK_SPACE_NO
@@ -65,30 +75,5 @@ namespace ComposAPI
 
       return groupSpacing;
     }
-
-    #region methods
-    public override string ToString()
-    {
-      string start = "";
-      if (DistanceFromStart.QuantityInfo.UnitType == typeof(LengthUnit))
-      {
-        Length l = (Length)DistanceFromStart;
-        if (l != Length.Zero)
-          start = "From:" + l.ToString("g2").Replace(" ", string.Empty);
-      }
-      else
-      {
-        Ratio p = (Ratio)DistanceFromStart;
-        if (p != Ratio.Zero)
-          start = "From:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
-      }
-      string rows = NumberOfRows + "R";
-      string lines = NumberOfLines + "L";
-      string spacing = "@" + Spacing.ToUnit(ComposUnitsHelper.LengthUnitSection).ToString("f0").Replace(" ", string.Empty);
-
-      string joined = string.Join(" ", new List<string>() { start, rows, lines, spacing });
-      return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');
-    }
-    #endregion
   }
 }

@@ -1,17 +1,15 @@
-﻿using ComposGH.Parameters;
+﻿using ComposAPI;
 using ComposGH.Components;
-using Xunit;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
-using ComposAPI;
 using OasysGH.Components;
+using Xunit;
 
-namespace ComposGHTests.Design
-{
+namespace ComposGHTests.Design {
   [Collection("GrasshopperFixture collection")]
-  public class CreateDesignCriteriaComponentTests
-  {
-    public static GH_OasysDropDownComponent CreateDesignCriteriaMother()
-    {
+  public class CreateDesignCriteriaComponentTests {
+
+    public static GH_OasysDropDownComponent CreateDesignCriteriaMother() {
       var comp = new CreateDesignCriteria();
       comp.CreateAttributes();
 
@@ -24,8 +22,13 @@ namespace ComposGHTests.Design
     }
 
     [Fact]
-    public void CreateComponentWithInputs1()
-    {
+    public void ChangeDropDownTest() {
+      var comp = CreateDesignCriteriaMother();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponentWithInputs1() {
       var comp = CreateDesignCriteriaMother();
 
       DesignCriteriaGoo output = (DesignCriteriaGoo)ComponentTestHelper.GetOutput(comp);
@@ -38,8 +41,7 @@ namespace ComposGHTests.Design
     }
 
     [Fact]
-    public void CreateComponentWithInputs2()
-    {
+    public void CreateComponentWithInputs2() {
       var comp = CreateDesignCriteriaMother();
 
       comp.SetSelected(0, 1); // change dropdown to min height
@@ -71,17 +73,9 @@ namespace ComposGHTests.Design
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void DeserializeTest() {
       var comp = CreateDesignCriteriaMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      var comp = CreateDesignCriteriaMother();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

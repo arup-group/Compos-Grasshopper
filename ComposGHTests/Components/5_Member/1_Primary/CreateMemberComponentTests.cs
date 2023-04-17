@@ -1,20 +1,18 @@
-﻿using ComposGH.Parameters;
-using ComposGH.Components;
-using Xunit;
-using ComposGHTests.Helpers;
+﻿using ComposGH.Components;
+using ComposGH.Parameters;
 using ComposGHTests.Beam;
-using ComposGHTests.Stud;
-using ComposGHTests.Slab;
+using ComposGHTests.Helpers;
 using ComposGHTests.Load;
+using ComposGHTests.Slab;
+using ComposGHTests.Stud;
 using OasysGH.Components;
+using Xunit;
 
-namespace ComposGHTests.Member
-{
+namespace ComposGHTests.Member {
   [Collection("GrasshopperFixture collection")]
-  public class CreateMemberComponentTests
-  {
-    public static GH_OasysComponent CreateMemberMother()
-    {
+  public class CreateMemberComponentTests {
+
+    public static GH_OasysComponent CreateMemberMother() {
       var comp = new CreateMember();
       comp.CreateAttributes();
 
@@ -37,8 +35,7 @@ namespace ComposGHTests.Member
     }
 
     [Fact]
-    public void CreateComponentWithInputs1()
-    {
+    public void CreateComponentWithInputs1() {
       var comp = CreateMemberMother();
 
       BeamGoo expected_input1 = (BeamGoo)ComponentTestHelper.GetOutput(CreateBeamComponentTests.ComponentMother());
@@ -61,15 +58,14 @@ namespace ComposGHTests.Member
     }
 
     [Fact]
-    public void CreateComponentWithInputs2()
-    {
+    public void CreateComponentWithInputs2() {
       var comp = CreateMemberMother();
 
       ComponentTestHelper.SetInput(comp, "Grid-1", 6);
       ComponentTestHelper.SetInput(comp, "Note this down", 7);
 
       MemberGoo output = (MemberGoo)ComponentTestHelper.GetOutput(comp);
-      
+
       Assert.Equal("Grid-1", output.Value.GridReference);
       Assert.Equal("Note this down", output.Value.Note);
     }

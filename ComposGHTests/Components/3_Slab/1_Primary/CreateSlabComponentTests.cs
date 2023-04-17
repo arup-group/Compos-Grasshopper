@@ -1,16 +1,14 @@
-﻿using ComposGH.Parameters;
-using ComposGH.Components;
-using Xunit;
+﻿using ComposGH.Components;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
 using OasysGH.Components;
+using Xunit;
 
-namespace ComposGHTests.Slab
-{
+namespace ComposGHTests.Slab {
   [Collection("GrasshopperFixture collection")]
-  public class CreateSlabComponentTests
-  {
-    public static GH_OasysComponent ComponentMother()
-    {
+  public class CreateSlabComponentTests {
+
+    public static GH_OasysComponent ComponentMother() {
       var comp = new CreateSlab();
       comp.CreateAttributes();
 
@@ -27,8 +25,7 @@ namespace ComposGHTests.Slab
     }
 
     [Fact]
-    public void CreateComponentWithInputs1()
-    {
+    public void CreateComponentWithInputs1() {
       var comp = ComponentMother();
       SlabGoo output = (SlabGoo)ComponentTestHelper.GetOutput(comp);
 
@@ -43,8 +40,7 @@ namespace ComposGHTests.Slab
     }
 
     [Fact]
-    public void CreateComponentWithInputs2()
-    {
+    public void CreateComponentWithInputs2() {
       var comp = ComponentMother();
 
       MeshReinforcementGoo input4 = (MeshReinforcementGoo)ComponentTestHelper.GetOutput(CreateMeshReinforcementComponentTests.ComponentMother());
@@ -58,10 +54,8 @@ namespace ComposGHTests.Slab
       Duplicates.AreEqual(input5.Value, output.Value.Decking);
     }
 
-
     [Fact]
-    public void CreateComponentWithInputs3()
-    {
+    public void CreateComponentWithInputs3() {
       var comp = ComponentMother();
 
       SlabDimensionGoo input2_2 = (SlabDimensionGoo)ComponentTestHelper.GetOutput(CreateSlabDimensionComponentTests.ComponentMother());

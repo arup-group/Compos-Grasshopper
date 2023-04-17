@@ -1,21 +1,32 @@
-﻿using System.Collections.Generic;
-using Xunit;
+﻿using ComposAPI.Helpers;
+using ComposGHTests.Helpers;
+using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
-using ComposGHTests.Helpers;
-using ComposAPI.Helpers;
-using OasysGH;
+using System.Collections.Generic;
+using Xunit;
 
-namespace ComposAPI.Loads.Tests
-{
-    public partial class LoadTest
-  {
+namespace ComposAPI.Loads.Tests {
+  public partial class LoadTest {
+
+    [Fact]
+    public void DuplicateTriLineTest() {
+      // 1 create with constructor and duplicate
+      Load original = TestTriLinearLineLoadConstructor(1, 1.5, 3, 5, 4000, 3, 4.5, 6, 5, 6000);
+      Load duplicate = (Load)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
     // 1 setup inputs
     [Theory]
     [InlineData(1, 1.5, 3, 5, 4000, 3, 4.5, 6, 5, 6000)]
     public Load TestTriLinearLineLoadConstructor(double consDead1, double consLive1, double finalDead1, double finalLive1, double positionW1,
-      double consDead2, double consLive2, double finalDead2, double finalLive2, double positionW2)
-    {
+      double consDead2, double consLive2, double finalDead2, double finalLive2, double positionW2) {
       LengthUnit length = LengthUnit.Millimeter;
       ForcePerLengthUnit force = ForcePerLengthUnit.KilonewtonPerMeter;
 
@@ -40,26 +51,12 @@ namespace ComposAPI.Loads.Tests
 
       return load;
     }
-    [Fact]
-    public void DuplicateTriLineTest()
-    {
-      // 1 create with constructor and duplicate
-      Load original = TestTriLinearLineLoadConstructor(1, 1.5, 3, 5, 4000, 3, 4.5, 6, 5, 6000);
-      Load duplicate = (Load)original.Duplicate();
-
-      // 2 check that duplicate has duplicated values
-      Duplicates.AreEqual(original, duplicate);
-
-      // 3 check that the memory pointer is not the same
-      Assert.NotSame(original, duplicate);
-    }
 
     // 1 setup inputs
     [Theory]
     [InlineData(1, 1.5, 3, 5, 4000, 3, 4.5, 6, 5, 6000)]
     public Load TestTriLinearLineLoadConstructorPercentage(double consDead1, double consLive1, double finalDead1, double finalLive1, double positionW1,
-      double consDead2, double consLive2, double finalDead2, double finalLive2, double positionW2)
-    {
+      double consDead2, double consLive2, double finalDead2, double finalLive2, double positionW2) {
       RatioUnit ratio = RatioUnit.Percent;
       ForcePerLengthUnit force = ForcePerLengthUnit.KilonewtonPerMeter;
 
@@ -86,32 +83,7 @@ namespace ComposAPI.Loads.Tests
     }
 
     [Fact]
-    public void TriLinearLineLoadToCoaStringTest()
-    {
-      // Arrange
-      string expected_coaString = "LOAD	MEMBER-1	Tri-Linear	Line	2.00000	3.00000	4.50000	6.00000	7.00000	3.00000	4.50000	6.00000	7.00000	8.90000\n";
-      Load load = TestTriLinearLineLoadConstructor(0.002, 0.003, 0.0045, 0.006, 7000, 0.003, 0.0045, 0.006, 0.007, 8900); // input unit in kN/m, coa string in N/m - input pos units in mm, coa string in m
-      // Act
-      string coaString = load.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
-      // Assert
-      Assert.Equal(expected_coaString, coaString);
-    }
-
-    [Fact]
-    public void TriLinearLineLoadToCoaStringTestPercentage()
-    {
-      // Arrange
-      string expected_coaString = "LOAD	MEMBER-1	Tri-Linear	Line	2.00000	3.00000	4.50000	6.00000	7.00000%	3.00000	4.50000	6.00000	7.00000	8.90000%\n";
-      Load load = TestTriLinearLineLoadConstructorPercentage(0.002, 0.003, 0.0045, 0.006, 7, 0.003, 0.0045, 0.006, 0.007, 8.9); // input unit in kN/m, coa string in N/m - input pos units in mm, coa string in m
-      // Act
-      string coaString = load.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
-      // Assert
-      Assert.Equal(expected_coaString, coaString);
-    }
-
-    [Fact]
-    public void TriLinearLineLoadFromCoaStringTest()
-    {
+    public void TriLinearLineLoadFromCoaStringTest() {
       ForceUnit forceUnit = ForceUnit.Kilonewton;
       LengthUnit lengthUnit = LengthUnit.Millimeter;
       ComposUnits units = ComposUnits.GetStandardUnits();
@@ -144,8 +116,7 @@ namespace ComposAPI.Loads.Tests
     }
 
     [Fact]
-    public void TriLinearLineLoadFromCoaStringTestPercentage()
-    {
+    public void TriLinearLineLoadFromCoaStringTestPercentage() {
       ForceUnit forceUnit = ForceUnit.Kilonewton;
       LengthUnit lengthUnit = LengthUnit.Millimeter;
       ComposUnits units = ComposUnits.GetStandardUnits();
@@ -175,6 +146,28 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(8.9, trilinearLineLoad.LoadW2.Position.As(RatioUnit.Percent));
       Assert.Equal(LoadType.TriLinear, trilinearLineLoad.Type);
       Assert.Equal(LoadDistribution.Line, trilinearLineLoad.Distribution);
+    }
+
+    [Fact]
+    public void TriLinearLineLoadToCoaStringTest() {
+      // Arrange
+      string expected_coaString = "LOAD	MEMBER-1	Tri-Linear	Line	2.00000	3.00000	4.50000	6.00000	7.00000	3.00000	4.50000	6.00000	7.00000	8.90000\n";
+      Load load = TestTriLinearLineLoadConstructor(0.002, 0.003, 0.0045, 0.006, 7000, 0.003, 0.0045, 0.006, 0.007, 8900); // input unit in kN/m, coa string in N/m - input pos units in mm, coa string in m
+      // Act
+      string coaString = load.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
+
+    [Fact]
+    public void TriLinearLineLoadToCoaStringTestPercentage() {
+      // Arrange
+      string expected_coaString = "LOAD	MEMBER-1	Tri-Linear	Line	2.00000	3.00000	4.50000	6.00000	7.00000%	3.00000	4.50000	6.00000	7.00000	8.90000%\n";
+      Load load = TestTriLinearLineLoadConstructorPercentage(0.002, 0.003, 0.0045, 0.006, 7, 0.003, 0.0045, 0.006, 0.007, 8.9); // input unit in kN/m, coa string in N/m - input pos units in mm, coa string in m
+      // Act
+      string coaString = load.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
     }
   }
 }

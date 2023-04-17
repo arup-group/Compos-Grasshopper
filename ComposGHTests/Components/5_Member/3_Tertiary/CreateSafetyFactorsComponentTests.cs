@@ -1,24 +1,21 @@
-﻿using ComposGH.Parameters;
-using ComposGH.Components;
-using Xunit;
+﻿using ComposGH.Components;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
 using OasysGH.Components;
+using Xunit;
 
-namespace ComposGHTests.Member
-{
+namespace ComposGHTests.Member {
   [Collection("GrasshopperFixture collection")]
-  public class CreateSafetyFactorsComponentTests
-  {
-    public static GH_OasysComponent ComponentMother()
-    {
+  public class CreateSafetyFactorsComponentTests {
+
+    public static GH_OasysComponent ComponentMother() {
       var comp = new CreateSafetyFactors();
       comp.CreateAttributes();
       return comp;
     }
 
     [Fact]
-    public void CreateComponent()
-    {
+    public void CreateComponent() {
       var comp = ComponentMother();
 
       SafetyFactorsGoo output = (SafetyFactorsGoo)ComponentTestHelper.GetOutput(comp);
@@ -36,12 +33,11 @@ namespace ComposGHTests.Member
     }
 
     [Fact]
-    public void CreateComponentWithInputs()
-    {
+    public void CreateComponentWithInputs() {
       var comp = ComponentMother();
-      
+
       for (int i = 0; i < comp.Params.Input.Count; i++)
-        ComponentTestHelper.SetInput(comp, 1 + 1/(i + 1), i);
+        ComponentTestHelper.SetInput(comp, 1 + 1 / (i + 1), i);
 
       SafetyFactorsGoo output = (SafetyFactorsGoo)ComponentTestHelper.GetOutput(comp);
 

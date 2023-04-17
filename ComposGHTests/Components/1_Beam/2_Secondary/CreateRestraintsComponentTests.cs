@@ -1,17 +1,15 @@
 ﻿using ComposAPI;
-using ComposGH.Parameters;
 using ComposGH.Components;
-using Xunit;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
+using Xunit;
 
-namespace ComposGHTests.Beam
-{
+namespace ComposGHTests.Beam {
   [Collection("GrasshopperFixture collection")]
-  public class CreateRestraintComponentTests
-  {
+  public class CreateRestraintComponentTests {
+
     [Fact]
-    public void CreateComponentTest()
-    {
+    public void CreateComponentTest() {
       var comp = new CreateRestraint();
       comp.CreateAttributes();
 
@@ -22,8 +20,7 @@ namespace ComposGHTests.Beam
     }
 
     [Fact]
-    public void CreateComponentWithInputsTest1()
-    {
+    public void CreateComponentWithInputsTest1() {
       var comp = new CreateRestraint();
       comp.CreateAttributes();
 
@@ -39,8 +36,7 @@ namespace ComposGHTests.Beam
     }
 
     [Fact]
-    public void CreateComponentWithInputsTest2()
-    {
+    public void CreateComponentWithInputsTest2() {
       var comp = new CreateRestraint();
       comp.CreateAttributes();
 
@@ -59,8 +55,7 @@ namespace ComposGHTests.Beam
     }
 
     [Fact]
-    public void CreateComponentWithInputsTest3()
-    {
+    public void CreateComponentWithInputsTest3() {
       var comp = new CreateRestraint();
       comp.CreateAttributes();
 

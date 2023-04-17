@@ -1,17 +1,15 @@
-﻿using ComposGH.Parameters;
-using ComposGH.Components;
-using Xunit;
+﻿using ComposGH.Components;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
-using OasysUnits.Units;
 using OasysGH.Components;
+using OasysUnits.Units;
+using Xunit;
 
-namespace ComposGHTests.Stud
-{
+namespace ComposGHTests.Stud {
   [Collection("GrasshopperFixture collection")]
-  public class CreateCustomStudSpacingComponentTests
-  {
-    public static GH_OasysDropDownComponent ComponentMother()
-    {
+  public class CreateCustomStudSpacingComponentTests {
+
+    public static GH_OasysDropDownComponent ComponentMother() {
       var comp = new CreateCustomStudSpacing();
       comp.CreateAttributes();
 
@@ -25,8 +23,13 @@ namespace ComposGHTests.Stud
     }
 
     [Fact]
-    public void CreateComponentWithInputsTest()
-    {
+    public void ChangeDropDownTest() {
+      var comp = ComponentMother();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponentWithInputsTest() {
       var comp = ComponentMother();
 
       comp.SetSelected(0, 0); // change the dropdown to mm
@@ -39,17 +42,9 @@ namespace ComposGHTests.Stud
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void DeserializeTest() {
       var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      var comp = ComponentMother();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

@@ -1,15 +1,13 @@
-using Xunit;
 using ComposGHTests.Helpers;
 using OasysGH;
+using Xunit;
 
-namespace ComposAPI.Members.Tests
-{
+namespace ComposAPI.Members.Tests {
   [Collection("ComposAPI Fixture collection")]
-  public partial class EC4MaterialPartialFactorsTest
-  {
+  public partial class EC4MaterialPartialFactorsTest {
+
     [Fact]
-    public MaterialPartialFactors ConstructorTest()
-    {
+    public MaterialPartialFactors ConstructorTest() {
       // 1 setup input
       // empty constructor creates default EC4 values
 
@@ -28,9 +26,9 @@ namespace ComposAPI.Members.Tests
       // (optionally return object for other tests)
       return partialFactors;
     }
+
     [Fact]
-    public void DuplicateMatEC4Test()
-    {
+    public void DuplicateMatEC4Test() {
       // 1 create with constructor and duplicate
       MaterialPartialFactors original = ConstructorTest();
       MaterialPartialFactors duplicate = (MaterialPartialFactors)original.Duplicate();

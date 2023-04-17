@@ -1,22 +1,20 @@
-﻿using Xunit;
+﻿using ComposGHTests.Helpers;
+using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
 using System.Collections.Generic;
-using ComposGHTests.Helpers;
-using OasysGH;
+using Xunit;
 
-namespace ComposAPI.Beams.Tests
-{
-  public partial class RestraintTest
-  {
+namespace ComposAPI.Beams.Tests {
+  public partial class RestraintTest {
+
     // 1 setup inputs
     [Theory]
     [InlineData(IntermediateRestraint.None, true, false)]
     [InlineData(IntermediateRestraint.Mid__Span, true, true)]
     [InlineData(IntermediateRestraint.Third_Points, false, false)]
     [InlineData(IntermediateRestraint.Quarter_Points, false, true)]
-    public static Supports TestSupportConstructor(IntermediateRestraint intermediateRestraint, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds)
-    {
+    public static Supports TestSupportConstructor(IntermediateRestraint intermediateRestraint, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds) {
       // 2 create object instance with constructor
       Supports sup = new Supports(intermediateRestraint, secondaryMemberIntermediateRestraint, bothFlangesFreeToRotateOnPlanAtEnds);
 
@@ -29,11 +27,36 @@ namespace ComposAPI.Beams.Tests
       return sup;
     }
 
+    [Fact]
+    public void DuplicateSupportCustomTest() {
+      // 1 create with constructor and duplicate
+      Supports original = TestSupportConstructorCustom(-0, 4000, -1, false, true);
+      Supports duplicate = (Supports)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
+    [Fact]
+    public void DuplicateSupportTest() {
+      // 1 create with constructor and duplicate
+      Supports original = TestSupportConstructor(IntermediateRestraint.None, true, false);
+      Supports duplicate = (Supports)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
     // 1 setup inputs
     [Theory]
     [InlineData(100, 500, 1500, true, false)]
-    public Supports TestSupportConstructorCustom(double val1, double val2, double val3, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds)
-    {
+    public Supports TestSupportConstructorCustom(double val1, double val2, double val3, bool secondaryMemberIntermediateRestraint, bool bothFlangesFreeToRotateOnPlanAtEnds) {
       LengthUnit unit = LengthUnit.Millimeter;
       List<IQuantity> customIntermediateRestraintPositions = new List<IQuantity>();
       if (val1 < 0)
@@ -73,8 +96,7 @@ namespace ComposAPI.Beams.Tests
     }
 
     [Fact]
-    public void TestSupportDuplicate()
-    {
+    public void TestSupportDuplicate() {
       // 1 create with constructor and duplicate
       Supports original = TestSupportConstructor(IntermediateRestraint.None, true, false);
       Supports duplicate = (Supports)original.Duplicate();
@@ -104,8 +126,7 @@ namespace ComposAPI.Beams.Tests
     }
 
     [Fact]
-    public void TestSupportDuplicate2()
-    {
+    public void TestSupportDuplicate2() {
       LengthUnit unit = LengthUnit.Millimeter;
 
       // 1 create with constructor and duplicate
@@ -146,34 +167,6 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(1, original.CustomIntermediateRestraintPositions[0].As(LengthUnit.Millimeter));
       Assert.Equal(2, original.CustomIntermediateRestraintPositions[1].As(LengthUnit.Millimeter));
       Assert.Equal(3, original.CustomIntermediateRestraintPositions[2].As(LengthUnit.Millimeter));
-    }
-
-    [Fact]
-    public void DuplicateSupportTest()
-    {
-      // 1 create with constructor and duplicate
-      Supports original = TestSupportConstructor(IntermediateRestraint.None, true, false);
-      Supports duplicate = (Supports)original.Duplicate();
-
-      // 2 check that duplicate has duplicated values
-      Duplicates.AreEqual(original, duplicate);
-
-      // 3 check that the memory pointer is not the same
-      Assert.NotSame(original, duplicate);
-    }
-
-    [Fact]
-    public void DuplicateSupportCustomTest()
-    {
-      // 1 create with constructor and duplicate
-      Supports original = TestSupportConstructorCustom(-0, 4000, -1, false, true);
-      Supports duplicate = (Supports)original.Duplicate();
-
-      // 2 check that duplicate has duplicated values
-      Duplicates.AreEqual(original, duplicate);
-
-      // 3 check that the memory pointer is not the same
-      Assert.NotSame(original, duplicate);
     }
   }
 }

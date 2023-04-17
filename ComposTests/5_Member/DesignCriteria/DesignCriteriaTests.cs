@@ -1,28 +1,16 @@
-using System.Collections.Generic;
-using OasysUnits;
-using OasysUnits.Units;
-using Xunit;
 using ComposGHTests.Helpers;
 using OasysGH;
+using OasysUnits;
+using OasysUnits.Units;
+using System.Collections.Generic;
+using Xunit;
 
-namespace ComposAPI.Members.Tests
-{
-    [Collection("ComposAPI Fixture collection")]
-  public class DesignCriteriaTests
-  {
-    [Fact]
-    public void EmptyConstructorTest()
-    {
-      DesignCriteria designCriteria = new DesignCriteria();
-
-      Duplicates.AreEqual(new BeamSizeLimits(), designCriteria.BeamSizeLimits);
-      Assert.Equal(OptimiseOption.MinimumWeight, designCriteria.OptimiseOption);
-      Assert.Equal(0, designCriteria.CatalogueSectionTypes.Count);
-    }
+namespace ComposAPI.Members.Tests {
+  [Collection("ComposAPI Fixture collection")]
+  public class DesignCriteriaTests {
 
     [Fact]
-    public void CheckSetCatalogueSectionIDs()
-    {
+    public void CheckSetCatalogueSectionIDs() {
       DesignCriteria designCriteria = new DesignCriteria();
 
       List<int> wrongIDs = new List<int>() { 4, 5 };
@@ -31,8 +19,7 @@ namespace ComposAPI.Members.Tests
     }
 
     [Fact]
-    public void ConstructorTest1()
-    {
+    public void ConstructorTest1() {
       BeamSizeLimits beamSizeLimits = new BeamSizeLimits(0.1, 1.1, 0.2, 0.6, LengthUnit.Meter);
       OptimiseOption optimiseOption = OptimiseOption.MinimumHeight;
       List<int> catalogues = new List<int>() { 1, 2, 3 };
@@ -50,8 +37,7 @@ namespace ComposAPI.Members.Tests
     }
 
     [Fact]
-    public DesignCriteria ConstructorTest2()
-    {
+    public DesignCriteria ConstructorTest2() {
       BeamSizeLimits beamSizeLimits = new BeamSizeLimits(0.1, 1.1, 0.2, 0.6, LengthUnit.Meter);
       OptimiseOption optimiseOption = OptimiseOption.MinimumHeight;
       List<int> catalogues = new List<int>() { 1, 2, 3, 4 };
@@ -77,9 +63,29 @@ namespace ComposAPI.Members.Tests
     }
 
     [Fact]
+    public void DuplicateTest() {
+      // 1 create with constructor and duplicate
+      DesignCriteria original = ConstructorTest2();
+      DesignCriteria duplicate = (DesignCriteria)original.Duplicate();
 
-    public void FromCoaStringTest()
-    {
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
+    [Fact]
+    public void EmptyConstructorTest() {
+      DesignCriteria designCriteria = new DesignCriteria();
+
+      Duplicates.AreEqual(new BeamSizeLimits(), designCriteria.BeamSizeLimits);
+      Assert.Equal(OptimiseOption.MinimumWeight, designCriteria.OptimiseOption);
+      Assert.Equal(0, designCriteria.CatalogueSectionTypes.Count);
+    }
+
+    [Fact]
+    public void FromCoaStringTest() {
       // Assemble
       string coaString =
         "CRITERIA_DEF_LIMIT	MEMBER-1	CONSTRUCTION_DEAD_LOAD	ABSOLUTE	30.0000\n" +
@@ -96,25 +102,30 @@ namespace ComposAPI.Members.Tests
         "CRITERIA_OPTIMISE_OPTION	MEMBER-1	MINIMUM_WEIGHT\n" +
         "CRITERIA_SECTION_TYPE	MEMBER-1	93\n" +
         "CRITERIA_FREQUENCY	MEMBER-1	CHECK_NATURAL_FREQUENCY	4.00000	1.00000	0.100000\n";
-      
+
       ComposUnits units = ComposUnits.GetStandardUnits();
       units.Displacement = LengthUnit.Millimeter;
       units.Section = LengthUnit.Centimeter;
-      DeflectionLimit constrLim = new DeflectionLimit() { 
+      DeflectionLimit constrLim = new DeflectionLimit() {
         AbsoluteDeflection = new Length(30, LengthUnit.Millimeter),
-        SpanOverDeflectionRatio = new Ratio(360, RatioUnit.DecimalFraction) };
+        SpanOverDeflectionRatio = new Ratio(360, RatioUnit.DecimalFraction)
+      };
       DeflectionLimit addLim = new DeflectionLimit() {
         AbsoluteDeflection = new Length(10, LengthUnit.Millimeter),
-        SpanOverDeflectionRatio = new Ratio(300, RatioUnit.DecimalFraction) };
+        SpanOverDeflectionRatio = new Ratio(300, RatioUnit.DecimalFraction)
+      };
       DeflectionLimit finalLim = new DeflectionLimit() {
         AbsoluteDeflection = new Length(20, LengthUnit.Millimeter),
-        SpanOverDeflectionRatio = new Ratio(500, RatioUnit.DecimalFraction) };
+        SpanOverDeflectionRatio = new Ratio(500, RatioUnit.DecimalFraction)
+      };
       DeflectionLimit totalLim = new DeflectionLimit() {
         AbsoluteDeflection = new Length(35, LengthUnit.Millimeter),
-        SpanOverDeflectionRatio = new Ratio(200, RatioUnit.DecimalFraction) };
+        SpanOverDeflectionRatio = new Ratio(200, RatioUnit.DecimalFraction)
+      };
       DeflectionLimit postLim = new DeflectionLimit() {
         AbsoluteDeflection = new Length(15, LengthUnit.Millimeter),
-        SpanOverDeflectionRatio = new Ratio(340, RatioUnit.DecimalFraction) };
+        SpanOverDeflectionRatio = new Ratio(340, RatioUnit.DecimalFraction)
+      };
       BeamSizeLimits beamSizeLimits = new BeamSizeLimits(20, 100, 10, 50, LengthUnit.Centimeter);
       List<int> cats = new List<int>() { 93 };
       FrequencyLimits frequencyLimits = new FrequencyLimits(4, 100, 10);
@@ -129,8 +140,7 @@ namespace ComposAPI.Members.Tests
     }
 
     [Fact]
-    public void ToCoaStringTest()
-    {
+    public void ToCoaStringTest() {
       // Assemble
       string expectedCoaString =
         "CRITERIA_DEF_LIMIT	MEMBER-1	CONSTRUCTION_DEAD_LOAD	ABSOLUTE	30.0000\n" +
@@ -151,28 +161,23 @@ namespace ComposAPI.Members.Tests
       ComposUnits units = ComposUnits.GetStandardUnits();
       units.Displacement = LengthUnit.Millimeter;
       units.Section = LengthUnit.Centimeter;
-      DeflectionLimit constrLim = new DeflectionLimit()
-      {
+      DeflectionLimit constrLim = new DeflectionLimit() {
         AbsoluteDeflection = new Length(30, LengthUnit.Millimeter),
         SpanOverDeflectionRatio = new Ratio(360, RatioUnit.DecimalFraction)
       };
-      DeflectionLimit addLim = new DeflectionLimit()
-      {
+      DeflectionLimit addLim = new DeflectionLimit() {
         AbsoluteDeflection = new Length(10, LengthUnit.Millimeter),
         SpanOverDeflectionRatio = new Ratio(300, RatioUnit.DecimalFraction)
       };
-      DeflectionLimit finalLim = new DeflectionLimit()
-      {
+      DeflectionLimit finalLim = new DeflectionLimit() {
         AbsoluteDeflection = new Length(20, LengthUnit.Millimeter),
         SpanOverDeflectionRatio = new Ratio(500, RatioUnit.DecimalFraction)
       };
-      DeflectionLimit totalLim = new DeflectionLimit()
-      {
+      DeflectionLimit totalLim = new DeflectionLimit() {
         AbsoluteDeflection = new Length(35, LengthUnit.Millimeter),
         SpanOverDeflectionRatio = new Ratio(200, RatioUnit.DecimalFraction)
       };
-      DeflectionLimit postLim = new DeflectionLimit()
-      {
+      DeflectionLimit postLim = new DeflectionLimit() {
         AbsoluteDeflection = new Length(15, LengthUnit.Millimeter),
         SpanOverDeflectionRatio = new Ratio(340, RatioUnit.DecimalFraction)
       };
@@ -187,20 +192,6 @@ namespace ComposAPI.Members.Tests
 
       // Assert
       Assert.Equal(expectedCoaString, coaString);
-    }
-
-    [Fact]
-    public void DuplicateTest()
-    {
-      // 1 create with constructor and duplicate
-      DesignCriteria original = ConstructorTest2();
-      DesignCriteria duplicate = (DesignCriteria)original.Duplicate();
-
-      // 2 check that duplicate has duplicated values
-      Duplicates.AreEqual(original, duplicate);
-
-      // 3 check that the memory pointer is not the same
-      Assert.NotSame(original, duplicate);
     }
   }
 }

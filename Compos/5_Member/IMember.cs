@@ -1,27 +1,27 @@
 ﻿using System.Collections.Generic;
 
-namespace ComposAPI
-{
-  public interface IMember
-  {
+namespace ComposAPI {
+  public interface IMember {
     IBeam Beam { get; }
-    IStud Stud { get; }
-    ISlab Slab { get; }
-    IList<ILoad> Loads { get; }
     IDesignCode DesignCode { get; }
     IDesignCriteria DesignCriteria { get; }
-    IResult Result { get; }
+    string GridReference { get; }
+    IList<ILoad> Loads { get; }
     //IComposFile File { get; set; } // the hosting Compos file
     string Name { get; }
-    string GridReference { get; }
     string Note { get; }
-    string ToCoaString(ComposUnits units);
+    IResult Result { get; }
+    ISlab Slab { get; }
+    IStud Stud { get; }
 
     short Analyse();
+
     short CodeSatisfied();
+
     string GetCodeSatisfiedMessage();
-    
+
+    string ToCoaString(ComposUnits units);
+
     //void Register(ComposFile file);
-    
   }
 }

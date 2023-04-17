@@ -1,18 +1,16 @@
-﻿using ComposGH.Parameters;
+﻿using ComposAPI;
 using ComposGH.Components;
-using Xunit;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
-using ComposAPI;
-using OasysUnits.Units;
 using OasysGH.Components;
+using OasysUnits.Units;
+using Xunit;
 
-namespace ComposGHTests.Load
-{
-    [Collection("GrasshopperFixture collection")]
-  public class CreatePointLoadComponentTests
-  {
-    public static GH_OasysDropDownComponent ComponentMother()
-    {
+namespace ComposGHTests.Load {
+  [Collection("GrasshopperFixture collection")]
+  public class CreatePointLoadComponentTests {
+
+    public static GH_OasysDropDownComponent ComponentMother() {
       var comp = new CreatePointLoad();
       comp.CreateAttributes();
 
@@ -25,8 +23,13 @@ namespace ComposGHTests.Load
     }
 
     [Fact]
-    public void CreateComponent()
-    {
+    public void ChangeDropDownTest() {
+      var comp = ComponentMother();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponent() {
       var comp = ComponentMother();
 
       comp.SetSelected(0, 1); // change dropdown to kN
@@ -36,7 +39,7 @@ namespace ComposGHTests.Load
 
       LoadGoo output = (LoadGoo)ComponentTestHelper.GetOutput(comp);
       PointLoad load = (PointLoad)output.Value;
-      
+
       int i = 0;
       Assert.Equal((i++ + 1) * 1, load.Load.ConstantDead.As(force));
       Assert.Equal((i++ + 1) * 1, load.Load.ConstantLive.As(force));
@@ -46,17 +49,9 @@ namespace ComposGHTests.Load
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void DeserializeTest() {
       var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      var comp = ComponentMother();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

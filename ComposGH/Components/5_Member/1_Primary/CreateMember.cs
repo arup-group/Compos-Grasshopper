@@ -1,36 +1,30 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using Grasshopper.Kernel;
-using ComposAPI;
+﻿using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using Grasshopper.Kernel;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using OasysGH;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace ComposGH.Components
-{
-  public class CreateMember : GH_OasysComponent
-  {
-    #region Name and Ribbon Layout
+namespace ComposGH.Components {
+  public class CreateMember : GH_OasysComponent {
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("e7eafcec-ede6-4d60-9fcb-5392cb878581");
     public override GH_Exposure Exposure => GH_Exposure.primary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override System.Drawing.Bitmap Icon => Resources.CreateMember;
+
     public CreateMember()
       : base("Create" + MemberGoo.Name.Replace(" ", string.Empty),
           MemberGoo.Name.Replace(" ", string.Empty),
           "Create a " + MemberGoo.Description,
             Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat5())
-    { Hidden = false; } // sets the initial state of the component to hidden
-    #endregion
+            Ribbon.SubCategoryName.Cat5()) { Hidden = false; } // sets the initial state of the component to hidden
 
-    #region Input and output
-    protected override void RegisterInputParams(GH_InputParamManager pManager)
-    {
+    protected override void RegisterInputParams(GH_InputParamManager pManager) {
       pManager.AddParameter(new ComposBeamParameter());
       pManager.AddParameter(new ComposStudParameter());
       pManager.AddParameter(new ComposSlabParameter());
@@ -43,14 +37,11 @@ namespace ComposGH.Components
       pManager[7].Optional = true;
     }
 
-    protected override void RegisterOutputParams(GH_OutputParamManager pManager)
-    {
+    protected override void RegisterOutputParams(GH_OutputParamManager pManager) {
       pManager.AddParameter(new ComposMemberParameter());
     }
-    #endregion
 
-    protected override void SolveInstance(IGH_DataAccess DA)
-    {
+    protected override void SolveInstance(IGH_DataAccess DA) {
       BeamGoo beam = (BeamGoo)Input.GenericGoo<BeamGoo>(this, DA, 0);
       StudGoo stud = (StudGoo)Input.GenericGoo<StudGoo>(this, DA, 1);
       SlabGoo slab = (SlabGoo)Input.GenericGoo<SlabGoo>(this, DA, 2);
@@ -68,7 +59,7 @@ namespace ComposGH.Components
       note = note.Trim();
 
       Member member = new Member(name, gridRef, note, code.Value, beam.Value, stud.Value, slab.Value, loads.Select(x => x.Value).ToList());
-      
+
       DA.SetData(0, new MemberGoo(member));
     }
   }

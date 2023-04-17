@@ -1,76 +1,67 @@
 ﻿using ComposAPI.Helpers;
-using System.Collections.Generic;
 using OasysUnits;
 using OasysUnits.Units;
+using System.Collections.Generic;
 
-namespace ComposAPI
-{
-  public enum DeflectionLimitLoadType
-  {
-    ConstructionDeadLoad,
-    AdditionalDeadLoad,
-    FinalLiveLoad,
-    Total,
-    PostConstruction
-  }
-  public class DeflectionLimit : IDeflectionLimit
-  {
+namespace ComposAPI {
+  public class DeflectionLimit : IDeflectionLimit {
     public Length AbsoluteDeflection { get; set; } = Length.Zero;
     public Ratio SpanOverDeflectionRatio { get; set; } = Ratio.Zero;
 
     public DeflectionLimit() { }
 
-    public DeflectionLimit(double absoluteDeflection, LengthUnit lengthUnit)
-    {
+    public DeflectionLimit(double absoluteDeflection, LengthUnit lengthUnit) {
       AbsoluteDeflection = new Length(absoluteDeflection, lengthUnit);
     }
-    public DeflectionLimit(double spanDeflectionRatio)
-    {
+
+    public DeflectionLimit(double spanDeflectionRatio) {
       SpanOverDeflectionRatio = new Ratio(spanDeflectionRatio, RatioUnit.DecimalFraction);
     }
-    
-    #region coa interop
-    internal static string GetLoadTypeCoaString(DeflectionLimitLoadType type)
-    {
-      switch (type)
-      {
-        case DeflectionLimitLoadType.ConstructionDeadLoad:
-          return "CONSTRUCTION_DEAD_LOAD";
-        case DeflectionLimitLoadType.AdditionalDeadLoad:
-          return "ADDITIONAL_DEAD_LOAD";
-        case DeflectionLimitLoadType.FinalLiveLoad:
-          return "FINAL_LIVE_LOAD";
-        case DeflectionLimitLoadType.Total:
-          return "TOTAL";
-        case DeflectionLimitLoadType.PostConstruction:
-          return "POST_CONSTRUCTION";
+
+    public string ToCoaString(string name, DeflectionLimitLoadType type, ComposUnits units) {
+      string coaString = "";
+
+      if (AbsoluteDeflection != Length.Zero) {
+        List<string> parameters = new List<string>();
+        parameters.Add(CoaIdentifier.DesignCriteria.DeflectionLimit);
+        parameters.Add(name);
+        parameters.Add(GetLoadTypeCoaString(type));
+        parameters.Add("ABSOLUTE");
+        parameters.Add(CoaHelper.FormatSignificantFigures(AbsoluteDeflection.ToUnit(units.Displacement).Value, 6));
+
+        coaString += CoaHelper.CreateString(parameters);
       }
-      return null;
-    }
-    internal static DeflectionLimitLoadType GetLoadType(string coaString)
-    {
-      switch (coaString)
-      {
-        case "CONSTRUCTION_DEAD_LOAD":
-          return DeflectionLimitLoadType.ConstructionDeadLoad;
-        case "ADDITIONAL_DEAD_LOAD":
-          return DeflectionLimitLoadType.AdditionalDeadLoad;
-        case "FINAL_LIVE_LOAD":
-          return DeflectionLimitLoadType.FinalLiveLoad;
-        case "TOTAL":
-          return DeflectionLimitLoadType.Total;
-        case "POST_CONSTRUCTION":
-          return DeflectionLimitLoadType.PostConstruction;
+
+      if (SpanOverDeflectionRatio != Ratio.Zero) {
+        List<string> parameters = new List<string>();
+        parameters.Add(CoaIdentifier.DesignCriteria.DeflectionLimit);
+        parameters.Add(name);
+        parameters.Add(GetLoadTypeCoaString(type));
+        parameters.Add("SPAN/DEF_RATIO");
+        parameters.Add(CoaHelper.FormatSignificantFigures(SpanOverDeflectionRatio.DecimalFractions, 6));
+
+        coaString += CoaHelper.CreateString(parameters);
       }
-      return DeflectionLimitLoadType.Total;
+
+      return coaString;
     }
-    internal static IDeflectionLimit FromCoaString(string coaString, string name, DeflectionLimitLoadType type, ComposUnits units)
-    {
+
+    public override string ToString() {
+      string str = "";
+      if (AbsoluteDeflection != Length.Zero)
+        str += "δ:" + AbsoluteDeflection.ToUnit(ComposUnitsHelper.LengthUnitResult).ToString("f0").Replace(" ", string.Empty) + ", ";
+
+      if (SpanOverDeflectionRatio != Ratio.Zero) {
+        str += "δ:1/" + SpanOverDeflectionRatio.DecimalFractions.ToString("f0").Replace(" ", string.Empty);
+      }
+      return str.TrimEnd(' ').TrimEnd(',');
+    }
+
+    internal static IDeflectionLimit FromCoaString(string coaString, string name, DeflectionLimitLoadType type, ComposUnits units) {
       DeflectionLimit defLim = new DeflectionLimit();
 
       List<string> lines = CoaHelper.SplitAndStripLines(coaString);
-      foreach (string line in lines)
-      {
+      foreach (string line in lines) {
         List<string> parameters = CoaHelper.Split(line);
 
         if (parameters[0] == "END")
@@ -93,51 +84,52 @@ namespace ComposAPI
       return defLim;
     }
 
-    public string ToCoaString(string name, DeflectionLimitLoadType type, ComposUnits units)
-    {
-      string coaString = "";
+    internal static DeflectionLimitLoadType GetLoadType(string coaString) {
+      switch (coaString) {
+        case "CONSTRUCTION_DEAD_LOAD":
+          return DeflectionLimitLoadType.ConstructionDeadLoad;
 
-      if (AbsoluteDeflection != Length.Zero)
-      {
-        List<string> parameters = new List<string>();
-        parameters.Add(CoaIdentifier.DesignCriteria.DeflectionLimit);
-        parameters.Add(name);
-        parameters.Add(GetLoadTypeCoaString(type));
-        parameters.Add("ABSOLUTE");
-        parameters.Add(CoaHelper.FormatSignificantFigures(AbsoluteDeflection.ToUnit(units.Displacement).Value, 6));
+        case "ADDITIONAL_DEAD_LOAD":
+          return DeflectionLimitLoadType.AdditionalDeadLoad;
 
-        coaString += CoaHelper.CreateString(parameters);
+        case "FINAL_LIVE_LOAD":
+          return DeflectionLimitLoadType.FinalLiveLoad;
+
+        case "TOTAL":
+          return DeflectionLimitLoadType.Total;
+
+        case "POST_CONSTRUCTION":
+          return DeflectionLimitLoadType.PostConstruction;
       }
-
-      if (SpanOverDeflectionRatio != Ratio.Zero)
-      {
-        List<string> parameters = new List<string>();
-        parameters.Add(CoaIdentifier.DesignCriteria.DeflectionLimit);
-        parameters.Add(name);
-        parameters.Add(GetLoadTypeCoaString(type));
-        parameters.Add("SPAN/DEF_RATIO");
-        parameters.Add(CoaHelper.FormatSignificantFigures(SpanOverDeflectionRatio.DecimalFractions, 6));
-
-        coaString += CoaHelper.CreateString(parameters);
-      }
-
-      return coaString;
+      return DeflectionLimitLoadType.Total;
     }
-    #endregion
 
-    #region methods
-    public override string ToString()
-    {
-      string str = "";
-      if (AbsoluteDeflection != Length.Zero)
-        str += "δ:" + AbsoluteDeflection.ToUnit(ComposUnitsHelper.LengthUnitResult).ToString("f0").Replace(" ", string.Empty) + ", ";
+    internal static string GetLoadTypeCoaString(DeflectionLimitLoadType type) {
+      switch (type) {
+        case DeflectionLimitLoadType.ConstructionDeadLoad:
+          return "CONSTRUCTION_DEAD_LOAD";
 
-      if (SpanOverDeflectionRatio != Ratio.Zero)
-      {
-        str += "δ:1/" + SpanOverDeflectionRatio.DecimalFractions.ToString("f0").Replace(" ", string.Empty);
+        case DeflectionLimitLoadType.AdditionalDeadLoad:
+          return "ADDITIONAL_DEAD_LOAD";
+
+        case DeflectionLimitLoadType.FinalLiveLoad:
+          return "FINAL_LIVE_LOAD";
+
+        case DeflectionLimitLoadType.Total:
+          return "TOTAL";
+
+        case DeflectionLimitLoadType.PostConstruction:
+          return "POST_CONSTRUCTION";
       }
-      return str.TrimEnd(' ').TrimEnd(',');
+      return null;
     }
-    #endregion
+  }
+
+  public enum DeflectionLimitLoadType {
+    ConstructionDeadLoad,
+    AdditionalDeadLoad,
+    FinalLiveLoad,
+    Total,
+    PostConstruction
   }
 }

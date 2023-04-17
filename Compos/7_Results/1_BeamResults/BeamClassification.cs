@@ -1,80 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ComposAPI
-{
-  internal enum ClassResultOption
-  {
-    CLAS_CONS_FLAN_CLASS, // Flange class in Construction stage
-    CLAS_CONS_WEB_CLASS, // web class in Construction stage
-    CLAS_CONS_SECTION, // Section class in Construction stage
-    CLAS_FINA_FLAN_CLASS, // Flange class in Final stage
-    CLAS_FINA_WEB_CLASS, // web class in Final stage
-    CLAS_FINA_SECTION, // Section class in Final stage
-  }
-
-  public class BeamClassification : SubResult, IBeamClassification
-  {
-    public BeamClassification(Member member, int numIntermediatePos) : base(member, numIntermediatePos)
-    {
-    }
-
-    /// <summary>
-    /// Flange class in Construction stage
-    /// </summary>
-    public List<string> FlangeConstruction
-    {
-      get
-      {
-        ClassResultOption resultType = ClassResultOption.CLAS_CONS_FLAN_CLASS;
-        return GetResults(resultType);
-      }
-    }
-
-    /// <summary>
-    /// Web class in Construction stage
-    /// </summary>
-    public List<string> WebConstruction
-    {
-      get
-      {
-        ClassResultOption resultType = ClassResultOption.CLAS_CONS_WEB_CLASS;
-        return GetResults(resultType);
-      }
-    }
-
-    /// <summary>
-    /// Section class in Construction stage
-    /// </summary>
-    public List<string> SectionConstruction
-    {
-      get
-      {
-        ClassResultOption resultType = ClassResultOption.CLAS_CONS_SECTION;
-        return GetResults(resultType);
-      }
-    }
-
+namespace ComposAPI {
+  public class BeamClassification : SubResult, IBeamClassification {
     /// <summary>
     /// Flange class in Final stage
     /// </summary>
-    public List<string> Flange
-    {
-      get
-      {
+    public List<string> Flange {
+      get {
         ClassResultOption resultType = ClassResultOption.CLAS_FINA_FLAN_CLASS;
         return GetResults(resultType);
       }
     }
 
     /// <summary>
-    /// Web class in Final stage
+    /// Flange class in Construction stage
     /// </summary>
-    public List<string> Web
-    {
-      get
-      {
-        ClassResultOption resultType = ClassResultOption.CLAS_FINA_WEB_CLASS;
+    public List<string> FlangeConstruction {
+      get {
+        ClassResultOption resultType = ClassResultOption.CLAS_CONS_FLAN_CLASS;
         return GetResults(resultType);
       }
     }
@@ -82,33 +26,59 @@ namespace ComposAPI
     /// <summary>
     /// Section class in Final stage
     /// </summary>
-    public List<string> Section
-    {
-      get
-      {
+    public List<string> Section {
+      get {
         ClassResultOption resultType = ClassResultOption.CLAS_FINA_SECTION;
+        return GetResults(resultType);
+      }
+    }
+
+    /// <summary>
+    /// Section class in Construction stage
+    /// </summary>
+    public List<string> SectionConstruction {
+      get {
+        ClassResultOption resultType = ClassResultOption.CLAS_CONS_SECTION;
+        return GetResults(resultType);
+      }
+    }
+
+    /// <summary>
+    /// Web class in Final stage
+    /// </summary>
+    public List<string> Web {
+      get {
+        ClassResultOption resultType = ClassResultOption.CLAS_FINA_WEB_CLASS;
+        return GetResults(resultType);
+      }
+    }
+
+    /// <summary>
+    /// Web class in Construction stage
+    /// </summary>
+    public List<string> WebConstruction {
+      get {
+        ClassResultOption resultType = ClassResultOption.CLAS_CONS_WEB_CLASS;
         return GetResults(resultType);
       }
     }
 
     private Dictionary<ClassResultOption, List<string>> ResultsCache = new Dictionary<ClassResultOption, List<string>>();
 
-    private List<string> GetResults(ClassResultOption resultType)
-    {
-      if (!ResultsCache.ContainsKey(resultType))
-      {
+    public BeamClassification(Member member, int numIntermediatePos) : base(member, numIntermediatePos) {
+    }
+
+    private List<string> GetResults(ClassResultOption resultType) {
+      if (!ResultsCache.ContainsKey(resultType)) {
         List<string> results = new List<string>();
-        for (short pos = 0; pos < NumIntermediatePos; pos++)
-        {
+        for (short pos = 0; pos < NumIntermediatePos; pos++) {
           float value = Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
-          switch (Member.DesignCode.Code)
-          {
+          switch (Member.DesignCode.Code) {
             case Code.BS5950_3_1_1990_Superseded:
             case Code.BS5950_3_1_1990_A1_2010:
             case Code.HKSUOS_2005:
             case Code.HKSUOS_2011:
-              if (resultType == ClassResultOption.CLAS_CONS_SECTION || resultType == ClassResultOption.CLAS_FINA_SECTION)
-              {
+              if (resultType == ClassResultOption.CLAS_CONS_SECTION || resultType == ClassResultOption.CLAS_FINA_SECTION) {
                 if (value == 1)
                   results.Add("Plastic");
                 else if (value == 2)
@@ -120,8 +90,7 @@ namespace ComposAPI
                 else
                   results.Add("Unknown");
               }
-              else
-              {
+              else {
                 if (value == 1)
                   results.Add("Plastic");
                 else if (value == 2)
@@ -157,5 +126,14 @@ namespace ComposAPI
       }
       return ResultsCache[resultType];
     }
+  }
+
+  internal enum ClassResultOption {
+    CLAS_CONS_FLAN_CLASS, // Flange class in Construction stage
+    CLAS_CONS_WEB_CLASS, // web class in Construction stage
+    CLAS_CONS_SECTION, // Section class in Construction stage
+    CLAS_FINA_FLAN_CLASS, // Flange class in Final stage
+    CLAS_FINA_WEB_CLASS, // web class in Final stage
+    CLAS_FINA_SECTION, // Section class in Final stage
   }
 }

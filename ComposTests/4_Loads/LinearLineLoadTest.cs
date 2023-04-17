@@ -1,45 +1,16 @@
-﻿using System.Collections.Generic;
-using ComposAPI.Helpers;
+﻿using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
+using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
+using System.Collections.Generic;
 using Xunit;
-using OasysGH;
 
-namespace ComposAPI.Loads.Tests
-{
-    public partial class LoadTest
-  {
-    // 1 setup inputs
-    [Theory]
-    [InlineData(1, 1.5, 3, 5, 3, 4.5, 6, 5)]
-    public Load TestLinearLineLoadConstructor(double consDead1, double consLive1, double finalDead1, double finalLive1,
-      double consDead2, double consLive2, double finalDead2, double finalLive2)
-    {
-      ForcePerLengthUnit force = ForcePerLengthUnit.KilonewtonPerMeter;
+namespace ComposAPI.Loads.Tests {
+  public partial class LoadTest {
 
-      // 2 create object instance with constructor
-      LinearLoad load = new LinearLoad(
-        new ForcePerLength(consDead1, force), new ForcePerLength(consLive1, force), new ForcePerLength(finalDead1, force), new ForcePerLength(finalLive1, force),
-        new ForcePerLength(consDead2, force), new ForcePerLength(consLive2, force), new ForcePerLength(finalDead2, force), new ForcePerLength(finalLive2, force));
-
-      // 3 check that inputs are set in object's members
-      Assert.Equal(consDead1, load.LoadW1.ConstantDead.As(force));
-      Assert.Equal(consLive1, load.LoadW1.ConstantLive.As(force));
-      Assert.Equal(finalDead1, load.LoadW1.FinalDead.As(force));
-      Assert.Equal(finalLive1, load.LoadW1.FinalLive.As(force));
-      Assert.Equal(consDead2, load.LoadW2.ConstantDead.As(force));
-      Assert.Equal(consLive2, load.LoadW2.ConstantLive.As(force));
-      Assert.Equal(finalDead2, load.LoadW2.FinalDead.As(force));
-      Assert.Equal(finalLive2, load.LoadW2.FinalLive.As(force));
-      Assert.Equal(LoadType.Linear, load.Type);
-      Assert.Equal(LoadDistribution.Line, load.Distribution);
-
-      return load;
-    }
     [Fact]
-    public void DuplicateLinearLineTest()
-    {
+    public void DuplicateLinearLineTest() {
       // 1 create with constructor and duplicate
       Load original = TestLinearLineLoadConstructor(1, 1.5, 3, 5, 3, 4.5, 6, 5);
       Load duplicate = (Load)original.Duplicate();
@@ -52,20 +23,7 @@ namespace ComposAPI.Loads.Tests
     }
 
     [Fact]
-    public void LinearLineLoadToCoaStringTest()
-    {
-      // Arrange
-      string expected_coaString = "LOAD	MEMBER-1	Linear	Line	4.50000	6.00000	7.00000	8.00000	8.90000	10.0000	11.0000	12.0000\n";
-      Load load = TestLinearLineLoadConstructor(0.0045, 0.006, 0.007, 0.008, 0.0089, 0.010, 0.011, 0.012); // input unit in kN/m, coa string in N/m
-      // Act
-      string coaString = load.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
-      // Assert
-      Assert.Equal(expected_coaString, coaString);
-    }
-
-    [Fact]
-    public void LinearLineLoadFromCoaStringTest()
-    {
+    public void LinearLineLoadFromCoaStringTest() {
       ForceUnit forceUnit = ForceUnit.Kilonewton;
       LengthUnit lengthUnit = LengthUnit.Millimeter;
       ComposUnits units = ComposUnits.GetStandardUnits();
@@ -93,6 +51,44 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(12, linearLineLoad.LoadW2.FinalLive.As(forcePerLengthUnit));
       Assert.Equal(LoadType.Linear, linearLineLoad.Type);
       Assert.Equal(LoadDistribution.Line, linearLineLoad.Distribution);
+    }
+
+    [Fact]
+    public void LinearLineLoadToCoaStringTest() {
+      // Arrange
+      string expected_coaString = "LOAD	MEMBER-1	Linear	Line	4.50000	6.00000	7.00000	8.00000	8.90000	10.0000	11.0000	12.0000\n";
+      Load load = TestLinearLineLoadConstructor(0.0045, 0.006, 0.007, 0.008, 0.0089, 0.010, 0.011, 0.012); // input unit in kN/m, coa string in N/m
+      // Act
+      string coaString = load.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
+
+    // 1 setup inputs
+    [Theory]
+    [InlineData(1, 1.5, 3, 5, 3, 4.5, 6, 5)]
+    public Load TestLinearLineLoadConstructor(double consDead1, double consLive1, double finalDead1, double finalLive1,
+      double consDead2, double consLive2, double finalDead2, double finalLive2) {
+      ForcePerLengthUnit force = ForcePerLengthUnit.KilonewtonPerMeter;
+
+      // 2 create object instance with constructor
+      LinearLoad load = new LinearLoad(
+        new ForcePerLength(consDead1, force), new ForcePerLength(consLive1, force), new ForcePerLength(finalDead1, force), new ForcePerLength(finalLive1, force),
+        new ForcePerLength(consDead2, force), new ForcePerLength(consLive2, force), new ForcePerLength(finalDead2, force), new ForcePerLength(finalLive2, force));
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(consDead1, load.LoadW1.ConstantDead.As(force));
+      Assert.Equal(consLive1, load.LoadW1.ConstantLive.As(force));
+      Assert.Equal(finalDead1, load.LoadW1.FinalDead.As(force));
+      Assert.Equal(finalLive1, load.LoadW1.FinalLive.As(force));
+      Assert.Equal(consDead2, load.LoadW2.ConstantDead.As(force));
+      Assert.Equal(consLive2, load.LoadW2.ConstantLive.As(force));
+      Assert.Equal(finalDead2, load.LoadW2.FinalDead.As(force));
+      Assert.Equal(finalLive2, load.LoadW2.FinalLive.As(force));
+      Assert.Equal(LoadType.Linear, load.Type);
+      Assert.Equal(LoadDistribution.Line, load.Distribution);
+
+      return load;
     }
   }
 }

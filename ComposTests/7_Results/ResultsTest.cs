@@ -1,20 +1,12 @@
 ﻿using System.IO;
 using Xunit;
 
-namespace ComposAPI.Results.Tests
-{
-    [Collection("ComposAPI Fixture collection")]
-
-  public class ResultsTest
-  {
-    public static readonly string RelativePath = "..\\..\\..\\..\\TestFiles\\";
-
-    public static IMember ResultMember
-    {
-      get
-      {
-        if (m_Member == null)
-        {
+namespace ComposAPI.Results.Tests {
+  [Collection("ComposAPI Fixture collection")]
+  public class ResultsTest {
+    public static IMember ResultMember {
+      get {
+        if (m_Member == null) {
           string fileName = "Compos2_UTF8.coa";
           string memberName = "MEMBER-1";
 
@@ -25,11 +17,11 @@ namespace ComposAPI.Results.Tests
         return m_Member;
       }
     }
+    public static readonly string RelativePath = "..\\..\\..\\..\\TestFiles\\";
     private static IMember m_Member = null;
 
     [Fact]
-    public void PositionsTest()
-    {
+    public void PositionsTest() {
       IMember member = ResultsTest.ResultMember;
       Assert.Equal(7, member.Result.Positions.Count);
 

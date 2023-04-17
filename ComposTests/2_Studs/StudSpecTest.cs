@@ -1,59 +1,27 @@
-﻿using Xunit;
+﻿using ComposGHTests.Helpers;
+using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
-using ComposGHTests.Helpers;
-using OasysGH;
+using Xunit;
 
-namespace ComposAPI.Studs.Tests
-{
-    public partial class StudTest
-  {
-    // 1 setup inputs
-    [Theory]
-    [InlineData(50, 100, 10, true, false)]
-    [InlineData(20, 120, 5, false, true)]
-    [InlineData(0, 10.5, 0.15, true, true)]
-    [InlineData(-2.0, 9999, -250, false, false)]
-    public StudSpecification TestConstructorStudSpecEC4(double noStudZoneStart, double noStudZoneEnd, 
-      double reinforcementPosition, bool welding, bool ncci)
-    {
-      LengthUnit unit = LengthUnit.Millimeter;
+namespace ComposAPI.Studs.Tests {
+  public partial class StudTest {
 
-      // 2 create object instance with constructor
-      StudSpecification studSpec = new StudSpecification(
-        new Length(noStudZoneStart, unit), new Length(noStudZoneEnd, unit), 
-        new Length(reinforcementPosition, unit), welding, ncci);
+    [Fact]
+    public void DuplicateBS5950Test() {
+      // 1 create with constructor and duplicate
+      StudSpecification original = TestConstructorStudSpecBS5950(true, 100, 10);
+      StudSpecification duplicate = (StudSpecification)original.Duplicate();
 
-      // 3 check that inputs are set in object's members
-      Assert.Equal(noStudZoneStart, studSpec.NoStudZoneStart.As(LengthUnit.Millimeter));
-      Assert.Equal(noStudZoneEnd, studSpec.NoStudZoneEnd.As(LengthUnit.Millimeter));
-      Assert.Equal(reinforcementPosition, studSpec.ReinforcementPosition.Millimeters);
-      Assert.Equal(welding, studSpec.Welding);
-      Assert.Equal(ncci, studSpec.NCCI);
-      Assert.Equal(StudSpecType.EC4, studSpec.SpecType);
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
 
-      return studSpec;
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     [Fact]
-    public void TestConstructorStudSpecEC4Ratio()
-    {
-      LengthUnit unit = LengthUnit.Millimeter;
-      RatioUnit percent = RatioUnit.Percent;
-
-      // 2 create object instance with constructor
-      StudSpecification studSpec = new StudSpecification(
-        new Ratio(20, percent), new Ratio(5, percent),
-        new Length(20, unit), true, false);
-
-      // 3 check that inputs are set in object's members
-      Assert.Equal(20, studSpec.NoStudZoneStart.As(percent));
-      Assert.Equal(5, studSpec.NoStudZoneEnd.As(percent));
-    }
-
-    [Fact]
-    public void DuplicateEC4Test()
-    {
+    public void DuplicateEC4Test() {
       // 1 create with constructor and duplicate
       StudSpecification original = TestConstructorStudSpecEC4(50, 100, 10, true, false);
       StudSpecification duplicate = (StudSpecification)original.Duplicate();
@@ -65,12 +33,44 @@ namespace ComposAPI.Studs.Tests
       Assert.NotSame(original, duplicate);
     }
 
+    [Fact]
+    public void DuplicateStudSpecTest() {
+      // 1 create with constructor and duplicate
+      StudSpecification original = TestConstructorStudSpec(50, 100, true);
+      StudSpecification duplicate = (StudSpecification)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
+    // 1 setup inputs
+    [Theory]
+    [InlineData(50, 100, true)]
+    [InlineData(20, 120, false)]
+    public StudSpecification TestConstructorStudSpec(double noStudZoneStart, double noStudZoneEnd, bool welding) {
+      LengthUnit unit = LengthUnit.Millimeter;
+
+      // 2 create object instance with constructor
+      StudSpecification studSpec = new StudSpecification(
+        new Length(noStudZoneStart, unit), new Length(noStudZoneEnd, unit), welding);
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(noStudZoneStart, studSpec.NoStudZoneStart.As(LengthUnit.Millimeter));
+      Assert.Equal(noStudZoneEnd, studSpec.NoStudZoneEnd.As(LengthUnit.Millimeter));
+      Assert.Equal(welding, studSpec.Welding);
+      Assert.Equal(StudSpecType.Other, studSpec.SpecType);
+
+      return studSpec;
+    }
+
     // 1 setup inputs
     [Theory]
     [InlineData(true, 100, 10)]
     [InlineData(false, 120, 5)]
-    public StudSpecification TestConstructorStudSpecBS5950(bool useEC4Limit, double noStudZoneStart, double noStudZoneEnd)
-    {
+    public StudSpecification TestConstructorStudSpecBS5950(bool useEC4Limit, double noStudZoneStart, double noStudZoneEnd) {
       LengthUnit unit = LengthUnit.Millimeter;
 
       // 2 create object instance with constructor
@@ -86,57 +86,49 @@ namespace ComposAPI.Studs.Tests
       return studSpec;
     }
 
-    [Fact]
-    public void DuplicateBS5950Test()
-    {
-      // 1 create with constructor and duplicate
-      StudSpecification original = TestConstructorStudSpecBS5950(true, 100, 10);
-      StudSpecification duplicate = (StudSpecification)original.Duplicate();
-
-      // 2 check that duplicate has duplicated values
-      Duplicates.AreEqual(original, duplicate);
-
-      // 3 check that the memory pointer is not the same
-      Assert.NotSame(original, duplicate);
-    }
-
     // 1 setup inputs
     [Theory]
-    [InlineData(50, 100, true)]
-    [InlineData(20, 120, false)]
-    public StudSpecification TestConstructorStudSpec(double noStudZoneStart, double noStudZoneEnd, bool welding)
-    {
+    [InlineData(50, 100, 10, true, false)]
+    [InlineData(20, 120, 5, false, true)]
+    [InlineData(0, 10.5, 0.15, true, true)]
+    [InlineData(-2.0, 9999, -250, false, false)]
+    public StudSpecification TestConstructorStudSpecEC4(double noStudZoneStart, double noStudZoneEnd,
+      double reinforcementPosition, bool welding, bool ncci) {
       LengthUnit unit = LengthUnit.Millimeter;
 
       // 2 create object instance with constructor
       StudSpecification studSpec = new StudSpecification(
-        new Length(noStudZoneStart, unit), new Length(noStudZoneEnd, unit), welding);
+        new Length(noStudZoneStart, unit), new Length(noStudZoneEnd, unit),
+        new Length(reinforcementPosition, unit), welding, ncci);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(noStudZoneStart, studSpec.NoStudZoneStart.As(LengthUnit.Millimeter));
       Assert.Equal(noStudZoneEnd, studSpec.NoStudZoneEnd.As(LengthUnit.Millimeter));
+      Assert.Equal(reinforcementPosition, studSpec.ReinforcementPosition.Millimeters);
       Assert.Equal(welding, studSpec.Welding);
-      Assert.Equal(StudSpecType.Other, studSpec.SpecType);
+      Assert.Equal(ncci, studSpec.NCCI);
+      Assert.Equal(StudSpecType.EC4, studSpec.SpecType);
 
       return studSpec;
     }
+
     [Fact]
-    public void DuplicateStudSpecTest()
-    {
-      // 1 create with constructor and duplicate
-      StudSpecification original = TestConstructorStudSpec(50, 100, true);
-      StudSpecification duplicate = (StudSpecification)original.Duplicate();
+    public void TestConstructorStudSpecEC4Ratio() {
+      LengthUnit unit = LengthUnit.Millimeter;
+      RatioUnit percent = RatioUnit.Percent;
 
-      // 2 check that duplicate has duplicated values
-      Duplicates.AreEqual(original, duplicate);
+      // 2 create object instance with constructor
+      StudSpecification studSpec = new StudSpecification(
+        new Ratio(20, percent), new Ratio(5, percent),
+        new Length(20, unit), true, false);
 
-      // 3 check that the memory pointer is not the same
-      Assert.NotSame(original, duplicate);
+      // 3 check that inputs are set in object's members
+      Assert.Equal(20, studSpec.NoStudZoneStart.As(percent));
+      Assert.Equal(5, studSpec.NoStudZoneEnd.As(percent));
     }
 
     [Fact]
-    public void TestStudSpecDuplicate1()
-    {
+    public void TestStudSpecDuplicate1() {
       LengthUnit unit = LengthUnit.Millimeter;
 
       // 1 create with constructor and duplicate
@@ -176,8 +168,7 @@ namespace ComposAPI.Studs.Tests
     }
 
     [Fact]
-    public void TestStudSpecDuplicate2()
-    {
+    public void TestStudSpecDuplicate2() {
       LengthUnit unit = LengthUnit.Millimeter;
 
       // 1 create with new constructor and duplicate
@@ -210,8 +201,7 @@ namespace ComposAPI.Studs.Tests
     }
 
     [Fact]
-    public void TestStudSpecDuplicate3()
-    {
+    public void TestStudSpecDuplicate3() {
       LengthUnit unit = LengthUnit.Millimeter;
 
       // 1 create with new constructor and duplicate

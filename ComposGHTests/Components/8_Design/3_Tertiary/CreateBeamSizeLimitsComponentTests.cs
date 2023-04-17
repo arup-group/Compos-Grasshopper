@@ -1,25 +1,28 @@
-﻿using ComposGH.Parameters;
-using ComposGH.Components;
-using Xunit;
+﻿using ComposGH.Components;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
 using OasysGH.Components;
+using Xunit;
 
-namespace ComposGHTests.Design
-{
+namespace ComposGHTests.Design {
   [Collection("GrasshopperFixture collection")]
-  public class CreateBeamSizeLimitsComponentTests
-  {
-    public static GH_OasysDropDownComponent CreateBeamSizeLimitsMother()
-    {
+  public class CreateBeamSizeLimitsComponentTests {
+
+    public static GH_OasysDropDownComponent CreateBeamSizeLimitsMother() {
       var comp = new CreateBeamSizeLimits();
       comp.CreateAttributes();
-      
+
       return comp;
     }
 
     [Fact]
-    public void CreateComponent()
-    {
+    public void ChangeDropDownTest() {
+      var comp = CreateBeamSizeLimitsMother();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponent() {
       var comp = CreateBeamSizeLimitsMother();
 
       BeamSizeLimitsGoo output = (BeamSizeLimitsGoo)ComponentTestHelper.GetOutput(comp);
@@ -31,8 +34,7 @@ namespace ComposGHTests.Design
     }
 
     [Fact]
-    public void CreateComponentWithInputs()
-    {
+    public void CreateComponentWithInputs() {
       var comp = CreateBeamSizeLimitsMother();
 
       comp.SetSelected(0, 0); // change dropdown to mm
@@ -51,17 +53,9 @@ namespace ComposGHTests.Design
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void DeserializeTest() {
       var comp = CreateBeamSizeLimitsMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      var comp = CreateBeamSizeLimitsMother();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

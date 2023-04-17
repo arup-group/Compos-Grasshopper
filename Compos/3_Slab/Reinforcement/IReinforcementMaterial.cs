@@ -1,12 +1,10 @@
 ﻿using OasysUnits;
 
-namespace ComposAPI
-{
-  public interface IReinforcementMaterial
-  {
+namespace ComposAPI {
+  public interface IReinforcementMaterial {
+    Pressure Fy { get; }
     RebarGrade Grade { get; }
     bool UserDefined { get; }
-    Pressure Fy { get; }
 
     string ToCoaString(string name);
   }

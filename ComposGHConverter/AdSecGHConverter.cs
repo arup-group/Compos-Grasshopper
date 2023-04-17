@@ -1,22 +1,19 @@
 ﻿using System;
+
 //using AdSecGH.Parameters;
 
-namespace ComposGH.Converters
-{
-  public class AdSecGHConverter
-  {
-    public static object CastToComposBeam(object source)
-    {
-      return null;
-    }
-    
-    public static Type GetTypeFor(Type type)
-    {
+namespace ComposGH.Converters {
+  public class AdSecGHConverter {
+
+    public static object CastToComposBeam(object source) {
       return null;
     }
 
-    public static bool IsPresent()
-    {
+    public static Type GetTypeFor(Type type) {
+      return null;
+    }
+
+    public static bool IsPresent() {
       //try
       //{
       //  AdSecMaterial material = new AdSecMaterial();
@@ -28,7 +25,5 @@ namespace ComposGH.Converters
       //return true;
       return false;
     }
-
-
   }
 }

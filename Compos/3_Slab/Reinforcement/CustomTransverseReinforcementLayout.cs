@@ -1,33 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using ComposAPI.Helpers;
+﻿using ComposAPI.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
+using System;
+using System.Collections.Generic;
 
-namespace ComposAPI
-{
-  public class CustomTransverseReinforcementLayout : ICustomTransverseReinforcementLayout
-  {
-    public IQuantity StartPosition
-    {
-      get { return m_StartPosition; }
-      set
-      {
-        if (value == null) return;
-        if (value.QuantityInfo.UnitType != typeof(LengthUnit)
-          & value.QuantityInfo.UnitType != typeof(RatioUnit))
-          throw new ArgumentException("Start Position must be either Length or Ratio");
-        else
-          m_StartPosition = value;
-      }
-    }
-    private IQuantity m_StartPosition = Length.Zero;
+namespace ComposAPI {
+  public class CustomTransverseReinforcementLayout : ICustomTransverseReinforcementLayout {
+    public Length Cover { get; set; }
+    public Length Diameter { get; set; }
     // end x of the reinforcement
-    public IQuantity EndPosition
-    {
+    public IQuantity EndPosition {
       get { return m_EndPosition; }
-      set
-      {
+      set {
         if (value == null) return;
         if (value.QuantityInfo.UnitType != typeof(LengthUnit)
           & value.QuantityInfo.UnitType != typeof(RatioUnit))
@@ -36,15 +20,27 @@ namespace ComposAPI
           m_EndPosition = value;
       }
     }
+    // diameter of the reinforcement
+    public Length Spacing { get; set; }
+    public IQuantity StartPosition {
+      get { return m_StartPosition; }
+      set {
+        if (value == null) return;
+        if (value.QuantityInfo.UnitType != typeof(LengthUnit)
+          & value.QuantityInfo.UnitType != typeof(RatioUnit))
+          throw new ArgumentException("Start Position must be either Length or Ratio");
+        else
+          m_StartPosition = value;
+      }
+    }
     private IQuantity m_EndPosition = new Ratio(100, RatioUnit.Percent);
-    public Length Diameter { get; set; } // diameter of the reinforcement
-    public Length Spacing { get; set; } //	spacing of the reinforcement
-    public Length Cover { get; set; } // reinforcement cover
+    private IQuantity m_StartPosition = Length.Zero;
+    //	spacing of the reinforcement
+    // reinforcement cover
 
     public CustomTransverseReinforcementLayout() { }
 
-    public CustomTransverseReinforcementLayout(IQuantity distanceFromStart, IQuantity distanceFromEnd, Length diameter, Length spacing, Length cover)
-    {
+    public CustomTransverseReinforcementLayout(IQuantity distanceFromStart, IQuantity distanceFromEnd, Length diameter, Length spacing, Length cover) {
       StartPosition = distanceFromStart;
       EndPosition = distanceFromEnd;
       Diameter = diameter;
@@ -52,28 +48,12 @@ namespace ComposAPI
       Cover = cover;
     }
 
-    #region coa interop
-    internal static ICustomTransverseReinforcementLayout FromCoaString(List<string> parameters, ComposUnits units)
-    {
-      CustomTransverseReinforcementLayout layout = new CustomTransverseReinforcementLayout();
-
-      layout.StartPosition = CoaHelper.ConvertToLengthOrRatio(parameters[3], units.Length);
-      layout.EndPosition = CoaHelper.ConvertToLengthOrRatio(parameters[4], units.Length);
-      layout.Diameter = CoaHelper.ConvertToLength(parameters[5], units.Length);
-      layout.Spacing = CoaHelper.ConvertToLength(parameters[6], units.Length);
-      layout.Cover = CoaHelper.ConvertToLength(parameters[7], units.Length);
-
-      return layout;
-    }
-
-    public string ToCoaString(string name, ComposUnits units)
-    {
+    public string ToCoaString(string name, ComposUnits units) {
       List<string> parameters = new List<string>();
       parameters.Add(CoaIdentifier.RebarTransverse);
       parameters.Add(name);
       parameters.Add("USER_DEFINED");
-      if (StartPosition.QuantityInfo.UnitType == typeof(RatioUnit))
-      {
+      if (StartPosition.QuantityInfo.UnitType == typeof(RatioUnit)) {
         // start position in percent
         Ratio p = (Ratio)StartPosition;
         // percentage in coa string for beam section is a negative decimal fraction!
@@ -81,8 +61,7 @@ namespace ComposAPI
       }
       else
         parameters.Add(CoaHelper.FormatSignificantFigures(StartPosition.ToUnit(units.Length).Value, 6));
-      if (EndPosition.QuantityInfo.UnitType == typeof(RatioUnit))
-      {
+      if (EndPosition.QuantityInfo.UnitType == typeof(RatioUnit)) {
         // start position in percent
         Ratio p = (Ratio)EndPosition;
         // percentage in coa string for beam section is a negative decimal fraction!
@@ -96,31 +75,24 @@ namespace ComposAPI
 
       return CoaHelper.CreateString(parameters);
     }
-    #endregion
 
-    #region methods
-    public override string ToString()
-    {
+    public override string ToString() {
       string start = "";
-      if (StartPosition.QuantityInfo.UnitType == typeof(LengthUnit))
-      {
+      if (StartPosition.QuantityInfo.UnitType == typeof(LengthUnit)) {
         Length l = (Length)StartPosition;
         start = l.ToString("g2").Replace(" ", string.Empty);
       }
-      else
-      {
+      else {
         Ratio p = (Ratio)StartPosition;
         start = p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
       }
 
       string end = "";
-      if (EndPosition.QuantityInfo.UnitType == typeof(LengthUnit))
-      {
+      if (EndPosition.QuantityInfo.UnitType == typeof(LengthUnit)) {
         Length l = (Length)EndPosition;
         end = l.ToString("g2").Replace(" ", string.Empty);
       }
-      else
-      {
+      else {
         Ratio p = (Ratio)EndPosition;
         end = p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
       }
@@ -134,6 +106,17 @@ namespace ComposAPI
       string joined = string.Join(", ", new List<string>() { startend, diaspacingcov });
       return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');
     }
-    #endregion
+
+    internal static ICustomTransverseReinforcementLayout FromCoaString(List<string> parameters, ComposUnits units) {
+      CustomTransverseReinforcementLayout layout = new CustomTransverseReinforcementLayout();
+
+      layout.StartPosition = CoaHelper.ConvertToLengthOrRatio(parameters[3], units.Length);
+      layout.EndPosition = CoaHelper.ConvertToLengthOrRatio(parameters[4], units.Length);
+      layout.Diameter = CoaHelper.ConvertToLength(parameters[5], units.Length);
+      layout.Spacing = CoaHelper.ConvertToLength(parameters[6], units.Length);
+      layout.Cover = CoaHelper.ConvertToLength(parameters[7], units.Length);
+
+      return layout;
+    }
   }
 }

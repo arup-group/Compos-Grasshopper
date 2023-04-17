@@ -1,26 +1,19 @@
-﻿using System;
-using Grasshopper.Kernel;
+﻿using Grasshopper.Kernel;
 using Grasshopper.Kernel.Special;
+using System;
 using Xunit;
 
-namespace IntegrationTests
-{
-  internal class Helper
-  {
-    public static GH_Component FindComponentInDocumentByGroup(GH_Document doc, string groupIdentifier)
-    {
-      foreach (var obj in doc.Objects)
-      {
-        if (obj is GH_Group group)
-        {
-          if (group.NickName == groupIdentifier)
-          {
+namespace IntegrationTests {
+  internal class Helper {
+
+    public static GH_Component FindComponentInDocumentByGroup(GH_Document doc, string groupIdentifier) {
+      foreach (var obj in doc.Objects) {
+        if (obj is GH_Group group) {
+          if (group.NickName == groupIdentifier) {
             Guid componentguid = group.ObjectIDs[0];
 
-            foreach (var obj2 in (doc.Objects))
-            {
-              if (obj2.InstanceGuid == componentguid)
-              {
+            foreach (var obj2 in (doc.Objects)) {
+              if (obj2.InstanceGuid == componentguid) {
                 return (GH_Component)obj2;
               }
             }
@@ -30,8 +23,7 @@ namespace IntegrationTests
       return null;
     }
 
-    public static void TestNoRuntimeMessagesInDocument(GH_Document doc, GH_RuntimeMessageLevel runtimeMessageLevel, string exceptComponentNamed = "")
-    {
+    public static void TestNoRuntimeMessagesInDocument(GH_Document doc, GH_RuntimeMessageLevel runtimeMessageLevel, string exceptComponentNamed = "") {
       foreach (var obj in doc.Objects)
         if (obj is GH_Component comp)
           if (comp.Name != exceptComponentNamed)

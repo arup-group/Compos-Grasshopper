@@ -1,16 +1,14 @@
-﻿using ComposGH.Parameters;
-using ComposGH.Components;
-using Xunit;
+﻿using ComposGH.Components;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
 using OasysGH.Components;
+using Xunit;
 
-namespace ComposGHTests.Design
-{
+namespace ComposGHTests.Design {
   [Collection("GrasshopperFixture collection")]
-  public class CreateFrequencyLimitsComponentTests
-  {
-    public static GH_OasysComponent CreateFrequencyLimitsMother()
-    {
+  public class CreateFrequencyLimitsComponentTests {
+
+    public static GH_OasysComponent CreateFrequencyLimitsMother() {
       var comp = new CreateFrequencyLimits();
       comp.CreateAttributes();
 
@@ -20,8 +18,7 @@ namespace ComposGHTests.Design
     }
 
     [Fact]
-    public void CreateComponentWithInputs1()
-    {
+    public void CreateComponentWithInputs1() {
       var comp = CreateFrequencyLimitsMother();
 
       FrequencyLimitsGoo output = (FrequencyLimitsGoo)ComponentTestHelper.GetOutput(comp);
@@ -32,8 +29,7 @@ namespace ComposGHTests.Design
     }
 
     [Fact]
-    public void CreateComponentWithInputs2()
-    {
+    public void CreateComponentWithInputs2() {
       var comp = CreateFrequencyLimitsMother();
 
       ComponentTestHelper.SetInput(comp, 0.9, 1);

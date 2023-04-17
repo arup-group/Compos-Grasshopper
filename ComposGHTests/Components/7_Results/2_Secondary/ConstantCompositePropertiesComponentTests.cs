@@ -5,31 +5,33 @@ using OasysGH.Components;
 using OasysGH.Parameters;
 using Xunit;
 
-namespace ComposGHTests.Result
-{
+namespace ComposGHTests.Result {
   [Collection("GrasshopperFixture collection")]
-  public class ConstantCompositePropertiesComponentTests
-  {
-    public static GH_OasysDropDownComponent ComponentMother()
-    {
+  public class ConstantCompositePropertiesComponentTests {
+
+    public static GH_OasysDropDownComponent ComponentMother() {
       var comp = new ConstantCompositeProperties();
       comp.CreateAttributes();
       MemberGoo input = (MemberGoo)ComponentTestHelper.GetOutput(CompFile.FileComponentsTests.ComponentMother());
       ComponentTestHelper.SetInput(comp, input);
-      
+
       return comp;
     }
 
     [Fact]
-    public void CreateComponentWithInput()
-    {
+    public void ChangeDropDownTest() {
+      var comp = ComponentMother();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponentWithInput() {
       var comp = ComponentMother();
       comp.ExpireSolution(true);
 
       int expectedNumberOfResults = 7;
 
-      for (int i = 0; i < comp.Params.Output.Count; i++)
-      {
+      for (int i = 0; i < comp.Params.Output.Count; i++) {
         comp.Params.Output[i].CollectData();
 
         if (i == 4) // natural freq is single item results
@@ -37,10 +39,8 @@ namespace ComposGHTests.Result
           GH_UnitNumber output = (GH_UnitNumber)ComponentTestHelper.GetOutput(comp, i);
           Assert.NotNull(output);
         }
-        else
-        {
-          for (int j = 0; j < expectedNumberOfResults; j++)
-          {
+        else {
+          for (int j = 0; j < expectedNumberOfResults; j++) {
             GH_UnitNumber output = (GH_UnitNumber)ComponentTestHelper.GetOutput(comp, i, 0, j);
             Assert.NotNull(output);
           }
@@ -49,17 +49,9 @@ namespace ComposGHTests.Result
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void DeserializeTest() {
       var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      var comp = ComponentMother();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

@@ -1,25 +1,31 @@
 ﻿using ComposAPI.Helpers;
 using System.Collections.Generic;
 
-namespace ComposAPI
-{
-  public class SafetyFactorsEN : ISafetyFactorsEN
-  {
-    public IMaterialPartialFactors MaterialFactors { get; set; } = null;
+namespace ComposAPI {
+  public class SafetyFactorsEN : ISafetyFactorsEN {
     public ILoadCombinationFactors LoadCombinationFactors { get; set; } = new LoadCombinationFactors();
+    public IMaterialPartialFactors MaterialFactors { get; set; } = null;
 
-    public SafetyFactorsEN()
-    {
+    public SafetyFactorsEN() {
       // empty constructor
     }
 
-    internal static ISafetyFactorsEN FromCoaString(string coaString, string name)
-    {
+    public string ToCoaString(string name) {
+      string str = "";
+      if (MaterialFactors != null)
+        str = MaterialFactors.ToCoaString(name);
+
+      if (LoadCombinationFactors != null)
+        str += LoadCombinationFactors.ToCoaString(name);
+
+      return str;
+    }
+
+    internal static ISafetyFactorsEN FromCoaString(string coaString, string name) {
       SafetyFactorsEN safetyFactors = new SafetyFactorsEN();
 
       List<string> lines = CoaHelper.SplitAndStripLines(coaString);
-      foreach (string line in lines)
-      {
+      foreach (string line in lines) {
         List<string> parameters = CoaHelper.Split(line);
 
         if (parameters[0] == "END")
@@ -28,8 +34,7 @@ namespace ComposAPI
         if (parameters[1] != name)
           continue;
 
-        switch (parameters[0])
-        {
+        switch (parameters[0]) {
           case (CoaIdentifier.SafetyFactorLoad):
             safetyFactors.LoadCombinationFactors.LoadCombination = LoadCombination.Custom;
             LoadCombinationFactors loadFactors = (LoadCombinationFactors)safetyFactors.LoadCombinationFactors;
@@ -41,11 +46,11 @@ namespace ComposAPI
             break;
 
           case (CoaIdentifier.EC4LoadCombinationFactors):
-            switch (parameters[2])
-            {
+            switch (parameters[2]) {
               case ("EC0_WORST_6_10A_10B"):
                 safetyFactors.LoadCombinationFactors = new LoadCombinationFactors(LoadCombination.Equation6_10a__6_10b);
                 break;
+
               case ("USER_DEFINED"):
                 safetyFactors.LoadCombinationFactors.LoadCombination = LoadCombination.Custom;
                 LoadCombinationFactors combinationFactors = (LoadCombinationFactors)safetyFactors.LoadCombinationFactors;
@@ -55,6 +60,7 @@ namespace ComposAPI
                 combinationFactors.FinalPsi = CoaHelper.ConvertToDouble(parameters[6]);
                 safetyFactors.LoadCombinationFactors = combinationFactors;
                 break;
+
               case ("EC0_6_10"):
               default:
                 safetyFactors.LoadCombinationFactors.LoadCombination = LoadCombination.Equation6_10;
@@ -68,18 +74,6 @@ namespace ComposAPI
         }
       }
       return safetyFactors;
-    }
-
-    public string ToCoaString(string name)
-    {
-      string str = "";
-      if (MaterialFactors != null)
-        str = MaterialFactors.ToCoaString(name);
-
-      if (LoadCombinationFactors != null)
-        str += LoadCombinationFactors.ToCoaString(name);
-
-      return str;
     }
   }
 }

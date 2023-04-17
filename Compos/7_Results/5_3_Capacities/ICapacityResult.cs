@@ -1,45 +1,69 @@
-﻿using System.Collections.Generic;
-using OasysUnits;
+﻿using OasysUnits;
+using System.Collections.Generic;
 
-namespace ComposAPI
-{
-  public interface ICapacityResult
-  {
+namespace ComposAPI {
+  public interface ICapacityResult {
+    /// <summary>
+    /// Assumed plastic Sagging moment capacity. Values given at each <see cref="IResult.Positions"/>
+    /// </summary>
+    List<Moment> AssumedBeamPlasticMoment { get; }
+    /// <summary>
+    /// Assumed plastic Hogging moment capacity. Values given at each <see cref="IResult.Positions"/>
+    /// </summary>
+    List<Moment> AssumedBeamPlasticMomentHogging { get; }
+    /// <summary>
+    /// Assumed 100% shear interaction Sagging moment capacity. Values given at each <see cref="IResult.Positions"/>
+    /// </summary>
+    List<Moment> AssumedMomentFullShearInteraction { get; }
+    /// <summary>
+    /// Assumed 100% shear interaction Sagging moment capacity. Values given at each <see cref="IResult.Positions"/>
+    /// </summary>
+    List<Moment> AssumedMomentFullShearInteractionHogging { get; }
+    /// <summary>
+    /// Neutral axis depth under Assumed 100% shear interaction Sagging moment. Values given at each <see cref="IResult.Positions"/>
+    /// </summary>
+    List<Length> AssumedNeutralAxisFullShearInteraction { get; }
+    /// <summary>
+    /// Neutral axis depth under Assumed 100% shear interaction Sagging moment. Values given at each <see cref="IResult.Positions"/>
+    /// </summary>
+    List<Length> AssumedNeutralAxisFullShearInteractionHogging { get; }
+    /// <summary>
+    /// Neutral axis depth under Assumed plastic Sagging moment. Values given at each <see cref="IResult.Positions"/>
+    /// </summary>
+    List<Length> AssumedPlasticNeutralAxis { get; }
+    /// <summary>
+    /// Neutral axis depth under Assumed plastic Hogging moment. Values given at each <see cref="IResult.Positions"/>
+    /// </summary>
+    List<Length> AssumedPlasticNeutralAxisHogging { get; }
     /// <summary>
     /// Sagging moment capacity in Final stage. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
     List<Moment> Moment { get; }
 
     /// <summary>
-    /// Neutral axis depth under Sagging moment in Final stage. Values given at each <see cref="IResult.Positions"/>
-    /// </summary>
-    List<Length> NeutralAxis { get; }
-
-    /// <summary>
     /// Sagging moment capacity in Construction stage. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
     List<Moment> MomentConstruction { get; }
-
-    /// <summary>
-    /// Neutral axis depth under Sagging moment in Construction stage. Values given at each <see cref="IResult.Positions"/>
-    /// </summary>
-    List<Length> NeutralAxisConstruction { get; }
-
     /// <summary>
     /// Hogging moment capacity in Construction stage. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
     List<Moment> MomentHoggingConstruction { get; }
-
-    /// <summary>
-    /// Neutral axis depth under Hogging moment in Construction stage. Values given at each <see cref="IResult.Positions"/>
-    /// </summary>
-    List<Length> NeutralAxisHoggingConstruction { get; }
-
     /// <summary>
     /// Hogging moment capacity in Final stage. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
     List<Moment> MomentHoggingFinal { get; }
-
+    /// <summary>
+    /// Neutral axis depth under Sagging moment in Final stage. Values given at each <see cref="IResult.Positions"/>
+    /// </summary>
+    List<Length> NeutralAxis { get; }
+    /// <summary>
+    /// Neutral axis depth under Sagging moment in Construction stage. Values given at each <see cref="IResult.Positions"/>
+    /// </summary>
+    List<Length> NeutralAxisConstruction { get; }
+    /// <summary>
+    /// Neutral axis depth under Hogging moment in Construction stage. Values given at each <see cref="IResult.Positions"/>
+    /// </summary>
+    List<Length> NeutralAxisHoggingConstruction { get; }
     /// <summary>
     /// Neutral axis depth under Hogging moment in Final stage. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
@@ -59,45 +83,5 @@ namespace ComposAPI
     /// Used shear capacity. Values given at each <see cref="IResult.Positions"/>
     /// </summary>
     List<Force> ShearRequired { get; }
-
-    /// <summary>
-    /// Assumed plastic Sagging moment capacity. Values given at each <see cref="IResult.Positions"/>
-    /// </summary>
-    List<Moment> AssumedBeamPlasticMoment { get; }
-
-    /// <summary>
-    /// Neutral axis depth under Assumed plastic Sagging moment. Values given at each <see cref="IResult.Positions"/>
-    /// </summary>
-    List<Length> AssumedPlasticNeutralAxis { get; }
-
-    /// <summary>
-    /// Assumed 100% shear interaction Sagging moment capacity. Values given at each <see cref="IResult.Positions"/>
-    /// </summary>
-    List<Moment> AssumedMomentFullShearInteraction { get; }
-
-    /// <summary>
-    /// Neutral axis depth under Assumed 100% shear interaction Sagging moment. Values given at each <see cref="IResult.Positions"/>
-    /// </summary>
-    List<Length> AssumedNeutralAxisFullShearInteraction { get; }
-
-    /// <summary>
-    /// Assumed plastic Hogging moment capacity. Values given at each <see cref="IResult.Positions"/>
-    /// </summary>
-    List<Moment> AssumedBeamPlasticMomentHogging { get; }
-
-    /// <summary>
-    /// Neutral axis depth under Assumed plastic Hogging moment. Values given at each <see cref="IResult.Positions"/>
-    /// </summary>
-    List<Length> AssumedPlasticNeutralAxisHogging { get; }
-
-    /// <summary>
-    /// Assumed 100% shear interaction Sagging moment capacity. Values given at each <see cref="IResult.Positions"/>
-    /// </summary>
-    List<Moment> AssumedMomentFullShearInteractionHogging { get; }
-
-    /// <summary>
-    /// Neutral axis depth under Assumed 100% shear interaction Sagging moment. Values given at each <see cref="IResult.Positions"/>
-    /// </summary>
-    List<Length> AssumedNeutralAxisFullShearInteractionHogging { get; }
   }
 }

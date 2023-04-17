@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using OasysUnits;
+﻿using OasysUnits;
+using System.Collections.Generic;
 
-namespace ComposAPI
-{
-  public interface IBeam
-  {
+namespace ComposAPI {
+  public interface IBeam {
     Length Length { get; }
-    IRestraint Restraint { get; }
     ISteelMaterial Material { get; }
+    IRestraint Restraint { get; }
     IList<IBeamSection> Sections { get; }
     IList<IWebOpening> WebOpenings { get; }
 

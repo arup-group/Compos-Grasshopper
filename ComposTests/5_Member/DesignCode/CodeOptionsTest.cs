@@ -1,16 +1,40 @@
+using ComposGHTests.Helpers;
+using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
 using Xunit;
-using ComposGHTests.Helpers;
-using OasysGH;
 
-namespace ComposAPI.Members.Tests
-{
-    public partial class DesignCodeTest
-  {
+namespace ComposAPI.Members.Tests {
+  public partial class DesignCodeTest {
+
     [Fact]
-    public CodeOptionsASNZ TestCodeOptionsConstructor()
-    {
+    public void DuplicateASNZTest() {
+      // 1 create with constructor and duplicate
+      CodeOptionsASNZ original = new CodeOptionsASNZ();
+      CodeOptionsASNZ duplicate = (CodeOptionsASNZ)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
+    [Fact]
+    public void DuplicateEC4Test() {
+      // 1 create with constructor and duplicate
+      CodeOptionsEN original = new CodeOptionsEN();
+      CodeOptionsEN duplicate = (CodeOptionsEN)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
+    [Fact]
+    public CodeOptionsASNZ TestCodeOptionsConstructor() {
       // 1 setup input
       // empty constructor creates default AS/NZ values
 
@@ -25,23 +49,9 @@ namespace ComposAPI.Members.Tests
       // (optionally return object for other tests)
       return codeOptions;
     }
-    [Fact]
-    public void DuplicateASNZTest()
-    {
-      // 1 create with constructor and duplicate
-      CodeOptionsASNZ original = new CodeOptionsASNZ();
-      CodeOptionsASNZ duplicate = (CodeOptionsASNZ)original.Duplicate();
-
-      // 2 check that duplicate has duplicated values
-      Duplicates.AreEqual(original, duplicate);
-
-      // 3 check that the memory pointer is not the same
-      Assert.NotSame(original, duplicate);
-    }
 
     [Fact]
-    public void TestCodeOptionsDuplicate()
-    {
+    public void TestCodeOptionsDuplicate() {
       // 1 create with constructor and duplicate
       CodeOptionsASNZ original = new CodeOptionsASNZ();
       CodeOptionsASNZ duplicate = (CodeOptionsASNZ)original.Duplicate();
@@ -72,8 +82,7 @@ namespace ComposAPI.Members.Tests
     }
 
     [Fact]
-    public CodeOptionsEN TestEC4OptionsConstructor()
-    {
+    public CodeOptionsEN TestEC4OptionsConstructor() {
       // 1 setup input
       // empty constructor creates default EC4 values
 
@@ -98,23 +107,9 @@ namespace ComposAPI.Members.Tests
       // (optionally return object for other tests)
       return codeOptions;
     }
-    [Fact]
-    public void DuplicateEC4Test()
-    {
-      // 1 create with constructor and duplicate
-      CodeOptionsEN original = new CodeOptionsEN();
-      CodeOptionsEN duplicate = (CodeOptionsEN)original.Duplicate();
-
-      // 2 check that duplicate has duplicated values
-      Duplicates.AreEqual(original, duplicate);
-
-      // 3 check that the memory pointer is not the same
-      Assert.NotSame(original, duplicate);
-    }
 
     [Fact]
-    public void TestEC4OptionsDuplicate()
-    {
+    public void TestEC4OptionsDuplicate() {
       // 1 create with constructor and duplicate
       CodeOptionsEN original = new CodeOptionsEN();
       CodeOptionsEN duplicate = (CodeOptionsEN)original.Duplicate();

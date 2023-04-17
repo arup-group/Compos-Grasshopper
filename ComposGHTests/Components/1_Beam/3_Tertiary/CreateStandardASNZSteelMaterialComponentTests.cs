@@ -1,17 +1,21 @@
 ﻿using ComposAPI;
-using ComposGH.Parameters;
 using ComposGH.Components;
-using Xunit;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
+using Xunit;
 
-namespace ComposGHTests.Beam
-{
+namespace ComposGHTests.Beam {
   [Collection("GrasshopperFixture collection")]
-  public class CreateStandardASNZSteelMaterialComponentTests
-  {
+  public class CreateStandardASNZSteelMaterialComponentTests {
+
     [Fact]
-    public void CreateComponentTest()
-    {
+    public void ChangeDropDownTest() {
+      var comp = new CreateStandardASNZSteelMaterial();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponentTest() {
       var comp = new CreateStandardASNZSteelMaterial();
       comp.CreateAttributes();
 
@@ -20,8 +24,7 @@ namespace ComposGHTests.Beam
     }
 
     [Fact]
-    public void CreateComponentWithInputsTest()
-    {
+    public void CreateComponentWithInputsTest() {
       var comp = new CreateStandardASNZSteelMaterial();
       comp.CreateAttributes();
 
@@ -33,17 +36,9 @@ namespace ComposGHTests.Beam
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void DeserializeTest() {
       var comp = new CreateStandardASNZSteelMaterial();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      var comp = new CreateStandardASNZSteelMaterial();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

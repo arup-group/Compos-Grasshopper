@@ -1,25 +1,23 @@
-﻿using ComposGH.Parameters;
-using ComposGH.Components;
-using Xunit;
+﻿using ComposGH.Components;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
-using System.IO;
-using System;
 using Grasshopper.Kernel;
 using OasysGH.Components;
+using System;
+using System.IO;
+using Xunit;
 
-namespace ComposGHTests.CompFile
-{
+namespace ComposGHTests.CompFile {
   [Collection("GrasshopperFixture collection")]
-  public class FileComponentsTests
-  {
-    public static GH_OasysComponent ComponentMother()
-    {
+  public class FileComponentsTests {
+
+    public static GH_OasysComponent ComponentMother() {
       var comp = new OpenComposFile();
       comp.CreateAttributes();
-      
+
       string solutiondir = Directory.GetParent(
         Directory.GetCurrentDirectory()).Parent.Parent.Parent.Parent.FullName;
-      
+
       string input1 = Path.Combine(solutiondir, "ComposTests", "TestFiles", "Compos2.coa");
 
       ComponentTestHelper.SetInput(comp, input1, 0);
@@ -28,8 +26,7 @@ namespace ComposGHTests.CompFile
     }
 
     [Fact]
-    public void CreateOpenComponent()
-    {
+    public void CreateOpenComponent() {
       var comp = ComponentMother();
 
       MemberGoo output = (MemberGoo)ComponentTestHelper.GetOutput(comp);
@@ -38,8 +35,7 @@ namespace ComposGHTests.CompFile
     }
 
     [Fact]
-    public void CreateSaveComponent()
-    {
+    public void CreateSaveComponent() {
       SaveComposFile comp = new SaveComposFile();
       comp.CreateAttributes();
 

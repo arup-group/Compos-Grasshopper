@@ -1,16 +1,14 @@
-﻿using System.Collections.Generic;
-using ComposAPI.Helpers;
+﻿using ComposAPI.Helpers;
 using OasysUnits.Units;
+using System.Collections.Generic;
 using Xunit;
 
-namespace ComposAPI.Loads.Tests
-{
-    public partial class LoadTest
-  {
+namespace ComposAPI.Loads.Tests {
+  public partial class LoadTest {
+
     [Fact]
-    public void TestFileCoaStringForLoadingParts()
-    {
-      // Arrange 
+    public void TestFileCoaStringForLoadingParts() {
+      // Arrange
       string coaString =
         "UNIT_DATA	FORCE	kN	0.00100000" + '\n' +
         "UNIT_DATA	LENGTH	m	1.00000" + '\n' +
@@ -212,7 +210,6 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(12, axialLoad2.LoadW2.FinalLive.As(forceUnit));
       Assert.Equal(13, axialLoad2.Depth2.As(lengthUnit));
       Assert.Equal(LoadType.Axial, axialLoad2.Type);
-
     }
   }
 }

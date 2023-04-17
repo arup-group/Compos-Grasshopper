@@ -1,44 +1,20 @@
-﻿using ComposGH.Parameters;
-using ComposGH.Components;
-using Xunit;
+﻿using ComposGH.Components;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
+using Xunit;
 
-namespace ComposGHTests.Beam
-{
+namespace ComposGHTests.Beam {
   [Collection("GrasshopperFixture collection")]
-  public class CreateProfileComponentTests
-  {
+  public class CreateProfileComponentTests {
+
     [Fact]
-    public void CreateComponentTest()
-    {
+    public void ChangeDropDownTest() {
       var comp = new CreateProfile();
-      comp.CreateAttributes();
-
-      // this is the first profile in the catalogue
-      string expectedProfile = "CAT BSI-IPE IPEAA80";
-
-      BeamSectionGoo output = (BeamSectionGoo)ComponentTestHelper.GetOutput(comp);
-      Assert.Equal(expectedProfile, output.Value.SectionDescription);
-    }
-
-    [Theory]
-    [InlineData("IPE100", "CAT BSI-IPE IPE100")]
-    [InlineData("HE 200 B", "CAT BSI-HE HE200B")]
-    [InlineData("UC254", "CAT BSI-UC UC254x254x73")]
-    public void CreateComponentWithInputsTest(string profile, string expected)
-    {
-      var comp = new CreateProfile();
-      comp.CreateAttributes();
-
-      ComponentTestHelper.SetInput(comp, profile, 0);
-
-      BeamSectionGoo output = (BeamSectionGoo)ComponentTestHelper.GetOutput(comp);
-      Assert.Equal(expected, output.Value.SectionDescription);
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
 
     [Fact]
-    public void CreateComponentIBeamAsymmetricalTest()
-    {
+    public void CreateComponentIBeamAsymmetricalTest() {
       var comp = new CreateProfile();
       comp.CreateAttributes();
 
@@ -60,8 +36,7 @@ namespace ComposGHTests.Beam
     }
 
     [Fact]
-    public void CreateComponentIBeamSymmetricalTest()
-    {
+    public void CreateComponentIBeamSymmetricalTest() {
       var comp = new CreateProfile();
       comp.CreateAttributes();
 
@@ -81,17 +56,35 @@ namespace ComposGHTests.Beam
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void CreateComponentTest() {
       var comp = new CreateProfile();
-      OasysDropDownComponentTestHelper.TestDeserialize(comp);
+      comp.CreateAttributes();
+
+      // this is the first profile in the catalogue
+      string expectedProfile = "CAT BSI-IPE IPEAA80";
+
+      BeamSectionGoo output = (BeamSectionGoo)ComponentTestHelper.GetOutput(comp);
+      Assert.Equal(expectedProfile, output.Value.SectionDescription);
+    }
+
+    [Theory]
+    [InlineData("IPE100", "CAT BSI-IPE IPE100")]
+    [InlineData("HE 200 B", "CAT BSI-HE HE200B")]
+    [InlineData("UC254", "CAT BSI-UC UC254x254x73")]
+    public void CreateComponentWithInputsTest(string profile, string expected) {
+      var comp = new CreateProfile();
+      comp.CreateAttributes();
+
+      ComponentTestHelper.SetInput(comp, profile, 0);
+
+      BeamSectionGoo output = (BeamSectionGoo)ComponentTestHelper.GetOutput(comp);
+      Assert.Equal(expected, output.Value.SectionDescription);
     }
 
     [Fact]
-    public void ChangeDropDownTest()
-    {
+    public void DeserializeTest() {
       var comp = new CreateProfile();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+      OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
   }
 }

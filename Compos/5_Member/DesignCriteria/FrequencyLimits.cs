@@ -1,40 +1,23 @@
 ﻿using ComposAPI.Helpers;
-using System.Collections.Generic;
 using OasysUnits;
 using OasysUnits.Units;
+using System.Collections.Generic;
 
-namespace ComposAPI
-{
-  public class FrequencyLimits : IFrequencyLimits
-  {
-    public Frequency MinimumRequired { get; set; } = Frequency.Zero;
+namespace ComposAPI {
+  public class FrequencyLimits : IFrequencyLimits {
     public Ratio DeadLoadIncl { get; set; } = new Ratio(1, RatioUnit.DecimalFraction);
     public Ratio LiveLoadIncl { get; set; } = new Ratio(0.1, RatioUnit.DecimalFraction);
+    public Frequency MinimumRequired { get; set; } = Frequency.Zero;
 
     public FrequencyLimits() { }
-    public FrequencyLimits(double minReqFrequencyHertz, double deadLoadInclPercentage, double liveLoadInclPercentage) 
-    { 
+
+    public FrequencyLimits(double minReqFrequencyHertz, double deadLoadInclPercentage, double liveLoadInclPercentage) {
       MinimumRequired = new Frequency(minReqFrequencyHertz, FrequencyUnit.Hertz);
       DeadLoadIncl = new Ratio(deadLoadInclPercentage, RatioUnit.Percent);
       LiveLoadIncl = new Ratio(liveLoadInclPercentage, RatioUnit.Percent);
     }
 
-    #region coa interop
-    internal static IFrequencyLimits FromCoaString(List<string> parameters)
-    {
-      if (parameters[2] == "IGNORE_NATURAL_FREQUENCY") return null;
-      
-      FrequencyLimits freqLim = new FrequencyLimits();
-      int i = 3;
-      freqLim.MinimumRequired = new Frequency(CoaHelper.ConvertToDouble(parameters[i++]), FrequencyUnit.Hertz);
-      freqLim.DeadLoadIncl = new Ratio(CoaHelper.ConvertToDouble(parameters[i++]), RatioUnit.DecimalFraction);
-      freqLim.LiveLoadIncl = new Ratio(CoaHelper.ConvertToDouble(parameters[i++]), RatioUnit.DecimalFraction);
-
-      return freqLim;
-    }
-
-    public string ToCoaString(string name)
-    {
+    public string ToCoaString(string name) {
       List<string> parameters = new List<string>();
       parameters.Add(CoaIdentifier.DesignCriteria.Frequency);
       parameters.Add(name);
@@ -47,17 +30,25 @@ namespace ComposAPI
 
       return coaString;
     }
-    #endregion
 
-    #region methods
-    public override string ToString()
-    {
+    public override string ToString() {
       string str = "Min:" + MinimumRequired.ToUnit(FrequencyUnit.Hertz).ToString("f0").Replace(" ", string.Empty);
 
       str += ", " + DeadLoadIncl.ToUnit(RatioUnit.Percent).ToString("f0").Replace(" ", string.Empty) + " DL";
       str += ", " + LiveLoadIncl.ToUnit(RatioUnit.Percent).ToString("f0").Replace(" ", string.Empty) + " LL";
       return str;
     }
-    #endregion
+
+    internal static IFrequencyLimits FromCoaString(List<string> parameters) {
+      if (parameters[2] == "IGNORE_NATURAL_FREQUENCY") return null;
+
+      FrequencyLimits freqLim = new FrequencyLimits();
+      int i = 3;
+      freqLim.MinimumRequired = new Frequency(CoaHelper.ConvertToDouble(parameters[i++]), FrequencyUnit.Hertz);
+      freqLim.DeadLoadIncl = new Ratio(CoaHelper.ConvertToDouble(parameters[i++]), RatioUnit.DecimalFraction);
+      freqLim.LiveLoadIncl = new Ratio(CoaHelper.ConvertToDouble(parameters[i++]), RatioUnit.DecimalFraction);
+
+      return freqLim;
+    }
   }
 }

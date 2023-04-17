@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using ComposAPI.Helpers;
+﻿using ComposAPI.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 
-namespace ComposAPI
-{
-  public enum RebarGrade
-  {
+namespace ComposAPI {
+  public enum RebarGrade {
     BS_250R,
     BS_460T,
     BS_500X,
@@ -24,48 +22,66 @@ namespace ComposAPI
     AS_D500E
   }
 
-  public class ReinforcementMaterial : IReinforcementMaterial
-  {
+  public class ReinforcementMaterial : IReinforcementMaterial {
+    public Pressure Fy { get; set; }
     public RebarGrade Grade { get; set; }
     public bool UserDefined { get; set; } = false;
-    public Pressure Fy { get; set; } // characteristic strength of user defined reinforcement
+    // characteristic strength of user defined reinforcement
 
-    #region constructors
-    public ReinforcementMaterial()
-    {
+    public ReinforcementMaterial() {
       // empty constructor
     }
 
-    public ReinforcementMaterial(Pressure fy)
-    {
+    public ReinforcementMaterial(Pressure fy) {
       UserDefined = true;
       Fy = fy;
     }
 
-    public ReinforcementMaterial(RebarGrade grade)
-    {
+    public ReinforcementMaterial(RebarGrade grade) {
       Grade = grade;
       UserDefined = false;
       SetFy();
     }
-    #endregion
 
-    #region coa interop
-    internal static IReinforcementMaterial FromCoaString(List<string> parameters, Code code)
-    {
+    public string ToCoaString(string name) {
+      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
+
+      List<string> parameters = new List<string>();
+      parameters.Add(CoaIdentifier.RebarMaterial);
+      parameters.Add(name);
+      if (UserDefined) {
+        parameters.Add("USER_DEFINED");
+        parameters.Add(CoaHelper.FormatSignificantFigures(Fy.ToUnit(PressureUnit.NewtonPerSquareMeter).Value, 6));
+      }
+      else {
+        parameters.Add("STANDARD");
+        parameters.Add(Grade.ToString().Remove(0, 3));
+      }
+
+      return CoaHelper.CreateString(parameters);
+    }
+
+    public override string ToString() {
+      if (UserDefined) {
+        string str = Fy.ToUnit(ComposUnitsHelper.StressUnit).ToString("f0");
+        return str.Replace(" ", string.Empty);
+      }
+      else {
+        return Grade.ToString().Remove(0, 3);
+      }
+    }
+
+    internal static IReinforcementMaterial FromCoaString(List<string> parameters, Code code) {
       ReinforcementMaterial material = new ReinforcementMaterial();
 
-      if (parameters[2] == "USER_DEFINED")
-      {
+      if (parameters[2] == "USER_DEFINED") {
         material.UserDefined = true;
         material.Fy = CoaHelper.ConvertToStress(parameters[3], PressureUnit.NewtonPerSquareMeter);
       }
-      else
-      {
+      else {
         material.UserDefined = false;
         string gradePrefix;
-        switch (code)
-        {
+        switch (code) {
           case (Code.AS_NZS2327_2017):
             gradePrefix = "AS_";
             break;
@@ -93,42 +109,19 @@ namespace ComposAPI
       return material;
     }
 
-    public string ToCoaString(string name)
-    {
-      NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
-
-      List<string> parameters = new List<string>();
-      parameters.Add(CoaIdentifier.RebarMaterial);
-      parameters.Add(name);
-      if (UserDefined)
-      {
-        parameters.Add("USER_DEFINED");
-        parameters.Add(CoaHelper.FormatSignificantFigures(Fy.ToUnit(PressureUnit.NewtonPerSquareMeter).Value, 6));
-      }
-      else
-      {
-        parameters.Add("STANDARD");
-        parameters.Add(Grade.ToString().Remove(0, 3));
-      }
-
-      return CoaHelper.CreateString(parameters);
-    }
-    #endregion
-
-    #region methods
-    internal void SetFy()
-    {
-      switch (Grade)
-      {
+    internal void SetFy() {
+      switch (Grade) {
         case RebarGrade.BS_250R:
         case RebarGrade.HK_250:
         case RebarGrade.AS_R250N:
           Fy = new Pressure(250, PressureUnit.Megapascal);
           break;
+
         case RebarGrade.BS_460T:
         case RebarGrade.HK_460:
           Fy = new Pressure(460, PressureUnit.Megapascal);
           break;
+
         case RebarGrade.BS_500X:
         case RebarGrade.AS_D500L:
         case RebarGrade.AS_D500N:
@@ -138,23 +131,11 @@ namespace ComposAPI
         case RebarGrade.EN_500C:
           Fy = new Pressure(500, PressureUnit.Megapascal);
           break;
+
         case RebarGrade.BS_1770:
           Fy = new Pressure(1770, PressureUnit.Megapascal);
           break;
       }
     }
-    public override string ToString()
-    {
-      if (UserDefined)
-      {
-        string str = Fy.ToUnit(ComposUnitsHelper.StressUnit).ToString("f0");
-        return str.Replace(" ", string.Empty);
-      }
-      else
-      {
-        return Grade.ToString().Remove(0, 3);
-      }
-    }
-    #endregion
   }
 }

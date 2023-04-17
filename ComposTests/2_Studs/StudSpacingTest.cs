@@ -1,19 +1,30 @@
-﻿using Xunit;
+﻿using ComposGHTests.Helpers;
+using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
-using ComposGHTests.Helpers;
-using OasysGH;
+using Xunit;
 
-namespace ComposAPI.Studs.Tests
-{
-    public partial class StudTest
-  {
+namespace ComposAPI.Studs.Tests {
+  public partial class StudTest {
+
+    [Fact]
+    public void DuplicateTest() {
+      // 1 create with constructor and duplicate
+      StudGroupSpacing original = TestConstructorStudSpacing(50, 1, 2, 150);
+      StudGroupSpacing duplicate = (StudGroupSpacing)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
     // 1 setup inputs
     [Theory]
     [InlineData(50, 1, 2, 150)]
-    public StudGroupSpacing TestConstructorStudSpacing(double distanceFromStart, int numberOfRows, 
-      int numberOfLines, double spacing)
-    {
+    public StudGroupSpacing TestConstructorStudSpacing(double distanceFromStart, int numberOfRows,
+      int numberOfLines, double spacing) {
       LengthUnit unit = LengthUnit.Millimeter;
 
       // 2 create object instance with constructor
@@ -29,31 +40,16 @@ namespace ComposAPI.Studs.Tests
       // 4 return object as input for overaching class test
       return studSpacing;
     }
-    [Fact]
-    public void DuplicateTest()
-    {
-      // 1 create with constructor and duplicate
-      StudGroupSpacing original = TestConstructorStudSpacing(50, 1, 2, 150);
-      StudGroupSpacing duplicate = (StudGroupSpacing)original.Duplicate();
-
-      // 2 check that duplicate has duplicated values
-      Duplicates.AreEqual(original, duplicate);
-
-      // 3 check that the memory pointer is not the same
-      Assert.NotSame(original, duplicate);
-    }
 
     [Fact]
-    public void TestContructorStudSpacingExceptions()
-    {
+    public void TestContructorStudSpacingExceptions() {
       // check that exceptions are thrown if inputs does not comply with allowed
       Assert.Throws<System.ArgumentException>(() => TestConstructorStudSpacing(150, 0, 1, 250));
       Assert.Throws<System.ArgumentException>(() => TestConstructorStudSpacing(150, 1, 0, 250));
     }
 
     [Fact]
-    public void TestStudSpacingDuplicate()
-    {
+    public void TestStudSpacingDuplicate() {
       LengthUnit unit = LengthUnit.Millimeter;
 
       // 1 create with constructor and duplicate

@@ -2,14 +2,12 @@ using ComposGHTests.Helpers;
 using OasysGH;
 using Xunit;
 
-namespace ComposAPI.Members.Tests
-{
+namespace ComposAPI.Members.Tests {
   [Collection("ComposAPI Fixture collection")]
-  public partial class SafetyFactorsTest
-  {
+  public partial class SafetyFactorsTest {
+
     [Fact]
-    public SafetyFactors ConstructorTest()
-    {
+    public SafetyFactors ConstructorTest() {
       // 1 setup input
       // empty constructor creates default (non-EC4) values
 
@@ -23,9 +21,9 @@ namespace ComposAPI.Members.Tests
       // (optionally return object for other tests)
       return safetyFactors;
     }
+
     [Fact]
-    public void DuplicateSFTest()
-    {
+    public void DuplicateSFTest() {
       // 1 create with constructor and duplicate
       SafetyFactors original = ConstructorTest();
       SafetyFactors duplicate = (SafetyFactors)original.Duplicate();
@@ -37,43 +35,8 @@ namespace ComposAPI.Members.Tests
       Assert.NotSame(original, duplicate);
     }
 
-    [Theory]
-    [InlineData("SAFETY_FACTOR_LOAD	MEMBER-1	2.00000	3.00000	4.00000	5.00000\nSAFETY_FACTOR_MATERIAL	MEMBER-1	6.00000	1.00000	1.00000	7.00000	8.00000	9.00000	10.0000	11.0000\n", true, 6, 7, 8, 9, 10, 11, 2, 3, 4, 5)]
-    [InlineData("SAFETY_FACTOR_LOAD	MEMBER-1	1.10000	1.20000	1.30000	1.40000\n", false, 0, 0, 0, 0, 0, 0, 1.1, 1.2, 1.3, 1.4)]
-    public void ToCoaStringTest(string expected_CoaString, bool materialFactorsSet, double steelBeam, double concreteCompression, double concreteShear, double metalDecking, double shearStud, double reinforcement,double constantDead, double finalDead, double constantLive, double finalLive)
-    {
-      // Assemble
-      SafetyFactors safetyFactors = new SafetyFactors();
-
-      if (materialFactorsSet)
-      {
-        MaterialFactors mat = new MaterialFactors();
-        mat.SteelBeam = steelBeam;
-        mat.ConcreteCompression = concreteCompression;
-        mat.ConcreteShear = concreteShear;
-        mat.MetalDecking = metalDecking;
-        mat.ShearStud = shearStud;
-        mat.Reinforcement = reinforcement;
-        safetyFactors.MaterialFactors = mat;
-      }
-
-      LoadFactors loadFactors = new LoadFactors();
-      loadFactors.ConstantDead = constantDead;
-      loadFactors.ConstantLive = constantLive;
-      loadFactors.FinalDead = finalDead;
-      loadFactors.FinalLive = finalLive;
-      safetyFactors.LoadFactors = loadFactors;
-
-      // Act
-      string coaString = safetyFactors.ToCoaString("MEMBER-1");
-
-      // Assert
-      Assert.Equal(expected_CoaString, coaString);
-    }
-
     [Fact]
-    public void DuplicateTest()
-    {
+    public void DuplicateTest() {
       // 1 create with constructor and duplicate
       SafetyFactors original = new SafetyFactors();
       SafetyFactors duplicate = (SafetyFactors)original.Duplicate();
@@ -136,6 +99,38 @@ namespace ComposAPI.Members.Tests
       Assert.Equal(1.4, original.LoadFactors.ConstantLive);
       Assert.Equal(1.6, original.LoadFactors.FinalDead);
       Assert.Equal(1.6, original.LoadFactors.FinalLive);
+    }
+
+    [Theory]
+    [InlineData("SAFETY_FACTOR_LOAD	MEMBER-1	2.00000	3.00000	4.00000	5.00000\nSAFETY_FACTOR_MATERIAL	MEMBER-1	6.00000	1.00000	1.00000	7.00000	8.00000	9.00000	10.0000	11.0000\n", true, 6, 7, 8, 9, 10, 11, 2, 3, 4, 5)]
+    [InlineData("SAFETY_FACTOR_LOAD	MEMBER-1	1.10000	1.20000	1.30000	1.40000\n", false, 0, 0, 0, 0, 0, 0, 1.1, 1.2, 1.3, 1.4)]
+    public void ToCoaStringTest(string expected_CoaString, bool materialFactorsSet, double steelBeam, double concreteCompression, double concreteShear, double metalDecking, double shearStud, double reinforcement, double constantDead, double finalDead, double constantLive, double finalLive) {
+      // Assemble
+      SafetyFactors safetyFactors = new SafetyFactors();
+
+      if (materialFactorsSet) {
+        MaterialFactors mat = new MaterialFactors();
+        mat.SteelBeam = steelBeam;
+        mat.ConcreteCompression = concreteCompression;
+        mat.ConcreteShear = concreteShear;
+        mat.MetalDecking = metalDecking;
+        mat.ShearStud = shearStud;
+        mat.Reinforcement = reinforcement;
+        safetyFactors.MaterialFactors = mat;
+      }
+
+      LoadFactors loadFactors = new LoadFactors();
+      loadFactors.ConstantDead = constantDead;
+      loadFactors.ConstantLive = constantLive;
+      loadFactors.FinalDead = finalDead;
+      loadFactors.FinalLive = finalLive;
+      safetyFactors.LoadFactors = loadFactors;
+
+      // Act
+      string coaString = safetyFactors.ToCoaString("MEMBER-1");
+
+      // Assert
+      Assert.Equal(expected_CoaString, coaString);
     }
   }
 }

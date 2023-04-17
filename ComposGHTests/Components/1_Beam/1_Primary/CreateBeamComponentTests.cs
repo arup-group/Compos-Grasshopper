@@ -1,20 +1,18 @@
 ﻿using ComposAPI;
-using ComposGH.Parameters;
 using ComposGH.Components;
-using Xunit;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
-using Rhino.Geometry;
+using OasysGH.Components;
 using OasysUnits;
 using OasysUnits.Units;
-using OasysGH.Components;
+using Rhino.Geometry;
+using Xunit;
 
-namespace ComposGHTests.Beam
-{
+namespace ComposGHTests.Beam {
   [Collection("GrasshopperFixture collection")]
-  public class CreateBeamComponentTests
-  {
-    public static GH_OasysDropDownComponent ComponentMother()
-    {
+  public class CreateBeamComponentTests {
+
+    public static GH_OasysDropDownComponent ComponentMother() {
       var comp = new CreateBeam();
       comp.CreateAttributes();
 
@@ -37,8 +35,13 @@ namespace ComposGHTests.Beam
     }
 
     [Fact]
-    public void CreateComponentWithInputsTest()
-    {
+    public void ChangeDropDownTest() {
+      GH_OasysDropDownComponent comp = ComponentMother();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponentWithInputsTest() {
       var comp = ComponentMother();
 
       RestraintGoo expectedRestraint = new RestraintGoo(new Restraint());
@@ -54,8 +57,7 @@ namespace ComposGHTests.Beam
     }
 
     [Fact]
-    public void CreateComponentWithInputsTest2()
-    {
+    public void CreateComponentWithInputsTest2() {
       var comp = ComponentMother();
 
       BeamSection beamSection = new BeamSection("CAT IPE IPE400");
@@ -76,17 +78,9 @@ namespace ComposGHTests.Beam
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void DeserializeTest() {
       GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      GH_OasysDropDownComponent comp = ComponentMother();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

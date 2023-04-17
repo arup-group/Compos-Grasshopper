@@ -1,41 +1,14 @@
-﻿using System.Collections.Generic;
-using ComposGHTests.Helpers;
+﻿using ComposGHTests.Helpers;
 using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
+using System.Collections.Generic;
 using Xunit;
 
-namespace ComposAPI.Beams.Tests
-{
-  public static class BeamMother
-  {
-    public static string Example1CoaString()
-    {
-      return
-        "BEAM_STEEL_MATERIAL_STD	MEMBER-1	S355 (EN)" + '\n' +
-        "BEAM_WELDING_MATERIAL	MEMBER-1	Grade 42" + '\n' +
-        "BEAM_SPAN_LENGTH	MEMBER-1	1	9.00000" + '\n' +
-        "BEAM_SECTION_AT_X	MEMBER-1	3	1	0.000000	STD I 600 200 15 25	TAPERED_YES" + '\n' +
-        "BEAM_SECTION_AT_X	MEMBER-1	3	2	-0.500000	STD I 900 200 15 25	TAPERED_YES" + '\n' +
-        "BEAM_SECTION_AT_X	MEMBER-1	3	3	-1.00000	STD I 600 200 15 25	TAPERED_YES" + '\n' +
-        "RESTRAINT_POINT	MEMBER-1	STANDARD	2" + '\n' +
-        "RESTRAINT_TOP_FALNGE	MEMBER-1	TOP_FLANGE_FREE" + '\n' +
-        "RESTRAINT_2ND_BEAM	MEMBER-1	SEC_BEAM_AS_REST" + '\n' +
-        "END_FLANGE_FREE_ROTATE	MEMBER-1	FREE_TO_ROTATE" + '\n' +
-        "FINAL_RESTRAINT_POINT	MEMBER-1	STANDARD	0" + '\n' +
-        "FINAL_RESTRAINT_NOSTUD	MEMBER-1	NOSTUD_ZONE_LATERAL_FIXED" + '\n' +
-        "FINAL_RESTRAINT_2ND_BEAM	MEMBER-1	SEC_BEAM_AS_REST" + '\n' +
-        "FINAL_END_FLANGE_FREE_ROTATE	MEMBER-1	FREE_TO_ROTATE" + '\n' +
-        "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	0.400000	0.300000	20.0000%	50.0000%	STIFFENER_NO" + '\n' +
-        "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	0.400000	0.400000	3.50000	50.0000%	STIFFENER_NO" + '\n' +
-        "WEB_OPEN_DIMENSION	MEMBER-1	RIGHT_NOTCH	0.400000	0.300000	50.0000%	50.0000%	STIFFENER_NO" + '\n' +
-        "WEB_OPEN_DIMENSION	MEMBER-1	LEFT_NOTCH	0.400000	0.300000	50.0000%	50.0000%	STIFFENER_NO" + '\n' +
-        "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	0.400000	0.300000	5.50000	0.400000	STIFFENER_YES	ONE_SIDE_STIFFENER	0.0500000	0.100000	0.0100000	0.100000	0.0100000" + '\n' +
-        "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	0.300000	0.300000	80.0000%	0.350000	STIFFENER_YES	BOTH_SIDE_STIFFENER	0.0600000	0.150000	0.0200000	0.150000	0.0200000" + '\n';
-    }
+namespace ComposAPI.Beams.Tests {
+  public static class BeamMother {
 
-    public static Beam Example1Beam()
-    {
+    public static Beam Example1Beam() {
       Supports constructionStageSupport = new Supports(IntermediateRestraint.Third_Points, true, true);
 
       Restraint restraint = new Restraint(false, constructionStageSupport);
@@ -75,16 +48,39 @@ namespace ComposAPI.Beams.Tests
 
       return new Beam(new Length(9, LengthUnit.Meter), restraint, steelMaterial, sections, webOpenings);
     }
+
+    public static string Example1CoaString() {
+      return
+        "BEAM_STEEL_MATERIAL_STD	MEMBER-1	S355 (EN)" + '\n' +
+        "BEAM_WELDING_MATERIAL	MEMBER-1	Grade 42" + '\n' +
+        "BEAM_SPAN_LENGTH	MEMBER-1	1	9.00000" + '\n' +
+        "BEAM_SECTION_AT_X	MEMBER-1	3	1	0.000000	STD I 600 200 15 25	TAPERED_YES" + '\n' +
+        "BEAM_SECTION_AT_X	MEMBER-1	3	2	-0.500000	STD I 900 200 15 25	TAPERED_YES" + '\n' +
+        "BEAM_SECTION_AT_X	MEMBER-1	3	3	-1.00000	STD I 600 200 15 25	TAPERED_YES" + '\n' +
+        "RESTRAINT_POINT	MEMBER-1	STANDARD	2" + '\n' +
+        "RESTRAINT_TOP_FALNGE	MEMBER-1	TOP_FLANGE_FREE" + '\n' +
+        "RESTRAINT_2ND_BEAM	MEMBER-1	SEC_BEAM_AS_REST" + '\n' +
+        "END_FLANGE_FREE_ROTATE	MEMBER-1	FREE_TO_ROTATE" + '\n' +
+        "FINAL_RESTRAINT_POINT	MEMBER-1	STANDARD	0" + '\n' +
+        "FINAL_RESTRAINT_NOSTUD	MEMBER-1	NOSTUD_ZONE_LATERAL_FIXED" + '\n' +
+        "FINAL_RESTRAINT_2ND_BEAM	MEMBER-1	SEC_BEAM_AS_REST" + '\n' +
+        "FINAL_END_FLANGE_FREE_ROTATE	MEMBER-1	FREE_TO_ROTATE" + '\n' +
+        "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	0.400000	0.300000	20.0000%	50.0000%	STIFFENER_NO" + '\n' +
+        "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	0.400000	0.400000	3.50000	50.0000%	STIFFENER_NO" + '\n' +
+        "WEB_OPEN_DIMENSION	MEMBER-1	RIGHT_NOTCH	0.400000	0.300000	50.0000%	50.0000%	STIFFENER_NO" + '\n' +
+        "WEB_OPEN_DIMENSION	MEMBER-1	LEFT_NOTCH	0.400000	0.300000	50.0000%	50.0000%	STIFFENER_NO" + '\n' +
+        "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	0.400000	0.300000	5.50000	0.400000	STIFFENER_YES	ONE_SIDE_STIFFENER	0.0500000	0.100000	0.0100000	0.100000	0.0100000" + '\n' +
+        "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	0.300000	0.300000	80.0000%	0.350000	STIFFENER_YES	BOTH_SIDE_STIFFENER	0.0600000	0.150000	0.0200000	0.150000	0.0200000" + '\n';
+    }
   }
 
   [Collection("ComposAPI Fixture collection")]
-  public class BeamTest
-  {
+  public class BeamTest {
+
     // 1 setup inputs
     [Theory]
     [InlineData(6)]
-    public void ConstructorTest(double length)
-    {
+    public void ConstructorTest(double length) {
       ComposUnits units = ComposUnits.GetStandardUnits();
 
       // 2 create object instance with constructor
@@ -104,22 +100,21 @@ namespace ComposAPI.Beams.Tests
     }
 
     [Fact]
-    public void ToCoaStringTest()
-    {
-      // Assemble
-      Beam beam = BeamMother.Example1Beam();
+    public void DuplicateTest() {
+      // 1 create with constructor and duplicate
+      Beam original = BeamMother.Example1Beam();
+      Beam duplicate = (Beam)original.Duplicate();
 
-      // Act
-      string coaString = beam.ToCoaString("MEMBER-1", Code.EN1994_1_1_2004, ComposUnits.GetStandardUnits());
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
 
-      // Assert
-      Assert.Equal(BeamMother.Example1CoaString(), coaString);
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     [Fact]
-    public void FromCoaStringTest()
-    {
-      // Assemble 
+    public void FromCoaStringTest() {
+      // Assemble
       Beam expectedBeam = BeamMother.Example1Beam();
 
       // Act
@@ -130,17 +125,15 @@ namespace ComposAPI.Beams.Tests
     }
 
     [Fact]
-    public void DuplicateTest()
-    {
-      // 1 create with constructor and duplicate
-      Beam original = BeamMother.Example1Beam();
-      Beam duplicate = (Beam)original.Duplicate();
+    public void ToCoaStringTest() {
+      // Assemble
+      Beam beam = BeamMother.Example1Beam();
 
-      // 2 check that duplicate has duplicated values
-      Duplicates.AreEqual(original, duplicate);
+      // Act
+      string coaString = beam.ToCoaString("MEMBER-1", Code.EN1994_1_1_2004, ComposUnits.GetStandardUnits());
 
-      // 3 check that the memory pointer is not the same
-      Assert.NotSame(original, duplicate);
+      // Assert
+      Assert.Equal(BeamMother.Example1CoaString(), coaString);
     }
   }
 }

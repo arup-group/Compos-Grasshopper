@@ -1,18 +1,16 @@
-﻿using ComposGH.Parameters;
+﻿using ComposAPI;
 using ComposGH.Components;
-using Xunit;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
-using OasysUnits.Units;
-using ComposAPI;
 using OasysGH.Components;
+using OasysUnits.Units;
+using Xunit;
 
-namespace ComposGHTests.Slab
-{
+namespace ComposGHTests.Slab {
   [Collection("GrasshopperFixture collection")]
-  public class CreateMeshReinforcementComponentTests
-  {
-    public static GH_OasysDropDownComponent ComponentMother()
-    {
+  public class CreateMeshReinforcementComponentTests {
+
+    public static GH_OasysDropDownComponent ComponentMother() {
       var comp = new CreateMeshReinforcement();
       comp.CreateAttributes();
 
@@ -23,8 +21,13 @@ namespace ComposGHTests.Slab
     }
 
     [Fact]
-    public void CreateComponentWithInputsTest()
-    {
+    public void ChangeDropDownTest() {
+      var comp = ComponentMother();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponentWithInputsTest() {
       var comp = ComponentMother();
 
       MeshReinforcementGoo output = (MeshReinforcementGoo)ComponentTestHelper.GetOutput(comp);
@@ -34,17 +37,9 @@ namespace ComposGHTests.Slab
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void DeserializeTest() {
       var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      var comp = ComponentMother();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

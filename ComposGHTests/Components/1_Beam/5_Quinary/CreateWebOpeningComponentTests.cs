@@ -1,18 +1,16 @@
 ﻿using ComposAPI;
-using ComposGH.Parameters;
 using ComposGH.Components;
-using Xunit;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
 using OasysGH.Components;
 using OasysUnits.Units;
+using Xunit;
 
-namespace ComposGHTests.Beam
-{
+namespace ComposGHTests.Beam {
   [Collection("GrasshopperFixture collection")]
-  public class CreateWebOpeningComponentTests
-  {
-    public static GH_OasysDropDownComponent ComponentMother()
-    {
+  public class CreateWebOpeningComponentTests {
+
+    public static GH_OasysDropDownComponent ComponentMother() {
       var comp = new CreateWebOpening();
       comp.CreateAttributes();
 
@@ -26,8 +24,13 @@ namespace ComposGHTests.Beam
     }
 
     [Fact]
-    public void CreateComponentWithInputsTest1()
-    {
+    public void ChangeDropDownTest() {
+      var comp = ComponentMother();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponentWithInputsTest1() {
       var comp = ComponentMother();
 
       comp.SetSelected(1, 0); // change the dropdown to mm
@@ -41,8 +44,7 @@ namespace ComposGHTests.Beam
     }
 
     [Fact]
-    public void CreateComponentWithInputsTest2()
-    {
+    public void CreateComponentWithInputsTest2() {
       var comp = ComponentMother();
 
       comp.SetSelected(0, 1); // change the dropdown to Circular
@@ -56,8 +58,7 @@ namespace ComposGHTests.Beam
     }
 
     [Fact]
-    public void CreateComponentWithInputsTest3()
-    {
+    public void CreateComponentWithInputsTest3() {
       var comp = ComponentMother();
 
       comp.SetSelected(1, 4); // change the dropdown to ft
@@ -73,17 +74,9 @@ namespace ComposGHTests.Beam
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void DeserializeTest() {
       var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      var comp = ComponentMother();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

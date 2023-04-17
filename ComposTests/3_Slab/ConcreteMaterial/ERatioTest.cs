@@ -1,47 +1,22 @@
-﻿using Xunit;
-using ComposGHTests.Helpers;
+﻿using ComposGHTests.Helpers;
 using OasysGH;
+using Xunit;
 
-namespace ComposAPI.Slabs.Tests
-{
-  public static class ERatioMother
-  {
-    public static ERatio CreateERatio()
-    {
+namespace ComposAPI.Slabs.Tests {
+  public static class ERatioMother {
+
+    public static ERatio CreateERatio() {
       return new ERatio(9.87, 28.72, 9.55, 27.55);
     }
   }
 
   [Collection("ComposAPI Fixture collection")]
-  public class ERatioTest
-  {
-    [Fact]
-    public ERatio EmptyConstructorTest()
-    {
-      ERatio eRatio = new ERatio();
+  public class ERatioTest {
 
-      Assert.False(eRatio.UserDefined);
-
-      return eRatio;
-    }
-    [Fact]
-    public void DuplicateStdTest()
-    {
-      // 1 create with constructor and duplicate
-      ERatio original = ERatioMother.CreateERatio();
-      ERatio duplicate = (ERatio)original.Duplicate();
-
-      // 2 check that duplicate has duplicated values
-      Duplicates.AreEqual(original, duplicate);
-
-      // 3 check that the memory pointer is not the same
-      Assert.NotSame(original, duplicate);
-    }
     // 1 setup inputs
     [Theory]
     [InlineData(6, 18, 5.39)]
-    public void Constructor1Test(double shortTerm, double longTerm, double vibration)
-    {
+    public void Constructor1Test(double shortTerm, double longTerm, double vibration) {
       // 2 create object instance with constructor
       ERatio eRatio = new ERatio(shortTerm, longTerm, vibration);
 
@@ -56,8 +31,7 @@ namespace ComposAPI.Slabs.Tests
     // 1 setup inputs
     [Theory]
     [InlineData(9.87, 28.72, 9.55, 27.55)]
-    public void Constructor2Test(double shortTerm, double longTerm, double vibration, double shrinkage)
-    {
+    public void Constructor2Test(double shortTerm, double longTerm, double vibration, double shrinkage) {
       // 2 create object instance with constructor
       ERatio eRatio = new ERatio(shortTerm, longTerm, vibration, shrinkage);
 
@@ -69,10 +43,22 @@ namespace ComposAPI.Slabs.Tests
       Assert.True(eRatio.UserDefined);
     }
 
+    [Fact]
+    public void DuplicateStdTest() {
+      // 1 create with constructor and duplicate
+      ERatio original = ERatioMother.CreateERatio();
+      ERatio duplicate = (ERatio)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
     [Theory]
     [InlineData(9.87, 28.72, 9.55, 27.55)]
-    public void DuplicateTest(double shortTerm, double longTerm, double vibration, double shrinkage)
-    {
+    public void DuplicateTest(double shortTerm, double longTerm, double vibration, double shrinkage) {
       // 1 create with constructor and duplicate
       ERatio original = new ERatio(shortTerm, longTerm, vibration, shrinkage);
       ERatio duplicate = (ERatio)original.Duplicate();
@@ -102,6 +88,15 @@ namespace ComposAPI.Slabs.Tests
       Assert.Equal(vibration, original.Vibration);
       Assert.Equal(shrinkage, original.Shrinkage);
       Assert.True(original.UserDefined);
+    }
+
+    [Fact]
+    public ERatio EmptyConstructorTest() {
+      ERatio eRatio = new ERatio();
+
+      Assert.False(eRatio.UserDefined);
+
+      return eRatio;
     }
   }
 }

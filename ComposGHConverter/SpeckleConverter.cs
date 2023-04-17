@@ -1,9 +1,7 @@
-﻿namespace ComposGH.Converters
-{
+﻿namespace ComposGH.Converters {
   public class SpeckleConverter //: ISpeckleConverter
   {
-    public static bool IsPresent()
-    {
+    public static bool IsPresent() {
       return false;
       //try
       //{
@@ -19,6 +17,5 @@
       //}
       //return true;
     }
-
   }
 }

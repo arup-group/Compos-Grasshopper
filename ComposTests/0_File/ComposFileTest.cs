@@ -1,15 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using ComposAPI.Helpers;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using ComposAPI.Helpers;
 using Xunit;
 
-namespace ComposAPI.File.Tests
-{
+namespace ComposAPI.File.Tests {
   [Collection("ComposAPI Fixture collection")]
-  public class ComposFileTest
-  {
-    static readonly string RelativePath = "..\\..\\..\\..\\TestFiles\\";
+  public class ComposFileTest {
+    private static readonly string RelativePath = "..\\..\\..\\..\\TestFiles\\";
+
+    [Theory]
+    [InlineData("Compos1.coa", "MEMBER-1")]
+    public void AnalyseMemberTest(string fileName, string memberName) {
+      ComposFile file = ComposFile.Open(Path.GetFullPath(ComposFileTest.RelativePath + fileName));
+      short status = file.Analyse(memberName);
+      Assert.Equal(0, status);
+    }
 
     [Theory]
     [InlineData("01_Default.coa")]
@@ -37,9 +43,8 @@ namespace ComposAPI.File.Tests
     [InlineData("25_Loads[Patch].coa")]
     [InlineData("26_Loads[Axial].coa")]
     [InlineData("Compos1.coa")]
-    [InlineData("Compos2_UTF8.coa")] //Not found: UNIT_DATA	STRESS	N/m�	1.00000 
-    public void AnalyseTest(string fileName)
-    {
+    [InlineData("Compos2_UTF8.coa")] //Not found: UNIT_DATA	STRESS	N/m�	1.00000
+    public void AnalyseTest(string fileName) {
       string path = Path.GetFullPath(ComposFileTest.RelativePath);
 
       ComposFile file = ComposFile.Open(Path.Combine(path, fileName));
@@ -49,25 +54,30 @@ namespace ComposAPI.File.Tests
 
     [Theory]
     [InlineData("Compos1.coa", "MEMBER-1")]
-    public void AnalyseMemberTest(string fileName, string memberName)
-    {
+    public void BeamSectDescTest(string fileName, string memberName) {
       ComposFile file = ComposFile.Open(Path.GetFullPath(ComposFileTest.RelativePath + fileName));
-      short status = file.Analyse(memberName);
-      Assert.Equal(0, status);
+      string status = file.BeamSectDesc(memberName);
+      Assert.Equal("STD I 600. 200. 15. 25.", status);
     }
 
     [Theory]
     [InlineData("Compos1.coa", "MEMBER-1", 0)]
-    public void CodeSatisfiedTest(string searchPattern, string memberName, int expextedStatus)
-    {
+    public void CodeSatisfiedTest(string searchPattern, string memberName, int expextedStatus) {
       string path = Path.GetFullPath(ComposFileTest.RelativePath);
 
-      foreach (string fileName in Directory.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly))
-      {
+      foreach (string fileName in Directory.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly)) {
         ComposFile file = ComposFile.Open(fileName);
         short status = file.CodeSatisfied(memberName);
         Assert.Equal(expextedStatus, status);
       }
+    }
+
+    [Theory]
+    [InlineData("Compos1.coa", "MEMBER-1")]
+    public void DesignMemberTest(string fileName, string memberName) {
+      ComposFile file = ComposFile.Open(Path.GetFullPath(ComposFileTest.RelativePath + fileName));
+      short status = file.Design(memberName);
+      Assert.Equal(0, status);
     }
 
     [Theory]
@@ -97,8 +107,7 @@ namespace ComposAPI.File.Tests
     [InlineData("26_Loads[Axial].coa")]
     [InlineData("Compos1.coa")]
     [InlineData("Compos2_UTF8.coa")] //Not found: UNIT_DATA	STRESS	N/m�	1.00000
-    public void DesignTest(string fileName)
-    {
+    public void DesignTest(string fileName) {
       string path = Path.GetFullPath(ComposFileTest.RelativePath);
 
       ComposFile file = ComposFile.Open(Path.Combine(path, fileName));
@@ -107,24 +116,6 @@ namespace ComposAPI.File.Tests
     }
 
     [Theory]
-    [InlineData("Compos1.coa", "MEMBER-1")]
-    public void DesignMemberTest(string fileName, string memberName)
-    {
-      ComposFile file = ComposFile.Open(Path.GetFullPath(ComposFileTest.RelativePath + fileName));
-      short status = file.Design(memberName);
-      Assert.Equal(0, status);
-    }
-
-    [Theory]
-    [InlineData("Compos1.coa", "MEMBER-1")]
-    public void BeamSectDescTest(string fileName, string memberName)
-    {
-      ComposFile file = ComposFile.Open(Path.GetFullPath(ComposFileTest.RelativePath + fileName));
-      string status = file.BeamSectDesc(memberName);
-      Assert.Equal("STD I 600. 200. 15. 25.", status);
-    }
-
-    [Theory]
     [InlineData("01_Default.coa")]
     [InlineData("02_DesignCode[Manual_CreepShrinkage].coa")]
     [InlineData("04_SteelMaterial[Custom].coa")]
@@ -151,8 +142,7 @@ namespace ComposAPI.File.Tests
     [InlineData("26_Loads[Axial].coa")]
     [InlineData("Compos1.coa")]
     [InlineData("Compos2_UTF8.coa")] //Not found: UNIT_DATA	STRESS	N/m�	1.00000
-    public void FromAndToCoaStringTest(string fileName)
-    {
+    public void FromAndToCoaStringTest(string fileName) {
       string path = Path.GetFullPath(ComposFileTest.RelativePath);
       string expectedCoaString = System.IO.File.ReadAllText(Path.Combine(path, fileName), Encoding.UTF8);
       ComposFile file = ComposFile.FromCoaString(expectedCoaString);
@@ -160,13 +150,11 @@ namespace ComposAPI.File.Tests
       ComposFileTest.Compare(expectedCoaString, actualCoaString);
     }
 
-    internal static void Compare(string expectedCoaString, string actualCoaString)
-    {
+    internal static void Compare(string expectedCoaString, string actualCoaString) {
       List<string> expectedLines = CoaHelper.SplitAndStripLines(expectedCoaString);
       List<string> actualLines = CoaHelper.SplitAndStripLines(actualCoaString);
 
-      foreach (string expectedLine in expectedLines)
-      {
+      foreach (string expectedLine in expectedLines) {
         if (expectedLine != "")
           Assert.Contains(expectedLine, actualLines);
       }

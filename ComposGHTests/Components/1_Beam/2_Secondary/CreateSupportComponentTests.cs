@@ -1,21 +1,25 @@
 ﻿using ComposAPI;
-using ComposGH.Parameters;
 using ComposGH.Components;
-using Xunit;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
-using System.Collections.Generic;
-using OasysUnits;
 using OasysGH.Components;
+using OasysUnits;
 using OasysUnits.Units;
+using System.Collections.Generic;
+using Xunit;
 
-namespace ComposGHTests.Beam
-{
+namespace ComposGHTests.Beam {
   [Collection("GrasshopperFixture collection")]
-  public class CreateSupportComponentTests
-  { 
+  public class CreateSupportComponentTests {
+
     [Fact]
-    public void CreateComponentTest()
-    {
+    public void ChangeDropDownTest() {
+      GH_OasysDropDownComponent comp = new CreateSupport();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponentTest() {
       var comp = new CreateSupport();
       comp.CreateAttributes();
 
@@ -27,8 +31,7 @@ namespace ComposGHTests.Beam
     }
 
     [Fact]
-    public void CreateComponentWithInputsTest()
-    {
+    public void CreateComponentWithInputsTest() {
       var comp = new CreateSupport();
       comp.CreateAttributes();
 
@@ -54,17 +57,9 @@ namespace ComposGHTests.Beam
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void DeserializeTest() {
       GH_OasysDropDownComponent comp = new CreateSupport();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      GH_OasysDropDownComponent comp = new CreateSupport();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

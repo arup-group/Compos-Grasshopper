@@ -1,16 +1,14 @@
-﻿using ComposGH.Parameters;
-using ComposGH.Components;
-using Xunit;
+﻿using ComposGH.Components;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
 using OasysGH.Components;
+using Xunit;
 
-namespace ComposGHTests.Design
-{
+namespace ComposGHTests.Design {
   [Collection("GrasshopperFixture collection")]
-  public class CreateDeflectionLimitComponentTests
-  {
-    public static GH_OasysDropDownComponent CreateDeflectionLimitMother()
-    {
+  public class CreateDeflectionLimitComponentTests {
+
+    public static GH_OasysDropDownComponent CreateDeflectionLimitMother() {
       var comp = new CreateDeflectionLimit();
       comp.CreateAttributes();
       ComponentTestHelper.SetInput(comp, "35 mm", 0);
@@ -19,8 +17,13 @@ namespace ComposGHTests.Design
     }
 
     [Fact]
-    public void CreateComponentWithInputs()
-    {
+    public void ChangeDropDownTest() {
+      var comp = CreateDeflectionLimitMother();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponentWithInputs() {
       var comp = CreateDeflectionLimitMother();
 
       DeflectionLimitGoo output = (DeflectionLimitGoo)ComponentTestHelper.GetOutput(comp);
@@ -30,17 +33,9 @@ namespace ComposGHTests.Design
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void DeserializeTest() {
       var comp = CreateDeflectionLimitMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      var comp = CreateDeflectionLimitMother();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

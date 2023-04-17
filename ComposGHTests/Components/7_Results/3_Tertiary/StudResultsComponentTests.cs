@@ -6,24 +6,27 @@ using OasysGH.Components;
 using OasysGH.Parameters;
 using Xunit;
 
-namespace ComposGHTests.Result
-{
+namespace ComposGHTests.Result {
   [Collection("GrasshopperFixture collection")]
-  public class StudResultsComponentTests
-  {
-    public static GH_OasysDropDownComponent ComponentMother()
-    {
+  public class StudResultsComponentTests {
+
+    public static GH_OasysDropDownComponent ComponentMother() {
       var comp = new StudResults();
       comp.CreateAttributes();
       MemberGoo input = (MemberGoo)ComponentTestHelper.GetOutput(CompFile.FileComponentsTests.ComponentMother());
       ComponentTestHelper.SetInput(comp, input);
-      
+
       return comp;
     }
 
     [Fact]
-    public void CreateComponentWithInput()
-    {
+    public void ChangeDropDownTest() {
+      var comp = ComponentMother();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponentWithInput() {
       var comp = ComponentMother();
       comp.ExpireSolution(true);
 
@@ -31,18 +34,15 @@ namespace ComposGHTests.Result
 
       int i = 0;
       comp.Params.Output[i].CollectData();
-      for (int j = 0; j < expectedNumberOfResults; j++)
-      {
+      for (int j = 0; j < expectedNumberOfResults; j++) {
         GH_UnitNumber output = (GH_UnitNumber)ComponentTestHelper.GetOutput(comp, i, 0, j);
         Assert.NotNull(output);
       }
       i++;
 
-      while (i < 5)
-      {
+      while (i < 5) {
         comp.Params.Output[i].CollectData();
-        for (int j = 0; j < expectedNumberOfResults; j++)
-        {
+        for (int j = 0; j < expectedNumberOfResults; j++) {
           GH_Integer output = (GH_Integer)ComponentTestHelper.GetOutput(comp, i, 0, j);
           Assert.NotNull(output);
           Assert.True(output.Value >= 0);
@@ -51,16 +51,14 @@ namespace ComposGHTests.Result
       }
 
       comp.Params.Output[5].CollectData();
-      for (int j = 0; j < expectedNumberOfResults; j++)
-      {
+      for (int j = 0; j < expectedNumberOfResults; j++) {
         GH_UnitNumber output = (GH_UnitNumber)ComponentTestHelper.GetOutput(comp, 5, 0, j);
         Assert.NotNull(output);
       }
       i++;
 
       comp.Params.Output[6].CollectData();
-      for (int j = 0; j < expectedNumberOfResults; j++)
-      {
+      for (int j = 0; j < expectedNumberOfResults; j++) {
         GH_Number output = (GH_Number)ComponentTestHelper.GetOutput(comp, 6, 0, j);
         Assert.NotNull(output);
         Assert.True(output.Value >= 0);
@@ -73,39 +71,27 @@ namespace ComposGHTests.Result
       i++;
 
       comp.Params.Output[8].CollectData();
-      for (int j = 0; j < expectedNumberOfResults; j++)
-      {
+      for (int j = 0; j < expectedNumberOfResults; j++) {
         GH_Number output = (GH_Number)ComponentTestHelper.GetOutput(comp, 8, 0, j);
         Assert.NotNull(output);
         Assert.True(output.Value >= 0);
       }
       i++;
 
-      while (i < comp.Params.Output.Count)
-      {
+      while (i < comp.Params.Output.Count) {
         comp.Params.Output[i].CollectData();
-        for (int j = 0; j < expectedNumberOfResults; j++)
-        {
+        for (int j = 0; j < expectedNumberOfResults; j++) {
           GH_UnitNumber output = (GH_UnitNumber)ComponentTestHelper.GetOutput(comp, i, 0, j);
           Assert.NotNull(output);
         }
         i++;
       }
-
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void DeserializeTest() {
       var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      var comp = ComponentMother();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

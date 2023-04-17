@@ -1,72 +1,58 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.IO;
+﻿using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using OasysGH;
-using OasysUnits.Units;
-using OasysUnits;
-using ComposAPI;
-using ComposAPI.Helpers;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
-namespace ComposGH.Components
-{
-  public class CreateCatalogueDeck : GH_OasysDropDownComponent
-  {
-    #region Name and Ribbon Layout
+namespace ComposGH.Components {
+  public class CreateCatalogueDeck : GH_OasysDropDownComponent {
     public override Guid ComponentGuid => new Guid("6796D3E6-CF84-4AC6-ABB7-012C20E6DB9A");
     public override GH_Exposure Exposure => GH_Exposure.quinary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override System.Drawing.Bitmap Icon => Resources.StandardDecking;
-    public CreateCatalogueDeck()
-        : base("Catalogue" + DeckingGoo.Name.Replace(" ", string.Empty),
-          DeckingGoo.Name.Replace(" ", string.Empty),
-          "Look up a Catalogue " + DeckingGoo.Description + " for a " + SlabGoo.Description,
-            Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat3())
-    { Hidden = true; }
-    #endregion
+    private string Catalogue = null;
 
-    #region Input and output
-    protected override void RegisterInputParams(GH_InputParamManager pManager)
-    {
-      pManager.AddGenericParameter(DeckingConfigurationGoo.Name, DeckingConfigurationGoo.NickName, DeckingConfigurationGoo.Description, GH_ParamAccess.item);
-      pManager[0].Optional = true;
-    }
-    protected override void RegisterOutputParams(GH_OutputParamManager pManager)
-    {
-      pManager.AddParameter(new ComposDeckingParameter(), "Catalogue " + DeckingGoo.Name, DeckingGoo.NickName, "Standard Catalogue " + DeckingGoo.Description + " for a " + SlabGoo.Description, GH_ParamAccess.item);
-    }
-    #endregion
+    private List<string> CatalogueNames = ComposAPI.Helpers.SqlReader.Instance.GetDeckCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"));
 
-    protected override void SolveInstance(IGH_DataAccess DA)
-    {
-      if (Params.Input[0].Sources.Count > 0)
-      {
-        DeckingConfigurationGoo dconf = (DeckingConfigurationGoo)Input.GenericGoo<DeckingConfigurationGoo>(this, DA, 0);
-        if (dconf == null)
-        {
-          return;
-        }
-        DA.SetData(0, new DeckingGoo(new CatalogueDecking(Catalogue, Profile, SteelGrade, dconf.Value)));
-      }
-      else
-        Output.SetItem(this, DA, 0, new DeckingGoo(new CatalogueDecking(Catalogue, Profile, SteelGrade, new DeckingConfiguration())));
-    }
+    private string Profile = null;
 
-    #region Custom UI
-    string Catalogue = null;
-    string Profile = null;
+    private List<string> SectionList = null;
+
     private DeckingSteelGrade SteelGrade = DeckingSteelGrade.S350;
-    List<string> CatalogueNames = ComposAPI.Helpers.SqlReader.Instance.GetDeckCataloguesDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"));
-    List<string> SectionList = null;
 
-    protected override void InitialiseDropdowns()
-    {
+    public CreateCatalogueDeck()
+                                            : base("Catalogue" + DeckingGoo.Name.Replace(" ", string.Empty),
+      DeckingGoo.Name.Replace(" ", string.Empty),
+      "Look up a Catalogue " + DeckingGoo.Description + " for a " + SlabGoo.Description,
+        Ribbon.CategoryName.Name(),
+        Ribbon.SubCategoryName.Cat3()) { Hidden = true; }
+
+    public override void SetSelected(int i, int j) {
+      _selectedItems[i] = _dropDownItems[i][j];
+
+      if (i == 0)  // change is made to code
+      {
+        // update selected section to be all
+        Catalogue = _selectedItems[0];
+        _dropDownItems[1] = ComposAPI.Helpers.SqlReader.Instance.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), Catalogue);
+      }
+
+      if (i == 1)
+        Profile = _selectedItems[1];
+
+      if (i == 2)
+        SteelGrade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), _selectedItems[i]);
+
+      base.UpdateUI();
+    }
+
+    protected override void InitialiseDropdowns() {
       _spacerDescriptions = new List<string>(new string[] {
         "Type",
         "Decking",
@@ -93,28 +79,28 @@ namespace ComposGH.Components
       _isInitialised = true;
     }
 
-    public override void SetSelected(int i, int j)
-    {
-      _selectedItems[i] = _dropDownItems[i][j];
-
-      if (i == 0)  // change is made to code 
-      {
-        // update selected section to be all
-        Catalogue = _selectedItems[0];
-        _dropDownItems[1] = ComposAPI.Helpers.SqlReader.Instance.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), Catalogue);
-      }
-
-      if (i == 1)
-        Profile = _selectedItems[1];
-
-      if (i == 2)
-        SteelGrade = (DeckingSteelGrade)Enum.Parse(typeof(DeckingSteelGrade), _selectedItems[i]);
-
-      base.UpdateUI();
+    protected override void RegisterInputParams(GH_InputParamManager pManager) {
+      pManager.AddGenericParameter(DeckingConfigurationGoo.Name, DeckingConfigurationGoo.NickName, DeckingConfigurationGoo.Description, GH_ParamAccess.item);
+      pManager[0].Optional = true;
     }
 
-    protected override void UpdateUIFromSelectedItems()
-    {
+    protected override void RegisterOutputParams(GH_OutputParamManager pManager) {
+      pManager.AddParameter(new ComposDeckingParameter(), "Catalogue " + DeckingGoo.Name, DeckingGoo.NickName, "Standard Catalogue " + DeckingGoo.Description + " for a " + SlabGoo.Description, GH_ParamAccess.item);
+    }
+
+    protected override void SolveInstance(IGH_DataAccess DA) {
+      if (Params.Input[0].Sources.Count > 0) {
+        DeckingConfigurationGoo dconf = (DeckingConfigurationGoo)Input.GenericGoo<DeckingConfigurationGoo>(this, DA, 0);
+        if (dconf == null) {
+          return;
+        }
+        DA.SetData(0, new DeckingGoo(new CatalogueDecking(Catalogue, Profile, SteelGrade, dconf.Value)));
+      }
+      else
+        Output.SetItem(this, DA, 0, new DeckingGoo(new CatalogueDecking(Catalogue, Profile, SteelGrade, new DeckingConfiguration())));
+    }
+
+    protected override void UpdateUIFromSelectedItems() {
       SectionList = ComposAPI.Helpers.SqlReader.Instance.GetDeckingDataFromSQLite(Path.Combine(AddReferencePriority.InstallPath, "decking.db3"), Catalogue);
       Catalogue = _selectedItems[0];
       Profile = _selectedItems[1];
@@ -122,6 +108,5 @@ namespace ComposGH.Components
 
       base.UpdateUIFromSelectedItems();
     }
-    #endregion
   }
 }

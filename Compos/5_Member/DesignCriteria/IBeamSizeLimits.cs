@@ -1,13 +1,12 @@
 ﻿using OasysUnits;
 
-namespace ComposAPI
-{
-  public interface IBeamSizeLimits
-  {
-    Length MinDepth { get; }
+namespace ComposAPI {
+  public interface IBeamSizeLimits {
     Length MaxDepth { get; }
-    Length MinWidth { get; }
     Length MaxWidth { get; }
+    Length MinDepth { get; }
+    Length MinWidth { get; }
+
     string ToCoaString(string name, ComposUnits units);
   }
 }

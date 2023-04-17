@@ -1,46 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ComposAPI.Helpers;
+﻿using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
-namespace ComposAPI.Beams.Tests
-{
-    [Collection("ComposAPI Fixture collection")]
-  public class ASNZSteelMaterialTest
-  {
-    [Theory]
-    [InlineData(StandardASNZSteelMaterialGrade.C450_AS1163, "BEAM_STEEL_MATERIAL_STD	MEMBER-1	C450(AS1163)\nBEAM_WELDING_MATERIAL\tMEMBER-1\tGrade 35\n")]
-    [InlineData(StandardASNZSteelMaterialGrade.C250_AS1163, "BEAM_STEEL_MATERIAL_STD	MEMBER-1	C250(AS1163)\nBEAM_WELDING_MATERIAL\tMEMBER-1\tGrade 42\n")]
-    public void ToCoaStringTest(StandardASNZSteelMaterialGrade steelMaterialGrade, string expected_coaString)
-    {
-      SteelMaterial steelMaterial = new ASNZSteelMaterial(steelMaterialGrade);
-      string coaString = steelMaterial.ToCoaString("MEMBER-1", Code.AS_NZS2327_2017, ComposUnits.GetStandardUnits());
-
-      Assert.Equal(expected_coaString, coaString);
-    }
-
-    [Fact]
-    public void ToCoaAndBack()
-    {
-      List<StandardASNZSteelMaterialGrade> grades = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().ToList();
-
-      foreach (StandardASNZSteelMaterialGrade grade in grades)
-      {
-        ASNZSteelMaterial steelMaterial = new ASNZSteelMaterial(grade);
-        string coaString = steelMaterial.ToCoaString("MEMBER-1", Code.AS_NZS2327_2017, ComposUnits.GetStandardUnits());
-
-        string line = CoaHelper.SplitAndStripLines(coaString)[0];
-        List<string> parameters = line.Split('\t').ToList();
-        string gradeString = parameters.Last().Replace("\n", string.Empty);
-        StandardASNZSteelMaterialGrade gradeFromString = ASNZSteelMaterial.FromString(gradeString);
-        Assert.Equal(steelMaterial.Grade, gradeFromString);
-      }
-    }
+namespace ComposAPI.Beams.Tests {
+  [Collection("ComposAPI Fixture collection")]
+  public class ASNZSteelMaterialTest {
 
     // 1 setup inputs
     [Theory]
@@ -74,8 +44,7 @@ namespace ComposAPI.Beams.Tests
     [InlineData(StandardASNZSteelMaterialGrade.Gr350_AS3679_1_Hollow, 340, WeldMaterialGrade.Grade_35)]
     [InlineData(StandardASNZSteelMaterialGrade.Gr300_AS3679_1_Hollow, 300, WeldMaterialGrade.Grade_35)]
     [InlineData(StandardASNZSteelMaterialGrade.Gr250_AS3679_1_Hollow, 250, WeldMaterialGrade.Grade_35)]
-    public void ConstructorTest(StandardASNZSteelMaterialGrade grade, double fy_expected, WeldMaterialGrade weldGrade_expected)
-    {
+    public void ConstructorTest(StandardASNZSteelMaterialGrade grade, double fy_expected, WeldMaterialGrade weldGrade_expected) {
       // 2 create object instance with constructor
       ASNZSteelMaterial material = new ASNZSteelMaterial(grade);
 
@@ -87,8 +56,7 @@ namespace ComposAPI.Beams.Tests
     }
 
     [Fact]
-    public void DuplicateTest()
-    {
+    public void DuplicateTest() {
       // 1 create with constructor and duplicate
       StandardASNZSteelMaterialGrade original = new StandardASNZSteelMaterialGrade();
       StandardASNZSteelMaterialGrade duplicate = (StandardASNZSteelMaterialGrade)original.Duplicate();
@@ -98,6 +66,32 @@ namespace ComposAPI.Beams.Tests
 
       // 3 check that the memory pointer is not the same
       Assert.NotSame(original, duplicate);
+    }
+
+    [Fact]
+    public void ToCoaAndBack() {
+      List<StandardASNZSteelMaterialGrade> grades = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().ToList();
+
+      foreach (StandardASNZSteelMaterialGrade grade in grades) {
+        ASNZSteelMaterial steelMaterial = new ASNZSteelMaterial(grade);
+        string coaString = steelMaterial.ToCoaString("MEMBER-1", Code.AS_NZS2327_2017, ComposUnits.GetStandardUnits());
+
+        string line = CoaHelper.SplitAndStripLines(coaString)[0];
+        List<string> parameters = line.Split('\t').ToList();
+        string gradeString = parameters.Last().Replace("\n", string.Empty);
+        StandardASNZSteelMaterialGrade gradeFromString = ASNZSteelMaterial.FromString(gradeString);
+        Assert.Equal(steelMaterial.Grade, gradeFromString);
+      }
+    }
+
+    [Theory]
+    [InlineData(StandardASNZSteelMaterialGrade.C450_AS1163, "BEAM_STEEL_MATERIAL_STD	MEMBER-1	C450(AS1163)\nBEAM_WELDING_MATERIAL\tMEMBER-1\tGrade 35\n")]
+    [InlineData(StandardASNZSteelMaterialGrade.C250_AS1163, "BEAM_STEEL_MATERIAL_STD	MEMBER-1	C250(AS1163)\nBEAM_WELDING_MATERIAL\tMEMBER-1\tGrade 42\n")]
+    public void ToCoaStringTest(StandardASNZSteelMaterialGrade steelMaterialGrade, string expected_coaString) {
+      SteelMaterial steelMaterial = new ASNZSteelMaterial(steelMaterialGrade);
+      string coaString = steelMaterial.ToCoaString("MEMBER-1", Code.AS_NZS2327_2017, ComposUnits.GetStandardUnits());
+
+      Assert.Equal(expected_coaString, coaString);
     }
   }
 }

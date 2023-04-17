@@ -1,15 +1,13 @@
-using Xunit;
 using ComposGHTests.Helpers;
 using OasysGH;
+using Xunit;
 
-namespace ComposAPI.Members.Tests
-{
+namespace ComposAPI.Members.Tests {
   [Collection("ComposAPI Fixture collection")]
-  public partial class LoadCombinationFactorsTest
-  {
+  public partial class LoadCombinationFactorsTest {
+
     [Fact]
-    public LoadCombinationFactors ConstructorTest()
-    {
+    public LoadCombinationFactors ConstructorTest() {
       // 1 setup input
       // empty constructor creates default EC4 values
 
@@ -29,9 +27,9 @@ namespace ComposAPI.Members.Tests
       // (optionally return object for other tests)
       return loadFactors;
     }
+
     [Fact]
-    public void DuplicateLCTest()
-    {
+    public void DuplicateLCTest() {
       // 1 create with constructor and duplicate
       LoadCombinationFactors original = ConstructorTest();
       LoadCombinationFactors duplicate = (LoadCombinationFactors)original.Duplicate();

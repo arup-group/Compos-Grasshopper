@@ -1,18 +1,14 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using ComposAPI.Helpers;
-using ComposGHTests.Helpers;
+﻿using ComposGHTests.Helpers;
 using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
+using System.Collections.Generic;
 using Xunit;
 
-namespace ComposAPI.Slabs.Tests
-{
-  public static class SlabMother
-  {
-    public static string Example1CoaString()
-    {
+namespace ComposAPI.Slabs.Tests {
+  public static class SlabMother {
+
+    public static string Example1CoaString() {
       return
         "SLAB_CONCRETE_MATERIAL	MEMBER-1	C40	NORMAL	CODE_DENSITY	2400.00	NOT_APPLY	0.330000	CODE_E_RATIO	CODE_STRAIN" + '\n' +
         "SLAB_DIMENSION	MEMBER-1	3	1	0.000000	0.130000	1.50000	1.50000	TAPERED_YES	EFFECTIVE_WIDTH_NO" + '\n' +
@@ -25,8 +21,7 @@ namespace ComposAPI.Slabs.Tests
         "DECKING_CATALOGUE	MEMBER-1	Kingspan	Multideck 50 (0.85)	S280	90.0000	DECKING_JOINTED	JOINT_NOT_WELD" + '\n';
     }
 
-    public static Slab Example1Slab()
-    {
+    public static Slab Example1Slab() {
       ConcreteMaterial material = (ConcreteMaterial)ConcreteMaterialMother.CreateConcreteMaterial();
       material.Grade = ConcreteGrade.C40.ToString();
 
@@ -48,54 +43,11 @@ namespace ComposAPI.Slabs.Tests
   }
 
   [Collection("ComposAPI Fixture collection")]
-  public class SlabTest
-  {
-    [Fact]
-    public void DuplicateTest()
-    {
-      // 1 create with constructor and duplicate
-      Slab original = SlabMother.Example1Slab();
-      Slab duplicate = (Slab)original.Duplicate();
-
-      // 2 check that duplicate has duplicated values
-      Duplicates.AreEqual(original, duplicate);
-
-      // 3 check that the memory pointer is not the same
-      Assert.NotSame(original, duplicate);
-    }
-
-    [Fact]
-    public void ToCoaStringTest()
-    {
-      // Assemble
-      ComposUnits units = ComposUnits.GetStandardUnits();
-      string expectedCoaString = SlabMother.Example1CoaString();
-
-      // Act
-      string coaString = SlabMother.Example1Slab().ToCoaString("MEMBER-1", units);
-
-      // Assert
-      Assert.Equal(expectedCoaString, coaString);
-    }
-
-    [Fact]
-    public void FromCoaStringTest()
-    {
-      // Assemble
-      ComposUnits units = ComposUnits.GetStandardUnits();
-      Slab expectedSlab = SlabMother.Example1Slab();
-
-      // Act
-      Slab slab = (Slab)Slab.FromCoaString(SlabMother.Example1CoaString(), "MEMBER-1", Code.BS5950_3_1_1990_A1_2010, units);
-
-      // Assert
-      ObjectExtension.Equals(expectedSlab, slab);
-    }
+  public class SlabTest {
 
     // 1 setup inputs
     [Fact]
-    public void ConstructorTest1()
-    {
+    public void ConstructorTest1() {
       // 2 create object instance with constructor
       IConcreteMaterial material = ConcreteMaterialMother.CreateConcreteMaterial();
       List<ISlabDimension> dimensions = new List<ISlabDimension>() { SlabDimensionMother.CreateSlabDimension() };
@@ -115,8 +67,7 @@ namespace ComposAPI.Slabs.Tests
 
     // 1 setup inputs
     [Fact]
-    public void ConstructorTest2()
-    {
+    public void ConstructorTest2() {
       // 2 create object instance with constructor
       IConcreteMaterial material = ConcreteMaterialMother.CreateConcreteMaterial();
       List<ISlabDimension> dimensions = new List<ISlabDimension>() { SlabDimensionMother.CreateSlabDimension() };
@@ -130,6 +81,45 @@ namespace ComposAPI.Slabs.Tests
       Assert.Equal(transverse, slab.Transverse);
       Assert.Null(slab.Mesh);
       Assert.Null(slab.Decking);
+    }
+
+    [Fact]
+    public void DuplicateTest() {
+      // 1 create with constructor and duplicate
+      Slab original = SlabMother.Example1Slab();
+      Slab duplicate = (Slab)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
+    [Fact]
+    public void FromCoaStringTest() {
+      // Assemble
+      ComposUnits units = ComposUnits.GetStandardUnits();
+      Slab expectedSlab = SlabMother.Example1Slab();
+
+      // Act
+      Slab slab = (Slab)Slab.FromCoaString(SlabMother.Example1CoaString(), "MEMBER-1", Code.BS5950_3_1_1990_A1_2010, units);
+
+      // Assert
+      ObjectExtension.Equals(expectedSlab, slab);
+    }
+
+    [Fact]
+    public void ToCoaStringTest() {
+      // Assemble
+      ComposUnits units = ComposUnits.GetStandardUnits();
+      string expectedCoaString = SlabMother.Example1CoaString();
+
+      // Act
+      string coaString = SlabMother.Example1Slab().ToCoaString("MEMBER-1", units);
+
+      // Assert
+      Assert.Equal(expectedCoaString, coaString);
     }
   }
 }

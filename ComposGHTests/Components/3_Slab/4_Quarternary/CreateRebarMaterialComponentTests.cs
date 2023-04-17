@@ -1,26 +1,29 @@
-﻿using ComposGH.Parameters;
+﻿using ComposAPI;
 using ComposGH.Components;
-using Xunit;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
-using ComposAPI;
 using OasysGH.Components;
+using Xunit;
 
-namespace ComposGHTests.Slab
-{
+namespace ComposGHTests.Slab {
   [Collection("GrasshopperFixture collection")]
-  public class CreateRebarMaterialComponentTests
-  {
-    public static GH_OasysDropDownComponent ComponentMother()
-    {
+  public class CreateRebarMaterialComponentTests {
+
+    public static GH_OasysDropDownComponent ComponentMother() {
       var comp = new CreateRebarMaterial();
       comp.CreateAttributes();
-      
+
       return comp;
     }
 
     [Fact]
-    public void CreateComponentTest()
-    {
+    public void ChangeDropDownTest() {
+      var comp = ComponentMother();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponentTest() {
       var comp = ComponentMother();
 
       ReinforcementMaterialGoo output = (ReinforcementMaterialGoo)ComponentTestHelper.GetOutput(comp);
@@ -28,8 +31,7 @@ namespace ComposGHTests.Slab
     }
 
     [Fact]
-    public void CreateComponentWithInputsTest()
-    {
+    public void CreateComponentWithInputsTest() {
       var comp = ComponentMother();
 
       ComponentTestHelper.SetInput(comp, "498 MPa", 0);
@@ -40,17 +42,9 @@ namespace ComposGHTests.Slab
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void DeserializeTest() {
       var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      var comp = ComponentMother();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

@@ -1,34 +1,27 @@
-﻿using System;
-using Grasshopper.Kernel;
-using ComposAPI;
+﻿using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
-using OasysGH.Components;
+using Grasshopper.Kernel;
 using OasysGH;
+using OasysGH.Components;
+using System;
 
-namespace ComposGH.Components
-{
-  public class CreateSafetyFactors : GH_OasysComponent
-  {
-    #region Name and Ribbon Layout
+namespace ComposGH.Components {
+  public class CreateSafetyFactors : GH_OasysComponent {
     // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("c0df8c23-4aa1-439b-83a1-9b59078284c2");
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override System.Drawing.Bitmap Icon => Resources.SafetyFactors;
+
     public CreateSafetyFactors()
       : base("Create" + SafetyFactorsGoo.Name.Replace(" ", string.Empty),
           SafetyFactorsGoo.Name.Replace(" ", string.Empty),
           "Create a " + SafetyFactorsGoo.Description + " for a " + DesignCodeGoo.Description,
             Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat5())
-    { Hidden = true; } // sets the initial state of the component to hidden
-    #endregion
+            Ribbon.SubCategoryName.Cat5()) { Hidden = true; } // sets the initial state of the component to hidden
 
-    #region Input and output
-
-    protected override void RegisterInputParams(GH_InputParamManager pManager)
-    {
+    protected override void RegisterInputParams(GH_InputParamManager pManager) {
       pManager.AddNumberParameter("Const. Dead", "dlF", "Load combination factor (γf) for Dead Load during Construction Stage", GH_ParamAccess.item, 1.4);
       pManager.AddNumberParameter("Final Dead", "DLF", "Load combination factor (γf) for Final Dead Load", GH_ParamAccess.item, 1.4);
       pManager.AddNumberParameter("Const. Live", "llF", "Load combination factor (γf) for Live Load during Construction Stage", GH_ParamAccess.item, 1.6);
@@ -43,14 +36,11 @@ namespace ComposGH.Components
         pManager[i].Optional = true;
     }
 
-    protected override void RegisterOutputParams(GH_OutputParamManager pManager)
-    {
+    protected override void RegisterOutputParams(GH_OutputParamManager pManager) {
       pManager.AddParameter(new SafetyFactorParam());
     }
-    #endregion
 
-    protected override void SolveInstance(IGH_DataAccess DA)
-    {
+    protected override void SolveInstance(IGH_DataAccess DA) {
       LoadFactors lf = new LoadFactors();
       double dl = 0;
       double DL = 0;
@@ -67,8 +57,7 @@ namespace ComposGH.Components
       if (Params.Input[0].Sources.Count == 0
         & Params.Input[1].Sources.Count == 0
         & Params.Input[2].Sources.Count == 0
-        & Params.Input[3].Sources.Count == 0)
-      {
+        & Params.Input[3].Sources.Count == 0) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Default Load Factor values from BS5950-1.1:1990+A1:2010");
       }
 
@@ -92,14 +81,12 @@ namespace ComposGH.Components
       if (DA.GetData(9, ref reb))
         mf.Reinforcement = reb;
 
-
       if (Params.Input[4].Sources.Count == 0
         & Params.Input[5].Sources.Count == 0
         & Params.Input[6].Sources.Count == 0
         & Params.Input[7].Sources.Count == 0
         & Params.Input[8].Sources.Count == 0
-        & Params.Input[9].Sources.Count == 0)
-      {
+        & Params.Input[9].Sources.Count == 0) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Default Material Partial Safety Factor values from BS5950-1.1:1990+A1:2010");
       }
       SafetyFactors sf = new SafetyFactors() { LoadFactors = lf, MaterialFactors = mf };

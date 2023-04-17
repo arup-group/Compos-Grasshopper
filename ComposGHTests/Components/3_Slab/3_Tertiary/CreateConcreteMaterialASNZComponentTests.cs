@@ -1,25 +1,28 @@
 ﻿using ComposAPI;
-using ComposGH.Parameters;
 using ComposGH.Components;
-using Xunit;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
 using OasysGH.Components;
+using Xunit;
 
-namespace ComposGHTests.Slab
-{
+namespace ComposGHTests.Slab {
   [Collection("GrasshopperFixture collection")]
-  public class CreateConcreteMaterialASNZComponentTests
-  {
-    public static GH_OasysDropDownComponent ComponentMother()
-    {
+  public class CreateConcreteMaterialASNZComponentTests {
+
+    public static GH_OasysDropDownComponent ComponentMother() {
       var comp = new CreateConcreteMaterialASNZ();
       comp.CreateAttributes();
       return comp;
     }
 
     [Fact]
-    public void CreateComponent()
-    {
+    public void ChangeDropDownTest() {
+      var comp = ComponentMother();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponent() {
       var comp = ComponentMother();
 
       ConcreteMaterialGoo output = (ConcreteMaterialGoo)ComponentTestHelper.GetOutput(comp);
@@ -33,12 +36,11 @@ namespace ComposGHTests.Slab
     }
 
     [Fact]
-    public void CreateComponentWithInputs1()
-    {
+    public void CreateComponentWithInputs1() {
       var comp = ComponentMother();
 
       comp.SetSelected(1, 5); // change dropdown to KilogramPerCubicMeter
-      
+
       ComponentTestHelper.SetInput(comp, 1864, 0);
 
       ERatioGoo input2 = (ERatioGoo)ComponentTestHelper.GetOutput(CreateERatioComponentTests.ComponentMother());
@@ -53,10 +55,9 @@ namespace ComposGHTests.Slab
       Assert.Equal(-0.4, output.Value.ShrinkageStrain.MilliStrain);
       Duplicates.AreEqual(input2.Value, output.Value.ERatio);
     }
-    
+
     [Fact]
-    public void CreateComponentWithInputs2()
-    {
+    public void CreateComponentWithInputs2() {
       var comp = ComponentMother();
 
       ComponentTestHelper.SetInput(comp, "C30", 4);
@@ -66,17 +67,9 @@ namespace ComposGHTests.Slab
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void DeserializeTest() {
       var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      var comp = ComponentMother();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

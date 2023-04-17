@@ -1,39 +1,68 @@
-﻿using System;
-using System.Drawing;
-using Grasshopper.Kernel;
-using ComposAPI;
+﻿using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using Grasshopper.Kernel;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using OasysGH;
+using System;
+using System.Drawing;
 
-namespace ComposGH.Components
-{
-  public class Utilisations : GH_OasysComponent, IGH_VariableParameterComponent
-  {
-    #region Name and Ribbon Layout
+namespace ComposGH.Components {
+  public class Utilisations : GH_OasysComponent, IGH_VariableParameterComponent {
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("dcbd858c-6077-40a0-b109-ed0a3e2d7217");
     public override GH_Exposure Exposure => GH_Exposure.primary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
-    public Utilisations()
-      : base("Utilisation Results",
-          "Utilisations",
-          "Get overall utilisation results for a " + MemberGoo.Description,
-            Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat7())
-    { Hidden = true; } // sets the initial state of the component to hidden
-    #endregion
+    protected override Bitmap Icon {
+      get {
+        if (maxUtil < 0)
+          return Resources.Utilisation;
+        else if (maxUtil < 0.50)
+          return Resources.UtilisationLow;
+        else if (maxUtil < 0.80)
+          return Resources.UtilisationMedium;
+        else if (maxUtil <= 1)
+          return Resources.UtilisationHigh;
+        else
+          return Resources.UtilisationOver;
+      }
+    }
 
-    #region Input and output
-    protected override void RegisterInputParams(GH_InputParamManager pManager)
-    {
+    private double maxUtil = -1;
+
+    public Utilisations()
+                  : base("Utilisation Results",
+      "Utilisations",
+      "Get overall utilisation results for a " + MemberGoo.Description,
+        Ribbon.CategoryName.Name(),
+        Ribbon.SubCategoryName.Cat7()) { Hidden = true; } // sets the initial state of the component to hidden
+
+    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index) {
+      return false;
+    }
+
+    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index) {
+      return false;
+    }
+
+    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index) {
+      return null;
+    }
+
+    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index) {
+      return false;
+    }
+
+    void IGH_VariableParameterComponent.VariableParameterMaintenance() {
+    }
+
+    protected override void RegisterInputParams(GH_InputParamManager pManager) {
       pManager.AddParameter(new ComposMemberParameter());
     }
-    protected override void RegisterOutputParams(GH_OutputParamManager pManager)
-    {
+
+    protected override void RegisterOutputParams(GH_OutputParamManager pManager) {
       pManager.AddGenericParameter("Moment", "M", "Final moment utilisation factor.", GH_ParamAccess.item);
       pManager.AddGenericParameter("Shear", "V", "Final shear utilisation factor.", GH_ParamAccess.item);
       pManager.AddGenericParameter("Moment Construction", "Mc", "Construction stage moment utilisation factor.", GH_ParamAccess.item);
@@ -44,10 +73,8 @@ namespace ComposGH.Components
       pManager.AddGenericParameter("Transverse Shear", "Tv", "Transverse shear utilisation factor.", GH_ParamAccess.item);
       pManager.AddGenericParameter("Web Opening", "Wo", "Web opening (max) utilisation factor.", GH_ParamAccess.item);
     }
-    #endregion
 
-    protected override void SolveInstance(IGH_DataAccess DA)
-    {
+    protected override void SolveInstance(IGH_DataAccess DA) {
       IResult res = ((MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
       IUtilisation result = res.Utilisations;
 
@@ -116,51 +143,8 @@ namespace ComposGH.Components
       if (output > maxUtil)
         maxUtil = output;
       DA.SetData(i, output);
-      
+
       base.DestroyIconCache();
     }
-
-    double maxUtil = -1;
-    protected override Bitmap Icon
-    {
-      get
-      {
-        if (maxUtil < 0)
-          return Resources.Utilisation;
-        else if (maxUtil < 0.50)
-          return Resources.UtilisationLow;
-        else if (maxUtil < 0.80)
-          return Resources.UtilisationMedium;
-        else if (maxUtil <= 1)
-          return Resources.UtilisationHigh;
-        else
-          return Resources.UtilisationOver;
-      }
-    }
-    #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
-    {
-      return null;
-    }
-
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
-    {
-      return false;
-    }
-
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
-    }
-    #endregion
   }
 }

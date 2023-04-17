@@ -1,21 +1,19 @@
-﻿using ComposGH.Parameters;
-using ComposGH.Components;
-using Xunit;
+﻿using ComposGH.Components;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
 using OasysGH.Components;
+using Xunit;
 
-namespace ComposGHTests.Slab
-{
+namespace ComposGHTests.Slab {
   [Collection("GrasshopperFixture collection")]
-  public class CreateSlabDimensionComponentTests
-  {
-    public static GH_OasysDropDownComponent ComponentMother()
-    {
+  public class CreateSlabDimensionComponentTests {
+
+    public static GH_OasysDropDownComponent ComponentMother() {
       var comp = new CreateSlabDimension();
       comp.CreateAttributes();
-      
+
       comp.SetSelected(0, 0); // change dropdown to mm
-      
+
       ComponentTestHelper.SetInput(comp, 130, 1);
       ComponentTestHelper.SetInput(comp, 1700, 2);
       ComponentTestHelper.SetInput(comp, 1200, 3);
@@ -24,8 +22,13 @@ namespace ComposGHTests.Slab
     }
 
     [Fact]
-    public void CreateComponent()
-    {
+    public void ChangeDropDownTest() {
+      var comp = ComponentMother();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponent() {
       var comp = ComponentMother();
       comp.SetSelected(0, 0); // change dropdown to mm
       SlabDimensionGoo output = (SlabDimensionGoo)ComponentTestHelper.GetOutput(comp);
@@ -37,8 +40,7 @@ namespace ComposGHTests.Slab
     }
 
     [Fact]
-    public void CreateComponentWithInputs1()
-    {
+    public void CreateComponentWithInputs1() {
       var comp = ComponentMother();
 
       comp.SetSelected(0, 2); // change dropdown to m
@@ -54,17 +56,9 @@ namespace ComposGHTests.Slab
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void DeserializeTest() {
       var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      var comp = ComponentMother();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

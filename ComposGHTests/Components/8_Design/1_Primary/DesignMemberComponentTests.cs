@@ -1,21 +1,19 @@
-﻿using ComposGH.Parameters;
+﻿using ComposAPI;
 using ComposGH.Components;
-using Xunit;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
-using ComposAPI;
 using ComposGHTests.Member;
+using OasysGH.Components;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System;
-using OasysGH.Components;
+using Xunit;
 
-namespace ComposGHTests.Design
-{
+namespace ComposGHTests.Design {
   [Collection("GrasshopperFixture collection")]
-  public class DesignMemberComponentTests
-  {
-    public static GH_OasysComponent DesignMemberMother()
-    {
+  public class DesignMemberComponentTests {
+
+    public static GH_OasysComponent DesignMemberMother() {
       var comp = new DesignMember();
       comp.CreateAttributes();
 
@@ -30,8 +28,7 @@ namespace ComposGHTests.Design
     }
 
     [Fact]
-    public void CreateComponent()
-    {
+    public void CreateComponent() {
       var comp = DesignMemberMother();
 
       MemberGoo output = (MemberGoo)ComponentTestHelper.GetOutput(comp);

@@ -1,28 +1,24 @@
-﻿using System.Collections.Generic;
-using ComposAPI.Helpers;
+﻿using ComposAPI.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
+using System.Collections.Generic;
 
-namespace ComposAPI
-{
-  public class ComposUnits
-  {
+namespace ComposAPI {
+  public class ComposUnits {
     public AngleUnit Angle { get; set; }
     public DensityUnit Density { get; set; }
-    public MassUnit Mass { get; set; }
+    public LengthUnit Displacement { get; set; }
     public ForceUnit Force { get; set; }
     public LengthUnit Length { get; set; }
+    public MassUnit Mass { get; set; }
     public LengthUnit Section { get; set; }
-    public LengthUnit Displacement { get; set; }
-    public PressureUnit Stress { get; set; }
     public StrainUnit Strain { get; set; }
+    public PressureUnit Stress { get; set; }
 
     public ComposUnits() { }
 
-    public static ComposUnits GetStandardUnits()
-    {
-      ComposUnits units = new ComposUnits
-      {
+    public static ComposUnits GetStandardUnits() {
+      ComposUnits units = new ComposUnits {
         Angle = AngleUnit.Degree,
         Density = ComposUnitsHelper.DensityUnit,
         Force = ComposUnitsHelper.ForceUnit,
@@ -36,8 +32,7 @@ namespace ComposAPI
       return units;
     }
 
-    public string ToCoaString()
-    {
+    public string ToCoaString() {
       ComposUnits standardUnits = ComposUnits.GetStandardUnits();
 
       Force force = new Force(1.0, Force);
@@ -67,25 +62,28 @@ namespace ComposAPI
       return coaString;
     }
 
-    internal void FromCoaString(List<string> parameters)
-    {
-      switch (parameters[1])
-      {
+    internal void FromCoaString(List<string> parameters) {
+      switch (parameters[1]) {
         case CoaIdentifier.Units.Force:
           Force = (ForceUnit)UnitParser.Default.Parse(parameters[2], typeof(ForceUnit));
           break;
+
         case CoaIdentifier.Units.Length:
           Length = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
           break;
+
         case CoaIdentifier.Units.Displacement:
           Displacement = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
           break;
+
         case CoaIdentifier.Units.Section:
           Section = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
           break;
+
         case CoaIdentifier.Units.Stress:
           Stress = (PressureUnit)UnitParser.Default.Parse(parameters[2], typeof(PressureUnit));
           break;
+
         case CoaIdentifier.Units.Mass:
           Mass = (MassUnit)UnitParser.Default.Parse(parameters[2], typeof(MassUnit));
           break;

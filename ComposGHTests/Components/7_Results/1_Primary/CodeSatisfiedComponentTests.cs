@@ -1,17 +1,15 @@
-﻿using Xunit;
-using Grasshopper.Kernel.Types;
+﻿using ComposGH.Components;
 using ComposGH.Parameters;
-using ComposGH.Components;
 using ComposGHTests.Helpers;
+using Grasshopper.Kernel.Types;
+using Xunit;
 
-namespace ComposGHTests.Result
-{
+namespace ComposGHTests.Result {
   [Collection("GrasshopperFixture collection")]
-  public class CodeSatisfiedComponentTests
-  {
+  public class CodeSatisfiedComponentTests {
+
     [Fact]
-    public void CreateComponentWithInput()
-    {
+    public void CreateComponentWithInput() {
       var comp = new CodeSatisfied();
       MemberGoo input = (MemberGoo)ComponentTestHelper.GetOutput(CompFile.FileComponentsTests.ComponentMother());
       ComponentTestHelper.SetInput(comp, input);

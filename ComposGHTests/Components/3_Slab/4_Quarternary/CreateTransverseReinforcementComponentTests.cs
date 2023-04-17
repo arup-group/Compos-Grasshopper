@@ -1,17 +1,15 @@
 ﻿using ComposAPI;
-using ComposGH.Parameters;
 using ComposGH.Components;
-using Xunit;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
 using OasysGH.Components;
+using Xunit;
 
-namespace ComposGHTests.Slab
-{
+namespace ComposGHTests.Slab {
   [Collection("GrasshopperFixture collection")]
-  public class CreateTransverseReinforcementComponentTests
-  {
-    public static GH_OasysComponent ComponentMother()
-    {
+  public class CreateTransverseReinforcementComponentTests {
+
+    public static GH_OasysComponent ComponentMother() {
       var comp = new CreateTransverseReinforcement();
       comp.CreateAttributes();
 
@@ -22,8 +20,7 @@ namespace ComposGHTests.Slab
     }
 
     [Fact]
-    public void CreateComponentWithInputs1()
-    {
+    public void CreateComponentWithInputs1() {
       var comp = ComponentMother();
 
       TransverseReinforcementGoo output = (TransverseReinforcementGoo)ComponentTestHelper.GetOutput(comp);
@@ -34,8 +31,7 @@ namespace ComposGHTests.Slab
     }
 
     [Fact]
-    public void CreateComponentWithInputs2()
-    {
+    public void CreateComponentWithInputs2() {
       var comp = ComponentMother();
 
       CustomTransverseReinforcementLayoutGoo input2 = (CustomTransverseReinforcementLayoutGoo)ComponentTestHelper.GetOutput(CreateCustomTransverseReinforcementLayoutComponentTests.ComponentMother());

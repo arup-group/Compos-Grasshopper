@@ -1,18 +1,16 @@
-﻿using ComposGH.Parameters;
+﻿using ComposAPI;
 using ComposGH.Components;
-using Xunit;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
-using ComposAPI;
-using OasysUnits.Units;
 using OasysGH.Components;
+using OasysUnits.Units;
+using Xunit;
 
-namespace ComposGHTests.Load
-{
+namespace ComposGHTests.Load {
   [Collection("GrasshopperFixture collection")]
-  public class CreateLinearLoadComponentTests
-  {
-    public static GH_OasysDropDownComponent ComponentMother()
-    {
+  public class CreateLinearLoadComponentTests {
+
+    public static GH_OasysDropDownComponent ComponentMother() {
       var comp = new CreateLinearLoad();
       comp.CreateAttributes();
 
@@ -25,8 +23,13 @@ namespace ComposGHTests.Load
     }
 
     [Fact]
-    public void CreateComponent1()
-    {
+    public void ChangeDropDownTest() {
+      var comp = ComponentMother();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponent1() {
       var comp = ComponentMother();
 
       comp.SetSelected(0, 0); // change dropdown to line
@@ -35,7 +38,7 @@ namespace ComposGHTests.Load
 
       LoadGoo output = (LoadGoo)ComponentTestHelper.GetOutput(comp);
       LinearLoad load = (LinearLoad)output.Value;
-      
+
       int i = 0;
       Assert.Equal(LoadDistribution.Line, load.Distribution);
       Assert.Equal((i++ + 1) * 1, load.LoadW1.ConstantDead.As(force));
@@ -49,8 +52,7 @@ namespace ComposGHTests.Load
     }
 
     [Fact]
-    public void CreateComponent2()
-    {
+    public void CreateComponent2() {
       var comp = ComponentMother();
 
       comp.SetSelected(0, 1); // change dropdown to area
@@ -73,17 +75,9 @@ namespace ComposGHTests.Load
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void DeserializeTest() {
       var comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      var comp = ComponentMother();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

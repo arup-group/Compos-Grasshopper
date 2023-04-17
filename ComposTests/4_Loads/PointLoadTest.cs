@@ -1,41 +1,15 @@
-﻿using System.Collections.Generic;
-using Xunit;
+﻿using ComposGHTests.Helpers;
+using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
-using ComposGHTests.Helpers;
-using OasysGH;
+using System.Collections.Generic;
+using Xunit;
 
-namespace ComposAPI.Loads.Tests
-{
-    public partial class LoadTest
-  {
-    // 1 setup inputs
-    [Theory]
-    [InlineData(1, 1.5, 3, 5, 5000)]
-    [InlineData(3, 4.5, 6, 5, 0)]
-    public Load TestPointLoadConstructor(double consDead, double consLive, double finalDead, double finalLive, double position)
-    {
-      LengthUnit length = LengthUnit.Millimeter;
-      ForceUnit force = ForceUnit.Kilonewton;
+namespace ComposAPI.Loads.Tests {
+  public partial class LoadTest {
 
-      // 2 create object instance with constructor
-      PointLoad load = new PointLoad(
-        new Force(consDead, force), new Force(consLive, force), new Force(finalDead, force), new Force(finalLive, force),
-        new Length(position, length));
-
-      // 3 check that inputs are set in object's members
-      Assert.Equal(consDead, load.Load.ConstantDead.As(force));
-      Assert.Equal(consLive, load.Load.ConstantLive.As(force));
-      Assert.Equal(finalDead, load.Load.FinalDead.As(force));
-      Assert.Equal(finalLive, load.Load.FinalLive.As(force));
-      Assert.Equal(position, load.Load.Position.As(LengthUnit.Millimeter));
-      Assert.Equal(LoadType.Point, load.Type);
-
-      return load;
-    }
     [Fact]
-    public void DuplicatePointTest()
-    {
+    public void DuplicatePointTest() {
       // 1 create with constructor and duplicate
       Load original = TestPointLoadConstructor(1, 1.5, 3, 5, 5000);
       Load duplicate = (Load)original.Duplicate();
@@ -47,58 +21,8 @@ namespace ComposAPI.Loads.Tests
       Assert.NotSame(original, duplicate);
     }
 
-    // 1 setup inputs
-    [Theory]
-    [InlineData(1, 1.5, 3, 5, 5000)]
-    [InlineData(3, 4.5, 6, 5, 0)]
-    public Load TestPointLoadConstructorPercentage(double consDead, double consLive, double finalDead, double finalLive, double position)
-    {
-      RatioUnit ratio = RatioUnit.Percent;
-      ForceUnit force = ForceUnit.Kilonewton;
-
-      // 2 create object instance with constructor
-      PointLoad load = new PointLoad(
-        new Force(consDead, force), new Force(consLive, force), new Force(finalDead, force), new Force(finalLive, force),
-        new Ratio(position, ratio));
-
-      // 3 check that inputs are set in object's members
-      Assert.Equal(consDead, load.Load.ConstantDead.As(force));
-      Assert.Equal(consLive, load.Load.ConstantLive.As(force));
-      Assert.Equal(finalDead, load.Load.FinalDead.As(force));
-      Assert.Equal(finalLive, load.Load.FinalLive.As(force));
-      Assert.Equal(position, load.Load.Position.As(RatioUnit.Percent));
-      Assert.Equal(LoadType.Point, load.Type);
-
-      return load;
-    }
-
     [Fact]
-    public void PointLoadToCoaStringTest()
-    {
-      // Arrange
-      string expected_coaString = "LOAD	MEMBER-1	Point	1.00000	2.00000	3.00000	4.50000	6.00000\n";
-      Load load = TestPointLoadConstructor(0.001, 0.002, 0.003, 0.0045, 6000); // input load in kN, coa string in N - input position length unit in mm, coa string in m
-      // Act
-      string coaString = load.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
-      // Assert
-      Assert.Equal(expected_coaString, coaString);
-    }
-
-    [Fact]
-    public void PointLoadToCoaStringTestPercentage()
-    {
-      // Arrange
-      string expected_coaString = "LOAD	MEMBER-1	Point	1.00000	2.00000	3.00000	4.50000	6.00000%\n";
-      Load load = TestPointLoadConstructorPercentage(0.001, 0.002, 0.003, 0.0045, 6); // input load in kN, coa string in N - input position length unit in mm, coa string in m
-      // Act
-      string coaString = load.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
-      // Assert
-      Assert.Equal(expected_coaString, coaString);
-    }
-
-    [Fact]
-    public void PointLoadFromCoaStringTest()
-    {
+    public void PointLoadFromCoaStringTest() {
       ForceUnit forceUnit = ForceUnit.Kilonewton;
       LengthUnit lengthUnit = LengthUnit.Millimeter;
       ComposUnits units = ComposUnits.GetStandardUnits();
@@ -124,8 +48,7 @@ namespace ComposAPI.Loads.Tests
     }
 
     [Fact]
-    public void PointLoadFromCoaStringTestPercentage()
-    {
+    public void PointLoadFromCoaStringTestPercentage() {
       ForceUnit forceUnit = ForceUnit.Kilonewton;
       LengthUnit lengthUnit = LengthUnit.Millimeter;
       ComposUnits units = ComposUnits.GetStandardUnits();
@@ -148,6 +71,76 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(4.5, pointLoad.Load.FinalLive.As(forceUnit));
       Assert.Equal(6, pointLoad.Load.Position.As(RatioUnit.Percent));
       Assert.Equal(LoadType.Point, pointLoad.Type);
+    }
+
+    [Fact]
+    public void PointLoadToCoaStringTest() {
+      // Arrange
+      string expected_coaString = "LOAD	MEMBER-1	Point	1.00000	2.00000	3.00000	4.50000	6.00000\n";
+      Load load = TestPointLoadConstructor(0.001, 0.002, 0.003, 0.0045, 6000); // input load in kN, coa string in N - input position length unit in mm, coa string in m
+      // Act
+      string coaString = load.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
+
+    [Fact]
+    public void PointLoadToCoaStringTestPercentage() {
+      // Arrange
+      string expected_coaString = "LOAD	MEMBER-1	Point	1.00000	2.00000	3.00000	4.50000	6.00000%\n";
+      Load load = TestPointLoadConstructorPercentage(0.001, 0.002, 0.003, 0.0045, 6); // input load in kN, coa string in N - input position length unit in mm, coa string in m
+      // Act
+      string coaString = load.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
+    }
+
+    // 1 setup inputs
+    [Theory]
+    [InlineData(1, 1.5, 3, 5, 5000)]
+    [InlineData(3, 4.5, 6, 5, 0)]
+    public Load TestPointLoadConstructor(double consDead, double consLive, double finalDead, double finalLive, double position) {
+      LengthUnit length = LengthUnit.Millimeter;
+      ForceUnit force = ForceUnit.Kilonewton;
+
+      // 2 create object instance with constructor
+      PointLoad load = new PointLoad(
+        new Force(consDead, force), new Force(consLive, force), new Force(finalDead, force), new Force(finalLive, force),
+        new Length(position, length));
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(consDead, load.Load.ConstantDead.As(force));
+      Assert.Equal(consLive, load.Load.ConstantLive.As(force));
+      Assert.Equal(finalDead, load.Load.FinalDead.As(force));
+      Assert.Equal(finalLive, load.Load.FinalLive.As(force));
+      Assert.Equal(position, load.Load.Position.As(LengthUnit.Millimeter));
+      Assert.Equal(LoadType.Point, load.Type);
+
+      return load;
+    }
+
+    // 1 setup inputs
+    [Theory]
+    [InlineData(1, 1.5, 3, 5, 5000)]
+    [InlineData(3, 4.5, 6, 5, 0)]
+    public Load TestPointLoadConstructorPercentage(double consDead, double consLive, double finalDead, double finalLive, double position) {
+      RatioUnit ratio = RatioUnit.Percent;
+      ForceUnit force = ForceUnit.Kilonewton;
+
+      // 2 create object instance with constructor
+      PointLoad load = new PointLoad(
+        new Force(consDead, force), new Force(consLive, force), new Force(finalDead, force), new Force(finalLive, force),
+        new Ratio(position, ratio));
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(consDead, load.Load.ConstantDead.As(force));
+      Assert.Equal(consLive, load.Load.ConstantLive.As(force));
+      Assert.Equal(finalDead, load.Load.FinalDead.As(force));
+      Assert.Equal(finalLive, load.Load.FinalLive.As(force));
+      Assert.Equal(position, load.Load.Position.As(RatioUnit.Percent));
+      Assert.Equal(LoadType.Point, load.Type);
+
+      return load;
     }
   }
 }
