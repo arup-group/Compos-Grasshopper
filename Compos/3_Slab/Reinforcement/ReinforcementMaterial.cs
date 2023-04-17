@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using ComposAPI.Helpers;
+﻿using ComposAPI.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 
-namespace ComposAPI
-{
-  public enum RebarGrade
-  {
+namespace ComposAPI {
+  public enum RebarGrade {
     BS_250R,
     BS_460T,
     BS_500X,
@@ -24,26 +22,22 @@ namespace ComposAPI
     AS_D500E
   }
 
-  public class ReinforcementMaterial : IReinforcementMaterial
-  {
+  public class ReinforcementMaterial : IReinforcementMaterial {
     public RebarGrade Grade { get; set; }
     public bool UserDefined { get; set; } = false;
     public Pressure Fy { get; set; } // characteristic strength of user defined reinforcement
 
     #region constructors
-    public ReinforcementMaterial()
-    {
+    public ReinforcementMaterial() {
       // empty constructor
     }
 
-    public ReinforcementMaterial(Pressure fy)
-    {
+    public ReinforcementMaterial(Pressure fy) {
       UserDefined = true;
       Fy = fy;
     }
 
-    public ReinforcementMaterial(RebarGrade grade)
-    {
+    public ReinforcementMaterial(RebarGrade grade) {
       Grade = grade;
       UserDefined = false;
       SetFy();
@@ -51,36 +45,32 @@ namespace ComposAPI
     #endregion
 
     #region coa interop
-    internal static IReinforcementMaterial FromCoaString(List<string> parameters, Code code)
-    {
-      ReinforcementMaterial material = new ReinforcementMaterial();
+    internal static IReinforcementMaterial FromCoaString(List<string> parameters, Code code) {
+      var material = new ReinforcementMaterial();
 
-      if (parameters[2] == "USER_DEFINED")
-      {
+      if (parameters[2] == "USER_DEFINED") {
         material.UserDefined = true;
         material.Fy = CoaHelper.ConvertToStress(parameters[3], PressureUnit.NewtonPerSquareMeter);
       }
-      else
-      {
+      else {
         material.UserDefined = false;
         string gradePrefix;
-        switch (code)
-        {
-          case (Code.AS_NZS2327_2017):
+        switch (code) {
+          case Code.AS_NZS2327_2017:
             gradePrefix = "AS_";
             break;
 
-          case (Code.BS5950_3_1_1990_A1_2010):
-          case (Code.BS5950_3_1_1990_Superseded):
+          case Code.BS5950_3_1_1990_A1_2010:
+          case Code.BS5950_3_1_1990_Superseded:
             gradePrefix = "BS_";
             break;
 
-          case (Code.EN1994_1_1_2004):
+          case Code.EN1994_1_1_2004:
             gradePrefix = "EN_";
             break;
 
-          case (Code.HKSUOS_2005):
-          case (Code.HKSUOS_2011):
+          case Code.HKSUOS_2005:
+          case Code.HKSUOS_2011:
             gradePrefix = "HK_";
             break;
 
@@ -93,20 +83,18 @@ namespace ComposAPI
       return material;
     }
 
-    public string ToCoaString(string name)
-    {
+    public string ToCoaString(string name) {
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
 
-      List<string> parameters = new List<string>();
-      parameters.Add(CoaIdentifier.RebarMaterial);
-      parameters.Add(name);
-      if (UserDefined)
-      {
+      var parameters = new List<string> {
+        CoaIdentifier.RebarMaterial,
+        name
+      };
+      if (UserDefined) {
         parameters.Add("USER_DEFINED");
         parameters.Add(CoaHelper.FormatSignificantFigures(Fy.ToUnit(PressureUnit.NewtonPerSquareMeter).Value, 6));
       }
-      else
-      {
+      else {
         parameters.Add("STANDARD");
         parameters.Add(Grade.ToString().Remove(0, 3));
       }
@@ -116,10 +104,8 @@ namespace ComposAPI
     #endregion
 
     #region methods
-    internal void SetFy()
-    {
-      switch (Grade)
-      {
+    internal void SetFy() {
+      switch (Grade) {
         case RebarGrade.BS_250R:
         case RebarGrade.HK_250:
         case RebarGrade.AS_R250N:
@@ -143,15 +129,12 @@ namespace ComposAPI
           break;
       }
     }
-    public override string ToString()
-    {
-      if (UserDefined)
-      {
+    public override string ToString() {
+      if (UserDefined) {
         string str = Fy.ToUnit(ComposUnitsHelper.StressUnit).ToString("f0");
         return str.Replace(" ", string.Empty);
       }
-      else
-      {
+      else {
         return Grade.ToString().Remove(0, 3);
       }
     }

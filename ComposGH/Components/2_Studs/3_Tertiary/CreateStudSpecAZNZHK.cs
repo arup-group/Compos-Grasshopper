@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using ComposAPI;
+﻿using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -11,11 +9,11 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
+using System;
+using System.Collections.Generic;
 
-namespace ComposGH.Components
-{
-  public class CreateStudSpecAZNZHK : GH_OasysDropDownComponent
-  {
+namespace ComposGH.Components {
+  public class CreateStudSpecAZNZHK : GH_OasysDropDownComponent {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
@@ -28,13 +26,11 @@ namespace ComposGH.Components
           StudSpecificationGoo.Name.Replace(" ", string.Empty),
           "Create a " + StudSpecificationGoo.Description + " applicable for AS/NZ or HK codes, for a " + StudGoo.Description,
             Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat2())
-    { Hidden = true; } // sets the initial state of the component to hidden
+            Ribbon.SubCategoryName.Cat2()) { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
-    protected override void RegisterInputParams(GH_InputParamManager pManager)
-    {
+    protected override void RegisterInputParams(GH_InputParamManager pManager) {
       string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
 
       pManager.AddGenericParameter("No Stud Zone Start [" + unitAbbreviation + "]",
@@ -48,35 +44,34 @@ namespace ComposGH.Components
       pManager[1].Optional = true;
       pManager[2].Optional = true;
     }
-    protected override void RegisterOutputParams(GH_OutputParamManager pManager)
-    {
+    protected override void RegisterOutputParams(GH_OutputParamManager pManager) {
       pManager.AddParameter(new StudSpecificationParam(), StudSpecificationGoo.Name, StudSpecificationGoo.NickName, StudSpecificationGoo.Description + " applicable for AS/NZ or HK codes, for a " + StudGoo.Description, GH_ParamAccess.item);
     }
     #endregion
 
-    protected override void SolveInstance(IGH_DataAccess DA)
-    {
+    protected override void SolveInstance(IGH_DataAccess DA) {
       // get default length inputs used for all cases
       IQuantity noStudZoneStart = Length.Zero;
-      if (Params.Input[0].Sources.Count > 0)
+      if (Params.Input[0].Sources.Count > 0) {
         noStudZoneStart = Input.LengthOrRatio(this, DA, 0, LengthUnit, true);
+      }
+
       IQuantity noStudZoneEnd = Length.Zero;
-      if (Params.Input[1].Sources.Count > 0)
+      if (Params.Input[1].Sources.Count > 0) {
         noStudZoneEnd = Input.LengthOrRatio(this, DA, 1, LengthUnit, true);
+      }
 
       bool welded = true;
       DA.GetData(2, ref welded);
 
-      StudSpecification specOther = new StudSpecification(
-          noStudZoneStart, noStudZoneEnd, welded);
+      var specOther = new StudSpecification(noStudZoneStart, noStudZoneEnd, welded);
       Output.SetItem(this, DA, 0, new StudSpecificationGoo(specOther));
     }
 
     #region Custom UI
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
-    protected override void InitialiseDropdowns()
-    {
+    protected override void InitialiseDropdowns() {
       _spacerDescriptions = new List<string>(new string[] { "Unit" });
 
       _dropDownItems = new List<List<string>>();
@@ -88,26 +83,24 @@ namespace ComposGH.Components
 
       _isInitialised = true;
     }
-    public override void SetSelected(int i, int j)
-    {
+    public override void SetSelected(int i, int j) {
       // change selected item
       _selectedItems[i] = _dropDownItems[i][j];
-      if (LengthUnit.ToString() == _selectedItems[i])
+      if (LengthUnit.ToString() == _selectedItems[i]) {
         return;
+      }
 
       LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
       base.UpdateUI();
     }
 
-    protected override void UpdateUIFromSelectedItems()
-    {
+    protected override void UpdateUIFromSelectedItems() {
       LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[0]);
 
       base.UpdateUIFromSelectedItems();
     }
-    public override void VariableParameterMaintenance()
-    {
+    public override void VariableParameterMaintenance() {
       string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
       Params.Input[0].Name = "No Stud Zone Start [" + unitAbbreviation + "]";
       Params.Input[1].Name = "No Stud Zone End [" + unitAbbreviation + "]";

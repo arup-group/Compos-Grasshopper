@@ -26,7 +26,7 @@ namespace ComposGHTests.Stud
       StudSpecificationGoo output = (StudSpecificationGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(Length.Zero, output.Value.NoStudZoneStart);
       Assert.Equal(Length.Zero, output.Value.NoStudZoneEnd);
-      Assert.True(output.Value.EC4_Limit);
+      Assert.True(output.Value.Ec4Limit);
     }
 
     [Fact]
@@ -44,7 +44,7 @@ namespace ComposGHTests.Stud
       StudSpecificationGoo output = (StudSpecificationGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(250, output.Value.NoStudZoneStart.As(LengthUnit.Centimeter));
       Assert.Equal(15, output.Value.NoStudZoneEnd.As(RatioUnit.Percent));
-      Assert.False(output.Value.EC4_Limit);
+      Assert.False(output.Value.Ec4Limit);
     }
 
     [Fact]

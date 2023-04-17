@@ -1,17 +1,15 @@
-﻿using System;
-using System.Drawing;
-using Grasshopper.Kernel;
-using ComposAPI;
+﻿using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
+using Grasshopper.Kernel;
+using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using OasysGH;
+using System;
+using System.Drawing;
 
-namespace ComposGH.Components
-{
-  public class Utilisations : GH_OasysComponent, IGH_VariableParameterComponent
-  {
+namespace ComposGH.Components {
+  public class Utilisations : GH_OasysComponent, IGH_VariableParameterComponent {
     #region Name and Ribbon Layout
     // This region handles how the component in displayed on the ribbon
     // including name, exposure level and icon
@@ -23,17 +21,14 @@ namespace ComposGH.Components
           "Utilisations",
           "Get overall utilisation results for a " + MemberGoo.Description,
             Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat7())
-    { Hidden = true; } // sets the initial state of the component to hidden
+            Ribbon.SubCategoryName.Cat7()) { Hidden = true; } // sets the initial state of the component to hidden
     #endregion
 
     #region Input and output
-    protected override void RegisterInputParams(GH_InputParamManager pManager)
-    {
+    protected override void RegisterInputParams(GH_InputParamManager pManager) {
       pManager.AddParameter(new ComposMemberParameter());
     }
-    protected override void RegisterOutputParams(GH_OutputParamManager pManager)
-    {
+    protected override void RegisterOutputParams(GH_OutputParamManager pManager) {
       pManager.AddGenericParameter("Moment", "M", "Final moment utilisation factor.", GH_ParamAccess.item);
       pManager.AddGenericParameter("Shear", "V", "Final shear utilisation factor.", GH_ParamAccess.item);
       pManager.AddGenericParameter("Moment Construction", "Mc", "Construction stage moment utilisation factor.", GH_ParamAccess.item);
@@ -46,8 +41,7 @@ namespace ComposGH.Components
     }
     #endregion
 
-    protected override void SolveInstance(IGH_DataAccess DA)
-    {
+    protected override void SolveInstance(IGH_DataAccess DA) {
       IResult res = ((MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
       IUtilisation result = res.Utilisations;
 
@@ -55,111 +49,127 @@ namespace ComposGH.Components
 
       int i = 0;
       double output = result.Moment.DecimalFractions;
-      if (output > 1)
+      if (output > 1) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Moment utilisation is bigger than 100%");
-      if (output > maxUtil)
+      }
+      if (output > maxUtil) {
         maxUtil = output;
+      }
       DA.SetData(i++, output);
 
       output = result.Shear.DecimalFractions;
-      if (output > 1)
+      if (output > 1) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Shear utilisation is bigger than 100%");
-      if (output > maxUtil)
+      }
+      if (output > maxUtil) {
         maxUtil = output;
+      }
       DA.SetData(i++, output);
 
       output = result.MomentConstruction.DecimalFractions;
-      if (output > 1)
+      if (output > 1) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Moment Construction stage utilisation is bigger than 100%");
-      if (output > maxUtil)
+      }
+      if (output > maxUtil) {
         maxUtil = output;
+      }
       DA.SetData(i++, output);
 
       output = result.ShearConstruction.DecimalFractions;
-      if (output > 1)
+      if (output > 1) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Shaer Construction stage utilisation is bigger than 100%");
-      if (output > maxUtil)
+      }
+      if (output > maxUtil) {
         maxUtil = output;
+      }
       DA.SetData(i++, output);
 
       output = result.BucklingConstruction.DecimalFractions;
-      if (output > 1)
+      if (output > 1) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Buckling Construction stage utilisation is bigger than 100%");
-      if (output > maxUtil)
+      }
+      if (output > maxUtil) {
         maxUtil = output;
+      }
       DA.SetData(i++, output);
 
       output = result.DeflectionConstruction.DecimalFractions;
-      if (output > 1)
+      if (output > 1) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Deflection Construction stage utilisation is bigger than 100%");
-      if (output > maxUtil)
+      }
+      if (output > maxUtil) {
         maxUtil = output;
+      }
       DA.SetData(i++, output);
 
       output = result.Deflection.DecimalFractions;
-      if (output > 1)
+      if (output > 1) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Deflection utilisation is bigger than 100%");
-      if (output > maxUtil)
+      }
+      if (output > maxUtil) {
         maxUtil = output;
+      }
       DA.SetData(i++, output);
 
       output = result.TransverseShear.DecimalFractions;
-      if (output > 1)
+      if (output > 1) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Transverse Shear utilisation is bigger than 100%");
-      if (output > maxUtil)
+      }
+      if (output > maxUtil) {
         maxUtil = output;
+      }
       DA.SetData(i++, output);
 
       output = result.WebOpening.DecimalFractions;
-      if (output > 1)
+      if (output > 1) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Web Opening utilisation is bigger than 100%");
-      if (output > maxUtil)
+      }
+      if (output > maxUtil) {
         maxUtil = output;
+      }
       DA.SetData(i, output);
-      
+
       base.DestroyIconCache();
     }
 
-    double maxUtil = -1;
-    protected override Bitmap Icon
-    {
-      get
-      {
-        if (maxUtil < 0)
+    private double maxUtil = -1;
+    protected override Bitmap Icon {
+      get {
+        if (maxUtil < 0) {
           return Resources.Utilisation;
-        else if (maxUtil < 0.50)
+        }
+        else if (maxUtil < 0.50) {
           return Resources.UtilisationLow;
-        else if (maxUtil < 0.80)
+        }
+        else if (maxUtil < 0.80) {
           return Resources.UtilisationMedium;
-        else if (maxUtil <= 1)
+        }
+        else if (maxUtil <= 1) {
           return Resources.UtilisationHigh;
-        else
+        }
+        else {
           return Resources.UtilisationOver;
+        }
       }
     }
     #region IGH_VariableParameterComponent null implementation
-    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index)
-    {
+    bool IGH_VariableParameterComponent.CanInsertParameter(GH_ParameterSide side, int index) {
       return false;
     }
 
-    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index)
-    {
+    bool IGH_VariableParameterComponent.CanRemoveParameter(GH_ParameterSide side, int index) {
       return false;
     }
 
-    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index)
-    {
+    IGH_Param IGH_VariableParameterComponent.CreateParameter(GH_ParameterSide side, int index) {
       return null;
     }
 
-    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index)
-    {
+    bool IGH_VariableParameterComponent.DestroyParameter(GH_ParameterSide side, int index) {
       return false;
     }
 
-    void IGH_VariableParameterComponent.VariableParameterMaintenance()
-    {
+    void IGH_VariableParameterComponent.VariableParameterMaintenance() {
     }
     #endregion
   }

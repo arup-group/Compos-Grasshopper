@@ -1,13 +1,11 @@
-﻿using System;
+﻿using OasysUnits;
+using OasysUnits.Units;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using OasysUnits;
-using OasysUnits.Units;
 
-namespace ComposAPI
-{
-  internal enum TransverseRebarOption
-  {
+namespace ComposAPI {
+  internal enum TransverseRebarOption {
     REBAR_DIST_LEFT_SIDE, // Rebar starting position
     REBAR_DIST_RIGHT_SIDE, // Rebar ending position
     REBAR_DIAMETER, // Rebar diameter
@@ -25,19 +23,15 @@ namespace ComposAPI
     REBAR_CRITI_SHEAR_MAX_ALLOW, // Maximum allowable shear resistance
   }
 
-  public class TransverseRebarResult : SubResult, ITransverseRebarResult
-  {
-    public TransverseRebarResult(Member member, int numIntermediatePos) : base(member, numIntermediatePos)
-    {
+  public class TransverseRebarResult : SubResult, ITransverseRebarResult {
+    public TransverseRebarResult(Member member, int numIntermediatePos) : base(member, numIntermediatePos) {
     }
 
     /// <summary>
     /// Rebar starting position, measured from start
     /// </summary>
-    public List<Length> StartPosition
-    {
-      get
-      {
+    public List<Length> StartPosition {
+      get {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_DIST_LEFT_SIDE;
         return GetResults(resultType).Select(x => (Length)x).ToList();
       }
@@ -46,10 +40,8 @@ namespace ComposAPI
     /// <summary>
     /// Rebar ending position, measured from start
     /// </summary>
-    public List<Length> EndPosition
-    {
-      get
-      {
+    public List<Length> EndPosition {
+      get {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_DIST_RIGHT_SIDE;
         return GetResults(resultType).Select(x => (Length)x).ToList();
       }
@@ -58,10 +50,8 @@ namespace ComposAPI
     /// <summary>
     /// Rebar diameter
     /// </summary>
-    public List<Length> Diameter
-    {
-      get
-      {
+    public List<Length> Diameter {
+      get {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_DIAMETER;
         return GetResults(resultType).Select(x => (Length)x).ToList();
       }
@@ -70,10 +60,8 @@ namespace ComposAPI
     /// <summary>
     /// Rebar interval
     /// </summary>
-    public List<Length> Spacing
-    {
-      get
-      {
+    public List<Length> Spacing {
+      get {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_INTERVAL;
         return GetResults(resultType).Select(x => (Length)x).ToList();
       }
@@ -82,10 +70,8 @@ namespace ComposAPI
     /// <summary>
     /// Rebar cover
     /// </summary>
-    public List<Length> Cover
-    {
-      get
-      {
+    public List<Length> Cover {
+      get {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_COVER;
         return GetResults(resultType).Select(x => (Length)x).ToList();
       }
@@ -94,10 +80,8 @@ namespace ComposAPI
     /// <summary>
     /// Rebar area per meter
     /// </summary>
-    public List<Area> Area
-    {
-      get
-      {
+    public List<Area> Area {
+      get {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_AREA;
         return GetResults(resultType).Select(x => (Area)x).ToList();
       }
@@ -106,10 +90,8 @@ namespace ComposAPI
     /// <summary>
     /// Critical transverse shear position
     /// </summary>
-    public List<Length> Positions
-    {
-      get
-      {
+    public List<Length> Positions {
+      get {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_CRITI_DIST;
         return GetResults(resultType).Select(x => (Length)x).ToList();
       }
@@ -118,25 +100,25 @@ namespace ComposAPI
     /// <summary>
     /// Failure surface at <see cref="Positions"/>, being either a-a section, b-b section, or e-e section
     /// </summary>
-    public List<string> ControlSurface
-    {
-      get
-      {
+    public List<string> ControlSurface {
+      get {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_CRITI_SURFACE;
-        if (m_surface == null)
-        {
+        if (m_surface == null) {
           m_surface = new List<string>();
-          for (short pos = 0; pos < NumIntermediatePos; pos++)
-          {
+          for (short pos = 0; pos < NumIntermediatePos; pos++) {
             float value = Member.TranRebarProp(resultType, Convert.ToInt16(pos));
-            if (value == 1)
+            if (value == 1) {
               m_surface.Add("a-a section");
-            else if (value == 2)
+            }
+            else if (value == 2) {
               m_surface.Add("b-b section");
-            else if (value == 5)
+            }
+            else if (value == 5) {
               m_surface.Add("e-e section");
-            else
+            }
+            else {
               m_surface.Add("unknown");
+            }
           }
         }
         return m_surface;
@@ -147,10 +129,8 @@ namespace ComposAPI
     /// <summary>
     /// Effective perimeter at <see cref="Positions"/>
     /// </summary>
-    public List<Length> EffectiveShearPerimeter
-    {
-      get
-      {
+    public List<Length> EffectiveShearPerimeter {
+      get {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_CRITI_PERI;
         return GetResults(resultType).Select(x => (Length)x).ToList();
       }
@@ -159,10 +139,8 @@ namespace ComposAPI
     /// <summary>
     /// Actual transverse shear force at <see cref="Positions"/>
     /// </summary>
-    public List<Force> TransverseShearForce
-    {
-      get
-      {
+    public List<Force> TransverseShearForce {
+      get {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_CRITI_ACTUAL_SHEAR;
         return GetResults(resultType).Select(x => (Force)x).ToList();
       }
@@ -171,10 +149,8 @@ namespace ComposAPI
     /// <summary>
     /// Concrete shear resistance at <see cref="Positions"/>
     /// </summary>
-    public List<Force> ConcreteShearResistance
-    {
-      get
-      {
+    public List<Force> ConcreteShearResistance {
+      get {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_CRITI_SHEAR_CONC;
         return GetResults(resultType).Select(x => (Force)x).ToList();
       }
@@ -183,10 +159,8 @@ namespace ComposAPI
     /// <summary>
     /// Decking shear resistance at <see cref="Positions"/>
     /// </summary>
-    public List<Force> DeckingShearResistance
-    {
-      get
-      {
+    public List<Force> DeckingShearResistance {
+      get {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_CRITI_SHEAR_DECK;
         return GetResults(resultType).Select(x => (Force)x).ToList();
       }
@@ -195,10 +169,8 @@ namespace ComposAPI
     /// <summary>
     /// Mesh reinforcement bar shear resistance at <see cref="Positions"/>
     /// </summary>
-    public List<Force> MeshBarShearResistance
-    {
-      get
-      {
+    public List<Force> MeshBarShearResistance {
+      get {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_CRITI_SHEAR_MESH;
         return GetResults(resultType).Select(x => (Force)x).ToList();
       }
@@ -207,10 +179,8 @@ namespace ComposAPI
     /// <summary>
     /// Rebar shear resistance at <see cref="Positions"/>
     /// </summary>
-    public List<Force> RebarShearResistance
-    {
-      get
-      {
+    public List<Force> RebarShearResistance {
+      get {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_CRITI_SHEAR_REBAR;
         return GetResults(resultType).Select(x => (Force)x).ToList();
       }
@@ -219,17 +189,14 @@ namespace ComposAPI
     /// <summary>
     /// Combined shear resistance [Concrete] + [Decking] + [Mesh bar] + [Rebar] at <see cref="Positions"/>
     /// </summary>
-    public List<Force> TotalShearResistance
-    {
-      get
-      {
-        List<Force> total = new List<Force>();
+    public List<Force> TotalShearResistance {
+      get {
+        var total = new List<Force>();
         List<Force> concrete = ConcreteShearResistance;
         List<Force> decking = DeckingShearResistance;
         List<Force> mesh = MeshBarShearResistance;
         List<Force> rebar = RebarShearResistance;
-        for (int i = 0; i < Positions.Count; i++)
-        {
+        for (int i = 0; i < Positions.Count; i++) {
           Force tot = concrete[i] + decking[i] + mesh[i] + rebar[i];
           total.Add(tot);
         }
@@ -240,10 +207,8 @@ namespace ComposAPI
     /// <summary>
     /// Maximum allowable shear resistance at <see cref="Positions"/>
     /// </summary>
-    public List<Force> MaxAllowedShearResistance
-    {
-      get
-      {
+    public List<Force> MaxAllowedShearResistance {
+      get {
         TransverseRebarOption resultType = TransverseRebarOption.REBAR_CRITI_SHEAR_MAX_ALLOW;
         return GetResults(resultType).Select(x => (Force)x).ToList();
       }
@@ -251,17 +216,13 @@ namespace ComposAPI
 
     private Dictionary<TransverseRebarOption, List<IQuantity>> ResultsCache = new Dictionary<TransverseRebarOption, List<IQuantity>>();
 
-    private List<IQuantity> GetResults(TransverseRebarOption resultType)
-    {
-      if (!ResultsCache.ContainsKey(resultType))
-      {
-        List<IQuantity> results = new List<IQuantity>();
-        for (short pos = 0; pos < NumIntermediatePos; pos++)
-        {
+    private List<IQuantity> GetResults(TransverseRebarOption resultType) {
+      if (!ResultsCache.ContainsKey(resultType)) {
+        var results = new List<IQuantity>();
+        for (short pos = 0; pos < NumIntermediatePos; pos++) {
           float value = Member.TranRebarProp(resultType, Convert.ToInt16(pos));
 
-          switch (resultType)
-          {
+          switch (resultType) {
             case TransverseRebarOption.REBAR_DIST_LEFT_SIDE:
             case TransverseRebarOption.REBAR_DIST_RIGHT_SIDE:
             case TransverseRebarOption.REBAR_DIAMETER:
