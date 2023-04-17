@@ -129,10 +129,4 @@ namespace ComposAPI {
       return joined.Replace("  ", " ").TrimEnd(' ').TrimStart(' ');
     }
   }
-
-  public enum StudSpecType {
-    EC4,
-    BS5950,
-    Other
-  }
 }
