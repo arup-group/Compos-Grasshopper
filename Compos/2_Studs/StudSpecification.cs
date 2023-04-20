@@ -1,7 +1,7 @@
-﻿using OasysUnits;
-using OasysUnits.Units;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposAPI {
   /// <summary>
@@ -11,25 +11,29 @@ namespace ComposAPI {
     public bool EC4_Limit { get; set; }
     public bool NCCI { get; set; }
     public IQuantity NoStudZoneEnd {
-      get { return m_EndPosition; }
+      get => m_EndPosition;
       set {
-        if (value == null) return;
-        if (value.QuantityInfo.UnitType != typeof(LengthUnit)
-          & value.QuantityInfo.UnitType != typeof(RatioUnit))
+        if (value == null) {
+          return;
+        }
+        if (value.QuantityInfo.UnitType != typeof(LengthUnit) & value.QuantityInfo.UnitType != typeof(RatioUnit)) {
           throw new ArgumentException("Start Position must be either Length or Ratio");
-        else
+        } else {
           m_EndPosition = value;
+        }
       }
     }
     public IQuantity NoStudZoneStart {
-      get { return m_StartPosition; }
+      get => m_StartPosition;
       set {
-        if (value == null) return;
-        if (value.QuantityInfo.UnitType != typeof(LengthUnit)
-          & value.QuantityInfo.UnitType != typeof(RatioUnit))
+        if (value == null) {
+          return;
+        }
+        if (value.QuantityInfo.UnitType != typeof(LengthUnit) & value.QuantityInfo.UnitType != typeof(RatioUnit)) {
           throw new ArgumentException("Start Position must be either Length or Ratio");
-        else
+        } else {
           m_StartPosition = value;
+        }
       }
     }
     public Length ReinforcementPosition { get; set; }
@@ -91,25 +95,27 @@ namespace ComposAPI {
     public override string ToString() {
       string noStudStart = "";
       if (NoStudZoneStart.QuantityInfo.UnitType == typeof(LengthUnit)) {
-        Length l = (Length)NoStudZoneStart;
-        if (l != Length.Zero)
+        var l = (Length)NoStudZoneStart;
+        if (l != Length.Zero) {
           noStudStart = "NoStudStart:" + l.ToString("g2").Replace(" ", string.Empty);
-      }
-      else {
-        Ratio p = (Ratio)NoStudZoneStart;
-        if (p != Ratio.Zero)
+        }
+      } else {
+        var p = (Ratio)NoStudZoneStart;
+        if (p != Ratio.Zero) {
           noStudStart = "NoStudStart:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
+        }
       }
       string noStudEnd = "";
       if (NoStudZoneEnd.QuantityInfo.UnitType == typeof(LengthUnit)) {
-        Length l = (Length)NoStudZoneEnd;
-        if (l != Length.Zero)
+        var l = (Length)NoStudZoneEnd;
+        if (l != Length.Zero) {
           noStudEnd = "NoStudEnd:" + l.ToString("g2").Replace(" ", string.Empty);
-      }
-      else {
-        Ratio p = (Ratio)NoStudZoneEnd;
-        if (p != Ratio.Zero)
+        }
+      } else {
+        var p = (Ratio)NoStudZoneEnd;
+        if (p != Ratio.Zero) {
           noStudEnd = "NoStudEnd:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
+        }
       }
       string rebarPos = (ReinforcementPosition.Value == 0) ? "" : "RbP:" + ReinforcementPosition.ToString("g4").Replace(" ", string.Empty);
       string welding = (Welding == true) ? "Welded" : "";

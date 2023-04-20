@@ -265,7 +265,7 @@ namespace ComposAPI.Beams.Tests {
       Assert.Equal(expected_bottomFlangeThickness, beam.BottomFlangeThickness.Millimeters);
       Assert.Equal(expected_rootRadius, beam.RootRadius.Millimeters);
       Assert.Equal(expected_webThickness, beam.WebThickness.Millimeters);
-      Assert.Equal(expected_isCatalogue, beam.isCatalogue);
+      Assert.Equal(expected_isCatalogue, beam.IsCatalogue);
       Assert.Equal(expected_sectionDescription, beam.SectionDescription);
       Assert.Equal(expected_taperToNext, beam.TaperedToNext);
     }
@@ -293,7 +293,7 @@ namespace ComposAPI.Beams.Tests {
       beamSection.BottomFlangeThickness = new Length(bottomFlangeThickness, LengthUnit.Millimeter);
       beamSection.RootRadius = new Length(rootRadius, LengthUnit.Millimeter);
       beamSection.WebThickness = new Length(webThickness, LengthUnit.Millimeter);
-      beamSection.isCatalogue = isCatalogue;
+      beamSection.IsCatalogue = isCatalogue;
       beamSection.SectionDescription = sectionDescription;
       beamSection.TaperedToNext = taperToNext;
 

@@ -94,7 +94,7 @@ namespace ComposGH.Components {
       DA.SetData(i++, new GH_UnitNumber(profile.TopFlangeThickness.ToUnit(LengthUnit)));
       DA.SetData(i++, new GH_UnitNumber(profile.BottomFlangeThickness.ToUnit(LengthUnit)));
       DA.SetData(i++, new GH_UnitNumber(profile.RootRadius.ToUnit(LengthUnit)));
-      DA.SetData(i++, profile.isCatalogue);
+      DA.SetData(i++, profile.IsCatalogue);
     }
 
     protected override void UpdateUIFromSelectedItems() {

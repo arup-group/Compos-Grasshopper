@@ -42,8 +42,8 @@ namespace ComposGHTests.Beam {
       Assert.Equal(10, output.Value.TopStiffenerThickness.Millimeters);
       Assert.Equal(100, output.Value.BottomStiffenerWidth.Millimeters);
       Assert.Equal(10, output.Value.BottomStiffenerThickness.Millimeters);
-      Assert.True(output.Value.isBothSides);
-      Assert.False(output.Value.isNotch);
+      Assert.True(output.Value.IsBothSides);
+      Assert.False(output.Value.IsNotch);
     }
 
     [Fact]
@@ -59,8 +59,8 @@ namespace ComposGHTests.Beam {
       comp.Params.Input[0] = input;
 
       WebOpeningStiffenersGoo output = (WebOpeningStiffenersGoo)ComponentTestHelper.GetOutput(comp);
-      Assert.False(output.Value.isBothSides);
-      Assert.True(output.Value.isNotch);
+      Assert.False(output.Value.IsBothSides);
+      Assert.True(output.Value.IsNotch);
     }
 
     [Fact]

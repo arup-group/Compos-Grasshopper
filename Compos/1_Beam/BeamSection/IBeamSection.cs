@@ -10,7 +10,7 @@ namespace ComposAPI {
     Length BottomFlangeWidth { get; }
     // Dimensions
     Length Depth { get; }
-    bool isCatalogue { get; }
+    bool IsCatalogue { get; }
     Length RootRadius { get; }
     string SectionDescription { get; }
     IQuantity StartPosition { get; }

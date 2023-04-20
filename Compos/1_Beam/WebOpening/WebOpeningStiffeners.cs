@@ -9,8 +9,8 @@ namespace ComposAPI {
     public Length BottomStiffenerThickness { get; set; }
     public Length BottomStiffenerWidth { get; set; }
     public Length DistanceFrom { get; set; }
-    public bool isBothSides { get; set; }
-    public bool isNotch { get; set; }
+    public bool IsBothSides { get; set; }
+    public bool IsNotch { get; set; }
     public Length TopStiffenerThickness { get; set; }
     public Length TopStiffenerWidth { get; set; }
 
@@ -33,8 +33,8 @@ namespace ComposAPI {
       TopStiffenerThickness = topTHK;
       BottomStiffenerWidth = bottomWidth;
       BottomStiffenerThickness = bottomTHK;
-      isBothSides = bothSides;
-      isNotch = false;
+      IsBothSides = bothSides;
+      IsNotch = false;
     }
 
     /// <summary>
@@ -45,11 +45,11 @@ namespace ComposAPI {
     /// <param name="topTHK"></param>
     /// <param name="bothSides"></param>
     public WebOpeningStiffeners(Length distance, Length topWidth, Length topTHK, bool bothSides) {
-      isBothSides = bothSides;
+      IsBothSides = bothSides;
       DistanceFrom = distance;
       TopStiffenerWidth = topWidth;
       TopStiffenerThickness = topTHK;
-      isNotch = true;
+      IsNotch = true;
     }
 
     public override string ToString() {

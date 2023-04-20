@@ -1,11 +1,11 @@
-﻿using Compos_8_6;
-using ComposAPI.Helpers;
-using OasysUnits.Units;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Compos_8_6;
+using ComposAPI.Helpers;
+using OasysUnits.Units;
 
 namespace ComposAPI {
   public class ComposFile : IComposFile, IDisposable {
@@ -45,18 +45,20 @@ namespace ComposAPI {
       }
       ComposFile.ComposCOM = new Automation();
       int status = ComposFile.ComposCOM.Open(fileName);
-      if (status == 1)
+      if (status == 1) {
         return null;
+      }
 
       // save COM object to a temp coa file
       string tempCoa = Path.GetTempPath() + System.Guid.NewGuid().ToString() + ".coa";
       status = ComposFile.ComposCOM.SaveAs(tempCoa);
-      if (status == 1)
+      if (status == 1) {
         return null;
+      }
 
       // open temp coa file as ASCII string
       string coaString = File.ReadAllText(tempCoa, Encoding.Default);
-      ComposFile file = ComposFile.FromCoaString(coaString);
+      var file = ComposFile.FromCoaString(coaString);
 
       return file;
     }
@@ -130,9 +132,9 @@ namespace ComposAPI {
     /// <param name="option"></param>
     /// <param name="position">position number</param>
     /// <returns></returns>
-    public float MaxResult(string memberName, string option, short position) {
+    public float MaxResult(string memberName, string option) {
       Initialise();
-      return ComposFile.ComposCOM.MaxResult(memberName, option.ToString(), out position);
+      return ComposFile.ComposCOM.MaxResult(memberName, option.ToString(), out short position);
     }
 
     /// <summary>
@@ -142,9 +144,9 @@ namespace ComposAPI {
     /// <param name="option"></param>
     /// <param name="position">position number</param>
     /// <returns></returns>
-    public short MaxResultPosition(string memberName, string option, short position) {
+    public short MaxResultPosition(string memberName, string option) {
       Initialise();
-      ComposFile.ComposCOM.MaxResult(memberName, option.ToString(), out position);
+      ComposFile.ComposCOM.MaxResult(memberName, option.ToString(), out short position);
       return position;
     }
 
@@ -160,9 +162,9 @@ namespace ComposAPI {
     /// <param name="option"></param>
     /// <param name="position">position number</param>
     /// <returns></returns>
-    public float MinResult(string memberName, string option, short position) {
+    public float MinResult(string memberName, string option) {
       Initialise();
-      return ComposFile.ComposCOM.MinResult(memberName, option.ToString(), out position);
+      return ComposFile.ComposCOM.MinResult(memberName, option.ToString(), out short position);
     }
 
     /// <summary>
@@ -172,9 +174,9 @@ namespace ComposAPI {
     /// <param name="option"></param>
     /// <param name="position">position number</param>
     /// <returns></returns>
-    public short MinResultPosition(string memberName, string option, short position) {
+    public short MinResultPosition(string memberName, string option) {
       Initialise();
-      ComposFile.ComposCOM.MinResult(memberName, option.ToString(), out position);
+      ComposFile.ComposCOM.MinResult(memberName, option.ToString(), out short position);
       return position;
     }
 
@@ -230,8 +232,9 @@ namespace ComposAPI {
       Initialise();
 
       // save to .coa with COM object
-      if (!fileName.EndsWith(".coa"))
-        fileName = fileName + ".coa";
+      if (!fileName.EndsWith(".coa")) {
+        fileName += ".coa";
+      }
 
       int status = ComposFile.ComposCOM.SaveAs(fileName);
 
@@ -281,8 +284,9 @@ namespace ComposAPI {
       }
 
       coaString += "GROUP\tALL\tDefault group containing all the members\t1";
-      foreach (IMember member in Members)
+      foreach (IMember member in Members) {
         coaString += "\t" + member.Name;
+      }
       coaString += "\nEND\n";
 
       return coaString;
@@ -290,8 +294,9 @@ namespace ComposAPI {
 
     public override string ToString() {
       string str = "";
-      foreach (IMember member in Members)
+      foreach (IMember member in Members) {
         str += member.ToString() + " ";
+      }
       str.TrimEnd(' ');
       return str;
     }
@@ -304,8 +309,8 @@ namespace ComposAPI {
     }
 
     internal static ComposFile FromCoaString(string coaString) {
-      List<IMember> members = new List<IMember>();
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var members = new List<IMember>();
+      var units = ComposUnits.GetStandardUnits();
       List<string> lines = CoaHelper.SplitAndStripLines(coaString);
 
       // ### collect data from each line ###
@@ -327,7 +332,7 @@ namespace ComposAPI {
       }
 
       // ### Set data to members ###
-      foreach (Member member in members) {
+      foreach (Member member in members.Cast<Member>()) {
         string name = member.Name;
         member.DesignCode = DesignCode.FromCoaString(coaString, name, units);
         Code code = member.DesignCode.Code;
@@ -338,11 +343,13 @@ namespace ComposAPI {
         member.Slab = Slab.FromCoaString(coaString, name, code, units);
         member.Loads = Load.FromCoaString(coaString, name, units);
       }
-      if (members.Count < 0)
+      if (members.Count < 0) {
         return null;
+      }
 
-      ComposFile file = new ComposFile(members);
-      file.Units = units;
+      var file = new ComposFile(members) {
+        Units = units
+      };
 
       return file;
     }
@@ -358,9 +365,10 @@ namespace ComposAPI {
       ComposFile.Counter++;
 
       short status = 0;
-      foreach (Member member in Members) {
-        if (Analyse(member.Name) == 1)
+      foreach (Member member in Members.Cast<Member>()) {
+        if (Analyse(member.Name) == 1) {
           status = 1;
+        }
       }
       return status;
     }
@@ -375,9 +383,10 @@ namespace ComposAPI {
     internal short Design() {
       Initialise();
       short status = 0;
-      foreach (Member member in Members) {
-        if (Design(member.Name) == 1)
+      foreach (Member member in Members.Cast<Member>()) {
+        if (Design(member.Name) == 1) {
           status = 1;
+        }
       }
       return status;
     }
@@ -415,8 +424,9 @@ namespace ComposAPI {
     /// </returns>
     private short Initialise(bool checkGUID = true) {
       if (checkGUID) {
-        if (Guid == ComposFile.CurrentGuid)
+        if (Guid == ComposFile.CurrentGuid) {
           return -1;
+        }
       }
 
       short status;

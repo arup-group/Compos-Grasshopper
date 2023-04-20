@@ -55,8 +55,8 @@ namespace ComposAPI.Beams.Tests {
       Assert.Equal(12, duplicate.OpeningStiffeners.TopStiffenerThickness.Millimeters);
       Assert.Equal(125, duplicate.OpeningStiffeners.BottomStiffenerWidth.Millimeters);
       Assert.Equal(15, duplicate.OpeningStiffeners.BottomStiffenerThickness.Millimeters);
-      Assert.False(duplicate.OpeningStiffeners.isBothSides);
-      Assert.False(duplicate.OpeningStiffeners.isNotch);
+      Assert.False(duplicate.OpeningStiffeners.IsBothSides);
+      Assert.False(duplicate.OpeningStiffeners.IsNotch);
 
       // 3 make some changes to duplicate
       duplicate.WebOpeningType = OpeningType.Circular;
@@ -78,8 +78,8 @@ namespace ComposAPI.Beams.Tests {
       Assert.Equal(10, duplicate.OpeningStiffeners.TopStiffenerThickness.Millimeters);
       Assert.Equal(135, duplicate.OpeningStiffeners.BottomStiffenerWidth.Millimeters);
       Assert.Equal(7, duplicate.OpeningStiffeners.BottomStiffenerThickness.Millimeters);
-      Assert.True(duplicate.OpeningStiffeners.isBothSides);
-      Assert.False(duplicate.OpeningStiffeners.isNotch);
+      Assert.True(duplicate.OpeningStiffeners.IsBothSides);
+      Assert.False(duplicate.OpeningStiffeners.IsNotch);
 
       // 5 check that original has not been changed
       Assert.Equal(OpeningType.Rectangular, original.WebOpeningType);
@@ -94,8 +94,8 @@ namespace ComposAPI.Beams.Tests {
       Assert.Equal(12, original.OpeningStiffeners.TopStiffenerThickness.Millimeters);
       Assert.Equal(125, original.OpeningStiffeners.BottomStiffenerWidth.Millimeters);
       Assert.Equal(15, original.OpeningStiffeners.BottomStiffenerThickness.Millimeters);
-      Assert.False(original.OpeningStiffeners.isBothSides);
-      Assert.False(original.OpeningStiffeners.isNotch);
+      Assert.False(original.OpeningStiffeners.IsBothSides);
+      Assert.False(original.OpeningStiffeners.IsNotch);
     }
 
     [Fact]
@@ -117,8 +117,8 @@ namespace ComposAPI.Beams.Tests {
       Assert.Equal(5, duplicate.OpeningStiffeners.TopStiffenerThickness.Millimeters);
       Assert.Equal(98, duplicate.OpeningStiffeners.BottomStiffenerWidth.Millimeters);
       Assert.Equal(12, duplicate.OpeningStiffeners.BottomStiffenerThickness.Millimeters);
-      Assert.True(duplicate.OpeningStiffeners.isBothSides);
-      Assert.False(duplicate.OpeningStiffeners.isNotch);
+      Assert.True(duplicate.OpeningStiffeners.IsBothSides);
+      Assert.False(duplicate.OpeningStiffeners.IsNotch);
 
       // 3 make some changes to duplicate
       duplicate.WebOpeningType = OpeningType.Start_notch;
@@ -139,8 +139,8 @@ namespace ComposAPI.Beams.Tests {
       Assert.Equal(10, duplicate.OpeningStiffeners.TopStiffenerThickness.Millimeters);
       Assert.Equal(Length.Zero, duplicate.OpeningStiffeners.BottomStiffenerWidth);
       Assert.Equal(Length.Zero, duplicate.OpeningStiffeners.BottomStiffenerThickness);
-      Assert.False(duplicate.OpeningStiffeners.isBothSides);
-      Assert.True(duplicate.OpeningStiffeners.isNotch);
+      Assert.False(duplicate.OpeningStiffeners.IsBothSides);
+      Assert.True(duplicate.OpeningStiffeners.IsNotch);
 
       // 5 check that original has not been changed
       Assert.Equal(OpeningType.Circular, original.WebOpeningType);
@@ -155,8 +155,8 @@ namespace ComposAPI.Beams.Tests {
       Assert.Equal(5, original.OpeningStiffeners.TopStiffenerThickness.Millimeters);
       Assert.Equal(98, original.OpeningStiffeners.BottomStiffenerWidth.Millimeters);
       Assert.Equal(12, original.OpeningStiffeners.BottomStiffenerThickness.Millimeters);
-      Assert.True(original.OpeningStiffeners.isBothSides);
-      Assert.False(original.OpeningStiffeners.isNotch);
+      Assert.True(original.OpeningStiffeners.IsBothSides);
+      Assert.False(original.OpeningStiffeners.IsNotch);
     }
 
     [Theory]
@@ -252,12 +252,12 @@ namespace ComposAPI.Beams.Tests {
 
       Assert.NotNull(webOpening.OpeningStiffeners);
 
-      Assert.Equal(expected_bothSides, webOpening.OpeningStiffeners.isBothSides);
+      Assert.Equal(expected_bothSides, webOpening.OpeningStiffeners.IsBothSides);
       Assert.Equal(expected_distFrom, webOpening.OpeningStiffeners.DistanceFrom.As(units.Section));
       Assert.Equal(expected_topWidth, webOpening.OpeningStiffeners.TopStiffenerWidth.As(units.Section));
       Assert.Equal(expected_topThk, webOpening.OpeningStiffeners.TopStiffenerThickness.As(units.Section));
 
-      if (!webOpening.OpeningStiffeners.isNotch) {
+      if (!webOpening.OpeningStiffeners.IsNotch) {
         Assert.Equal(expected_bottomWidth, webOpening.OpeningStiffeners.BottomStiffenerWidth.As(units.Section));
         Assert.Equal(expected_bottomThk, webOpening.OpeningStiffeners.BottomStiffenerThickness.As(units.Section));
       }

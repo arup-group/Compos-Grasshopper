@@ -8,8 +8,8 @@ namespace ComposAPI {
     Length BottomStiffenerThickness { get; }
     Length BottomStiffenerWidth { get; }
     Length DistanceFrom { get; }
-    bool isBothSides { get; }
-    bool isNotch { get; }
+    bool IsBothSides { get; }
+    bool IsNotch { get; }
     Length TopStiffenerThickness { get; }
     Length TopStiffenerWidth { get; }
   }

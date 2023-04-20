@@ -1,10 +1,10 @@
-﻿using ComposAPI.Helpers;
-using OasysUnits;
-using OasysUnits.Units;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using ComposAPI.Helpers;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposAPI {
   /// <summary>
@@ -16,32 +16,36 @@ namespace ComposAPI {
     public Length BottomFlangeWidth { get; set; }
     // Dimensions
     public Length Depth { get; set; }
-    public bool isCatalogue { get; set; }
+    public bool IsCatalogue { get; set; }
     public Length RootRadius { get; set; } = Length.Zero;
     public string SectionDescription { get; set; }
     public IQuantity StartPosition {
-      get { return m_StartPosition; }
+      get => m_StartPosition;
       set {
-        if (value == null) return;
-        if (value.QuantityInfo.UnitType != typeof(LengthUnit)
-          & value.QuantityInfo.UnitType != typeof(RatioUnit))
+        if (value == null) {
+          return;
+        }
+        if (value.QuantityInfo.UnitType != typeof(LengthUnit) & value.QuantityInfo.UnitType != typeof(RatioUnit)) {
           throw new ArgumentException("Start Position must be either Length or Ratio");
-        else
+        } else {
           m_StartPosition = value;
+        }
       }
     }
     // Setting out
     public bool TaperedToNext //	tapered or uniform to the next section
     {
       get {
-        if (isCatalogue)
+        if (IsCatalogue) {
           return false;
-        else
+        } else {
           return m_taper;
+        }
       }
       set {
-        if (!isCatalogue)
+        if (!IsCatalogue) {
           m_taper = value;
+        }
       }
     }
     public Length TopFlangeThickness { get; set; }
@@ -71,13 +75,12 @@ namespace ComposAPI {
       WebThickness = webThickness;
       TopFlangeThickness = topFlangeThickness;
       BottomFlangeThickness = bottomFlangeThickness;
-      isCatalogue = false;
+      IsCatalogue = false;
       TaperedToNext = taperToNext;
 
       LengthUnit unit = Depth.Unit;
       string u = " ";
-      try { u = unitString(unit); }
-      catch (Exception) { unit = LengthUnit.Millimeter; }
+      try { u = UnitString(unit); } catch (Exception) { unit = LengthUnit.Millimeter; }
 
       string dims = string.Join(" ",
         Depth.As(unit).ToString(),
@@ -104,13 +107,12 @@ namespace ComposAPI {
       WebThickness = webThickness;
       TopFlangeThickness = flangeThickness;
       BottomFlangeThickness = TopFlangeThickness;
-      isCatalogue = false;
+      IsCatalogue = false;
       m_taper = taperToNext;
 
       LengthUnit unit = Depth.Unit;
       string u = " ";
-      try { u = unitString(unit); }
-      catch (Exception) { unit = LengthUnit.Millimeter; }
+      try { u = UnitString(unit); } catch (Exception) { unit = LengthUnit.Millimeter; }
 
       string dims = string.Join(" ",
         Depth.As(unit).ToString(),
@@ -126,19 +128,20 @@ namespace ComposAPI {
     }
 
     public string ToCoaString(string name, int num, int index, ComposUnits units) {
-      List<string> parameters = new List<string>();
-      parameters.Add(CoaIdentifier.BeamSectionAtX);
-      parameters.Add(name);
-      parameters.Add(Convert.ToString(num));
-      parameters.Add(Convert.ToString(index));
+      var parameters = new List<string> {
+        CoaIdentifier.BeamSectionAtX,
+        name,
+        Convert.ToString(num),
+        Convert.ToString(index)
+      };
       if (StartPosition.QuantityInfo.UnitType == typeof(RatioUnit)) {
         // start position in percent
-        Ratio p = (Ratio)StartPosition;
+        var p = (Ratio)StartPosition;
         // percentage in coa string for beam section is a negative decimal fraction!
         parameters.Add(CoaHelper.FormatSignificantFigures(p.As(RatioUnit.DecimalFraction) * -1, p.DecimalFractions == 1 ? 5 : 6));
-      }
-      else
+      } else {
         parameters.Add(CoaHelper.FormatSignificantFigures(StartPosition.ToUnit(units.Length).Value, 6));
+      }
       parameters.Add(SectionDescription);
       CoaHelper.AddParameter(parameters, "TAPERED", TaperedToNext);
 
@@ -150,24 +153,26 @@ namespace ComposAPI {
     public override string ToString() {
       string start = "";
       if (StartPosition.QuantityInfo.UnitType == typeof(LengthUnit)) {
-        Length l = (Length)StartPosition;
-        if (l != Length.Zero)
+        var l = (Length)StartPosition;
+        if (l != Length.Zero) {
           start = ", Px:" + l.ToString("g2").Replace(" ", string.Empty);
-      }
-      else {
-        Ratio p = (Ratio)StartPosition;
-        if (p != Ratio.Zero)
+        }
+      } else {
+        var p = (Ratio)StartPosition;
+        if (p != Ratio.Zero) {
           start = ", Px:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
+        }
       }
 
       string tapered = "";
-      if (TaperedToNext)
+      if (TaperedToNext) {
         tapered = ", Tapered";
+      }
 
       string sect = "";
       if (SectionDescription != null) {
         sect = SectionDescription;
-        if (isCatalogue) {
+        if (IsCatalogue) {
           // remove the catalogue date if exist:
           sect = sect.Split(' ')[0] + " " + sect.Split(' ')[1] + " " + sect.Split(' ')[2];
         }
@@ -177,24 +182,27 @@ namespace ComposAPI {
     }
 
     internal static IBeamSection FromCoaString(List<string> parameters, ComposUnits units) {
-      BeamSection section = new BeamSection();
+      var section = new BeamSection();
       //BEAM_SECTION_AT_X	MEMBER-1	3	1	0.000000	STD GI 200 189.2 222.25 8.5 12.7 12.7	TAPERED_YES
       //BEAM_SECTION_AT_X MEMBER-1 3 2 6.00000 STD GI 730 189.2 222.25 8.5 12.7 12.7 TAPERED_YES
       //BEAM_SECTION_AT_X MEMBER-1 3 3 12.0000 STD GI 200 189.2 222.25 8.5 12.7 12.7 TAPERED_YES
 
       double startPosition = CoaHelper.ConvertToDouble(parameters[4]);
-      if (startPosition < 0)
+      if (startPosition < 0) {
+
         // start position in percent
         section.StartPosition = new Ratio(Math.Abs(startPosition), RatioUnit.DecimalFraction).ToUnit(RatioUnit.Percent);
-      else
+      } else {
         section.StartPosition = CoaHelper.ConvertToLength(parameters[4], units.Length);
+      }
 
       section.SetFromProfileString(parameters[5]);
       // using StartsWith as string is the last parameter and can contain new line character: "TAPERED_YES\n"
-      if (parameters[6].StartsWith("TAPERED_YES"))
+      if (parameters[6].StartsWith("TAPERED_YES")) {
         section.TaperedToNext = true;
-      else
+      } else {
         section.TaperedToNext = false;
+      }
 
       return section;
     }
@@ -212,7 +220,7 @@ namespace ComposAPI {
 
         string[] type = parts[1].Split('(', ')');
         if (type.Length > 1) {
-          var parser = UnitParser.Default;
+          UnitParser parser = UnitParser.Default;
           unit = parser.Parse<LengthUnit>(type[1]);
         }
         try {
@@ -223,13 +231,11 @@ namespace ComposAPI {
           TopFlangeThickness = new Length(double.Parse(parts[5], CultureInfo.InvariantCulture), unit);
           BottomFlangeThickness = TopFlangeThickness;
           SectionDescription = profile;
-          isCatalogue = false;
-        }
-        catch (Exception) {
+          IsCatalogue = false;
+        } catch (Exception) {
           throw new Exception("Unrecognisable elements in profile string.");
         }
-      }
-      else if (profile.StartsWith("STD GI")) {
+      } else if (profile.StartsWith("STD GI")) {
         // example: STD GI 400. 300. 250. 12. 25. 20.
         // example: STD GI(cm) 15. 15. 12. 3. 1. 2.
 
@@ -239,7 +245,7 @@ namespace ComposAPI {
 
         string[] type = parts[1].Split('(', ')');
         if (type.Length > 1) {
-          var parser = UnitParser.Default;
+          UnitParser parser = UnitParser.Default;
           unit = parser.Parse<LengthUnit>(type[1]);
         }
         try {
@@ -250,13 +256,11 @@ namespace ComposAPI {
           TopFlangeThickness = new Length(double.Parse(parts[6], CultureInfo.InvariantCulture), unit);
           BottomFlangeThickness = new Length(double.Parse(parts[7], CultureInfo.InvariantCulture), unit);
           SectionDescription = profile;
-          isCatalogue = false;
-        }
-        catch (Exception) {
+          IsCatalogue = false;
+        } catch (Exception) {
           throw new Exception("Unrecognisable elements in profile string.");
         }
-      }
-      else if (profile.StartsWith("CAT")) {
+      } else if (profile.StartsWith("CAT")) {
         string prof = profile.Split(' ')[2];
 
         List<double> sqlValues = SqlReader.Instance.GetCatalogueProfileValues(Path.Combine(ComposIO.InstallPath, "sectlib.db3"), prof);
@@ -270,14 +274,14 @@ namespace ComposAPI {
         BottomFlangeThickness = new Length(sqlValues[3], unit);
         RootRadius = new Length(sqlValues[4], unit);
         SectionDescription = profile;
-        isCatalogue = true;
+        IsCatalogue = true;
         m_taper = false;
-      }
-      else
+      } else {
         throw new ArgumentException("Unrecognisable profile type. String must start with 'STD I', 'STD GI' or 'CAT'.");
+      }
     }
 
-    private string unitString(LengthUnit unit) {
+    private string UnitString(LengthUnit unit) {
       switch (unit) {
         case LengthUnit.Millimeter:
           return " ";

@@ -1,8 +1,8 @@
-﻿using ComposAPI.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using ComposAPI.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
 
 namespace ComposAPI {
   public class ASNZSteelMaterial : SteelMaterial {
@@ -17,16 +17,18 @@ namespace ComposAPI {
     }
 
     public override string ToCoaString(string name, Code code, ComposUnits units) {
-      List<string> steelParameters = new List<string>();
-      steelParameters.Add("BEAM_STEEL_MATERIAL_STD");
-      steelParameters.Add(name);
-      steelParameters.Add(ToString());
+      var steelParameters = new List<string> {
+        "BEAM_STEEL_MATERIAL_STD",
+        name,
+        ToString()
+      };
       string coaString = CoaHelper.CreateString(steelParameters);
 
-      List<string> weldingParameters = new List<string>();
-      weldingParameters.Add("BEAM_WELDING_MATERIAL");
-      weldingParameters.Add(name);
-      weldingParameters.Add(WeldGrade.ToString().Replace('_', ' '));
+      var weldingParameters = new List<string> {
+        "BEAM_WELDING_MATERIAL",
+        name,
+        WeldGrade.ToString().Replace('_', ' ')
+      };
       coaString += CoaHelper.CreateString(weldingParameters);
 
       return coaString;

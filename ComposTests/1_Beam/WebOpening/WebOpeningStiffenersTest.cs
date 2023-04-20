@@ -39,8 +39,8 @@ namespace ComposAPI.Beams.Tests {
       Assert.Equal(topTHK, webOpeningStiffeners.TopStiffenerThickness.Millimeters);
       Assert.Equal(Length.Zero, webOpeningStiffeners.BottomStiffenerWidth);
       Assert.Equal(Length.Zero, webOpeningStiffeners.BottomStiffenerThickness);
-      Assert.Equal(bothSides, webOpeningStiffeners.isBothSides);
-      Assert.True(webOpeningStiffeners.isNotch);
+      Assert.Equal(bothSides, webOpeningStiffeners.IsBothSides);
+      Assert.True(webOpeningStiffeners.IsNotch);
 
       // (optionally return object for other tests)
       return webOpeningStiffeners;
@@ -66,8 +66,8 @@ namespace ComposAPI.Beams.Tests {
       Assert.Equal(topTHK, webOpeningStiffeners.TopStiffenerThickness.Millimeters);
       Assert.Equal(bottomWidth, webOpeningStiffeners.BottomStiffenerWidth.Millimeters);
       Assert.Equal(bottomTHK, webOpeningStiffeners.BottomStiffenerThickness.Millimeters);
-      Assert.Equal(bothSides, webOpeningStiffeners.isBothSides);
-      Assert.False(webOpeningStiffeners.isNotch);
+      Assert.Equal(bothSides, webOpeningStiffeners.IsBothSides);
+      Assert.False(webOpeningStiffeners.IsNotch);
 
       // (optionally return object for other tests)
       return webOpeningStiffeners;
@@ -87,8 +87,8 @@ namespace ComposAPI.Beams.Tests {
       Assert.Equal(12, duplicate.TopStiffenerThickness.Millimeters);
       Assert.Equal(125, duplicate.BottomStiffenerWidth.Millimeters);
       Assert.Equal(15, duplicate.BottomStiffenerThickness.Millimeters);
-      Assert.False(duplicate.isBothSides);
-      Assert.False(duplicate.isNotch);
+      Assert.False(duplicate.IsBothSides);
+      Assert.False(duplicate.IsNotch);
 
       // 3 make some changes to duplicate
       duplicate.DistanceFrom = new Length(26, unit);
@@ -96,7 +96,7 @@ namespace ComposAPI.Beams.Tests {
       duplicate.TopStiffenerThickness = new Length(13, unit);
       duplicate.BottomStiffenerWidth = new Length(126, unit);
       duplicate.BottomStiffenerThickness = new Length(16, unit);
-      duplicate.isBothSides = true;
+      duplicate.IsBothSides = true;
 
       // 4 check that duplicate has set changes
       Assert.Equal(26, duplicate.DistanceFrom.Millimeters);
@@ -104,8 +104,8 @@ namespace ComposAPI.Beams.Tests {
       Assert.Equal(13, duplicate.TopStiffenerThickness.Millimeters);
       Assert.Equal(126, duplicate.BottomStiffenerWidth.Millimeters);
       Assert.Equal(16, duplicate.BottomStiffenerThickness.Millimeters);
-      Assert.True(duplicate.isBothSides);
-      Assert.False(duplicate.isNotch);
+      Assert.True(duplicate.IsBothSides);
+      Assert.False(duplicate.IsNotch);
 
       // 5 check that original has not been changed
       Assert.Equal(25, original.DistanceFrom.Millimeters);
@@ -113,8 +113,8 @@ namespace ComposAPI.Beams.Tests {
       Assert.Equal(12, original.TopStiffenerThickness.Millimeters);
       Assert.Equal(125, original.BottomStiffenerWidth.Millimeters);
       Assert.Equal(15, original.BottomStiffenerThickness.Millimeters);
-      Assert.False(original.isBothSides);
-      Assert.False(original.isNotch);
+      Assert.False(original.IsBothSides);
+      Assert.False(original.IsNotch);
     }
 
     [Fact]
@@ -131,14 +131,14 @@ namespace ComposAPI.Beams.Tests {
       Assert.Equal(14, duplicate.TopStiffenerThickness.Millimeters);
       Assert.Equal(Length.Zero, duplicate.BottomStiffenerWidth);
       Assert.Equal(Length.Zero, duplicate.BottomStiffenerThickness);
-      Assert.True(duplicate.isBothSides);
-      Assert.True(duplicate.isNotch);
+      Assert.True(duplicate.IsBothSides);
+      Assert.True(duplicate.IsNotch);
 
       // 3 make some changes to duplicate
       duplicate.DistanceFrom = new Length(28, unit);
       duplicate.TopStiffenerWidth = new Length(78, unit);
       duplicate.TopStiffenerThickness = new Length(15, unit);
-      duplicate.isBothSides = false;
+      duplicate.IsBothSides = false;
 
       // 4 check that duplicate has set changes
       Assert.Equal(28, duplicate.DistanceFrom.Millimeters);
@@ -146,8 +146,8 @@ namespace ComposAPI.Beams.Tests {
       Assert.Equal(15, duplicate.TopStiffenerThickness.Millimeters);
       Assert.Equal(Length.Zero, duplicate.BottomStiffenerWidth);
       Assert.Equal(Length.Zero, duplicate.BottomStiffenerThickness);
-      Assert.False(duplicate.isBothSides);
-      Assert.True(duplicate.isNotch);
+      Assert.False(duplicate.IsBothSides);
+      Assert.True(duplicate.IsNotch);
 
       // 5 check that original has not been changed
       Assert.Equal(27, original.DistanceFrom.Millimeters);
@@ -155,8 +155,8 @@ namespace ComposAPI.Beams.Tests {
       Assert.Equal(14, original.TopStiffenerThickness.Millimeters);
       Assert.Equal(Length.Zero, original.BottomStiffenerWidth);
       Assert.Equal(Length.Zero, original.BottomStiffenerThickness);
-      Assert.True(original.isBothSides);
-      Assert.True(original.isNotch);
+      Assert.True(original.IsBothSides);
+      Assert.True(original.IsNotch);
     }
   }
 }

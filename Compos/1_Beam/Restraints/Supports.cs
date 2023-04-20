@@ -1,6 +1,6 @@
-﻿using OasysUnits;
+﻿using System.Collections.Generic;
+using OasysUnits;
 using OasysUnits.Units;
-using System.Collections.Generic;
 
 namespace ComposAPI {
   public enum IntermediateRestraint {
@@ -19,14 +19,13 @@ namespace ComposAPI {
     public IList<IQuantity> CustomIntermediateRestraintPositions { get; set; }
     public IntermediateRestraint IntermediateRestraintPositions {
       get {
-        if (CustomIntermediateRestraintPositions != null)
+        if (CustomIntermediateRestraintPositions != null) {
           return IntermediateRestraint.Custom;
-        else
+        } else {
           return m_intermediateRestraints;
+        }
       }
-      set {
-        m_intermediateRestraints = value;
-      }
+      set => m_intermediateRestraints = value;
     }
     public bool SecondaryMemberAsIntermediateRestraint { get; set; } = true;
     private IntermediateRestraint m_intermediateRestraints;
@@ -49,19 +48,18 @@ namespace ComposAPI {
     }
 
     public override string ToString() {
-      string sec = (SecondaryMemberAsIntermediateRestraint) ? ", SMIR" : "";
-      string flange = (BothFlangesFreeToRotateOnPlanAtEnds) ? ", FFRE" : "";
+      string sec = SecondaryMemberAsIntermediateRestraint ? ", SMIR" : "";
+      string flange = BothFlangesFreeToRotateOnPlanAtEnds ? ", FFRE" : "";
       string res = IntermediateRestraintPositions.ToString().Replace("__", "-").Replace("_", " ");
       if (CustomIntermediateRestraintPositions != null) {
         res = "Custom:{";
         foreach (IQuantity pos in CustomIntermediateRestraintPositions) {
           res += " ";
           if (pos.QuantityInfo.UnitType == typeof(LengthUnit)) {
-            Length l = (Length)pos;
+            var l = (Length)pos;
             res += l.ToString("g2").Replace(" ", string.Empty);
-          }
-          else {
-            Ratio p = (Ratio)pos;
+          } else {
+            var p = (Ratio)pos;
             res += p.ToString("g2").Replace(" ", string.Empty);
           }
           res += ",";

@@ -196,7 +196,7 @@ namespace ComposAPI {
       string h = Height.ToString("g5");
       string f = (Fu.Value == 0) ? CharacterStrength.ToString("g5") : Fu.ToString("g5");
 
-      return "Ø" + dia.Replace(" ", string.Empty) + "/" + h.Replace(" ", string.Empty) + ((IsStandard) ? "" : ", f:" + f.Replace(" ", string.Empty));
+      return "Ø" + dia.Replace(" ", string.Empty) + "/" + h.Replace(" ", string.Empty) + (IsStandard ? "" : ", f:" + f.Replace(" ", string.Empty));
     }
   }
 }

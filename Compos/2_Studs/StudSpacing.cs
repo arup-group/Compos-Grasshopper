@@ -1,7 +1,7 @@
-﻿using ComposAPI.Helpers;
-using OasysUnits;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using ComposAPI.Helpers;
+using OasysUnits;
 
 namespace ComposAPI {
   /// <summary>
@@ -19,11 +19,13 @@ namespace ComposAPI {
 
     public StudSpacing(Length distanceFromStart, int numberOfRows, int numberOfLines, Length spacing) {
       DistanceFromStart = distanceFromStart;
-      if (numberOfRows < 1)
+      if (numberOfRows < 1) {
         throw new ArgumentException("Number of rows must be bigger or equal to 1");
+      }
       NumberOfRows = numberOfRows;
-      if (numberOfLines < 1)
+      if (numberOfLines < 1) {
         throw new ArgumentException("Number of lines must be bigger or equal to 1");
+      }
       NumberOfLines = numberOfLines;
       Spacing = spacing;
     }
