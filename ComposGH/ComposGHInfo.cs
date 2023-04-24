@@ -1,11 +1,11 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Drawing;
+using System.IO;
+using ComposAPI;
 using ComposGH.UI;
 using Grasshopper.Kernel;
 using OasysGH;
 using OasysGH.Helpers;
-using System;
-using System.Drawing;
-using System.IO;
 
 namespace ComposGH {
   public class AddReferencePriority : GH_AssemblyPriority {
@@ -14,14 +14,15 @@ namespace ComposGH {
     public static string PluginPath;
 
     public override GH_LoadingInstruction PriorityLoad() {
-      if (!TryFindPluginPath("Compos.gha"))
+      if (!TryFindPluginPath("Compos.gha")) {
         return GH_LoadingInstruction.Abort;
+      }
 
       // ### Set system environment variables to allow user rights to read below dlls ###
       const string name = "PATH";
       string pathvar = System.Environment.GetEnvironmentVariable(name);
-      var value = InstallPath + ";" + pathvar;
-      var target = EnvironmentVariableTarget.Process;
+      string value = InstallPath + ";" + pathvar;
+      EnvironmentVariableTarget target = EnvironmentVariableTarget.Process;
       System.Environment.SetEnvironmentVariable(name, value, target);
 
       // ### Queue up Main menu loader ###
@@ -61,8 +62,9 @@ namespace ComposGH {
           "Libraries");
 
         string[] files = Directory.GetFiles(sDir, keyword, SearchOption.AllDirectories);
-        if (files.Length > 0)
+        if (files.Length > 0) {
           path = files[0].Replace(keyword, string.Empty);
+        }
 
         if (!File.Exists(Path.Combine(path, keyword))) // if no plugin file is found there continue search
         {
@@ -80,11 +82,12 @@ namespace ComposGH {
             + Environment.NewLine + "The plugin cannot be loaded."
             + Environment.NewLine + "Folders (including subfolder) that was searched:"
             + Environment.NewLine + sDir;
-          foreach (GH_AssemblyFolderInfo pluginFolder in Grasshopper.Folders.AssemblyFolders)
+          foreach (GH_AssemblyFolderInfo pluginFolder in Grasshopper.Folders.AssemblyFolders) {
             message += Environment.NewLine + pluginFolder.Folder;
+          }
 
-          Exception exception = new Exception(message);
-          GH_LoadingException gH_LoadingException = new GH_LoadingException(ComposGHInfo.ProductName + ": " + keyword + " loading failed", exception);
+          var exception = new Exception(message);
+          var gH_LoadingException = new GH_LoadingException(ComposGHInfo.ProductName + ": " + keyword + " loading failed", exception);
           Grasshopper.Instances.ComponentServer.LoadingExceptions.Add(gH_LoadingException);
           PostHog.PluginLoaded(PluginInfo.Instance, message);
           return false;
@@ -96,56 +99,27 @@ namespace ComposGH {
   }
 
   public class ComposGHInfo : GH_AssemblyInfo {
-    public override Bitmap AssemblyIcon {
-      get {
-        return Icon;
-      }
-    }
-    public override string AuthorContact {
-      get {
-        //Return a string representing your preferred contact details.
-        return Contact;
-      }
-    }
-    public override string AuthorName {
-      get {
-        //Return a string identifying you or your company.
-        return Company;
-      }
-    }
-    public override string Description {
-      get {
-        // Return a short string describing the purpose of this GHA library.
-        return "Official Oasys Compos Grasshopper Plugin" + Environment.NewLine
+    public override Bitmap AssemblyIcon => Icon;
+    public override string AuthorContact => Contact;
+    public override string AuthorName => Company;
+    public override string Description =>
+        "Official Oasys Compos Grasshopper Plugin" + Environment.NewLine
           + (isBeta ? Disclaimer : "")
         + Environment.NewLine + "The plugin requires a licensed version of Compos to load."
         + Environment.NewLine
         + Environment.NewLine + "Contact oasys@arup.com to request a free trial version."
         + Environment.NewLine + Environment.NewLine + Copyright;
-      }
-    }
-    public override Bitmap Icon {
-      get {
-        //Return a 24x24 pixel bitmap to represent this GHA library.
-        return null;
-      }
-    }
-    public override Guid Id {
-      get {
-        return GUID;
-      }
-    }
-    public override string Name {
-      get {
-        return ProductName;
-      }
-    }
+    // Return a 24x24 pixel bitmap to represent this GHA library.
+    public override Bitmap Icon => null;
+    public override Guid Id => GUID;
+    public override string Name => ProductName;
     public override string Version {
       get {
-        if (isBeta)
+        if (isBeta) {
           return Vers + "-beta";
-        else
+        } else {
           return Vers;
+        }
       }
     }
     public const string Company = "Oasys";
@@ -160,7 +134,7 @@ namespace ComposGH {
   }
 
   internal sealed class PluginInfo {
-    public static OasysPluginInfo Instance { get { return lazy.Value; } }
+    public static OasysPluginInfo Instance => lazy.Value;
     private static readonly Lazy<OasysPluginInfo> lazy =
             new Lazy<OasysPluginInfo>(() => new OasysPluginInfo(
       ComposGHInfo.ProductName,

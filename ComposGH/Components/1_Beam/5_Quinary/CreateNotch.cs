@@ -1,4 +1,7 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -9,9 +12,6 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ComposGH.Components {
   public class CreateNotch : GH_OasysDropDownComponent {
@@ -21,8 +21,7 @@ namespace ComposGH.Components {
       End
     }
 
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("de802051-ae6a-4249-8699-7ea0cfe8c528");
     public override GH_Exposure Exposure => GH_Exposure.quinary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
@@ -31,22 +30,21 @@ namespace ComposGH.Components {
 
     private NotchTypes OpeningType = NotchTypes.Both_ends;
 
-    public CreateNotch()
-                  : base("BeamNotch", "Notch", "Create Beam Notch for a " + BeamGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
+    public CreateNotch() : base("BeamNotch", "Notch", "Create Beam Notch for a " + BeamGoo.Description,
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       // change selected item
       _selectedItems[i] = _dropDownItems[i][j];
 
       if (i == 0) {
-        if (_selectedItems[i] == OpeningType.ToString().Replace('_', ' '))
+        if (_selectedItems[i] == OpeningType.ToString().Replace('_', ' ')) {
           return;
+        }
         OpeningType = (NotchTypes)Enum.Parse(typeof(NotchTypes), _selectedItems[i].Replace(' ', '_'));
-      }
-      else if (i == 1) // change is made to length unit
-      {
+      } else if (i == 1) // change is made to length unit
+        {
         LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
       }
 
@@ -54,10 +52,11 @@ namespace ComposGH.Components {
     }
 
     public override void VariableParameterMaintenance() {
-      if (OpeningType == NotchTypes.Both_ends)
+      if (OpeningType == NotchTypes.Both_ends) {
         Params.Output[0].Access = GH_ParamAccess.list;
-      else
+      } else {
         Params.Output[0].Access = GH_ParamAccess.item;
+      }
 
       string unitAbbreviation = Length.GetAbbreviation(LengthUnit);
       Params.Input[0].Name = "Width [" + unitAbbreviation + "]";
@@ -96,12 +95,13 @@ namespace ComposGH.Components {
     }
 
     protected override void SolveInstance(IGH_DataAccess DA) {
-      Length width = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
-      Length height = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
-      WebOpeningStiffenersGoo stiff = (WebOpeningStiffenersGoo)Input.GenericGoo<WebOpeningStiffenersGoo>(this, DA, 2);
+      var width = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
+      var height = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
+      var stiff = (WebOpeningStiffenersGoo)Input.GenericGoo<WebOpeningStiffenersGoo>(this, DA, 2);
       if (stiff != null) {
-        if (stiff.Value.BottomStiffenerWidth != Length.Zero)
+        if (stiff.Value.BottomStiffenerWidth != Length.Zero) {
           AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "For Beam Notches only top stiffener(s) will be used.");
+        }
       }
 
       switch (OpeningType) {
@@ -114,9 +114,10 @@ namespace ComposGH.Components {
           break;
 
         case NotchTypes.Both_ends:
-          List<WebOpeningGoo> both = new List<WebOpeningGoo>();
-          both.Add(new WebOpeningGoo(new WebOpening(width, height, NotchPosition.Start, (stiff == null) ? null : stiff.Value)));
-          both.Add(new WebOpeningGoo(new WebOpening(width, height, NotchPosition.End, (stiff == null) ? null : stiff.Value)));
+          var both = new List<WebOpeningGoo> {
+            new WebOpeningGoo(new WebOpening(width, height, NotchPosition.Start, stiff?.Value)),
+            new WebOpeningGoo(new WebOpening(width, height, NotchPosition.End, stiff?.Value))
+          };
           Output.SetList(this, DA, 0, both);
           break;
       }

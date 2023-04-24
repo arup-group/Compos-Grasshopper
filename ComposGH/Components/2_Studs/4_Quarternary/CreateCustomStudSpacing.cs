@@ -1,4 +1,6 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -9,31 +11,28 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
 
 namespace ComposGH.Components {
   public class CreateCustomStudSpacing : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("49328e6d-eebe-405c-b58c-060b8bdc1bef");
     public override GH_Exposure Exposure => GH_Exposure.quarternary | GH_Exposure.obscure;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override System.Drawing.Bitmap Icon => Resources.CustomStudSpacing;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
-    public CreateCustomStudSpacing()
-          : base("Custom" + StudGroupSpacingGoo.Name.Replace(" ", string.Empty),
+    public CreateCustomStudSpacing() : base("Custom" + StudGroupSpacingGoo.Name.Replace(" ", string.Empty),
       StudGroupSpacingGoo.Name.Replace(" ", string.Empty),
       "Create a Custom " + StudGroupSpacingGoo.Description + " for a " + StudGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat2()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat2()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       // change selected item
       _selectedItems[i] = _dropDownItems[i][j];
-      if (LengthUnit.ToString() == _selectedItems[i])
+      if (LengthUnit.ToString() == _selectedItems[i]) {
         return;
+      }
 
       LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
@@ -79,7 +78,7 @@ namespace ComposGH.Components {
       DA.GetData(1, ref rows);
       int lines = 1;
       DA.GetData(2, ref lines);
-      Length spacing = (Length)Input.UnitNumber(this, DA, 3, LengthUnit);
+      var spacing = (Length)Input.UnitNumber(this, DA, 3, LengthUnit);
 
       Output.SetItem(this, DA, 0, new StudGroupSpacingGoo(new StudGroupSpacing(start, rows, lines, spacing)));
     }

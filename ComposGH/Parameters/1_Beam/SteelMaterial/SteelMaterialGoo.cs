@@ -1,9 +1,9 @@
-﻿using ComposAPI;
+﻿using System;
+using ComposAPI;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using OasysGH;
 using OasysGH.Parameters;
-using System;
 
 namespace ComposGH.Parameters {
   /// <summary>
@@ -17,7 +17,9 @@ namespace ComposGH.Parameters {
 
     public SteelMaterialGoo(ISteelMaterial item) : base(item) { }
 
-    public override IGH_Goo Duplicate() => new SteelMaterialGoo(Value);
+    public override IGH_Goo Duplicate() {
+      return new SteelMaterialGoo(Value);
+    }
   }
 
   /// <summary>
@@ -34,8 +36,7 @@ namespace ComposGH.Parameters {
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.SteelMaterialParam;
 
-    public SteelMaterialParam()
-                                          : base(new GH_InstanceDescription(
+    public SteelMaterialParam() : base(new GH_InstanceDescription(
     SteelMaterialGoo.Name,
     SteelMaterialGoo.NickName,
     SteelMaterialGoo.Description + " parameter",

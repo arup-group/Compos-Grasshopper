@@ -1,4 +1,7 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -10,14 +13,10 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ComposGH.Components {
   public class CreateWebOpening : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("084fa2ab-d50e-4213-8f44-2affc9f41752");
     public override GH_Exposure Exposure => GH_Exposure.quinary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
@@ -26,26 +25,26 @@ namespace ComposGH.Components {
 
     private WebOpeningShape OpeningType = WebOpeningShape.Rectangular;
 
-    public CreateWebOpening()
-                  : base("Create" + WebOpeningGoo.Name.Replace(" ", string.Empty),
+    public CreateWebOpening() : base("Create" + WebOpeningGoo.Name.Replace(" ", string.Empty),
       WebOpeningGoo.Name.Replace(" ", string.Empty),
       "Create a " + WebOpeningGoo.Description + " for a " + BeamGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       // change selected item
       _selectedItems[i] = _dropDownItems[i][j];
 
       if (i == 0) {
-        if (_selectedItems[i] == OpeningType.ToString())
+        if (_selectedItems[i] == OpeningType.ToString()) {
           return;
+        }
         OpeningType = (WebOpeningShape)Enum.Parse(typeof(WebOpeningShape), _selectedItems[i]);
         ModeChangeClicked();
-      }
-      else if (i == 1) // change is made to length unit
+      } else if (i == 1) {
+        // change is made to length unit
         LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
-
+      }
       base.UpdateUI();
     }
 
@@ -139,27 +138,28 @@ namespace ComposGH.Components {
     }
 
     protected override void SolveInstance(IGH_DataAccess DA) {
-      Length width_dia = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
+      var width_dia = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
 
       int i = 1;
 
       Length height = Length.Zero;
-      if (OpeningType == WebOpeningShape.Rectangular)
+      if (OpeningType == WebOpeningShape.Rectangular) {
         height = (Length)Input.UnitNumber(this, DA, i++, LengthUnit);
+      }
 
       IQuantity x = Input.LengthOrRatio(this, DA, i++, LengthUnit);
 
       IQuantity z = Input.LengthOrRatio(this, DA, i++, LengthUnit);
 
-      WebOpeningStiffenersGoo stiff = (WebOpeningStiffenersGoo)Input.GenericGoo<WebOpeningStiffenersGoo>(this, DA, i++);
+      var stiff = (WebOpeningStiffenersGoo)Input.GenericGoo<WebOpeningStiffenersGoo>(this, DA, i++);
 
       switch (OpeningType) {
         case WebOpeningShape.Rectangular:
-          Output.SetItem(this, DA, 0, new WebOpeningGoo(new WebOpening(width_dia, height, x, z, (stiff == null) ? null : stiff.Value)));
+          Output.SetItem(this, DA, 0, new WebOpeningGoo(new WebOpening(width_dia, height, x, z, stiff?.Value)));
           break;
 
         case WebOpeningShape.Circular:
-          Output.SetItem(this, DA, 0, new WebOpeningGoo(new WebOpening(width_dia, x, z, (stiff == null) ? null : stiff.Value)));
+          Output.SetItem(this, DA, 0, new WebOpeningGoo(new WebOpening(width_dia, x, z, stiff?.Value)));
           break;
       }
     }
@@ -177,8 +177,9 @@ namespace ComposGH.Components {
       RecordUndoEvent("Changed Parameters");
 
       if (OpeningType == WebOpeningShape.Rectangular) {
-        if (Params.Input.Count == 5)
+        if (Params.Input.Count == 5) {
           return;
+        }
 
         // remove parameters until first
         IGH_Param stiff = Params.Input[3];
@@ -197,8 +198,9 @@ namespace ComposGH.Components {
         Params.RegisterInputParam(stiff);
       }
       if (OpeningType == WebOpeningShape.Circular) {
-        if (Params.Input.Count == 4)
+        if (Params.Input.Count == 4) {
           return;
+        }
 
         // remove height param
         Params.UnregisterInputParameter(Params.Input[1], true);

@@ -1,13 +1,13 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ComposGH.Components {
   public class CreateSlab : GH_OasysComponent {
@@ -17,12 +17,11 @@ namespace ComposGH.Components {
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override System.Drawing.Bitmap Icon => Resources.CreateSlab;
 
-    public CreateSlab()
-      : base("Create" + SlabGoo.Name.Replace(" ", string.Empty),
-          SlabGoo.Name.Replace(" ", string.Empty),
-          "Create a " + SlabGoo.Description + " for a " + MemberGoo.Description,
-            Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat3()) { Hidden = true; } // sets the initial state of the component to hidden
+    public CreateSlab() : base("Create" + SlabGoo.Name.Replace(" ", string.Empty),
+      SlabGoo.Name.Replace(" ", string.Empty),
+      "Create a " + SlabGoo.Description + " for a " + MemberGoo.Description,
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat3()) { Hidden = true; } // sets the initial state of the component to hidden
 
     protected override void RegisterInputParams(GH_InputParamManager pManager) {
       pManager.AddParameter(new ConcreteMaterialParam());
@@ -40,7 +39,7 @@ namespace ComposGH.Components {
     }
 
     protected override void SolveInstance(IGH_DataAccess DA) {
-      ConcreteMaterialGoo material = (ConcreteMaterialGoo)Input.GenericGoo<ConcreteMaterialGoo>(this, DA, 0);
+      var material = (ConcreteMaterialGoo)Input.GenericGoo<ConcreteMaterialGoo>(this, DA, 0);
       if (material == null) { return; } // return here on non-optional inputs
 
       List<SlabDimensionGoo> dimensions = Input.GenericGooList<SlabDimensionGoo>(this, DA, 1);
@@ -50,19 +49,19 @@ namespace ComposGH.Components {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "There is currently a bug in ComposAPI preventing more than one SlabDimension to be written to a compos file.");
       }
 
-      TransverseReinforcementGoo transverseReinforcement = (TransverseReinforcementGoo)Input.GenericGoo<TransverseReinforcementGoo>(this, DA, 2);
+      var transverseReinforcement = (TransverseReinforcementGoo)Input.GenericGoo<TransverseReinforcementGoo>(this, DA, 2);
       if (transverseReinforcement == null) { return; } // return here on non-optional inputs
 
-      MeshReinforcementGoo meshReinforcement = (MeshReinforcementGoo)Input.GenericGoo<MeshReinforcementGoo>(this, DA, 3);
+      var meshReinforcement = (MeshReinforcementGoo)Input.GenericGoo<MeshReinforcementGoo>(this, DA, 3);
 
-      DeckingGoo decking = (DeckingGoo)Input.GenericGoo<DeckingGoo>(this, DA, 4);
+      var decking = (DeckingGoo)Input.GenericGoo<DeckingGoo>(this, DA, 4);
 
       ISlab slab = new Slab(
         material.Value,
         dimensions.Select(x => x.Value as ISlabDimension).ToList(),
         transverseReinforcement.Value,
-        (meshReinforcement == null) ? null : meshReinforcement.Value,
-        (decking == null) ? null : decking.Value);
+        meshReinforcement?.Value,
+        decking?.Value);
 
       DA.SetData(0, new SlabGoo(slab));
     }

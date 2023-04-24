@@ -1,4 +1,5 @@
-﻿using ComposAPI;
+﻿using System;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -7,7 +8,6 @@ using OasysGH.Components;
 using OasysGH.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
 
 namespace ComposGH.Components {
   public class CreateFrequencyLimits : GH_OasysComponent {
@@ -17,12 +17,11 @@ namespace ComposGH.Components {
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override System.Drawing.Bitmap Icon => Resources.FrequencyLimit;
 
-    public CreateFrequencyLimits()
-      : base("Create" + FrequencyLimitsGoo.Name.Replace(" ", string.Empty),
-          FrequencyLimitsGoo.Name.Replace(" ", string.Empty),
-          "Create a " + FrequencyLimitsGoo.Description + " for a " + DesignCriteriaGoo.Description,
-            Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat8()) { Hidden = true; } // sets the initial state of the component to hidden
+    public CreateFrequencyLimits() : base("Create" + FrequencyLimitsGoo.Name.Replace(" ", string.Empty),
+      FrequencyLimitsGoo.Name.Replace(" ", string.Empty),
+      "Create a " + FrequencyLimitsGoo.Description + " for a " + DesignCriteriaGoo.Description,
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat8()) { Hidden = true; } // sets the initial state of the component to hidden
 
     protected override void RegisterInputParams(GH_InputParamManager pManager) {
       pManager.AddGenericParameter("Min Required [Hz]", "fmin", "Minimum required frequency", GH_ParamAccess.item);
@@ -37,13 +36,14 @@ namespace ComposGH.Components {
     }
 
     protected override void SolveInstance(IGH_DataAccess DA) {
-      FrequencyLimits frequencyLimits = new FrequencyLimits() { MinimumRequired = (Frequency)Input.UnitNumber(this, DA, 0, FrequencyUnit.Hertz) };
+      var frequencyLimits = new FrequencyLimits() { MinimumRequired = (Frequency)Input.UnitNumber(this, DA, 0, FrequencyUnit.Hertz) };
 
-      if (Params.Input[1].Sources.Count > 0)
+      if (Params.Input[1].Sources.Count > 0) {
         frequencyLimits.DeadLoadIncl = (Ratio)Input.UnitNumber(this, DA, 1, RatioUnit.DecimalFraction);
-
-      if (Params.Input[2].Sources.Count > 0)
+      }
+      if (Params.Input[2].Sources.Count > 0) {
         frequencyLimits.LiveLoadIncl = (Ratio)Input.UnitNumber(this, DA, 2, RatioUnit.DecimalFraction);
+      }
 
       DA.SetData(0, new FrequencyLimitsGoo(frequencyLimits));
     }

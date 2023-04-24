@@ -1,9 +1,9 @@
-﻿using ComposAPI;
+﻿using System;
+using ComposAPI;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using OasysGH;
 using OasysGH.Parameters;
-using System;
 
 namespace ComposGH.Parameters {
   /// <summary>
@@ -17,7 +17,9 @@ namespace ComposGH.Parameters {
 
     public StudGroupSpacingGoo(IStudGroupSpacing item) : base(item) { }
 
-    public override IGH_Goo Duplicate() => new StudGroupSpacingGoo(Value);
+    public override IGH_Goo Duplicate() {
+      return new StudGroupSpacingGoo(Value);
+    }
   }
 
   /// <summary>
@@ -34,12 +36,11 @@ namespace ComposGH.Parameters {
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.StudGrpDimParam;
 
-    public StudGroupSpacingParam()
-                                          : base(new GH_InstanceDescription(
-    StudGroupSpacingGoo.Name,
-    StudGroupSpacingGoo.NickName,
-    StudGroupSpacingGoo.Description + " parameter",
-    Components.Ribbon.CategoryName.Name(),
-    Components.Ribbon.SubCategoryName.Cat10())) { }
+    public StudGroupSpacingParam() : base(new GH_InstanceDescription(
+      StudGroupSpacingGoo.Name,
+      StudGroupSpacingGoo.NickName,
+      StudGroupSpacingGoo.Description + " parameter",
+      Components.Ribbon.CategoryName.Name(),
+      Components.Ribbon.SubCategoryName.Cat10())) { }
   }
 }

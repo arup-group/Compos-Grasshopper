@@ -1,9 +1,9 @@
-﻿using ComposAPI;
+﻿using System;
+using ComposAPI;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using OasysGH;
 using OasysGH.Parameters;
-using System;
 
 namespace ComposGH.Parameters {
   /// <summary>
@@ -17,7 +17,9 @@ namespace ComposGH.Parameters {
 
     public DeflectionLimitGoo(IDeflectionLimit item) : base(item) { }
 
-    public override IGH_Goo Duplicate() => new DeflectionLimitGoo(Value);
+    public override IGH_Goo Duplicate() {
+      return new DeflectionLimitGoo(Value);
+    }
   }
 
   /// <summary>
@@ -34,12 +36,11 @@ namespace ComposGH.Parameters {
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.DeflectionLimit;
 
-    public DeflectionLimitParam()
-                                          : base(new GH_InstanceDescription(
-    DeflectionLimitGoo.Name,
-    DeflectionLimitGoo.NickName,
-    DeflectionLimitGoo.Description + " parameter",
-    Components.Ribbon.CategoryName.Name(),
-    Components.Ribbon.SubCategoryName.Cat10())) { }
+    public DeflectionLimitParam() : base(new GH_InstanceDescription(
+      DeflectionLimitGoo.Name,
+      DeflectionLimitGoo.NickName,
+      DeflectionLimitGoo.Description + " parameter",
+      Components.Ribbon.CategoryName.Name(),
+      Components.Ribbon.SubCategoryName.Cat10())) { }
   }
 }

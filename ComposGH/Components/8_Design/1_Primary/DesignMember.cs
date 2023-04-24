@@ -1,29 +1,27 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Drawing;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using System;
-using System.Drawing;
 
 namespace ComposGH.Components {
   /// <summary>
   /// Component to check if a Compos model satisfies the chosen code
   /// </summary>
   public class DesignMember : GH_OasysComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("c422ae16-b8c0-4203-86c7-43c3f2917075");
     public override GH_Exposure Exposure => GH_Exposure.primary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override Bitmap Icon => Resources.DesignMember;
 
-    public DesignMember()
-      : base("DesignMember", "Design", "Design (size) the Steel Beam of a Compos Member",
-            Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat8()) { Hidden = true; } // sets the initial state of the component to hidden
+    public DesignMember() : base("DesignMember", "Design", "Design (size) the Steel Beam of a Compos Member",
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat8()) { Hidden = true; } // sets the initial state of the component to hidden
 
     protected override void RegisterInputParams(GH_InputParamManager pManager) {
       pManager.AddParameter(new ComposMemberParameter());
@@ -35,11 +33,11 @@ namespace ComposGH.Components {
     }
 
     protected override void SolveInstance(IGH_DataAccess DA) {
-      MemberGoo memGoo = (MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0);
-      DesignCriteriaGoo critGoo = (DesignCriteriaGoo)Input.GenericGoo<DesignCriteriaGoo>(this, DA, 1);
+      var memGoo = (MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0);
+      var critGoo = (DesignCriteriaGoo)Input.GenericGoo<DesignCriteriaGoo>(this, DA, 1);
       Message = "";
       if (memGoo.Value != null) {
-        Member designedMember = (Member)memGoo.Value.Duplicate();
+        var designedMember = (Member)memGoo.Value.Duplicate();
         designedMember.DesignCriteria = critGoo.Value;
         Message = designedMember.GetCodeSatisfiedMessage();
         if (!designedMember.Design()) {

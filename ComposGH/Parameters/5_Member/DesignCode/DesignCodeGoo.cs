@@ -1,9 +1,9 @@
-﻿using ComposAPI;
+﻿using System;
+using ComposAPI;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using OasysGH;
 using OasysGH.Parameters;
-using System;
 
 namespace ComposGH.Parameters {
   /// <summary>
@@ -17,7 +17,9 @@ namespace ComposGH.Parameters {
 
     public DesignCodeGoo(IDesignCode item) : base(item) { }
 
-    public override IGH_Goo Duplicate() => new DesignCodeGoo(Value);
+    public override IGH_Goo Duplicate() {
+      return new DesignCodeGoo(Value);
+    }
   }
 
   /// <summary>
@@ -34,12 +36,11 @@ namespace ComposGH.Parameters {
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.DesignCodeParameter;
 
-    public DesignCodeParam()
-                                          : base(new GH_InstanceDescription(
-    DesignCodeGoo.Name,
-    DesignCodeGoo.NickName,
-    DesignCodeGoo.Description + " parameter",
-    Components.Ribbon.CategoryName.Name(),
-    Components.Ribbon.SubCategoryName.Cat10())) { }
+    public DesignCodeParam() : base(new GH_InstanceDescription(
+      DesignCodeGoo.Name,
+      DesignCodeGoo.NickName,
+      DesignCodeGoo.Description + " parameter",
+      Components.Ribbon.CategoryName.Name(),
+      Components.Ribbon.SubCategoryName.Cat10())) { }
   }
 }

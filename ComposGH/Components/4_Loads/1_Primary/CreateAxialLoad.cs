@@ -1,4 +1,6 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -9,13 +11,10 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
 
 namespace ComposGH.Components {
   public class CreateAxialLoad : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("9dfed0d2-3ad1-49e6-a8d8-d5a5fd851a64");
     public override GH_Exposure Exposure => GH_Exposure.primary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
@@ -24,18 +23,19 @@ namespace ComposGH.Components {
 
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
 
-    public CreateAxialLoad()
-                  : base("CreateAxialLoad", "AxialLoad", "Create an Axial Compos Load applied at both end positions.",
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat4()) { Hidden = true; } // sets the initial state of the component to hidden
+    public CreateAxialLoad() : base("CreateAxialLoad", "AxialLoad", "Create an Axial Compos Load applied at both end positions.",
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat4()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       _selectedItems[i] = _dropDownItems[i][j];
 
-      if (i == 0)
+      if (i == 0) {
         ForceUnit = (ForceUnit)UnitsHelper.Parse(typeof(ForceUnit), _selectedItems[i]);
-      if (i == 1)
+      }
+      if (i == 1) {
         LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
+      }
 
       base.UpdateUI();
     }
@@ -101,16 +101,16 @@ namespace ComposGH.Components {
     }
 
     protected override void SolveInstance(IGH_DataAccess DA) {
-      Force constDead1 = (Force)Input.UnitNumber(this, DA, 0, ForceUnit);
-      Force constLive1 = (Force)Input.UnitNumber(this, DA, 1, ForceUnit);
-      Force finalDead1 = (Force)Input.UnitNumber(this, DA, 2, ForceUnit);
-      Force finalLive1 = (Force)Input.UnitNumber(this, DA, 3, ForceUnit);
-      Length pos1 = (Length)Input.UnitNumber(this, DA, 4, LengthUnit);
-      Force constDead2 = (Force)Input.UnitNumber(this, DA, 5, ForceUnit);
-      Force constLive2 = (Force)Input.UnitNumber(this, DA, 6, ForceUnit);
-      Force finalDead2 = (Force)Input.UnitNumber(this, DA, 7, ForceUnit);
-      Force finalLive2 = (Force)Input.UnitNumber(this, DA, 8, ForceUnit);
-      Length pos2 = (Length)Input.UnitNumber(this, DA, 9, LengthUnit);
+      var constDead1 = (Force)Input.UnitNumber(this, DA, 0, ForceUnit);
+      var constLive1 = (Force)Input.UnitNumber(this, DA, 1, ForceUnit);
+      var finalDead1 = (Force)Input.UnitNumber(this, DA, 2, ForceUnit);
+      var finalLive1 = (Force)Input.UnitNumber(this, DA, 3, ForceUnit);
+      var pos1 = (Length)Input.UnitNumber(this, DA, 4, LengthUnit);
+      var constDead2 = (Force)Input.UnitNumber(this, DA, 5, ForceUnit);
+      var constLive2 = (Force)Input.UnitNumber(this, DA, 6, ForceUnit);
+      var finalDead2 = (Force)Input.UnitNumber(this, DA, 7, ForceUnit);
+      var finalLive2 = (Force)Input.UnitNumber(this, DA, 8, ForceUnit);
+      var pos2 = (Length)Input.UnitNumber(this, DA, 9, LengthUnit);
 
       Load load = new AxialLoad(
         constDead1, constLive1, finalDead1, finalLive1, pos1, constDead2, constLive2, finalDead2, finalLive2, pos2);

@@ -1,4 +1,7 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -10,31 +13,26 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ComposGH.Components {
   public class CreateStandardStudDimensionsEN : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("f012d853-af53-45b9-b080-723661b9c2ad");
     public override GH_Exposure Exposure => GH_Exposure.secondary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override System.Drawing.Bitmap Icon => Resources.StandardStudDimsEN;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
-    private List<string> StandardSizes = new List<string>(new string[]
-{
-            "Custom",
-            "Ø13/65mm",
-            "Ø16/75mm",
-            "Ø19/75mm",
-            "Ø19/100mm",
-            "Ø19/125mm",
-            "Ø22/100mm",
-            "Ø25/100mm"
-});
+    private List<string> StandardSizes = new List<string>(new string[] {
+      "Custom",
+      "Ø13/65mm",
+      "Ø16/75mm",
+      "Ø19/75mm",
+      "Ø19/100mm",
+      "Ø19/125mm",
+      "Ø22/100mm",
+      "Ø25/100mm"
+    });
 
     private StandardStudGrade StdGrd = StandardStudGrade.SD1_EN13918;
 
@@ -42,12 +40,11 @@ namespace ComposGH.Components {
 
     private PressureUnit StressUnit = DefaultUnits.MaterialStrengthUnit;
 
-    public CreateStandardStudDimensionsEN()
-                                          : base("StandardEN" + StudDimensionsGoo.Name.Replace(" ", string.Empty),
+    public CreateStandardStudDimensionsEN() : base("StandardEN" + StudDimensionsGoo.Name.Replace(" ", string.Empty),
       "StudDimsEN",
       "Look up a Standard " + StudDimensionsGoo.Description + " for a " + StudGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat2()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat2()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       _selectedItems[i] = _dropDownItems[i][j];
@@ -64,8 +61,7 @@ namespace ComposGH.Components {
             _spacerDescriptions.RemoveAt(_spacerDescriptions.Count - 1);
             ModeChangeClicked();
           }
-        }
-        else if (_dropDownItems.Count < 4) {
+        } else if (_dropDownItems.Count < 4) {
           // add length dropdown
           _dropDownItems.Add(UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.Length));
           _selectedItems.Add(Length.GetAbbreviation(LengthUnit));
@@ -73,15 +69,18 @@ namespace ComposGH.Components {
           ModeChangeClicked();
         }
       }
-      if (i == 1) // change is made to grade
+      if (i == 1) {
+        // change is made to grade
         StdGrd = (StandardStudGrade)Enum.Parse(typeof(StandardStudGrade), _selectedItems[i]);
-
-      if (i == 2) // change is made to grade
+      }
+      if (i == 2) {
+        // change is made to grade
         StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), _selectedItems[i]);
-
-      if (i == 3) // change is made to length
+      }
+      if (i == 3) {
+        // change is made to length
         LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
-
+      }
       base.UpdateUI();
     }
 
@@ -154,25 +153,24 @@ namespace ComposGH.Components {
     protected override void SolveInstance(IGH_DataAccess DA) {
       if (_selectedItems[0] == StandardSizes[0]) // custom size
       {
-        Length dia = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
-        Length h = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
+        var dia = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
+        var h = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
 
         if (Params.Input[2].Sources.Count > 0) {
           _selectedItems[1] = "Custom";
-          Pressure strengthS = (Pressure)Input.UnitNumber(this, DA, 2, StressUnit);
+          var strengthS = (Pressure)Input.UnitNumber(this, DA, 2, StressUnit);
           Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthS)));
-        }
-        else
+        } else {
           Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(dia, h, StdGrd)));
-      }
-      else {
+        }
+      } else {
         if (Params.Input[0].Sources.Count > 0) {
           _selectedItems[1] = "Custom";
-          Pressure strengthS = (Pressure)Input.UnitNumber(this, DA, 0, StressUnit);
+          var strengthS = (Pressure)Input.UnitNumber(this, DA, 0, StressUnit);
           Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(StdSize, strengthS)));
-        }
-        else
+        } else {
           Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(StdSize, StdGrd)));
+        }
       }
     }
 
@@ -181,8 +179,7 @@ namespace ComposGH.Components {
         string sz = _selectedItems[0].Replace("Ø", "D").Replace("/", "mmH");
         StdSize = (StandardStudSize)Enum.Parse(typeof(StandardStudSize), sz);
         StdGrd = (StandardStudGrade)Enum.Parse(typeof(StandardStudGrade), _selectedItems[1]);
-      }
-      else {
+      } else {
         ModeChangeClicked();
         LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[3]);
       }
@@ -197,8 +194,9 @@ namespace ComposGH.Components {
 
       if (_selectedItems[0] == StandardSizes[0]) // custom size
       {
-        if (Params.Input.Count == 3)
+        if (Params.Input.Count == 3) {
           return;
+        }
 
         // temp remove input 1
         IGH_Param fu = Params.Input[0];
@@ -213,8 +211,9 @@ namespace ComposGH.Components {
       }
       if (_selectedItems[0] != StandardSizes[0]) // standard size
       {
-        if (Params.Input.Count == 1)
+        if (Params.Input.Count == 1) {
           return;
+        }
 
         // remove params
         Params.UnregisterInputParameter(Params.Input[0], true);

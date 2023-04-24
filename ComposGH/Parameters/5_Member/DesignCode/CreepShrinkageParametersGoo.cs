@@ -15,6 +15,8 @@ namespace ComposGH.Parameters {
 
     public CreepShrinkageParametersGoo(ICreepShrinkageParameters item) : base(item) { }
 
-    public override IGH_Goo Duplicate() => new CreepShrinkageParametersGoo(Value);
+    public override IGH_Goo Duplicate() {
+      return new CreepShrinkageParametersGoo(Value);
+    }
   }
 }

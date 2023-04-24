@@ -1,4 +1,7 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -10,9 +13,6 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ComposGH.Components {
   public class CompositeProperties : GH_OasysDropDownComponent {
@@ -25,8 +25,7 @@ namespace ComposGH.Components {
       Vibration
     }
 
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("afdb280d-8af4-4aba-b4c0-e9247b5b16d3");
     public override GH_Exposure Exposure => GH_Exposure.secondary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
@@ -35,19 +34,19 @@ namespace ComposGH.Components {
 
     private Case SelectedCase = Case.LongTerm;
 
-    public CompositeProperties()
-                  : base("Composite Section Properties",
+    public CompositeProperties() : base("Composite Section Properties",
       "CompositeProps",
       "Get calculated, case dependent, composite section properties for a " + MemberGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat7()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat7()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       _selectedItems[i] = _dropDownItems[i][j];
-      if (i == 0)
+      if (i == 0) {
         SelectedCase = (Case)Enum.Parse(typeof(Case), _selectedItems[i]);
-      else if (i == 1)
+      } else if (i == 1) {
         LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
+      }
 
       base.UpdateUI();
     }
@@ -82,7 +81,7 @@ namespace ComposGH.Components {
 
     protected override void SolveInstance(IGH_DataAccess DA) {
       IResult res = ((MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
-      List<GH_UnitNumber> positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
+      var positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
       ICompositeSectionProperties result = res.SectionProperties;
 
       AreaUnit areaUnit = UnitsHelper.GetAreaUnit(LengthUnit);

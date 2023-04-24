@@ -1,4 +1,6 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -9,8 +11,6 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
 
 namespace ComposGH.Components {
   public class CreateDeflectionLimit : GH_OasysDropDownComponent {
@@ -21,18 +21,18 @@ namespace ComposGH.Components {
     protected override System.Drawing.Bitmap Icon => Resources.DeflectionLimit;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitResult;
 
-    public CreateDeflectionLimit()
-          : base("Create" + DeflectionLimitGoo.Name.Replace(" ", string.Empty),
+    public CreateDeflectionLimit() : base("Create" + DeflectionLimitGoo.Name.Replace(" ", string.Empty),
       DeflectionLimitGoo.Name.Replace(" ", string.Empty),
       "Create a " + DeflectionLimitGoo.Description + " for a " + DesignCriteriaGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat8()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat8()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       // change selected item
       _selectedItems[i] = _dropDownItems[i][j];
-      if (LengthUnit.ToString() == _selectedItems[i])
+      if (LengthUnit.ToString() == _selectedItems[i]) {
         return;
+      }
 
       LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
@@ -76,20 +76,21 @@ namespace ComposGH.Components {
         return;
       }
 
-      DeflectionLimit deflectionLimit = new DeflectionLimit();
+      var deflectionLimit = new DeflectionLimit();
 
-      if (Params.Input[0].Sources.Count > 0)
+      if (Params.Input[0].Sources.Count > 0) {
         deflectionLimit.AbsoluteDeflection = (Length)Input.UnitNumber(this, DA, 0, LengthUnit, true);
+      }
 
-      if (Params.Input[1].Sources.Count > 0)
+      if (Params.Input[1].Sources.Count > 0) {
         deflectionLimit.SpanOverDeflectionRatio = (Ratio)Input.UnitNumber(this, DA, 1, RatioUnit.DecimalFraction);
+      }
 
       Output.SetItem(this, DA, 0, new DeflectionLimitGoo(deflectionLimit));
     }
 
     protected override void UpdateUIFromSelectedItems() {
       LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[0]);
-
       base.UpdateUIFromSelectedItems();
     }
   }

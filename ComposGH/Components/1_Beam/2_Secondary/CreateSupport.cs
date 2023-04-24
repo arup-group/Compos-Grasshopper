@@ -1,4 +1,7 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -9,14 +12,10 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ComposGH.Components {
   public class CreateSupport : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("71c87cde-f442-475b-9131-8f2974c42499");
     public override GH_Exposure Exposure => GH_Exposure.secondary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
@@ -27,20 +26,21 @@ namespace ComposGH.Components {
 
     private IntermediateRestraint RestraintType = IntermediateRestraint.None;
 
-    public CreateSupport()
-                          : base("Create" + SupportsGoo.Name.Replace(" ", string.Empty),
+    public CreateSupport() : base("Create" + SupportsGoo.Name.Replace(" ", string.Empty),
       SupportsGoo.Name.Replace(" ", string.Empty),
       "Create a " + SupportsGoo.Description + " for a " + RestraintGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       _selectedItems[i] = _dropDownItems[i][j];
 
-      if (i == 0)
+      if (i == 0) {
         ParseRestraintType(_selectedItems[0]);
-      if (i == 1)
+      }
+      if (i == 1) {
         LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
+      }
 
       base.UpdateUI();
     }
@@ -103,19 +103,18 @@ namespace ComposGH.Components {
           _dropDownItems[0] = new List<string>();
           _selectedItems[0] = "-";
           Override_dropDownItems[0] = true;
-        }
-        catch (ArgumentException) {
+        } catch (ArgumentException) {
           string text = "Could not parse intermediate restraint. Valid options are (click to copy to clipboard):";
           AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
-          List<string> options = new List<string>();
+          var options = new List<string>();
           foreach (string g in Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
-            .Select(x => x.ToString().Replace("__", "-").Replace("_", " ")).ToList())
+            .Select(x => x.ToString().Replace("__", "-").Replace("_", " ")).ToList()) {
             AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, g);
+          }
           _dropDownItems[0] = Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
             .Select(x => x.ToString().Replace("__", "-").Replace("_", " ")).ToList();
         }
-      }
-      else if (Override_dropDownItems[0]) {
+      } else if (Override_dropDownItems[0]) {
         _dropDownItems[0] = Enum.GetValues(typeof(IntermediateRestraint)).Cast<IntermediateRestraint>()
             .Select(x => x.ToString().Replace("__", "-").Replace("_", " ")).ToList();
         _selectedItems[0] = RestraintType.ToString().Replace("__", "-").Replace("_", " ");
@@ -130,11 +129,10 @@ namespace ComposGH.Components {
       if (Params.Input[2].Sources.Count > 0) {
         List<IQuantity> restrs = Input.LengthsOrRatios(this, DA, 2, LengthUnit);
         _selectedItems[0] = "Custom";
-        Supports sup = new Supports(restrs, smir, ffre);
+        var sup = new Supports(restrs, smir, ffre);
         Output.SetItem(this, DA, 0, new SupportsGoo(sup));
-      }
-      else {
-        Supports sup = new Supports(RestraintType, smir, ffre);
+      } else {
+        var sup = new Supports(RestraintType, smir, ffre);
         Output.SetItem(this, DA, 0, new SupportsGoo(sup));
       }
     }

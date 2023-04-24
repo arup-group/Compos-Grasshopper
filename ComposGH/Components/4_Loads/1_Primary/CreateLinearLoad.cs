@@ -1,4 +1,7 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -9,14 +12,10 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ComposGH.Components {
   public class CreateLinearLoad : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("6dfed0d2-3ad1-49e6-a8d8-d5a5fd851a64");
     public override GH_Exposure Exposure => GH_Exposure.primary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
@@ -27,10 +26,9 @@ namespace ComposGH.Components {
 
     private ForcePerLengthUnit ForcePerLengthUnit = DefaultUnits.ForcePerLengthUnit;
 
-    public CreateLinearLoad()
-                          : base("CreateLinearLoad", "LinearLoad", "Create a linearly varying distributed Compos Load.",
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat4()) { Hidden = true; } // sets the initial state of the component to hidden
+    public CreateLinearLoad() : base("CreateLinearLoad", "LinearLoad", "Create a linearly varying distributed Compos Load.",
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat4()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       _selectedItems[i] = _dropDownItems[i][j];
@@ -40,17 +38,17 @@ namespace ComposGH.Components {
         if (DistributionType == LoadDistribution.Line) {
           _dropDownItems[1] = UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.ForcePerLength);
           _selectedItems[1] = ForcePerLength.GetAbbreviation(ForcePerLengthUnit);
-        }
-        else {
+        } else {
           _dropDownItems[1] = UnitsHelper.GetFilteredAbbreviations(EngineeringUnits.ForcePerArea);
           _selectedItems[1] = Pressure.GetAbbreviation(ForcePerAreaUnit);
         }
       }
       if (i == 1) {
-        if (DistributionType == LoadDistribution.Line)
+        if (DistributionType == LoadDistribution.Line) {
           ForcePerLengthUnit = (ForcePerLengthUnit)UnitsHelper.Parse(typeof(ForcePerLengthUnit), _selectedItems[i]);
-        else
+        } else {
           ForcePerAreaUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), _selectedItems[i]);
+        }
       }
 
       base.UpdateUI();
@@ -58,10 +56,11 @@ namespace ComposGH.Components {
 
     public override void VariableParameterMaintenance() {
       string unitAbbreviation;
-      if (DistributionType == LoadDistribution.Line)
+      if (DistributionType == LoadDistribution.Line) {
         unitAbbreviation = ForcePerLength.GetAbbreviation(ForcePerLengthUnit);
-      else
+      } else {
         unitAbbreviation = Pressure.GetAbbreviation(ForcePerAreaUnit);
+      }
 
       int i = 0;
 
@@ -112,28 +111,28 @@ namespace ComposGH.Components {
     protected override void SolveInstance(IGH_DataAccess DA) {
       switch (DistributionType) {
         case LoadDistribution.Line:
-          ForcePerLength constDeadL1 = (ForcePerLength)Input.UnitNumber(this, DA, 0, ForcePerLengthUnit);
-          ForcePerLength constLiveL1 = (ForcePerLength)Input.UnitNumber(this, DA, 1, ForcePerLengthUnit);
-          ForcePerLength finalDeadL1 = (ForcePerLength)Input.UnitNumber(this, DA, 2, ForcePerLengthUnit);
-          ForcePerLength finalLiveL1 = (ForcePerLength)Input.UnitNumber(this, DA, 3, ForcePerLengthUnit);
-          ForcePerLength constDeadL2 = (ForcePerLength)Input.UnitNumber(this, DA, 4, ForcePerLengthUnit);
-          ForcePerLength constLiveL2 = (ForcePerLength)Input.UnitNumber(this, DA, 5, ForcePerLengthUnit);
-          ForcePerLength finalDeadL2 = (ForcePerLength)Input.UnitNumber(this, DA, 6, ForcePerLengthUnit);
-          ForcePerLength finalLiveL2 = (ForcePerLength)Input.UnitNumber(this, DA, 7, ForcePerLengthUnit);
+          var constDeadL1 = (ForcePerLength)Input.UnitNumber(this, DA, 0, ForcePerLengthUnit);
+          var constLiveL1 = (ForcePerLength)Input.UnitNumber(this, DA, 1, ForcePerLengthUnit);
+          var finalDeadL1 = (ForcePerLength)Input.UnitNumber(this, DA, 2, ForcePerLengthUnit);
+          var finalLiveL1 = (ForcePerLength)Input.UnitNumber(this, DA, 3, ForcePerLengthUnit);
+          var constDeadL2 = (ForcePerLength)Input.UnitNumber(this, DA, 4, ForcePerLengthUnit);
+          var constLiveL2 = (ForcePerLength)Input.UnitNumber(this, DA, 5, ForcePerLengthUnit);
+          var finalDeadL2 = (ForcePerLength)Input.UnitNumber(this, DA, 6, ForcePerLengthUnit);
+          var finalLiveL2 = (ForcePerLength)Input.UnitNumber(this, DA, 7, ForcePerLengthUnit);
           Load loadL = new LinearLoad(
             constDeadL1, constLiveL1, finalDeadL1, finalLiveL1, constDeadL2, constLiveL2, finalDeadL2, finalLiveL2);
           Output.SetItem(this, DA, 0, new LoadGoo(loadL));
           break;
 
         case LoadDistribution.Area:
-          Pressure constDeadA1 = (Pressure)Input.UnitNumber(this, DA, 0, ForcePerAreaUnit);
-          Pressure constLiveA1 = (Pressure)Input.UnitNumber(this, DA, 1, ForcePerAreaUnit);
-          Pressure finalDeadA1 = (Pressure)Input.UnitNumber(this, DA, 2, ForcePerAreaUnit);
-          Pressure finalLiveA1 = (Pressure)Input.UnitNumber(this, DA, 3, ForcePerAreaUnit);
-          Pressure constDeadA2 = (Pressure)Input.UnitNumber(this, DA, 4, ForcePerAreaUnit);
-          Pressure constLiveA2 = (Pressure)Input.UnitNumber(this, DA, 5, ForcePerAreaUnit);
-          Pressure finalDeadA2 = (Pressure)Input.UnitNumber(this, DA, 6, ForcePerAreaUnit);
-          Pressure finalLiveA2 = (Pressure)Input.UnitNumber(this, DA, 7, ForcePerAreaUnit);
+          var constDeadA1 = (Pressure)Input.UnitNumber(this, DA, 0, ForcePerAreaUnit);
+          var constLiveA1 = (Pressure)Input.UnitNumber(this, DA, 1, ForcePerAreaUnit);
+          var finalDeadA1 = (Pressure)Input.UnitNumber(this, DA, 2, ForcePerAreaUnit);
+          var finalLiveA1 = (Pressure)Input.UnitNumber(this, DA, 3, ForcePerAreaUnit);
+          var constDeadA2 = (Pressure)Input.UnitNumber(this, DA, 4, ForcePerAreaUnit);
+          var constLiveA2 = (Pressure)Input.UnitNumber(this, DA, 5, ForcePerAreaUnit);
+          var finalDeadA2 = (Pressure)Input.UnitNumber(this, DA, 6, ForcePerAreaUnit);
+          var finalLiveA2 = (Pressure)Input.UnitNumber(this, DA, 7, ForcePerAreaUnit);
           Load loadA = new LinearLoad(
             constDeadA1, constLiveA1, finalDeadA1, finalLiveA1, constDeadA2, constLiveA2, finalDeadA2, finalLiveA2);
           Output.SetItem(this, DA, 0, new LoadGoo(loadA));
@@ -143,10 +142,11 @@ namespace ComposGH.Components {
 
     protected override void UpdateUIFromSelectedItems() {
       DistributionType = (LoadDistribution)Enum.Parse(typeof(LoadDistribution), _selectedItems[0]);
-      if (DistributionType == LoadDistribution.Line)
+      if (DistributionType == LoadDistribution.Line) {
         ForcePerLengthUnit = (ForcePerLengthUnit)UnitsHelper.Parse(typeof(ForcePerLengthUnit), _selectedItems[1]);
-      else
+      } else {
         ForcePerAreaUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), _selectedItems[1]);
+      }
 
       base.UpdateUIFromSelectedItems();
     }

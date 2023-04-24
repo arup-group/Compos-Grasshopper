@@ -1,9 +1,9 @@
-﻿using ComposAPI;
+﻿using System;
+using ComposAPI;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using OasysGH;
 using OasysGH.Parameters;
-using System;
 
 namespace ComposGH.Parameters {
   /// <summary>
@@ -17,7 +17,9 @@ namespace ComposGH.Parameters {
 
     public RestraintGoo(IRestraint item) : base(item) { }
 
-    public override IGH_Goo Duplicate() => new RestraintGoo(Value);
+    public override IGH_Goo Duplicate() {
+      return new RestraintGoo(Value);
+    }
   }
 
   /// <summary>
@@ -34,8 +36,7 @@ namespace ComposGH.Parameters {
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.RestraintParam;
 
-    public RestraintParam()
-                                          : base(new GH_InstanceDescription(
+    public RestraintParam() : base(new GH_InstanceDescription(
     RestraintGoo.Name,
     RestraintGoo.NickName,
     RestraintGoo.Description + " parameter",

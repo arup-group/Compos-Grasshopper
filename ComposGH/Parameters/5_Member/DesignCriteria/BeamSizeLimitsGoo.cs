@@ -1,9 +1,9 @@
-﻿using ComposAPI;
+﻿using System;
+using ComposAPI;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using OasysGH;
 using OasysGH.Parameters;
-using System;
 
 namespace ComposGH.Parameters {
   /// <summary>
@@ -17,7 +17,9 @@ namespace ComposGH.Parameters {
 
     public BeamSizeLimitsGoo(IBeamSizeLimits item) : base(item) { }
 
-    public override IGH_Goo Duplicate() => new BeamSizeLimitsGoo(Value);
+    public override IGH_Goo Duplicate() {
+      return new BeamSizeLimitsGoo(Value);
+    }
   }
 
   /// <summary>
@@ -34,12 +36,11 @@ namespace ComposGH.Parameters {
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.BeamSizeLimits;
 
-    public BeamSizeLimitsParam()
-                                          : base(new GH_InstanceDescription(
-    BeamSizeLimitsGoo.Name,
-    BeamSizeLimitsGoo.NickName,
-    BeamSizeLimitsGoo.Description + " parameter",
-    Components.Ribbon.CategoryName.Name(),
-    Components.Ribbon.SubCategoryName.Cat10())) { }
+    public BeamSizeLimitsParam() : base(new GH_InstanceDescription(
+      BeamSizeLimitsGoo.Name,
+      BeamSizeLimitsGoo.NickName,
+      BeamSizeLimitsGoo.Description + " parameter",
+      Components.Ribbon.CategoryName.Name(),
+      Components.Ribbon.SubCategoryName.Cat10())) { }
   }
 }

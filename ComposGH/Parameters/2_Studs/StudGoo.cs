@@ -15,6 +15,8 @@ namespace ComposGH.Parameters {
 
     public StudGoo(IStud item) : base(item) { }
 
-    public override IGH_Goo Duplicate() => new StudGoo(Value);
+    public override IGH_Goo Duplicate() {
+      return new StudGoo(Value);
+    }
   }
 }

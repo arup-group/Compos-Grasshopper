@@ -15,6 +15,8 @@ namespace ComposGH.Parameters {
 
     public WebOpeningGoo(IWebOpening item) : base(item) { }
 
-    public override IGH_Goo Duplicate() => new WebOpeningGoo(Value);
+    public override IGH_Goo Duplicate() {
+      return new WebOpeningGoo(Value);
+    }
   }
 }

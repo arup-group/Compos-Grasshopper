@@ -1,4 +1,6 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -9,31 +11,28 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
 
 namespace ComposGH.Components {
   public class CreateStudSpecAZNZHK : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("1ef0e7f8-bd0a-4a10-b6ed-009745062628");
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override System.Drawing.Bitmap Icon => Resources.StandardStudSpecs;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
-    public CreateStudSpecAZNZHK()
-          : base("Create" + StudSpecificationGoo.Name.Replace(" ", string.Empty),
+    public CreateStudSpecAZNZHK() : base("Create" + StudSpecificationGoo.Name.Replace(" ", string.Empty),
       StudSpecificationGoo.Name.Replace(" ", string.Empty),
       "Create a " + StudSpecificationGoo.Description + " applicable for AS/NZ or HK codes, for a " + StudGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat2()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat2()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       // change selected item
       _selectedItems[i] = _dropDownItems[i][j];
-      if (LengthUnit.ToString() == _selectedItems[i])
+      if (LengthUnit.ToString() == _selectedItems[i]) {
         return;
+      }
 
       LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
@@ -81,16 +80,18 @@ namespace ComposGH.Components {
     protected override void SolveInstance(IGH_DataAccess DA) {
       // get default length inputs used for all cases
       IQuantity noStudZoneStart = Length.Zero;
-      if (Params.Input[0].Sources.Count > 0)
+      if (Params.Input[0].Sources.Count > 0) {
         noStudZoneStart = Input.LengthOrRatio(this, DA, 0, LengthUnit, true);
+      }
       IQuantity noStudZoneEnd = Length.Zero;
-      if (Params.Input[1].Sources.Count > 0)
+      if (Params.Input[1].Sources.Count > 0) {
         noStudZoneEnd = Input.LengthOrRatio(this, DA, 1, LengthUnit, true);
+      }
 
       bool welded = true;
       DA.GetData(2, ref welded);
 
-      StudSpecification specOther = new StudSpecification(
+      var specOther = new StudSpecification(
           noStudZoneStart, noStudZoneEnd, welded);
       Output.SetItem(this, DA, 0, new StudSpecificationGoo(specOther));
     }

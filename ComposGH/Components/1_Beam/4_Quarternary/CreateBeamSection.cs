@@ -1,4 +1,6 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -9,25 +11,21 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
 
 namespace ComposGH.Components {
   public class CreateBeamSection : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("de792051-ae6a-4249-8699-7ea0cfe8c528");
     public override GH_Exposure Exposure => GH_Exposure.quarternary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override System.Drawing.Bitmap Icon => Resources.BeamSection;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
 
-    public CreateBeamSection()
-          : base("Create" + BeamSectionGoo.Name.Replace(" ", string.Empty),
+    public CreateBeamSection() : base("Create" + BeamSectionGoo.Name.Replace(" ", string.Empty),
       BeamSectionGoo.Name.Replace(" ", string.Empty),
       "Create a " + BeamSectionGoo.Description + " for a " + BeamGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       // change selected item
@@ -76,18 +74,21 @@ namespace ComposGH.Components {
       profile = profile.Trim();
 
       IQuantity start = new Ratio(0, RatioUnit.Percent);
-      if (Params.Input[1].Sources.Count > 0)
+      if (Params.Input[1].Sources.Count > 0) {
         start = Input.LengthOrRatio(this, DA, 1, LengthUnit);
+      }
 
       bool taper = false;
       if (DA.GetData(2, ref taper)) {
-        if (taper & profile.StartsWith("CAT"))
+        if (taper & profile.StartsWith("CAT")) {
           AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Catalogue profiles cannot taper - use a custom welded section instead");
+        }
       }
 
-      BeamSection beamSection = new BeamSection(profile);
-      beamSection.StartPosition = start;
-      beamSection.TaperedToNext = taper;
+      var beamSection = new BeamSection(profile) {
+        StartPosition = start,
+        TaperedToNext = taper
+      };
       Output.SetItem(this, DA, 0, new BeamSectionGoo(beamSection));
     }
 

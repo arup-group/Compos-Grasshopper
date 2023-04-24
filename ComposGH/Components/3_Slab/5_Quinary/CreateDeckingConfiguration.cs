@@ -1,4 +1,6 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Linq;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -7,34 +9,30 @@ using OasysGH;
 using OasysGH.Components;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Linq;
 
 namespace ComposGH.Components {
   public class CreateDeckingConfiguration : GH_OasysComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("85E6A4A4-DD97-4780-A679-B733C4B4FE01");
     public override GH_Exposure Exposure => GH_Exposure.quinary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override System.Drawing.Bitmap Icon => Resources.DeckingConfig;
     private AngleUnit angleUnit = AngleUnit.Radian;
 
-    public CreateDeckingConfiguration()
-          : base("Create" + DeckingConfigurationGoo.Name.Replace(" ", string.Empty),
+    public CreateDeckingConfiguration() : base("Create" + DeckingConfigurationGoo.Name.Replace(" ", string.Empty),
       DeckingConfigurationGoo.Name.Replace(" ", string.Empty),
       "Create a " + DeckingConfigurationGoo.Description + " for a " + DeckingGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat3()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat3()) { Hidden = true; } // sets the initial state of the component to hidden
 
     protected override void BeforeSolveInstance() {
       base.BeforeSolveInstance();
-      Param_Number angleParameter = Params.Input[0] as Param_Number;
-      if (angleParameter != null) {
-        if (angleParameter.UseDegrees)
+      if (Params.Input[0] is Param_Number angleParameter) {
+        if (angleParameter.UseDegrees) {
           angleUnit = AngleUnit.Degree;
-        else
+        } else {
           angleUnit = AngleUnit.Radian;
+        }
       }
     }
 

@@ -1,7 +1,7 @@
-﻿using Grasshopper.Kernel.Types;
-using OasysGH;
-using System;
+﻿using System;
 using System.IO;
+using Grasshopper.Kernel.Types;
+using OasysGH;
 
 namespace ComposGH.Parameters {
   /// <summary>
@@ -10,22 +10,21 @@ namespace ComposGH.Parameters {
   [Serializable]
   public class ComposModel {
     public string FileName {
-      get { return m_filename; }
-      set { m_filename = value; }
+      get => m_filename;
+      set => m_filename = value;
     }
-    public Guid GUID {
-      get { return m_guid; }
-    }
+    public Guid GUID => m_guid;
     public bool IsValid {
       get {
-        if (m_model == null)
+        if (m_model == null) {
           return false;
+        }
         return true;
       }
     }
     public dynamic Model {
-      get { return m_model; }
-      set { m_model = value; }
+      get => m_model;
+      set => m_model = value;
     }
     private string m_filename = "";
     private Guid m_guid = Guid.NewGuid();
@@ -40,7 +39,7 @@ namespace ComposGH.Parameters {
     /// </summary>
     /// <returns>Return opened model with new GUID</returns>
     public ComposModel Clone() {
-      ComposModel clone = new ComposModel();
+      var clone = new ComposModel();
 
       // workaround duplicate model
       string tempfilename = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Oasys") + "Compos-Grasshopper_temp_.coa";
@@ -86,21 +85,18 @@ namespace ComposGH.Parameters {
       }
     }
 
-    public override string TypeDescription {
-      get { return ("Compos Model"); }
-    }
+    public override string TypeDescription => "Compos Model";
 
-    public override string TypeName {
-      get { return ("Compos Model"); }
-    }
+    public override string TypeName => "Compos Model";
 
     public ComposModelGoo() {
       Value = new ComposModel();
     }
 
     public ComposModelGoo(ComposModel model) {
-      if (model == null)
+      if (model == null) {
         model = new ComposModel();
+      }
       Value = model; //model.Duplicate();
     }
 
@@ -124,10 +120,11 @@ namespace ComposGH.Parameters {
       // instance of GsaModel into some other type Q.
 
       if (typeof(Q).IsAssignableFrom(typeof(ComposModel))) {
-        if (Value == null)
+        if (Value == null) {
           target = default;
-        else
+        } else {
           target = (Q)(object)Value.Duplicate();
+        }
         return true;
       }
 
@@ -140,14 +137,15 @@ namespace ComposGH.Parameters {
     }
 
     public ComposModelGoo DuplicateComposModel() {
-      return new ComposModelGoo(Value == null ? new ComposModel() : Value); //Value.Duplicate());
+      return new ComposModelGoo(Value ?? new ComposModel()); //Value.Duplicate());
     }
 
     public override string ToString() {
-      if (Value == null)
+      if (Value == null) {
         return "Null Compos Model";
-      else
+      } else {
         return Value.ToString();
+      }
     }
   }
 

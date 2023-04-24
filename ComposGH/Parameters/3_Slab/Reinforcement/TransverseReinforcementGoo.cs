@@ -1,9 +1,9 @@
-﻿using ComposAPI;
+﻿using System;
+using ComposAPI;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using OasysGH;
 using OasysGH.Parameters;
-using System;
 
 namespace ComposGH.Parameters {
   /// <summary>
@@ -17,7 +17,9 @@ namespace ComposGH.Parameters {
 
     public TransverseReinforcementGoo(ITransverseReinforcement item) : base(item) { }
 
-    public override IGH_Goo Duplicate() => new TransverseReinforcementGoo(Value);
+    public override IGH_Goo Duplicate() {
+      return new TransverseReinforcementGoo(Value);
+    }
   }
 
   /// <summary>
@@ -34,12 +36,11 @@ namespace ComposGH.Parameters {
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.TransverseReinforcementParam;
 
-    public TransverseReinforcementParam()
-                                          : base(new GH_InstanceDescription(
-    TransverseReinforcementGoo.Name,
-    TransverseReinforcementGoo.NickName,
-    TransverseReinforcementGoo.Description + " parameter",
-    Components.Ribbon.CategoryName.Name(),
-    Components.Ribbon.SubCategoryName.Cat10())) { }
+    public TransverseReinforcementParam() : base(new GH_InstanceDescription(
+      TransverseReinforcementGoo.Name,
+      TransverseReinforcementGoo.NickName,
+      TransverseReinforcementGoo.Description + " parameter",
+      Components.Ribbon.CategoryName.Name(),
+      Components.Ribbon.SubCategoryName.Cat10())) { }
   }
 }

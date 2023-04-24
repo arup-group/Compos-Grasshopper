@@ -1,4 +1,7 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -9,14 +12,10 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ComposGH.Components {
   public class CreateRebarMaterial : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("E91D37A1-81D4-427D-9910-E8A514466F3C");
     public override GH_Exposure Exposure => GH_Exposure.quarternary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
@@ -25,21 +24,23 @@ namespace ComposGH.Components {
 
     private PressureUnit StressUnit = DefaultUnits.MaterialStrengthUnit;
 
-    public CreateRebarMaterial()
-                  : base("Create" + ReinforcementMaterialGoo.Name.Replace(" ", string.Empty),
+    public CreateRebarMaterial() : base("Create" + ReinforcementMaterialGoo.Name.Replace(" ", string.Empty),
       ReinforcementMaterialGoo.Name.Replace(" ", string.Empty),
       "Create a Standard " + ReinforcementMaterialGoo.Description + " for a " + TransverseReinforcementGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat3()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat3()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       _selectedItems[i] = _dropDownItems[i][j];
 
-      if (i == 0) // change is made to grade
+      if (i == 0) {
+        // change is made to grade
         Grade = (RebarGrade)Enum.Parse(typeof(RebarGrade), _selectedItems[i]);
-      if (i == 1) // change is made to unit
+      }
+      if (i == 1) {
+        // change is made to unit
         StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), _selectedItems[i]);
-
+      }
       base.UpdateUI();
     }
 
@@ -79,14 +80,15 @@ namespace ComposGH.Components {
       if (Params.Input[0].Sources.Count > 0) {
         _selectedItems[0] = "Custom";
         Output.SetItem(this, DA, 0, new ReinforcementMaterialGoo(new ReinforcementMaterial((Pressure)Input.UnitNumber(this, DA, 0, StressUnit))));
-      }
-      else
+      } else {
         Output.SetItem(this, DA, 0, new ReinforcementMaterialGoo(new ReinforcementMaterial(Grade)));
+      }
     }
 
     protected override void UpdateUIFromSelectedItems() {
-      if (_selectedItems[0] != "Custom")
+      if (_selectedItems[0] != "Custom") {
         Grade = (RebarGrade)Enum.Parse(typeof(RebarGrade), _selectedItems[0]);
+      }
 
       StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), _selectedItems[1]);
 

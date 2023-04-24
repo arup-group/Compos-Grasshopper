@@ -1,13 +1,13 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ComposGH.Components {
   public class CreateMember : GH_OasysComponent {
@@ -17,12 +17,11 @@ namespace ComposGH.Components {
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override System.Drawing.Bitmap Icon => Resources.CreateMember;
 
-    public CreateMember()
-      : base("Create" + MemberGoo.Name.Replace(" ", string.Empty),
-          MemberGoo.Name.Replace(" ", string.Empty),
-          "Create a " + MemberGoo.Description,
-            Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat5()) { Hidden = false; } // sets the initial state of the component to hidden
+    public CreateMember() : base("Create" + MemberGoo.Name.Replace(" ", string.Empty),
+      MemberGoo.Name.Replace(" ", string.Empty),
+      "Create a " + MemberGoo.Description,
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat5()) { Hidden = false; } // sets the initial state of the component to hidden
 
     protected override void RegisterInputParams(GH_InputParamManager pManager) {
       pManager.AddParameter(new ComposBeamParameter());
@@ -42,11 +41,11 @@ namespace ComposGH.Components {
     }
 
     protected override void SolveInstance(IGH_DataAccess DA) {
-      BeamGoo beam = (BeamGoo)Input.GenericGoo<BeamGoo>(this, DA, 0);
-      StudGoo stud = (StudGoo)Input.GenericGoo<StudGoo>(this, DA, 1);
-      SlabGoo slab = (SlabGoo)Input.GenericGoo<SlabGoo>(this, DA, 2);
+      var beam = (BeamGoo)Input.GenericGoo<BeamGoo>(this, DA, 0);
+      var stud = (StudGoo)Input.GenericGoo<StudGoo>(this, DA, 1);
+      var slab = (SlabGoo)Input.GenericGoo<SlabGoo>(this, DA, 2);
       List<LoadGoo> loads = Input.GenericGooList<LoadGoo>(this, DA, 3);
-      DesignCodeGoo code = (DesignCodeGoo)Input.GenericGoo<DesignCodeGoo>(this, DA, 4);
+      var code = (DesignCodeGoo)Input.GenericGoo<DesignCodeGoo>(this, DA, 4);
 
       string name = "";
       DA.GetData(5, ref name);
@@ -58,7 +57,7 @@ namespace ComposGH.Components {
       DA.GetData(7, ref note);
       note = note.Trim();
 
-      Member member = new Member(name, gridRef, note, code.Value, beam.Value, stud.Value, slab.Value, loads.Select(x => x.Value).ToList());
+      var member = new Member(name, gridRef, note, code.Value, beam.Value, stud.Value, slab.Value, loads.Select(x => x.Value).ToList());
 
       DA.SetData(0, new MemberGoo(member));
     }

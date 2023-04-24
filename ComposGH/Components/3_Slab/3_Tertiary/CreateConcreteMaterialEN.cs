@@ -1,4 +1,7 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -9,9 +12,6 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ComposGH.Components {
   public class CreateConcreteMaterialEN : GH_OasysDropDownComponent {
@@ -32,12 +32,11 @@ namespace ComposGH.Components {
 
     private StrainUnit StrainUnit = StrainUnit.MilliStrain;
 
-    public CreateConcreteMaterialEN()
-                                                  : base("EN" + ConcreteMaterialGoo.Name.Replace(" ", string.Empty),
+    public CreateConcreteMaterialEN() : base("EN" + ConcreteMaterialGoo.Name.Replace(" ", string.Empty),
       "EN" + ConcreteMaterialGoo.NickName.Replace(" ", string.Empty),
       "Look up a Standard EN " + ConcreteMaterialGoo.Description + " for a " + SlabGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat3()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat3()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override bool Read(GH_IO.Serialization.GH_IReader reader) {
       isLightWeight = reader.GetBoolean("isLightWeight");
@@ -55,14 +54,13 @@ namespace ComposGH.Components {
           isLightWeight = true;
           if (_dropDownItems.Count < 4) {
             // density class
-            List<string> densityClasses = Enum.GetValues(typeof(ConcreteMaterial.DensityClass)).Cast<ConcreteMaterial.DensityClass>().Select(x => x.ToString()).ToList();
+            var densityClasses = Enum.GetValues(typeof(ConcreteMaterial.DensityClass)).Cast<ConcreteMaterial.DensityClass>().Select(x => x.ToString()).ToList();
             densityClasses.RemoveAt(0);
             _dropDownItems.Insert(1, densityClasses);
             _selectedItems.Insert(1, DensityClass.ToString());
             _spacerDescriptions.Insert(1, "Density Class");
           }
-        }
-        else {
+        } else {
           isLightWeight = false;
           if (_dropDownItems.Count > 3) {
             _dropDownItems.RemoveAt(1);
@@ -70,17 +68,19 @@ namespace ComposGH.Components {
             _spacerDescriptions.RemoveAt(1);
           }
         }
-      }
-      else if (isLightWeight & i == 1) // change is made to density class
+      } else if (isLightWeight & i == 1) {
+        // change is made to density class
         DensityClass = (ConcreteMaterial.DensityClass)Enum.Parse(typeof(ConcreteMaterial.DensityClass), _selectedItems[i]);
-
-      if (!isLightWeight)
+      }
+      if (!isLightWeight) {
         i++; //
-      else if (i == 2) // change is made to density unit
+      } else if (i == 2) {
+        // change is made to density unit
         DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), _selectedItems[i]);
-      else if (i == 3) // change is made to strain unit
+      } else if (i == 3) {
+        // change is made to strain unit
         StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), _selectedItems[i]);
-
+      }
       base.UpdateUI();
     }
 
@@ -106,7 +106,7 @@ namespace ComposGH.Components {
       _selectedItems = new List<string>();
 
       // grade
-      List<string> concreteGrades = Enum.GetValues(typeof(ConcreteGradeEN)).Cast<ConcreteGradeEN>().Select(x => x.ToString()).ToList();
+      var concreteGrades = Enum.GetValues(typeof(ConcreteGradeEN)).Cast<ConcreteGradeEN>().Select(x => x.ToString()).ToList();
       _dropDownItems.Add(concreteGrades);
       _selectedItems.Add(Grade.ToString());
 
@@ -158,8 +158,7 @@ namespace ComposGH.Components {
           _dropDownItems[0] = new List<string>();
           _selectedItems[0] = "-";
           Override_dropDownItems[0] = true;
-        }
-        catch (ArgumentException) {
+        } catch (ArgumentException) {
           string text = "Could not parse concrete grade. Valid EC4 concrete grades are ";
           foreach (string g in Enum.GetValues(typeof(ConcreteGradeEN)).Cast<ConcreteGradeEN>().Select(x => x.ToString()).ToList()) {
             text += g + ", ";
@@ -170,8 +169,7 @@ namespace ComposGH.Components {
           AddRuntimeMessage(GH_RuntimeMessageLevel.Error, text);
           return;
         }
-      }
-      else if (Override_dropDownItems[0]) {
+      } else if (Override_dropDownItems[0]) {
         _dropDownItems[0] = Enum.GetValues(typeof(ConcreteGradeEN)).Cast<ConcreteGradeEN>().Select(x => x.ToString()).ToList();
         Override_dropDownItems[0] = false;
       }
@@ -184,8 +182,7 @@ namespace ComposGH.Components {
           _dropDownItems[1] = new List<string>();
           _selectedItems[1] = "-";
           Override_dropDownItems[1] = true;
-        }
-        catch (ArgumentException) {
+        } catch (ArgumentException) {
           string text = "Could not parse density class. Valid density classes are ";
           foreach (string dc in Enum.GetValues(typeof(ConcreteMaterial.DensityClass)).Cast<ConcreteMaterial.DensityClass>().Select(x => x.ToString()).ToList()) {
             text += dc + ", ";
@@ -195,21 +192,20 @@ namespace ComposGH.Components {
           _dropDownItems[1] = Enum.GetValues(typeof(ConcreteMaterial.DensityClass)).Cast<ConcreteMaterial.DensityClass>().Select(x => x.ToString()).ToList();
           AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
         }
-      }
-      else if (Override_dropDownItems[1]) {
+      } else if (Override_dropDownItems[1]) {
         _dropDownItems[1] = Enum.GetValues(typeof(ConcreteMaterial.DensityClass)).Cast<ConcreteMaterial.DensityClass>().Select(x => x.ToString()).ToList();
         Override_dropDownItems[1] = false;
       }
 
-      Density dryDensity = new Density(2400, DensityUnit.KilogramPerCubicMeter);
+      var dryDensity = new Density(2400, DensityUnit.KilogramPerCubicMeter);
       bool userDensity = false;
       if (Params.Input[0].Sources.Count > 0) {
         dryDensity = (Density)Input.UnitNumber(this, DA, 0, DensityUnit);
         userDensity = true;
-        if (isLightWeight)
+        if (isLightWeight) {
           _selectedItems[1] = "NOT_APPLY";
-      }
-      else if (Grade.ToString().StartsWith("L")) {
+        }
+      } else if (Grade.ToString().StartsWith("L")) {
         if (DensityClass == ConcreteMaterial.DensityClass.NOT_APPLY) {
           AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Please select a densitiy class.");
           return;
@@ -217,11 +213,11 @@ namespace ComposGH.Components {
         dryDensity = new Density((double)DensityClass, DensityUnit.KilogramPerCubicMeter);
       }
 
-      ERatioGoo eRatio = (ERatioGoo)Input.GenericGoo<ERatioGoo>(this, DA, 1);
+      var eRatio = (ERatioGoo)Input.GenericGoo<ERatioGoo>(this, DA, 1);
 
-      Ratio imposedLoadPercentage = (Ratio)Input.UnitNumber(this, DA, 2, RatioUnit.DecimalFraction);
+      var imposedLoadPercentage = (Ratio)Input.UnitNumber(this, DA, 2, RatioUnit.DecimalFraction);
 
-      Strain shrinkageStrain = new Strain(-0.5, StrainUnit.MilliStrain);
+      var shrinkageStrain = new Strain(-0.5, StrainUnit.MilliStrain);
       bool userStrain = false;
       if (Params.Input[3].Sources.Count > 0) {
         shrinkageStrain = (Strain)Input.UnitNumber(this, DA, 3, StrainUnit, true);
@@ -229,20 +225,23 @@ namespace ComposGH.Components {
       }
 
       ConcreteMaterial.DensityClass selectedDensityClass = DensityClass;
-      if (!isLightWeight)
+      if (!isLightWeight) {
         selectedDensityClass = ConcreteMaterial.DensityClass.NOT_APPLY;
+      }
 
-      ConcreteMaterial concreteMaterial = new ConcreteMaterial(Grade, selectedDensityClass, dryDensity, userDensity, (eRatio == null) ? new ERatio() { ShortTerm = 6, LongTerm = 18, Vibration = 5.39 } : eRatio.Value, imposedLoadPercentage, shrinkageStrain, userStrain);
+      var concreteMaterial = new ConcreteMaterial(Grade, selectedDensityClass, dryDensity, userDensity, (eRatio == null) ? new ERatio() { ShortTerm = 6, LongTerm = 18, Vibration = 5.39 } : eRatio.Value, imposedLoadPercentage, shrinkageStrain, userStrain);
 
       Output.SetItem(this, DA, 0, new ConcreteMaterialGoo(concreteMaterial));
     }
 
     protected override void UpdateUIFromSelectedItems() {
-      if (_selectedItems[0] != "-")
+      if (_selectedItems[0] != "-") {
         Grade = (ConcreteGradeEN)Enum.Parse(typeof(ConcreteGradeEN), _selectedItems[0]);
+      }
       int i = 1;
-      if (isLightWeight)
+      if (isLightWeight) {
         DensityClass = (ConcreteMaterial.DensityClass)Enum.Parse(typeof(ConcreteMaterial.DensityClass), _selectedItems[i++]);
+      }
 
       DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), _selectedItems[i++]);
       StrainUnit = (StrainUnit)UnitsHelper.Parse(typeof(StrainUnit), _selectedItems[i++]);

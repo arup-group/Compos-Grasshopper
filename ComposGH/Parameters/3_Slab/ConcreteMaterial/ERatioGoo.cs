@@ -15,6 +15,8 @@ namespace ComposGH.Parameters {
 
     public ERatioGoo(IERatio item) : base(item) { }
 
-    public override IGH_Goo Duplicate() => new ERatioGoo(Value);
+    public override IGH_Goo Duplicate() {
+      return new ERatioGoo(Value);
+    }
   }
 }

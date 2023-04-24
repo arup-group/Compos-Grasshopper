@@ -1,18 +1,17 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ComposGH.Components {
   public class CreateStandardSteelMaterial : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("a671a346-5989-47e0-aacc-920c77fdfb1f");
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
@@ -21,12 +20,11 @@ namespace ComposGH.Components {
 
     private StandardSteelGrade SteelGrade = StandardSteelGrade.S235;
 
-    public CreateStandardSteelMaterial()
-                  : base("Standard" + SteelMaterialGoo.Name.Replace(" ", string.Empty),
+    public CreateStandardSteelMaterial() : base("Standard" + SteelMaterialGoo.Name.Replace(" ", string.Empty),
       "STD" + SteelMaterialGoo.NickName.Replace(" ", string.Empty),
       "Look up a Standard " + SteelMaterialGoo.Description + " for a " + BeamGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       // change selected item
@@ -34,8 +32,9 @@ namespace ComposGH.Components {
 
       if (i == 0)  // change is made to code
       {
-        if (SteelGrade.ToString() == _selectedItems[i])
+        if (SteelGrade.ToString() == _selectedItems[i]) {
           return; // return if selected value is same as before
+        }
 
         SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), _selectedItems[i]);
       }
@@ -73,14 +72,14 @@ namespace ComposGH.Components {
         string grade = "";
         DA.GetData(0, ref grade);
         try {
-          if (Char.IsDigit(grade[0]))
+          if (char.IsDigit(grade[0])) {
             grade = "S" + grade;
+          }
           SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), grade);
           _dropDownItems[0] = new List<string>();
           _selectedItems[0] = " -- ";
           Override_dropDownItems[0] = true;
-        }
-        catch (ArgumentException) {
+        } catch (ArgumentException) {
           string text = "Could not parse steel grade. Valid steel grades are ";
           foreach (string g in Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList()) {
             text += g + ", ";
@@ -91,8 +90,7 @@ namespace ComposGH.Components {
           AddRuntimeMessage(GH_RuntimeMessageLevel.Error, text);
           return;
         }
-      }
-      else if (Override_dropDownItems[0]) {
+      } else if (Override_dropDownItems[0]) {
         _dropDownItems[0] = Enum.GetValues(typeof(StandardSteelGrade)).Cast<StandardSteelGrade>().Select(x => x.ToString()).ToList();
         Override_dropDownItems[0] = false;
       }
@@ -101,8 +99,9 @@ namespace ComposGH.Components {
     }
 
     protected override void UpdateUIFromSelectedItems() {
-      if (_selectedItems[0] != " -- ")
+      if (_selectedItems[0] != " -- ") {
         SteelGrade = (StandardSteelGrade)Enum.Parse(typeof(StandardSteelGrade), _selectedItems[0]);
+      }
 
       base.UpdateUIFromSelectedItems();
     }

@@ -1,12 +1,12 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using System;
-using System.Collections.Generic;
 
 namespace ComposGH.Components {
   public class CreateDesignCriteria : GH_OasysDropDownComponent {
@@ -17,12 +17,11 @@ namespace ComposGH.Components {
     protected override System.Drawing.Bitmap Icon => Resources.DesignCriteria;
     private OptimiseOption OptOption = OptimiseOption.MinimumWeight;
 
-    public CreateDesignCriteria()
-          : base("Create" + DesignCriteriaGoo.Name.Replace(" ", string.Empty),
+    public CreateDesignCriteria() : base("Create" + DesignCriteriaGoo.Name.Replace(" ", string.Empty),
       DesignCriteriaGoo.Name.Replace(" ", string.Empty),
       "Create a " + DesignCriteriaGoo.Description + " for a " + MemberGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat8()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat8()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       _selectedItems[i] = _dropDownItems[i][j];
@@ -53,8 +52,9 @@ namespace ComposGH.Components {
       pManager.AddParameter(new DeflectionLimitParam(), "Total Load Lim.", "ALm", DeflectionLimitGoo.Description + " for Total Load.", GH_ParamAccess.item);
       pManager.AddParameter(new DeflectionLimitParam(), "Post Constr. Lim.", "PLm", DeflectionLimitGoo.Description + " for Post Construction Load (Total Load minus Construction Dead Load).", GH_ParamAccess.item);
       pManager.AddParameter(new FrequencyLimitsParam());
-      for (int i = 2; i < pManager.ParamCount; i++)
+      for (int i = 2; i < pManager.ParamCount; i++) {
         pManager[i].Optional = true;
+      }
     }
 
     protected override void RegisterOutputParams(GH_OutputParamManager pManager) {
@@ -62,58 +62,58 @@ namespace ComposGH.Components {
     }
 
     protected override void SolveInstance(IGH_DataAccess DA) {
-      DesignCriteria designCriteria = new DesignCriteria();
-      designCriteria.OptimiseOption = OptOption;
+      var designCriteria = new DesignCriteria {
+        OptimiseOption = OptOption
+      };
 
       int i = 0;
       // 0 beam size limits
-      BeamSizeLimitsGoo beamGoo = (BeamSizeLimitsGoo)Input.GenericGoo<BeamSizeLimitsGoo>(this, DA, i++);
+      var beamGoo = (BeamSizeLimitsGoo)Input.GenericGoo<BeamSizeLimitsGoo>(this, DA, i++);
       designCriteria.BeamSizeLimits = beamGoo.Value;
 
       // 1 catalogues
-      List<int> cats = new List<int>();
+      var cats = new List<int>();
       DA.GetDataList(i++, cats);
       try {
         designCriteria.CatalogueSectionTypes = cats;
-      }
-      catch (Exception e) {
+      } catch (Exception e) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
         return;
       }
 
       // 2 Constr limits
       if (Params.Input[i].Sources.Count > 0) {
-        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
+        var dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.ConstructionDeadLoad = dlGoo.Value;
       }
 
       // 3 Add limits
       if (Params.Input[i].Sources.Count > 0) {
-        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
+        var dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.AdditionalDeadLoad = dlGoo.Value;
       }
 
       // 4 final limits
       if (Params.Input[i].Sources.Count > 0) {
-        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
+        var dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.FinalLiveLoad = dlGoo.Value;
       }
 
       // 5 total limits
       if (Params.Input[i].Sources.Count > 0) {
-        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
+        var dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.TotalLoads = dlGoo.Value;
       }
 
       // 6 post limits
       if (Params.Input[i].Sources.Count > 0) {
-        DeflectionLimitGoo dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
+        var dlGoo = (DeflectionLimitGoo)Input.GenericGoo<DeflectionLimitGoo>(this, DA, i++);
         designCriteria.PostConstruction = dlGoo.Value;
       }
 
       // 7 freq limits
       if (Params.Input[i].Sources.Count > 0) {
-        FrequencyLimitsGoo dlGoo = (FrequencyLimitsGoo)Input.GenericGoo<FrequencyLimitsGoo>(this, DA, i++);
+        var dlGoo = (FrequencyLimitsGoo)Input.GenericGoo<FrequencyLimitsGoo>(this, DA, i++);
         designCriteria.FrequencyLimits = dlGoo.Value;
       }
 
@@ -122,7 +122,6 @@ namespace ComposGH.Components {
 
     protected override void UpdateUIFromSelectedItems() {
       OptOption = _selectedItems[0] == "Min. Weight" ? OptimiseOption.MinimumWeight : OptimiseOption.MinimumHeight;
-
       base.UpdateUIFromSelectedItems();
     }
   }

@@ -1,11 +1,12 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
+using ComposAPI;
 using Grasshopper;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 
 namespace ComposGH.Parameters {
   /// <summary>
@@ -25,9 +26,10 @@ namespace ComposGH.Parameters {
     }
 
     public MemberGoo(IMember item) {
-      if (item == null)
+      if (item == null) {
         item = new Member();
-      Value = item; //.Duplicate() as SafetyFactors;
+      }
+      Value = item;
     }
 
     public override IGH_Goo Duplicate() {
@@ -35,20 +37,21 @@ namespace ComposGH.Parameters {
     }
 
     public MemberGoo DuplicateGoo() {
-      return new MemberGoo(Value == null ? new Member() : Value);// .Duplicate() as SafetyFactors);
+      return new MemberGoo(Value ?? new Member());
     }
 
     public override IGH_GeometricGoo DuplicateGeometry() {
-      if (Value == null)
+      if (Value == null) {
         return null;
-      else
+      } else {
         return (IGH_GeometricGoo)Duplicate();
+      }
     }
 
     #endregion
 
     #region properties
-    public override bool IsValid => (Value == null) ? false : true;
+    public override bool IsValid => Value != null;
     public override string TypeName => "Member";
     public override string TypeDescription => "Compos " + TypeName + " Parameter";
     public override string IsValidWhyNot {
@@ -59,20 +62,14 @@ namespace ComposGH.Parameters {
     }
 
     public override string ToString() {
-      if (Value == null)
+      if (Value == null) {
         return "Null";
-      else
+      } else {
         return "Compos " + TypeName + " {" + Value.ToString() + "}"; ;
-    }
-
-    public override BoundingBox Boundingbox {
-      get {
-        return BoundingBox.Empty;
-        //if (Value == null) { return BoundingBox.Empty; }
-        //if (Line == null) { return BoundingBox.Empty; }
-        //return Line.GetBoundingBox(false);
       }
     }
+
+    public override BoundingBox Boundingbox => BoundingBox.Empty;
 
     public override BoundingBox GetBoundingBox(Transform xform) {
       return BoundingBox.Empty;
@@ -90,10 +87,11 @@ namespace ComposGH.Parameters {
       // instance of our custom class into some other type Q.
 
       if (typeof(Q).IsAssignableFrom(typeof(Member))) {
-        if (Value == null)
+        if (Value == null) {
           target = default;
-        else
+        } else {
           target = (Q)(object)Value;
+        }
         return true;
       }
 
@@ -180,8 +178,7 @@ namespace ComposGH.Parameters {
         //{
         //  // todo: implement
         //}
-      }
-      catch (Exception) {
+      } catch (Exception) {
         return false;
       }
 
@@ -238,9 +235,7 @@ namespace ComposGH.Parameters {
     #endregion
 
     #region drawing methods
-    public BoundingBox ClippingBox {
-      get { return Boundingbox; }
-    }
+    public BoundingBox ClippingBox => Boundingbox;
 
     public void DrawViewportMeshes(GH_PreviewMeshArgs args) {
       ////Draw shape.
@@ -324,8 +319,8 @@ namespace ComposGH.Parameters {
       return GH_GetterResult.cancel;
     }
 
-    protected override System.Windows.Forms.ToolStripMenuItem Menu_CustomSingleValueItem() {
-      System.Windows.Forms.ToolStripMenuItem item = new System.Windows.Forms.ToolStripMenuItem {
+    protected override ToolStripMenuItem Menu_CustomSingleValueItem() {
+      var item = new ToolStripMenuItem {
         Text = "Not available",
         Visible = false
       };
@@ -333,7 +328,7 @@ namespace ComposGH.Parameters {
     }
 
     protected override System.Windows.Forms.ToolStripMenuItem Menu_CustomMultiValueItem() {
-      System.Windows.Forms.ToolStripMenuItem item = new System.Windows.Forms.ToolStripMenuItem {
+      var item = new ToolStripMenuItem {
         Text = "Not available",
         Visible = false
       };
@@ -341,11 +336,7 @@ namespace ComposGH.Parameters {
     }
 
     #region preview methods
-    public BoundingBox ClippingBox {
-      get {
-        return Preview_ComputeClippingBox();
-      }
-    }
+    public BoundingBox ClippingBox => Preview_ComputeClippingBox();
 
     public void DrawViewportMeshes(IGH_PreviewArgs args) {
       //Use a standard method to draw gunk, you don't have to specifically implement
@@ -357,14 +348,8 @@ namespace ComposGH.Parameters {
       Preview_DrawWires(args);
     }
 
-    private bool m_hidden = false;
-    public bool Hidden {
-      get { return m_hidden; }
-      set { m_hidden = value; }
-    }
-    public bool IsPreviewCapable {
-      get { return true; }
-    }
+    public bool Hidden { get; set; } = false;
+    public bool IsPreviewCapable => true;
     #endregion
   }
 }

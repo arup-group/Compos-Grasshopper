@@ -1,4 +1,6 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -9,31 +11,28 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
 
 namespace ComposGH.Components {
   public class CreateCustomTransverseReinforcementLayout : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("19322156-8b1a-4849-9772-813411af965c");
     public override GH_Exposure Exposure => GH_Exposure.quarternary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override System.Drawing.Bitmap Icon => Resources.CustomRebarLayout;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
-    public CreateCustomTransverseReinforcementLayout()
-          : base("Create" + CustomTransverseReinforcementLayoutGoo.Name.Replace(" ", string.Empty),
+    public CreateCustomTransverseReinforcementLayout() : base("Create" + CustomTransverseReinforcementLayoutGoo.Name.Replace(" ", string.Empty),
       CustomTransverseReinforcementLayoutGoo.Name.Replace(" ", string.Empty),
       "Create a " + CustomTransverseReinforcementLayoutGoo.Description + " for a " + TransverseReinforcementGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat3()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat3()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       // change selected item
       _selectedItems[i] = _dropDownItems[i][j];
-      if (LengthUnit.ToString() == _selectedItems[i])
+      if (LengthUnit.ToString() == _selectedItems[i]) {
         return;
+      }
 
       LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
@@ -82,9 +81,9 @@ namespace ComposGH.Components {
     protected override void SolveInstance(IGH_DataAccess DA) {
       IQuantity start = Input.LengthOrRatio(this, DA, 0, LengthUnit);
       IQuantity end = Input.LengthOrRatio(this, DA, 1, LengthUnit);
-      Length dia = (Length)Input.UnitNumber(this, DA, 2, LengthUnit);
-      Length spacing = (Length)Input.UnitNumber(this, DA, 3, LengthUnit);
-      Length cov = (Length)Input.UnitNumber(this, DA, 4, LengthUnit);
+      var dia = (Length)Input.UnitNumber(this, DA, 2, LengthUnit);
+      var spacing = (Length)Input.UnitNumber(this, DA, 3, LengthUnit);
+      var cov = (Length)Input.UnitNumber(this, DA, 4, LengthUnit);
 
       Output.SetItem(this, DA, 0, new CustomTransverseReinforcementLayoutGoo(new CustomTransverseReinforcementLayout(start, end, dia, spacing, cov)));
     }

@@ -1,9 +1,9 @@
-﻿using ComposAPI;
+﻿using System;
+using ComposAPI;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using OasysGH;
 using OasysGH.Parameters;
-using System;
 
 namespace ComposGH.Parameters {
   /// <summary>
@@ -20,13 +20,12 @@ namespace ComposGH.Parameters {
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.SafetyFactorParam;
 
-    public SafetyFactorENParam()
-                                          : base(new GH_InstanceDescription(
-    SafetyFactorsENGoo.Name,
-    SafetyFactorsENGoo.NickName,
-    SafetyFactorsENGoo.Description + " parameter",
-    Components.Ribbon.CategoryName.Name(),
-    Components.Ribbon.SubCategoryName.Cat10())) { }
+    public SafetyFactorENParam() : base(new GH_InstanceDescription(
+      SafetyFactorsENGoo.Name,
+      SafetyFactorsENGoo.NickName,
+      SafetyFactorsENGoo.Description + " parameter",
+      Components.Ribbon.CategoryName.Name(),
+      Components.Ribbon.SubCategoryName.Cat10())) { }
   }
 
   /// <summary>
@@ -40,6 +39,8 @@ namespace ComposGH.Parameters {
 
     public SafetyFactorsENGoo(ISafetyFactorsEN item) : base(item) { }
 
-    public override IGH_Goo Duplicate() => new SafetyFactorsENGoo(Value);
+    public override IGH_Goo Duplicate() {
+      return new SafetyFactorsENGoo(Value);
+    }
   }
 }

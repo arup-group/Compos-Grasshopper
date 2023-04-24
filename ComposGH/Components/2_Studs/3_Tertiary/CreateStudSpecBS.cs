@@ -1,4 +1,6 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -9,31 +11,28 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
 
 namespace ComposGH.Components {
   public class CreateStudSpecBS : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("418590eb-52b0-455b-96e7-36df966d328f");
     public override GH_Exposure Exposure => GH_Exposure.tertiary | GH_Exposure.obscure;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override System.Drawing.Bitmap Icon => Resources.StandardStudSpecsBS;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
-    public CreateStudSpecBS()
-          : base("StandardBS" + StudSpecificationGoo.Name.Replace(" ", string.Empty),
+    public CreateStudSpecBS() : base("StandardBS" + StudSpecificationGoo.Name.Replace(" ", string.Empty),
       "StudSpecsBS",
       "Look up a Standard BS " + StudSpecificationGoo.Description + " for a " + StudGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat2()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat2()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       // change selected item
       _selectedItems[i] = _dropDownItems[i][j];
-      if (LengthUnit.ToString() == _selectedItems[i])
+      if (LengthUnit.ToString() == _selectedItems[i]) {
         return;
+      }
 
       LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
@@ -81,16 +80,18 @@ namespace ComposGH.Components {
     protected override void SolveInstance(IGH_DataAccess DA) {
       // get default length inputs used for all cases
       IQuantity noStudZoneStart = Length.Zero;
-      if (Params.Input[0].Sources.Count > 0)
+      if (Params.Input[0].Sources.Count > 0) {
         noStudZoneStart = Input.LengthOrRatio(this, DA, 0, LengthUnit, true);
+      }
       IQuantity noStudZoneEnd = Length.Zero;
-      if (Params.Input[1].Sources.Count > 0)
+      if (Params.Input[1].Sources.Count > 0) {
         noStudZoneEnd = Input.LengthOrRatio(this, DA, 1, LengthUnit, true);
+      }
 
       bool ec4 = true;
       DA.GetData(2, ref ec4);
 
-      StudSpecification specBS = new StudSpecification(
+      var specBS = new StudSpecification(
           ec4, noStudZoneStart, noStudZoneEnd);
       Output.SetItem(this, DA, 0, new StudSpecificationGoo(specBS));
     }

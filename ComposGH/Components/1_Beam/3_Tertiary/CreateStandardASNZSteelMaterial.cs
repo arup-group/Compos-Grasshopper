@@ -1,18 +1,17 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ComposGH.Components {
   public class CreateStandardASNZSteelMaterial : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("8656c967-817c-49fe-9297-d863664b714a");
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
@@ -21,12 +20,11 @@ namespace ComposGH.Components {
 
     private StandardASNZSteelMaterialGrade SteelGrade = StandardASNZSteelMaterialGrade.C450_AS1163;
 
-    public CreateStandardASNZSteelMaterial()
-                  : base("StandardASNZ" + SteelMaterialGoo.Name.Replace(" ", string.Empty),
+    public CreateStandardASNZSteelMaterial() : base("StandardASNZ" + SteelMaterialGoo.Name.Replace(" ", string.Empty),
       "ASNZ" + SteelMaterialGoo.NickName.Replace(" ", string.Empty),
       "Look up a Standard ASNZ " + SteelMaterialGoo.Description + " for a " + BeamGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       // change selected item
@@ -34,9 +32,10 @@ namespace ComposGH.Components {
 
       if (i == 0)  // change is made to code
       {
-        if (SteelGrade.ToString().Replace("_", " ") == _selectedItems[i])
+        if (SteelGrade.ToString().Replace("_", " ") == _selectedItems[i]) {
           return; // return if selected value is same as before
-        StandardASNZSteelMaterialGrade grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), _selectedItems[i].Replace(" ", "_"));
+        }
+        var grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), _selectedItems[i].Replace(" ", "_"));
         SteelGrade = grade;
       }
 
@@ -50,7 +49,7 @@ namespace ComposGH.Components {
       _selectedItems = new List<string>();
 
       // SteelType
-      List<StandardASNZSteelMaterialGrade> grades = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().ToList();
+      var grades = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().ToList();
 
       _dropDownItems.Add(grades.Select(x => x.ToString().Replace("_", " ")).ToList());
       _selectedItems.Add(_dropDownItems[0][0]);
@@ -79,8 +78,7 @@ namespace ComposGH.Components {
           _dropDownItems[0] = new List<string>();
           _selectedItems[0] = "-";
           Override_dropDownItems[0] = true;
-        }
-        catch (ArgumentException) {
+        } catch (ArgumentException) {
           string text = "Could not parse steel grade. Valid AS/NZS steel grades are ";
           foreach (string g in Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().Select(x => x.ToString()).ToList()) {
             text += g + ", ";
@@ -91,8 +89,7 @@ namespace ComposGH.Components {
           AddRuntimeMessage(GH_RuntimeMessageLevel.Error, text);
           return;
         }
-      }
-      else if (Override_dropDownItems[0]) {
+      } else if (Override_dropDownItems[0]) {
         _dropDownItems[0] = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().Select(x => x.ToString()).ToList();
         Override_dropDownItems[0] = false;
       }
@@ -102,7 +99,7 @@ namespace ComposGH.Components {
 
     protected override void UpdateUIFromSelectedItems() {
       if (_selectedItems[0] != "-") {
-        StandardASNZSteelMaterialGrade grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), _selectedItems[0].Replace(" ", "_"));
+        var grade = (StandardASNZSteelMaterialGrade)Enum.Parse(typeof(StandardASNZSteelMaterialGrade), _selectedItems[0].Replace(" ", "_"));
         SteelGrade = grade;
       }
 

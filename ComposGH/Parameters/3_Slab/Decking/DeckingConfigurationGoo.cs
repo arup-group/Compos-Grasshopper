@@ -15,6 +15,8 @@ namespace ComposGH.Parameters {
 
     public DeckingConfigurationGoo(IDeckingConfiguration item) : base(item) { }
 
-    public override IGH_Goo Duplicate() => new DeckingConfigurationGoo(Value);
+    public override IGH_Goo Duplicate() {
+      return new DeckingConfigurationGoo(Value);
+    }
   }
 }

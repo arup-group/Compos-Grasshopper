@@ -1,4 +1,7 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -9,9 +12,6 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ComposGH.Components {
   public class CreateConcreteMaterialBS : GH_OasysDropDownComponent {
@@ -28,24 +28,25 @@ namespace ComposGH.Components {
 
     private ConcreteMaterial.WeightType Type = ConcreteMaterial.WeightType.Normal;
 
-    public CreateConcreteMaterialBS()
-                                  : base("BS" + ConcreteMaterialGoo.Name.Replace(" ", string.Empty),
+    public CreateConcreteMaterialBS() : base("BS" + ConcreteMaterialGoo.Name.Replace(" ", string.Empty),
       "BS" + ConcreteMaterialGoo.NickName.Replace(" ", string.Empty),
       "Look up a Standard BS " + ConcreteMaterialGoo.Description + " for a " + SlabGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat3()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat3()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       // change selected item
       _selectedItems[i] = _dropDownItems[i][j];
 
-      if (i == 0) // change is made to grade
+      if (i == 0) {// change is made to grade
         Grade = (ConcreteGrade)Enum.Parse(typeof(ConcreteGrade), _selectedItems[i]);
-      else if (i == 1) // change is made to weight type
+      } else if (i == 1) {
+        // change is made to weight type
         Type = (ConcreteMaterial.WeightType)Enum.Parse(typeof(ConcreteMaterial.WeightType), _selectedItems[i]);
-      else if (i == 2) // change is made to density unit
+      } else if (i == 2) {
+        // change is made to density unit
         DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), _selectedItems[i]);
-
+      }
       base.UpdateUI();
     }
 
@@ -64,7 +65,7 @@ namespace ComposGH.Components {
       _selectedItems = new List<string>();
 
       // grade
-      List<string> concreteGrades = Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList();
+      var concreteGrades = Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList();
       concreteGrades.RemoveAt(0); // C20
       concreteGrades.RemoveAt(2); // C32
       _dropDownItems.Add(concreteGrades);
@@ -112,8 +113,7 @@ namespace ComposGH.Components {
           _dropDownItems[0] = new List<string>();
           _selectedItems[0] = "-";
           Override_dropDownItems[0] = true;
-        }
-        catch (ArgumentException) {
+        } catch (ArgumentException) {
           string text = "Could not parse concrete grade. Valid BS concrete grades are ";
           foreach (string g in Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList()) {
             text += g + ", ";
@@ -124,26 +124,25 @@ namespace ComposGH.Components {
           AddRuntimeMessage(GH_RuntimeMessageLevel.Error, text);
           return;
         }
-      }
-      else if (Override_dropDownItems[0]) {
+      } else if (Override_dropDownItems[0]) {
         _dropDownItems[0] = Enum.GetValues(typeof(ConcreteGrade)).Cast<ConcreteGrade>().Select(x => x.ToString()).ToList();
         Override_dropDownItems[0] = false;
       }
 
-      Density dryDensity = new Density(2400, DensityUnit.KilogramPerCubicMeter);
+      var dryDensity = new Density(2400, DensityUnit.KilogramPerCubicMeter);
       bool userDensity = false;
       if (Params.Input[0].Sources.Count > 0) {
         dryDensity = (Density)Input.UnitNumber(this, DA, 0, DensityUnit);
         userDensity = true;
-      }
-      else {
-        if (Type == ConcreteMaterial.WeightType.LightWeight)
+      } else {
+        if (Type == ConcreteMaterial.WeightType.LightWeight) {
           dryDensity = new Density(1800, DensityUnit.KilogramPerCubicMeter);
+        }
       }
 
-      Ratio imposedLoadPercentage = (Ratio)Input.UnitNumber(this, DA, 2, RatioUnit.DecimalFraction);
+      var imposedLoadPercentage = (Ratio)Input.UnitNumber(this, DA, 2, RatioUnit.DecimalFraction);
 
-      ERatioGoo eRatio = (ERatioGoo)Input.GenericGoo<ERatioGoo>(this, DA, 1);
+      var eRatio = (ERatioGoo)Input.GenericGoo<ERatioGoo>(this, DA, 1);
 
       IConcreteMaterial concreteMaterial = new ConcreteMaterial(Grade, Type, dryDensity, userDensity, (eRatio == null) ? new ERatio() : eRatio.Value, imposedLoadPercentage);
 
@@ -151,8 +150,9 @@ namespace ComposGH.Components {
     }
 
     protected override void UpdateUIFromSelectedItems() {
-      if (_selectedItems[0] != "-")
+      if (_selectedItems[0] != "-") {
         Grade = (ConcreteGrade)Enum.Parse(typeof(ConcreteGrade), _selectedItems[0]);
+      }
       Type = (ConcreteMaterial.WeightType)Enum.Parse(typeof(ConcreteMaterial.WeightType), _selectedItems[1]);
       DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), _selectedItems[2]);
 

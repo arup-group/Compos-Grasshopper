@@ -1,15 +1,16 @@
-﻿using Grasshopper.GUI;
-using Grasshopper.GUI.Canvas;
-using System.Threading;
+﻿using System.Threading;
 using System.Windows.Forms;
+using Grasshopper.GUI;
+using Grasshopper.GUI.Canvas;
 
 namespace ComposGH.UI {
   public class MenuLoad {
     private static ToolStripMenuItem oasysMenu;
 
     internal static void OnStartup(GH_Canvas canvas) {
-      oasysMenu = new ToolStripMenuItem("Oasys");
-      oasysMenu.Name = "Oasys";
+      oasysMenu = new ToolStripMenuItem("Oasys") {
+        Name = "Oasys"
+      };
 
       PopulateSub(oasysMenu);
 
@@ -20,9 +21,9 @@ namespace ComposGH.UI {
         Thread.Sleep(750);
       }
 
-      if (!editor.MainMenuStrip.Items.ContainsKey("Oasys"))
+      if (!editor.MainMenuStrip.Items.ContainsKey("Oasys")) {
         editor.MainMenuStrip.Items.Add(oasysMenu);
-      else {
+      } else {
         oasysMenu = (ToolStripMenuItem)editor.MainMenuStrip.Items["Oasys"];
         lock (oasysMenu) {
           oasysMenu.DropDown.Items.Add(new ToolStripSeparator());
@@ -35,7 +36,7 @@ namespace ComposGH.UI {
 
     private static void PopulateSub(ToolStripMenuItem menutItem) {
       menutItem.DropDown.Items.Add("Compos Info", Properties.Resources.ComposInfo, (s, a) => {
-        AboutBox aboutBox = new AboutBox();
+        var aboutBox = new AboutBox();
         aboutBox.ShowDialog();
       });
     }

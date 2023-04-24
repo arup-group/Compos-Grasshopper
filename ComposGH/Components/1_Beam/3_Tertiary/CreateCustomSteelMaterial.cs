@@ -1,4 +1,7 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -9,14 +12,10 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ComposGH.Components {
   public class CreateCustomSteelMaterial : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("2C3C07F4-C395-4747-A111-D5A67B250104");
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
@@ -29,12 +28,11 @@ namespace ComposGH.Components {
 
     private PressureUnit StressUnit = DefaultUnits.MaterialStrengthUnit;
 
-    public CreateCustomSteelMaterial()
-                                  : base("Custom" + SteelMaterialGoo.Name.Replace(" ", string.Empty),
+    public CreateCustomSteelMaterial() : base("Custom" + SteelMaterialGoo.Name.Replace(" ", string.Empty),
       SteelMaterialGoo.Name.Replace(" ", string.Empty),
       "Create a Custom " + SteelMaterialGoo.Description + " for a " + BeamGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       // change selected item
@@ -42,15 +40,18 @@ namespace ComposGH.Components {
 
       if (i == 0)  // change is made to code
       {
-        if (Grade.ToString() == _selectedItems[i])
+        if (Grade.ToString() == _selectedItems[i]) {
           return; // return if selected value is same as before
+        }
 
         Grade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), _selectedItems[i]);
       }
-      if (i == 1)
+      if (i == 1) {
         StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), _selectedItems[i]);
-      if (i == 2)
+      }
+      if (i == 2) {
         DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), _selectedItems[i]);
+      }
 
       base.UpdateUI();
     }
@@ -119,8 +120,7 @@ namespace ComposGH.Components {
           _dropDownItems[0] = new List<string>();
           _selectedItems[0] = "-";
           Override_dropDownItems[0] = true;
-        }
-        catch (ArgumentException) {
+        } catch (ArgumentException) {
           string text = "Could not parse steel grade. Valid steel grades are ";
           foreach (string g in Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList()) {
             text += g + ", ";
@@ -130,17 +130,18 @@ namespace ComposGH.Components {
           _dropDownItems[0] = Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList();
           AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, text);
         }
-      }
-      else if (Override_dropDownItems[0]) {
+      } else if (Override_dropDownItems[0]) {
         _dropDownItems[0] = Enum.GetValues(typeof(WeldMaterialGrade)).Cast<WeldMaterialGrade>().Select(x => x.ToString()).ToList();
         Override_dropDownItems[0] = false;
       }
 
       bool redFact = new bool();
 
-      if (DA.GetData(3, ref redFact))
-        if (redFact)
+      if (DA.GetData(3, ref redFact)) {
+        if (redFact) {
           AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Note that reduction factor only applies for EC4 DesignCode");
+        }
+      }
 
       Output.SetItem(this, DA, 0, new SteelMaterialGoo(new SteelMaterial(
         (Pressure)Input.UnitNumber(this, DA, 0, StressUnit),
@@ -150,8 +151,9 @@ namespace ComposGH.Components {
     }
 
     protected override void UpdateUIFromSelectedItems() {
-      if (_selectedItems[0] != "-")
+      if (_selectedItems[0] != "-") {
         Grade = (WeldMaterialGrade)Enum.Parse(typeof(WeldMaterialGrade), _selectedItems[0]);
+      }
       StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), _selectedItems[1]);
       DensityUnit = (DensityUnit)UnitsHelper.Parse(typeof(DensityUnit), _selectedItems[2]);
 

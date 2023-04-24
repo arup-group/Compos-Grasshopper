@@ -1,4 +1,7 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -10,9 +13,6 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ComposGH.Components {
   public class CreateWebOpeningStiffener : GH_OasysDropDownComponent {
@@ -21,8 +21,7 @@ namespace ComposGH.Components {
       Notch,
     }
 
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("4e7a2c23-0504-46d2-8fe1-846bf4ef6a37");
     public override GH_Exposure Exposure => GH_Exposure.quinary | GH_Exposure.obscure;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
@@ -31,25 +30,25 @@ namespace ComposGH.Components {
 
     private Stiff_types OpeningType = Stiff_types.Web_Opening;
 
-    public CreateWebOpeningStiffener()
-                  : base("Create" + WebOpeningStiffenersGoo.Name.Replace(" ", string.Empty),
+    public CreateWebOpeningStiffener() : base("Create" + WebOpeningStiffenersGoo.Name.Replace(" ", string.Empty),
       WebOpeningStiffenersGoo.Name.Replace(" ", string.Empty),
       "Create a " + WebOpeningStiffenersGoo.Description + " for a " + WebOpeningGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       _selectedItems[i] = _dropDownItems[i][j];
 
       if (i == 0) {
-        if (_selectedItems[i] == OpeningType.ToString().Replace('_', ' '))
+        if (_selectedItems[i] == OpeningType.ToString().Replace('_', ' ')) {
           return;
+        }
         OpeningType = (Stiff_types)Enum.Parse(typeof(Stiff_types), _selectedItems[i].Replace(' ', '_'));
         ModeChangeClicked();
-      }
-      else if (i == 1) // change is made to length unit
+      } else if (i == 1) {
+        // change is made to length unit
         LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
-
+      }
       base.UpdateUI();
     }
 
@@ -110,16 +109,15 @@ namespace ComposGH.Components {
     protected override void SolveInstance(IGH_DataAccess DA) {
       bool bothSides = false;
       DA.GetData(0, ref bothSides);
-      Length start = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
-      Length topWidth = (Length)Input.UnitNumber(this, DA, 2, LengthUnit);
-      Length topTHK = (Length)Input.UnitNumber(this, DA, 3, LengthUnit);
+      var start = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
+      var topWidth = (Length)Input.UnitNumber(this, DA, 2, LengthUnit);
+      var topTHK = (Length)Input.UnitNumber(this, DA, 3, LengthUnit);
       if (OpeningType == Stiff_types.Web_Opening) {
-        Length bottomWidth = (Length)Input.UnitNumber(this, DA, 4, LengthUnit);
-        Length bottomTHK = (Length)Input.UnitNumber(this, DA, 5, LengthUnit);
+        var bottomWidth = (Length)Input.UnitNumber(this, DA, 4, LengthUnit);
+        var bottomTHK = (Length)Input.UnitNumber(this, DA, 5, LengthUnit);
         Output.SetItem(this, DA, 0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
             start, topWidth, topTHK, bottomWidth, bottomTHK, bothSides)));
-      }
-      else {
+      } else {
         Output.SetItem(this, DA, 0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
             start, topWidth, topTHK, bothSides)));
       }
@@ -138,15 +136,17 @@ namespace ComposGH.Components {
       RecordUndoEvent("Changed Parameters");
 
       if (OpeningType == Stiff_types.Web_Opening) {
-        if (Params.Input.Count == 6)
+        if (Params.Input.Count == 6) {
           return;
+        }
 
         Params.RegisterInputParam(new Param_GenericObject());
         Params.RegisterInputParam(new Param_GenericObject());
       }
       if (OpeningType == Stiff_types.Notch) {
-        if (Params.Input.Count == 4)
+        if (Params.Input.Count == 4) {
           return;
+        }
 
         Params.UnregisterInputParameter(Params.Input[Params.Input.Count - 1], true);
         Params.UnregisterInputParameter(Params.Input[Params.Input.Count - 1], true);

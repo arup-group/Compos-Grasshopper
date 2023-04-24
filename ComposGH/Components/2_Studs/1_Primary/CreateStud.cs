@@ -1,4 +1,7 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -6,32 +9,28 @@ using Grasshopper.Kernel.Parameters;
 using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ComposGH.Components {
   public class CreateStud : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("1451E11C-69D0-47D3-8730-FCA80E838E25");
     public override GH_Exposure Exposure => GH_Exposure.primary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override System.Drawing.Bitmap Icon => Resources.CreateStud;
     private StudSpacingType SpacingType = StudSpacingType.Min_Num_of_Studs;
 
-    public CreateStud()
-          : base("Create" + StudGoo.Name.Replace(" ", string.Empty),
+    public CreateStud() : base("Create" + StudGoo.Name.Replace(" ", string.Empty),
       StudGoo.Name.Replace(" ", string.Empty),
       "Create a " + StudGoo.Description + " for a " + MemberGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat2()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat2()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       // change selected item
       _selectedItems[i] = _dropDownItems[i][j];
-      if (SpacingType.ToString().Replace("_", " ") == _selectedItems[i])
+      if (SpacingType.ToString().Replace("_", " ") == _selectedItems[i]) {
         return;
+      }
       SpacingType = (StudSpacingType)Enum.Parse(typeof(StudSpacingType), _selectedItems[i].Replace(" ", "_"));
       ModeChangeClicked();
       base.UpdateUI();
@@ -147,8 +146,9 @@ namespace ComposGH.Components {
         case StudSpacingType.Automatic:
         case StudSpacingType.Min_Num_of_Studs:
           //remove input parameters
-          while (Params.Input.Count > 2)
+          while (Params.Input.Count > 2) {
             Params.UnregisterInputParameter(Params.Input[2], true);
+          }
 
           //add input parameters
           Params.RegisterInputParam(new Param_Number());
@@ -156,8 +156,9 @@ namespace ComposGH.Components {
 
         case StudSpacingType.Partial_Interaction:
           //remove input parameters
-          while (Params.Input.Count > 2)
+          while (Params.Input.Count > 2) {
             Params.UnregisterInputParameter(Params.Input[2], true);
+          }
 
           //add input parameters
           Params.RegisterInputParam(new Param_Number());
@@ -166,8 +167,9 @@ namespace ComposGH.Components {
 
         case StudSpacingType.Custom:
           //remove input parameters
-          while (Params.Input.Count > 2)
+          while (Params.Input.Count > 2) {
             Params.UnregisterInputParameter(Params.Input[2], true);
+          }
 
           //add input parameters
           Params.RegisterInputParam(new StudGroupSpacingParam());

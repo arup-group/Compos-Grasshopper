@@ -1,4 +1,6 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -9,8 +11,6 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
 
 namespace ComposGH.Components {
   public class CreateSlabDimension : GH_OasysDropDownComponent {
@@ -21,18 +21,18 @@ namespace ComposGH.Components {
     protected override System.Drawing.Bitmap Icon => Resources.SlabDimensions;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitSection;
 
-    public CreateSlabDimension()
-          : base("Create" + SlabDimensionGoo.Name.Replace(" ", string.Empty),
+    public CreateSlabDimension() : base("Create" + SlabDimensionGoo.Name.Replace(" ", string.Empty),
       SlabDimensionGoo.Name.Replace(" ", string.Empty),
       "Create a " + SlabDimensionGoo.Description + " for a " + SlabGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat3()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat3()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       // change selected item
       _selectedItems[i] = _dropDownItems[i][j];
-      if (LengthUnit.ToString() == _selectedItems[i])
+      if (LengthUnit.ToString() == _selectedItems[i]) {
         return;
+      }
 
       LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
 
@@ -84,10 +84,10 @@ namespace ComposGH.Components {
     }
 
     protected override void SolveInstance(IGH_DataAccess DA) {
-      Length start = (Length)Input.UnitNumber(this, DA, 0, LengthUnit, true);
-      Length overallDepth = (Length)Input.UnitNumber(this, DA, 1, LengthUnit, true);
-      Length availableWidthLeft = (Length)Input.UnitNumber(this, DA, 2, LengthUnit, true);
-      Length availableWidthRight = (Length)Input.UnitNumber(this, DA, 3, LengthUnit, true);
+      var start = (Length)Input.UnitNumber(this, DA, 0, LengthUnit, true);
+      var overallDepth = (Length)Input.UnitNumber(this, DA, 1, LengthUnit, true);
+      var availableWidthLeft = (Length)Input.UnitNumber(this, DA, 2, LengthUnit, true);
+      var availableWidthRight = (Length)Input.UnitNumber(this, DA, 3, LengthUnit, true);
 
       bool customEffectiveWidth = false;
       Length effectiveWidthLeft = Length.Zero;
@@ -102,10 +102,11 @@ namespace ComposGH.Components {
       DA.GetData(6, ref taperedToNext);
 
       SlabDimension slabDimension;
-      if (customEffectiveWidth)
+      if (customEffectiveWidth) {
         slabDimension = new SlabDimension(start, overallDepth, availableWidthLeft, availableWidthRight, effectiveWidthLeft, effectiveWidthRight, taperedToNext);
-      else
+      } else {
         slabDimension = new SlabDimension(start, overallDepth, availableWidthLeft, availableWidthRight, taperedToNext);
+      }
 
       Output.SetItem(this, DA, 0, new SlabDimensionGoo(slabDimension));
     }

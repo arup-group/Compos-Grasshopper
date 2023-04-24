@@ -1,10 +1,10 @@
-﻿using ComposAPI;
+﻿using System;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH;
 using OasysGH.Components;
-using System;
 
 namespace ComposGH.Components {
   public class CreateERatio : GH_OasysComponent {
@@ -14,12 +14,11 @@ namespace ComposGH.Components {
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override System.Drawing.Bitmap Icon => Resources.ERatio;
 
-    public CreateERatio()
-      : base("Create" + ERatioGoo.Name.Replace(" ", string.Empty),
-          ERatioGoo.Name.Replace(" ", string.Empty),
-          "Create a " + ERatioGoo.Description + " for a " + ConcreteMaterialGoo.Description,
-            Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat3()) { Hidden = true; } // sets the initial state of the component to hidden
+    public CreateERatio() : base("Create" + ERatioGoo.Name.Replace(" ", string.Empty),
+      ERatioGoo.Name.Replace(" ", string.Empty),
+      "Create a " + ERatioGoo.Description + " for a " + ConcreteMaterialGoo.Description,
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat3()) { Hidden = true; } // sets the initial state of the component to hidden
 
     protected override void RegisterInputParams(GH_InputParamManager pManager) {
       pManager.AddNumberParameter("Short Term", "ST", "Steel/concrete Young´s modulus ratio for short term", GH_ParamAccess.item, 6.24304);

@@ -1,4 +1,7 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using ComposAPI;
 using Grasshopper;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
@@ -6,9 +9,6 @@ using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
 using Rhino.Geometry;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 
 namespace ComposGH.Parameters {
   /// <summary>
@@ -25,10 +25,8 @@ namespace ComposGH.Parameters {
         return Line.GetBoundingBox(false);
       }
     }
-    public BoundingBox ClippingBox {
-      get { return Boundingbox; }
-    }
-    public override bool IsValid => (Value == null) ? false : true;
+    public BoundingBox ClippingBox => Boundingbox;
+    public override bool IsValid => Value != null;
     public override string IsValidWhyNot {
       get {
         if (IsValid) { return string.Empty; }
@@ -44,7 +42,7 @@ namespace ComposGH.Parameters {
     public BeamGoo(LineCurve line, LengthUnit lengthUnit, IRestraint restraint, ISteelMaterial material, List<IBeamSection> beamSections, List<IWebOpening> webOpenings = null) {
       Line = line;
       LengthUnit = lengthUnit;
-      Length length = new Length(line.GetLength(), lengthUnit);
+      var length = new Length(line.GetLength(), lengthUnit);
       Value = new Beam(length, restraint, material, beamSections, webOpenings);
       UpdatePreview();
     }
@@ -54,8 +52,9 @@ namespace ComposGH.Parameters {
     }
 
     public BeamGoo(LineCurve line, LengthUnit lengthUnit, IBeam item) {
-      if (item == null)
+      if (item == null) {
         item = new Beam();
+      }
       Line = (LineCurve)line.DuplicateShallow();
       LengthUnit = lengthUnit;
       Value = item.Duplicate() as IBeam;
@@ -106,8 +105,7 @@ namespace ComposGH.Parameters {
         //{
         //  // todo: implement
         //}
-      }
-      catch (Exception) {
+      } catch (Exception) {
         return false;
       }
 
@@ -119,26 +117,28 @@ namespace ComposGH.Parameters {
       // instance of our custom class into some other type Q.
 
       if (typeof(Q).IsAssignableFrom(typeof(Beam))) {
-        if (Value == null)
+        if (Value == null) {
           target = default;
-        else
+        } else {
           target = (Q)(object)Value;
+        }
         return true;
       }
 
       //Cast to Curve
       if (typeof(Q).IsAssignableFrom(typeof(Line))) {
-        if (Value == null)
+        if (Value == null) {
           target = default;
-        else
+        } else {
           target = (Q)(object)Line;
+        }
         return true;
       }
       if (typeof(Q).IsAssignableFrom(typeof(GH_Line))) {
-        if (Value == null)
+        if (Value == null) {
           target = default;
-        else {
-          GH_Line ghLine = new GH_Line();
+        } else {
+          var ghLine = new GH_Line();
           GH_Convert.ToGHLine(Line, GH_Conversion.Both, ref ghLine);
           target = (Q)(object)ghLine;
         }
@@ -146,16 +146,17 @@ namespace ComposGH.Parameters {
         return true;
       }
       if (typeof(Q).IsAssignableFrom(typeof(Curve))) {
-        if (Value == null)
+        if (Value == null) {
           target = default;
-        else
+        } else {
           target = (Q)(object)Line;
+        }
         return true;
       }
       if (typeof(Q).IsAssignableFrom(typeof(GH_Curve))) {
-        if (Value == null)
+        if (Value == null) {
           target = default;
-        else {
+        } else {
           target = (Q)(object)new GH_Curve(Line);
         }
         return true;
@@ -221,24 +222,30 @@ namespace ComposGH.Parameters {
     }
 
     public override IGH_Goo Duplicate() {
-      BeamGoo dup = new BeamGoo();
-      dup.Line = (LineCurve)Line.DuplicateShallow();
-      dup.LengthUnit = LengthUnit;
-      dup.Value = Value.Duplicate() as IBeam;
+      var dup = new BeamGoo {
+        Line = (LineCurve)Line.DuplicateShallow(),
+        LengthUnit = LengthUnit,
+        Value = Value.Duplicate() as IBeam
+      };
       dup.UpdatePreview();
       return dup;
     }
 
     public override IGH_GeometricGoo DuplicateGeometry() {
-      if (Value == null)
+      if (Value == null) {
         return null;
-      else
+      } else {
         return (IGH_GeometricGoo)Duplicate();
+      }
     }
 
     public override BoundingBox GetBoundingBox(Transform xform) {
-      if (Value == null) { return BoundingBox.Empty; }
-      if (Line == null) { return BoundingBox.Empty; }
+      if (Value == null) {
+        return BoundingBox.Empty;
+      }
+      if (Line == null) {
+        return BoundingBox.Empty;
+      }
       return Line.GetBoundingBox(xform);
     }
 
@@ -246,7 +253,7 @@ namespace ComposGH.Parameters {
       if (Value == null) { return null; }
       if (Line == null) { return null; }
 
-      BeamGoo dup = new BeamGoo(this);
+      var dup = new BeamGoo(this);
       LineCurve xLn = dup.Line;
       xmorph.Morph(xLn);
       dup.Line = xLn;
@@ -257,17 +264,18 @@ namespace ComposGH.Parameters {
     }
 
     public override string ToString() {
-      if (Value == null)
+      if (Value == null) {
         return "Null";
-      else
+      } else {
         return "Compos " + TypeName + " {" + Value.ToString() + "}"; ;
+      }
     }
 
     public override IGH_GeometricGoo Transform(Transform xform) {
       if (Value == null) { return null; }
       if (Line == null) { return null; }
 
-      BeamGoo dup = new BeamGoo(this);
+      var dup = new BeamGoo(this);
       LineCurve xLn = dup.Line;
       xLn.Transform(xform);
       dup.Line = xLn;

@@ -1,4 +1,6 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -9,13 +11,10 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
 
 namespace ComposGH.Components {
   public class CreateCustomDeck : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("8859723E-D8BD-4AC5-A341-81D1B5708F43");
     public override GH_Exposure Exposure => GH_Exposure.quinary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
@@ -24,20 +23,21 @@ namespace ComposGH.Components {
 
     private PressureUnit StressUnit = DefaultUnits.MaterialStrengthUnit;
 
-    public CreateCustomDeck()
-                  : base("Custom" + DeckingGoo.Name.Replace(" ", string.Empty),
+    public CreateCustomDeck() : base("Custom" + DeckingGoo.Name.Replace(" ", string.Empty),
       DeckingGoo.Name.Replace(" ", string.Empty),
       "Create a " + DeckingGoo.Description + " for a " + SlabGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat3()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat3()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       _selectedItems[i] = _dropDownItems[i][j];
 
-      if (i == 0) // change is made to length unit
+      if (i == 0) {
+        // change is made to length unit
         LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
-      else
+      } else {
         StressUnit = (PressureUnit)UnitsHelper.Parse(typeof(PressureUnit), _selectedItems[i]);
+      }
 
       base.UpdateUI();
     }
@@ -94,15 +94,15 @@ namespace ComposGH.Components {
     }
 
     protected override void SolveInstance(IGH_DataAccess DA) {
-      Length distB1 = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
-      Length distB2 = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
-      Length distB3 = (Length)Input.UnitNumber(this, DA, 2, LengthUnit);
-      Length distB4 = (Length)Input.UnitNumber(this, DA, 3, LengthUnit);
-      Length distB5 = (Length)Input.UnitNumber(this, DA, 4, LengthUnit);
-      Length depth = (Length)Input.UnitNumber(this, DA, 5, LengthUnit);
-      Length thickness = (Length)Input.UnitNumber(this, DA, 6, LengthUnit);
-      Pressure stress = (Pressure)Input.UnitNumber(this, DA, 7, StressUnit);
-      DeckingConfigurationGoo dconf = (DeckingConfigurationGoo)Input.GenericGoo<DeckingConfigurationGoo>(this, DA, 8);
+      var distB1 = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
+      var distB2 = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
+      var distB3 = (Length)Input.UnitNumber(this, DA, 2, LengthUnit);
+      var distB4 = (Length)Input.UnitNumber(this, DA, 3, LengthUnit);
+      var distB5 = (Length)Input.UnitNumber(this, DA, 4, LengthUnit);
+      var depth = (Length)Input.UnitNumber(this, DA, 5, LengthUnit);
+      var thickness = (Length)Input.UnitNumber(this, DA, 6, LengthUnit);
+      var stress = (Pressure)Input.UnitNumber(this, DA, 7, StressUnit);
+      var dconf = (DeckingConfigurationGoo)Input.GenericGoo<DeckingConfigurationGoo>(this, DA, 8);
 
       Output.SetItem(this, DA, 0, new DeckingGoo(new CustomDecking(distB1, distB2, distB3, distB4, distB5, depth, thickness, stress, (dconf == null) ? new DeckingConfiguration() : dconf.Value)));
     }

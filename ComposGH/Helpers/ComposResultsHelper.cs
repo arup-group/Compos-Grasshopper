@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace ComposGH.Helpers {
-  internal class ResultHelper {
+  internal static class ComposResultHelper {
     internal static double RoundToSignificantDigits(double d, int digits) {
       if (d == 0.0) {
         return 0.0;
-      }
-      else {
+      } else {
         double leftSideNumbers = Math.Floor(Math.Log10(Math.Abs(d))) + 1;
         double scale = Math.Pow(10, leftSideNumbers);
         double result = scale * Math.Round(d / scale, digits, MidpointRounding.AwayFromZero);
@@ -16,10 +15,10 @@ namespace ComposGH.Helpers {
         // Clean possible precision error.
         if ((int)leftSideNumbers >= digits) {
           return Math.Round(result, 0, MidpointRounding.AwayFromZero);
-        }
-        else {
-          if (Math.Abs(digits - (int)leftSideNumbers) > 15)
+        } else {
+          if (Math.Abs(digits - (int)leftSideNumbers) > 15) {
             return 0.0;
+          }
           return Math.Round(result, digits - (int)leftSideNumbers, MidpointRounding.AwayFromZero);
         }
       }
@@ -27,7 +26,7 @@ namespace ComposGH.Helpers {
 
     internal static List<double> SmartRounder(double max, double min) {
       // list to hold output values
-      List<double> roundedvals = new List<double>();
+      var roundedvals = new List<double>();
 
       // check if both are zero then return
       if (max == 0 & min == 0) {
@@ -54,36 +53,37 @@ namespace ComposGH.Helpers {
         // count the number of zeroes after the decimal point
         string valString = val.ToString().Split('.')[1];
         int digits = 0;
-        while (valString[digits] == '0')
+        while (valString[digits] == '0') {
           digits++;
+        }
         // create the factor, we want to remove the zeroes as well as making it big enough for rounding
         factor = Math.Pow(10, digits + 1);
         // scale up max/min values
-        max = max * factor;
-        min = min * factor;
+        max *= factor;
+        min *= factor;
         max = Math.Ceiling(max);
         min = Math.Floor(min);
-        max = max / factor;
-        min = min / factor;
+        max /= factor;
+        min /= factor;
         numberOfDigitsOut = digits + significantNumbers;
-      }
-      else {
+      } else {
         string valString = val.ToString();
         // count the number of digits before the decimal point
         int digits = valString.Split('.')[0].Count();
         // create the factor, we want to remove the zeroes as well as making it big enough for rounding
         int power = 10;
-        if (val < 500)
+        if (val < 500) {
           power = 5;
+        }
 
         factor = Math.Pow(power, digits - 1);
         // scale up max/min values
-        max = max / factor;
-        min = min / factor;
+        max /= factor;
+        min /= factor;
         max = Math.Ceiling(max);
         min = Math.Floor(min);
-        max = max * factor;
-        min = min * factor;
+        max *= factor;
+        min *= factor;
         numberOfDigitsOut = significantNumbers;
       }
 

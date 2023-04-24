@@ -1,30 +1,28 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ComposGH.Components {
   public class CreateStandardStudDimensions : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("c97c7e52-7aa3-438f-900a-33f6ca889b3c");
     public override GH_Exposure Exposure => GH_Exposure.secondary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override System.Drawing.Bitmap Icon => Resources.StandardStudDims;
     private StandardStudSize StdSize = StandardStudSize.D19mmH100mm;
 
-    public CreateStandardStudDimensions()
-          : base("Standard" + StudDimensionsGoo.Name.Replace(" ", string.Empty),
+    public CreateStandardStudDimensions() : base("Standard" + StudDimensionsGoo.Name.Replace(" ", string.Empty),
       "StudDimsStandard",
       "Look up a Standard " + StudDimensionsGoo.Description + " for a " + StudGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat2()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat2()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       _selectedItems[i] = _dropDownItems[i][j];
@@ -47,8 +45,9 @@ namespace ComposGH.Components {
       // spacing
       _dropDownItems.Add(Enum.GetValues(typeof(StandardStudSize)).Cast<StandardStudSize>()
           .Select(x => x.ToString()).ToList());
-      for (int i = 0; i < _dropDownItems[0].Count; i++)
+      for (int i = 0; i < _dropDownItems[0].Count; i++) {
         _dropDownItems[0][i] = _dropDownItems[0][i].Replace("D", "Ø").Replace("mmH", "/");
+      }
 
       _selectedItems.Add(StdSize.ToString().Replace("D", "Ø").Replace("mmH", "/"));
 

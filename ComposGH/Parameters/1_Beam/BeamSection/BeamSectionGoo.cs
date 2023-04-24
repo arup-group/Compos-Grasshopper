@@ -1,9 +1,9 @@
-﻿using ComposAPI;
+﻿using System;
+using ComposAPI;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using OasysGH;
 using OasysGH.Parameters;
-using System;
 
 namespace ComposGH.Parameters {
   /// <summary>
@@ -41,9 +41,8 @@ namespace ComposGH.Parameters {
     public override bool CastTo<Q>(ref Q target) {
       if (typeof(Q).IsAssignableFrom(typeof(IBeamSection))) {
         if (Value == null) {
-          target = default(Q);
-        }
-        else {
+          target = default;
+        } else {
           target = (Q)(object)Value;
         }
 
@@ -52,18 +51,21 @@ namespace ComposGH.Parameters {
 
       //Cast to string
       if (typeof(Q).IsAssignableFrom(typeof(string))) {
-        if (Value == null)
+        if (Value == null) {
           target = default;
-        else
+        } else {
           target = (Q)(object)Value.SectionDescription;
+        }
         return true;
       }
 
-      target = default(Q);
+      target = default;
       return false;
     }
 
-    public override IGH_Goo Duplicate() => new BeamSectionGoo(Value);
+    public override IGH_Goo Duplicate() {
+      return new BeamSectionGoo(Value);
+    }
   }
 
   public class BeamSectionParam : GH_Param<BeamSectionGoo> {

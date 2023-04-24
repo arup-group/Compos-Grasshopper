@@ -1,4 +1,8 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -6,10 +10,6 @@ using Grasshopper.Kernel.Types;
 using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 
 namespace ComposGH.Components {
   /// <summary>
@@ -25,10 +25,9 @@ namespace ComposGH.Components {
     private ComposFile ComposFile;
     private string FileName = null;
 
-    public SaveComposFile()
-  : base("SaveCompos", "Save", "Saves your Compos File from this parametric nightmare",
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat0()) { Hidden = true; } // sets the initial state of the component to hidden
+    public SaveComposFile() : base("SaveCompos", "Save", "Saves your Compos File from this parametric nightmare",
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat0()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void CreateAttributes() {
       m_attributes = new OasysGH.UI.ThreeButtonAtrributes(this, "Save", "Save As", "Open in Compos", SaveFile, SaveAsFile, OpenCompos, true, "Save Compos file");
@@ -55,16 +54,18 @@ namespace ComposGH.Components {
       string programFiles = Environment.ExpandEnvironmentVariables("%ProgramW6432%");
       string fileName = programFiles + @"\Oasys\Compos 8.6\Compos.exe";
 
-      if (FileName == null || FileName == "")
+      if (FileName == null || FileName == "") {
         FileName = Path.GetTempPath() + ComposFile.Guid + ".coa";
+      }
       SaveFile();
-      if (CanOpen)
+      if (CanOpen) {
         System.Diagnostics.Process.Start(fileName, FileName);
+      }
     }
 
     internal void SaveAsFile() {
       var fdi = new Rhino.UI.SaveFileDialog { Filter = "Compos File (*.coa)|*.coa|All files (*.*)|*.*" };
-      var res = fdi.ShowSaveDialog();
+      bool res = fdi.ShowSaveDialog();
       if (res) // == DialogResult.OK)
       {
         FileName = fdi.FileName;
@@ -73,8 +74,9 @@ namespace ComposGH.Components {
 
         // add panel input with string
         // delete existing inputs if any
-        while (Params.Input[2].Sources.Count > 0)
+        while (Params.Input[2].Sources.Count > 0) {
           Grasshopper.Instances.ActiveCanvas.Document.RemoveObject(Params.Input[2].Sources[0], false);
+        }
 
         // instantiate new panel
         var panel = new Grasshopper.Kernel.Special.GH_Panel();
@@ -141,20 +143,19 @@ namespace ComposGH.Components {
     }
 
     protected override void SolveInstance(IGH_DataAccess DA) {
-      List<GH_ObjectWrapper> list = new List<GH_ObjectWrapper>();
+      var list = new List<GH_ObjectWrapper>();
       if (DA.GetDataList(0, list)) {
         if (list == null || list.Count < 1) { return; }
         if (list[0].Value is MemberGoo) {
-          List<IMember> members = new List<IMember>();
+          var members = new List<IMember>();
           foreach (GH_ObjectWrapper wrapper in list) {
-            MemberGoo goo = (MemberGoo)wrapper.Value;
-            IMember member = (IMember)goo.Value;
+            var goo = (MemberGoo)wrapper.Value;
+            var member = (IMember)goo.Value;
             members.Add(member);
             Message = "";
           }
           ComposFile = new ComposFile(members);
-        }
-        else {
+        } else {
           AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Error converting input to Compos File");
           return;
         }
@@ -162,8 +163,9 @@ namespace ComposGH.Components {
         FileName = null;
 
         string tempfile = "";
-        if (DA.GetData(2, ref tempfile))
+        if (DA.GetData(2, ref tempfile)) {
           FileName = tempfile;
+        }
 
         bool save = false;
         if (DA.GetData(1, ref save)) {
@@ -173,9 +175,10 @@ namespace ComposGH.Components {
           }
         }
 
-        List<MemberGoo> savedMembers = new List<MemberGoo>();
-        foreach (IMember mem in ComposFile.GetMembers())
+        var savedMembers = new List<MemberGoo>();
+        foreach (IMember mem in ComposFile.GetMembers()) {
           savedMembers.Add(new MemberGoo(mem));
+        }
         DA.SetDataList(0, savedMembers);
       }
     }

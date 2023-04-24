@@ -1,9 +1,9 @@
-﻿using ComposAPI;
+﻿using System;
+using ComposAPI;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using OasysGH;
 using OasysGH.Parameters;
-using System;
 
 namespace ComposGH.Parameters {
   /// <summary>
@@ -17,7 +17,9 @@ namespace ComposGH.Parameters {
 
     public StudDimensionsGoo(IStudDimensions item) : base(item) { }
 
-    public override IGH_Goo Duplicate() => new StudDimensionsGoo(Value);
+    public override IGH_Goo Duplicate() {
+      return new StudDimensionsGoo(Value);
+    }
   }
 
   /// <summary>
@@ -34,12 +36,11 @@ namespace ComposGH.Parameters {
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.StudDimParam;
 
-    public StudDimensionsParam()
-                                          : base(new GH_InstanceDescription(
-    StudDimensionsGoo.Name,
-    StudDimensionsGoo.NickName,
-    StudDimensionsGoo.Description + " parameter",
-    Components.Ribbon.CategoryName.Name(),
-    Components.Ribbon.SubCategoryName.Cat10())) { }
+    public StudDimensionsParam() : base(new GH_InstanceDescription(
+      StudDimensionsGoo.Name,
+      StudDimensionsGoo.NickName,
+      StudDimensionsGoo.Description + " parameter",
+      Components.Ribbon.CategoryName.Name(),
+      Components.Ribbon.SubCategoryName.Cat10())) { }
   }
 }

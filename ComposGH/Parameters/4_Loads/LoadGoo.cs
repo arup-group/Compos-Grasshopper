@@ -15,6 +15,8 @@ namespace ComposGH.Parameters {
 
     public LoadGoo(ILoad item) : base(item) { }
 
-    public override IGH_Goo Duplicate() => new LoadGoo(Value);
+    public override IGH_Goo Duplicate() {
+      return new LoadGoo(Value);
+    }
   }
 }

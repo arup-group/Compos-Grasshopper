@@ -1,4 +1,8 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -7,15 +11,10 @@ using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
 using OasysGH.UI;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 
 namespace ComposGH.Components {
   public class OpenComposFile : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("51e4fa31-a626-45a0-a3f6-70175ebb80e4");
     public override GH_Exposure Exposure => GH_Exposure.primary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
@@ -23,10 +22,9 @@ namespace ComposGH.Components {
     protected override Bitmap Icon => Resources.OpenModel;
     private Guid panelGUID = Guid.NewGuid();
 
-    public OpenComposFile()
-          : base("OpenCompos", "Open", "Open an existing Compos .coa file",
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat0()) { Hidden = true; } // sets the initial state of the component to hidden
+    public OpenComposFile() : base("OpenCompos", "Open", "Open an existing Compos .coa file",
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat0()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void CreateAttributes() {
       m_attributes = new ButtonComponentAttributes(this, "Open", OpenFile, "Open Compos file");
@@ -51,7 +49,7 @@ namespace ComposGH.Components {
 
     internal void OpenFile() {
       var fdi = new Rhino.UI.OpenFileDialog { Filter = "Compos Files(*.coa)|*.coa|All files (*.*)|*.*" };
-      var res = fdi.ShowOpenDialog();
+      bool res = fdi.ShowOpenDialog();
       if (res) // == DialogResult.OK)
       {
         FileName = fdi.FileName;
@@ -62,11 +60,11 @@ namespace ComposGH.Components {
 
         // set the location relative to the open component on the canvas
         panel.Attributes.Pivot = new PointF((float)Attributes.DocObject.Attributes.Bounds.Left -
-            panel.Attributes.Bounds.Width - 30, (float)Params.Input[0].Attributes.Pivot.Y - panel.Attributes.Bounds.Height / 2);
+            panel.Attributes.Bounds.Width - 30, (float)Params.Input[0].Attributes.Pivot.Y - (panel.Attributes.Bounds.Height / 2));
 
         // check for existing input
         while (Params.Input[0].Sources.Count > 0) {
-          var input = Params.Input[0].Sources[0];
+          IGH_Param input = Params.Input[0].Sources[0];
           // check if input is the one we automatically create below
           if (Params.Input[0].Sources[0].InstanceGuid == panelGUID) {
             // update the UserText in existing panel
@@ -113,22 +111,25 @@ namespace ComposGH.Components {
     }
 
     protected override void SolveInstance(IGH_DataAccess DA) {
-      GH_ObjectWrapper gh_typ = new GH_ObjectWrapper();
+      var gh_typ = new GH_ObjectWrapper();
       if (DA.GetData(0, ref gh_typ)) {
         if (gh_typ.Value is GH_String) {
-          string tempfile = "";
-          if (GH_Convert.ToString(gh_typ, out tempfile, GH_Conversion.Both))
+          if (GH_Convert.ToString(gh_typ, out string tempfile, GH_Conversion.Both)) {
             FileName = tempfile;
+          }
 
-          if (!FileName.EndsWith(".coa"))
-            FileName = FileName + ".coa";
+          if (!FileName.EndsWith(".coa")) {
+
+            FileName += ".coa";
+          }
 
           IComposFile composFile = ComposFile.Open(FileName);
           PostHog.ModelIO(PluginInfo, "openCOA", (int)(new FileInfo(FileName).Length / 1024));
 
-          List<MemberGoo> members = new List<MemberGoo>();
-          foreach (IMember mem in composFile.GetMembers())
+          var members = new List<MemberGoo>();
+          foreach (IMember mem in composFile.GetMembers()) {
             members.Add(new MemberGoo(mem));
+          }
           DA.SetDataList(0, members);
         }
       }

@@ -1,4 +1,5 @@
-﻿using ComposAPI;
+﻿using System;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -7,7 +8,6 @@ using OasysGH.Components;
 using OasysGH.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
 
 namespace ComposGH.Components {
   public class CreateCreepShrinkageParams : GH_OasysComponent {
@@ -17,12 +17,11 @@ namespace ComposGH.Components {
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override System.Drawing.Bitmap Icon => Resources.CreepShrinkageParams;
 
-    public CreateCreepShrinkageParams()
-      : base("Create" + CreepShrinkageParametersGoo.Name.Replace(" ", string.Empty),
-          CreepShrinkageParametersGoo.Name.Replace(" ", string.Empty),
-          "Create a " + CreepShrinkageParametersGoo.Description + " for a (EN) " + DesignCodeGoo.Description,
-            Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat5()) { Hidden = true; } // sets the initial state of the component to hidden
+    public CreateCreepShrinkageParams() : base("Create" + CreepShrinkageParametersGoo.Name.Replace(" ", string.Empty),
+      CreepShrinkageParametersGoo.Name.Replace(" ", string.Empty),
+      "Create a " + CreepShrinkageParametersGoo.Description + " for a (EN) " + DesignCodeGoo.Description,
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat5()) { Hidden = true; } // sets the initial state of the component to hidden
 
     protected override void RegisterInputParams(GH_InputParamManager pManager) {
       pManager.AddNumberParameter("Creep Coefficient", "CC", "Creep multiplier used for calculating E ratio for long term and shrinkage (see clause 5.4.2.2 of EN 1994-1-1:2004)", GH_ParamAccess.item);
@@ -38,22 +37,26 @@ namespace ComposGH.Components {
     }
 
     protected override void SolveInstance(IGH_DataAccess DA) {
-      CreepShrinkageParametersEN csparams = new CreepShrinkageParametersEN();
+      var csparams = new CreepShrinkageParametersEN();
 
       double creepmultiplier = 0;
-      if (DA.GetData(0, ref creepmultiplier))
+      if (DA.GetData(0, ref creepmultiplier)) {
         csparams.CreepCoefficient = creepmultiplier;
+      }
 
       int ageLoad = 0;
-      if (DA.GetData(1, ref ageLoad))
+      if (DA.GetData(1, ref ageLoad)) {
         csparams.ConcreteAgeAtLoad = ageLoad;
+      }
 
       int ageFinal = 36500;
-      if (DA.GetData(2, ref ageFinal))
+      if (DA.GetData(2, ref ageFinal)) {
         csparams.FinalConcreteAgeCreep = ageFinal;
+      }
 
-      if (Params.Input[3].Sources.Count > 0)
+      if (Params.Input[3].Sources.Count > 0) {
         csparams.RelativeHumidity = (Ratio)Input.UnitNumber(this, DA, 3, RatioUnit.DecimalFraction);
+      }
 
       DA.SetData(0, new CreepShrinkageParametersGoo(csparams));
     }

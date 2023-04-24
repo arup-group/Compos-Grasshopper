@@ -1,9 +1,9 @@
-﻿using ComposAPI;
+﻿using System;
+using ComposAPI;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using OasysGH;
 using OasysGH.Parameters;
-using System;
 
 namespace ComposGH.Parameters {
   /// <summary>
@@ -17,7 +17,9 @@ namespace ComposGH.Parameters {
 
     public WebOpeningStiffenersGoo(IWebOpeningStiffeners item) : base(item) { }
 
-    public override IGH_Goo Duplicate() => new WebOpeningStiffenersGoo(Value);
+    public override IGH_Goo Duplicate() {
+      return new WebOpeningStiffenersGoo(Value);
+    }
   }
 
   /// <summary>
@@ -34,8 +36,7 @@ namespace ComposGH.Parameters {
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.WebOpeningStiffenerParam;
 
-    public WebOpeningStiffenersParam()
-                                          : base(new GH_InstanceDescription(
+    public WebOpeningStiffenersParam() : base(new GH_InstanceDescription(
     WebOpeningStiffenersGoo.Name,
     WebOpeningStiffenersGoo.NickName,
     WebOpeningStiffenersGoo.Description + " parameter",

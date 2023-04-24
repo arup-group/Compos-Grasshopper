@@ -1,27 +1,25 @@
-﻿using ComposAPI;
+﻿using System;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using System;
 
 namespace ComposGH.Components {
   public class CreateRestraint : GH_OasysComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("82c87cde-f442-475b-9131-8f2974c42499");
     public override GH_Exposure Exposure => GH_Exposure.secondary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
     protected override System.Drawing.Bitmap Icon => Resources.CreateRestraint;
 
-    public CreateRestraint()
-      : base("Create" + RestraintGoo.Name.Replace(" ", string.Empty),
-          RestraintGoo.Name.Replace(" ", string.Empty),
-          "Create a " + RestraintGoo.Description + " for a " + BeamGoo.Description,
-            Ribbon.CategoryName.Name(),
-            Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
+    public CreateRestraint() : base("Create" + RestraintGoo.Name.Replace(" ", string.Empty),
+      RestraintGoo.Name.Replace(" ", string.Empty),
+      "Create a " + RestraintGoo.Description + " for a " + BeamGoo.Description,
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
 
     protected override void RegisterInputParams(GH_InputParamManager pManager) {
       pManager.AddBooleanParameter("Top flng. lat. res. constr.stg.", "TFLR", "Top flange laterally restrained continuously at construction stage (default = true)", GH_ParamAccess.item, true);
@@ -42,24 +40,24 @@ namespace ComposGH.Components {
       IRestraint res;
 
       if (Params.Input[1].Sources.Count > 0) {
-        SupportsGoo constructionGoo = (SupportsGoo)Input.GenericGoo<SupportsGoo>(this, DA, 1);
+        var constructionGoo = (SupportsGoo)Input.GenericGoo<SupportsGoo>(this, DA, 1);
         construction = constructionGoo.Value;
 
         if (Params.Input[0].Sources.Count > 0) {
           AddRuntimeMessage(tflr ? GH_RuntimeMessageLevel.Warning : GH_RuntimeMessageLevel.Remark, "When setting Construction Stage supports it is assumed Top Flange is not laterally restrained");
         }
         tflr = false;
-      }
-      else
+      } else {
         construction = new Supports();
+      }
 
       if (Params.Input[2].Sources.Count > 0) {
-        SupportsGoo final = (SupportsGoo)Input.GenericGoo<SupportsGoo>(this, DA, 2);
+        var final = (SupportsGoo)Input.GenericGoo<SupportsGoo>(this, DA, 2);
         if (final == null) { return; }
         res = new Restraint(tflr, construction, final.Value);
-      }
-      else
+      } else {
         res = new Restraint(tflr, construction);
+      }
 
       DA.SetData(0, new RestraintGoo(res));
     }

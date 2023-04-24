@@ -1,14 +1,14 @@
-﻿using ComposGH.Parameters;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace ComposGH.Components {
   public class CataloguesSections : GH_OasysDropDownComponent {
@@ -19,10 +19,9 @@ namespace ComposGH.Components {
     protected override System.Drawing.Bitmap Icon => Resources.CatalogueID;
     private List<string> Catalogues = ComposAPI.Helpers.CatalogueSectionType.CatalogueSectionTypes.Values.Select(x => x.ToString()).ToList();
 
-    public CataloguesSections()
-          : base("SectionCatID", "Cat", "Get Compos Section Catalogue IDs for a " + DesignCriteriaGoo.Description,
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat8()) { Hidden = true; } // sets the initial state of the component to hidden
+    public CataloguesSections() : base("SectionCatID", "Cat", "Get Compos Section Catalogue IDs for a " + DesignCriteriaGoo.Description,
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat8()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       // change selected item
@@ -58,7 +57,7 @@ namespace ComposGH.Components {
       string s = "";
       if (DA.GetData(0, ref s)) {
         s = s.ToLower();
-        List<int> catIDs = new List<int>();
+        var catIDs = new List<int>();
         for (int i = 0; i < Catalogues.Count; i++) {
           if (Catalogues[i].ToLower().Contains(s)) {
             catIDs.Add(catDic.Keys.ElementAt(i));
@@ -79,21 +78,20 @@ namespace ComposGH.Components {
           _selectedItems[0] = " - ";
           DA.SetDataList(0, catIDs);
           AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Found the following catalogues:");
-          foreach (int i in catIDs)
+          foreach (int i in catIDs) {
             AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, catDic[i]);
-        }
-        else if (catIDs.Count == 1) {
+          }
+        } else if (catIDs.Count == 1) {
           _selectedItems[0] = catDic[catIDs[0]];
           DA.SetDataList(0, catIDs);
-        }
-        else {
+        } else {
           AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Could not find a matching catalogue");
         }
         return;
-      }
-      else {
-        if (_selectedItems[0] == " - ")
+      } else {
+        if (_selectedItems[0] == " - ") {
           _selectedItems[0] = Catalogues[4];
+        }
 
         Output.SetItem(this, DA, 0, new GH_Integer(catDic.FirstOrDefault(x => x.Value == _selectedItems[0]).Key));
       }

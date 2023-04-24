@@ -15,6 +15,8 @@ namespace ComposGH.Parameters {
 
     public SlabGoo(ISlab item) : base(item) { }
 
-    public override IGH_Goo Duplicate() => new SlabGoo(Value);
+    public override IGH_Goo Duplicate() {
+      return new SlabGoo(Value);
+    }
   }
 }

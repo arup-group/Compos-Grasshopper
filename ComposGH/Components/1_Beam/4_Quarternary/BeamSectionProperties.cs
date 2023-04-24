@@ -1,4 +1,6 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using ComposAPI;
 using ComposGH.Helpers;
 using ComposGH.Parameters;
 using ComposGH.Properties;
@@ -10,13 +12,10 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
 
 namespace ComposGH.Components {
   public class BeamSectionProperties : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
-    // including name, exposure level and icon
+    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("93b27356-f92d-454f-b39d-5c7e2c607391");
 
     public override GH_Exposure Exposure => GH_Exposure.quarternary;
@@ -26,12 +25,11 @@ namespace ComposGH.Components {
 
     private int ProfileSerialized = 0;
 
-    public BeamSectionProperties()
-                  : base(BeamSectionGoo.Name.Replace(" ", string.Empty) + "Props",
+    public BeamSectionProperties() : base(BeamSectionGoo.Name.Replace(" ", string.Empty) + "Props",
       BeamSectionGoo.Name.Replace(" ", string.Empty),
       "Get " + BeamSectionGoo.Description + " Properties",
-        Ribbon.CategoryName.Name(),
-        Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
+      Ribbon.CategoryName.Name(),
+      Ribbon.SubCategoryName.Cat1()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void SetSelected(int i, int j) {
       // change selected item
@@ -84,7 +82,7 @@ namespace ComposGH.Components {
     }
 
     protected override void SolveInstance(IGH_DataAccess DA) {
-      BeamSection profile = new BeamSection(CustomInput.BeamSection(this, DA, 0, false));
+      var profile = new BeamSection(CustomInput.BeamSection(this, DA, 0, false));
 
       int i = 0;
       DA.SetData(i++, new GH_UnitNumber(profile.Depth.ToUnit(LengthUnit)));

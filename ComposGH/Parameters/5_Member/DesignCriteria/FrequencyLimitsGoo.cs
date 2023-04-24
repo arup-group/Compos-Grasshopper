@@ -1,9 +1,9 @@
-﻿using ComposAPI;
+﻿using System;
+using ComposAPI;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using OasysGH;
 using OasysGH.Parameters;
-using System;
 
 namespace ComposGH.Parameters {
   /// <summary>
@@ -17,7 +17,9 @@ namespace ComposGH.Parameters {
 
     public FrequencyLimitsGoo(IFrequencyLimits item) : base(item) { }
 
-    public override IGH_Goo Duplicate() => new FrequencyLimitsGoo(Value);
+    public override IGH_Goo Duplicate() {
+      return new FrequencyLimitsGoo(Value);
+    }
   }
 
   /// <summary>
