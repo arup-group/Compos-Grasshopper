@@ -1,7 +1,7 @@
-﻿using ComposAPI.Helpers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using ComposAPI.Helpers;
 using Xunit;
 
 namespace ComposAPI.File.Tests {
@@ -12,7 +12,7 @@ namespace ComposAPI.File.Tests {
     [Theory]
     [InlineData("Compos1.coa", "MEMBER-1")]
     public void AnalyseMemberTest(string fileName, string memberName) {
-      ComposFile file = ComposFile.Open(Path.GetFullPath(ComposFileTest.RelativePath + fileName));
+      var file = ComposFile.Open(Path.GetFullPath(ComposFileTest.RelativePath + fileName));
       short status = file.Analyse(memberName);
       Assert.Equal(0, status);
     }
@@ -47,7 +47,7 @@ namespace ComposAPI.File.Tests {
     public void AnalyseTest(string fileName) {
       string path = Path.GetFullPath(ComposFileTest.RelativePath);
 
-      ComposFile file = ComposFile.Open(Path.Combine(path, fileName));
+      var file = ComposFile.Open(Path.Combine(path, fileName));
       short status = file.Analyse();
       Assert.Equal(0, status);
     }
@@ -55,7 +55,7 @@ namespace ComposAPI.File.Tests {
     [Theory]
     [InlineData("Compos1.coa", "MEMBER-1")]
     public void BeamSectDescTest(string fileName, string memberName) {
-      ComposFile file = ComposFile.Open(Path.GetFullPath(ComposFileTest.RelativePath + fileName));
+      var file = ComposFile.Open(Path.GetFullPath(ComposFileTest.RelativePath + fileName));
       string status = file.BeamSectDesc(memberName);
       Assert.Equal("STD I 600. 200. 15. 25.", status);
     }
@@ -66,7 +66,7 @@ namespace ComposAPI.File.Tests {
       string path = Path.GetFullPath(ComposFileTest.RelativePath);
 
       foreach (string fileName in Directory.GetFiles(path, searchPattern, SearchOption.TopDirectoryOnly)) {
-        ComposFile file = ComposFile.Open(fileName);
+        var file = ComposFile.Open(fileName);
         short status = file.CodeSatisfied(memberName);
         Assert.Equal(expextedStatus, status);
       }
@@ -75,7 +75,7 @@ namespace ComposAPI.File.Tests {
     [Theory]
     [InlineData("Compos1.coa", "MEMBER-1")]
     public void DesignMemberTest(string fileName, string memberName) {
-      ComposFile file = ComposFile.Open(Path.GetFullPath(ComposFileTest.RelativePath + fileName));
+      var file = ComposFile.Open(Path.GetFullPath(ComposFileTest.RelativePath + fileName));
       short status = file.Design(memberName);
       Assert.Equal(0, status);
     }
@@ -110,7 +110,7 @@ namespace ComposAPI.File.Tests {
     public void DesignTest(string fileName) {
       string path = Path.GetFullPath(ComposFileTest.RelativePath);
 
-      ComposFile file = ComposFile.Open(Path.Combine(path, fileName));
+      var file = ComposFile.Open(Path.Combine(path, fileName));
       short status = file.Design();
       Assert.Equal(0, status);
     }
@@ -145,7 +145,7 @@ namespace ComposAPI.File.Tests {
     public void FromAndToCoaStringTest(string fileName) {
       string path = Path.GetFullPath(ComposFileTest.RelativePath);
       string expectedCoaString = System.IO.File.ReadAllText(Path.Combine(path, fileName), Encoding.UTF8);
-      ComposFile file = ComposFile.FromCoaString(expectedCoaString);
+      var file = ComposFile.FromCoaString(expectedCoaString);
       string actualCoaString = file.ToCoaString();
       ComposFileTest.Compare(expectedCoaString, actualCoaString);
     }
@@ -155,8 +155,9 @@ namespace ComposAPI.File.Tests {
       List<string> actualLines = CoaHelper.SplitAndStripLines(actualCoaString);
 
       foreach (string expectedLine in expectedLines) {
-        if (expectedLine != "")
+        if (expectedLine != "") {
           Assert.Contains(expectedLine, actualLines);
+        }
       }
     }
   }

@@ -1,7 +1,7 @@
+using System.Collections.Generic;
 using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Members.Tests {
@@ -14,7 +14,7 @@ namespace ComposAPI.Members.Tests {
       // empty constructor creates default (non-EC4) values
 
       // 2 create object instance with constructor
-      LoadFactors loadFactors = new LoadFactors();
+      var loadFactors = new LoadFactors();
 
       // 3 check that inputs are set in object's members
       Assert.Equal(1.4, loadFactors.ConstantDead);
@@ -30,7 +30,7 @@ namespace ComposAPI.Members.Tests {
     public void DuplicateLFTest() {
       // 1 create with constructor and duplicate
       LoadFactors original = ConstructorTest();
-      LoadFactors duplicate = (LoadFactors)original.Duplicate();
+      var duplicate = (LoadFactors)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -42,7 +42,7 @@ namespace ComposAPI.Members.Tests {
     [Theory]
     [InlineData("SAFETY_FACTOR_LOAD	MEMBER-1	1.10000	1.20000	1.30000	1.40000\n", 1.1, 1.2, 1.3, 1.4)]
     public void FromCoaStringTest(string coaString, double expected_constantDead, double expected_finalDead, double expected_constantLive, double expected_finalLive) {
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
 
       List<string> parameters = CoaHelper.Split(coaString);
       ILoadFactors loadFactors = LoadFactors.FromCoaString(parameters);
@@ -56,11 +56,12 @@ namespace ComposAPI.Members.Tests {
     [Theory]
     [InlineData(1.1, 1.2, 1.3, 1.4, "SAFETY_FACTOR_LOAD	MEMBER-1	1.10000	1.20000	1.30000	1.40000\n")]
     public void ToCoaStringTest(double constantDead, double finalDead, double constantLive, double finalLive, string expected_coaString) {
-      LoadFactors loadFactors = new LoadFactors();
-      loadFactors.ConstantDead = constantDead;
-      loadFactors.FinalDead = finalDead;
-      loadFactors.ConstantLive = constantLive;
-      loadFactors.FinalLive = finalLive;
+      var loadFactors = new LoadFactors {
+        ConstantDead = constantDead,
+        FinalDead = finalDead,
+        ConstantLive = constantLive,
+        FinalLive = finalLive
+      };
       string coaString = loadFactors.ToCoaString("MEMBER-1");
 
       Assert.Equal(expected_coaString, coaString);

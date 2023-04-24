@@ -1,8 +1,8 @@
-﻿using ComposGHTests.Helpers;
+﻿using System.Collections.Generic;
+using ComposGHTests.Helpers;
 using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Slabs.Tests {
@@ -13,11 +13,11 @@ namespace ComposAPI.Slabs.Tests {
     [Theory]
     [InlineData(500)]
     public TransverseReinforcement ConstructorTest1(double fy) {
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
 
       // 2 create object instance with constructor
-      ReinforcementMaterial material = new ReinforcementMaterial(new Pressure(fy, units.Stress));
-      TransverseReinforcement reinforcement = new TransverseReinforcement(material);
+      var material = new ReinforcementMaterial(new Pressure(fy, units.Stress));
+      var reinforcement = new TransverseReinforcement(material);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(material, reinforcement.Material);
@@ -30,13 +30,13 @@ namespace ComposAPI.Slabs.Tests {
     [Theory]
     [InlineData(500)]
     public void ConstructorTest2(double fy) {
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
 
       // 2 create object instance with constructor
       IReinforcementMaterial material = new ReinforcementMaterial(new Pressure(fy, units.Stress));
-      List<ICustomTransverseReinforcementLayout> layouts = new List<ICustomTransverseReinforcementLayout>() { new CustomTransverseReinforcementLayout() };
+      var layouts = new List<ICustomTransverseReinforcementLayout>() { new CustomTransverseReinforcementLayout() };
 
-      TransverseReinforcement reinforcement = new TransverseReinforcement(material, layouts);
+      var reinforcement = new TransverseReinforcement(material, layouts);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(material, reinforcement.Material);
@@ -48,7 +48,7 @@ namespace ComposAPI.Slabs.Tests {
     public void DuplicateTest() {
       // 1 create with constructor and duplicate
       TransverseReinforcement original = ConstructorTest1(550);
-      TransverseReinforcement duplicate = (TransverseReinforcement)original.Duplicate();
+      var duplicate = (TransverseReinforcement)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -111,10 +111,10 @@ namespace ComposAPI.Slabs.Tests {
     [Theory]
     [InlineData(RebarGrade.BS_500X, "REBAR_MATERIAL	MEMBER-1	STANDARD	500X\nREBAR_LONGITUDINAL	MEMBER-1	PROGRAM_DESIGNED\nREBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\n")]
     public void ToCoaStringCustomLayoutTest(RebarGrade grade, string expected_coaString) {
-      ComposUnits units = ComposUnits.GetStandardUnits();
-      List<ICustomTransverseReinforcementLayout> customReinforcementLayout = new List<ICustomTransverseReinforcementLayout>() { new CustomTransverseReinforcementLayout(new Length(0, units.Length), new Length(1, units.Length), new Length(8, units.Length), new Length(100, units.Length), new Length(35, units.Length)) };
+      var units = ComposUnits.GetStandardUnits();
+      var customReinforcementLayout = new List<ICustomTransverseReinforcementLayout>() { new CustomTransverseReinforcementLayout(new Length(0, units.Length), new Length(1, units.Length), new Length(8, units.Length), new Length(100, units.Length), new Length(35, units.Length)) };
 
-      TransverseReinforcement transverseReinforcement = new TransverseReinforcement(new ReinforcementMaterial(grade), customReinforcementLayout);
+      var transverseReinforcement = new TransverseReinforcement(new ReinforcementMaterial(grade), customReinforcementLayout);
 
       string coaString = transverseReinforcement.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
 
@@ -124,7 +124,7 @@ namespace ComposAPI.Slabs.Tests {
     [Theory]
     [InlineData(RebarGrade.AS_D500E, "REBAR_MATERIAL	MEMBER-1	STANDARD	D500E\nREBAR_LONGITUDINAL	MEMBER-1	PROGRAM_DESIGNED\nREBAR_TRANSVERSE	MEMBER-1	PROGRAM_DESIGNED\n")]
     public void ToCoaStringTest(RebarGrade grade, string expected_coaString) {
-      TransverseReinforcement transverseReinforcement = new TransverseReinforcement(new ReinforcementMaterial(grade));
+      var transverseReinforcement = new TransverseReinforcement(new ReinforcementMaterial(grade));
 
       string coaString = transverseReinforcement.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
 

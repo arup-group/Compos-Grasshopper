@@ -1,9 +1,9 @@
+using System.Collections.Generic;
 using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Members.Tests {
@@ -12,7 +12,7 @@ namespace ComposAPI.Members.Tests {
 
     [Fact]
     public void ConstructorTest() {
-      BeamSizeLimits beamSizeLimits = new BeamSizeLimits(0.3, 1.1, 0.2, 0.6, LengthUnit.Meter);
+      var beamSizeLimits = new BeamSizeLimits(0.3, 1.1, 0.2, 0.6, LengthUnit.Meter);
 
       Assert.Equal(new Length(0.3, LengthUnit.Meter), beamSizeLimits.MinDepth);
       Assert.Equal(new Length(1.1, LengthUnit.Meter), beamSizeLimits.MaxDepth);
@@ -23,8 +23,8 @@ namespace ComposAPI.Members.Tests {
     [Fact]
     public void DuplicateTest() {
       // 1 create with constructor and duplicate
-      BeamSizeLimits original = new BeamSizeLimits();
-      BeamSizeLimits duplicate = (BeamSizeLimits)original.Duplicate();
+      var original = new BeamSizeLimits();
+      var duplicate = (BeamSizeLimits)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -35,7 +35,7 @@ namespace ComposAPI.Members.Tests {
 
     [Fact]
     public void EmptyConstructorTest() {
-      BeamSizeLimits beamSizeLimits = new BeamSizeLimits();
+      var beamSizeLimits = new BeamSizeLimits();
 
       Assert.Equal(new Length(0.2, LengthUnit.Meter), beamSizeLimits.MinDepth);
       Assert.Equal(new Length(1, LengthUnit.Meter), beamSizeLimits.MaxDepth);
@@ -48,9 +48,9 @@ namespace ComposAPI.Members.Tests {
     public void FromCoaStringTest(string coaString, double minDepth, double maxDepth, double minWidth, double maxWidth) {
       // Assemble
       LengthUnit unit = LengthUnit.Millimeter;
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       units.Section = unit;
-      BeamSizeLimits expectedBeamSizeLimits = new BeamSizeLimits(minDepth, maxDepth, minWidth, maxWidth, unit);
+      var expectedBeamSizeLimits = new BeamSizeLimits(minDepth, maxDepth, minWidth, maxWidth, unit);
       List<string> parameters = CoaHelper.Split(coaString);
 
       // Act
@@ -65,9 +65,9 @@ namespace ComposAPI.Members.Tests {
     public void ToCoaStringTest(string expected_CoaString, double minDepth, double maxDepth, double minWidth, double maxWidth) {
       // Assemble
       LengthUnit unit = LengthUnit.Millimeter;
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       units.Section = unit;
-      BeamSizeLimits beamSizeLimits = new BeamSizeLimits(minDepth, maxDepth, minWidth, maxWidth, unit);
+      var beamSizeLimits = new BeamSizeLimits(minDepth, maxDepth, minWidth, maxWidth, unit);
 
       // Act
       string coaString = beamSizeLimits.ToCoaString("MEMBER-1", units);

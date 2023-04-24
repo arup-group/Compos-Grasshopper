@@ -1,8 +1,8 @@
-﻿using ComposGHTests.Helpers;
+﻿using System.Collections.Generic;
+using ComposGHTests.Helpers;
 using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Slabs.Tests {
@@ -22,13 +22,13 @@ namespace ComposAPI.Slabs.Tests {
     }
 
     public static Slab Example1Slab() {
-      ConcreteMaterial material = (ConcreteMaterial)ConcreteMaterialMother.CreateConcreteMaterial();
+      var material = (ConcreteMaterial)ConcreteMaterialMother.CreateConcreteMaterial();
       material.Grade = ConcreteGrade.C40.ToString();
 
       ISlabDimension slabDimension1 = new SlabDimension(Length.Zero, new Length(0.13, LengthUnit.Meter), new Length(1.5, LengthUnit.Meter), new Length(1.5, LengthUnit.Meter), true);
       ISlabDimension slabDimension2 = new SlabDimension(new Ratio(15, RatioUnit.Percent), new Length(0.15, LengthUnit.Meter), new Length(1.0, LengthUnit.Meter), new Length(1.0, LengthUnit.Meter), false);
       ISlabDimension slabDimension3 = new SlabDimension(new Length(9, LengthUnit.Meter), new Length(0.15, LengthUnit.Meter), new Length(1.0, LengthUnit.Meter), new Length(1.0, LengthUnit.Meter), new Length(1, LengthUnit.Meter), new Length(1, LengthUnit.Meter), true);
-      List<ISlabDimension> slabDimensions = new List<ISlabDimension>() { slabDimension1, slabDimension2, slabDimension3 };
+      var slabDimensions = new List<ISlabDimension>() { slabDimension1, slabDimension2, slabDimension3 };
 
       IReinforcementMaterial rebarMat = new ReinforcementMaterial(RebarGrade.BS_460T);
       ITransverseReinforcement transverseReinforcement = new TransverseReinforcement(rebarMat);
@@ -50,12 +50,12 @@ namespace ComposAPI.Slabs.Tests {
     public void ConstructorTest1() {
       // 2 create object instance with constructor
       IConcreteMaterial material = ConcreteMaterialMother.CreateConcreteMaterial();
-      List<ISlabDimension> dimensions = new List<ISlabDimension>() { SlabDimensionMother.CreateSlabDimension() };
-      TransverseReinforcement transverse = new TransverseReinforcement(new ReinforcementMaterial(RebarGrade.EN_500B));
-      MeshReinforcement mesh = new MeshReinforcement();
-      Decking decking = new Decking();
+      var dimensions = new List<ISlabDimension>() { SlabDimensionMother.CreateSlabDimension() };
+      var transverse = new TransverseReinforcement(new ReinforcementMaterial(RebarGrade.EN_500B));
+      var mesh = new MeshReinforcement();
+      var decking = new Decking();
 
-      Slab slab = new Slab(material, dimensions, transverse, mesh, decking);
+      var slab = new Slab(material, dimensions, transverse, mesh, decking);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(material, slab.Material);
@@ -70,10 +70,10 @@ namespace ComposAPI.Slabs.Tests {
     public void ConstructorTest2() {
       // 2 create object instance with constructor
       IConcreteMaterial material = ConcreteMaterialMother.CreateConcreteMaterial();
-      List<ISlabDimension> dimensions = new List<ISlabDimension>() { SlabDimensionMother.CreateSlabDimension() };
-      TransverseReinforcement transverse = new TransverseReinforcement(new ReinforcementMaterial(RebarGrade.EN_500B));
+      var dimensions = new List<ISlabDimension>() { SlabDimensionMother.CreateSlabDimension() };
+      var transverse = new TransverseReinforcement(new ReinforcementMaterial(RebarGrade.EN_500B));
 
-      Slab slab = new Slab(material, dimensions, transverse);
+      var slab = new Slab(material, dimensions, transverse);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(material, slab.Material);
@@ -87,7 +87,7 @@ namespace ComposAPI.Slabs.Tests {
     public void DuplicateTest() {
       // 1 create with constructor and duplicate
       Slab original = SlabMother.Example1Slab();
-      Slab duplicate = (Slab)original.Duplicate();
+      var duplicate = (Slab)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -99,11 +99,11 @@ namespace ComposAPI.Slabs.Tests {
     [Fact]
     public void FromCoaStringTest() {
       // Assemble
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       Slab expectedSlab = SlabMother.Example1Slab();
 
       // Act
-      Slab slab = (Slab)Slab.FromCoaString(SlabMother.Example1CoaString(), "MEMBER-1", Code.BS5950_3_1_1990_A1_2010, units);
+      var slab = (Slab)Slab.FromCoaString(SlabMother.Example1CoaString(), "MEMBER-1", Code.BS5950_3_1_1990_A1_2010, units);
 
       // Assert
       ObjectExtension.Equals(expectedSlab, slab);
@@ -112,7 +112,7 @@ namespace ComposAPI.Slabs.Tests {
     [Fact]
     public void ToCoaStringTest() {
       // Assemble
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       string expectedCoaString = SlabMother.Example1CoaString();
 
       // Act

@@ -10,8 +10,8 @@ namespace ComposAPI.Members.Tests {
     [Fact]
     public void DuplicateASNZTest() {
       // 1 create with constructor and duplicate
-      CodeOptionsASNZ original = new CodeOptionsASNZ();
-      CodeOptionsASNZ duplicate = (CodeOptionsASNZ)original.Duplicate();
+      var original = new CodeOptionsASNZ();
+      var duplicate = (CodeOptionsASNZ)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -23,8 +23,8 @@ namespace ComposAPI.Members.Tests {
     [Fact]
     public void DuplicateEC4Test() {
       // 1 create with constructor and duplicate
-      CodeOptionsEN original = new CodeOptionsEN();
-      CodeOptionsEN duplicate = (CodeOptionsEN)original.Duplicate();
+      var original = new CodeOptionsEN();
+      var duplicate = (CodeOptionsEN)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -39,7 +39,7 @@ namespace ComposAPI.Members.Tests {
       // empty constructor creates default AS/NZ values
 
       // 2 create object instance with constructor
-      CodeOptionsASNZ codeOptions = new CodeOptionsASNZ();
+      var codeOptions = new CodeOptionsASNZ();
 
       // 3 check that inputs are set in object's members
       Assert.False(codeOptions.ConsiderShrinkageDeflection);
@@ -53,8 +53,8 @@ namespace ComposAPI.Members.Tests {
     [Fact]
     public void TestCodeOptionsDuplicate() {
       // 1 create with constructor and duplicate
-      CodeOptionsASNZ original = new CodeOptionsASNZ();
-      CodeOptionsASNZ duplicate = (CodeOptionsASNZ)original.Duplicate();
+      var original = new CodeOptionsASNZ();
+      var duplicate = (CodeOptionsASNZ)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.False(duplicate.ConsiderShrinkageDeflection);
@@ -62,10 +62,12 @@ namespace ComposAPI.Members.Tests {
       Assert.Equal(2.0, duplicate.ShortTerm.CreepCoefficient);
 
       // 3 make some changes to duplicate
-      CreepShrinkageParametersASNZ shortTerm = new CreepShrinkageParametersASNZ();
-      shortTerm.CreepCoefficient = 4.0;
-      CreepShrinkageParametersASNZ longTerm = new CreepShrinkageParametersASNZ();
-      longTerm.CreepCoefficient = 6.0;
+      var shortTerm = new CreepShrinkageParametersASNZ {
+        CreepCoefficient = 4.0
+      };
+      var longTerm = new CreepShrinkageParametersASNZ {
+        CreepCoefficient = 6.0
+      };
       duplicate.ShortTerm = shortTerm;
       duplicate.LongTerm = longTerm;
       duplicate.ConsiderShrinkageDeflection = true;
@@ -87,9 +89,9 @@ namespace ComposAPI.Members.Tests {
       // empty constructor creates default EC4 values
 
       // 2 create object instance with constructor
-      CodeOptionsEN codeOptions = new CodeOptionsEN();
-      CreepShrinkageParametersEN lt = (CreepShrinkageParametersEN)codeOptions.LongTerm;
-      CreepShrinkageParametersEN st = (CreepShrinkageParametersEN)codeOptions.ShortTerm;
+      var codeOptions = new CodeOptionsEN();
+      var lt = (CreepShrinkageParametersEN)codeOptions.LongTerm;
+      var st = (CreepShrinkageParametersEN)codeOptions.ShortTerm;
 
       // 3 check that inputs are set in object's members
       Assert.False(codeOptions.ApproxModularRatios);
@@ -111,10 +113,10 @@ namespace ComposAPI.Members.Tests {
     [Fact]
     public void TestEC4OptionsDuplicate() {
       // 1 create with constructor and duplicate
-      CodeOptionsEN original = new CodeOptionsEN();
-      CodeOptionsEN duplicate = (CodeOptionsEN)original.Duplicate();
-      CreepShrinkageParametersEN lt = (CreepShrinkageParametersEN)duplicate.LongTerm;
-      CreepShrinkageParametersEN st = (CreepShrinkageParametersEN)duplicate.ShortTerm;
+      var original = new CodeOptionsEN();
+      var duplicate = (CodeOptionsEN)original.Duplicate();
+      var lt = (CreepShrinkageParametersEN)duplicate.LongTerm;
+      var st = (CreepShrinkageParametersEN)duplicate.ShortTerm;
 
       // 2 check that duplicate has duplicated values
       Assert.False(duplicate.ApproxModularRatios);
@@ -130,16 +132,18 @@ namespace ComposAPI.Members.Tests {
       Assert.Equal(0.5, st.RelativeHumidity.DecimalFractions);
 
       // 3 make some changes to duplicate
-      CreepShrinkageParametersEN longTerm = new CreepShrinkageParametersEN();
-      longTerm.CreepCoefficient = 4.0;
-      longTerm.ConcreteAgeAtLoad = 45;
-      longTerm.FinalConcreteAgeCreep = 500;
-      longTerm.RelativeHumidity = new Ratio(0.3, RatioUnit.DecimalFraction);
-      CreepShrinkageParametersEN shortTerm = new CreepShrinkageParametersEN();
-      shortTerm.CreepCoefficient = 2.0;
-      shortTerm.ConcreteAgeAtLoad = 2;
-      shortTerm.FinalConcreteAgeCreep = 28;
-      shortTerm.RelativeHumidity = new Ratio(0.95, RatioUnit.DecimalFraction);
+      var longTerm = new CreepShrinkageParametersEN {
+        CreepCoefficient = 4.0,
+        ConcreteAgeAtLoad = 45,
+        FinalConcreteAgeCreep = 500,
+        RelativeHumidity = new Ratio(0.3, RatioUnit.DecimalFraction)
+      };
+      var shortTerm = new CreepShrinkageParametersEN {
+        CreepCoefficient = 2.0,
+        ConcreteAgeAtLoad = 2,
+        FinalConcreteAgeCreep = 28,
+        RelativeHumidity = new Ratio(0.95, RatioUnit.DecimalFraction)
+      };
 
       duplicate.LongTerm = longTerm;
       duplicate.ShortTerm = shortTerm;
@@ -149,8 +153,8 @@ namespace ComposAPI.Members.Tests {
       duplicate.CementType = CementClass.S;
 
       // 4 check that duplicate has set changes
-      CreepShrinkageParametersEN lt2 = (CreepShrinkageParametersEN)duplicate.LongTerm;
-      CreepShrinkageParametersEN st2 = (CreepShrinkageParametersEN)duplicate.ShortTerm;
+      var lt2 = (CreepShrinkageParametersEN)duplicate.LongTerm;
+      var st2 = (CreepShrinkageParametersEN)duplicate.ShortTerm;
       Assert.True(duplicate.ApproxModularRatios);
       Assert.True(duplicate.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
       Assert.Equal(CementClass.S, duplicate.CementType);
@@ -164,8 +168,8 @@ namespace ComposAPI.Members.Tests {
       Assert.Equal(0.95, st2.RelativeHumidity.DecimalFractions);
 
       // 5 check that original has not been changed
-      CreepShrinkageParametersEN olt = (CreepShrinkageParametersEN)original.LongTerm;
-      CreepShrinkageParametersEN ost = (CreepShrinkageParametersEN)original.ShortTerm;
+      var olt = (CreepShrinkageParametersEN)original.LongTerm;
+      var ost = (CreepShrinkageParametersEN)original.ShortTerm;
       Assert.False(original.ApproxModularRatios);
       Assert.False(original.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
       Assert.Equal(CementClass.N, original.CementType);

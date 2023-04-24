@@ -1,6 +1,6 @@
-﻿using ComposGHTests.Helpers;
+﻿using System.Collections.Generic;
+using ComposGHTests.Helpers;
 using OasysGH;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Members.Tests {
@@ -19,7 +19,7 @@ namespace ComposAPI.Members.Tests {
       IDesignCode designCode = new DesignCode();
       IDesignCriteria designCriteria = new DesignCriteria();
 
-      Member member = new Member(name, designCode, beam, stud, slab, loads, designCriteria);
+      var member = new Member(name, designCode, beam, stud, slab, loads, designCriteria);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(name, member.Name);
@@ -46,7 +46,7 @@ namespace ComposAPI.Members.Tests {
       IDesignCode designCode = new DesignCode();
       IDesignCriteria designCriteria = new DesignCriteria();
 
-      Member member = new Member(name, gridRef, note, designCode, beam, stud, slab, loads, designCriteria);
+      var member = new Member(name, gridRef, note, designCode, beam, stud, slab, loads, designCriteria);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(name, member.Name);
@@ -63,7 +63,7 @@ namespace ComposAPI.Members.Tests {
     public void DuplicateTest() {
       // 1 create with constructor and duplicate
       Member original = ConstructorTest1("MEMBER-1");
-      Member duplicate = (Member)original.Duplicate();
+      var duplicate = (Member)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate, true); // exclude testing GUIDs are equal

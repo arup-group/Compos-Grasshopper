@@ -1,11 +1,10 @@
-﻿using ComposAPI.Helpers;
+﻿using System;
+using System.Linq;
+using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace ComposAPI.Beams.Tests {
@@ -46,7 +45,7 @@ namespace ComposAPI.Beams.Tests {
     [InlineData(StandardASNZSteelMaterialGrade.Gr250_AS3679_1_Hollow, 250, WeldMaterialGrade.Grade_35)]
     public void ConstructorTest(StandardASNZSteelMaterialGrade grade, double fy_expected, WeldMaterialGrade weldGrade_expected) {
       // 2 create object instance with constructor
-      ASNZSteelMaterial material = new ASNZSteelMaterial(grade);
+      var material = new ASNZSteelMaterial(grade);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(new Pressure(200, PressureUnit.Gigapascal), material.E);
@@ -58,8 +57,8 @@ namespace ComposAPI.Beams.Tests {
     [Fact]
     public void DuplicateTest() {
       // 1 create with constructor and duplicate
-      StandardASNZSteelMaterialGrade original = new StandardASNZSteelMaterialGrade();
-      StandardASNZSteelMaterialGrade duplicate = (StandardASNZSteelMaterialGrade)original.Duplicate();
+      var original = new StandardASNZSteelMaterialGrade();
+      var duplicate = (StandardASNZSteelMaterialGrade)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -70,14 +69,14 @@ namespace ComposAPI.Beams.Tests {
 
     [Fact]
     public void ToCoaAndBack() {
-      List<StandardASNZSteelMaterialGrade> grades = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().ToList();
+      var grades = Enum.GetValues(typeof(StandardASNZSteelMaterialGrade)).Cast<StandardASNZSteelMaterialGrade>().ToList();
 
       foreach (StandardASNZSteelMaterialGrade grade in grades) {
-        ASNZSteelMaterial steelMaterial = new ASNZSteelMaterial(grade);
+        var steelMaterial = new ASNZSteelMaterial(grade);
         string coaString = steelMaterial.ToCoaString("MEMBER-1", Code.AS_NZS2327_2017, ComposUnits.GetStandardUnits());
 
         string line = CoaHelper.SplitAndStripLines(coaString)[0];
-        List<string> parameters = line.Split('\t').ToList();
+        var parameters = line.Split('\t').ToList();
         string gradeString = parameters.Last().Replace("\n", string.Empty);
         StandardASNZSteelMaterialGrade gradeFromString = ASNZSteelMaterial.FromString(gradeString);
         Assert.Equal(steelMaterial.Grade, gradeFromString);

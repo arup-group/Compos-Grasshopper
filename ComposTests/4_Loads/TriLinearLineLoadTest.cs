@@ -1,9 +1,9 @@
-﻿using ComposAPI.Helpers;
+﻿using System.Collections.Generic;
+using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Loads.Tests {
@@ -13,7 +13,7 @@ namespace ComposAPI.Loads.Tests {
     public void DuplicateTriLineTest() {
       // 1 create with constructor and duplicate
       Load original = TestTriLinearLineLoadConstructor(1, 1.5, 3, 5, 4000, 3, 4.5, 6, 5, 6000);
-      Load duplicate = (Load)original.Duplicate();
+      var duplicate = (Load)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -31,7 +31,7 @@ namespace ComposAPI.Loads.Tests {
       ForcePerLengthUnit force = ForcePerLengthUnit.KilonewtonPerMeter;
 
       // 2 create object instance with constructor
-      TriLinearLoad load = new TriLinearLoad(
+      var load = new TriLinearLoad(
         new ForcePerLength(consDead1, force), new ForcePerLength(consLive1, force), new ForcePerLength(finalDead1, force), new ForcePerLength(finalLive1, force), new Length(positionW1, length),
         new ForcePerLength(consDead2, force), new ForcePerLength(consLive2, force), new ForcePerLength(finalDead2, force), new ForcePerLength(finalLive2, force), new Length(positionW2, length));
 
@@ -61,7 +61,7 @@ namespace ComposAPI.Loads.Tests {
       ForcePerLengthUnit force = ForcePerLengthUnit.KilonewtonPerMeter;
 
       // 2 create object instance with constructor
-      TriLinearLoad load = new TriLinearLoad(
+      var load = new TriLinearLoad(
         new ForcePerLength(consDead1, force), new ForcePerLength(consLive1, force), new ForcePerLength(finalDead1, force), new ForcePerLength(finalLive1, force), new Ratio(positionW1, ratio),
         new ForcePerLength(consDead2, force), new ForcePerLength(consLive2, force), new ForcePerLength(finalDead2, force), new ForcePerLength(finalLive2, force), new Ratio(positionW2, ratio));
 
@@ -86,7 +86,7 @@ namespace ComposAPI.Loads.Tests {
     public void TriLinearLineLoadFromCoaStringTest() {
       ForceUnit forceUnit = ForceUnit.Kilonewton;
       LengthUnit lengthUnit = LengthUnit.Millimeter;
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       units.Force = forceUnit;
       units.Length = lengthUnit;
       ForcePerLengthUnit forcePerLengthUnit = ComposUnitsHelper.GetForcePerLengthUnit(forceUnit, lengthUnit);
@@ -97,7 +97,7 @@ namespace ComposAPI.Loads.Tests {
 
       // Act
       IList<ILoad> loads = Load.FromCoaString(coaString, "MEMBER-1", units);
-      TriLinearLoad trilinearLineLoad = (TriLinearLoad)loads[0];
+      var trilinearLineLoad = (TriLinearLoad)loads[0];
 
       // Assert
       //LOAD	MEMBER-1	Tri-Linear	Line	2.00000	3.00000	4.50000	6.00000	7.00000	3.00000	4.50000	6.00000	7.00000	8.90000
@@ -119,7 +119,7 @@ namespace ComposAPI.Loads.Tests {
     public void TriLinearLineLoadFromCoaStringTestPercentage() {
       ForceUnit forceUnit = ForceUnit.Kilonewton;
       LengthUnit lengthUnit = LengthUnit.Millimeter;
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       units.Force = forceUnit;
       units.Length = lengthUnit;
       ForcePerLengthUnit forcePerLengthUnit = ComposUnitsHelper.GetForcePerLengthUnit(forceUnit, lengthUnit);
@@ -130,7 +130,7 @@ namespace ComposAPI.Loads.Tests {
 
       // Act
       IList<ILoad> loads = Load.FromCoaString(coaString, "MEMBER-1", units);
-      TriLinearLoad trilinearLineLoad = (TriLinearLoad)loads[0];
+      var trilinearLineLoad = (TriLinearLoad)loads[0];
 
       // Assert
       //LOAD	MEMBER-1	Tri-Linear	Line	2.00000	3.00000	4.50000	6.00000	7.00000	3.00000	4.50000	6.00000	7.00000	8.90000

@@ -11,8 +11,8 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       IStudResult res = r.StudResults;
 
-      List<double> expectedLeft = new List<double>()
-      {
+      var expectedLeft = new List<double>()
+       {
         0.0,
         357500,
         643500,
@@ -21,9 +21,9 @@ namespace ComposAPI.Results.Tests {
         1.573E+6,
         1.931E+6,
       };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedLeft[i] * Math.Pow(10, -6),
-          res.StudCapacityStart[i].Newtons * Math.Pow(10, -6), 3);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedLeft[i] * 1E-6, res.StudCapacityStart[i].Newtons * 1E-6, 3);
+      }
     }
 
     [Fact]
@@ -31,7 +31,7 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       IStudResult res = r.StudResults;
 
-      List<double> expectedRequired = new List<double>()
+      var expectedRequired = new List<double>()
       {
         0.0,
         433000,
@@ -41,9 +41,9 @@ namespace ComposAPI.Results.Tests {
         433000,
         0.0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedRequired[i] * Math.Pow(10, -6),
-          res.StudCapacityRequired[i].Newtons * Math.Pow(10, -6), 4);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedRequired[i] * 1E-6, res.StudCapacityRequired[i].Newtons * 1E-6, 4);
+      }
     }
 
     [Fact]
@@ -51,7 +51,7 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       IStudResult res = r.StudResults;
 
-      List<double> expectedActual = new List<double>()
+      var expectedActual = new List<double>()
       {
         0.0,
         357500,
@@ -61,9 +61,9 @@ namespace ComposAPI.Results.Tests {
         357500,
         0.0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedActual[i] * Math.Pow(10, -6),
-          res.StudCapacity[i].Newtons * Math.Pow(10, -6), 4);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedActual[i] * 1E-6, res.StudCapacity[i].Newtons * 1E-6, 4);
+      }
     }
 
     [Fact]
@@ -71,7 +71,7 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       IStudResult res = r.StudResults;
 
-      List<double> expectedRight = new List<double>()
+      var expectedRight = new List<double>()
       {
         1.931E+6,
         1.573E+6,
@@ -81,9 +81,9 @@ namespace ComposAPI.Results.Tests {
         357500,
         0.0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedRight[i] * Math.Pow(10, -6),
-          res.StudCapacityEnd[i].Newtons * Math.Pow(10, -6), 3);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedRight[i] * 1E-6, res.StudCapacityEnd[i].Newtons * 1E-6, 3);
+      }
     }
 
     [Fact]
@@ -91,7 +91,7 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       IStudResult res = r.StudResults;
 
-      List<double> expectedRequired100 = new List<double>()
+      var expectedRequired100 = new List<double>()
       {
         0.0,
         951500,
@@ -101,9 +101,9 @@ namespace ComposAPI.Results.Tests {
         951500,
         0.0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedRequired100[i] * Math.Pow(10, -6),
-          res.StudCapacityRequiredForFullShearInteraction[i].Newtons * Math.Pow(10, -6), 4);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedRequired100[i] * 1E-6, res.StudCapacityRequiredForFullShearInteraction[i].Newtons * 1E-6, 4);
+      }
     }
 
     [Fact]
@@ -111,8 +111,7 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       IStudResult res = r.StudResults;
 
-      Assert.Equal(71500 * Math.Pow(10, -6),
-          res.SingleStudCapacity.Newtons * Math.Pow(10, -6), 4);
+      Assert.Equal(71500 * 1E-6, res.SingleStudCapacity.Newtons * 1E-6, 4);
     }
 
     [Fact]
@@ -120,7 +119,7 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       IStudResult res = r.StudResults;
 
-      List<double> expectedActual = new List<double>()
+      var expectedActual = new List<double>()
       {
         0.0,
         37.57,
@@ -130,9 +129,9 @@ namespace ComposAPI.Results.Tests {
         37.57,
         0.0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedActual[i],
-          res.ShearInteraction[i].Percent, 2);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedActual[i], res.ShearInteraction[i].Percent, 2);
+      }
     }
 
     [Fact]
@@ -140,7 +139,7 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       IStudResult res = r.StudResults;
 
-      List<double> expectedReqInteract = new List<double>()
+      var expectedReqInteract = new List<double>()
       {
         0.0,
         45.51,
@@ -150,9 +149,9 @@ namespace ComposAPI.Results.Tests {
         45.51,
         0.0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedReqInteract[i],
-          res.ShearInteractionRequired[i].Percent, 2);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedReqInteract[i], res.ShearInteractionRequired[i].Percent, 2);
+      }
     }
 
     [Fact]
@@ -160,7 +159,7 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       IStudResult res = r.StudResults;
 
-      List<int> expectedStudsLeft = new List<int>()
+      var expectedStudsLeft = new List<int>()
       {
         0,
         5,
@@ -170,8 +169,9 @@ namespace ComposAPI.Results.Tests {
         22,
         27
       };
-      for (int i = 0; i < r.Positions.Count; i++)
+      for (int i = 0; i < r.Positions.Count; i++) {
         Assert.Equal(expectedStudsLeft[i], res.NumberOfStudsStart[i]);
+      }
     }
 
     [Fact]
@@ -179,7 +179,7 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       IStudResult res = r.StudResults;
 
-      List<int> expectedStudsRight = new List<int>()
+      var expectedStudsRight = new List<int>()
       {
         27,
         22,
@@ -189,8 +189,9 @@ namespace ComposAPI.Results.Tests {
         5,
         0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
+      for (int i = 0; i < r.Positions.Count; i++) {
         Assert.Equal(expectedStudsRight[i], res.NumberOfStudsEnd[i]);
+      }
     }
 
     [Fact]
@@ -198,7 +199,7 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       IStudResult res = r.StudResults;
 
-      List<int> expectedUsedStudsLeft = new List<int>()
+      var expectedUsedStudsLeft = new List<int>()
       {
         0,
         5,
@@ -208,8 +209,9 @@ namespace ComposAPI.Results.Tests {
         22,
         27
       };
-      for (int i = 0; i < r.Positions.Count; i++)
+      for (int i = 0; i < r.Positions.Count; i++) {
         Assert.Equal(expectedUsedStudsLeft[i], res.NumberOfStudsRequiredStart[i]);
+      }
     }
 
     [Fact]
@@ -217,7 +219,7 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       IStudResult res = r.StudResults;
 
-      List<int> expectedUsedStudsRight = new List<int>()
+      var expectedUsedStudsRight = new List<int>()
       {
         27,
         22,
@@ -227,8 +229,9 @@ namespace ComposAPI.Results.Tests {
         5,
         0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
+      for (int i = 0; i < r.Positions.Count; i++) {
         Assert.Equal(expectedUsedStudsRight[i], res.NumberOfStudsRequiredEnd[i]);
+      }
     }
   }
 }

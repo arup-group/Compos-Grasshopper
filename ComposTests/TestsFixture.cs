@@ -20,8 +20,8 @@ namespace ComposAPI.Tests {
 
       const string name = "PATH";
       string pathvar = Environment.GetEnvironmentVariable(name);
-      var value = pathvar + ";" + installPath;
-      var target = EnvironmentVariableTarget.Process;
+      string value = pathvar + ";" + installPath;
+      EnvironmentVariableTarget target = EnvironmentVariableTarget.Process;
       Environment.SetEnvironmentVariable(name, value, target);
     }
 
@@ -29,8 +29,9 @@ namespace ComposAPI.Tests {
       // Do "global" teardown here; Only called once.
       ComposFile.Close();
       Process[] ps = Process.GetProcessesByName("Compos");
-      foreach (Process p in ps)
+      foreach (Process p in ps) {
         p.Kill();
+      }
     }
   }
 }

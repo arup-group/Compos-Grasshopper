@@ -14,11 +14,11 @@ namespace ComposAPI.Loads.Tests {
 
       // 1 create with constructor and duplicate
       Load originalParent = TestAxialLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
-      Load duplicateParent = (Load)originalParent.Duplicate();
+      var duplicateParent = (Load)originalParent.Duplicate();
 
       // 1b create child
-      AxialLoad duplicateChildLine = (AxialLoad)duplicateParent;
-      AxialLoad originalChildLine = (AxialLoad)originalParent;
+      var duplicateChildLine = (AxialLoad)duplicateParent;
+      var originalChildLine = (AxialLoad)originalParent;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(0, duplicateChildLine.LoadW1.ConstantDead.As(force));
@@ -78,11 +78,11 @@ namespace ComposAPI.Loads.Tests {
 
       // 1 create with constructor and duplicate
       Load originalParent = TestLinearLineLoadConstructor(0, 0, 1, 1, 2, 2, 3, 3);
-      Load duplicateParent = (Load)originalParent.Duplicate();
+      var duplicateParent = (Load)originalParent.Duplicate();
 
       // 1b create child
-      LinearLoad duplicateChildLine = (LinearLoad)duplicateParent;
-      LinearLoad originalChildLine = (LinearLoad)originalParent;
+      var duplicateChildLine = (LinearLoad)duplicateParent;
+      var originalChildLine = (LinearLoad)originalParent;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(0, duplicateChildLine.LoadW1.ConstantDead.As(length));
@@ -137,10 +137,10 @@ namespace ComposAPI.Loads.Tests {
 
       // 1 create with constructor and duplicate
       Load originalParent = TestLinearAreaLoadConstructor(0, 0, 1, 1, 2, 2, 3, 3);
-      Load duplicateParent = (Load)originalParent.Duplicate();
+      var duplicateParent = (Load)originalParent.Duplicate();
 
-      LinearLoad duplicateChildArea = (LinearLoad)duplicateParent;
-      LinearLoad originalChildArea = (LinearLoad)originalParent;
+      var duplicateChildArea = (LinearLoad)duplicateParent;
+      var originalChildArea = (LinearLoad)originalParent;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(0, duplicateChildArea.LoadW1.ConstantDead.As(area));
@@ -195,11 +195,11 @@ namespace ComposAPI.Loads.Tests {
 
       // 1 create with constructor and duplicate
       Load originalParent = TestMemberLoadConstructor(150, "Original", MemberLoad.SupportSide.Left);
-      Load duplicateParent = (Load)originalParent.Duplicate();
+      var duplicateParent = (Load)originalParent.Duplicate();
 
       // 1b create child
-      MemberLoad duplicateChild = (MemberLoad)duplicateParent;
-      MemberLoad originalChild = (MemberLoad)originalParent;
+      var duplicateChild = (MemberLoad)duplicateParent;
+      var originalChild = (MemberLoad)originalParent;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(150, duplicateChild.Position.As(length));
@@ -232,11 +232,11 @@ namespace ComposAPI.Loads.Tests {
 
       // 1 create with constructor and duplicate
       Load originalParent = TestPatchLineLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
-      Load duplicateParent = (Load)originalParent.Duplicate();
+      var duplicateParent = (Load)originalParent.Duplicate();
 
       // 1b create child
-      PatchLoad duplicateChildLine = (PatchLoad)duplicateParent;
-      PatchLoad originalChildLine = (PatchLoad)originalParent;
+      var duplicateChildLine = (PatchLoad)duplicateParent;
+      var originalChildLine = (PatchLoad)originalParent;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(0, duplicateChildLine.LoadW1.ConstantDead.As(flength));
@@ -300,11 +300,11 @@ namespace ComposAPI.Loads.Tests {
 
       // 1 create with constructor and duplicate
       Load originalParent = TestPatchAreaLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
-      Load duplicateParent = (Load)originalParent.Duplicate();
+      var duplicateParent = (Load)originalParent.Duplicate();
 
       // 1b create child
-      PatchLoad duplicateChildArea = (PatchLoad)duplicateParent;
-      PatchLoad originalChildArea = (PatchLoad)originalParent;
+      var duplicateChildArea = (PatchLoad)duplicateParent;
+      var originalChildArea = (PatchLoad)originalParent;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(0, duplicateChildArea.LoadW1.ConstantDead.As(farea));
@@ -367,11 +367,11 @@ namespace ComposAPI.Loads.Tests {
 
       // 1 create with constructor and duplicate
       Load originalParent = TestPointLoadConstructor(0, 0, 1, 1, 0.5);
-      Load duplicateParent = (Load)originalParent.Duplicate();
+      var duplicateParent = (Load)originalParent.Duplicate();
 
       // 1b create child
-      PointLoad duplicateChild = (PointLoad)duplicateParent;
-      PointLoad originalChild = (PointLoad)originalParent;
+      var duplicateChild = (PointLoad)duplicateParent;
+      var originalChild = (PointLoad)originalParent;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(0, duplicateChild.Load.ConstantDead.As(force));
@@ -412,11 +412,11 @@ namespace ComposAPI.Loads.Tests {
 
       // 1 create with constructor and duplicate
       Load originalParent = TestTriLinearLineLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
-      Load duplicateParent = (Load)originalParent.Duplicate();
+      var duplicateParent = (Load)originalParent.Duplicate();
 
       // 1b create child
-      TriLinearLoad duplicateChildLine = (TriLinearLoad)duplicateParent;
-      TriLinearLoad originalChildLine = (TriLinearLoad)originalParent;
+      var duplicateChildLine = (TriLinearLoad)duplicateParent;
+      var originalChildLine = (TriLinearLoad)originalParent;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(0, duplicateChildLine.LoadW1.ConstantDead.As(flength));
@@ -480,11 +480,11 @@ namespace ComposAPI.Loads.Tests {
 
       // 1 create with constructor and duplicate
       Load originalParent = TestTriLinearAreaLoadConstructor(0, 0, 1, 1, 0.5, 2, 2, 3, 3, 1.5);
-      Load duplicateParent = (Load)originalParent.Duplicate();
+      var duplicateParent = (Load)originalParent.Duplicate();
 
       // 1b create child
-      TriLinearLoad duplicateChildArea = (TriLinearLoad)duplicateParent;
-      TriLinearLoad originalChildArea = (TriLinearLoad)originalParent;
+      var duplicateChildArea = (TriLinearLoad)duplicateParent;
+      var originalChildArea = (TriLinearLoad)originalParent;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(0, duplicateChildArea.LoadW1.ConstantDead.As(farea));
@@ -546,11 +546,11 @@ namespace ComposAPI.Loads.Tests {
 
       // 1 create with constructor and duplicate
       Load originalParent = TestUniformLineLoadConstructor(0, 0, 1, 1);
-      Load duplicateParent = (Load)originalParent.Duplicate();
+      var duplicateParent = (Load)originalParent.Duplicate();
 
       // 1b create child
-      UniformLoad duplicateChildLine = (UniformLoad)duplicateParent;
-      UniformLoad originalChildLine = (UniformLoad)originalParent;
+      var duplicateChildLine = (UniformLoad)duplicateParent;
+      var originalChildLine = (UniformLoad)originalParent;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(0, duplicateChildLine.Load.ConstantDead.As(length));
@@ -589,11 +589,11 @@ namespace ComposAPI.Loads.Tests {
 
       // 1 create with constructor and duplicate
       Load originalParent = TestUniformAreaLoadConstructor(0, 0, 1, 1);
-      Load duplicateParent = (Load)originalParent.Duplicate();
+      var duplicateParent = (Load)originalParent.Duplicate();
 
       // 1b create child
-      UniformLoad duplicateChildArea = (UniformLoad)duplicateParent;
-      UniformLoad originalChildArea = (UniformLoad)originalParent;
+      var duplicateChildArea = (UniformLoad)duplicateParent;
+      var originalChildArea = (UniformLoad)originalParent;
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(0, duplicateChildArea.Load.ConstantDead.As(area));

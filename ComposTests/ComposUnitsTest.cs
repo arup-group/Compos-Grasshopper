@@ -1,6 +1,6 @@
-﻿using ComposAPI.Helpers;
+﻿using System.Collections.Generic;
+using ComposAPI.Helpers;
 using OasysUnits.Units;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Tests {
@@ -27,7 +27,7 @@ namespace ComposAPI.Tests {
     public void FromCoaStringTest(string coaString, ForceUnit expected_forceUnit, LengthUnit expected_lengthUnit, LengthUnit expected_displacementUnit, LengthUnit expected_sectionUnit, PressureUnit expected_stressUnit, MassUnit expected_massUnit) {
       List<string> parameters = CoaHelper.Split(coaString);
 
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       units.FromCoaString(parameters);
 
       Assert.Equal(expected_forceUnit, units.Force);
@@ -45,7 +45,7 @@ namespace ComposAPI.Tests {
     [InlineData(ForceUnit.Newton, LengthUnit.Meter, LengthUnit.Millimeter, LengthUnit.Meter, PressureUnit.NewtonPerSquareMeter, MassUnit.Kilogram, "UNIT_DATA	FORCE	N	1.00000\nUNIT_DATA	LENGTH	m	1.00000\nUNIT_DATA	DISP	mm	1000.00\nUNIT_DATA	SECTION	m	1.00000\nUNIT_DATA	STRESS	N/m²	1.00000\nUNIT_DATA	MASS	kg	1.00000\n")]
     [InlineData(ForceUnit.Newton, LengthUnit.Meter, LengthUnit.Meter, LengthUnit.Millimeter, PressureUnit.NewtonPerSquareMeter, MassUnit.Kilogram, "UNIT_DATA	FORCE	N	1.00000\nUNIT_DATA	LENGTH	m	1.00000\nUNIT_DATA	DISP	m	1.00000\nUNIT_DATA	SECTION	mm	1000.00\nUNIT_DATA	STRESS	N/m²	1.00000\nUNIT_DATA	MASS	kg	1.00000\n")]
     public void ToCoaStringTest(ForceUnit forceUnit, LengthUnit lengthUnit, LengthUnit displacementUnit, LengthUnit sectionUnit, PressureUnit stressUnit, MassUnit massUnit, string expected_coaString) {
-      ComposUnits units = new ComposUnits();
+      var units = new ComposUnits();
       units.Force = forceUnit;
       units.Length = lengthUnit;
       units.Displacement = displacementUnit;

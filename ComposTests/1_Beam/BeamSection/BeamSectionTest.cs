@@ -1,10 +1,10 @@
-﻿using ComposAPI.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Beams.Tests {
@@ -20,7 +20,7 @@ namespace ComposAPI.Beams.Tests {
       LengthUnit unit = LengthUnit.Centimeter;
 
       // 2 create object instance with constructor
-      BeamSection beam = new BeamSection(new Length(depth, unit), new Length(topFlangeWidth, unit),
+      var beam = new BeamSection(new Length(depth, unit), new Length(topFlangeWidth, unit),
         new Length(bottomFlangeWidth, unit), new Length(webThickness, unit),
         new Length(topFlangeThickness, unit), new Length(bottomFlangeThickness, unit), taperToNext);
 
@@ -40,7 +40,7 @@ namespace ComposAPI.Beams.Tests {
       LengthUnit unit = LengthUnit.Millimeter;
 
       // 2 create object instance with constructor
-      BeamSection beam = new BeamSection(new Length(depth, unit), new Length(topFlangeWidth, unit),
+      var beam = new BeamSection(new Length(depth, unit), new Length(topFlangeWidth, unit),
         new Length(bottomFlangeWidth, unit), new Length(webThickness, unit),
         new Length(topFlangeThickness, unit), new Length(bottomFlangeThickness, unit), taperToNext);
 
@@ -77,7 +77,7 @@ namespace ComposAPI.Beams.Tests {
     [InlineData("CAT IPE IPE100", 100, 55, 55, 4.1, 5.7, 5.7)] // issue with loading GH referencing in testing environment
     public BeamSection BeamSectionConstructorProfileTest(string profile, double expDepth, double expTopFlangeWidth, double expBottomFlangeWidth, double expWebThickness, double expTopFlangeThickness, double expBottomFlangeThickness) {
       // 2 create object instance with constructor
-      BeamSection beam = new BeamSection(profile);
+      var beam = new BeamSection(profile);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(expDepth, beam.Depth.Millimeters, 3);
@@ -101,7 +101,7 @@ namespace ComposAPI.Beams.Tests {
       LengthUnit unit = LengthUnit.Centimeter;
 
       // 2 create object instance with constructor
-      BeamSection beam = new BeamSection(new Length(depth, unit), new Length(flangeWidth, unit), new Length(webThickness, unit), new Length(flangeThickness, unit), taperToNext);
+      var beam = new BeamSection(new Length(depth, unit), new Length(flangeWidth, unit), new Length(webThickness, unit), new Length(flangeThickness, unit), taperToNext);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(expProfile, beam.SectionDescription);
@@ -119,7 +119,7 @@ namespace ComposAPI.Beams.Tests {
       LengthUnit unit = LengthUnit.Millimeter;
 
       // 2 create object instance with constructor
-      BeamSection beam = new BeamSection(new Length(depth, unit), new Length(flangeWidth, unit), new Length(webThickness, unit), new Length(flangeThickness, unit), taperToNext);
+      var beam = new BeamSection(new Length(depth, unit), new Length(flangeWidth, unit), new Length(webThickness, unit), new Length(flangeThickness, unit), taperToNext);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(expDepth, beam.Depth.Millimeters, 3);
@@ -140,9 +140,9 @@ namespace ComposAPI.Beams.Tests {
     public void BeamSectionDuplicateTest1() {
       LengthUnit unit = LengthUnit.Millimeter;
       // 1 create with constructor and duplicate
-      BeamSection original = new BeamSection(new Length(400, unit), new Length(300, unit),
+      var original = new BeamSection(new Length(400, unit), new Length(300, unit),
         new Length(15, unit), new Length(12, unit), true);
-      BeamSection duplicate = (BeamSection)original.Duplicate();
+      var duplicate = (BeamSection)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(original.ToString(), duplicate.ToString());
@@ -186,9 +186,9 @@ namespace ComposAPI.Beams.Tests {
     public void BeamSectionDuplicateTest2() {
       LengthUnit unit = LengthUnit.Millimeter;
       // 1 create with new constructor and duplicate
-      BeamSection original = new BeamSection(new Length(420, unit), new Length(310, unit), new Length(350, unit),
+      var original = new BeamSection(new Length(420, unit), new Length(310, unit), new Length(350, unit),
         new Length(10, unit), new Length(11, unit), new Length(12, unit), false);
-      BeamSection duplicate = (BeamSection)original.Duplicate();
+      var duplicate = (BeamSection)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(420, duplicate.Depth.Millimeters);
@@ -230,8 +230,8 @@ namespace ComposAPI.Beams.Tests {
     [Fact]
     public void DuplicateTest() {
       // 1 create with constructor and duplicate
-      BeamSection original = new BeamSection();
-      BeamSection duplicate = (BeamSection)original.Duplicate();
+      var original = new BeamSection();
+      var duplicate = (BeamSection)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -254,10 +254,11 @@ namespace ComposAPI.Beams.Tests {
       List<string> parameters = CoaHelper.Split(coaString);
       IBeamSection beam = BeamSection.FromCoaString(parameters, ComposUnits.GetStandardUnits());
 
-      if (beam.StartPosition.QuantityInfo.UnitType == typeof(RatioUnit))
+      if (beam.StartPosition.QuantityInfo.UnitType == typeof(RatioUnit)) {
         Assert.Equal(expected_startPosition, beam.StartPosition.As(RatioUnit.DecimalFraction) * -1);
-      else
+      } else {
         Assert.Equal(expected_startPosition, beam.StartPosition.As(LengthUnit.Meter));
+      }
       Assert.Equal(expected_depth, beam.Depth.Millimeters);
       Assert.Equal(expected_topFlangeWidth, beam.TopFlangeWidth.Millimeters);
       Assert.Equal(expected_bottomFlangeWidth, beam.BottomFlangeWidth.Millimeters);
@@ -281,11 +282,12 @@ namespace ComposAPI.Beams.Tests {
     [InlineData(7, 1, -0.5, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600. 200. 15. 25.", true, "BEAM_SECTION_AT_X	MEMBER-1	7	1	-0.500000	STD I 600. 200. 15. 25.	TAPERED_YES\n")]
     public void ToCoaStringTest(int num, int index, double startPosition, double depth, double topFlangeWidth, double bottomFlangeWidth,
       double topFlangeThickness, double bottomFlangeThickness, double rootRadius, bool isCatalogue, double webThickness, string sectionDescription, bool taperToNext, string expected_coaString) {
-      BeamSection beamSection = new BeamSection();
-      if (startPosition < 0)
+      var beamSection = new BeamSection();
+      if (startPosition < 0) {
         beamSection.StartPosition = new Ratio(Math.Abs(startPosition), RatioUnit.DecimalFraction);
-      else
+      } else {
         beamSection.StartPosition = new Length(startPosition, LengthUnit.Meter);
+      }
       beamSection.Depth = new Length(depth, LengthUnit.Millimeter);
       beamSection.TopFlangeWidth = new Length(topFlangeWidth, LengthUnit.Millimeter);
       beamSection.BottomFlangeWidth = new Length(bottomFlangeWidth, LengthUnit.Millimeter);

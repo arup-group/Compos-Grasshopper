@@ -1,7 +1,7 @@
-﻿using ComposAPI.Helpers;
+﻿using System.Collections.Generic;
+using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Beams.Tests {
@@ -44,7 +44,7 @@ namespace ComposAPI.Beams.Tests {
       double FSintermediateRestraintPosition1, double FSintermediateRestraintPosition2, double FSintermediateRestraintPosition3, bool FSsecondaryMemberIntermediateRestraint, bool FSbothFlangesFreeToRotateOnPlanAtEnds, string expected_coaString) {
       Supports construction = TestSupportConstructorCustom(CSintermediateRestraintPosition1, CSintermediateRestraintPosition2, CSintermediateRestraintPosition3, CSsecondaryMemberIntermediateRestraint, CSbothFlangesFreeToRotateOnPlanAtEnds);
       Supports final = TestSupportConstructorCustom(FSintermediateRestraintPosition1, FSintermediateRestraintPosition2, FSintermediateRestraintPosition3, FSsecondaryMemberIntermediateRestraint, FSbothFlangesFreeToRotateOnPlanAtEnds);
-      IRestraint restraint = (setFinal) ? new Restraint(topFlangeRestrained, construction, final) : new Restraint(topFlangeRestrained, construction);
+      IRestraint restraint = setFinal ? new Restraint(topFlangeRestrained, construction, final) : new Restraint(topFlangeRestrained, construction);
       string coaString = restraint.ToCoaString("MEMBER-2", ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_coaString, coaString);
@@ -54,7 +54,7 @@ namespace ComposAPI.Beams.Tests {
     public void DuplicateTest() {
       // 1 create with constructor and duplicate
       Restraint original = TestConstructorNoFinalSupports();
-      Restraint duplicate = (Restraint)original.Duplicate();
+      var duplicate = (Restraint)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -67,7 +67,7 @@ namespace ComposAPI.Beams.Tests {
     public void DuplicateTest1() {
       // 1 create with constructor and duplicate
       Restraint original = TestConstructor();
-      Restraint duplicate = (Restraint)original.Duplicate();
+      var duplicate = (Restraint)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(original.ToString(), duplicate.ToString());
@@ -81,11 +81,11 @@ namespace ComposAPI.Beams.Tests {
 
       // 3 make some changes to duplicate
       duplicate.TopFlangeRestrained = false;
-      Supports constructionStageSupports = (Supports)duplicate.ConstructionStageSupports;
+      var constructionStageSupports = (Supports)duplicate.ConstructionStageSupports;
       constructionStageSupports.BothFlangesFreeToRotateOnPlanAtEnds = true;
       constructionStageSupports.SecondaryMemberAsIntermediateRestraint = true;
       constructionStageSupports.IntermediateRestraintPositions = IntermediateRestraint.None;
-      Supports finalStageSupports = (Supports)duplicate.FinalStageSupports;
+      var finalStageSupports = (Supports)duplicate.FinalStageSupports;
       finalStageSupports.BothFlangesFreeToRotateOnPlanAtEnds = false;
       finalStageSupports.SecondaryMemberAsIntermediateRestraint = false;
       finalStageSupports.IntermediateRestraintPositions = IntermediateRestraint.Mid__Span;
@@ -113,7 +113,7 @@ namespace ComposAPI.Beams.Tests {
     public void DuplicateTest2() {
       // 1 create with constructor and duplicate
       Restraint original = TestConstructorNoFinalSupports();
-      Restraint duplicate = (Restraint)original.Duplicate();
+      var duplicate = (Restraint)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.False(duplicate.TopFlangeRestrained);
@@ -126,11 +126,11 @@ namespace ComposAPI.Beams.Tests {
 
       // 3 make some changes to duplicate
       duplicate.TopFlangeRestrained = true;
-      Supports constructionStageSupports2 = (Supports)duplicate.ConstructionStageSupports;
+      var constructionStageSupports2 = (Supports)duplicate.ConstructionStageSupports;
       constructionStageSupports2.BothFlangesFreeToRotateOnPlanAtEnds = false;
       constructionStageSupports2.SecondaryMemberAsIntermediateRestraint = true;
       constructionStageSupports2.IntermediateRestraintPositions = IntermediateRestraint.Third_Points;
-      Supports finalStageSupports2 = (Supports)duplicate.FinalStageSupports;
+      var finalStageSupports2 = (Supports)duplicate.FinalStageSupports;
       finalStageSupports2.BothFlangesFreeToRotateOnPlanAtEnds = false;
       finalStageSupports2.SecondaryMemberAsIntermediateRestraint = false;
       finalStageSupports2.IntermediateRestraintPositions = IntermediateRestraint.Mid__Span;
@@ -211,7 +211,7 @@ namespace ComposAPI.Beams.Tests {
 "FINAL_END_FLANGE_FREE_ROTATE	MEMBER-1	NOT_FREE_TO_ROTATE\n")]
     public void StandardFromCoaStringTest(bool expected_topFlangeRestrained, IntermediateRestraint expected_CSintermediateRestraintPositions, bool expected_CSsecondaryMemberIntermediateRestraint, bool expected_CSbothFlangesFreeToRotateOnPlanAtEnds, bool expected_setFinal, IntermediateRestraint expected_FSintermediateRestraintPositions, bool expected_FSsecondaryMemberIntermediateRestraint, bool expected_FSbothFlangesFreeToRotateOnPlanAtEnds, string coaString) {
       List<string> lines = CoaHelper.SplitLines(coaString);
-      Restraint restraint = new Restraint();
+      var restraint = new Restraint();
       foreach (string line in lines) {
         List<string> parameters = CoaHelper.Split(line);
         restraint.FromCoaString(parameters, ComposUnits.GetStandardUnits());
@@ -267,7 +267,7 @@ namespace ComposAPI.Beams.Tests {
     public void StandardToCoaStringTest(bool topFlangeRestrained, IntermediateRestraint CSintermediateRestraintPositions, bool CSsecondaryMemberIntermediateRestraint, bool CSbothFlangesFreeToRotateOnPlanAtEnds, bool setFinal, IntermediateRestraint FSintermediateRestraintPositions, bool FSsecondaryMemberIntermediateRestraint, bool FSbothFlangesFreeToRotateOnPlanAtEnds, string expected_coaString) {
       Supports construction = TestSupportConstructor(CSintermediateRestraintPositions, CSsecondaryMemberIntermediateRestraint, CSbothFlangesFreeToRotateOnPlanAtEnds);
       Supports final = TestSupportConstructor(FSintermediateRestraintPositions, FSsecondaryMemberIntermediateRestraint, FSbothFlangesFreeToRotateOnPlanAtEnds);
-      IRestraint restraint = (setFinal) ? new Restraint(topFlangeRestrained, construction, final) : new Restraint(topFlangeRestrained, construction);
+      IRestraint restraint = setFinal ? new Restraint(topFlangeRestrained, construction, final) : new Restraint(topFlangeRestrained, construction);
       string coaString = restraint.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_coaString, coaString);
@@ -276,7 +276,7 @@ namespace ComposAPI.Beams.Tests {
     [Fact]
     public Restraint TestConstructor() {
       // 2 create object instance with constructor
-      Restraint restraint = new Restraint(true, construction, final);
+      var restraint = new Restraint(true, construction, final);
 
       // 3 check that inputs are set in object's members
       Assert.True(restraint.TopFlangeRestrained);
@@ -295,7 +295,7 @@ namespace ComposAPI.Beams.Tests {
       Supports construction = TestSupportConstructor(IntermediateRestraint.Mid__Span, true, false);
 
       // 2 create object instance with constructor
-      Restraint restraint = new Restraint(false, construction);
+      var restraint = new Restraint(false, construction);
 
       // 3 check that inputs are set in object's members
       Assert.False(restraint.TopFlangeRestrained);

@@ -1,9 +1,9 @@
-﻿using ComposAPI.Helpers;
+﻿using System.Collections.Generic;
+using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Loads.Tests {
@@ -13,7 +13,7 @@ namespace ComposAPI.Loads.Tests {
     public void DuplicateLinearAreaTest() {
       // 1 create with constructor and duplicate
       Load original = TestLinearAreaLoadConstructor(1, 1.5, 3, 5, 3, 4.5, 6, 5);
-      Load duplicate = (Load)original.Duplicate();
+      var duplicate = (Load)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -26,7 +26,7 @@ namespace ComposAPI.Loads.Tests {
     public void LinearAreaLoadFromCoaStringTest() {
       ForceUnit forceUnit = ForceUnit.Kilonewton;
       LengthUnit lengthUnit = LengthUnit.Millimeter;
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       units.Force = forceUnit;
       units.Length = lengthUnit;
       PressureUnit forcePerAreaUnit = ComposUnitsHelper.GetForcePerAreaUnit(forceUnit, lengthUnit);
@@ -37,7 +37,7 @@ namespace ComposAPI.Loads.Tests {
 
       // Act
       IList<ILoad> loads = Load.FromCoaString(coaString, "MEMBER-1", units);
-      LinearLoad linearAreaLoad = (LinearLoad)loads[0];
+      var linearAreaLoad = (LinearLoad)loads[0];
 
       // Assert
       //LOAD MEMBER - 1 Linear Area 1.00000 2.00000 3.00000 4.50000 6.00000 7.00000 8.00000 9.00000
@@ -72,7 +72,7 @@ namespace ComposAPI.Loads.Tests {
       PressureUnit force = PressureUnit.KilonewtonPerSquareMeter;
 
       // 2 create object instance with constructor
-      LinearLoad load = new LinearLoad(
+      var load = new LinearLoad(
         new Pressure(consDead1, force), new Pressure(consLive1, force), new Pressure(finalDead1, force), new Pressure(finalLive1, force),
         new Pressure(consDead2, force), new Pressure(consLive2, force), new Pressure(finalDead2, force), new Pressure(finalLive2, force));
 

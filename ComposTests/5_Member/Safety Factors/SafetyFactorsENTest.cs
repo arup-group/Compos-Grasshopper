@@ -12,7 +12,7 @@ namespace ComposAPI.Members.Tests {
       // empty constructor creates default EC4 values
 
       // 2 create object instance with constructor
-      SafetyFactorsEN safetyFactors = new SafetyFactorsEN();
+      var safetyFactors = new SafetyFactorsEN();
 
       // 3 check that inputs are set in object's members
       Assert.Null(safetyFactors.MaterialFactors);
@@ -35,7 +35,7 @@ namespace ComposAPI.Members.Tests {
     public void DuplicateSFENTest() {
       // 1 create with constructor and duplicate
       SafetyFactorsEN original = ConstructorTest();
-      SafetyFactorsEN duplicate = (SafetyFactorsEN)original.Duplicate();
+      var duplicate = (SafetyFactorsEN)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -47,8 +47,8 @@ namespace ComposAPI.Members.Tests {
     [Fact]
     public void DuplicateTest() {
       // 1 create with constructor and duplicate
-      SafetyFactorsEN original = new SafetyFactorsEN();
-      SafetyFactorsEN duplicate = (SafetyFactorsEN)original.Duplicate();
+      var original = new SafetyFactorsEN();
+      var duplicate = (SafetyFactorsEN)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Null(duplicate.MaterialFactors);
@@ -78,24 +78,26 @@ namespace ComposAPI.Members.Tests {
       Assert.Equal(1.5, duplicate.LoadCombinationFactors.Finalgamma_Q);
 
       // 3 make some changes to duplicate
-      MaterialPartialFactors partialFactors = new MaterialPartialFactors();
-      partialFactors.Gamma_M0 = 1.2;
-      partialFactors.Gamma_M1 = 1.25;
-      partialFactors.Gamma_M2 = 1.3;
-      partialFactors.Gamma_C = 1.35;
-      partialFactors.Gamma_Deck = 1.4;
-      partialFactors.Gamma_vs = 1.05;
-      partialFactors.Gamma_S = 1.5;
+      var partialFactors = new MaterialPartialFactors {
+        Gamma_M0 = 1.2,
+        Gamma_M1 = 1.25,
+        Gamma_M2 = 1.3,
+        Gamma_C = 1.35,
+        Gamma_Deck = 1.4,
+        Gamma_vs = 1.05,
+        Gamma_S = 1.5
+      };
       duplicate.MaterialFactors = partialFactors;
-      LoadCombinationFactors combinationFactors = new LoadCombinationFactors();
-      combinationFactors.ConstantXi = 1.15;
-      combinationFactors.ConstantPsi = 1.45;
-      combinationFactors.Constantgamma_G = 1.55;
-      combinationFactors.Constantgamma_Q = 0.95;
-      combinationFactors.FinalXi = 1.15;
-      combinationFactors.FinalPsi = 1.45;
-      combinationFactors.Finalgamma_G = 1.55;
-      combinationFactors.Finalgamma_Q = 0.95;
+      var combinationFactors = new LoadCombinationFactors {
+        ConstantXi = 1.15,
+        ConstantPsi = 1.45,
+        Constantgamma_G = 1.55,
+        Constantgamma_Q = 0.95,
+        FinalXi = 1.15,
+        FinalPsi = 1.45,
+        Finalgamma_G = 1.55,
+        Finalgamma_Q = 0.95
+      };
       duplicate.LoadCombinationFactors = combinationFactors;
 
       // 4 check that duplicate has set changes
@@ -152,9 +154,9 @@ namespace ComposAPI.Members.Tests {
         Assert.Equal(expected_gamma_Deck, mat.Gamma_Deck);
         Assert.Equal(expected_gamma_vs, mat.Gamma_vs);
         Assert.Equal(expected_gamma_S, mat.Gamma_S);
-      }
-      else
+      } else {
         Assert.Null(safetyFactorsEN.MaterialFactors);
+      }
 
       ILoadCombinationFactors combinationFactors = safetyFactorsEN.LoadCombinationFactors;
       Assert.Equal(expected_LoadCombination, combinationFactors.LoadCombination);
@@ -175,30 +177,32 @@ namespace ComposAPI.Members.Tests {
     [InlineData("SAFETY_FACTOR_LOAD	MEMBER-1	12.0000	13.0000	14.0000	15.0000\nEC4_LOAD_COMB_FACTORS	MEMBER-1	USER_DEFINED	1.10000	1.20000	1.30000	1.40000\n", false, 0, 0, 0, 0, 0, 0, 0, LoadCombination.Custom, 12, 13, 14, 15, 1.1, 1.2, 1.3, 1.4)]
     public void ToCoaStringTest(string expected_CoaString, bool materialFactorsSet, double gamma_M0, double gamma_M1, double gamma_M2, double gamma_C, double gamma_Deck, double gamma_vs, double gamma_S, LoadCombination loadCombination, double constantgamma_G, double finalgamma_G, double constantgamma_Q, double finalgamma_Q, double constantxi, double finalXi, double constantPsi, double finalPsi) {
       // Assemble
-      SafetyFactorsEN safetyFactorsEN = new SafetyFactorsEN();
+      var safetyFactorsEN = new SafetyFactorsEN();
 
       if (materialFactorsSet) {
-        MaterialPartialFactors mat = new MaterialPartialFactors();
-        mat.Gamma_M0 = gamma_M0;
-        mat.Gamma_M1 = gamma_M1;
-        mat.Gamma_M2 = gamma_M2;
-        mat.Gamma_C = gamma_C;
-        mat.Gamma_Deck = gamma_Deck;
-        mat.Gamma_vs = gamma_vs;
-        mat.Gamma_S = gamma_S;
+        var mat = new MaterialPartialFactors {
+          Gamma_M0 = gamma_M0,
+          Gamma_M1 = gamma_M1,
+          Gamma_M2 = gamma_M2,
+          Gamma_C = gamma_C,
+          Gamma_Deck = gamma_Deck,
+          Gamma_vs = gamma_vs,
+          Gamma_S = gamma_S
+        };
         safetyFactorsEN.MaterialFactors = mat;
       }
 
-      LoadCombinationFactors combinationFactors = new LoadCombinationFactors();
-      combinationFactors.LoadCombination = loadCombination;
-      combinationFactors.ConstantXi = constantxi;
-      combinationFactors.FinalXi = finalXi;
-      combinationFactors.ConstantPsi = constantPsi;
-      combinationFactors.FinalPsi = finalPsi;
-      combinationFactors.Constantgamma_G = constantgamma_G;
-      combinationFactors.Constantgamma_Q = constantgamma_Q;
-      combinationFactors.Finalgamma_G = finalgamma_G;
-      combinationFactors.Finalgamma_Q = finalgamma_Q;
+      var combinationFactors = new LoadCombinationFactors {
+        LoadCombination = loadCombination,
+        ConstantXi = constantxi,
+        FinalXi = finalXi,
+        ConstantPsi = constantPsi,
+        FinalPsi = finalPsi,
+        Constantgamma_G = constantgamma_G,
+        Constantgamma_Q = constantgamma_Q,
+        Finalgamma_G = finalgamma_G,
+        Finalgamma_Q = finalgamma_Q
+      };
       safetyFactorsEN.LoadCombinationFactors = combinationFactors;
 
       // Act

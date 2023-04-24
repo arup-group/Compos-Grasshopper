@@ -11,7 +11,7 @@ namespace ComposAPI.Studs.Tests {
     public void DuplicateCustomSizeStandardGradeTest() {
       // 1 create with constructor and duplicate
       StudDimensions original = TestConstructorStudDimensionsCustomSizeStandardGrade(13, 65, StandardStudGrade.SD1_EN13918, 400);
-      StudDimensions duplicate = (StudDimensions)original.Duplicate();
+      var duplicate = (StudDimensions)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -24,7 +24,7 @@ namespace ComposAPI.Studs.Tests {
     public void DuplicateStandardSizeForceTest() {
       // 1 create with constructor and duplicate
       StudDimensions original = TestConstructorStudDimensionsStandardSizeForce(StandardStudSize.D13mmH65mm, 90, 13, 65);
-      StudDimensions duplicate = (StudDimensions)original.Duplicate();
+      var duplicate = (StudDimensions)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -37,7 +37,7 @@ namespace ComposAPI.Studs.Tests {
     public void DuplicateStandardSizeStandardGradeTest() {
       // 1 create with constructor and duplicate
       StudDimensions original = TestConstructorStudDimensionsStandardSizeStandardGrade(StandardStudSize.D13mmH65mm, StandardStudGrade.SD1_EN13918, 400, 13, 65);
-      StudDimensions duplicate = (StudDimensions)original.Duplicate();
+      var duplicate = (StudDimensions)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -50,7 +50,7 @@ namespace ComposAPI.Studs.Tests {
     public void DuplicateStandardSizeStressTest() {
       // 1 create with constructor and duplicate
       StudDimensions original = TestConstructorStudDimensionsStandardSizeStress(StandardStudSize.D13mmH65mm, 400, 13, 65);
-      StudDimensions duplicate = (StudDimensions)original.Duplicate();
+      var duplicate = (StudDimensions)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -67,7 +67,7 @@ namespace ComposAPI.Studs.Tests {
       ForceUnit force = ForceUnit.Kilonewton;
 
       // 2 create object instance with constructor
-      StudDimensions studDims = new StudDimensions(
+      var studDims = new StudDimensions(
         new Length(diameter, length), new Length(height, length), new Force(strength, force));
 
       // 3 check that inputs are set in object's members
@@ -89,7 +89,7 @@ namespace ComposAPI.Studs.Tests {
       LengthUnit length = LengthUnit.Millimeter;
 
       // 2 create object instance with constructor
-      StudDimensions studDims = new StudDimensions(new Length(diameter, length), new Length(height, length), grade);
+      var studDims = new StudDimensions(new Length(diameter, length), new Length(height, length), grade);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(diameter, studDims.Diameter.Millimeters);
@@ -108,7 +108,7 @@ namespace ComposAPI.Studs.Tests {
       PressureUnit stress = PressureUnit.Megapascal;
 
       // 2 create object instance with constructor
-      StudDimensions studDims = new StudDimensions(
+      var studDims = new StudDimensions(
         new Length(diameter, length), new Length(height, length), new Pressure(fu, stress));
 
       // 3 check that inputs are set in object's members
@@ -138,7 +138,7 @@ namespace ComposAPI.Studs.Tests {
       ForceUnit force = ForceUnit.Kilonewton;
 
       // 2 create object instance with constructor
-      StudDimensions studDims = new StudDimensions(size, new Force(strength, force));
+      var studDims = new StudDimensions(size, new Force(strength, force));
 
       // 3 check that inputs are set in object's members
       Assert.Equal(expectedDiameter, studDims.Diameter.Millimeters);
@@ -166,7 +166,7 @@ namespace ComposAPI.Studs.Tests {
       StandardStudSize size, StandardStudGrade grade,
       double expectedFu, double expectedDiameter, double expectedHeight) {
       // 2 create object instance with constructor
-      StudDimensions studDims = new StudDimensions(size, grade);
+      var studDims = new StudDimensions(size, grade);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(expectedDiameter, studDims.Diameter.Millimeters);
@@ -195,7 +195,7 @@ namespace ComposAPI.Studs.Tests {
       PressureUnit stress = PressureUnit.Megapascal;
 
       // 2 create object instance with constructor
-      StudDimensions studDims = new StudDimensions(size, new Pressure(fu, stress));
+      var studDims = new StudDimensions(size, new Pressure(fu, stress));
 
       // 3 check that inputs are set in object's members
       Assert.Equal(expectedDiameter, studDims.Diameter.Millimeters);
@@ -213,7 +213,7 @@ namespace ComposAPI.Studs.Tests {
 
       // 1 create with constructor and duplicate
       StudDimensions original = TestConstructorStudDimensionsCustomSizeStress(19, 100, 450);
-      StudDimensions duplicate = (StudDimensions)original.Duplicate();
+      var duplicate = (StudDimensions)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(19, duplicate.Diameter.Millimeters);
@@ -246,7 +246,7 @@ namespace ComposAPI.Studs.Tests {
 
       // 1 create with new constructor and duplicate
       StudDimensions original = TestConstructorStudDimensionsCustomSizeForce(16, 75, 90);
-      StudDimensions duplicate = (StudDimensions)original.Duplicate();
+      var duplicate = (StudDimensions)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(16, duplicate.Diameter.Millimeters);

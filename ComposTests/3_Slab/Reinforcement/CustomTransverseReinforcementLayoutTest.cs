@@ -1,8 +1,8 @@
-﻿using ComposAPI.Helpers;
+﻿using System.Collections.Generic;
+using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
 using OasysUnits;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Slabs.Tests {
@@ -13,10 +13,10 @@ namespace ComposAPI.Slabs.Tests {
     [Theory]
     [InlineData(0, 1, 8, 100, 35)]
     public CustomTransverseReinforcementLayout ConstructorTest(double distanceFromStart, double distanceFromEnd, double diameter, double spacing, double cover) {
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
 
       // 2 create object instance with constructor
-      CustomTransverseReinforcementLayout layout = new CustomTransverseReinforcementLayout(new Length(distanceFromStart, units.Length), new Length(distanceFromEnd, units.Length), new Length(diameter, units.Length), new Length(spacing, units.Length), new Length(cover, units.Length));
+      var layout = new CustomTransverseReinforcementLayout(new Length(distanceFromStart, units.Length), new Length(distanceFromEnd, units.Length), new Length(diameter, units.Length), new Length(spacing, units.Length), new Length(cover, units.Length));
 
       // 3 check that inputs are set in object's members
       Assert.Equal(distanceFromStart, layout.StartPosition.Value);
@@ -32,7 +32,7 @@ namespace ComposAPI.Slabs.Tests {
     public void DuplicateTest() {
       // 1 create with constructor and duplicate
       CustomTransverseReinforcementLayout original = ConstructorTest(0, 1, 8, 100, 35);
-      CustomTransverseReinforcementLayout duplicate = (CustomTransverseReinforcementLayout)original.Duplicate();
+      var duplicate = (CustomTransverseReinforcementLayout)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -58,9 +58,9 @@ namespace ComposAPI.Slabs.Tests {
     [Theory]
     [InlineData(0, 1, 8, 100, 35, "REBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\n")]
     public void ToCoaStringTest(double distanceFromStart, double distanceFromEnd, double diameter, double spacing, double cover, string expected_coaString) {
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
 
-      CustomTransverseReinforcementLayout layout = new CustomTransverseReinforcementLayout(new Length(distanceFromStart, units.Length), new Length(distanceFromEnd, units.Length), new Length(diameter, units.Length), new Length(spacing, units.Length), new Length(cover, units.Length));
+      var layout = new CustomTransverseReinforcementLayout(new Length(distanceFromStart, units.Length), new Length(distanceFromEnd, units.Length), new Length(diameter, units.Length), new Length(spacing, units.Length), new Length(cover, units.Length));
 
       string coaString = layout.ToCoaString("MEMBER-1", units);
 

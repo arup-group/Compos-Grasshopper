@@ -10,7 +10,7 @@ namespace ComposAPI.Results.Tests {
           string fileName = "Compos2_UTF8.coa";
           string memberName = "MEMBER-1";
 
-          ComposFile file = ComposFile.Open(Path.GetFullPath(RelativePath + fileName));
+          var file = ComposFile.Open(Path.GetFullPath(RelativePath + fileName));
           Assert.Equal(0, file.Analyse(memberName));
           m_Member = file.GetMember(memberName);
         }
@@ -24,7 +24,6 @@ namespace ComposAPI.Results.Tests {
     public void PositionsTest() {
       IMember member = ResultsTest.ResultMember;
       Assert.Equal(7, member.Result.Positions.Count);
-
       Assert.Equal(0, member.Result.Positions[0].Meters, 3);
       Assert.Equal(1.333, member.Result.Positions[1].Meters, 3);
       Assert.Equal(2.667, member.Result.Positions[2].Meters, 3);

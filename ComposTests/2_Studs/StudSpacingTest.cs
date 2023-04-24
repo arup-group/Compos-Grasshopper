@@ -11,7 +11,7 @@ namespace ComposAPI.Studs.Tests {
     public void DuplicateTest() {
       // 1 create with constructor and duplicate
       StudGroupSpacing original = TestConstructorStudSpacing(50, 1, 2, 150);
-      StudGroupSpacing duplicate = (StudGroupSpacing)original.Duplicate();
+      var duplicate = (StudGroupSpacing)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -28,7 +28,7 @@ namespace ComposAPI.Studs.Tests {
       LengthUnit unit = LengthUnit.Millimeter;
 
       // 2 create object instance with constructor
-      StudGroupSpacing studSpacing = new StudGroupSpacing(
+      var studSpacing = new StudGroupSpacing(
         new Length(distanceFromStart, unit), numberOfRows, numberOfLines, new Length(spacing, unit));
 
       // 3 check that inputs are set in object's members
@@ -54,7 +54,7 @@ namespace ComposAPI.Studs.Tests {
 
       // 1 create with constructor and duplicate
       StudGroupSpacing original = TestConstructorStudSpacing(25, 1, 2, 250);
-      StudGroupSpacing duplicate = (StudGroupSpacing)original.Duplicate();
+      var duplicate = (StudGroupSpacing)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(25, duplicate.DistanceFromStart.As(LengthUnit.Millimeter));

@@ -1,8 +1,8 @@
-﻿using ComposGHTests.Helpers;
+﻿using System.Collections.Generic;
+using ComposGHTests.Helpers;
 using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Loads.Tests {
@@ -12,7 +12,7 @@ namespace ComposAPI.Loads.Tests {
     public void DuplicatePointTest() {
       // 1 create with constructor and duplicate
       Load original = TestPointLoadConstructor(1, 1.5, 3, 5, 5000);
-      Load duplicate = (Load)original.Duplicate();
+      var duplicate = (Load)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -25,7 +25,7 @@ namespace ComposAPI.Loads.Tests {
     public void PointLoadFromCoaStringTest() {
       ForceUnit forceUnit = ForceUnit.Kilonewton;
       LengthUnit lengthUnit = LengthUnit.Millimeter;
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       units.Force = forceUnit;
       units.Length = lengthUnit;
 
@@ -35,7 +35,7 @@ namespace ComposAPI.Loads.Tests {
 
       // Act
       IList<ILoad> loads = Load.FromCoaString(coaString, "MEMBER-1", units);
-      PointLoad pointLoad = (PointLoad)loads[0];
+      var pointLoad = (PointLoad)loads[0];
 
       // Assert
       //LOAD	MEMBER-1	Point	1.00000	2.00000	3.00000	4.50000	0.0600000
@@ -51,7 +51,7 @@ namespace ComposAPI.Loads.Tests {
     public void PointLoadFromCoaStringTestPercentage() {
       ForceUnit forceUnit = ForceUnit.Kilonewton;
       LengthUnit lengthUnit = LengthUnit.Millimeter;
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       units.Force = forceUnit;
       units.Length = lengthUnit;
 
@@ -61,7 +61,7 @@ namespace ComposAPI.Loads.Tests {
 
       // Act
       IList<ILoad> loads = Load.FromCoaString(coaString, "MEMBER-1", units);
-      PointLoad pointLoad = (PointLoad)loads[0];
+      var pointLoad = (PointLoad)loads[0];
 
       // Assert
       //LOAD	MEMBER-1	Point	1.00000	2.00000	3.00000	4.50000	0.0600000
@@ -104,7 +104,7 @@ namespace ComposAPI.Loads.Tests {
       ForceUnit force = ForceUnit.Kilonewton;
 
       // 2 create object instance with constructor
-      PointLoad load = new PointLoad(
+      var load = new PointLoad(
         new Force(consDead, force), new Force(consLive, force), new Force(finalDead, force), new Force(finalLive, force),
         new Length(position, length));
 
@@ -128,7 +128,7 @@ namespace ComposAPI.Loads.Tests {
       ForceUnit force = ForceUnit.Kilonewton;
 
       // 2 create object instance with constructor
-      PointLoad load = new PointLoad(
+      var load = new PointLoad(
         new Force(consDead, force), new Force(consLive, force), new Force(finalDead, force), new Force(finalLive, force),
         new Ratio(position, ratio));
 

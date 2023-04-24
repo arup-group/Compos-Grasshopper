@@ -12,7 +12,7 @@ namespace ComposAPI.Members.Tests {
       // empty constructor creates default EC4 values
 
       // 2 create object instance with constructor
-      MaterialPartialFactors partialFactors = new MaterialPartialFactors();
+      var partialFactors = new MaterialPartialFactors();
 
       // 3 check that inputs are set in object's members
       Assert.Equal(1.0, partialFactors.Gamma_M0);
@@ -31,7 +31,7 @@ namespace ComposAPI.Members.Tests {
     public void DuplicateMatEC4Test() {
       // 1 create with constructor and duplicate
       MaterialPartialFactors original = ConstructorTest();
-      MaterialPartialFactors duplicate = (MaterialPartialFactors)original.Duplicate();
+      var duplicate = (MaterialPartialFactors)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);

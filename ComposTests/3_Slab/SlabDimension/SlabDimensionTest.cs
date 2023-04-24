@@ -1,9 +1,9 @@
-﻿using ComposAPI.Helpers;
+﻿using System.Collections.Generic;
+using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Slabs.Tests {
@@ -57,8 +57,8 @@ namespace ComposAPI.Slabs.Tests {
     [Fact]
     public void DuplicateStdTest() {
       // 1 create with constructor and duplicate
-      SlabDimension original = (SlabDimension)SlabDimensionMother.CreateSlabDimension();
-      SlabDimension duplicate = (SlabDimension)original.Duplicate();
+      var original = (SlabDimension)SlabDimensionMother.CreateSlabDimension();
+      var duplicate = (SlabDimension)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -72,7 +72,7 @@ namespace ComposAPI.Slabs.Tests {
       // 1 create with constructor and duplicate
       LengthUnit lengthUnit = LengthUnit.Millimeter;
       ISlabDimension original = new SlabDimension(new Length(800, lengthUnit), new Length(250, lengthUnit), new Length(310, lengthUnit), new Length(300, lengthUnit), new Length(250, lengthUnit), new Length(240, lengthUnit), true);
-      SlabDimension duplicate = (SlabDimension)original.Duplicate();
+      var duplicate = (SlabDimension)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(800, duplicate.StartPosition.As(lengthUnit));
@@ -118,11 +118,11 @@ namespace ComposAPI.Slabs.Tests {
     [InlineData(3, 0.1, 1, 1, true, 2, 3, true, "SLAB_DIMENSION	MEMBER-1	4	4	3.00000	0.100000	1.00000	1.00000	TAPERED_YES	EFFECTIVE_WIDTH_YES	2.00000	3.00000\n")]
     public void FromCoaStringTest(double startPosition, double overallDepth, double availableWidthLeft, double availableWidthRight, bool userEffectiveWidth, double effectiveWidthLeft, double effectiveWidthRight, bool taperedToNext, string expected_coaString) {
       // Assemble
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       List<string> parameters = CoaHelper.Split(expected_coaString);
 
       // Act
-      SlabDimension slabDimension = (SlabDimension)SlabDimension.FromCoaString(parameters, units);
+      var slabDimension = (SlabDimension)SlabDimension.FromCoaString(parameters, units);
 
       // Assert
       Assert.Equal(startPosition, slabDimension.StartPosition.As(LengthUnit.Meter));
@@ -142,10 +142,11 @@ namespace ComposAPI.Slabs.Tests {
     [InlineData(4, 3, 0.1, 1, 1, true, 2, 3, true, "SLAB_DIMENSION	MEMBER-1	4	4	3.00000	0.100000	1.00000	1.00000	TAPERED_YES	EFFECTIVE_WIDTH_YES	2.00000	3.00000\n")]
     public void ToCoaStringTest(int index, double startPosition, double overallDepth, double availableWidthLeft, double availableWidthRight, bool userEffectiveWidth, double effectiveWidthLeft, double effectiveWidthRight, bool taperedToNext, string expected_coaString) {
       SlabDimension slabDimension;
-      if (userEffectiveWidth)
+      if (userEffectiveWidth) {
         slabDimension = new SlabDimension(new Length(startPosition, LengthUnit.Meter), new Length(overallDepth, LengthUnit.Meter), new Length(availableWidthLeft, LengthUnit.Meter), new Length(availableWidthRight, LengthUnit.Meter), new Length(effectiveWidthLeft, LengthUnit.Meter), new Length(effectiveWidthRight, LengthUnit.Meter), taperedToNext);
-      else
+      } else {
         slabDimension = new SlabDimension(new Length(startPosition, LengthUnit.Meter), new Length(overallDepth, LengthUnit.Meter), new Length(availableWidthLeft, LengthUnit.Meter), new Length(availableWidthRight, LengthUnit.Meter), taperedToNext);
+      }
       string coaString = slabDimension.ToCoaString("MEMBER-1", 4, index, ComposUnits.GetStandardUnits());
 
       Assert.Equal(expected_coaString, coaString);

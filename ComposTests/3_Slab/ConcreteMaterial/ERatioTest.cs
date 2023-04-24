@@ -18,7 +18,7 @@ namespace ComposAPI.Slabs.Tests {
     [InlineData(6, 18, 5.39)]
     public void Constructor1Test(double shortTerm, double longTerm, double vibration) {
       // 2 create object instance with constructor
-      ERatio eRatio = new ERatio(shortTerm, longTerm, vibration);
+      var eRatio = new ERatio(shortTerm, longTerm, vibration);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(shortTerm, eRatio.ShortTerm);
@@ -33,7 +33,7 @@ namespace ComposAPI.Slabs.Tests {
     [InlineData(9.87, 28.72, 9.55, 27.55)]
     public void Constructor2Test(double shortTerm, double longTerm, double vibration, double shrinkage) {
       // 2 create object instance with constructor
-      ERatio eRatio = new ERatio(shortTerm, longTerm, vibration, shrinkage);
+      var eRatio = new ERatio(shortTerm, longTerm, vibration, shrinkage);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(shortTerm, eRatio.ShortTerm);
@@ -47,7 +47,7 @@ namespace ComposAPI.Slabs.Tests {
     public void DuplicateStdTest() {
       // 1 create with constructor and duplicate
       ERatio original = ERatioMother.CreateERatio();
-      ERatio duplicate = (ERatio)original.Duplicate();
+      var duplicate = (ERatio)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -60,8 +60,8 @@ namespace ComposAPI.Slabs.Tests {
     [InlineData(9.87, 28.72, 9.55, 27.55)]
     public void DuplicateTest(double shortTerm, double longTerm, double vibration, double shrinkage) {
       // 1 create with constructor and duplicate
-      ERatio original = new ERatio(shortTerm, longTerm, vibration, shrinkage);
-      ERatio duplicate = (ERatio)original.Duplicate();
+      var original = new ERatio(shortTerm, longTerm, vibration, shrinkage);
+      var duplicate = (ERatio)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(original.ShortTerm, duplicate.ShortTerm);
@@ -92,7 +92,7 @@ namespace ComposAPI.Slabs.Tests {
 
     [Fact]
     public ERatio EmptyConstructorTest() {
-      ERatio eRatio = new ERatio();
+      var eRatio = new ERatio();
 
       Assert.False(eRatio.UserDefined);
 

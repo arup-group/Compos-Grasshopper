@@ -12,7 +12,7 @@ namespace ComposAPI.Members.Tests {
       // empty constructor creates default (non-EC4) values
 
       // 2 create object instance with constructor
-      SafetyFactors safetyFactors = new SafetyFactors();
+      var safetyFactors = new SafetyFactors();
 
       // 3 check that inputs are set in object's members
       Assert.Null(safetyFactors.MaterialFactors);
@@ -26,7 +26,7 @@ namespace ComposAPI.Members.Tests {
     public void DuplicateSFTest() {
       // 1 create with constructor and duplicate
       SafetyFactors original = ConstructorTest();
-      SafetyFactors duplicate = (SafetyFactors)original.Duplicate();
+      var duplicate = (SafetyFactors)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -38,8 +38,8 @@ namespace ComposAPI.Members.Tests {
     [Fact]
     public void DuplicateTest() {
       // 1 create with constructor and duplicate
-      SafetyFactors original = new SafetyFactors();
-      SafetyFactors duplicate = (SafetyFactors)original.Duplicate();
+      var original = new SafetyFactors();
+      var duplicate = (SafetyFactors)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Null(duplicate.MaterialFactors);
@@ -63,14 +63,14 @@ namespace ComposAPI.Members.Tests {
       Assert.Equal(1.6, duplicate.LoadFactors.FinalLive);
 
       // 3 make some changes to duplicate
-      MaterialFactors materialPartialFactors = (MaterialFactors)duplicate.MaterialFactors;
+      var materialPartialFactors = (MaterialFactors)duplicate.MaterialFactors;
       materialPartialFactors.SteelBeam = 1.2;
       materialPartialFactors.ConcreteCompression = 1.25;
       materialPartialFactors.ConcreteShear = 1.3;
       materialPartialFactors.MetalDecking = 1.35;
       materialPartialFactors.ShearStud = 1.4;
       materialPartialFactors.Reinforcement = 1.05;
-      LoadFactors loadFactors = (LoadFactors)duplicate.LoadFactors;
+      var loadFactors = (LoadFactors)duplicate.LoadFactors;
       loadFactors.ConstantDead = 1.15;
       loadFactors.ConstantLive = 1.45;
       loadFactors.FinalDead = 1.55;
@@ -106,24 +106,26 @@ namespace ComposAPI.Members.Tests {
     [InlineData("SAFETY_FACTOR_LOAD	MEMBER-1	1.10000	1.20000	1.30000	1.40000\n", false, 0, 0, 0, 0, 0, 0, 1.1, 1.2, 1.3, 1.4)]
     public void ToCoaStringTest(string expected_CoaString, bool materialFactorsSet, double steelBeam, double concreteCompression, double concreteShear, double metalDecking, double shearStud, double reinforcement, double constantDead, double finalDead, double constantLive, double finalLive) {
       // Assemble
-      SafetyFactors safetyFactors = new SafetyFactors();
+      var safetyFactors = new SafetyFactors();
 
       if (materialFactorsSet) {
-        MaterialFactors mat = new MaterialFactors();
-        mat.SteelBeam = steelBeam;
-        mat.ConcreteCompression = concreteCompression;
-        mat.ConcreteShear = concreteShear;
-        mat.MetalDecking = metalDecking;
-        mat.ShearStud = shearStud;
-        mat.Reinforcement = reinforcement;
+        var mat = new MaterialFactors {
+          SteelBeam = steelBeam,
+          ConcreteCompression = concreteCompression,
+          ConcreteShear = concreteShear,
+          MetalDecking = metalDecking,
+          ShearStud = shearStud,
+          Reinforcement = reinforcement
+        };
         safetyFactors.MaterialFactors = mat;
       }
 
-      LoadFactors loadFactors = new LoadFactors();
-      loadFactors.ConstantDead = constantDead;
-      loadFactors.ConstantLive = constantLive;
-      loadFactors.FinalDead = finalDead;
-      loadFactors.FinalLive = finalLive;
+      var loadFactors = new LoadFactors {
+        ConstantDead = constantDead,
+        ConstantLive = constantLive,
+        FinalDead = finalDead,
+        FinalLive = finalLive
+      };
       safetyFactors.LoadFactors = loadFactors;
 
       // Act

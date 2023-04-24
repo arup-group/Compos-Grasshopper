@@ -11,7 +11,7 @@ namespace ComposAPI.Beams.Tests {
     public void DuplicateStiffenerTest() {
       // 1 create with constructor and duplicate
       WebOpeningStiffeners original = TestConstructorStiffenersWebOpening(25, 75, 12, 125, 15, false);
-      WebOpeningStiffeners duplicate = (WebOpeningStiffeners)original.Duplicate();
+      var duplicate = (WebOpeningStiffeners)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -29,7 +29,7 @@ namespace ComposAPI.Beams.Tests {
       LengthUnit unit = LengthUnit.Millimeter;
 
       // 2 create object instance with constructor
-      WebOpeningStiffeners webOpeningStiffeners = new WebOpeningStiffeners(
+      var webOpeningStiffeners = new WebOpeningStiffeners(
         new Length(distance, unit), new Length(topWidth, unit),
         new Length(topTHK, unit), bothSides);
 
@@ -55,7 +55,7 @@ namespace ComposAPI.Beams.Tests {
       LengthUnit unit = LengthUnit.Millimeter;
 
       // 2 create object instance with constructor
-      WebOpeningStiffeners webOpeningStiffeners = new WebOpeningStiffeners(
+      var webOpeningStiffeners = new WebOpeningStiffeners(
         new Length(startPos, unit), new Length(topWidth, unit),
         new Length(topTHK, unit), new Length(bottomWidth, unit),
         new Length(bottomTHK, unit), bothSides);
@@ -79,7 +79,7 @@ namespace ComposAPI.Beams.Tests {
 
       // 1 create with constructor and duplicate
       WebOpeningStiffeners original = TestConstructorStiffenersWebOpening(25, 75, 12, 125, 15, false);
-      WebOpeningStiffeners duplicate = (WebOpeningStiffeners)original.Duplicate();
+      var duplicate = (WebOpeningStiffeners)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(25, duplicate.DistanceFrom.Millimeters);
@@ -123,7 +123,7 @@ namespace ComposAPI.Beams.Tests {
 
       // 1 create with constructor and duplicate
       WebOpeningStiffeners original = TestConstructorStiffenersNotch(27, 77, 14, true);
-      WebOpeningStiffeners duplicate = (WebOpeningStiffeners)original.Duplicate();
+      var duplicate = (WebOpeningStiffeners)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(27, duplicate.DistanceFrom.Millimeters);

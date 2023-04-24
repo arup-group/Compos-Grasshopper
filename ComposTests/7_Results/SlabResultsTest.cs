@@ -11,8 +11,8 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       ISlabStressResult res = r.SlabStresses;
 
-      List<double> expectedAddDL = new List<double>()
-      {
+      var expectedAddDL = new List<double>()
+       {
         0.0,
         0.0,
         0.0,
@@ -21,9 +21,9 @@ namespace ComposAPI.Results.Tests {
         0.0,
         0.0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedAddDL[i],
-          res.ConcreteStrainAdditionalDeadLoad[i].MilliStrain, 4);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedAddDL[i], res.ConcreteStrainAdditionalDeadLoad[i].MilliStrain, 4);
+      }
     }
 
     [Fact]
@@ -31,7 +31,7 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       ISlabStressResult res = r.SlabStresses;
 
-      List<double> expectedFinal = new List<double>()
+      var expectedFinal = new List<double>()
       {
         0.0,
         -0.1272,
@@ -41,9 +41,9 @@ namespace ComposAPI.Results.Tests {
         -0.1272,
         0.0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedFinal[i],
-          res.ConcreteStrainFinal[i].MilliStrain, 4);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedFinal[i], res.ConcreteStrainFinal[i].MilliStrain, 4);
+      }
     }
 
     [Fact]
@@ -51,7 +51,7 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       ISlabStressResult res = r.SlabStresses;
 
-      List<double> expectedFinalLL = new List<double>()
+      var expectedFinalLL = new List<double>()
       {
         0.0,
         -0.1272,
@@ -61,9 +61,9 @@ namespace ComposAPI.Results.Tests {
         -0.1272,
         0.0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedFinalLL[i],
-          res.ConcreteStrainFinalLiveLoad[i].MilliStrain, 4);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedFinalLL[i], res.ConcreteStrainFinalLiveLoad[i].MilliStrain, 4);
+      }
     }
 
     [Fact]
@@ -71,7 +71,7 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       ISlabStressResult res = r.SlabStresses;
 
-      List<double> expectedShrink = new List<double>()
+      var expectedShrink = new List<double>()
       {
         0.0,
         0.0,
@@ -81,9 +81,9 @@ namespace ComposAPI.Results.Tests {
         0.0,
         0.0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedShrink[i],
-          res.ConcreteStrainFinalShrinkage[i].MilliStrain, 4);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedShrink[i], res.ConcreteStrainFinalShrinkage[i].MilliStrain, 4);
+      }
     }
 
     [Fact]
@@ -91,7 +91,7 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       ISlabStressResult res = r.SlabStresses;
 
-      List<double> expectedFinal = new List<double>()
+      var expectedFinal = new List<double>()
       {
         0.0,
         -0.1272,
@@ -104,9 +104,9 @@ namespace ComposAPI.Results.Tests {
 
       // check that millistrain is the correct unit
       // values in compos is given as 'x 1000':
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedFinal[i] / 1000,
-          res.ConcreteStrainFinal[i].Value, 7);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedFinal[i] / 1000, res.ConcreteStrainFinal[i].Value, 7);
+      }
     }
 
     [Fact]
@@ -114,7 +114,7 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       ISlabStressResult res = r.SlabStresses;
 
-      List<double> expectedAddDL = new List<double>()
+      var expectedAddDL = new List<double>()
       {
         0.0,
         0.0,
@@ -124,9 +124,9 @@ namespace ComposAPI.Results.Tests {
         0.0,
         0.0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedAddDL[i] * Math.Pow(10, -6),
-          res.ConcreteStressAdditionalDeadLoad[i].NewtonsPerSquareMeter * Math.Pow(10, -6), 3);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedAddDL[i] * 1E-6, res.ConcreteStressAdditionalDeadLoad[i].NewtonsPerSquareMeter * 1E-6, 3);
+      }
     }
 
     [Fact]
@@ -134,7 +134,7 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       ISlabStressResult res = r.SlabStresses;
 
-      List<double> expectedFinal = new List<double>()
+      var expectedFinal = new List<double>()
       {
         0.0,
         -4.347E+6,
@@ -144,9 +144,9 @@ namespace ComposAPI.Results.Tests {
         -4.347E+6,
         0.0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedFinal[i] * Math.Pow(10, -6),
-          res.ConcreteStressFinal[i].NewtonsPerSquareMeter * Math.Pow(10, -6), 3);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedFinal[i] * 1E-6, res.ConcreteStressFinal[i].NewtonsPerSquareMeter * 1E-6, 3);
+      }
     }
 
     [Fact]
@@ -154,7 +154,7 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       ISlabStressResult res = r.SlabStresses;
 
-      List<double> expectedFinalLL = new List<double>()
+      var expectedFinalLL = new List<double>()
       {
         0.0,
         -4.347E+6,
@@ -164,9 +164,9 @@ namespace ComposAPI.Results.Tests {
         -4.347E+6,
         0.0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedFinalLL[i] * Math.Pow(10, -6),
-          res.ConcreteStressFinalLiveLoad[i].NewtonsPerSquareMeter * Math.Pow(10, -6), 3);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedFinalLL[i] * 1E-6, res.ConcreteStressFinalLiveLoad[i].NewtonsPerSquareMeter * 1E-6, 3);
+      }
     }
 
     [Fact]
@@ -174,7 +174,7 @@ namespace ComposAPI.Results.Tests {
       IResult r = ResultsTest.ResultMember.Result;
       ISlabStressResult res = r.SlabStresses;
 
-      List<double> expectedShrink = new List<double>()
+      var expectedShrink = new List<double>()
       {
         0.0,
         0.0,
@@ -184,9 +184,9 @@ namespace ComposAPI.Results.Tests {
         0.0,
         0.0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedShrink[i] * Math.Pow(10, -6),
-          res.ConcreteStressFinalShrinkage[i].NewtonsPerSquareMeter * Math.Pow(10, -6), 3);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedShrink[i] * 1E-6, res.ConcreteStressFinalShrinkage[i].NewtonsPerSquareMeter * 1E-6, 3);
+      }
     }
   }
 }

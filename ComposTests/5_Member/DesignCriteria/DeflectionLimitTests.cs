@@ -10,7 +10,7 @@ namespace ComposAPI.Members.Tests {
 
     [Fact]
     public void AbsoluteConstructorTest() {
-      DeflectionLimit deflectionLimit = new DeflectionLimit(0.3, LengthUnit.Meter);
+      var deflectionLimit = new DeflectionLimit(0.3, LengthUnit.Meter);
 
       Assert.Equal(new Length(0.3, LengthUnit.Meter), deflectionLimit.AbsoluteDeflection);
       Assert.Equal(Ratio.Zero, deflectionLimit.SpanOverDeflectionRatio);
@@ -19,8 +19,8 @@ namespace ComposAPI.Members.Tests {
     [Fact]
     public void DuplicateTest() {
       // 1 create with constructor and duplicate
-      DeflectionLimit original = new DeflectionLimit();
-      DeflectionLimit duplicate = (DeflectionLimit)original.Duplicate();
+      var original = new DeflectionLimit();
+      var duplicate = (DeflectionLimit)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -31,7 +31,7 @@ namespace ComposAPI.Members.Tests {
 
     [Fact]
     public void EmptyConstructorTest() {
-      DeflectionLimit deflectionLimit = new DeflectionLimit();
+      var deflectionLimit = new DeflectionLimit();
 
       Assert.Equal(Length.Zero, deflectionLimit.AbsoluteDeflection);
       Assert.Equal(Ratio.Zero, deflectionLimit.SpanOverDeflectionRatio);
@@ -45,9 +45,9 @@ namespace ComposAPI.Members.Tests {
     [InlineData("CRITERIA_DEF_LIMIT	MEMBER-1	POST_CONSTRUCTION	ABSOLUTE	32.0000\n", DeflectionLimitLoadType.PostConstruction, 32)]
     public void FromCoaStringAbsTest(string coaString, DeflectionLimitLoadType expectedType, double expectedAbsolute) {
       // Assemble
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       units.Displacement = LengthUnit.Millimeter;
-      DeflectionLimit expectedLimit = new DeflectionLimit(expectedAbsolute, LengthUnit.Millimeter);
+      var expectedLimit = new DeflectionLimit(expectedAbsolute, LengthUnit.Millimeter);
 
       // Act
       IDeflectionLimit deflectionLimit = DeflectionLimit.FromCoaString(coaString, "MEMBER-1", expectedType, units);
@@ -64,8 +64,8 @@ namespace ComposAPI.Members.Tests {
     [InlineData("CRITERIA_DEF_LIMIT	MEMBER-1	POST_CONSTRUCTION	SPAN/DEF_RATIO	500.000\n", DeflectionLimitLoadType.PostConstruction, 500)]
     public void FromCoaStringRatioTest(string coaString, DeflectionLimitLoadType expectedType, double expectedRatio) {
       // Assemble
-      ComposUnits units = ComposUnits.GetStandardUnits();
-      DeflectionLimit expectedLimit = new DeflectionLimit(expectedRatio);
+      var units = ComposUnits.GetStandardUnits();
+      var expectedLimit = new DeflectionLimit(expectedRatio);
 
       // Act
       IDeflectionLimit deflectionLimit = DeflectionLimit.FromCoaString(coaString, "MEMBER-1", expectedType, units);
@@ -76,7 +76,7 @@ namespace ComposAPI.Members.Tests {
 
     [Fact]
     public void SpanDeflectionConstructorTest() {
-      DeflectionLimit deflectionLimit = new DeflectionLimit(350);
+      var deflectionLimit = new DeflectionLimit(350);
 
       Assert.Equal(new Ratio(350, RatioUnit.DecimalFraction), deflectionLimit.SpanOverDeflectionRatio);
       Assert.Equal(Length.Zero, deflectionLimit.AbsoluteDeflection);
@@ -90,9 +90,9 @@ namespace ComposAPI.Members.Tests {
     [InlineData("CRITERIA_DEF_LIMIT	MEMBER-1	POST_CONSTRUCTION	ABSOLUTE	32.0000\n", DeflectionLimitLoadType.PostConstruction, 32)]
     public void ToCoaStringAbsTest(string expected_CoaString, DeflectionLimitLoadType type, double absolute) {
       // Assemble
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       units.Displacement = LengthUnit.Millimeter;
-      DeflectionLimit deflectionLimit = new DeflectionLimit(absolute, LengthUnit.Millimeter);
+      var deflectionLimit = new DeflectionLimit(absolute, LengthUnit.Millimeter);
 
       // Act
       string coaString = deflectionLimit.ToCoaString("MEMBER-1", type, units);
@@ -109,8 +109,8 @@ namespace ComposAPI.Members.Tests {
     [InlineData("CRITERIA_DEF_LIMIT	MEMBER-1	POST_CONSTRUCTION	SPAN/DEF_RATIO	500.000\n", DeflectionLimitLoadType.PostConstruction, 500)]
     public void ToCoaStringRatioTest(string expected_CoaString, DeflectionLimitLoadType type, double ratio) {
       // Assemble
-      ComposUnits units = ComposUnits.GetStandardUnits();
-      DeflectionLimit deflectionLimit = new DeflectionLimit(ratio);
+      var units = ComposUnits.GetStandardUnits();
+      var deflectionLimit = new DeflectionLimit(ratio);
 
       // Act
       string coaString = deflectionLimit.ToCoaString("MEMBER-1", type, units);

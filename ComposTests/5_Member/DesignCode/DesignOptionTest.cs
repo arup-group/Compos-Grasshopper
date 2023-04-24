@@ -9,7 +9,7 @@ namespace ComposAPI.Members.Tests {
     public void DuplicateDcOptTest() {
       // 1 create with constructor and duplicate
       DesignOption original = TestDesignOptionConstructor();
-      DesignOption duplicate = (DesignOption)original.Duplicate();
+      var duplicate = (DesignOption)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -24,7 +24,7 @@ namespace ComposAPI.Members.Tests {
       // use default values
 
       // 2 create object instance with constructor
-      DesignOption designOption = new DesignOption();
+      var designOption = new DesignOption();
 
       // 3 check that inputs are set in object's members
       Assert.True(designOption.ProppedDuringConstruction);
@@ -40,8 +40,8 @@ namespace ComposAPI.Members.Tests {
     [Fact]
     public void TestDesignOptionDuplicate() {
       // 1 create with constructor and duplicate
-      DesignOption original = new DesignOption();
-      DesignOption duplicate = (DesignOption)original.Duplicate();
+      var original = new DesignOption();
+      var duplicate = (DesignOption)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.True(duplicate.ProppedDuringConstruction);

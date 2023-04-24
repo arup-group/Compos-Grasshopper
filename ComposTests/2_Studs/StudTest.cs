@@ -1,8 +1,8 @@
-﻿using ComposGHTests.Helpers;
+﻿using System.Collections.Generic;
+using ComposGHTests.Helpers;
 using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Studs.Tests {
@@ -13,7 +13,7 @@ namespace ComposAPI.Studs.Tests {
     public void DuplicateStudCustomSpacingTest() {
       // 1 create with constructor and duplicate
       Stud original = TestConstructorStudCustomSpacing();
-      Stud duplicate = (Stud)original.Duplicate();
+      var duplicate = (Stud)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -37,8 +37,8 @@ namespace ComposAPI.Studs.Tests {
       IStudGroupSpacing spacing1 = new StudGroupSpacing(Length.Zero, 2, 1, new Length(150, LengthUnit.Millimeter));
       IStudGroupSpacing spacing2 = new StudGroupSpacing(new Length(8, LengthUnit.Meter), 3, 2, new Length(250, LengthUnit.Millimeter));
 
-      List<IStudGroupSpacing> spacing = new List<IStudGroupSpacing>() { spacing1, spacing2 };
-      Stud stud = new Stud(dimensions, specs, spacing, false);
+      var spacing = new List<IStudGroupSpacing>() { spacing1, spacing2 };
+      var stud = new Stud(dimensions, specs, spacing, false);
 
       // Act
       string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.AS_NZS2327_2017);
@@ -58,7 +58,7 @@ namespace ComposAPI.Studs.Tests {
 
       IStudDimensions dimensions = new StudDimensions(StandardStudSize.D19mmH100mm);
       IStudSpecification specs = new StudSpecification(true, Length.Zero, Length.Zero);
-      Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
+      var stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
 
       // Act
       string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.BS5950_3_1_1990_Superseded);
@@ -78,7 +78,7 @@ namespace ComposAPI.Studs.Tests {
 
       IStudDimensions dimensions = new StudDimensions(new Length(21, LengthUnit.Millimeter), new Length(105, LengthUnit.Millimeter), new Force(95000, ForceUnit.Newton));
       IStudSpecification specs = new StudSpecification(false, new Length(1, LengthUnit.Meter), new Length(5, LengthUnit.Meter));
-      Stud stud = new Stud(dimensions, specs, 0.2, 0.85);
+      var stud = new Stud(dimensions, specs, 0.2, 0.85);
 
       // Act
       string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.BS5950_3_1_1990_A1_2010);
@@ -97,7 +97,7 @@ namespace ComposAPI.Studs.Tests {
       IStudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
 
       // 2 create object instance with constructor
-      Stud stud = new Stud(dimensions, specification, minSaving, type);
+      var stud = new Stud(dimensions, specification, minSaving, type);
 
       // 3 check that inputs are set in object's members
       // dimensions
@@ -134,12 +134,13 @@ namespace ComposAPI.Studs.Tests {
       // 1 setup inputs
       IStudDimensions dimensions = new StudDimensions(StandardStudSize.D13mmH65mm, StandardStudGrade.SD1_EN13918);
       IStudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
-      List<IStudGroupSpacing> studSpacings = new List<IStudGroupSpacing>();
-      studSpacings.Add(new StudGroupSpacing(Length.Zero, 2, 1, new Length(25, LengthUnit.Centimeter)));
-      studSpacings.Add(new StudGroupSpacing(Length.Zero, 1, 2, new Length(35, LengthUnit.Centimeter)));
+      var studSpacings = new List<IStudGroupSpacing> {
+        new StudGroupSpacing(Length.Zero, 2, 1, new Length(25, LengthUnit.Centimeter)),
+        new StudGroupSpacing(Length.Zero, 1, 2, new Length(35, LengthUnit.Centimeter))
+      };
 
       // 2 create object instance with constructor
-      Stud stud = new Stud(dimensions, specification, studSpacings, true);
+      var stud = new Stud(dimensions, specification, studSpacings, true);
 
       // 3 check that inputs are set in object's members
       // dimensions
@@ -185,7 +186,7 @@ namespace ComposAPI.Studs.Tests {
       IStudSpecification specification = new StudSpecification(Length.Zero, Length.Zero, true);
 
       // 2 create object instance with constructor
-      Stud stud = new Stud(dimensions, specification, minSaving, interaction);
+      var stud = new Stud(dimensions, specification, minSaving, interaction);
 
       // 3 check that inputs are set in object's members
       // dimensions
@@ -223,7 +224,7 @@ namespace ComposAPI.Studs.Tests {
 
       IStudDimensions dimensions = new StudDimensions(StandardStudSize.D25mmH100mm, new Pressure(440, PressureUnit.Megapascal));
       IStudSpecification specs = new StudSpecification(new Length(0, LengthUnit.Meter), new Length(0, LengthUnit.Meter), new Length(30, LengthUnit.Millimeter), true, true);
-      Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Min_Num_of_Studs);
+      var stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Min_Num_of_Studs);
 
       // Act
       string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.EN1994_1_1_2004);
@@ -246,7 +247,7 @@ namespace ComposAPI.Studs.Tests {
 
       IStudDimensions dimensions = new StudDimensions(StandardStudSize.D19mmH100mm, StandardStudGrade.SD2_EN13918);
       IStudSpecification specs = new StudSpecification(new Length(0, LengthUnit.Meter), new Length(0, LengthUnit.Meter), new Length(30, LengthUnit.Millimeter), false, false);
-      Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
+      var stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
 
       // Act
       string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.EN1994_1_1_2004);
@@ -324,7 +325,7 @@ namespace ComposAPI.Studs.Tests {
 "STUD_EC4_APPLY\tMEMBER-7\tYES" + '\n';
 
       // Act
-      ComposFile composFile = ComposFile.FromCoaString(coaString);
+      var composFile = ComposFile.FromCoaString(coaString);
 
       //// Assert
       Assert.Equal(7, composFile.GetMembers().Count);
@@ -436,8 +437,8 @@ namespace ComposAPI.Studs.Tests {
       IStudGroupSpacing spacing2 = new StudGroupSpacing(new Length(4.5, LengthUnit.Meter), 3, 2, new Length(250, LengthUnit.Millimeter));
       IStudGroupSpacing spacing3 = new StudGroupSpacing(new Length(9, LengthUnit.Meter), 4, 3, new Length(350, LengthUnit.Millimeter));
 
-      List<IStudGroupSpacing> spacing = new List<IStudGroupSpacing>() { spacing1, spacing2, spacing3 };
-      Stud stud = new Stud(dimensions, specs, spacing, true);
+      var spacing = new List<IStudGroupSpacing>() { spacing1, spacing2, spacing3 };
+      var stud = new Stud(dimensions, specs, spacing, true);
 
       // Act
       string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.HKSUOS_2005);
@@ -457,7 +458,7 @@ namespace ComposAPI.Studs.Tests {
 
       IStudDimensions dimensions = new StudDimensions(StandardStudSize.D19mmH95mm);
       IStudSpecification specs = new StudSpecification(Length.Zero, Length.Zero, true);
-      Stud stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
+      var stud = new Stud(dimensions, specs, 0.2, StudSpacingType.Automatic);
 
       // Act
       string coaString = stud.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits(), Code.HKSUOS_2011);
@@ -470,7 +471,7 @@ namespace ComposAPI.Studs.Tests {
     public void TestStudDuplicate() {
       // 1 create with constructor and duplicate
       Stud original = TestConstructorStudCustomSpacing();
-      Stud duplicate = (Stud)original.Duplicate();
+      var duplicate = (Stud)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       // dimensions
@@ -508,8 +509,9 @@ namespace ComposAPI.Studs.Tests {
       // 3 make some changes to duplicate
       IStudDimensions dimensions = new StudDimensions(StandardStudSize.D25mmH100mm, StandardStudGrade.SD3_EN13918);
       IStudSpecification specification = new StudSpecification(new Length(25, LengthUnit.Centimeter), new Length(35, LengthUnit.Centimeter), false);
-      List<IStudGroupSpacing> studSpacings = new List<IStudGroupSpacing>();
-      studSpacings.Add(new StudGroupSpacing(Length.Zero, 3, 2, new Length(10, LengthUnit.Centimeter)));
+      var studSpacings = new List<IStudGroupSpacing> {
+        new StudGroupSpacing(Length.Zero, 3, 2, new Length(10, LengthUnit.Centimeter))
+      };
 
       duplicate.Dimensions = dimensions;
       duplicate.Specification = specification;
@@ -578,7 +580,7 @@ namespace ComposAPI.Studs.Tests {
     public void TestStudDuplicate2() {
       // 1 create with constructor and duplicate
       Stud original = TestConstructorStudAutomaticOrMinSpacing(StudSpacingType.Automatic, 0.2);
-      Stud duplicate = (Stud)original.Duplicate();
+      var duplicate = (Stud)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(StudSpacingType.Automatic, duplicate.StudSpacingType);

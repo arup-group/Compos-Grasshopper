@@ -12,7 +12,7 @@ namespace ComposAPI.Members.Tests {
       // empty constructor creates default EC4 values
 
       // 2 create object instance with constructor
-      LoadCombinationFactors loadFactors = new LoadCombinationFactors();
+      var loadFactors = new LoadCombinationFactors();
 
       // 3 check that inputs are set in object's members
       Assert.Equal(1.0, loadFactors.ConstantXi);
@@ -32,7 +32,7 @@ namespace ComposAPI.Members.Tests {
     public void DuplicateLCTest() {
       // 1 create with constructor and duplicate
       LoadCombinationFactors original = ConstructorTest();
-      LoadCombinationFactors duplicate = (LoadCombinationFactors)original.Duplicate();
+      var duplicate = (LoadCombinationFactors)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);

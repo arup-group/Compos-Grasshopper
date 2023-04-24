@@ -1,7 +1,7 @@
+using System.Collections.Generic;
 using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Members.Tests {
@@ -23,7 +23,7 @@ namespace ComposAPI.Members.Tests {
     public void BSssToCoaStringTest() {
       // Arrange
       string expected_coaString = "DESIGN_OPTION	MEMBER-1	BS5950-3.1:1990 (superseded)	PROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_NO	2.00000	2.00000\n";
-      DesignCode dc = new DesignCode(Code.BS5950_3_1_1990_Superseded);
+      var dc = new DesignCode(Code.BS5950_3_1_1990_Superseded);
       // Act
       string coaString = dc.ToCoaString("MEMBER-1");
       // Assert
@@ -34,7 +34,7 @@ namespace ComposAPI.Members.Tests {
     public void BSToCoaStringTest() {
       // Arrange
       string expected_coaString = "DESIGN_OPTION	MEMBER-2	BS5950-3.1:1990+A1:2010	PROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_NO	2.00000	2.00000\n";
-      DesignCode dc = new DesignCode(Code.BS5950_3_1_1990_A1_2010);
+      var dc = new DesignCode(Code.BS5950_3_1_1990_A1_2010);
       // Act
       string coaString = dc.ToCoaString("MEMBER-2");
       // Assert
@@ -47,7 +47,7 @@ namespace ComposAPI.Members.Tests {
       Code code = Code.BS5950_3_1_1990_A1_2010;
 
       // 2 create object instance with constructor
-      DesignCode designCode = new DesignCode(code);
+      var designCode = new DesignCode(code);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(code, designCode.Code);
@@ -67,7 +67,7 @@ namespace ComposAPI.Members.Tests {
     public void DuplicateDCASNZTest() {
       // 1 create with constructor and duplicate
       DesignCode original = TestASNZConstructor();
-      DesignCode duplicate = (DesignCode)original.Duplicate();
+      var duplicate = (DesignCode)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -80,7 +80,7 @@ namespace ComposAPI.Members.Tests {
     public void DuplicateDCEC4Test() {
       // 1 create with constructor and duplicate
       DesignCode original = TestEC4Constructor();
-      DesignCode duplicate = (DesignCode)original.Duplicate();
+      var duplicate = (DesignCode)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -93,7 +93,7 @@ namespace ComposAPI.Members.Tests {
     public void DuplicateDCTest() {
       // 1 create with constructor and duplicate
       DesignCode original = ConstructorTest();
-      DesignCode duplicate = (DesignCode)original.Duplicate();
+      var duplicate = (DesignCode)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -107,8 +107,8 @@ namespace ComposAPI.Members.Tests {
       Code code = Code.HKSUOS_2005;
 
       // 1 create with constructor and duplicate
-      DesignCode original = new DesignCode(code);
-      DesignCode duplicate = (DesignCode)original.Duplicate();
+      var original = new DesignCode(code);
+      var duplicate = (DesignCode)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(code, duplicate.Code);
@@ -160,7 +160,7 @@ namespace ComposAPI.Members.Tests {
     public void HK05ToCoaStringTest() {
       // Arrange
       string expected_coaString = "DESIGN_OPTION	MEMBER-5	HKSUOS:2005	PROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_NO	2.00000	2.00000\n";
-      DesignCode dc = new DesignCode(Code.HKSUOS_2005);
+      var dc = new DesignCode(Code.HKSUOS_2005);
       // Act
       string coaString = dc.ToCoaString("MEMBER-5");
       // Assert
@@ -171,7 +171,7 @@ namespace ComposAPI.Members.Tests {
     public void HK11ToCoaStringTest() {
       // Arrange
       string expected_coaString = "DESIGN_OPTION	MEMBER-6	HKSUOS:2011	PROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_NO	2.00000	2.00000\n";
-      DesignCode dc = new DesignCode(Code.HKSUOS_2011);
+      var dc = new DesignCode(Code.HKSUOS_2011);
       // Act
       string coaString = dc.ToCoaString("MEMBER-6");
       // Assert
@@ -184,7 +184,7 @@ namespace ComposAPI.Members.Tests {
       // empty constructor creates default AS/NZ code
 
       // 2 create object instance with constructor
-      ASNZS2327 designCode = new ASNZS2327();
+      var designCode = new ASNZS2327();
 
       // 3 check that inputs are set in object's members
       Assert.Equal(Code.AS_NZS2327_2017, designCode.Code);
@@ -208,8 +208,8 @@ namespace ComposAPI.Members.Tests {
     [Fact]
     public void TestASNZDuplicate() {
       // 1 create with constructor and duplicate
-      ASNZS2327 original = new ASNZS2327();
-      ASNZS2327 duplicate = (ASNZS2327)original.Duplicate();
+      var original = new ASNZS2327();
+      var duplicate = (ASNZS2327)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(Code.AS_NZS2327_2017, duplicate.Code);
@@ -238,7 +238,7 @@ namespace ComposAPI.Members.Tests {
       // empty constructor creates default EN1994-1-1 code
 
       // 2 create object instance with constructor
-      EN1994 designCode = new EN1994();
+      var designCode = new EN1994();
 
       // 3 check that inputs are set in object's members
       Assert.Equal(Code.EN1994_1_1_2004, designCode.Code);
@@ -253,8 +253,8 @@ namespace ComposAPI.Members.Tests {
       //Assert.Null(designCode.SafetyFactors.LoadCombinationFactors);
       Assert.Equal(LoadCombination.Equation6_10, designCode.SafetyFactors.LoadCombinationFactors.LoadCombination);
       // code options
-      CreepShrinkageParametersEN lt = (CreepShrinkageParametersEN)designCode.CodeOptions.LongTerm;
-      CreepShrinkageParametersEN st = (CreepShrinkageParametersEN)designCode.CodeOptions.ShortTerm;
+      var lt = (CreepShrinkageParametersEN)designCode.CodeOptions.LongTerm;
+      var st = (CreepShrinkageParametersEN)designCode.CodeOptions.ShortTerm;
       Assert.False(designCode.CodeOptions.ApproxModularRatios);
       Assert.False(designCode.CodeOptions.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
       Assert.Equal(CementClass.N, designCode.CodeOptions.CementType);
@@ -274,8 +274,8 @@ namespace ComposAPI.Members.Tests {
     [Fact]
     public void TestEC4Duplicate() {
       // 1 create with constructor and duplicate
-      EN1994 original = new EN1994();
-      EN1994 duplicate = (EN1994)original.Duplicate();
+      var original = new EN1994();
+      var duplicate = (EN1994)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(Code.EN1994_1_1_2004, duplicate.Code);
@@ -290,8 +290,8 @@ namespace ComposAPI.Members.Tests {
       //Assert.Null(duplicate.SafetyFactors.LoadCombinationFactors);
       Assert.Equal(LoadCombination.Equation6_10, duplicate.SafetyFactors.LoadCombinationFactors.LoadCombination);
       // code options
-      CreepShrinkageParametersEN lt = (CreepShrinkageParametersEN)duplicate.CodeOptions.LongTerm;
-      CreepShrinkageParametersEN st = (CreepShrinkageParametersEN)duplicate.CodeOptions.ShortTerm;
+      var lt = (CreepShrinkageParametersEN)duplicate.CodeOptions.LongTerm;
+      var st = (CreepShrinkageParametersEN)duplicate.CodeOptions.ShortTerm;
       Assert.False(duplicate.CodeOptions.ApproxModularRatios);
       Assert.False(duplicate.CodeOptions.IgnoreShrinkageDeflectionForLowLengthToDepthRatios);
       Assert.Equal(CementClass.N, duplicate.CodeOptions.CementType);
@@ -326,7 +326,7 @@ namespace ComposAPI.Members.Tests {
     [InlineData("AS_NZS2327_2017", false, false, false, false, false, "MEMBER_TITLE	MEMBER-7		B/tf=22.5    Change in direction > 8 degrees\nDESIGN_OPTION	MEMBER-7	AS/NZS2327:2017	UNPROPPED	BEAM_WEIGHT_NO	SLAB_WEIGHT_NO	SHEAR_DEFORM_NO	THIN_SECTION_NO	1.00000	3.00000\n", 1, 3)]
     public void TestFileCoaStringForDesignCode(string expected_Code, bool expected_ProppedDuringConstruction, bool expected_InclSteelBeamWeight, bool expected_InclConcreteSlabWeight, bool expected_ConsiderShearDeflection, bool expected_InclThinFlangeSections, string coaString, double expected_LongTermCreep = 0, double expected_ShortTermCreep = 0) {
       // Arrange
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       List<string> parameters = CoaHelper.Split(coaString);
 
       // Act

@@ -1,8 +1,8 @@
-﻿using ComposGHTests.Helpers;
+﻿using System;
+using ComposGHTests.Helpers;
 using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
 using Xunit;
 
 namespace ComposAPI.Slabs.Tests {
@@ -25,7 +25,7 @@ namespace ComposAPI.Slabs.Tests {
     [InlineData(90, true, true)]
     public void ConstructorTest(double angle, bool isDiscontinous, bool isWelded) {
       // 2 create object instance with constructor
-      DeckingConfiguration configuration = new DeckingConfiguration(new Angle(angle, ComposUnits.GetStandardUnits().Angle), isDiscontinous, isWelded);
+      var configuration = new DeckingConfiguration(new Angle(angle, ComposUnits.GetStandardUnits().Angle), isDiscontinous, isWelded);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(angle, configuration.Angle.Value);
@@ -37,7 +37,7 @@ namespace ComposAPI.Slabs.Tests {
     public void DuplicateStdTest() {
       // 1 create with constructor and duplicate
       DeckingConfiguration original = DeckingConfigurationMother.CreateDeckingConfiguration();
-      DeckingConfiguration duplicate = (DeckingConfiguration)original.Duplicate();
+      var duplicate = (DeckingConfiguration)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -50,7 +50,7 @@ namespace ComposAPI.Slabs.Tests {
     [Fact]
     public void EmptyConstructorTest() {
       // 2 create object instance with constructor
-      DeckingConfiguration configuration = new DeckingConfiguration();
+      var configuration = new DeckingConfiguration();
 
       // 3 check that inputs are set in object's members
       Assert.Equal(90, configuration.Angle.Value);

@@ -1,8 +1,8 @@
-﻿using ComposGHTests.Helpers;
+﻿using System.Collections.Generic;
+using ComposGHTests.Helpers;
 using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Loads.Tests {
@@ -12,7 +12,7 @@ namespace ComposAPI.Loads.Tests {
     public void AxialLoadFromCoaStringTest1() {
       ForceUnit forceUnit = ForceUnit.Kilonewton;
       LengthUnit lengthUnit = LengthUnit.Millimeter;
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       units.Force = forceUnit;
       units.Length = lengthUnit;
 
@@ -22,7 +22,7 @@ namespace ComposAPI.Loads.Tests {
 
       // Act
       IList<ILoad> loads = Load.FromCoaString(coaString, "MEMBER-1", units);
-      AxialLoad axialLoad1 = (AxialLoad)loads[0];
+      var axialLoad1 = (AxialLoad)loads[0];
 
       // Assert
       //LOAD	MEMBER-1	Axial	1.00000	2.00000	3.00000	4.50000	6.00000	7.00000	8.90000	10.0000	11.0000	12.0000
@@ -43,7 +43,7 @@ namespace ComposAPI.Loads.Tests {
     public void AxialLoadFromCoaStringTest2() {
       ForceUnit forceUnit = ForceUnit.Kilonewton;
       LengthUnit lengthUnit = LengthUnit.Millimeter;
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       units.Force = forceUnit;
       units.Length = lengthUnit;
 
@@ -53,7 +53,7 @@ namespace ComposAPI.Loads.Tests {
 
       // Act
       IList<ILoad> loads = Load.FromCoaString(coaString, "MEMBER-1", units);
-      AxialLoad axialLoad2 = (AxialLoad)loads[0];
+      var axialLoad2 = (AxialLoad)loads[0];
 
       // Assert
       //LOAD	MEMBER-1	Axial	2.00000	3.00000	4.50000	6.00000	7.00000	8.90000	10.0000	11.0000	12.0000	13.0000
@@ -85,7 +85,7 @@ namespace ComposAPI.Loads.Tests {
     public void DuplicateAxialTest() {
       // 1 create with constructor and duplicate
       Load original = TestAxialLoadConstructor(1, 1.5, 3, 5, 150, 3, 4.5, 6, 5, 200);
-      Load duplicate = (Load)original.Duplicate();
+      var duplicate = (Load)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -103,7 +103,7 @@ namespace ComposAPI.Loads.Tests {
       ForceUnit force = ForceUnit.Kilonewton;
 
       // 2 create object instance with constructor
-      AxialLoad load = new AxialLoad(
+      var load = new AxialLoad(
         new Force(consDead1, force), new Force(consLive1, force), new Force(finalDead1, force), new Force(finalLive1, force), new Length(depth1, length),
         new Force(consDead2, force), new Force(consLive2, force), new Force(finalDead2, force), new Force(finalLive2, force), new Length(depth2, length));
 

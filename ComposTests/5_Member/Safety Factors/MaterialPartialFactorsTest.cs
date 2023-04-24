@@ -1,7 +1,7 @@
+using System.Collections.Generic;
 using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Members.Tests {
@@ -31,8 +31,8 @@ namespace ComposAPI.Members.Tests {
     [Fact]
     public void DuplicatePFTest() {
       // 1 create with constructor and duplicate
-      MaterialFactors original = (MaterialFactors)ConstructorTest();
-      MaterialFactors duplicate = (MaterialFactors)original.Duplicate();
+      var original = (MaterialFactors)ConstructorTest();
+      var duplicate = (MaterialFactors)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -69,13 +69,14 @@ namespace ComposAPI.Members.Tests {
     [Fact]
     public void ToCoaStringTest() {
       // Arrange
-      MaterialFactors materialPartialFactors = new MaterialFactors();
-      materialPartialFactors.SteelBeam = 1.1;
-      materialPartialFactors.ConcreteCompression = 1.2;
-      materialPartialFactors.ConcreteShear = 1.3;
-      materialPartialFactors.MetalDecking = 1.4;
-      materialPartialFactors.ShearStud = 1.5;
-      materialPartialFactors.Reinforcement = 1.6;
+      var materialPartialFactors = new MaterialFactors {
+        SteelBeam = 1.1,
+        ConcreteCompression = 1.2,
+        ConcreteShear = 1.3,
+        MetalDecking = 1.4,
+        ShearStud = 1.5,
+        Reinforcement = 1.6
+      };
 
       // Act
       string coaString = materialPartialFactors.ToCoaString("MEMBER-1");

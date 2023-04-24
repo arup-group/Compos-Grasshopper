@@ -1,9 +1,9 @@
+using System.Collections.Generic;
 using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Beams.Tests {
@@ -14,7 +14,7 @@ namespace ComposAPI.Beams.Tests {
     public void DuplicateCircularTest() {
       // 1 create with constructor and duplicate
       WebOpening original = TestConstructorCircularWebOpeningWithStiffener(300, 7000, 150);
-      WebOpening duplicate = (WebOpening)original.Duplicate();
+      var duplicate = (WebOpening)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -27,7 +27,7 @@ namespace ComposAPI.Beams.Tests {
     public void DuplicateRectangularTest() {
       // 1 create with constructor and duplicate
       WebOpening original = TestConstructorRectangularWebOpeningWithStiffener(400, 300, 6000, 70);
-      WebOpening duplicate = (WebOpening)original.Duplicate();
+      var duplicate = (WebOpening)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -40,7 +40,7 @@ namespace ComposAPI.Beams.Tests {
     public void DuplicateTest() {
       // 1 create with constructor and duplicate
       WebOpening original = TestConstructorRectangularWebOpeningWithStiffener(400, 300, 6000, 70);
-      WebOpening duplicate = (WebOpening)original.Duplicate();
+      var duplicate = (WebOpening)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(OpeningType.Rectangular, duplicate.WebOpeningType);
@@ -102,7 +102,7 @@ namespace ComposAPI.Beams.Tests {
     public void DuplicateTest2() {
       // 1 create with constructor and duplicate
       WebOpening original = TestConstructorCircularWebOpeningWithStiffener(300, 7000, 150);
-      WebOpening duplicate = (WebOpening)original.Duplicate();
+      var duplicate = (WebOpening)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(OpeningType.Circular, duplicate.WebOpeningType);
@@ -164,7 +164,7 @@ namespace ComposAPI.Beams.Tests {
     [InlineData(400, 400, 3.5, 190, OpeningType.Circular, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	400.000	400.000	3.50000	190.000	STIFFENER_NO\n")]
     [InlineData(400, 300, 0, 0, OpeningType.Start_notch, "WEB_OPEN_DIMENSION	MEMBER-1	LEFT_NOTCH	400.000	300.000	50.0000%	50.0000%	STIFFENER_NO\n")]
     public void FromCoaStringNoStiffener(double expected_width, double expected_height, double expected_startPos, double expected_posFromTop, OpeningType expected_OpeningType, string coaString) {
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       List<string> parameters = CoaHelper.Split(coaString);
       IWebOpening webOpening = WebOpening.FromCoaString(parameters, units);
 
@@ -196,7 +196,7 @@ namespace ComposAPI.Beams.Tests {
     [InlineData(0.4, 0.3, 20, 50, OpeningType.Rectangular, "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	0.400000	0.300000	20.0000%	50.0000%	STIFFENER_NO\n")]
     [InlineData(0.4, 0.4, 20, 50, OpeningType.Circular, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	0.400000	0.400000	20.0000%	50.0000%	STIFFENER_NO\n")]
     public void FromCoaStringNoStiffenerPercentage(double expected_width, double expected_height, double expected_startPos, double expected_posFromTop, OpeningType expected_OpeningType, string coaString) {
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       List<string> parameters = CoaHelper.Split(coaString);
       IWebOpening webOpening = WebOpening.FromCoaString(parameters, units);
 
@@ -223,7 +223,7 @@ namespace ComposAPI.Beams.Tests {
     [InlineData(400, 300, 1.5, 250, OpeningType.Rectangular, true, 60, 100, 10, 50, 5, "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	400.000	300.000	1.50000	250.000	STIFFENER_YES	BOTH_SIDE_STIFFENER	60.0000	100.000	10.0000	50.0000	5.00000\n")]
     [InlineData(400, 400, 9.5, 150, OpeningType.Circular, true, 10, 120, 12, 70, 7, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	400.000	400.000	9.50000	150.000	STIFFENER_YES	BOTH_SIDE_STIFFENER	10.0000	120.000	12.0000	70.0000	7.00000\n")]
     public void FromCoaStringWithStiffener(double expected_width, double expected_height, double expected_startPos, double expected_posFromTop, OpeningType expected_OpeningType, bool expected_bothSides, double expected_distFrom, double expected_topWidth, double expected_topThk, double expected_bottomWidth, double expected_bottomThk, string coaString) {
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       List<string> parameters = CoaHelper.Split(coaString);
       IWebOpening webOpening = WebOpening.FromCoaString(parameters, units);
 
@@ -272,7 +272,7 @@ namespace ComposAPI.Beams.Tests {
       LengthUnit unit = LengthUnit.Millimeter;
 
       // 2 create object instance with constructor
-      WebOpening webOpening = new WebOpening(
+      var webOpening = new WebOpening(
         new Length(diameter, unit),
         new Length(positionCentroidFromStart, unit), new Length(positionCentroidFromTop, unit));
 
@@ -298,7 +298,7 @@ namespace ComposAPI.Beams.Tests {
       WebOpeningStiffeners stiffener = TestConstructorStiffenersWebOpening(80, 17, 5, 98, 12, true);
 
       // 2 create object instance with constructor
-      WebOpening webOpening = new WebOpening(
+      var webOpening = new WebOpening(
         new Length(diameter, unit),
         new Length(positionCentroidFromStart, unit), new Length(positionCentroidFromTop, unit), stiffener);
 
@@ -324,14 +324,16 @@ namespace ComposAPI.Beams.Tests {
       LengthUnit unit = LengthUnit.Millimeter;
 
       // 2 create object instance with constructor
-      WebOpening webOpening = new WebOpening(
+      var webOpening = new WebOpening(
         new Length(width, unit), new Length(height, unit), position);
 
       // 3 check that inputs are set in object's members
-      if (position == NotchPosition.Start)
+      if (position == NotchPosition.Start) {
         Assert.Equal(OpeningType.Start_notch, webOpening.WebOpeningType);
-      if (position == NotchPosition.End)
+      }
+      if (position == NotchPosition.End) {
         Assert.Equal(OpeningType.End_notch, webOpening.WebOpeningType);
+      }
       Assert.Equal(width, webOpening.Width.Millimeters);
       Assert.Equal(height, webOpening.Height.Millimeters);
       Assert.Equal(Length.Zero, webOpening.CentroidPosFromStart);
@@ -352,15 +354,17 @@ namespace ComposAPI.Beams.Tests {
       WebOpeningStiffeners stiffener = TestConstructorStiffenersNotch(15, 90, 7, false);
 
       // 2 create object instance with constructor
-      WebOpening webOpening = new WebOpening(
+      var webOpening = new WebOpening(
         new Length(width, unit), new Length(height, unit),
         position, stiffener);
 
       // 3 check that inputs are set in object's members
-      if (position == NotchPosition.Start)
+      if (position == NotchPosition.Start) {
         Assert.Equal(OpeningType.Start_notch, webOpening.WebOpeningType);
-      if (position == NotchPosition.End)
+      }
+      if (position == NotchPosition.End) {
         Assert.Equal(OpeningType.End_notch, webOpening.WebOpeningType);
+      }
       Assert.Equal(width, webOpening.Width.Millimeters);
       Assert.Equal(height, webOpening.Height.Millimeters);
       Assert.Equal(Length.Zero, webOpening.CentroidPosFromStart);
@@ -381,7 +385,7 @@ namespace ComposAPI.Beams.Tests {
       LengthUnit unit = LengthUnit.Millimeter;
 
       // 2 create object instance with constructor
-      WebOpening webOpening = new WebOpening(
+      var webOpening = new WebOpening(
         new Length(width, unit), new Length(height, unit),
         new Length(positionCentroidFromStart, unit), new Length(positionCentroidFromTop, unit));
 
@@ -407,7 +411,7 @@ namespace ComposAPI.Beams.Tests {
       WebOpeningStiffeners stiffener = TestConstructorStiffenersWebOpening(25, 75, 12, 125, 15, false);
 
       // 2 create object instance with constructor
-      WebOpening webOpening = new WebOpening(
+      var webOpening = new WebOpening(
         new Length(width, unit), new Length(height, unit),
         new Length(positionCentroidFromStart, unit), new Length(positionCentroidFromTop, unit), stiffener);
 
@@ -429,8 +433,8 @@ namespace ComposAPI.Beams.Tests {
     [InlineData(400, 400, 3.5, 190, OpeningType.Circular, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	400.000	400.000	3.50000	190.000	STIFFENER_NO\n")]
     [InlineData(400, 300, 0, 0, OpeningType.Start_notch, "WEB_OPEN_DIMENSION	MEMBER-1	LEFT_NOTCH	400.000	300.000	50.0000%	50.0000%	STIFFENER_NO\n")]
     public void ToCoaStringNoStiffener(double width, double height, double startPos, double posFromTop, OpeningType openingType, string expected_CoaString) {
-      ComposUnits units = ComposUnits.GetStandardUnits();
-      WebOpening webOpening = new WebOpening();
+      var units = ComposUnits.GetStandardUnits();
+      var webOpening = new WebOpening();
       switch (openingType) {
         case OpeningType.Rectangular:
           webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), new Length(startPos, units.Length), new Length(posFromTop, units.Section));
@@ -458,9 +462,9 @@ namespace ComposAPI.Beams.Tests {
     [InlineData(400, 300, 1.5, 250, OpeningType.Rectangular, true, 60, 100, 10, 50, 5, "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	400.000	300.000	1.50000	250.000	STIFFENER_YES	BOTH_SIDE_STIFFENER	60.0000	100.000	10.0000	50.0000	5.00000\n")]
     [InlineData(400, 400, 9.5, 150, OpeningType.Circular, true, 10, 120, 12, 70, 7, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	400.000	400.000	9.50000	150.000	STIFFENER_YES	BOTH_SIDE_STIFFENER	10.0000	120.000	12.0000	70.0000	7.00000\n")]
     public void ToCoaStringWithStiffener(double width, double height, double startPos, double posFromTop, OpeningType openingType, bool bothSides, double distFrom, double topWidth, double topThk, double bottomWidth, double bottomThk, string expected_CoaString) {
-      ComposUnits units = ComposUnits.GetStandardUnits();
-      WebOpening webOpening = new WebOpening();
-      WebOpeningStiffeners stiffeners = new WebOpeningStiffeners();
+      var units = ComposUnits.GetStandardUnits();
+      var webOpening = new WebOpening();
+      var stiffeners = new WebOpeningStiffeners();
       switch (openingType) {
         case OpeningType.Rectangular:
           webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), new Length(startPos, units.Length), new Length(posFromTop, units.Section));

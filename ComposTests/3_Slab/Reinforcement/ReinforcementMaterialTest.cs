@@ -1,9 +1,9 @@
-﻿using ComposAPI.Helpers;
+﻿using System.Collections.Generic;
+using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposAPI.Slabs.Tests {
@@ -14,10 +14,10 @@ namespace ComposAPI.Slabs.Tests {
     [Theory]
     [InlineData(500)]
     public ReinforcementMaterial ConstructorTest1(double fy) {
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
 
       // 2 create object instance with constructor
-      ReinforcementMaterial material = new ReinforcementMaterial(new Pressure(fy, units.Stress));
+      var material = new ReinforcementMaterial(new Pressure(fy, units.Stress));
 
       // 3 check that inputs are set in object's members
       Assert.Equal(fy, material.Fy.Value);
@@ -43,7 +43,7 @@ namespace ComposAPI.Slabs.Tests {
     [InlineData(RebarGrade.HK_460)]
     public void ConstructorTest2(RebarGrade grade) {
       // 2 create object instance with constructor
-      ReinforcementMaterial material = new ReinforcementMaterial(grade);
+      var material = new ReinforcementMaterial(grade);
 
       // 3 check that inputs are set in object's members
       Assert.Equal(grade, material.Grade);
@@ -80,7 +80,7 @@ namespace ComposAPI.Slabs.Tests {
     public void DuplicateTest() {
       // 1 create with constructor and duplicate
       ReinforcementMaterial original = ConstructorTest1(30);
-      ReinforcementMaterial duplicate = (ReinforcementMaterial)original.Duplicate();
+      var duplicate = (ReinforcementMaterial)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -109,8 +109,9 @@ namespace ComposAPI.Slabs.Tests {
 
       IReinforcementMaterial reinforcementMaterial = ReinforcementMaterial.FromCoaString(parameters, code);
 
-      if (!expected_userDefined)
+      if (!expected_userDefined) {
         Assert.Equal(expected_grade, reinforcementMaterial.Grade);
+      }
       Assert.Equal(expected_userDefined, reinforcementMaterial.UserDefined);
       Assert.Equal(new Pressure(expected_fy, PressureUnit.NewtonPerSquareMeter), reinforcementMaterial.Fy);
     }
@@ -132,10 +133,11 @@ namespace ComposAPI.Slabs.Tests {
     [InlineData(RebarGrade.AS_D500E, true, 4.00000e+008, "REBAR_MATERIAL	MEMBER-1	USER_DEFINED	4.00000e+008\n")]
     public void ToCoaStringTest(RebarGrade grade, bool userDefined, double fy, string expected_coaString) {
       ReinforcementMaterial reinforcementMaterial;
-      if (!userDefined)
+      if (!userDefined) {
         reinforcementMaterial = new ReinforcementMaterial(grade);
-      else
+      } else {
         reinforcementMaterial = new ReinforcementMaterial(new Pressure(fy, PressureUnit.NewtonPerSquareMeter));
+      }
 
       string coaString = reinforcementMaterial.ToCoaString("MEMBER-1");
 
