@@ -1,20 +1,22 @@
-﻿using Grasshopper.Kernel.Types;
-using ComposAPI;
-using OasysGH.Parameters;
+﻿using ComposAPI;
+using Grasshopper.Kernel.Types;
 using OasysGH;
+using OasysGH.Parameters;
 
-namespace ComposGH.Parameters
-{
+namespace ComposGH.Parameters {
   /// <summary>
   /// Goo wrapper class, makes sure ComposAPI <see cref="IERatio"/> class can be used in Grasshopper.
   /// </summary>
-  public class ERatioGoo : GH_OasysGoo<IERatio>
-  {
+  public class ERatioGoo : GH_OasysGoo<IERatio> {
+    public static string Description => "Compos Steel to concrete Young´s modulus ratios";
     public static string Name => "E-Ratio";
     public static string NickName => "ER";
-    public static string Description => "Compos Steel to concrete Young´s modulus ratios";
-    public ERatioGoo(IERatio item) : base(item) { }
-    public override IGH_Goo Duplicate() => new ERatioGoo(Value);
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
+
+    public ERatioGoo(IERatio item) : base(item) { }
+
+    public override IGH_Goo Duplicate() {
+      return new ERatioGoo(Value);
+    }
   }
 }

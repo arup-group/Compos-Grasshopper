@@ -1,16 +1,15 @@
 ﻿using System;
+using System.Reflection;
 using ComposAPI;
 using ComposGH.Parameters;
-using Xunit;
 using ComposGHTests.Helpers;
-using System.Reflection;
 using Grasshopper.Kernel.Types;
+using Xunit;
 
-namespace ComposGHTests.Parameters
-{
+namespace ComposGHTests.Parameters {
   [Collection("GrasshopperFixture collection")]
-  public class GH_OasysGooTest
-  {
+  public class GH_OasysGooTest {
+
     [Theory]
     [InlineData(typeof(BeamSectionGoo), typeof(BeamSection))]
     [InlineData(typeof(RestraintGoo), typeof(Restraint))]
@@ -42,14 +41,13 @@ namespace ComposGHTests.Parameters
     [InlineData(typeof(DeflectionLimitGoo), typeof(DeflectionLimit))]
     [InlineData(typeof(DesignCriteriaGoo), typeof(DesignCriteria))]
     [InlineData(typeof(FrequencyLimitsGoo), typeof(FrequencyLimits))]
-    public void GenericGH_OasysGooTest(Type gooType, Type wrapType)
-    {
+    public void GenericGH_OasysGooTest(Type gooType, Type wrapType) {
       // Create the actual API object
-      Object value = Activator.CreateInstance(wrapType);
-      Object[] parameters = { value };
+      object value = Activator.CreateInstance(wrapType);
+      object[] parameters = { value };
 
-      // Create GH_OasysGoo<API_Object> 
-      Object objectGoo = Activator.CreateInstance(gooType, parameters);
+      // Create GH_OasysGoo<API_Object>
+      object objectGoo = Activator.CreateInstance(gooType, parameters);
       gooType = objectGoo.GetType();
 
       // Trigger the IGH_Goo Duplicate() method
@@ -67,11 +65,9 @@ namespace ComposGHTests.Parameters
 
       // we can't cast directly to objectGoo.Value, so we do this instead
       PropertyInfo[] gooPropertyInfo = gooType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
-      foreach (PropertyInfo gooProperty in gooPropertyInfo)
-      {
-        if (gooProperty.Name == "Value")
-        {
-          Object gooValue = gooProperty.GetValue(objectGoo, null);
+      foreach (PropertyInfo gooProperty in gooPropertyInfo) {
+        if (gooProperty.Name == "Value") {
+          object gooValue = gooProperty.GetValue(objectGoo, null);
           // here check that the value in the goo object is a duplicate of the original object
           Duplicates.AreEqual(value, gooValue);
           // check that they are not the same object (same pointer in memory)
@@ -84,29 +80,25 @@ namespace ComposGHTests.Parameters
           //PropertyInfo[] wrappedPropertyInfo = typeSource.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
           //foreach (PropertyInfo wrapProperty in wrappedPropertyInfo)
           //{
-            
           //}
         }
 
         // check the grasshopper tostring method (when you hover over the input/output)
-        if (gooProperty.Name == "TypeName")
-        {
+        if (gooProperty.Name == "TypeName") {
           string typeName = (string)gooProperty.GetValue(objectGoo, null);
           Assert.StartsWith("Compos " + typeName + " (", objectGoo.ToString());
           hasToString = true;
         }
 
         // check the name, input/output parameters
-        if (gooProperty.Name == "Name")
-        {
+        if (gooProperty.Name == "Name") {
           string name = (string)gooProperty.GetValue(objectGoo, null);
           // require a name longer than 3 characters (stud being the shortest accepted)
           Assert.True(name.Length > 3);
           hasName = true;
         }
         // check the nickname, input/output parameters
-        if (gooProperty.Name == "NickName")
-        {
+        if (gooProperty.Name == "NickName") {
           string nickName = (string)gooProperty.GetValue(objectGoo, null);
           // require a nickname not longer than 3 characters excluding dots (".coa" being the exception)
           nickName = nickName.Replace(".", string.Empty);
@@ -114,8 +106,7 @@ namespace ComposGHTests.Parameters
           Assert.True(nickName.Length > 0);
           hasNickName = true;
         }
-        if (gooProperty.Name == "Description")
-        {
+        if (gooProperty.Name == "Description") {
           string description = (string)gooProperty.GetValue(objectGoo, null);
           // require a description to start with "Compos"
           Assert.StartsWith("Compos ", description);

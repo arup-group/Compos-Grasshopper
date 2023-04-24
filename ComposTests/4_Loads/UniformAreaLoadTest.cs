@@ -6,20 +6,31 @@ using OasysUnits;
 using OasysUnits.Units;
 using Xunit;
 
-namespace ComposAPI.Loads.Tests
-{
-    public partial class LoadTest
-  {
+namespace ComposAPI.Loads.Tests {
+  public partial class LoadTest {
+
+    [Fact]
+    public void DuplicateUniAreaTest() {
+      // 1 create with constructor and duplicate
+      Load original = TestUniformAreaLoadConstructor(1, 1.5, 3, 5);
+      var duplicate = (Load)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
     // 1 setup inputs
     [Theory]
     [InlineData(1, 1.5, 3, 5)]
     [InlineData(3, 4.5, 6, 5)]
-    public Load TestUniformAreaLoadConstructor(double consDead, double consLive, double finalDead, double finalLive)
-    {
+    public Load TestUniformAreaLoadConstructor(double consDead, double consLive, double finalDead, double finalLive) {
       PressureUnit force = PressureUnit.KilonewtonPerSquareMeter;
 
       // 2 create object instance with constructor
-      UniformLoad load = new UniformLoad(
+      var load = new UniformLoad(
         new Pressure(consDead, force), new Pressure(consLive, force), new Pressure(finalDead, force), new Pressure(finalLive, force));
 
       // 3 check that inputs are set in object's members
@@ -32,38 +43,12 @@ namespace ComposAPI.Loads.Tests
 
       return load;
     }
-    [Fact]
-    public void DuplicateUniAreaTest()
-    {
-      // 1 create with constructor and duplicate
-      Load original = TestUniformAreaLoadConstructor(1, 1.5, 3, 5);
-      Load duplicate = (Load)original.Duplicate();
-
-      // 2 check that duplicate has duplicated values
-      Duplicates.AreEqual(original, duplicate);
-
-      // 3 check that the memory pointer is not the same
-      Assert.NotSame(original, duplicate);
-    }
 
     [Fact]
-    public void UniformAreaLoadToCoaStringTest()
-    {
-      // Arrange
-      string expected_coaString = "LOAD	MEMBER-1	Uniform	Area	3.00000	4.50000	6.00000	7.00000\n";
-      Load load = TestUniformAreaLoadConstructor(0.003, 0.0045, 0.006, 0.007); // input unit in kN/m, coa string in N/m
-      // Act
-      string coaString = load.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
-      // Assert
-      Assert.Equal(expected_coaString, coaString);
-    }
-
-    [Fact]
-    public void UniformAreaLoadFromCoaStringTest()
-    {
+    public void UniformAreaLoadFromCoaStringTest() {
       ForceUnit forceUnit = ForceUnit.Kilonewton;
       LengthUnit lengthUnit = LengthUnit.Millimeter;
-      ComposUnits units = ComposUnits.GetStandardUnits();
+      var units = ComposUnits.GetStandardUnits();
       units.Force = forceUnit;
       units.Length = lengthUnit;
       PressureUnit forcePerAreaUnit = ComposUnitsHelper.GetForcePerAreaUnit(forceUnit, lengthUnit);
@@ -74,7 +59,7 @@ namespace ComposAPI.Loads.Tests
 
       // Act
       IList<ILoad> loads = Load.FromCoaString(coaString, "MEMBER-1", units);
-      UniformLoad uniformAreaLoad = (UniformLoad)loads[0];
+      var uniformAreaLoad = (UniformLoad)loads[0];
 
       // Assert
       //LOAD	MEMBER-1	Uniform	Area	3.00000	4.50000	6.00000	7.00000	Area	3.00000	4.50000	6.00000	7.00000	3.00000	4.50000	6.00000	5.00000
@@ -84,6 +69,17 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(7, uniformAreaLoad.Load.FinalLive.As(forcePerAreaUnit));
       Assert.Equal(LoadType.Uniform, uniformAreaLoad.Type);
       Assert.Equal(LoadDistribution.Area, uniformAreaLoad.Distribution);
+    }
+
+    [Fact]
+    public void UniformAreaLoadToCoaStringTest() {
+      // Arrange
+      string expected_coaString = "LOAD	MEMBER-1	Uniform	Area	3.00000	4.50000	6.00000	7.00000\n";
+      Load load = TestUniformAreaLoadConstructor(0.003, 0.0045, 0.006, 0.007); // input unit in kN/m, coa string in N/m
+      // Act
+      string coaString = load.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
     }
   }
 }

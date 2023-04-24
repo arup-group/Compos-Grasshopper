@@ -1,49 +1,44 @@
 ﻿using ComposAPI;
-using ComposGH.Parameters;
 using ComposGH.Components;
-using Xunit;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
+using Xunit;
 
-namespace ComposGHTests.Beam
-{
+namespace ComposGHTests.Beam {
   [Collection("GrasshopperFixture collection")]
-  public class CreateStandardSteelMaterialComponentTests
-  {
+  public class CreateStandardSteelMaterialComponentTests {
+
     [Fact]
-    public void CreateComponentTest()
-    {
+    public void ChangeDropDownTest() {
+      var comp = new CreateStandardSteelMaterial();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponentTest() {
       var comp = new CreateStandardSteelMaterial();
       comp.CreateAttributes();
 
-      SteelMaterialGoo output = (SteelMaterialGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (SteelMaterialGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(StandardSteelGrade.S235, output.Value.Grade);
     }
 
     [Fact]
-    public void CreateComponentWithInputsTest()
-    {
+    public void CreateComponentWithInputsTest() {
       var comp = new CreateStandardSteelMaterial();
       comp.CreateAttributes();
 
       string input1 = "S275";
       ComponentTestHelper.SetInput(comp, input1, 0);
-      
-      SteelMaterialGoo output = (SteelMaterialGoo)ComponentTestHelper.GetOutput(comp);
+
+      var output = (SteelMaterialGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(StandardSteelGrade.S275, output.Value.Grade);
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void DeserializeTest() {
       var comp = new CreateStandardSteelMaterial();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      var comp = new CreateStandardSteelMaterial();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

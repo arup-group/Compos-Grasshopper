@@ -1,8 +1,8 @@
-﻿using ComposAPI.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using ComposAPI.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
 
 namespace ComposAPI {
   public enum StandardSteelGrade {
@@ -58,19 +58,16 @@ namespace ComposAPI {
         if (code == Code.EN1994_1_1_2004) {
           if (ReductionFactorMpl) {
             steelParameters.Add("TRUE");
-          }
-          else {
+          } else {
             steelParameters.Add("FALSE");
           }
         }
-      }
-      else {
+      } else {
         steelParameters.Add("BEAM_STEEL_MATERIAL_STD");
         steelParameters.Add(name);
         if (code == Code.EN1994_1_1_2004) {
           steelParameters.Add(Grade.ToString() + " (EN)");
-        }
-        else {
+        } else {
           steelParameters.Add(Grade.ToString());
         }
       }
@@ -95,8 +92,7 @@ namespace ComposAPI {
 
       if (IsCustom == false) {
         return Grade.ToString();
-      }
-      else {
+      } else {
         isCust = "Cust.";
         f = Fy.ToUnit(ComposUnitsHelper.StressUnit).ToString("f0");
         e = E.ToUnit(ComposUnitsHelper.StressUnit).ToString("f0");
@@ -110,8 +106,7 @@ namespace ComposAPI {
       SteelMaterial material;
       if (code != Code.AS_NZS2327_2017) {
         material = new SteelMaterial();
-      }
-      else {
+      } else {
         material = new ASNZSteelMaterial();
       }
 
@@ -122,8 +117,7 @@ namespace ComposAPI {
           if (code == Code.AS_NZS2327_2017) {
             StandardASNZSteelMaterialGrade standardASNZSteelMaterialGrade = ASNZSteelMaterial.FromString(grade);
             ((ASNZSteelMaterial)material).SetValuesFromStandard(standardASNZSteelMaterialGrade);
-          }
-          else {
+          } else {
             bool EN = grade.EndsWith(" (EN)");
             if (EN) {
               grade = grade.Replace(" (EN)", string.Empty);
@@ -140,8 +134,7 @@ namespace ComposAPI {
           material.Density = CoaHelper.ConvertToDensity(parameters[4], units.Density);
           if (parameters.Count > 5 && parameters[5] == "TRUE") {
             material.ReductionFactorMpl = true;
-          }
-          else {
+          } else {
             material.ReductionFactorMpl = false;
           }
           break;

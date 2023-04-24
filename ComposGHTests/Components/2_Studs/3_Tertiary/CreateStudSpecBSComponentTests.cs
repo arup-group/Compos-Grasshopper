@@ -1,38 +1,40 @@
-﻿using ComposGH.Parameters;
-using ComposGH.Components;
-using Xunit;
+﻿using ComposGH.Components;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
+using OasysGH.Components;
 using OasysUnits;
 using OasysUnits.Units;
-using OasysGH.Components;
+using Xunit;
 
-namespace ComposGHTests.Stud
-{
+namespace ComposGHTests.Stud {
   [Collection("GrasshopperFixture collection")]
-  public class CreateStudSpecBSComponentTests
-  {
-    public static GH_OasysDropDownComponent ComponentMother()
-    {
+  public class CreateStudSpecBSComponentTests {
+
+    public static GH_OasysDropDownComponent ComponentMother() {
       var comp = new CreateStudSpecBS();
       comp.CreateAttributes();
       return comp;
     }
 
     [Fact]
-    public void CreateComponentTest()
-    {
-      var comp = ComponentMother();
+    public void ChangeDropDownTest() {
+      GH_OasysDropDownComponent comp = ComponentMother();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
 
-      StudSpecificationGoo output = (StudSpecificationGoo)ComponentTestHelper.GetOutput(comp);
+    [Fact]
+    public void CreateComponentTest() {
+      GH_OasysDropDownComponent comp = ComponentMother();
+
+      var output = (StudSpecificationGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(Length.Zero, output.Value.NoStudZoneStart);
       Assert.Equal(Length.Zero, output.Value.NoStudZoneEnd);
       Assert.True(output.Value.EC4_Limit);
     }
 
     [Fact]
-    public void CreateComponentWithInputsTest()
-    {
-      var comp = ComponentMother();
+    public void CreateComponentWithInputsTest() {
+      GH_OasysDropDownComponent comp = ComponentMother();
 
       int i = 0;
       ComponentTestHelper.SetInput(comp, 250, i++);
@@ -41,24 +43,16 @@ namespace ComposGHTests.Stud
 
       comp.SetSelected(0, 1); // change the dropdown to cm
 
-      StudSpecificationGoo output = (StudSpecificationGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (StudSpecificationGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(250, output.Value.NoStudZoneStart.As(LengthUnit.Centimeter));
       Assert.Equal(15, output.Value.NoStudZoneEnd.As(RatioUnit.Percent));
       Assert.False(output.Value.EC4_Limit);
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
-      var comp = ComponentMother();
+    public void DeserializeTest() {
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      var comp = ComponentMother();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

@@ -1,25 +1,23 @@
-﻿using ComposGH.Parameters;
-using ComposGH.Components;
-using Xunit;
-using ComposGHTests.Helpers;
+﻿using System;
 using System.IO;
-using System;
+using ComposGH.Components;
+using ComposGH.Parameters;
+using ComposGHTests.Helpers;
 using Grasshopper.Kernel;
 using OasysGH.Components;
+using Xunit;
 
-namespace ComposGHTests.CompFile
-{
+namespace ComposGHTests.CompFile {
   [Collection("GrasshopperFixture collection")]
-  public class FileComponentsTests
-  {
-    public static GH_OasysComponent ComponentMother()
-    {
+  public class FileComponentsTests {
+
+    public static GH_OasysComponent ComponentMother() {
       var comp = new OpenComposFile();
       comp.CreateAttributes();
-      
+
       string solutiondir = Directory.GetParent(
         Directory.GetCurrentDirectory()).Parent.Parent.Parent.Parent.FullName;
-      
+
       string input1 = Path.Combine(solutiondir, "ComposTests", "TestFiles", "Compos2.coa");
 
       ComponentTestHelper.SetInput(comp, input1, 0);
@@ -28,22 +26,20 @@ namespace ComposGHTests.CompFile
     }
 
     [Fact]
-    public void CreateOpenComponent()
-    {
-      var comp = ComponentMother();
+    public void CreateOpenComponent() {
+      GH_OasysComponent comp = ComponentMother();
 
-      MemberGoo output = (MemberGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (MemberGoo)ComponentTestHelper.GetOutput(comp);
 
       Assert.StartsWith("CAT BSI-HE HE180AA", output.Value.Beam.Sections[0].SectionDescription);
     }
 
     [Fact]
-    public void CreateSaveComponent()
-    {
-      SaveComposFile comp = new SaveComposFile();
+    public void CreateSaveComponent() {
+      var comp = new SaveComposFile();
       comp.CreateAttributes();
 
-      MemberGoo input1 = (MemberGoo)ComponentTestHelper.GetOutput(ComponentMother());
+      var input1 = (MemberGoo)ComponentTestHelper.GetOutput(ComponentMother());
 
       ComponentTestHelper.SetInput(comp, input1, 0);
 

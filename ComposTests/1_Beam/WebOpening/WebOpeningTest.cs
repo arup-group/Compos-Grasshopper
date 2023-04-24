@@ -1,189 +1,46 @@
-using Xunit;
-using OasysUnits;
-using OasysUnits.Units;
 using System.Collections.Generic;
 using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
+using OasysUnits;
+using OasysUnits.Units;
+using Xunit;
 
-namespace ComposAPI.Beams.Tests
-{
-    [Collection("ComposAPI Fixture collection")]
-  public partial class WebOpeningTest
-  {
-    // 1 setup inputs
-    [Theory]
-    [InlineData(400, 300, 6000, 150)]
-    [InlineData(250.123, 423.0013, 1240.12, 214)]
-    public void TestConstructorRectangularWebOpening(double width, double height,
-      double positionCentroidFromStart, double positionCentroidFromTop)
-    {
-      LengthUnit unit = LengthUnit.Millimeter;
+namespace ComposAPI.Beams.Tests {
+  [Collection("ComposAPI Fixture collection")]
+  public partial class WebOpeningTest {
 
-      // 2 create object instance with constructor
-      WebOpening webOpening = new WebOpening(
-        new Length(width, unit), new Length(height, unit),
-        new Length(positionCentroidFromStart, unit), new Length(positionCentroidFromTop, unit));
+    [Fact]
+    public void DuplicateCircularTest() {
+      // 1 create with constructor and duplicate
+      WebOpening original = TestConstructorCircularWebOpeningWithStiffener(300, 7000, 150);
+      var duplicate = (WebOpening)original.Duplicate();
 
-      // 3 check that inputs are set in object's members
-      Assert.Equal(OpeningType.Rectangular, webOpening.WebOpeningType);
-      Assert.Equal(width, webOpening.Width.Millimeters);
-      Assert.Equal(height, webOpening.Height.Millimeters);
-      Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.As(LengthUnit.Millimeter));
-      Assert.Equal(positionCentroidFromTop, webOpening.CentroidPosFromTop.As(LengthUnit.Millimeter));
-      Assert.Equal(Length.Zero, webOpening.Diameter);
-      Assert.Null(webOpening.OpeningStiffeners);
-    }
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
 
-    // 1 setup inputs
-    [Theory]
-    [InlineData(200, 400, 9000)]
-    [InlineData(123.456, 0.0123, 500.111)]
-    public void TestConstructorCircularWebOpening(double diameter,
-      double positionCentroidFromStart, double positionCentroidFromTop)
-    {
-      LengthUnit unit = LengthUnit.Millimeter;
-
-      // 2 create object instance with constructor
-      WebOpening webOpening = new WebOpening(
-        new Length(diameter, unit),
-        new Length(positionCentroidFromStart, unit), new Length(positionCentroidFromTop, unit));
-
-      // 3 check that inputs are set in object's members
-      Assert.Equal(OpeningType.Circular, webOpening.WebOpeningType);
-      Assert.Equal(diameter, webOpening.Diameter.Millimeters);
-      Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.As(LengthUnit.Millimeter));
-      Assert.Equal(positionCentroidFromTop, webOpening.CentroidPosFromTop.As(LengthUnit.Millimeter));
-      Assert.Equal(Length.Zero, webOpening.Width);
-      Assert.Equal(Length.Zero, webOpening.Height);
-      Assert.Null(webOpening.OpeningStiffeners);
-    }
-
-    // 1 setup inputs
-    [Theory]
-    [InlineData(200, 400, NotchPosition.Start)]
-    [InlineData(123.456, 0.0123, NotchPosition.End)]
-    public void TestConstructorNotchWebOpening(double width,
-      double height, NotchPosition position)
-    {
-      LengthUnit unit = LengthUnit.Millimeter;
-
-      // 2 create object instance with constructor
-      WebOpening webOpening = new WebOpening(
-        new Length(width, unit), new Length(height, unit), position);
-
-      // 3 check that inputs are set in object's members
-      if (position == NotchPosition.Start)
-        Assert.Equal(OpeningType.Start_notch, webOpening.WebOpeningType);
-      if (position == NotchPosition.End)
-        Assert.Equal(OpeningType.End_notch, webOpening.WebOpeningType);
-      Assert.Equal(width, webOpening.Width.Millimeters);
-      Assert.Equal(height, webOpening.Height.Millimeters);
-      Assert.Equal(Length.Zero, webOpening.CentroidPosFromStart);
-      Assert.Equal(Length.Zero, webOpening.CentroidPosFromTop);
-      Assert.Equal(Length.Zero, webOpening.Diameter);
-      Assert.Null(webOpening.OpeningStiffeners);
-    }
-
-    // 1 setup inputs
-    [Theory]
-    [InlineData(900, 450, 2000, 350)]
-    [InlineData(87.98, 42.34, 90000, 19.2)]
-    public WebOpening TestConstructorRectangularWebOpeningWithStiffener(double width, double height,
-      double positionCentroidFromStart, double positionCentroidFromTop)
-    {
-      LengthUnit unit = LengthUnit.Millimeter;
-
-      // 1b create additional input from custom class object
-      WebOpeningStiffeners stiffener = TestConstructorStiffenersWebOpening(25, 75, 12, 125, 15, false);
-
-      // 2 create object instance with constructor
-      WebOpening webOpening = new WebOpening(
-        new Length(width, unit), new Length(height, unit),
-        new Length(positionCentroidFromStart, unit), new Length(positionCentroidFromTop, unit), stiffener);
-
-      // 3 check that inputs are set in object's members
-      Assert.Equal(OpeningType.Rectangular, webOpening.WebOpeningType);
-      Assert.Equal(width, webOpening.Width.Millimeters);
-      Assert.Equal(height, webOpening.Height.Millimeters);
-      Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.As(LengthUnit.Millimeter));
-      Assert.Equal(positionCentroidFromTop, webOpening.CentroidPosFromTop.As(LengthUnit.Millimeter));
-      Assert.Equal(Length.Zero, webOpening.Diameter);
-      Assert.NotNull(webOpening.OpeningStiffeners);
-
-      // (optionally return object for other tests)
-      return webOpening;
-    }
-
-    // 1 setup inputs
-    [Theory]
-    [InlineData(200, 400, 9000)]
-    [InlineData(15, 4.0123, 59.211)]
-    public WebOpening TestConstructorCircularWebOpeningWithStiffener(double diameter,
-      double positionCentroidFromStart, double positionCentroidFromTop)
-    {
-      LengthUnit unit = LengthUnit.Millimeter;
-
-      // 1b create additional input from custom class object
-      WebOpeningStiffeners stiffener = TestConstructorStiffenersWebOpening(80, 17, 5, 98, 12, true);
-
-      // 2 create object instance with constructor
-      WebOpening webOpening = new WebOpening(
-        new Length(diameter, unit),
-        new Length(positionCentroidFromStart, unit), new Length(positionCentroidFromTop, unit), stiffener);
-
-      // 3 check that inputs are set in object's members
-      Assert.Equal(OpeningType.Circular, webOpening.WebOpeningType);
-      Assert.Equal(diameter, webOpening.Diameter.Millimeters);
-      Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.As(LengthUnit.Millimeter));
-      Assert.Equal(positionCentroidFromTop, webOpening.CentroidPosFromTop.As(LengthUnit.Millimeter));
-      Assert.Equal(Length.Zero, webOpening.Width);
-      Assert.Equal(Length.Zero, webOpening.Height);
-      Assert.NotNull(webOpening.OpeningStiffeners);
-
-      // (optionally return object for other tests)
-      return webOpening;
-    }
-
-    // 1 setup inputs
-    [Theory]
-    [InlineData(600, 70, NotchPosition.Start)]
-    [InlineData(14.3, 78.123, NotchPosition.End)]
-    public WebOpening TestConstructorNotchWebOpeningWithStiffener(double width,
-      double height, NotchPosition position)
-    {
-      LengthUnit unit = LengthUnit.Millimeter;
-
-      // 1b create additional input from custom class object
-      WebOpeningStiffeners stiffener = TestConstructorStiffenersNotch(15, 90, 7, false);
-
-      // 2 create object instance with constructor
-      WebOpening webOpening = new WebOpening(
-        new Length(width, unit), new Length(height, unit),
-        position, stiffener);
-
-      // 3 check that inputs are set in object's members
-      if (position == NotchPosition.Start)
-        Assert.Equal(OpeningType.Start_notch, webOpening.WebOpeningType);
-      if (position == NotchPosition.End)
-        Assert.Equal(OpeningType.End_notch, webOpening.WebOpeningType);
-      Assert.Equal(width, webOpening.Width.Millimeters);
-      Assert.Equal(height, webOpening.Height.Millimeters);
-      Assert.Equal(Length.Zero, webOpening.CentroidPosFromStart);
-      Assert.Equal(Length.Zero, webOpening.CentroidPosFromTop);
-      Assert.Equal(Length.Zero, webOpening.Diameter);
-      Assert.NotNull(webOpening.OpeningStiffeners);
-
-      // (optionally return object for other tests)
-      return webOpening;
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
     }
 
     [Fact]
-    public void DuplicateTest()
-    {
+    public void DuplicateRectangularTest() {
       // 1 create with constructor and duplicate
       WebOpening original = TestConstructorRectangularWebOpeningWithStiffener(400, 300, 6000, 70);
-      WebOpening duplicate = (WebOpening)original.Duplicate();
+      var duplicate = (WebOpening)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
+    [Fact]
+    public void DuplicateTest() {
+      // 1 create with constructor and duplicate
+      WebOpening original = TestConstructorRectangularWebOpeningWithStiffener(400, 300, 6000, 70);
+      var duplicate = (WebOpening)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(OpeningType.Rectangular, duplicate.WebOpeningType);
@@ -198,8 +55,8 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(12, duplicate.OpeningStiffeners.TopStiffenerThickness.Millimeters);
       Assert.Equal(125, duplicate.OpeningStiffeners.BottomStiffenerWidth.Millimeters);
       Assert.Equal(15, duplicate.OpeningStiffeners.BottomStiffenerThickness.Millimeters);
-      Assert.False(duplicate.OpeningStiffeners.isBothSides);
-      Assert.False(duplicate.OpeningStiffeners.isNotch);
+      Assert.False(duplicate.OpeningStiffeners.IsBothSides);
+      Assert.False(duplicate.OpeningStiffeners.IsNotch);
 
       // 3 make some changes to duplicate
       duplicate.WebOpeningType = OpeningType.Circular;
@@ -221,8 +78,8 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(10, duplicate.OpeningStiffeners.TopStiffenerThickness.Millimeters);
       Assert.Equal(135, duplicate.OpeningStiffeners.BottomStiffenerWidth.Millimeters);
       Assert.Equal(7, duplicate.OpeningStiffeners.BottomStiffenerThickness.Millimeters);
-      Assert.True(duplicate.OpeningStiffeners.isBothSides);
-      Assert.False(duplicate.OpeningStiffeners.isNotch);
+      Assert.True(duplicate.OpeningStiffeners.IsBothSides);
+      Assert.False(duplicate.OpeningStiffeners.IsNotch);
 
       // 5 check that original has not been changed
       Assert.Equal(OpeningType.Rectangular, original.WebOpeningType);
@@ -237,16 +94,15 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(12, original.OpeningStiffeners.TopStiffenerThickness.Millimeters);
       Assert.Equal(125, original.OpeningStiffeners.BottomStiffenerWidth.Millimeters);
       Assert.Equal(15, original.OpeningStiffeners.BottomStiffenerThickness.Millimeters);
-      Assert.False(original.OpeningStiffeners.isBothSides);
-      Assert.False(original.OpeningStiffeners.isNotch);
+      Assert.False(original.OpeningStiffeners.IsBothSides);
+      Assert.False(original.OpeningStiffeners.IsNotch);
     }
 
     [Fact]
-    public void DuplicateTest2()
-    {
+    public void DuplicateTest2() {
       // 1 create with constructor and duplicate
       WebOpening original = TestConstructorCircularWebOpeningWithStiffener(300, 7000, 150);
-      WebOpening duplicate = (WebOpening)original.Duplicate();
+      var duplicate = (WebOpening)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Assert.Equal(OpeningType.Circular, duplicate.WebOpeningType);
@@ -261,8 +117,8 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(5, duplicate.OpeningStiffeners.TopStiffenerThickness.Millimeters);
       Assert.Equal(98, duplicate.OpeningStiffeners.BottomStiffenerWidth.Millimeters);
       Assert.Equal(12, duplicate.OpeningStiffeners.BottomStiffenerThickness.Millimeters);
-      Assert.True(duplicate.OpeningStiffeners.isBothSides);
-      Assert.False(duplicate.OpeningStiffeners.isNotch);
+      Assert.True(duplicate.OpeningStiffeners.IsBothSides);
+      Assert.False(duplicate.OpeningStiffeners.IsNotch);
 
       // 3 make some changes to duplicate
       duplicate.WebOpeningType = OpeningType.Start_notch;
@@ -283,8 +139,8 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(10, duplicate.OpeningStiffeners.TopStiffenerThickness.Millimeters);
       Assert.Equal(Length.Zero, duplicate.OpeningStiffeners.BottomStiffenerWidth);
       Assert.Equal(Length.Zero, duplicate.OpeningStiffeners.BottomStiffenerThickness);
-      Assert.False(duplicate.OpeningStiffeners.isBothSides);
-      Assert.True(duplicate.OpeningStiffeners.isNotch);
+      Assert.False(duplicate.OpeningStiffeners.IsBothSides);
+      Assert.True(duplicate.OpeningStiffeners.IsNotch);
 
       // 5 check that original has not been changed
       Assert.Equal(OpeningType.Circular, original.WebOpeningType);
@@ -299,80 +155,22 @@ namespace ComposAPI.Beams.Tests
       Assert.Equal(5, original.OpeningStiffeners.TopStiffenerThickness.Millimeters);
       Assert.Equal(98, original.OpeningStiffeners.BottomStiffenerWidth.Millimeters);
       Assert.Equal(12, original.OpeningStiffeners.BottomStiffenerThickness.Millimeters);
-      Assert.True(original.OpeningStiffeners.isBothSides);
-      Assert.False(original.OpeningStiffeners.isNotch);
-    }
-
-    [Fact]
-    public void DuplicateCircularTest()
-    {
-      // 1 create with constructor and duplicate
-      WebOpening original = TestConstructorCircularWebOpeningWithStiffener(300, 7000, 150);
-      WebOpening duplicate = (WebOpening)original.Duplicate();
-
-      // 2 check that duplicate has duplicated values
-      Duplicates.AreEqual(original, duplicate);
-
-      // 3 check that the memory pointer is not the same
-      Assert.NotSame(original, duplicate);
-    }
-
-    [Fact]
-    public void DuplicateRectangularTest()
-    {
-      // 1 create with constructor and duplicate
-      WebOpening original = TestConstructorRectangularWebOpeningWithStiffener(400, 300, 6000, 70);
-      WebOpening duplicate = (WebOpening)original.Duplicate();
-
-      // 2 check that duplicate has duplicated values
-      Duplicates.AreEqual(original, duplicate);
-
-      // 3 check that the memory pointer is not the same
-      Assert.NotSame(original, duplicate);
+      Assert.True(original.OpeningStiffeners.IsBothSides);
+      Assert.False(original.OpeningStiffeners.IsNotch);
     }
 
     [Theory]
     [InlineData(400, 300, 7.5, 350, OpeningType.Rectangular, "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	400.000	300.000	7.50000	350.000	STIFFENER_NO\n")]
     [InlineData(400, 400, 3.5, 190, OpeningType.Circular, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	400.000	400.000	3.50000	190.000	STIFFENER_NO\n")]
     [InlineData(400, 300, 0, 0, OpeningType.Start_notch, "WEB_OPEN_DIMENSION	MEMBER-1	LEFT_NOTCH	400.000	300.000	50.0000%	50.0000%	STIFFENER_NO\n")]
-    public void ToCoaStringNoStiffener(double width, double height, double startPos, double posFromTop, OpeningType openingType, string expected_CoaString)
-    {
-      ComposUnits units = ComposUnits.GetStandardUnits();
-      WebOpening webOpening = new WebOpening();
-      switch (openingType)
-      {
-        case OpeningType.Rectangular:
-          webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), new Length(startPos, units.Length), new Length(posFromTop, units.Section));
-          break;
-        case OpeningType.Circular:
-          webOpening = new WebOpening(new Length(width, units.Section), new Length(startPos, units.Length), new Length(posFromTop, units.Section));
-          break;
-        case OpeningType.Start_notch:
-          webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), NotchPosition.Start);
-          break;
-        case OpeningType.End_notch:
-          webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), NotchPosition.End);
-          break;
-      }
-
-      string coaString = webOpening.ToCoaString("MEMBER-1", units);
-      Assert.Equal(expected_CoaString, coaString);
-    }
-
-    [Theory]
-    [InlineData(400, 300, 7.5, 350, OpeningType.Rectangular, "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	400.000	300.000	7.50000	350.000	STIFFENER_NO\n")]
-    [InlineData(400, 400, 3.5, 190, OpeningType.Circular, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	400.000	400.000	3.50000	190.000	STIFFENER_NO\n")]
-    [InlineData(400, 300, 0, 0, OpeningType.Start_notch, "WEB_OPEN_DIMENSION	MEMBER-1	LEFT_NOTCH	400.000	300.000	50.0000%	50.0000%	STIFFENER_NO\n")]
-    public void FromCoaStringNoStiffener(double expected_width, double expected_height, double expected_startPos, double expected_posFromTop, OpeningType expected_OpeningType, string coaString)
-    {
-      ComposUnits units = ComposUnits.GetStandardUnits();
+    public void FromCoaStringNoStiffener(double expected_width, double expected_height, double expected_startPos, double expected_posFromTop, OpeningType expected_OpeningType, string coaString) {
+      var units = ComposUnits.GetStandardUnits();
       List<string> parameters = CoaHelper.Split(coaString);
       IWebOpening webOpening = WebOpening.FromCoaString(parameters, units);
 
       Assert.Equal(expected_OpeningType, webOpening.WebOpeningType);
 
-      switch (webOpening.WebOpeningType)
-      {
+      switch (webOpening.WebOpeningType) {
         case OpeningType.Rectangular:
           Assert.Equal(expected_width, webOpening.Width.As(units.Section));
           Assert.Equal(expected_height, webOpening.Height.As(units.Section));
@@ -397,16 +195,14 @@ namespace ComposAPI.Beams.Tests
     [Theory]
     [InlineData(0.4, 0.3, 20, 50, OpeningType.Rectangular, "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	0.400000	0.300000	20.0000%	50.0000%	STIFFENER_NO\n")]
     [InlineData(0.4, 0.4, 20, 50, OpeningType.Circular, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	0.400000	0.400000	20.0000%	50.0000%	STIFFENER_NO\n")]
-    public void FromCoaStringNoStiffenerPercentage(double expected_width, double expected_height, double expected_startPos, double expected_posFromTop, OpeningType expected_OpeningType, string coaString)
-    {
-      ComposUnits units = ComposUnits.GetStandardUnits();
+    public void FromCoaStringNoStiffenerPercentage(double expected_width, double expected_height, double expected_startPos, double expected_posFromTop, OpeningType expected_OpeningType, string coaString) {
+      var units = ComposUnits.GetStandardUnits();
       List<string> parameters = CoaHelper.Split(coaString);
       IWebOpening webOpening = WebOpening.FromCoaString(parameters, units);
 
       Assert.Equal(expected_OpeningType, webOpening.WebOpeningType);
 
-      switch (webOpening.WebOpeningType)
-      {
+      switch (webOpening.WebOpeningType) {
         case OpeningType.Rectangular:
           Assert.Equal(expected_width, webOpening.Width.As(units.Section));
           Assert.Equal(expected_height, webOpening.Height.As(units.Section));
@@ -426,50 +222,14 @@ namespace ComposAPI.Beams.Tests
     [InlineData(400, 300, 0, 0, OpeningType.End_notch, false, 50, 100, 10, 0, 0, "WEB_OPEN_DIMENSION	MEMBER-1	RIGHT_NOTCH	400.000	300.000	50.0000%	50.0000%	STIFFENER_YES	ONE_SIDE_STIFFENER	50.0000	100.000	10.0000	100.000	10.0000\n")]
     [InlineData(400, 300, 1.5, 250, OpeningType.Rectangular, true, 60, 100, 10, 50, 5, "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	400.000	300.000	1.50000	250.000	STIFFENER_YES	BOTH_SIDE_STIFFENER	60.0000	100.000	10.0000	50.0000	5.00000\n")]
     [InlineData(400, 400, 9.5, 150, OpeningType.Circular, true, 10, 120, 12, 70, 7, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	400.000	400.000	9.50000	150.000	STIFFENER_YES	BOTH_SIDE_STIFFENER	10.0000	120.000	12.0000	70.0000	7.00000\n")]
-    public void ToCoaStringWithStiffener(double width, double height, double startPos, double posFromTop, OpeningType openingType, bool bothSides, double distFrom, double topWidth, double topThk, double bottomWidth, double bottomThk, string expected_CoaString)
-    {
-      ComposUnits units = ComposUnits.GetStandardUnits();
-      WebOpening webOpening = new WebOpening();
-      WebOpeningStiffeners stiffeners = new WebOpeningStiffeners();
-      switch (openingType)
-      {
-        case OpeningType.Rectangular:
-          webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), new Length(startPos, units.Length), new Length(posFromTop, units.Section));
-          stiffeners = new WebOpeningStiffeners(new Length(distFrom, units.Section), new Length(topWidth, units.Section), new Length(topThk, units.Section), new Length(bottomWidth, units.Section), new Length(bottomThk, units.Section), bothSides);
-          break;
-        case OpeningType.Circular:
-          webOpening = new WebOpening(new Length(width, units.Section), new Length(startPos, units.Length), new Length(posFromTop, units.Section));
-          stiffeners = new WebOpeningStiffeners(new Length(distFrom, units.Section), new Length(topWidth, units.Section), new Length(topThk, units.Section), new Length(bottomWidth, units.Section), new Length(bottomThk, units.Section), bothSides);
-          break;
-        case OpeningType.Start_notch:
-          webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), NotchPosition.Start);
-          stiffeners = new WebOpeningStiffeners(new Length(distFrom, units.Section), new Length(topWidth, units.Section), new Length(topThk, units.Section), bothSides);
-          break;
-        case OpeningType.End_notch:
-          webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), NotchPosition.End);
-          stiffeners = new WebOpeningStiffeners(new Length(distFrom, units.Section), new Length(topWidth, units.Section), new Length(topThk, units.Section), bothSides);
-          break;
-      }
-      webOpening.OpeningStiffeners = stiffeners;
-
-      string coaString = webOpening.ToCoaString("MEMBER-1", units);
-      Assert.Equal(expected_CoaString, coaString);
-    }
-
-    [Theory]
-    [InlineData(400, 300, 0, 0, OpeningType.End_notch, false, 50, 100, 10, 0, 0, "WEB_OPEN_DIMENSION	MEMBER-1	RIGHT_NOTCH	400.000	300.000	50.0000%	50.0000%	STIFFENER_YES	ONE_SIDE_STIFFENER	50.0000	100.000	10.0000	100.000	10.0000\n")]
-    [InlineData(400, 300, 1.5, 250, OpeningType.Rectangular, true, 60, 100, 10, 50, 5, "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	400.000	300.000	1.50000	250.000	STIFFENER_YES	BOTH_SIDE_STIFFENER	60.0000	100.000	10.0000	50.0000	5.00000\n")]
-    [InlineData(400, 400, 9.5, 150, OpeningType.Circular, true, 10, 120, 12, 70, 7, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	400.000	400.000	9.50000	150.000	STIFFENER_YES	BOTH_SIDE_STIFFENER	10.0000	120.000	12.0000	70.0000	7.00000\n")]
-    public void FromCoaStringWithStiffener(double expected_width, double expected_height, double expected_startPos, double expected_posFromTop, OpeningType expected_OpeningType, bool expected_bothSides, double expected_distFrom, double expected_topWidth, double expected_topThk, double expected_bottomWidth, double expected_bottomThk, string coaString)
-    {
-      ComposUnits units = ComposUnits.GetStandardUnits();
+    public void FromCoaStringWithStiffener(double expected_width, double expected_height, double expected_startPos, double expected_posFromTop, OpeningType expected_OpeningType, bool expected_bothSides, double expected_distFrom, double expected_topWidth, double expected_topThk, double expected_bottomWidth, double expected_bottomThk, string coaString) {
+      var units = ComposUnits.GetStandardUnits();
       List<string> parameters = CoaHelper.Split(coaString);
       IWebOpening webOpening = WebOpening.FromCoaString(parameters, units);
 
       Assert.Equal(expected_OpeningType, webOpening.WebOpeningType);
 
-      switch (webOpening.WebOpeningType)
-      {
+      switch (webOpening.WebOpeningType) {
         case OpeningType.Rectangular:
           Assert.Equal(expected_width, webOpening.Width.As(units.Section));
           Assert.Equal(expected_height, webOpening.Height.As(units.Section));
@@ -492,16 +252,244 @@ namespace ComposAPI.Beams.Tests
 
       Assert.NotNull(webOpening.OpeningStiffeners);
 
-      Assert.Equal(expected_bothSides, webOpening.OpeningStiffeners.isBothSides);
+      Assert.Equal(expected_bothSides, webOpening.OpeningStiffeners.IsBothSides);
       Assert.Equal(expected_distFrom, webOpening.OpeningStiffeners.DistanceFrom.As(units.Section));
       Assert.Equal(expected_topWidth, webOpening.OpeningStiffeners.TopStiffenerWidth.As(units.Section));
       Assert.Equal(expected_topThk, webOpening.OpeningStiffeners.TopStiffenerThickness.As(units.Section));
 
-      if (!webOpening.OpeningStiffeners.isNotch)
-      {
+      if (!webOpening.OpeningStiffeners.IsNotch) {
         Assert.Equal(expected_bottomWidth, webOpening.OpeningStiffeners.BottomStiffenerWidth.As(units.Section));
         Assert.Equal(expected_bottomThk, webOpening.OpeningStiffeners.BottomStiffenerThickness.As(units.Section));
       }
+    }
+
+    // 1 setup inputs
+    [Theory]
+    [InlineData(200, 400, 9000)]
+    [InlineData(123.456, 0.0123, 500.111)]
+    public void TestConstructorCircularWebOpening(double diameter,
+      double positionCentroidFromStart, double positionCentroidFromTop) {
+      LengthUnit unit = LengthUnit.Millimeter;
+
+      // 2 create object instance with constructor
+      var webOpening = new WebOpening(
+        new Length(diameter, unit),
+        new Length(positionCentroidFromStart, unit), new Length(positionCentroidFromTop, unit));
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(OpeningType.Circular, webOpening.WebOpeningType);
+      Assert.Equal(diameter, webOpening.Diameter.Millimeters);
+      Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.As(LengthUnit.Millimeter));
+      Assert.Equal(positionCentroidFromTop, webOpening.CentroidPosFromTop.As(LengthUnit.Millimeter));
+      Assert.Equal(Length.Zero, webOpening.Width);
+      Assert.Equal(Length.Zero, webOpening.Height);
+      Assert.Null(webOpening.OpeningStiffeners);
+    }
+
+    // 1 setup inputs
+    [Theory]
+    [InlineData(200, 400, 9000)]
+    [InlineData(15, 4.0123, 59.211)]
+    public WebOpening TestConstructorCircularWebOpeningWithStiffener(double diameter,
+      double positionCentroidFromStart, double positionCentroidFromTop) {
+      LengthUnit unit = LengthUnit.Millimeter;
+
+      // 1b create additional input from custom class object
+      WebOpeningStiffeners stiffener = TestConstructorStiffenersWebOpening(80, 17, 5, 98, 12, true);
+
+      // 2 create object instance with constructor
+      var webOpening = new WebOpening(
+        new Length(diameter, unit),
+        new Length(positionCentroidFromStart, unit), new Length(positionCentroidFromTop, unit), stiffener);
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(OpeningType.Circular, webOpening.WebOpeningType);
+      Assert.Equal(diameter, webOpening.Diameter.Millimeters);
+      Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.As(LengthUnit.Millimeter));
+      Assert.Equal(positionCentroidFromTop, webOpening.CentroidPosFromTop.As(LengthUnit.Millimeter));
+      Assert.Equal(Length.Zero, webOpening.Width);
+      Assert.Equal(Length.Zero, webOpening.Height);
+      Assert.NotNull(webOpening.OpeningStiffeners);
+
+      // (optionally return object for other tests)
+      return webOpening;
+    }
+
+    // 1 setup inputs
+    [Theory]
+    [InlineData(200, 400, NotchPosition.Start)]
+    [InlineData(123.456, 0.0123, NotchPosition.End)]
+    public void TestConstructorNotchWebOpening(double width,
+      double height, NotchPosition position) {
+      LengthUnit unit = LengthUnit.Millimeter;
+
+      // 2 create object instance with constructor
+      var webOpening = new WebOpening(
+        new Length(width, unit), new Length(height, unit), position);
+
+      // 3 check that inputs are set in object's members
+      if (position == NotchPosition.Start) {
+        Assert.Equal(OpeningType.Start_notch, webOpening.WebOpeningType);
+      }
+      if (position == NotchPosition.End) {
+        Assert.Equal(OpeningType.End_notch, webOpening.WebOpeningType);
+      }
+      Assert.Equal(width, webOpening.Width.Millimeters);
+      Assert.Equal(height, webOpening.Height.Millimeters);
+      Assert.Equal(Length.Zero, webOpening.CentroidPosFromStart);
+      Assert.Equal(Length.Zero, webOpening.CentroidPosFromTop);
+      Assert.Equal(Length.Zero, webOpening.Diameter);
+      Assert.Null(webOpening.OpeningStiffeners);
+    }
+
+    // 1 setup inputs
+    [Theory]
+    [InlineData(600, 70, NotchPosition.Start)]
+    [InlineData(14.3, 78.123, NotchPosition.End)]
+    public WebOpening TestConstructorNotchWebOpeningWithStiffener(double width,
+      double height, NotchPosition position) {
+      LengthUnit unit = LengthUnit.Millimeter;
+
+      // 1b create additional input from custom class object
+      WebOpeningStiffeners stiffener = TestConstructorStiffenersNotch(15, 90, 7, false);
+
+      // 2 create object instance with constructor
+      var webOpening = new WebOpening(
+        new Length(width, unit), new Length(height, unit),
+        position, stiffener);
+
+      // 3 check that inputs are set in object's members
+      if (position == NotchPosition.Start) {
+        Assert.Equal(OpeningType.Start_notch, webOpening.WebOpeningType);
+      }
+      if (position == NotchPosition.End) {
+        Assert.Equal(OpeningType.End_notch, webOpening.WebOpeningType);
+      }
+      Assert.Equal(width, webOpening.Width.Millimeters);
+      Assert.Equal(height, webOpening.Height.Millimeters);
+      Assert.Equal(Length.Zero, webOpening.CentroidPosFromStart);
+      Assert.Equal(Length.Zero, webOpening.CentroidPosFromTop);
+      Assert.Equal(Length.Zero, webOpening.Diameter);
+      Assert.NotNull(webOpening.OpeningStiffeners);
+
+      // (optionally return object for other tests)
+      return webOpening;
+    }
+
+    // 1 setup inputs
+    [Theory]
+    [InlineData(400, 300, 6000, 150)]
+    [InlineData(250.123, 423.0013, 1240.12, 214)]
+    public void TestConstructorRectangularWebOpening(double width, double height,
+      double positionCentroidFromStart, double positionCentroidFromTop) {
+      LengthUnit unit = LengthUnit.Millimeter;
+
+      // 2 create object instance with constructor
+      var webOpening = new WebOpening(
+        new Length(width, unit), new Length(height, unit),
+        new Length(positionCentroidFromStart, unit), new Length(positionCentroidFromTop, unit));
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(OpeningType.Rectangular, webOpening.WebOpeningType);
+      Assert.Equal(width, webOpening.Width.Millimeters);
+      Assert.Equal(height, webOpening.Height.Millimeters);
+      Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.As(LengthUnit.Millimeter));
+      Assert.Equal(positionCentroidFromTop, webOpening.CentroidPosFromTop.As(LengthUnit.Millimeter));
+      Assert.Equal(Length.Zero, webOpening.Diameter);
+      Assert.Null(webOpening.OpeningStiffeners);
+    }
+
+    // 1 setup inputs
+    [Theory]
+    [InlineData(900, 450, 2000, 350)]
+    [InlineData(87.98, 42.34, 90000, 19.2)]
+    public WebOpening TestConstructorRectangularWebOpeningWithStiffener(double width, double height,
+      double positionCentroidFromStart, double positionCentroidFromTop) {
+      LengthUnit unit = LengthUnit.Millimeter;
+
+      // 1b create additional input from custom class object
+      WebOpeningStiffeners stiffener = TestConstructorStiffenersWebOpening(25, 75, 12, 125, 15, false);
+
+      // 2 create object instance with constructor
+      var webOpening = new WebOpening(
+        new Length(width, unit), new Length(height, unit),
+        new Length(positionCentroidFromStart, unit), new Length(positionCentroidFromTop, unit), stiffener);
+
+      // 3 check that inputs are set in object's members
+      Assert.Equal(OpeningType.Rectangular, webOpening.WebOpeningType);
+      Assert.Equal(width, webOpening.Width.Millimeters);
+      Assert.Equal(height, webOpening.Height.Millimeters);
+      Assert.Equal(positionCentroidFromStart, webOpening.CentroidPosFromStart.As(LengthUnit.Millimeter));
+      Assert.Equal(positionCentroidFromTop, webOpening.CentroidPosFromTop.As(LengthUnit.Millimeter));
+      Assert.Equal(Length.Zero, webOpening.Diameter);
+      Assert.NotNull(webOpening.OpeningStiffeners);
+
+      // (optionally return object for other tests)
+      return webOpening;
+    }
+
+    [Theory]
+    [InlineData(400, 300, 7.5, 350, OpeningType.Rectangular, "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	400.000	300.000	7.50000	350.000	STIFFENER_NO\n")]
+    [InlineData(400, 400, 3.5, 190, OpeningType.Circular, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	400.000	400.000	3.50000	190.000	STIFFENER_NO\n")]
+    [InlineData(400, 300, 0, 0, OpeningType.Start_notch, "WEB_OPEN_DIMENSION	MEMBER-1	LEFT_NOTCH	400.000	300.000	50.0000%	50.0000%	STIFFENER_NO\n")]
+    public void ToCoaStringNoStiffener(double width, double height, double startPos, double posFromTop, OpeningType openingType, string expected_CoaString) {
+      var units = ComposUnits.GetStandardUnits();
+      var webOpening = new WebOpening();
+      switch (openingType) {
+        case OpeningType.Rectangular:
+          webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), new Length(startPos, units.Length), new Length(posFromTop, units.Section));
+          break;
+
+        case OpeningType.Circular:
+          webOpening = new WebOpening(new Length(width, units.Section), new Length(startPos, units.Length), new Length(posFromTop, units.Section));
+          break;
+
+        case OpeningType.Start_notch:
+          webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), NotchPosition.Start);
+          break;
+
+        case OpeningType.End_notch:
+          webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), NotchPosition.End);
+          break;
+      }
+
+      string coaString = webOpening.ToCoaString("MEMBER-1", units);
+      Assert.Equal(expected_CoaString, coaString);
+    }
+
+    [Theory]
+    [InlineData(400, 300, 0, 0, OpeningType.End_notch, false, 50, 100, 10, 0, 0, "WEB_OPEN_DIMENSION	MEMBER-1	RIGHT_NOTCH	400.000	300.000	50.0000%	50.0000%	STIFFENER_YES	ONE_SIDE_STIFFENER	50.0000	100.000	10.0000	100.000	10.0000\n")]
+    [InlineData(400, 300, 1.5, 250, OpeningType.Rectangular, true, 60, 100, 10, 50, 5, "WEB_OPEN_DIMENSION	MEMBER-1	RECTANGULAR	400.000	300.000	1.50000	250.000	STIFFENER_YES	BOTH_SIDE_STIFFENER	60.0000	100.000	10.0000	50.0000	5.00000\n")]
+    [InlineData(400, 400, 9.5, 150, OpeningType.Circular, true, 10, 120, 12, 70, 7, "WEB_OPEN_DIMENSION	MEMBER-1	CIRCULAR	400.000	400.000	9.50000	150.000	STIFFENER_YES	BOTH_SIDE_STIFFENER	10.0000	120.000	12.0000	70.0000	7.00000\n")]
+    public void ToCoaStringWithStiffener(double width, double height, double startPos, double posFromTop, OpeningType openingType, bool bothSides, double distFrom, double topWidth, double topThk, double bottomWidth, double bottomThk, string expected_CoaString) {
+      var units = ComposUnits.GetStandardUnits();
+      var webOpening = new WebOpening();
+      var stiffeners = new WebOpeningStiffeners();
+      switch (openingType) {
+        case OpeningType.Rectangular:
+          webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), new Length(startPos, units.Length), new Length(posFromTop, units.Section));
+          stiffeners = new WebOpeningStiffeners(new Length(distFrom, units.Section), new Length(topWidth, units.Section), new Length(topThk, units.Section), new Length(bottomWidth, units.Section), new Length(bottomThk, units.Section), bothSides);
+          break;
+
+        case OpeningType.Circular:
+          webOpening = new WebOpening(new Length(width, units.Section), new Length(startPos, units.Length), new Length(posFromTop, units.Section));
+          stiffeners = new WebOpeningStiffeners(new Length(distFrom, units.Section), new Length(topWidth, units.Section), new Length(topThk, units.Section), new Length(bottomWidth, units.Section), new Length(bottomThk, units.Section), bothSides);
+          break;
+
+        case OpeningType.Start_notch:
+          webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), NotchPosition.Start);
+          stiffeners = new WebOpeningStiffeners(new Length(distFrom, units.Section), new Length(topWidth, units.Section), new Length(topThk, units.Section), bothSides);
+          break;
+
+        case OpeningType.End_notch:
+          webOpening = new WebOpening(new Length(width, units.Section), new Length(height, units.Section), NotchPosition.End);
+          stiffeners = new WebOpeningStiffeners(new Length(distFrom, units.Section), new Length(topWidth, units.Section), new Length(topThk, units.Section), bothSides);
+          break;
+      }
+      webOpening.OpeningStiffeners = stiffeners;
+
+      string coaString = webOpening.ToCoaString("MEMBER-1", units);
+      Assert.Equal(expected_CoaString, coaString);
     }
   }
 }

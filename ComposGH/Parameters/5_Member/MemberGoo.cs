@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Drawing;
+using System.Windows.Forms;
+using ComposAPI;
+using Grasshopper;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
-using System.Drawing;
-using Grasshopper;
-using ComposAPI;
 
-namespace ComposGH.Parameters
-{
+namespace ComposGH.Parameters {
   /// <summary>
   /// GeometryGoo wrapper class, makes sure our custom class can be used and displayed in Grasshopper.
   /// </summary>
-  public class MemberGoo : GH_GeometricGoo<IMember>, IGH_PreviewData
-  {
+  public class MemberGoo : GH_GeometricGoo<IMember>, IGH_PreviewData {
     //public LineCurve Line { get; set; }
     //LengthUnit LengthUnit { get; set; }
     public static string Name => "Member";
@@ -22,86 +20,78 @@ namespace ComposGH.Parameters
     public static string Description => "Compos Member";
 
     #region constructors
-    public MemberGoo()
-    {
+
+    public MemberGoo() {
       Value = new Member();
     }
-    public MemberGoo(IMember item)
-    {
-      if (item == null)
+
+    public MemberGoo(IMember item) {
+      if (item == null) {
         item = new Member();
-      Value = item; //.Duplicate() as SafetyFactors;
+      }
+      Value = item;
     }
 
-    public override IGH_Goo Duplicate()
-    {
+    public override IGH_Goo Duplicate() {
       return DuplicateGoo();
     }
-    public MemberGoo DuplicateGoo()
-    {
-      return new MemberGoo(Value == null ? new Member() : Value);// .Duplicate() as SafetyFactors);
+
+    public MemberGoo DuplicateGoo() {
+      return new MemberGoo(Value ?? new Member());
     }
 
-    public override IGH_GeometricGoo DuplicateGeometry()
-    {
-      if (Value == null)
+    public override IGH_GeometricGoo DuplicateGeometry() {
+      if (Value == null) {
         return null;
-      else
+      } else {
         return (IGH_GeometricGoo)Duplicate();
+      }
     }
+
     #endregion
 
     #region properties
-    public override bool IsValid => (Value == null) ? false : true;
+    public override bool IsValid => Value != null;
     public override string TypeName => "Member";
     public override string TypeDescription => "Compos " + TypeName + " Parameter";
-    public override string IsValidWhyNot
-    {
-      get
-      {
+    public override string IsValidWhyNot {
+      get {
         if (IsValid) { return string.Empty; }
         return IsValid.ToString(); //Todo: beef this up to be more informative.
       }
     }
-    public override string ToString()
-    {
-      if (Value == null)
-        return "Null";
-      else
-        return "Compos " + TypeName + " {" + Value.ToString() + "}"; ;
-    }
 
-    public override BoundingBox Boundingbox
-    {
-      get
-      {
-        return BoundingBox.Empty;
-        //if (Value == null) { return BoundingBox.Empty; }
-        //if (Line == null) { return BoundingBox.Empty; }
-        //return Line.GetBoundingBox(false);
+    public override string ToString() {
+      if (Value == null) {
+        return "Null";
+      } else {
+        return "Compos " + TypeName + " {" + Value.ToString() + "}"; ;
       }
     }
-    public override BoundingBox GetBoundingBox(Transform xform)
-    {
+
+    public override BoundingBox Boundingbox => BoundingBox.Empty;
+
+    public override BoundingBox GetBoundingBox(Transform xform) {
       return BoundingBox.Empty;
       //if (Value == null) { return BoundingBox.Empty; }
       //if (Line == null) { return BoundingBox.Empty; }
       //return Line.GetBoundingBox(xform);
     }
+
     #endregion
 
     #region casting methods
-    public override bool CastTo<Q>(ref Q target)
-    {
-      // This function is called when Grasshopper needs to convert this 
-      // instance of our custom class into some other type Q.            
 
-      if (typeof(Q).IsAssignableFrom(typeof(Member)))
-      {
-        if (Value == null)
+    public override bool CastTo<Q>(ref Q target) {
+      // This function is called when Grasshopper needs to convert this
+      // instance of our custom class into some other type Q.
+
+      if (typeof(Q).IsAssignableFrom(typeof(Member))) {
+        if (Value == null) {
           target = default;
-        else
+        } else {
           target = (Q)(object)Value;
+        }
         return true;
       }
 
@@ -149,22 +139,20 @@ namespace ComposGH.Parameters
       target = default;
       return false;
     }
-    public override bool CastFrom(object source)
-    {
-      // This function is called when Grasshopper needs to convert other data 
+
+    public override bool CastFrom(object source) {
+      // This function is called when Grasshopper needs to convert other data
       // into our custom class.
 
       if (source == null) { return false; }
 
       //Cast from GsaMaterial
-      if (typeof(Member).IsAssignableFrom(source.GetType()))
-      {
+      if (typeof(Member).IsAssignableFrom(source.GetType())) {
         Value = (Member)source;
         return true;
       }
 
-      try
-      {
+      try {
         //// Cast from GsaGH
         //if (GsaGHConverter.IsPresent())
         //{
@@ -190,22 +178,19 @@ namespace ComposGH.Parameters
         //{
         //  // todo: implement
         //}
-
-      }
-      catch (Exception)
-      {
+      } catch (Exception) {
         return false;
       }
 
       return false;
     }
+
     #endregion
 
     #region transformation methods
-    public override IGH_GeometricGoo Transform(Transform xform)
-    {
-      return null;
 
+    public override IGH_GeometricGoo Transform(Transform xform) {
+      return null;
 
       //if (Value == null) { return null; }
       //if (Line == null) { return null; }
@@ -219,8 +204,7 @@ namespace ComposGH.Parameters
       //return dup;
     }
 
-    public override IGH_GeometricGoo Morph(SpaceMorph xmorph)
-    {
+    public override IGH_GeometricGoo Morph(SpaceMorph xmorph) {
       return null;
 
       //if (Value == null) { return null; }
@@ -240,23 +224,20 @@ namespace ComposGH.Parameters
 
 #pragma warning disable IDE0044 // Add readonly modifier
     #region preview geometry
-    List<PolyCurve> profileOutlines;
-    List<Brep> profileExtrusions;
-    List<Brep> stiffenerPlates;
-    void UpdatePreview()
-    {
+    private List<PolyCurve> profileOutlines;
+    private List<Brep> profileExtrusions;
+    private List<Brep> stiffenerPlates;
 
+    private void UpdatePreview() {
     }
+
 #pragma warning restore IDE0044 // Add readonly modifier
     #endregion
 
     #region drawing methods
-    public BoundingBox ClippingBox
-    {
-      get { return Boundingbox; }
-    }
-    public void DrawViewportMeshes(GH_PreviewMeshArgs args)
-    {
+    public BoundingBox ClippingBox => Boundingbox;
+
+    public void DrawViewportMeshes(GH_PreviewMeshArgs args) {
       ////Draw shape.
       //if (profileExtrusions != null)
       //{
@@ -272,9 +253,10 @@ namespace ComposGH.Parameters
       //  }
       //}
     }
-    Color defaultCol = Instances.Settings.GetValue("DefaultPreviewColour", Color.White);
-    public void DrawViewportWires(GH_PreviewWireArgs args)
-    {
+
+    private Color defaultCol = Instances.Settings.GetValue("DefaultPreviewColour", Color.White);
+
+    public void DrawViewportWires(GH_PreviewWireArgs args) {
       if (Value == null) { return; }
 
       ////Draw lines
@@ -288,7 +270,6 @@ namespace ComposGH.Parameters
       //    // profiles
       //    foreach (PolyCurve crv in profileOutlines)
       //      args.Pipeline.DrawCurve(crv, UI.Colour.OasysBlue, 2);
-
 
       //  }
       //  else // selected
@@ -304,22 +285,23 @@ namespace ComposGH.Parameters
       //  foreach (Brep brep in profileExtrusions)
       //    args.Pipeline.DrawBrepWires(brep, UI.Colour.OasysDarkGrey, -1);
     }
+
     #endregion
   }
 
   /// <summary>
   /// This class provides a Parameter interface for the CustomGoo type.
   /// </summary>
-  public class ComposMemberParameter : GH_PersistentGeometryParam<MemberGoo>, IGH_PreviewObject
-  {
+  public class ComposMemberParameter : GH_PersistentGeometryParam<MemberGoo>, IGH_PreviewObject {
+
     public ComposMemberParameter()
       : base(new GH_InstanceDescription(
-        "Member", 
-        "Mem", 
-        "Compos Member parameter", 
-        Components.Ribbon.CategoryName.Name(), 
-        Components.Ribbon.SubCategoryName.Cat10()))
-    { }
+        "Member",
+        "Mem",
+        "Compos Member parameter",
+        Components.Ribbon.CategoryName.Name(),
+        Components.Ribbon.SubCategoryName.Cat10())) { }
+
     public override string InstanceDescription => m_data.DataCount == 0 ? "Empty Member parameter" : base.InstanceDescription;
     public override string TypeName => SourceCount == 0 ? "Member" : base.TypeName;
     public override Guid ComponentGuid => new Guid("a94f9373-e1a3-49d9-9b98-d3a2618fb9f8");
@@ -328,29 +310,26 @@ namespace ComposGH.Parameters
 
     protected override Bitmap Icon => Properties.Resources.MemberParam;
 
-    //We do not allow users to pick parameter, 
+    //We do not allow users to pick parameter,
     //therefore the following 4 methods disable all this ui.
-    protected override GH_GetterResult Prompt_Plural(ref List<MemberGoo> values)
-    {
+    protected override GH_GetterResult Prompt_Plural(ref List<MemberGoo> values) {
       return GH_GetterResult.cancel;
     }
-    protected override GH_GetterResult Prompt_Singular(ref MemberGoo value)
-    {
+
+    protected override GH_GetterResult Prompt_Singular(ref MemberGoo value) {
       return GH_GetterResult.cancel;
     }
-    protected override System.Windows.Forms.ToolStripMenuItem Menu_CustomSingleValueItem()
-    {
-      System.Windows.Forms.ToolStripMenuItem item = new System.Windows.Forms.ToolStripMenuItem
-      {
+
+    protected override ToolStripMenuItem Menu_CustomSingleValueItem() {
+      var item = new ToolStripMenuItem {
         Text = "Not available",
         Visible = false
       };
       return item;
     }
-    protected override System.Windows.Forms.ToolStripMenuItem Menu_CustomMultiValueItem()
-    {
-      System.Windows.Forms.ToolStripMenuItem item = new System.Windows.Forms.ToolStripMenuItem
-      {
+
+    protected override System.Windows.Forms.ToolStripMenuItem Menu_CustomMultiValueItem() {
+      var item = new ToolStripMenuItem {
         Text = "Not available",
         Visible = false
       };
@@ -358,35 +337,20 @@ namespace ComposGH.Parameters
     }
 
     #region preview methods
-    public BoundingBox ClippingBox
-    {
-      get
-      {
-        return Preview_ComputeClippingBox();
-      }
-    }
-    public void DrawViewportMeshes(IGH_PreviewArgs args)
-    {
-      //Use a standard method to draw gunk, you don't have to specifically implement 
+    public BoundingBox ClippingBox => Preview_ComputeClippingBox();
+
+    public void DrawViewportMeshes(IGH_PreviewArgs args) {
+      //Use a standard method to draw gunk, you don't have to specifically implement
       Preview_DrawMeshes(args);
     }
-    public void DrawViewportWires(IGH_PreviewArgs args)
-    {
-      //Use a standard method to draw gunk, you don't have to specifically implement 
+
+    public void DrawViewportWires(IGH_PreviewArgs args) {
+      //Use a standard method to draw gunk, you don't have to specifically implement
       Preview_DrawWires(args);
     }
 
-    private bool m_hidden = false;
-    public bool Hidden
-    {
-      get { return m_hidden; }
-      set { m_hidden = value; }
-    }
-    public bool IsPreviewCapable
-    {
-      get { return true; }
-    }
+    public bool Hidden { get; set; } = false;
+    public bool IsPreviewCapable => true;
     #endregion
   }
 }
-

@@ -1,43 +1,38 @@
 ﻿using ComposGH.Components;
-using Xunit;
 using ComposGHTests.Helpers;
 using Grasshopper.Kernel.Types;
 using OasysGH.Components;
+using Xunit;
 
-namespace ComposGHTests.Design
-{
+namespace ComposGHTests.Design {
   [Collection("GrasshopperFixture collection")]
-  public class CataloguesSectionsComponentTests
-  {
-    public static GH_OasysDropDownComponent CataloguesSectionsMother()
-    {
+  public class CataloguesSectionsComponentTests {
+
+    public static GH_OasysDropDownComponent CataloguesSectionsMother() {
       var comp = new CataloguesSections();
       comp.CreateAttributes();
       return comp;
     }
 
     [Fact]
-    public void CreateComponent()
-    {
-      var comp = CataloguesSectionsMother();
+    public void ChangeDropDownTest() {
+      GH_OasysDropDownComponent comp = CataloguesSectionsMother();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
 
-      GH_Integer output = (GH_Integer)ComponentTestHelper.GetOutput(comp);
+    [Fact]
+    public void CreateComponent() {
+      GH_OasysDropDownComponent comp = CataloguesSectionsMother();
+
+      var output = (GH_Integer)ComponentTestHelper.GetOutput(comp);
 
       Assert.Equal(26, (int)output.Value);
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
-      var comp = CataloguesSectionsMother();
+    public void DeserializeTest() {
+      GH_OasysDropDownComponent comp = CataloguesSectionsMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      var comp = CataloguesSectionsMother();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

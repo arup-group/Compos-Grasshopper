@@ -1,4 +1,7 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGH.Properties;
 using Grasshopper.Kernel;
@@ -9,9 +12,6 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ComposGH.Components {
   public class CreateMeshReinforcement : GH_OasysDropDownComponent {
@@ -35,8 +35,7 @@ namespace ComposGH.Components {
         }
 
         _mesh = (ReinforcementMeshType)Enum.Parse(typeof(ReinforcementMeshType), _selectedItems[i]);
-      }
-      else {
+      } else {
         _lengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
       }
 

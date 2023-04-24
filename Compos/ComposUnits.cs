@@ -3,26 +3,22 @@ using ComposAPI.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
 
-namespace ComposAPI
-{
-  public class ComposUnits
-  {
+namespace ComposAPI {
+  public class ComposUnits {
     public AngleUnit Angle { get; set; }
     public DensityUnit Density { get; set; }
-    public MassUnit Mass { get; set; }
+    public LengthUnit Displacement { get; set; }
     public ForceUnit Force { get; set; }
     public LengthUnit Length { get; set; }
+    public MassUnit Mass { get; set; }
     public LengthUnit Section { get; set; }
-    public LengthUnit Displacement { get; set; }
-    public PressureUnit Stress { get; set; }
     public StrainUnit Strain { get; set; }
+    public PressureUnit Stress { get; set; }
 
     public ComposUnits() { }
 
-    public static ComposUnits GetStandardUnits()
-    {
-      ComposUnits units = new ComposUnits
-      {
+    public static ComposUnits GetStandardUnits() {
+      var units = new ComposUnits {
         Angle = AngleUnit.Degree,
         Density = ComposUnitsHelper.DensityUnit,
         Force = ComposUnitsHelper.ForceUnit,
@@ -36,26 +32,25 @@ namespace ComposAPI
       return units;
     }
 
-    public string ToCoaString()
-    {
-      ComposUnits standardUnits = ComposUnits.GetStandardUnits();
+    public string ToCoaString() {
+      var standardUnits = ComposUnits.GetStandardUnits();
 
-      Force force = new Force(1.0, Force);
+      var force = new Force(1.0, Force);
       double forceFactor = 1.0 / force.ToUnit(standardUnits.Force).Value;
 
-      Length length = new Length(1.0, Length);
+      var length = new Length(1.0, Length);
       double lengthFactor = 1.0 / length.ToUnit(standardUnits.Length).Value;
 
-      Length displacement = new Length(1.0, Displacement);
+      var displacement = new Length(1.0, Displacement);
       double displacementFactor = 1.0 / displacement.ToUnit(standardUnits.Displacement).Value;
 
-      Length section = new Length(1.0, Section);
+      var section = new Length(1.0, Section);
       double sectionFactor = 1.0 / section.ToUnit(standardUnits.Section).Value;
 
-      Pressure stress = new Pressure(1.0, Stress);
+      var stress = new Pressure(1.0, Stress);
       double stressFactor = 1.0 / stress.ToUnit(standardUnits.Stress).Value;
 
-      Mass mass = new Mass(1.0, Mass);
+      var mass = new Mass(1.0, Mass);
       double massFactor = 1.0 / mass.ToUnit(standardUnits.Mass).Value;
 
       string coaString = "UNIT_DATA\tFORCE\t" + OasysUnits.Force.GetAbbreviation(Force) + "\t" + CoaHelper.FormatSignificantFigures(forceFactor, 6) + "\n";
@@ -67,25 +62,28 @@ namespace ComposAPI
       return coaString;
     }
 
-    internal void FromCoaString(List<string> parameters)
-    {
-      switch (parameters[1])
-      {
+    internal void FromCoaString(List<string> parameters) {
+      switch (parameters[1]) {
         case CoaIdentifier.Units.Force:
           Force = (ForceUnit)UnitParser.Default.Parse(parameters[2], typeof(ForceUnit));
           break;
+
         case CoaIdentifier.Units.Length:
           Length = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
           break;
+
         case CoaIdentifier.Units.Displacement:
           Displacement = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
           break;
+
         case CoaIdentifier.Units.Section:
           Section = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
           break;
+
         case CoaIdentifier.Units.Stress:
           Stress = (PressureUnit)UnitParser.Default.Parse(parameters[2], typeof(PressureUnit));
           break;
+
         case CoaIdentifier.Units.Mass:
           Mass = (MassUnit)UnitParser.Default.Parse(parameters[2], typeof(MassUnit));
           break;

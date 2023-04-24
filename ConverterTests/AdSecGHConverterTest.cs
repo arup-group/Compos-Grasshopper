@@ -1,11 +1,8 @@
-namespace ConverterTests
-{
-  public class AdSecGHConverterTest
-  {
+namespace ConverterTests {
+  public class AdSecGHConverterTest {
     //[Fact]
     //public void Test1()
     //{
-
     //}
   }
 }

@@ -1,25 +1,29 @@
-﻿using ComposAPI;
-using ComposGH.Parameters;
+﻿using System.Collections.Generic;
+using ComposAPI;
 using ComposGH.Components;
-using Xunit;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
-using System.Collections.Generic;
-using OasysUnits;
 using OasysGH.Components;
+using OasysUnits;
 using OasysUnits.Units;
+using Xunit;
 
-namespace ComposGHTests.Beam
-{
+namespace ComposGHTests.Beam {
   [Collection("GrasshopperFixture collection")]
-  public class CreateSupportComponentTests
-  { 
+  public class CreateSupportComponentTests {
+
     [Fact]
-    public void CreateComponentTest()
-    {
+    public void ChangeDropDownTest() {
+      GH_OasysDropDownComponent comp = new CreateSupport();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponentTest() {
       var comp = new CreateSupport();
       comp.CreateAttributes();
 
-      SupportsGoo output = (SupportsGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (SupportsGoo)ComponentTestHelper.GetOutput(comp);
       Assert.True(output.Value.SecondaryMemberAsIntermediateRestraint);
       Assert.True(output.Value.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.Null(output.Value.CustomIntermediateRestraintPositions);
@@ -27,15 +31,14 @@ namespace ComposGHTests.Beam
     }
 
     [Fact]
-    public void CreateComponentWithInputsTest()
-    {
+    public void CreateComponentWithInputsTest() {
       var comp = new CreateSupport();
       comp.CreateAttributes();
 
       bool input1 = false;
       bool input2 = false;
-      List<object> input3 = new List<object>() { "2 %", "5000 mm", "8.7 m" };
-      List<IQuantity> quantities = new List<IQuantity>()
+      var input3 = new List<object>() { "2 %", "5000 mm", "8.7 m" };
+      var quantities = new List<IQuantity>()
       {
         new Ratio(2, RatioUnit.Percent),
         new Length(5000, LengthUnit.Millimeter),
@@ -46,7 +49,7 @@ namespace ComposGHTests.Beam
       ComponentTestHelper.SetInput(comp, input2, 1);
       ComponentTestHelper.SetInput(comp, input3, 2);
 
-      SupportsGoo output = (SupportsGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (SupportsGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(input1, output.Value.SecondaryMemberAsIntermediateRestraint);
       Assert.Equal(input2, output.Value.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.Equal(quantities, output.Value.CustomIntermediateRestraintPositions);
@@ -54,17 +57,9 @@ namespace ComposGHTests.Beam
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
+    public void DeserializeTest() {
       GH_OasysDropDownComponent comp = new CreateSupport();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      GH_OasysDropDownComponent comp = new CreateSupport();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

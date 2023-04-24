@@ -1,35 +1,29 @@
-﻿using System;
-using OasysUnits;
+﻿using OasysUnits;
 
-namespace ComposAPI
-{
-  public enum DeckingType
-  {
-    Custom,
-    Catalogue
-  }
-
-  public class Decking : IDecking
-  {
-    public Length b1 { get; set; } // dimensions of decking see decking page of property wizard of the program
-    public Length b2 { get; set; }
-    public Length b3 { get; set; }
-    public Length b4 { get; set; }
-    public Length b5 { get; set; }
+namespace ComposAPI {
+  public class Decking : IDecking {
+    public Length B1 { get; set; } // dimensions of decking see decking page of property wizard of the program
+    public Length B2 { get; set; }
+    public Length B3 { get; set; }
+    public Length B4 { get; set; }
+    public Length B5 { get; set; }
+    public IDeckingConfiguration DeckingConfiguration { get; set; }
     public Length Depth { get; set; } // overall depth of decking
     public Length Thickness { get; set; } // 	decking sheet thickness
-    public IDeckingConfiguration DeckingConfiguration { get; set; }
-    public DeckingType Type { get { return m_type; } }
+    public DeckingType Type => m_type;
     internal DeckingType m_type;
 
-    public Decking()
-    {
+    public Decking() {
       // empty constructor
     }
 
-    public virtual string ToCoaString(string name, ComposUnits units)
-    {
-      return String.Empty;
+    public virtual string ToCoaString(string name, ComposUnits units) {
+      return string.Empty;
     }
+  }
+
+  public enum DeckingType {
+    Custom,
+    Catalogue
   }
 }

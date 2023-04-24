@@ -1,35 +1,30 @@
-﻿using ComposGH.Parameters;
+﻿using ComposAPI;
 using ComposGH.Components;
-using Xunit;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
-using ComposAPI;
 using OasysGH.Components;
+using Xunit;
 
-namespace ComposGHTests.Member
-{
+namespace ComposGHTests.Member {
   [Collection("GrasshopperFixture collection")]
-  public class CreateCreepShrinkageParamsComponentTests
-  {
-    public static GH_OasysComponent ComponentMother()
-    {
+  public class CreateCreepShrinkageParamsComponentTests {
+
+    public static GH_OasysComponent ComponentMother() {
       var comp = new CreateCreepShrinkageParams();
       comp.CreateAttributes();
-      
+
       ComponentTestHelper.SetInput(comp, 1.1, 0);
       ComponentTestHelper.SetInput(comp, 28, 1);
-      
+
       return comp;
     }
 
     [Fact]
-    public void CreateComponentWithInputs1()
-    {
-      var comp = ComponentMother();
+    public void CreateComponentWithInputs1() {
+      GH_OasysComponent comp = ComponentMother();
 
-
-      CreepShrinkageParametersGoo output = (CreepShrinkageParametersGoo)ComponentTestHelper.GetOutput(comp);
-      CreepShrinkageParametersEN cs = (CreepShrinkageParametersEN)output.Value;
-
+      var output = (CreepShrinkageParametersGoo)ComponentTestHelper.GetOutput(comp);
+      var cs = (CreepShrinkageParametersEN)output.Value;
 
       Assert.Equal(1.1, cs.CreepCoefficient);
       Assert.Equal(28, cs.ConcreteAgeAtLoad);
@@ -38,14 +33,13 @@ namespace ComposGHTests.Member
     }
 
     [Fact]
-    public void CreateComponentWithInputs2()
-    {
-      var comp = ComponentMother();
+    public void CreateComponentWithInputs2() {
+      GH_OasysComponent comp = ComponentMother();
       ComponentTestHelper.SetInput(comp, 40000, 2);
       ComponentTestHelper.SetInput(comp, "60 %", 3);
 
-      CreepShrinkageParametersGoo output = (CreepShrinkageParametersGoo)ComponentTestHelper.GetOutput(comp);
-      CreepShrinkageParametersEN cs = (CreepShrinkageParametersEN)output.Value;
+      var output = (CreepShrinkageParametersGoo)ComponentTestHelper.GetOutput(comp);
+      var cs = (CreepShrinkageParametersEN)output.Value;
 
       Assert.Equal(40000, cs.FinalConcreteAgeCreep);
       Assert.Equal(60, cs.RelativeHumidity.Percent);

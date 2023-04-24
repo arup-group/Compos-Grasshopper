@@ -1,17 +1,15 @@
 ﻿using ComposAPI;
-using ComposGH.Parameters;
 using ComposGH.Components;
-using Xunit;
+using ComposGH.Parameters;
 using ComposGHTests.Helpers;
 using OasysGH.Components;
+using Xunit;
 
-namespace ComposGHTests.Slab
-{
+namespace ComposGHTests.Slab {
   [Collection("GrasshopperFixture collection")]
-  public class CreateCustomDeckComponentTests
-  {
-    public static GH_OasysDropDownComponent ComponentMother()
-    {
+  public class CreateCustomDeckComponentTests {
+
+    public static GH_OasysDropDownComponent ComponentMother() {
       var comp = new CreateCustomDeck();
       comp.CreateAttributes();
 
@@ -29,43 +27,47 @@ namespace ComposGHTests.Slab
     }
 
     [Fact]
-    public void CreateComponentWithInputs1()
-    {
-      var comp = ComponentMother();
+    public void ChangeDropDownTest() {
+      GH_OasysDropDownComponent comp = ComponentMother();
+      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
+    }
+
+    [Fact]
+    public void CreateComponentWithInputs1() {
+      GH_OasysDropDownComponent comp = ComponentMother();
 
       comp.SetSelected(0, 0); // set dropdown to mm
       comp.SetSelected(1, 2); // set dropdown to MPa
 
-      DeckingGoo output = (DeckingGoo)ComponentTestHelper.GetOutput(comp);
-      CustomDecking customDecking = (CustomDecking)output.Value;
-      Assert.Equal(11, customDecking.b1.Millimeters);
-      Assert.Equal(12, customDecking.b2.Millimeters);
-      Assert.Equal(13, customDecking.b3.Millimeters);
-      Assert.Equal(14.5, customDecking.b4.Millimeters);
-      Assert.Equal(9, customDecking.b5.Millimeters);
+      var output = (DeckingGoo)ComponentTestHelper.GetOutput(comp);
+      var customDecking = (CustomDecking)output.Value;
+      Assert.Equal(11, customDecking.B1.Millimeters);
+      Assert.Equal(12, customDecking.B2.Millimeters);
+      Assert.Equal(13, customDecking.B3.Millimeters);
+      Assert.Equal(14.5, customDecking.B4.Millimeters);
+      Assert.Equal(9, customDecking.B5.Millimeters);
       Assert.Equal(8, customDecking.Depth.Millimeters);
       Assert.Equal(7, customDecking.Thickness.Millimeters);
       Assert.Equal(600, customDecking.Strength.Megapascals);
     }
 
     [Fact]
-    public void CreateComponentWithInputs2()
-    {
-      var comp = ComponentMother();
+    public void CreateComponentWithInputs2() {
+      GH_OasysDropDownComponent comp = ComponentMother();
 
-      DeckingConfigurationGoo input9 = (DeckingConfigurationGoo)ComponentTestHelper.GetOutput(CreateDeckingConfigurationComponentTests.ComponentMother());
+      var input9 = (DeckingConfigurationGoo)ComponentTestHelper.GetOutput(CreateDeckingConfigurationComponentTests.ComponentMother());
       ComponentTestHelper.SetInput(comp, input9, 8);
 
       comp.SetSelected(0, 1); // set dropdown to cm
       comp.SetSelected(1, 0); // set dropdown to Pa
 
-      DeckingGoo output = (DeckingGoo)ComponentTestHelper.GetOutput(comp);
-      CustomDecking customDecking = (CustomDecking)output.Value;
-      Assert.Equal(11, customDecking.b1.Centimeters);
-      Assert.Equal(12, customDecking.b2.Centimeters);
-      Assert.Equal(13, customDecking.b3.Centimeters);
-      Assert.Equal(14.5, customDecking.b4.Centimeters);
-      Assert.Equal(9, customDecking.b5.Centimeters);
+      var output = (DeckingGoo)ComponentTestHelper.GetOutput(comp);
+      var customDecking = (CustomDecking)output.Value;
+      Assert.Equal(11, customDecking.B1.Centimeters);
+      Assert.Equal(12, customDecking.B2.Centimeters);
+      Assert.Equal(13, customDecking.B3.Centimeters);
+      Assert.Equal(14.5, customDecking.B4.Centimeters);
+      Assert.Equal(9, customDecking.B5.Centimeters);
       Assert.Equal(8, customDecking.Depth.Centimeters);
       Assert.Equal(7, customDecking.Thickness.Centimeters);
       Assert.Equal(600, customDecking.Strength.Pascals);
@@ -73,17 +75,9 @@ namespace ComposGHTests.Slab
     }
 
     [Fact]
-    public void DeserializeTest()
-    {
-      var comp = ComponentMother();
+    public void DeserializeTest() {
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
-    }
-
-    [Fact]
-    public void ChangeDropDownTest()
-    {
-      var comp = ComponentMother();
-      OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
   }
 }

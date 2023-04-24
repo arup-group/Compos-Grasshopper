@@ -1,19 +1,36 @@
 ﻿using System.Collections.Generic;
 using Xunit;
 
-namespace ComposAPI.Results.Tests
-{
-    [Collection("ComposAPI Fixture collection")]
+namespace ComposAPI.Results.Tests {
+  [Collection("ComposAPI Fixture collection")]
+  public class DeflectionResultsTest {
 
-  public class DeflectionResultsTest
-  {
     [Fact]
-    public void DeflectionResultTest()
-    {
+    public void AdditionalDeadLoadDeflectionResultTest() {
       IResult r = ResultsTest.ResultMember.Result;
       IDeflectionResult res = r.Deflections;
 
-      List<double> expectedDL = new List<double>()
+      var expectedAddDL = new List<double>()
+       {
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      };
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedAddDL[i], res.AdditionalDeadLoad[i].Meters, 5);
+      }
+    }
+
+    [Fact]
+    public void DeflectionResultTest() {
+      IResult r = ResultsTest.ResultMember.Result;
+      IDeflectionResult res = r.Deflections;
+
+      var expectedDL = new List<double>()
       {
         0.0,
         -0.02589,
@@ -23,39 +40,17 @@ namespace ComposAPI.Results.Tests
         -0.02589,
         0.0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedDL[i],
-          res.ConstructionDeadLoad[i].Meters, 5);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedDL[i], res.ConstructionDeadLoad[i].Meters, 5);
+      }
     }
 
     [Fact]
-    public void AdditionalDeadLoadDeflectionResultTest()
-    {
+    public void LiveLoadDeflectionResultTest() {
       IResult r = ResultsTest.ResultMember.Result;
       IDeflectionResult res = r.Deflections;
 
-      List<double> expectedAddDL = new List<double>()
-      {
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedAddDL[i],
-          res.AdditionalDeadLoad[i].Meters, 5);
-    }
-
-    [Fact]
-    public void LiveLoadDeflectionResultTest()
-    {
-      IResult r = ResultsTest.ResultMember.Result;
-      IDeflectionResult res = r.Deflections;
-
-      List<double> expectedLL = new List<double>()
+      var expectedLL = new List<double>()
       {
         0.0,
         -0.01541,
@@ -65,39 +60,17 @@ namespace ComposAPI.Results.Tests
         -0.01541,
         0.0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedLL[i],
-          res.LiveLoad[i].Meters, 5);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedLL[i], res.LiveLoad[i].Meters, 5);
+      }
     }
 
     [Fact]
-    public void ShrinkageLoadDeflectionResultTest()
-    {
+    public void PostConstructionDeflectionResultTest() {
       IResult r = ResultsTest.ResultMember.Result;
       IDeflectionResult res = r.Deflections;
 
-      List<double> expectedShrinkage = new List<double>()
-      {
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedShrinkage[i],
-          res.Shrinkage[i].Meters, 5);
-    }
-
-    [Fact]
-    public void PostConstructionDeflectionResultTest()
-    {
-      IResult r = ResultsTest.ResultMember.Result;
-      IDeflectionResult res = r.Deflections;
-
-      List<double> expectedPost = new List<double>()
+      var expectedPost = new List<double>()
       {
         0.0,
         -0.01541,
@@ -107,18 +80,37 @@ namespace ComposAPI.Results.Tests
         -0.01541,
         0.0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedPost[i],
-          res.PostConstruction[i].Meters, 5);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedPost[i], res.PostConstruction[i].Meters, 5);
+      }
     }
 
     [Fact]
-    public void TotalDeflectionResultTest()
-    {
+    public void ShrinkageLoadDeflectionResultTest() {
       IResult r = ResultsTest.ResultMember.Result;
       IDeflectionResult res = r.Deflections;
 
-      List<double> expectedTot = new List<double>()
+      var expectedShrinkage = new List<double>()
+      {
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      };
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedShrinkage[i], res.Shrinkage[i].Meters, 5);
+      }
+    }
+
+    [Fact]
+    public void TotalDeflectionResultTest() {
+      IResult r = ResultsTest.ResultMember.Result;
+      IDeflectionResult res = r.Deflections;
+
+      var expectedTot = new List<double>()
       {
         0.0,
         -0.04130,
@@ -128,9 +120,9 @@ namespace ComposAPI.Results.Tests
         -0.04130,
         0.0
       };
-      for (int i = 0; i < r.Positions.Count; i++)
-        Assert.Equal(expectedTot[i],
-          res.Total[i].Meters, 5);
+      for (int i = 0; i < r.Positions.Count; i++) {
+        Assert.Equal(expectedTot[i], res.Total[i].Meters, 5);
+      }
     }
 
     // bug in COM, ModalShape giving only 0 values

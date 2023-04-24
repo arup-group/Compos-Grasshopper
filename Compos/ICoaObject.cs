@@ -1,7 +1,5 @@
-﻿namespace ComposAPI
-{
-  internal interface ICoaObject
-  {
+﻿namespace ComposAPI {
+  internal interface ICoaObject {
     //string ToCoaString();
   }
 }

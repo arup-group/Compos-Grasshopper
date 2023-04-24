@@ -1,14 +1,12 @@
 ﻿using OasysUnits;
 
-namespace ComposAPI
-{
-  public interface ICustomTransverseReinforcementLayout
-  {
-    IQuantity StartPosition { get; }
-    IQuantity EndPosition { get; }
-    Length Diameter { get; }
-    Length Spacing { get; }
+namespace ComposAPI {
+  public interface ICustomTransverseReinforcementLayout {
     Length Cover { get; }
+    Length Diameter { get; }
+    IQuantity EndPosition { get; }
+    Length Spacing { get; }
+    IQuantity StartPosition { get; }
 
     string ToCoaString(string name, ComposUnits units);
   }

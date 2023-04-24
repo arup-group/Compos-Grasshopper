@@ -1,29 +1,27 @@
-﻿using ComposGH.Parameters;
-using ComposGH.Components;
-using Xunit;
-using ComposGHTests.Helpers;
+﻿using ComposGH.Components;
+using ComposGH.Parameters;
 using ComposGHTests.Beam;
-using ComposGHTests.Stud;
-using ComposGHTests.Slab;
+using ComposGHTests.Helpers;
 using ComposGHTests.Load;
+using ComposGHTests.Slab;
+using ComposGHTests.Stud;
 using OasysGH.Components;
+using Xunit;
 
-namespace ComposGHTests.Member
-{
+namespace ComposGHTests.Member {
   [Collection("GrasshopperFixture collection")]
-  public class CreateMemberComponentTests
-  {
-    public static GH_OasysComponent CreateMemberMother()
-    {
+  public class CreateMemberComponentTests {
+
+    public static GH_OasysComponent CreateMemberMother() {
       var comp = new CreateMember();
       comp.CreateAttributes();
 
-      BeamGoo input1 = (BeamGoo)ComponentTestHelper.GetOutput(CreateBeamComponentTests.ComponentMother());
-      StudGoo input2 = (StudGoo)ComponentTestHelper.GetOutput(CreateStudComponentTests.ComponentMother());
-      SlabGoo input3 = (SlabGoo)ComponentTestHelper.GetOutput(CreateSlabComponentTests.ComponentMother());
-      LoadGoo input4_1 = (LoadGoo)ComponentTestHelper.GetOutput(CreateUniformLoadComponentTests.ComponentMother());
-      LoadGoo input4_2 = (LoadGoo)ComponentTestHelper.GetOutput(CreatePointLoadComponentTests.ComponentMother());
-      DesignCodeGoo input5 = (DesignCodeGoo)ComponentTestHelper.GetOutput(CreateDesignCodeComponentTests.ComponentMother());
+      var input1 = (BeamGoo)ComponentTestHelper.GetOutput(CreateBeamComponentTests.ComponentMother());
+      var input2 = (StudGoo)ComponentTestHelper.GetOutput(CreateStudComponentTests.ComponentMother());
+      var input3 = (SlabGoo)ComponentTestHelper.GetOutput(CreateSlabComponentTests.ComponentMother());
+      var input4_1 = (LoadGoo)ComponentTestHelper.GetOutput(CreateUniformLoadComponentTests.ComponentMother());
+      var input4_2 = (LoadGoo)ComponentTestHelper.GetOutput(CreatePointLoadComponentTests.ComponentMother());
+      var input5 = (DesignCodeGoo)ComponentTestHelper.GetOutput(CreateDesignCodeComponentTests.ComponentMother());
 
       ComponentTestHelper.SetInput(comp, input1, 0);
       ComponentTestHelper.SetInput(comp, input2, 1);
@@ -37,18 +35,17 @@ namespace ComposGHTests.Member
     }
 
     [Fact]
-    public void CreateComponentWithInputs1()
-    {
-      var comp = CreateMemberMother();
+    public void CreateComponentWithInputs1() {
+      GH_OasysComponent comp = CreateMemberMother();
 
-      BeamGoo expected_input1 = (BeamGoo)ComponentTestHelper.GetOutput(CreateBeamComponentTests.ComponentMother());
-      StudGoo expected_input2 = (StudGoo)ComponentTestHelper.GetOutput(CreateStudComponentTests.ComponentMother());
-      SlabGoo expected_input3 = (SlabGoo)ComponentTestHelper.GetOutput(CreateSlabComponentTests.ComponentMother());
-      LoadGoo expected_input4_1 = (LoadGoo)ComponentTestHelper.GetOutput(CreateUniformLoadComponentTests.ComponentMother());
-      LoadGoo expected_input4_2 = (LoadGoo)ComponentTestHelper.GetOutput(CreatePointLoadComponentTests.ComponentMother());
-      DesignCodeGoo expected_input5 = (DesignCodeGoo)ComponentTestHelper.GetOutput(CreateDesignCodeComponentTests.ComponentMother());
+      var expected_input1 = (BeamGoo)ComponentTestHelper.GetOutput(CreateBeamComponentTests.ComponentMother());
+      var expected_input2 = (StudGoo)ComponentTestHelper.GetOutput(CreateStudComponentTests.ComponentMother());
+      var expected_input3 = (SlabGoo)ComponentTestHelper.GetOutput(CreateSlabComponentTests.ComponentMother());
+      var expected_input4_1 = (LoadGoo)ComponentTestHelper.GetOutput(CreateUniformLoadComponentTests.ComponentMother());
+      var expected_input4_2 = (LoadGoo)ComponentTestHelper.GetOutput(CreatePointLoadComponentTests.ComponentMother());
+      var expected_input5 = (DesignCodeGoo)ComponentTestHelper.GetOutput(CreateDesignCodeComponentTests.ComponentMother());
 
-      MemberGoo output = (MemberGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (MemberGoo)ComponentTestHelper.GetOutput(comp);
 
       Duplicates.AreEqual(expected_input1.Value, output.Value.Beam);
       Duplicates.AreEqual(expected_input2.Value, output.Value.Stud);
@@ -61,15 +58,14 @@ namespace ComposGHTests.Member
     }
 
     [Fact]
-    public void CreateComponentWithInputs2()
-    {
-      var comp = CreateMemberMother();
+    public void CreateComponentWithInputs2() {
+      GH_OasysComponent comp = CreateMemberMother();
 
       ComponentTestHelper.SetInput(comp, "Grid-1", 6);
       ComponentTestHelper.SetInput(comp, "Note this down", 7);
 
-      MemberGoo output = (MemberGoo)ComponentTestHelper.GetOutput(comp);
-      
+      var output = (MemberGoo)ComponentTestHelper.GetOutput(comp);
+
       Assert.Equal("Grid-1", output.Value.GridReference);
       Assert.Equal("Note this down", output.Value.Note);
     }

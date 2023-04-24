@@ -1,54 +1,64 @@
 ﻿using System.Collections.Generic;
+using ComposGHTests.Helpers;
+using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
 using Xunit;
-using ComposGHTests.Helpers;
-using OasysGH;
 
-namespace ComposAPI.Slabs.Tests
-{
-    [Collection("ComposAPI Fixture collection")]
-  public class TransverseReinforcementTest
-  {
+namespace ComposAPI.Slabs.Tests {
+  [Collection("ComposAPI Fixture collection")]
+  public class TransverseReinforcementTest {
+
+    // 1 setup inputs
     [Theory]
-    [InlineData(RebarGrade.AS_D500E, "REBAR_MATERIAL	MEMBER-1	STANDARD	D500E\nREBAR_LONGITUDINAL	MEMBER-1	PROGRAM_DESIGNED\nREBAR_TRANSVERSE	MEMBER-1	PROGRAM_DESIGNED\n")]
-    public void ToCoaStringTest(RebarGrade grade, string expected_coaString)
-    {
-      TransverseReinforcement transverseReinforcement = new TransverseReinforcement(new ReinforcementMaterial(grade));
+    [InlineData(500)]
+    public TransverseReinforcement ConstructorTest1(double fy) {
+      var units = ComposUnits.GetStandardUnits();
 
-      string coaString = transverseReinforcement.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
+      // 2 create object instance with constructor
+      var material = new ReinforcementMaterial(new Pressure(fy, units.Stress));
+      var reinforcement = new TransverseReinforcement(material);
 
-      Assert.Equal(expected_coaString, coaString);
+      // 3 check that inputs are set in object's members
+      Assert.Equal(material, reinforcement.Material);
+      Assert.Equal(LayoutMethod.Automatic, reinforcement.LayoutMethod);
+
+      return reinforcement;
     }
 
+    // 1 setup inputs
     [Theory]
-    [InlineData(RebarGrade.BS_500X, "REBAR_MATERIAL	MEMBER-1	STANDARD	500X\nREBAR_LONGITUDINAL	MEMBER-1	PROGRAM_DESIGNED\nREBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\n")]
-    public void ToCoaStringCustomLayoutTest(RebarGrade grade, string expected_coaString)
-    {
-      ComposUnits units = ComposUnits.GetStandardUnits();
-      List<ICustomTransverseReinforcementLayout> customReinforcementLayout = new List<ICustomTransverseReinforcementLayout>() { new CustomTransverseReinforcementLayout(new Length(0, units.Length), new Length(1, units.Length), new Length(8, units.Length), new Length(100, units.Length), new Length(35, units.Length)) };
+    [InlineData(500)]
+    public void ConstructorTest2(double fy) {
+      var units = ComposUnits.GetStandardUnits();
 
-      TransverseReinforcement transverseReinforcement = new TransverseReinforcement(new ReinforcementMaterial(grade), customReinforcementLayout);
+      // 2 create object instance with constructor
+      IReinforcementMaterial material = new ReinforcementMaterial(new Pressure(fy, units.Stress));
+      var layouts = new List<ICustomTransverseReinforcementLayout>() { new CustomTransverseReinforcementLayout() };
 
-      string coaString = transverseReinforcement.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
+      var reinforcement = new TransverseReinforcement(material, layouts);
 
-      Assert.Equal(expected_coaString, coaString);
-    }
-
-    [Theory]
-    [InlineData("REBAR_MATERIAL	MEMBER-1	STANDARD	460T\nREBAR_TRANSVERSE	MEMBER-1	PROGRAM_DESIGNED\n", RebarGrade.BS_460T)]
-    public void FromCoaStringTest(string coaString, RebarGrade expected_grade)
-    {
-      ITransverseReinforcement transverseReinforcement = TransverseReinforcement.FromCoaString(coaString, "MEMBER-1", Code.BS5950_3_1_1990_A1_2010, ComposUnits.GetStandardUnits());
-
-
-      Assert.Equal(expected_grade, transverseReinforcement.Material.Grade);
-      Assert.Equal(LayoutMethod.Automatic, transverseReinforcement.LayoutMethod);
+      // 3 check that inputs are set in object's members
+      Assert.Equal(material, reinforcement.Material);
+      Assert.Equal(layouts, reinforcement.CustomReinforcementLayouts);
+      Assert.Equal(LayoutMethod.Custom, reinforcement.LayoutMethod);
     }
 
     [Fact]
-    public void FromCoaStringCustomLayoutTest()
-    {
+    public void DuplicateTest() {
+      // 1 create with constructor and duplicate
+      TransverseReinforcement original = ConstructorTest1(550);
+      var duplicate = (TransverseReinforcement)original.Duplicate();
+
+      // 2 check that duplicate has duplicated values
+      Duplicates.AreEqual(original, duplicate);
+
+      // 3 check that the memory pointer is not the same
+      Assert.NotSame(original, duplicate);
+    }
+
+    [Fact]
+    public void FromCoaStringCustomLayoutTest() {
       string coaString = "REBAR_MATERIAL	MEMBER-1	STANDARD	500X\nREBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\nREBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\nREBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\n";
 
       ITransverseReinforcement transverseReinforcement = TransverseReinforcement.FromCoaString(coaString, "MEMBER-1", Code.BS5950_3_1_1990_A1_2010, ComposUnits.GetStandardUnits());
@@ -75,8 +85,7 @@ namespace ComposAPI.Slabs.Tests
     }
 
     [Fact]
-    public void FromCoaStringCustomLayoutTestPercentage()
-    {
+    public void FromCoaStringCustomLayoutTestPercentage() {
       string coaString = "REBAR_MATERIAL	MEMBER-2	STANDARD	460T\nREBAR_TRANSVERSE	MEMBER-2	USER_DEFINED	5.00000%	95.0000%	0.00800000	0.250000	0.0350000\n";
 
       ITransverseReinforcement transverseReinforcement = TransverseReinforcement.FromCoaString(coaString, "MEMBER-2", Code.BS5950_3_1_1990_A1_2010, ComposUnits.GetStandardUnits());
@@ -90,54 +99,36 @@ namespace ComposAPI.Slabs.Tests
       Assert.Equal(35, transverseReinforcement.CustomReinforcementLayouts[0].Cover.Millimeters);
     }
 
-    // 1 setup inputs
     [Theory]
-    [InlineData(500)]
-    public TransverseReinforcement ConstructorTest1(double fy)
-    {
-      ComposUnits units = ComposUnits.GetStandardUnits();
+    [InlineData("REBAR_MATERIAL	MEMBER-1	STANDARD	460T\nREBAR_TRANSVERSE	MEMBER-1	PROGRAM_DESIGNED\n", RebarGrade.BS_460T)]
+    public void FromCoaStringTest(string coaString, RebarGrade expected_grade) {
+      ITransverseReinforcement transverseReinforcement = TransverseReinforcement.FromCoaString(coaString, "MEMBER-1", Code.BS5950_3_1_1990_A1_2010, ComposUnits.GetStandardUnits());
 
-      // 2 create object instance with constructor
-      ReinforcementMaterial material = new ReinforcementMaterial(new Pressure(fy, units.Stress));
-      TransverseReinforcement reinforcement = new TransverseReinforcement(material);
-
-      // 3 check that inputs are set in object's members
-      Assert.Equal(material, reinforcement.Material);
-      Assert.Equal(LayoutMethod.Automatic, reinforcement.LayoutMethod);
-
-      return reinforcement;
-    }
-    [Fact]
-    public void DuplicateTest()
-    {
-      // 1 create with constructor and duplicate
-      TransverseReinforcement original = ConstructorTest1(550);
-      TransverseReinforcement duplicate = (TransverseReinforcement)original.Duplicate();
-
-      // 2 check that duplicate has duplicated values
-      Duplicates.AreEqual(original, duplicate);
-
-      // 3 check that the memory pointer is not the same
-      Assert.NotSame(original, duplicate);
+      Assert.Equal(expected_grade, transverseReinforcement.Material.Grade);
+      Assert.Equal(LayoutMethod.Automatic, transverseReinforcement.LayoutMethod);
     }
 
-    // 1 setup inputs
     [Theory]
-    [InlineData(500)]
-    public void ConstructorTest2(double fy)
-    {
-      ComposUnits units = ComposUnits.GetStandardUnits();
+    [InlineData(RebarGrade.BS_500X, "REBAR_MATERIAL	MEMBER-1	STANDARD	500X\nREBAR_LONGITUDINAL	MEMBER-1	PROGRAM_DESIGNED\nREBAR_TRANSVERSE	MEMBER-1	USER_DEFINED	0.000000	1.00000	8.00000	100.000	35.0000\n")]
+    public void ToCoaStringCustomLayoutTest(RebarGrade grade, string expected_coaString) {
+      var units = ComposUnits.GetStandardUnits();
+      var customReinforcementLayout = new List<ICustomTransverseReinforcementLayout>() { new CustomTransverseReinforcementLayout(new Length(0, units.Length), new Length(1, units.Length), new Length(8, units.Length), new Length(100, units.Length), new Length(35, units.Length)) };
 
-      // 2 create object instance with constructor
-      IReinforcementMaterial material = new ReinforcementMaterial(new Pressure(fy, units.Stress));
-      List<ICustomTransverseReinforcementLayout> layouts = new List<ICustomTransverseReinforcementLayout>() { new CustomTransverseReinforcementLayout() };
+      var transverseReinforcement = new TransverseReinforcement(new ReinforcementMaterial(grade), customReinforcementLayout);
 
-      TransverseReinforcement reinforcement = new TransverseReinforcement(material, layouts);
+      string coaString = transverseReinforcement.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
 
-      // 3 check that inputs are set in object's members
-      Assert.Equal(material, reinforcement.Material);
-      Assert.Equal(layouts, reinforcement.CustomReinforcementLayouts);
-      Assert.Equal(LayoutMethod.Custom, reinforcement.LayoutMethod);
+      Assert.Equal(expected_coaString, coaString);
+    }
+
+    [Theory]
+    [InlineData(RebarGrade.AS_D500E, "REBAR_MATERIAL	MEMBER-1	STANDARD	D500E\nREBAR_LONGITUDINAL	MEMBER-1	PROGRAM_DESIGNED\nREBAR_TRANSVERSE	MEMBER-1	PROGRAM_DESIGNED\n")]
+    public void ToCoaStringTest(RebarGrade grade, string expected_coaString) {
+      var transverseReinforcement = new TransverseReinforcement(new ReinforcementMaterial(grade));
+
+      string coaString = transverseReinforcement.ToCoaString("MEMBER-1", ComposUnits.GetStandardUnits());
+
+      Assert.Equal(expected_coaString, coaString);
     }
   }
 }

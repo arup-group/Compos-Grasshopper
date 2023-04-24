@@ -1,12 +1,10 @@
 ﻿using OasysUnits;
 
-namespace ComposAPI
-{
-  public interface IMeshReinforcement
-  {
+namespace ComposAPI {
+  public interface IMeshReinforcement {
     Length Cover { get; }
-    bool Rotated { get; }
     ReinforcementMeshType MeshType { get; }
+    bool Rotated { get; }
 
     string ToCoaString(string name, ComposUnits units);
   }

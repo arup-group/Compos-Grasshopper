@@ -3,14 +3,12 @@ using ComposAPI.Helpers;
 using OasysUnits.Units;
 using Xunit;
 
-namespace ComposAPI.Loads.Tests
-{
-    public partial class LoadTest
-  {
+namespace ComposAPI.Loads.Tests {
+  public partial class LoadTest {
+
     [Fact]
-    public void TestFileCoaStringForLoadingParts()
-    {
-      // Arrange 
+    public void TestFileCoaStringForLoadingParts() {
+      // Arrange
       string coaString =
         "UNIT_DATA	FORCE	kN	0.00100000" + '\n' +
         "UNIT_DATA	LENGTH	m	1.00000" + '\n' +
@@ -39,7 +37,7 @@ namespace ComposAPI.Loads.Tests
       PressureUnit forcePerAreaUnit = ComposUnitsHelper.GetForcePerAreaUnit(forceUnit, lengthUnit);
 
       // Act
-      ComposFile composFile = ComposFile.FromCoaString(coaString);
+      var composFile = ComposFile.FromCoaString(coaString);
       IMember member1 = composFile.GetMembers()[0];
       IList<ILoad> loads = member1.Loads;
 
@@ -48,7 +46,7 @@ namespace ComposAPI.Loads.Tests
       int i = 0;
 
       // point load
-      PointLoad pointLoad = (PointLoad)loads[i++];
+      var pointLoad = (PointLoad)loads[i++];
       //LOAD	MEMBER-1	Point	1.00000	2.00000	3.00000	4.50000	0.0600000
       Assert.Equal(1, pointLoad.Load.ConstantDead.As(forceUnit));
       Assert.Equal(2, pointLoad.Load.ConstantLive.As(forceUnit));
@@ -58,7 +56,7 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(LoadType.Point, pointLoad.Type);
 
       // uniform line load
-      UniformLoad uniformLineLoad = (UniformLoad)loads[i++];
+      var uniformLineLoad = (UniformLoad)loads[i++];
       //LOAD	MEMBER-1	Uniform	Line	1.00000	2.00000	3.00000	4.50000	Line	1.00000	2.00000	3.00000	4.50000	3.00000	4.50000	6.00000	5.00000
       Assert.Equal(1, uniformLineLoad.Load.ConstantDead.As(forcePerLengthUnit));
       Assert.Equal(2, uniformLineLoad.Load.ConstantLive.As(forcePerLengthUnit));
@@ -68,7 +66,7 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(LoadDistribution.Line, uniformLineLoad.Distribution);
 
       // uniform area load
-      UniformLoad uniformAreaLoad = (UniformLoad)loads[i++];
+      var uniformAreaLoad = (UniformLoad)loads[i++];
       //LOAD	MEMBER-1	Uniform	Area	3.00000	4.50000	6.00000	7.00000	Area	3.00000	4.50000	6.00000	7.00000	3.00000	4.50000	6.00000	5.00000
       Assert.Equal(3, uniformAreaLoad.Load.ConstantDead.As(forcePerAreaUnit));
       Assert.Equal(4.5, uniformAreaLoad.Load.ConstantLive.As(forcePerAreaUnit));
@@ -78,7 +76,7 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(LoadDistribution.Area, uniformAreaLoad.Distribution);
 
       // linear line load
-      LinearLoad linearLineLoad = (LinearLoad)loads[i++];
+      var linearLineLoad = (LinearLoad)loads[i++];
       //LOAD MEMBER-1 Linear Line 4.50000 6.00000 7.00000 8.00000 8.90000 10.0000 11.0000 12.0000
       Assert.Equal(4.5, linearLineLoad.LoadW1.ConstantDead.As(forcePerLengthUnit));
       Assert.Equal(6, linearLineLoad.LoadW1.ConstantLive.As(forcePerLengthUnit));
@@ -92,7 +90,7 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(LoadDistribution.Line, linearLineLoad.Distribution);
 
       // linear area load
-      LinearLoad linearAreaLoad = (LinearLoad)loads[i++];
+      var linearAreaLoad = (LinearLoad)loads[i++];
       //LOAD MEMBER - 1 Linear Area 1.00000 2.00000 3.00000 4.50000 6.00000 7.00000 8.00000 9.00000
       Assert.Equal(1, linearAreaLoad.LoadW1.ConstantDead.As(forcePerAreaUnit));
       Assert.Equal(2, linearAreaLoad.LoadW1.ConstantLive.As(forcePerAreaUnit));
@@ -106,7 +104,7 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(LoadDistribution.Area, linearAreaLoad.Distribution);
 
       // trilinear line load
-      TriLinearLoad trilinearLineLoad = (TriLinearLoad)loads[i++];
+      var trilinearLineLoad = (TriLinearLoad)loads[i++];
       //LOAD	MEMBER-1	Tri-Linear	Line	2.00000	3.00000	4.50000	6.00000	7.00000	3.00000	4.50000	6.00000	7.00000	8.90000
       Assert.Equal(2, trilinearLineLoad.LoadW1.ConstantDead.As(forcePerLengthUnit));
       Assert.Equal(3, trilinearLineLoad.LoadW1.ConstantLive.As(forcePerLengthUnit));
@@ -122,7 +120,7 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(LoadDistribution.Line, trilinearLineLoad.Distribution);
 
       // trilinear area load
-      TriLinearLoad trilinearAreaLoad = (TriLinearLoad)loads[i++];
+      var trilinearAreaLoad = (TriLinearLoad)loads[i++];
       //LOAD	MEMBER-1	Tri-Linear	Area	3.00000	4.50000	6.00000	7.00000	8.90000	10.0000	11.0000	12.0000	13.0000	14.5000
       Assert.Equal(3, trilinearAreaLoad.LoadW1.ConstantDead.As(forcePerAreaUnit));
       Assert.Equal(4.5, trilinearAreaLoad.LoadW1.ConstantLive.As(forcePerAreaUnit));
@@ -138,7 +136,7 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(LoadDistribution.Area, trilinearAreaLoad.Distribution);
 
       // patch line load
-      PatchLoad patchLineLoad = (PatchLoad)loads[i++];
+      var patchLineLoad = (PatchLoad)loads[i++];
       //LOAD	MEMBER-1	Patch	Line	2.00000	3.00000	4.50000	6.00000	7.00000	3.00000	4.50000	6.00000	7.00000	8.90000
       Assert.Equal(2, patchLineLoad.LoadW1.ConstantDead.As(forcePerLengthUnit));
       Assert.Equal(3, patchLineLoad.LoadW1.ConstantLive.As(forcePerLengthUnit));
@@ -154,7 +152,7 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(LoadDistribution.Line, patchLineLoad.Distribution);
 
       // patch area
-      PatchLoad patchAreaLoad = (PatchLoad)loads[i++];
+      var patchAreaLoad = (PatchLoad)loads[i++];
       //LOAD	MEMBER-1	Patch	Area	1.00000	2.00000	3.00000	4.50000	6.00000	7.00000	8.00000	9.00000	10.0000	11.0000
       Assert.Equal(1, patchAreaLoad.LoadW1.ConstantDead.As(forcePerAreaUnit));
       Assert.Equal(2, patchAreaLoad.LoadW1.ConstantLive.As(forcePerAreaUnit));
@@ -170,14 +168,14 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(LoadDistribution.Area, patchAreaLoad.Distribution);
 
       // member load
-      MemberLoad memberLoad1 = (MemberLoad)loads[i++];
+      var memberLoad1 = (MemberLoad)loads[i++];
       //LOAD	MEMBER-1	Member load	MEMBER-2	Left	1.50000
       Assert.Equal(1.5, memberLoad1.Position.As(lengthUnit));
       Assert.Equal("MEMBER-2", memberLoad1.MemberName);
       Assert.Equal(MemberLoad.SupportSide.Left, memberLoad1.Support);
       Assert.Equal(LoadType.MemberLoad, memberLoad1.Type);
 
-      MemberLoad memberLoad2 = (MemberLoad)loads[i++];
+      var memberLoad2 = (MemberLoad)loads[i++];
       //LOAD	MEMBER-1	Member load	MEMBER-2	Right	3.00000
       Assert.Equal(3, memberLoad2.Position.As(lengthUnit));
       Assert.Equal("MEMBER-2", memberLoad2.MemberName);
@@ -185,7 +183,7 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(LoadType.MemberLoad, memberLoad2.Type);
 
       // axial load
-      AxialLoad axialLoad1 = (AxialLoad)loads[i++];
+      var axialLoad1 = (AxialLoad)loads[i++];
       //LOAD	MEMBER-1	Axial	1.00000	2.00000	3.00000	4.50000	6.00000	7.00000	8.90000	10.0000	11.0000	12.0000
       Assert.Equal(1, axialLoad1.LoadW1.ConstantDead.As(forceUnit));
       Assert.Equal(2, axialLoad1.LoadW1.ConstantLive.As(forceUnit));
@@ -199,7 +197,7 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(12, axialLoad1.Depth2.As(lengthUnit));
       Assert.Equal(LoadType.Axial, axialLoad1.Type);
 
-      AxialLoad axialLoad2 = (AxialLoad)loads[i++];
+      var axialLoad2 = (AxialLoad)loads[i++];
       //LOAD	MEMBER-1	Axial	2.00000	3.00000	4.50000	6.00000	7.00000	8.90000	10.0000	11.0000	12.0000	13.0000
       Assert.Equal(2, axialLoad2.LoadW1.ConstantDead.As(forceUnit));
       Assert.Equal(3, axialLoad2.LoadW1.ConstantLive.As(forceUnit));
@@ -212,7 +210,6 @@ namespace ComposAPI.Loads.Tests
       Assert.Equal(12, axialLoad2.LoadW2.FinalLive.As(forceUnit));
       Assert.Equal(13, axialLoad2.Depth2.As(lengthUnit));
       Assert.Equal(LoadType.Axial, axialLoad2.Type);
-
     }
   }
 }

@@ -1,6 +1,4 @@
-﻿namespace ComposGH.Converters
-{
-  public interface IComposBeam
-  {
+﻿namespace ComposGH.Converters {
+  public interface IComposBeam {
   }
 }

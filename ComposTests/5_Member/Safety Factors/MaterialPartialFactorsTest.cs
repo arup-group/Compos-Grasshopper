@@ -1,17 +1,15 @@
-using ComposAPI.Helpers;
 using System.Collections.Generic;
+using ComposAPI.Helpers;
 using ComposGHTests.Helpers;
 using OasysGH;
 using Xunit;
 
-namespace ComposAPI.Members.Tests
-{
+namespace ComposAPI.Members.Tests {
   [Collection("ComposAPI Fixture collection")]
-  public partial class MaterialPartialFactorsTest
-  {
+  public partial class MaterialPartialFactorsTest {
+
     [Fact]
-    public IMaterialFactors ConstructorTest()
-    {
+    public IMaterialFactors ConstructorTest() {
       // 1 setup input
       // empty constructor creates default (non-EC4) values
 
@@ -29,12 +27,12 @@ namespace ComposAPI.Members.Tests
       // (optionally return object for other tests)
       return partialFactors;
     }
+
     [Fact]
-    public void DuplicatePFTest()
-    {
+    public void DuplicatePFTest() {
       // 1 create with constructor and duplicate
-      MaterialFactors original = (MaterialFactors)ConstructorTest();
-      MaterialFactors duplicate = (MaterialFactors)original.Duplicate();
+      var original = (MaterialFactors)ConstructorTest();
+      var duplicate = (MaterialFactors)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
@@ -44,29 +42,7 @@ namespace ComposAPI.Members.Tests
     }
 
     [Fact]
-    public void ToCoaStringTest()
-    {
-      // Arrange
-      MaterialFactors materialPartialFactors = new MaterialFactors();
-      materialPartialFactors.SteelBeam = 1.1;
-      materialPartialFactors.ConcreteCompression = 1.2;
-      materialPartialFactors.ConcreteShear = 1.3;
-      materialPartialFactors.MetalDecking = 1.4;
-      materialPartialFactors.ShearStud = 1.5;
-      materialPartialFactors.Reinforcement = 1.6;
-      
-      // Act
-      string coaString = materialPartialFactors.ToCoaString("MEMBER-1");
-
-      string expected_coaString = "SAFETY_FACTOR_MATERIAL	MEMBER-1	1.10000	1.00000	1.00000	1.20000	1.30000	1.40000	1.50000	1.60000\n";
-
-      // Assert
-      Assert.Equal(expected_coaString, coaString);
-    }
-
-    [Fact]
-    public void FromCoaStringTest()
-    {
+    public void FromCoaStringTest() {
       // Arrange
       string coaString = "SAFETY_FACTOR_MATERIAL	MEMBER-1	1.10000	1.00000	1.00000	1.20000	1.30000	1.40000	1.50000	1.60000\n";
       List<string> parameters = CoaHelper.Split(coaString);
@@ -88,6 +64,27 @@ namespace ComposAPI.Members.Tests
       Assert.Equal(expected_metalDecking, materialPartialFactors.MetalDecking);
       Assert.Equal(expected_shearStud, materialPartialFactors.ShearStud);
       Assert.Equal(expected_reinforcement, materialPartialFactors.Reinforcement);
+    }
+
+    [Fact]
+    public void ToCoaStringTest() {
+      // Arrange
+      var materialPartialFactors = new MaterialFactors {
+        SteelBeam = 1.1,
+        ConcreteCompression = 1.2,
+        ConcreteShear = 1.3,
+        MetalDecking = 1.4,
+        ShearStud = 1.5,
+        Reinforcement = 1.6
+      };
+
+      // Act
+      string coaString = materialPartialFactors.ToCoaString("MEMBER-1");
+
+      string expected_coaString = "SAFETY_FACTOR_MATERIAL	MEMBER-1	1.10000	1.00000	1.00000	1.20000	1.30000	1.40000	1.50000	1.60000\n";
+
+      // Assert
+      Assert.Equal(expected_coaString, coaString);
     }
   }
 }

@@ -1,14 +1,12 @@
-﻿
-namespace ComposAPI
-{
-  public abstract class SubResult
-  {
-    public SubResult(Member member, int numIntermediatePos)
-    {
+﻿namespace ComposAPI {
+  public abstract class SubResult {
+    internal Member Member;
+
+    internal int NumIntermediatePos;
+
+    public SubResult(Member member, int numIntermediatePos) {
       Member = member;
       NumIntermediatePos = numIntermediatePos;
     }
-    internal Member Member;
-    internal int NumIntermediatePos;
   }
 }

@@ -1,23 +1,18 @@
 ﻿using System.Collections.Generic;
 using OasysUnits;
 
-namespace ComposAPI
-{
-  public interface IResult
-  {
-    List<Length> Positions { get; }
-
-    IUtilisation Utilisations { get; }
-
-    ICompositeSectionProperties SectionProperties { get; }
-    IInternalForceResult InternalForces { get; }
-    ICapacityResult Capacities { get; }
-    IDeflectionResult Deflections { get; }
-
+namespace ComposAPI {
+  public interface IResult {
     IBeamClassification BeamClassification { get; }
     IBeamStressResult BeamStresses { get; }
-    IStudResult StudResults { get; }
+    ICapacityResult Capacities { get; }
+    IDeflectionResult Deflections { get; }
+    IInternalForceResult InternalForces { get; }
+    List<Length> Positions { get; }
+    ICompositeSectionProperties SectionProperties { get; }
     ISlabStressResult SlabStresses { get; }
-    ITransverseRebarResult TransverseRebarResults { get; } 
+    IStudResult StudResults { get; }
+    ITransverseRebarResult TransverseRebarResults { get; }
+    IUtilisation Utilisations { get; }
   }
 }
