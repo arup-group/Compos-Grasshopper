@@ -17,15 +17,15 @@ namespace ComposGHTests.Design {
 
     [Fact]
     public void ChangeDropDownTest() {
-      var comp = CreateBeamSizeLimitsMother();
+      GH_OasysDropDownComponent comp = CreateBeamSizeLimitsMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
 
     [Fact]
     public void CreateComponent() {
-      var comp = CreateBeamSizeLimitsMother();
+      GH_OasysDropDownComponent comp = CreateBeamSizeLimitsMother();
 
-      BeamSizeLimitsGoo output = (BeamSizeLimitsGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (BeamSizeLimitsGoo)ComponentTestHelper.GetOutput(comp);
 
       Assert.Equal(20, output.Value.MinDepth.Centimeters);
       Assert.Equal(100, output.Value.MaxDepth.Centimeters);
@@ -35,7 +35,7 @@ namespace ComposGHTests.Design {
 
     [Fact]
     public void CreateComponentWithInputs() {
-      var comp = CreateBeamSizeLimitsMother();
+      GH_OasysDropDownComponent comp = CreateBeamSizeLimitsMother();
 
       comp.SetSelected(0, 0); // change dropdown to mm
 
@@ -44,7 +44,7 @@ namespace ComposGHTests.Design {
       ComponentTestHelper.SetInput(comp, 150, 2);
       ComponentTestHelper.SetInput(comp, 700, 3);
 
-      BeamSizeLimitsGoo output = (BeamSizeLimitsGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (BeamSizeLimitsGoo)ComponentTestHelper.GetOutput(comp);
 
       Assert.Equal(250, output.Value.MinDepth.Millimeters);
       Assert.Equal(1200, output.Value.MaxDepth.Millimeters);
@@ -54,7 +54,7 @@ namespace ComposGHTests.Design {
 
     [Fact]
     public void DeserializeTest() {
-      var comp = CreateBeamSizeLimitsMother();
+      GH_OasysDropDownComponent comp = CreateBeamSizeLimitsMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
   }

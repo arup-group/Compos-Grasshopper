@@ -25,17 +25,17 @@ namespace ComposGHTests.Slab {
 
     [Fact]
     public void ChangeDropDownTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
 
     [Fact]
     public void CreateComponent() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
       comp.SetSelected(0, 0); // set dropdown to mm
 
-      CustomTransverseReinforcementLayoutGoo output = (CustomTransverseReinforcementLayoutGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (CustomTransverseReinforcementLayoutGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(50, output.Value.StartPosition.As(RatioUnit.Percent));
       Assert.Equal(2000, output.Value.EndPosition.As(LengthUnit.Millimeter));
       Assert.Equal(20, output.Value.Diameter.As(LengthUnit.Millimeter));
@@ -45,7 +45,7 @@ namespace ComposGHTests.Slab {
 
     [Fact]
     public void DeserializeTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
   }

@@ -16,21 +16,22 @@ namespace ComposGHTests.Load {
 
       comp.SetSelected(0, 1); // change dropdown to kN
 
-      for (int i = 0; i < comp.Params.Input.Count; i++)
+      for (int i = 0; i < comp.Params.Input.Count; i++) {
         ComponentTestHelper.SetInput(comp, (i + 1) * 1, i);
+      }
 
       return comp;
     }
 
     [Fact]
     public void ChangeDropDownTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
 
     [Fact]
     public void CreateComponent1() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
       comp.SetSelected(0, 0); // change dropdown to line
       comp.SetSelected(1, 5); // change dropdown to kN/m
@@ -38,8 +39,8 @@ namespace ComposGHTests.Load {
       comp.SetSelected(2, 2); // change dropdown to m
       LengthUnit length = LengthUnit.Meter;
 
-      LoadGoo output = (LoadGoo)ComponentTestHelper.GetOutput(comp);
-      TriLinearLoad load = (TriLinearLoad)output.Value;
+      var output = (LoadGoo)ComponentTestHelper.GetOutput(comp);
+      var load = (TriLinearLoad)output.Value;
 
       int i = 0;
       Assert.Equal(LoadDistribution.Line, load.Distribution);
@@ -57,7 +58,7 @@ namespace ComposGHTests.Load {
 
     [Fact]
     public void CreateComponent2() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
       comp.SetSelected(0, 1); // change dropdown to area
       comp.SetSelected(1, 5); // change dropdown to kN/m2
@@ -65,8 +66,8 @@ namespace ComposGHTests.Load {
       comp.SetSelected(2, 2); // change dropdown to m
       LengthUnit length = LengthUnit.Meter;
 
-      LoadGoo output = (LoadGoo)ComponentTestHelper.GetOutput(comp);
-      TriLinearLoad load = (TriLinearLoad)output.Value;
+      var output = (LoadGoo)ComponentTestHelper.GetOutput(comp);
+      var load = (TriLinearLoad)output.Value;
 
       int i = 0;
       Assert.Equal(LoadDistribution.Area, load.Distribution);
@@ -84,7 +85,7 @@ namespace ComposGHTests.Load {
 
     [Fact]
     public void DeserializeTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
   }

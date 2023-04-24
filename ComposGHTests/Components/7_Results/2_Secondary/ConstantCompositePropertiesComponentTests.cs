@@ -12,7 +12,7 @@ namespace ComposGHTests.Result {
     public static GH_OasysDropDownComponent ComponentMother() {
       var comp = new ConstantCompositeProperties();
       comp.CreateAttributes();
-      MemberGoo input = (MemberGoo)ComponentTestHelper.GetOutput(CompFile.FileComponentsTests.ComponentMother());
+      var input = (MemberGoo)ComponentTestHelper.GetOutput(CompFile.FileComponentsTests.ComponentMother());
       ComponentTestHelper.SetInput(comp, input);
 
       return comp;
@@ -20,13 +20,13 @@ namespace ComposGHTests.Result {
 
     [Fact]
     public void ChangeDropDownTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
 
     [Fact]
     public void CreateComponentWithInput() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       comp.ExpireSolution(true);
 
       int expectedNumberOfResults = 7;
@@ -36,12 +36,11 @@ namespace ComposGHTests.Result {
 
         if (i == 4) // natural freq is single item results
         {
-          GH_UnitNumber output = (GH_UnitNumber)ComponentTestHelper.GetOutput(comp, i);
+          var output = (GH_UnitNumber)ComponentTestHelper.GetOutput(comp, i);
           Assert.NotNull(output);
-        }
-        else {
+        } else {
           for (int j = 0; j < expectedNumberOfResults; j++) {
-            GH_UnitNumber output = (GH_UnitNumber)ComponentTestHelper.GetOutput(comp, i, 0, j);
+            var output = (GH_UnitNumber)ComponentTestHelper.GetOutput(comp, i, 0, j);
             Assert.NotNull(output);
           }
         }
@@ -50,7 +49,7 @@ namespace ComposGHTests.Result {
 
     [Fact]
     public void DeserializeTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
   }

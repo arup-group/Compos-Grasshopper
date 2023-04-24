@@ -18,15 +18,15 @@ namespace ComposGHTests.Design {
 
     [Fact]
     public void ChangeDropDownTest() {
-      var comp = CreateDeflectionLimitMother();
+      GH_OasysDropDownComponent comp = CreateDeflectionLimitMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
 
     [Fact]
     public void CreateComponentWithInputs() {
-      var comp = CreateDeflectionLimitMother();
+      GH_OasysDropDownComponent comp = CreateDeflectionLimitMother();
 
-      DeflectionLimitGoo output = (DeflectionLimitGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (DeflectionLimitGoo)ComponentTestHelper.GetOutput(comp);
 
       Assert.Equal(35, output.Value.AbsoluteDeflection.Millimeters);
       Assert.Equal(500, output.Value.SpanOverDeflectionRatio.DecimalFractions);
@@ -34,7 +34,7 @@ namespace ComposGHTests.Design {
 
     [Fact]
     public void DeserializeTest() {
-      var comp = CreateDeflectionLimitMother();
+      GH_OasysDropDownComponent comp = CreateDeflectionLimitMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
   }

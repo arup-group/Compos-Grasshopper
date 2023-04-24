@@ -26,17 +26,17 @@ namespace ComposGHTests.Beam {
 
     [Fact]
     public void ChangeDropDownTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
 
     [Fact]
     public void CreateComponentWithInputsTest1() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
       comp.SetSelected(1, 0); // change the dropdown to mm
 
-      WebOpeningStiffenersGoo output = (WebOpeningStiffenersGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (WebOpeningStiffenersGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(50, output.Value.DistanceFrom.Millimeters);
       Assert.Equal(100, output.Value.TopStiffenerWidth.Millimeters);
       Assert.Equal(10, output.Value.TopStiffenerThickness.Millimeters);
@@ -48,7 +48,7 @@ namespace ComposGHTests.Beam {
 
     [Fact]
     public void CreateComponentWithInputsTest2() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
       comp.SetSelected(0, 1); // change the dropdown to notch
       comp.SetSelected(1, 0); // change the dropdown to mm
@@ -58,14 +58,14 @@ namespace ComposGHTests.Beam {
       input.PersistentData.Append(new GH_Boolean(false));
       comp.Params.Input[0] = input;
 
-      WebOpeningStiffenersGoo output = (WebOpeningStiffenersGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (WebOpeningStiffenersGoo)ComponentTestHelper.GetOutput(comp);
       Assert.False(output.Value.IsBothSides);
       Assert.True(output.Value.IsNotch);
     }
 
     [Fact]
     public void DeserializeTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
   }

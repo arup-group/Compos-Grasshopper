@@ -16,9 +16,9 @@ namespace ComposGHTests.Member {
 
     [Fact]
     public void CreateComponent() {
-      var comp = ComponentMother();
+      GH_OasysComponent comp = ComponentMother();
 
-      SafetyFactorsGoo output = (SafetyFactorsGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (SafetyFactorsGoo)ComponentTestHelper.GetOutput(comp);
 
       Assert.Equal(1.4, output.Value.LoadFactors.ConstantDead);
       Assert.Equal(1.4, output.Value.LoadFactors.FinalDead);
@@ -34,24 +34,25 @@ namespace ComposGHTests.Member {
 
     [Fact]
     public void CreateComponentWithInputs() {
-      var comp = ComponentMother();
+      GH_OasysComponent comp = ComponentMother();
 
-      for (int i = 0; i < comp.Params.Input.Count; i++)
-        ComponentTestHelper.SetInput(comp, 1 + 1 / (i + 1), i);
+      for (int i = 0; i < comp.Params.Input.Count; i++) {
+        ComponentTestHelper.SetInput(comp, 1 + (1 / (i + 1)), i);
+      }
 
-      SafetyFactorsGoo output = (SafetyFactorsGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (SafetyFactorsGoo)ComponentTestHelper.GetOutput(comp);
 
       int j = 0;
-      Assert.Equal(1 + 1 / (j++ + 1), output.Value.LoadFactors.ConstantDead);
-      Assert.Equal(1 + 1 / (j++ + 1), output.Value.LoadFactors.FinalDead);
-      Assert.Equal(1 + 1 / (j++ + 1), output.Value.LoadFactors.ConstantLive);
-      Assert.Equal(1 + 1 / (j++ + 1), output.Value.LoadFactors.FinalLive);
-      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.SteelBeam);
-      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.ConcreteCompression);
-      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.ConcreteShear);
-      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.MetalDecking);
-      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.ShearStud);
-      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.Reinforcement);
+      Assert.Equal(1 + (1 / (j++ + 1)), output.Value.LoadFactors.ConstantDead);
+      Assert.Equal(1 + (1 / (j++ + 1)), output.Value.LoadFactors.FinalDead);
+      Assert.Equal(1 + (1 / (j++ + 1)), output.Value.LoadFactors.ConstantLive);
+      Assert.Equal(1 + (1 / (j++ + 1)), output.Value.LoadFactors.FinalLive);
+      Assert.Equal(1 + (1 / (j++ + 1)), output.Value.MaterialFactors.SteelBeam);
+      Assert.Equal(1 + (1 / (j++ + 1)), output.Value.MaterialFactors.ConcreteCompression);
+      Assert.Equal(1 + (1 / (j++ + 1)), output.Value.MaterialFactors.ConcreteShear);
+      Assert.Equal(1 + (1 / (j++ + 1)), output.Value.MaterialFactors.MetalDecking);
+      Assert.Equal(1 + (1 / (j++ + 1)), output.Value.MaterialFactors.ShearStud);
+      Assert.Equal(1 + (1 / (j++ + 1)), output.Value.MaterialFactors.Reinforcement);
     }
   }
 }

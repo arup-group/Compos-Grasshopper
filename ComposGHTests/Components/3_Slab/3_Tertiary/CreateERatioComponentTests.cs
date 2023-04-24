@@ -16,8 +16,8 @@ namespace ComposGHTests.Slab {
 
     [Fact]
     public void CreateComponent() {
-      var comp = ComponentMother();
-      ERatioGoo output = (ERatioGoo)ComponentTestHelper.GetOutput(comp);
+      GH_OasysComponent comp = ComponentMother();
+      var output = (ERatioGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(6.24304, output.Value.ShortTerm);
       Assert.Equal(23.5531, output.Value.LongTerm);
       Assert.Equal(5.526, output.Value.Vibration);

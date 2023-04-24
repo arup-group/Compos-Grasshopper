@@ -29,7 +29,7 @@ namespace ComposGHTests.Beam {
       ComponentTestHelper.SetInput(comp, 25, i++);
       ComponentTestHelper.SetInput(comp, 20, i++);
 
-      BeamSectionGoo output = (BeamSectionGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (BeamSectionGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal("STD GI(in) 400 300 250 12 25 20", output.Value.SectionDescription);
 
       OasysDropDownComponentTestHelper.TestDeserialize(comp, "Asymmetrical");
@@ -49,7 +49,7 @@ namespace ComposGHTests.Beam {
       ComponentTestHelper.SetInput(comp, 12, i++);
       ComponentTestHelper.SetInput(comp, 20, i++);
 
-      BeamSectionGoo output = (BeamSectionGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (BeamSectionGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal("STD I(cm) 400 300 12 20", output.Value.SectionDescription);
 
       OasysDropDownComponentTestHelper.TestDeserialize(comp, "Symmetrical");
@@ -63,7 +63,7 @@ namespace ComposGHTests.Beam {
       // this is the first profile in the catalogue
       string expectedProfile = "CAT BSI-IPE IPEAA80";
 
-      BeamSectionGoo output = (BeamSectionGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (BeamSectionGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(expectedProfile, output.Value.SectionDescription);
     }
 
@@ -77,7 +77,7 @@ namespace ComposGHTests.Beam {
 
       ComponentTestHelper.SetInput(comp, profile, 0);
 
-      BeamSectionGoo output = (BeamSectionGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (BeamSectionGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(expected, output.Value.SectionDescription);
     }
 

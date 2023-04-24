@@ -18,15 +18,15 @@ namespace ComposGHTests.Stud {
 
     [Fact]
     public void ChangeDropDownTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
 
     [Fact]
     public void CreateComponentTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
-      StudSpecificationGoo output = (StudSpecificationGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (StudSpecificationGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(Length.Zero, output.Value.NoStudZoneStart);
       Assert.Equal(Length.Zero, output.Value.NoStudZoneEnd);
       Assert.True(output.Value.EC4_Limit);
@@ -34,7 +34,7 @@ namespace ComposGHTests.Stud {
 
     [Fact]
     public void CreateComponentWithInputsTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
       int i = 0;
       ComponentTestHelper.SetInput(comp, 250, i++);
@@ -43,7 +43,7 @@ namespace ComposGHTests.Stud {
 
       comp.SetSelected(0, 1); // change the dropdown to cm
 
-      StudSpecificationGoo output = (StudSpecificationGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (StudSpecificationGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(250, output.Value.NoStudZoneStart.As(LengthUnit.Centimeter));
       Assert.Equal(15, output.Value.NoStudZoneEnd.As(RatioUnit.Percent));
       Assert.False(output.Value.EC4_Limit);
@@ -51,7 +51,7 @@ namespace ComposGHTests.Stud {
 
     [Fact]
     public void DeserializeTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
   }

@@ -1,11 +1,11 @@
-﻿using ComposAPI;
+﻿using System.Collections.Generic;
+using ComposAPI;
 using ComposGH.Components;
 using ComposGH.Parameters;
 using ComposGHTests.Helpers;
 using OasysGH.Components;
 using OasysUnits;
 using OasysUnits.Units;
-using System.Collections.Generic;
 using Xunit;
 
 namespace ComposGHTests.Beam {
@@ -23,7 +23,7 @@ namespace ComposGHTests.Beam {
       var comp = new CreateSupport();
       comp.CreateAttributes();
 
-      SupportsGoo output = (SupportsGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (SupportsGoo)ComponentTestHelper.GetOutput(comp);
       Assert.True(output.Value.SecondaryMemberAsIntermediateRestraint);
       Assert.True(output.Value.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.Null(output.Value.CustomIntermediateRestraintPositions);
@@ -37,8 +37,8 @@ namespace ComposGHTests.Beam {
 
       bool input1 = false;
       bool input2 = false;
-      List<object> input3 = new List<object>() { "2 %", "5000 mm", "8.7 m" };
-      List<IQuantity> quantities = new List<IQuantity>()
+      var input3 = new List<object>() { "2 %", "5000 mm", "8.7 m" };
+      var quantities = new List<IQuantity>()
       {
         new Ratio(2, RatioUnit.Percent),
         new Length(5000, LengthUnit.Millimeter),
@@ -49,7 +49,7 @@ namespace ComposGHTests.Beam {
       ComponentTestHelper.SetInput(comp, input2, 1);
       ComponentTestHelper.SetInput(comp, input3, 2);
 
-      SupportsGoo output = (SupportsGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (SupportsGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(input1, output.Value.SecondaryMemberAsIntermediateRestraint);
       Assert.Equal(input2, output.Value.BothFlangesFreeToRotateOnPlanAtEnds);
       Assert.Equal(quantities, output.Value.CustomIntermediateRestraintPositions);

@@ -23,15 +23,15 @@ namespace ComposGHTests.Slab {
 
     [Fact]
     public void ChangeDropDownTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
 
     [Fact]
     public void CreateComponent() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       comp.SetSelected(0, 0); // change dropdown to mm
-      SlabDimensionGoo output = (SlabDimensionGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (SlabDimensionGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(0, output.Value.StartPosition.Value);
       Assert.Equal(130, output.Value.OverallDepth.Millimeters);
       Assert.Equal(1.7, output.Value.AvailableWidthLeft.Meters);
@@ -41,7 +41,7 @@ namespace ComposGHTests.Slab {
 
     [Fact]
     public void CreateComponentWithInputs1() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
       comp.SetSelected(0, 2); // change dropdown to m
 
@@ -49,7 +49,7 @@ namespace ComposGHTests.Slab {
       ComponentTestHelper.SetInput(comp, 1.0, 5);
       ComponentTestHelper.SetInput(comp, true, 6);
 
-      SlabDimensionGoo output = (SlabDimensionGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (SlabDimensionGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(1.5, output.Value.EffectiveWidthLeft.Meters);
       Assert.Equal(1.0, output.Value.EffectiveWidthRight.Meters);
       Assert.True(output.Value.TaperedToNext);
@@ -57,7 +57,7 @@ namespace ComposGHTests.Slab {
 
     [Fact]
     public void DeserializeTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
   }

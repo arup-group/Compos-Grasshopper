@@ -1,9 +1,9 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Reflection;
+using ComposAPI;
 using ComposGH.Parameters;
 using ComposGHTests.Helpers;
 using Grasshopper.Kernel.Types;
-using System;
-using System.Reflection;
 using Xunit;
 
 namespace ComposGHTests.Parameters {
@@ -43,11 +43,11 @@ namespace ComposGHTests.Parameters {
     [InlineData(typeof(FrequencyLimitsGoo), typeof(FrequencyLimits))]
     public void GenericGH_OasysGooTest(Type gooType, Type wrapType) {
       // Create the actual API object
-      Object value = Activator.CreateInstance(wrapType);
-      Object[] parameters = { value };
+      object value = Activator.CreateInstance(wrapType);
+      object[] parameters = { value };
 
       // Create GH_OasysGoo<API_Object>
-      Object objectGoo = Activator.CreateInstance(gooType, parameters);
+      object objectGoo = Activator.CreateInstance(gooType, parameters);
       gooType = objectGoo.GetType();
 
       // Trigger the IGH_Goo Duplicate() method
@@ -67,7 +67,7 @@ namespace ComposGHTests.Parameters {
       PropertyInfo[] gooPropertyInfo = gooType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
       foreach (PropertyInfo gooProperty in gooPropertyInfo) {
         if (gooProperty.Name == "Value") {
-          Object gooValue = gooProperty.GetValue(objectGoo, null);
+          object gooValue = gooProperty.GetValue(objectGoo, null);
           // here check that the value in the goo object is a duplicate of the original object
           Duplicates.AreEqual(value, gooValue);
           // check that they are not the same object (same pointer in memory)

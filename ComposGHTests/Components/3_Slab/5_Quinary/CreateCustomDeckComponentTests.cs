@@ -28,19 +28,19 @@ namespace ComposGHTests.Slab {
 
     [Fact]
     public void ChangeDropDownTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
 
     [Fact]
     public void CreateComponentWithInputs1() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
       comp.SetSelected(0, 0); // set dropdown to mm
       comp.SetSelected(1, 2); // set dropdown to MPa
 
-      DeckingGoo output = (DeckingGoo)ComponentTestHelper.GetOutput(comp);
-      CustomDecking customDecking = (CustomDecking)output.Value;
+      var output = (DeckingGoo)ComponentTestHelper.GetOutput(comp);
+      var customDecking = (CustomDecking)output.Value;
       Assert.Equal(11, customDecking.B1.Millimeters);
       Assert.Equal(12, customDecking.B2.Millimeters);
       Assert.Equal(13, customDecking.B3.Millimeters);
@@ -53,16 +53,16 @@ namespace ComposGHTests.Slab {
 
     [Fact]
     public void CreateComponentWithInputs2() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
-      DeckingConfigurationGoo input9 = (DeckingConfigurationGoo)ComponentTestHelper.GetOutput(CreateDeckingConfigurationComponentTests.ComponentMother());
+      var input9 = (DeckingConfigurationGoo)ComponentTestHelper.GetOutput(CreateDeckingConfigurationComponentTests.ComponentMother());
       ComponentTestHelper.SetInput(comp, input9, 8);
 
       comp.SetSelected(0, 1); // set dropdown to cm
       comp.SetSelected(1, 0); // set dropdown to Pa
 
-      DeckingGoo output = (DeckingGoo)ComponentTestHelper.GetOutput(comp);
-      CustomDecking customDecking = (CustomDecking)output.Value;
+      var output = (DeckingGoo)ComponentTestHelper.GetOutput(comp);
+      var customDecking = (CustomDecking)output.Value;
       Assert.Equal(11, customDecking.B1.Centimeters);
       Assert.Equal(12, customDecking.B2.Centimeters);
       Assert.Equal(13, customDecking.B3.Centimeters);
@@ -76,7 +76,7 @@ namespace ComposGHTests.Slab {
 
     [Fact]
     public void DeserializeTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
   }

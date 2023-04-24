@@ -1,10 +1,10 @@
-﻿using ComposGH.Components;
+﻿using System;
+using System.IO;
+using ComposGH.Components;
 using ComposGH.Parameters;
 using ComposGHTests.Helpers;
 using Grasshopper.Kernel;
 using OasysGH.Components;
-using System;
-using System.IO;
 using Xunit;
 
 namespace ComposGHTests.CompFile {
@@ -27,19 +27,19 @@ namespace ComposGHTests.CompFile {
 
     [Fact]
     public void CreateOpenComponent() {
-      var comp = ComponentMother();
+      GH_OasysComponent comp = ComponentMother();
 
-      MemberGoo output = (MemberGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (MemberGoo)ComponentTestHelper.GetOutput(comp);
 
       Assert.StartsWith("CAT BSI-HE HE180AA", output.Value.Beam.Sections[0].SectionDescription);
     }
 
     [Fact]
     public void CreateSaveComponent() {
-      SaveComposFile comp = new SaveComposFile();
+      var comp = new SaveComposFile();
       comp.CreateAttributes();
 
-      MemberGoo input1 = (MemberGoo)ComponentTestHelper.GetOutput(ComponentMother());
+      var input1 = (MemberGoo)ComponentTestHelper.GetOutput(ComponentMother());
 
       ComponentTestHelper.SetInput(comp, input1, 0);
 

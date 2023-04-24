@@ -1,31 +1,36 @@
-﻿using ComposAPI;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
+using ComposAPI;
 using Xunit;
 
 namespace ComposGHTests {
   public class GrasshopperFixture : IDisposable {
     public Rhino.Runtime.InProcess.RhinoCore Core {
       get {
-        if (null == _Core) InitializeCore();
+        if (null == _Core) {
+          InitializeCore();
+        }
         return _Core as Rhino.Runtime.InProcess.RhinoCore;
       }
     }
     public Grasshopper.Kernel.GH_DocumentIO DocIO {
       get {
-        if (null == _DocIO) InitializeDocIO();
-        return _DocIO as Grasshopper.Kernel.GH_DocumentIO;
+        if (null == _docIO) {
+          InitializeDocIO();
+        }
+        return _docIO as Grasshopper.Kernel.GH_DocumentIO;
       }
     }
     public Grasshopper.Plugin.GH_RhinoScriptInterface GHPlugin {
       get {
-        if (null == _GHPlugin) InitializeGrasshopperPlugin();
+        if (null == _GHPlugin) {
+          InitializeGrasshopperPlugin();
+        }
         return _GHPlugin as Grasshopper.Plugin.GH_RhinoScriptInterface;
       }
     }
-    private object _Doc { get; set; }
-    private object _DocIO { get; set; }
+    private object _docIO = null;
     private static string _linkFileName = "ComposGhTests.ghlink";
     private static string _linkFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Grasshopper", "Libraries");
     private object _Core = null;
@@ -74,19 +79,21 @@ namespace ComposGHTests {
       try {
         ComposFile.Close();
         Process[] ps = Process.GetProcessesByName("Compos");
-        foreach (Process p in ps)
+        foreach (Process p in ps) {
+
           p.Kill();
-      }
-      catch (Exception) {
+        }
+      } catch (Exception) {
         // Compos was already closed by Grasshopper
       }
     }
 
     protected virtual void Dispose(bool disposing) {
-      if (_isDisposed) return;
+      if (_isDisposed) {
+        return;
+      }
       if (disposing) {
-        _Doc = null;
-        _DocIO = null;
+        _docIO = null;
         GHPlugin.CloseAllDocuments();
         _GHPlugin = null;
         Core.Dispose();
@@ -104,17 +111,21 @@ namespace ComposGHTests {
     private void InitializeDocIO() {
       // we do this in a seperate function to absolutely ensure that the core is initialized before we load the GH plugin,
       // which will happen automatically when we enter the function containing GH references
-      if (null == _GHPlugin) InitializeGrasshopperPlugin();
+      if (null == _GHPlugin) {
+        InitializeGrasshopperPlugin();
+      }
       InitializeDocIO2();
     }
 
     private void InitializeDocIO2() {
       var docIO = new Grasshopper.Kernel.GH_DocumentIO();
-      _DocIO = docIO;
+      _docIO = docIO;
     }
 
     private void InitializeGrasshopperPlugin() {
-      if (null == _Core) InitializeCore();
+      if (null == _Core) {
+        InitializeCore();
+      }
       // we do this in a seperate function to absolutely ensure that the core is initialized before we load the GH plugin,
       // which will happen automatically when we enter the function containing GH references
       InitializeGrasshopperPlugin2();

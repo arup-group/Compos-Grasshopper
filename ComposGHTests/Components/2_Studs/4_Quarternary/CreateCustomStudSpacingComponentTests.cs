@@ -24,17 +24,17 @@ namespace ComposGHTests.Stud {
 
     [Fact]
     public void ChangeDropDownTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
 
     [Fact]
     public void CreateComponentWithInputsTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
       comp.SetSelected(0, 0); // change the dropdown to mm
 
-      StudGroupSpacingGoo output = (StudGroupSpacingGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (StudGroupSpacingGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(50, output.Value.DistanceFromStart.As(RatioUnit.Percent));
       Assert.Equal(15, output.Value.NumberOfRows);
       Assert.Equal(2, output.Value.NumberOfLines);
@@ -43,7 +43,7 @@ namespace ComposGHTests.Stud {
 
     [Fact]
     public void DeserializeTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
   }

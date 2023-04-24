@@ -13,7 +13,7 @@ namespace ComposGHTests.Design {
       var comp = new CreateDesignCriteria();
       comp.CreateAttributes();
 
-      BeamSizeLimitsGoo input1 = (BeamSizeLimitsGoo)ComponentTestHelper.GetOutput(CreateBeamSizeLimitsComponentTests.CreateBeamSizeLimitsMother());
+      var input1 = (BeamSizeLimitsGoo)ComponentTestHelper.GetOutput(CreateBeamSizeLimitsComponentTests.CreateBeamSizeLimitsMother());
 
       ComponentTestHelper.SetInput(comp, input1, 0);
       ComponentTestHelper.SetInput(comp, 27, 1);
@@ -23,17 +23,17 @@ namespace ComposGHTests.Design {
 
     [Fact]
     public void ChangeDropDownTest() {
-      var comp = CreateDesignCriteriaMother();
+      GH_OasysDropDownComponent comp = CreateDesignCriteriaMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
 
     [Fact]
     public void CreateComponentWithInputs1() {
-      var comp = CreateDesignCriteriaMother();
+      GH_OasysDropDownComponent comp = CreateDesignCriteriaMother();
 
-      DesignCriteriaGoo output = (DesignCriteriaGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (DesignCriteriaGoo)ComponentTestHelper.GetOutput(comp);
 
-      BeamSizeLimitsGoo expected_input1 = (BeamSizeLimitsGoo)ComponentTestHelper.GetOutput(CreateBeamSizeLimitsComponentTests.CreateBeamSizeLimitsMother());
+      var expected_input1 = (BeamSizeLimitsGoo)ComponentTestHelper.GetOutput(CreateBeamSizeLimitsComponentTests.CreateBeamSizeLimitsMother());
 
       Duplicates.AreEqual(expected_input1.Value, output.Value.BeamSizeLimits);
       Assert.Equal(27, output.Value.CatalogueSectionTypes[0]);
@@ -42,23 +42,23 @@ namespace ComposGHTests.Design {
 
     [Fact]
     public void CreateComponentWithInputs2() {
-      var comp = CreateDesignCriteriaMother();
+      GH_OasysDropDownComponent comp = CreateDesignCriteriaMother();
 
       comp.SetSelected(0, 1); // change dropdown to min height
 
       ComponentTestHelper.SetInput(comp, 26, 1);
 
-      DeflectionLimitGoo expectedInput2 = (DeflectionLimitGoo)ComponentTestHelper.GetOutput(CreateDeflectionLimitComponentTests.CreateDeflectionLimitMother());
+      var expectedInput2 = (DeflectionLimitGoo)ComponentTestHelper.GetOutput(CreateDeflectionLimitComponentTests.CreateDeflectionLimitMother());
       ComponentTestHelper.SetInput(comp, expectedInput2, 2);
       ComponentTestHelper.SetInput(comp, expectedInput2, 3);
       ComponentTestHelper.SetInput(comp, expectedInput2, 4);
       ComponentTestHelper.SetInput(comp, expectedInput2, 5);
       ComponentTestHelper.SetInput(comp, expectedInput2, 6);
 
-      FrequencyLimitsGoo expectedInput6 = (FrequencyLimitsGoo)ComponentTestHelper.GetOutput(CreateFrequencyLimitsComponentTests.CreateFrequencyLimitsMother());
+      var expectedInput6 = (FrequencyLimitsGoo)ComponentTestHelper.GetOutput(CreateFrequencyLimitsComponentTests.CreateFrequencyLimitsMother());
       ComponentTestHelper.SetInput(comp, expectedInput6, 7);
 
-      DesignCriteriaGoo output = (DesignCriteriaGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (DesignCriteriaGoo)ComponentTestHelper.GetOutput(comp);
 
       Assert.Equal(OptimiseOption.MinimumHeight, output.Value.OptimiseOption);
       Assert.Equal(26, output.Value.CatalogueSectionTypes[1]);
@@ -74,7 +74,7 @@ namespace ComposGHTests.Design {
 
     [Fact]
     public void DeserializeTest() {
-      var comp = CreateDesignCriteriaMother();
+      GH_OasysDropDownComponent comp = CreateDesignCriteriaMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
   }

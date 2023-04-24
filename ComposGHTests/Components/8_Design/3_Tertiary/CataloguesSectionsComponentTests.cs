@@ -16,22 +16,22 @@ namespace ComposGHTests.Design {
 
     [Fact]
     public void ChangeDropDownTest() {
-      var comp = CataloguesSectionsMother();
+      GH_OasysDropDownComponent comp = CataloguesSectionsMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
 
     [Fact]
     public void CreateComponent() {
-      var comp = CataloguesSectionsMother();
+      GH_OasysDropDownComponent comp = CataloguesSectionsMother();
 
-      GH_Integer output = (GH_Integer)ComponentTestHelper.GetOutput(comp);
+      var output = (GH_Integer)ComponentTestHelper.GetOutput(comp);
 
       Assert.Equal(26, (int)output.Value);
     }
 
     [Fact]
     public void DeserializeTest() {
-      var comp = CataloguesSectionsMother();
+      GH_OasysDropDownComponent comp = CataloguesSectionsMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
   }

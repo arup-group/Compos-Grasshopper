@@ -25,17 +25,17 @@ namespace ComposGHTests.Beam {
 
     [Fact]
     public void ChangeDropDownTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
 
     [Fact]
     public void CreateComponentWithInputsTest1() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
       comp.SetSelected(1, 0); // change the dropdown to mm
 
-      WebOpeningGoo output = (WebOpeningGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (WebOpeningGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(400, output.Value.Width.Millimeters);
       Assert.Equal(300, output.Value.Height.Millimeters);
       Assert.Equal(0.5, output.Value.CentroidPosFromStart.As(RatioUnit.DecimalFraction));
@@ -45,12 +45,12 @@ namespace ComposGHTests.Beam {
 
     [Fact]
     public void CreateComponentWithInputsTest2() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
       comp.SetSelected(0, 1); // change the dropdown to Circular
       comp.SetSelected(1, 1); // change the dropdown to cm
 
-      WebOpeningGoo output = (WebOpeningGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (WebOpeningGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(400, output.Value.Diameter.Centimeters);
       Assert.Equal(0.5, output.Value.CentroidPosFromStart.As(RatioUnit.DecimalFraction));
       Assert.Equal(150, output.Value.CentroidPosFromTop.As(LengthUnit.Centimeter));
@@ -59,13 +59,13 @@ namespace ComposGHTests.Beam {
 
     [Fact]
     public void CreateComponentWithInputsTest3() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
       comp.SetSelected(1, 4); // change the dropdown to ft
-      WebOpeningStiffenersGoo input5 = (WebOpeningStiffenersGoo)ComponentTestHelper.GetOutput(CreateWebOpeningStiffenerComponentTests.ComponentMother());
+      var input5 = (WebOpeningStiffenersGoo)ComponentTestHelper.GetOutput(CreateWebOpeningStiffenerComponentTests.ComponentMother());
       ComponentTestHelper.SetInput(comp, input5, 4);
 
-      WebOpeningGoo output = (WebOpeningGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (WebOpeningGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(400, output.Value.Width.Feet);
       Assert.Equal(300, output.Value.Height.Feet);
       Assert.Equal(0.5, output.Value.CentroidPosFromStart.As(RatioUnit.DecimalFraction));
@@ -75,7 +75,7 @@ namespace ComposGHTests.Beam {
 
     [Fact]
     public void DeserializeTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
   }

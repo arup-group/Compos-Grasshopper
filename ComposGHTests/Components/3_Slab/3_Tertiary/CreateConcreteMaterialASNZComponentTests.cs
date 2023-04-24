@@ -17,15 +17,15 @@ namespace ComposGHTests.Slab {
 
     [Fact]
     public void ChangeDropDownTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
 
     [Fact]
     public void CreateComponent() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
-      ConcreteMaterialGoo output = (ConcreteMaterialGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (ConcreteMaterialGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(ConcreteGrade.C20.ToString(), output.Value.Grade);
       Assert.Equal(2450, output.Value.DryDensity.KilogramsPerCubicMeter);
       Assert.False(output.Value.UserDensity);
@@ -37,18 +37,18 @@ namespace ComposGHTests.Slab {
 
     [Fact]
     public void CreateComponentWithInputs1() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
       comp.SetSelected(1, 5); // change dropdown to KilogramPerCubicMeter
 
       ComponentTestHelper.SetInput(comp, 1864, 0);
 
-      ERatioGoo input2 = (ERatioGoo)ComponentTestHelper.GetOutput(CreateERatioComponentTests.ComponentMother());
+      var input2 = (ERatioGoo)ComponentTestHelper.GetOutput(CreateERatioComponentTests.ComponentMother());
       ComponentTestHelper.SetInput(comp, input2, 1);
       ComponentTestHelper.SetInput(comp, 0.2, 2);
       ComponentTestHelper.SetInput(comp, -0.4, 3);
 
-      ConcreteMaterialGoo output = (ConcreteMaterialGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (ConcreteMaterialGoo)ComponentTestHelper.GetOutput(comp);
       Assert.True(output.Value.UserDensity);
       Assert.Equal(1864, output.Value.DryDensity.KilogramsPerCubicMeter);
       Assert.Equal(20, output.Value.ImposedLoadPercentage.Percent);
@@ -58,17 +58,17 @@ namespace ComposGHTests.Slab {
 
     [Fact]
     public void CreateComponentWithInputs2() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
       ComponentTestHelper.SetInput(comp, "C30", 4);
 
-      ConcreteMaterialGoo output = (ConcreteMaterialGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (ConcreteMaterialGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(ConcreteGrade.C30.ToString(), output.Value.Grade);
     }
 
     [Fact]
     public void DeserializeTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
   }

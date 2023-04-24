@@ -1,12 +1,12 @@
-﻿using ComposAPI;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using ComposAPI;
 using ComposGH.Components;
 using ComposGH.Parameters;
 using ComposGHTests.Helpers;
 using ComposGHTests.Member;
 using OasysGH.Components;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Xunit;
 
 namespace ComposGHTests.Design {
@@ -14,12 +14,12 @@ namespace ComposGHTests.Design {
   public class DesignMemberComponentTests {
 
     public static GH_OasysComponent DesignMemberMother() {
-      var comp = new DesignMember();
+      GH_OasysComponent comp = new DesignMember();
       comp.CreateAttributes();
 
-      MemberGoo input1 = (MemberGoo)ComponentTestHelper.GetOutput(CreateMemberComponentTests.CreateMemberMother());
+      var input1 = (MemberGoo)ComponentTestHelper.GetOutput(CreateMemberComponentTests.CreateMemberMother());
 
-      DesignCriteriaGoo input2 = (DesignCriteriaGoo)ComponentTestHelper.GetOutput(CreateDesignCriteriaComponentTests.CreateDesignCriteriaMother());
+      var input2 = (DesignCriteriaGoo)ComponentTestHelper.GetOutput(CreateDesignCriteriaComponentTests.CreateDesignCriteriaMother());
 
       ComponentTestHelper.SetInput(comp, input1, 0);
       ComponentTestHelper.SetInput(comp, input2, 1);
@@ -29,14 +29,14 @@ namespace ComposGHTests.Design {
 
     [Fact]
     public void CreateComponent() {
-      var comp = DesignMemberMother();
+      GH_OasysComponent comp = DesignMemberMother();
 
-      MemberGoo output = (MemberGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (MemberGoo)ComponentTestHelper.GetOutput(comp);
 
       Assert.StartsWith("CAT HE HE220.A", output.Value.Beam.Sections[0].SectionDescription);
 
-      MemberGoo input1 = (MemberGoo)ComponentTestHelper.GetOutput(CreateMemberComponentTests.CreateMemberMother());
-      ComposFile composFile = new ComposFile(new List<IMember>() { input1.Value, output.Value });
+      var input1 = (MemberGoo)ComponentTestHelper.GetOutput(CreateMemberComponentTests.CreateMemberMother());
+      var composFile = new ComposFile(new List<IMember>() { input1.Value, output.Value });
 
       string path = Path.Combine(Environment.CurrentDirectory, "GH-Test-Files");
       Directory.CreateDirectory(path);

@@ -22,15 +22,15 @@ namespace ComposGHTests.Slab {
 
     [Fact]
     public void ChangeDropDownTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
 
     [Fact]
     public void CreateComponentWithInputsTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
-      MeshReinforcementGoo output = (MeshReinforcementGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (MeshReinforcementGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(35, output.Value.Cover.As(LengthUnit.Millimeter));
       Assert.False(output.Value.Rotated);
       Assert.Equal(ReinforcementMeshType.A393, output.Value.MeshType);
@@ -38,7 +38,7 @@ namespace ComposGHTests.Slab {
 
     [Fact]
     public void DeserializeTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
   }

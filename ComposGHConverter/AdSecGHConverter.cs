@@ -1,17 +1,15 @@
-﻿using System;
-
-//using AdSecGH.Parameters;
+﻿//using AdSecGH.Parameters;
 
 namespace ComposGH.Converters {
   public class AdSecGHConverter {
 
-    public static object CastToComposBeam(object source) {
-      return null;
-    }
+    //public static object CastToComposBeam(object source) {
+    //  return null;
+    //}
 
-    public static Type GetTypeFor(Type type) {
-      return null;
-    }
+    //public static Type GetTypeFor(Type type) {
+    //  return null;
+    //}
 
     public static bool IsPresent() {
       //try

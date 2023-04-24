@@ -34,7 +34,7 @@ namespace ComposGHTests.Beam {
     public void CreateComponentWithInputsTest1() {
       GH_OasysDropDownComponent comp = ComponentMother();
 
-      SteelMaterialGoo output = (SteelMaterialGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (SteelMaterialGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(500, output.Value.Fy.Value);
       Assert.Equal(205000, output.Value.E.Value);
       Assert.Equal(7850, output.Value.Density.Value);
@@ -51,7 +51,7 @@ namespace ComposGHTests.Beam {
       ComponentTestHelper.SetInput(comp, input4, 3);
       ComponentTestHelper.SetInput(comp, input5, 4);
 
-      SteelMaterialGoo output = (SteelMaterialGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (SteelMaterialGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(input4, output.Value.ReductionFactorMpl);
       Assert.Equal(WeldMaterialGrade.Grade_50, output.Value.WeldGrade);
     }

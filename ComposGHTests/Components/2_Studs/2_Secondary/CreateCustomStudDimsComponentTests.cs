@@ -22,16 +22,16 @@ namespace ComposGHTests.Stud {
 
     [Fact]
     public void ChangeDropDownTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
 
     [Fact]
     public void CreateComponentTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       comp.SetSelected(0, 1); // change the dropdown to cm
       comp.SetSelected(1, 0); // change the dropdown to N
-      StudDimensionsGoo output = (StudDimensionsGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (StudDimensionsGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(21, output.Value.Diameter.Centimeters);
       Assert.Equal(110, output.Value.Height.Centimeters);
       Assert.Equal(500, output.Value.CharacterStrength.Newtons);
@@ -39,7 +39,7 @@ namespace ComposGHTests.Stud {
 
     [Fact]
     public void DeserializeTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
   }

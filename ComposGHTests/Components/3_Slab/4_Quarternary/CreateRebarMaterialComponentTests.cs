@@ -18,32 +18,32 @@ namespace ComposGHTests.Slab {
 
     [Fact]
     public void ChangeDropDownTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.ChangeDropDownTest(comp);
     }
 
     [Fact]
     public void CreateComponentTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
-      ReinforcementMaterialGoo output = (ReinforcementMaterialGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (ReinforcementMaterialGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(RebarGrade.EN_500B, output.Value.Grade);
     }
 
     [Fact]
     public void CreateComponentWithInputsTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
 
       ComponentTestHelper.SetInput(comp, "498 MPa", 0);
 
-      ReinforcementMaterialGoo output = (ReinforcementMaterialGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (ReinforcementMaterialGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(498, output.Value.Fy.Megapascals);
       Assert.True(output.Value.UserDefined);
     }
 
     [Fact]
     public void DeserializeTest() {
-      var comp = ComponentMother();
+      GH_OasysDropDownComponent comp = ComponentMother();
       OasysDropDownComponentTestHelper.TestDeserialize(comp);
     }
   }

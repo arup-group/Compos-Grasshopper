@@ -26,7 +26,7 @@ namespace ComposGHTests.Beam {
 
       ComponentTestHelper.SetInput(comp, profile, 0);
 
-      BeamSectionGoo output = (BeamSectionGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (BeamSectionGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(profile, output.Value.SectionDescription);
     }
 

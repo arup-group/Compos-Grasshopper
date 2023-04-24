@@ -1,9 +1,9 @@
-﻿using ComposGH.Components;
+﻿using System;
+using ComposGH.Components;
 using ComposGH.Parameters;
 using ComposGHTests.Helpers;
 using Grasshopper.Kernel.Parameters;
 using OasysGH.Components;
-using System;
 using Xunit;
 
 namespace ComposGHTests.Slab {
@@ -19,9 +19,9 @@ namespace ComposGHTests.Slab {
 
     [Fact]
     public void CreateComponent() {
-      var comp = ComponentMother();
+      GH_OasysComponent comp = ComponentMother();
 
-      DeckingConfigurationGoo output = (DeckingConfigurationGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (DeckingConfigurationGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(Math.PI / 2, output.Value.Angle.Radians);
       Assert.True(output.Value.IsDiscontinous);
       Assert.False(output.Value.IsWelded);
@@ -29,13 +29,13 @@ namespace ComposGHTests.Slab {
 
     [Fact]
     public void CreateComponentWithInputsTest1() {
-      var comp = ComponentMother();
+      GH_OasysComponent comp = ComponentMother();
       int i = 0;
       ComponentTestHelper.SetInput(comp, 0, i++);
       ComponentTestHelper.SetInput(comp, false, i++);
       ComponentTestHelper.SetInput(comp, true, i++);
 
-      DeckingConfigurationGoo output = (DeckingConfigurationGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (DeckingConfigurationGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(0, output.Value.Angle.Radians);
       Assert.False(output.Value.IsDiscontinous);
       Assert.True(output.Value.IsWelded);
@@ -43,8 +43,8 @@ namespace ComposGHTests.Slab {
 
     [Fact]
     public void CreateComponentWithInputsTest2() {
-      var comp = ComponentMother();
-      Param_Number angleParameter = (Param_Number)comp.Params.Input[0];
+      GH_OasysComponent comp = ComponentMother();
+      var angleParameter = (Param_Number)comp.Params.Input[0];
       angleParameter.UseDegrees = true;
 
       int i = 0;
@@ -52,7 +52,7 @@ namespace ComposGHTests.Slab {
       ComponentTestHelper.SetInput(comp, false, i++);
       ComponentTestHelper.SetInput(comp, true, i++);
 
-      DeckingConfigurationGoo output = (DeckingConfigurationGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (DeckingConfigurationGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(45, output.Value.Angle.Degrees);
       Assert.False(output.Value.IsDiscontinous);
       Assert.True(output.Value.IsWelded);

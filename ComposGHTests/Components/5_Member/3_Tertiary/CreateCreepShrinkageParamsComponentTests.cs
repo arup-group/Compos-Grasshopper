@@ -21,10 +21,10 @@ namespace ComposGHTests.Member {
 
     [Fact]
     public void CreateComponentWithInputs1() {
-      var comp = ComponentMother();
+      GH_OasysComponent comp = ComponentMother();
 
-      CreepShrinkageParametersGoo output = (CreepShrinkageParametersGoo)ComponentTestHelper.GetOutput(comp);
-      CreepShrinkageParametersEN cs = (CreepShrinkageParametersEN)output.Value;
+      var output = (CreepShrinkageParametersGoo)ComponentTestHelper.GetOutput(comp);
+      var cs = (CreepShrinkageParametersEN)output.Value;
 
       Assert.Equal(1.1, cs.CreepCoefficient);
       Assert.Equal(28, cs.ConcreteAgeAtLoad);
@@ -34,12 +34,12 @@ namespace ComposGHTests.Member {
 
     [Fact]
     public void CreateComponentWithInputs2() {
-      var comp = ComponentMother();
+      GH_OasysComponent comp = ComponentMother();
       ComponentTestHelper.SetInput(comp, 40000, 2);
       ComponentTestHelper.SetInput(comp, "60 %", 3);
 
-      CreepShrinkageParametersGoo output = (CreepShrinkageParametersGoo)ComponentTestHelper.GetOutput(comp);
-      CreepShrinkageParametersEN cs = (CreepShrinkageParametersEN)output.Value;
+      var output = (CreepShrinkageParametersGoo)ComponentTestHelper.GetOutput(comp);
+      var cs = (CreepShrinkageParametersEN)output.Value;
 
       Assert.Equal(40000, cs.FinalConcreteAgeCreep);
       Assert.Equal(60, cs.RelativeHumidity.Percent);

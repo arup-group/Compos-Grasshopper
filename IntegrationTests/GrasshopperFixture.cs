@@ -7,24 +7,29 @@ namespace Rhino.Test {
   public class GrasshopperFixture : IDisposable {
     public Rhino.Runtime.InProcess.RhinoCore Core {
       get {
-        if (null == _Core) InitializeCore();
+        if (null == _Core) {
+          InitializeCore();
+        }
         return _Core as Rhino.Runtime.InProcess.RhinoCore;
       }
     }
     public Grasshopper.Kernel.GH_DocumentIO DocIO {
       get {
-        if (null == _DocIO) InitializeDocIO();
+        if (null == _DocIO) {
+          InitializeDocIO();
+        }
         return _DocIO as Grasshopper.Kernel.GH_DocumentIO;
       }
     }
     public Grasshopper.Plugin.GH_RhinoScriptInterface GHPlugin {
       get {
-        if (null == _GHPlugin) InitializeGrasshopperPlugin();
+        if (null == _GHPlugin) {
+          InitializeGrasshopperPlugin();
+        }
         return _GHPlugin as Grasshopper.Plugin.GH_RhinoScriptInterface;
       }
     }
-    private object _Doc { get; set; }
-    private object _DocIO { get; set; }
+    private object _DocIO;
     private static string _linkFileName = "ComposGhTests.ghlink";
     private static string _linkFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Grasshopper", "Libraries");
     private object _Core = null;
@@ -73,18 +78,19 @@ namespace Rhino.Test {
       try {
         ComposAPI.ComposFile.Close();
         Process[] ps = Process.GetProcessesByName("Compos");
-        foreach (Process p in ps)
+        foreach (Process p in ps) {
           p.Kill();
-      }
-      catch (Exception) {
+        }
+      } catch (Exception) {
         // Compos was already closed by Grasshopper
       }
     }
 
     protected virtual void Dispose(bool disposing) {
-      if (_isDisposed) return;
+      if (_isDisposed) {
+        return;
+      }
       if (disposing) {
-        _Doc = null;
         _DocIO = null;
         GHPlugin.CloseAllDocuments();
         _GHPlugin = null;
@@ -103,7 +109,9 @@ namespace Rhino.Test {
     private void InitializeDocIO() {
       // we do this in a seperate function to absolutely ensure that the core is initialized before we load the GH plugin,
       // which will happen automatically when we enter the function containing GH references
-      if (null == _GHPlugin) InitializeGrasshopperPlugin();
+      if (null == _GHPlugin) {
+        InitializeGrasshopperPlugin();
+      }
       InitializeDocIO2();
     }
 
@@ -113,7 +121,9 @@ namespace Rhino.Test {
     }
 
     private void InitializeGrasshopperPlugin() {
-      if (null == _Core) InitializeCore();
+      if (null == _Core) {
+        InitializeCore();
+      }
       // we do this in a seperate function to absolutely ensure that the core is initialized before we load the GH plugin,
       // which will happen automatically when we enter the function containing GH references
       InitializeGrasshopperPlugin2();

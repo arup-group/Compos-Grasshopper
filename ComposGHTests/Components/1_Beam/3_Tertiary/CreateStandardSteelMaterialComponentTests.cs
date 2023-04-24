@@ -19,7 +19,7 @@ namespace ComposGHTests.Beam {
       var comp = new CreateStandardSteelMaterial();
       comp.CreateAttributes();
 
-      SteelMaterialGoo output = (SteelMaterialGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (SteelMaterialGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(StandardSteelGrade.S235, output.Value.Grade);
     }
 
@@ -31,7 +31,7 @@ namespace ComposGHTests.Beam {
       string input1 = "S275";
       ComponentTestHelper.SetInput(comp, input1, 0);
 
-      SteelMaterialGoo output = (SteelMaterialGoo)ComponentTestHelper.GetOutput(comp);
+      var output = (SteelMaterialGoo)ComponentTestHelper.GetOutput(comp);
       Assert.Equal(StandardSteelGrade.S275, output.Value.Grade);
     }
 
