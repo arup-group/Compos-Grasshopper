@@ -293,6 +293,7 @@ namespace ComposGH.Parameters {
   /// This class provides a Parameter interface for the CustomGoo type.
   /// </summary>
   public class ComposMemberParameter : GH_PersistentGeometryParam<MemberGoo>, IGH_PreviewObject {
+
     public ComposMemberParameter()
       : base(new GH_InstanceDescription(
         "Member",

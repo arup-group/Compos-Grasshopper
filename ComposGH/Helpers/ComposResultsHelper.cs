@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace ComposGH.Helpers {
   internal static class ComposResultHelper {
+
     internal static double RoundToSignificantDigits(double d, int digits) {
       if (d == 0.0) {
         return 0.0;

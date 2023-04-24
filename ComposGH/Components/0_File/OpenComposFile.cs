@@ -119,7 +119,6 @@ namespace ComposGH.Components {
           }
 
           if (!FileName.EndsWith(".coa")) {
-
             FileName += ".coa";
           }
 

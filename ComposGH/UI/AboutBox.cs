@@ -1,8 +1,8 @@
-﻿using Grasshopper.Kernel;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
+using Grasshopper.Kernel;
 
 namespace ComposGH.UI {
   internal partial class AboutBox : Form {

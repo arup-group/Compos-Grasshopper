@@ -4,6 +4,7 @@ using Grasshopper.Kernel.Types;
 
 namespace ComposGH.Helpers {
   internal class CustomInput {
+
     internal static string BeamSection(GH_Component owner, IGH_DataAccess DA, int inputid, bool isOptional = false) {
       string profile = "";
       var gh_typ = new GH_ObjectWrapper();
