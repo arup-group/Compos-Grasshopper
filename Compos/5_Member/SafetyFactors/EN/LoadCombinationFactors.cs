@@ -51,12 +51,11 @@ namespace ComposAPI {
         str += CoaHelper.FormatSignificantFigures(ConstantPsi, 6) + '\t';
         str += CoaHelper.FormatSignificantFigures(FinalPsi, 6) + '\n';
         return str;
-      }
-      else {
+      } else {
         string str = "EC4_LOAD_COMB_FACTORS" + '\t';
         str += name + '\t';
         switch (LoadCombination) {
-          case (LoadCombination.Equation6_10a__6_10b):
+          case LoadCombination.Equation6_10a__6_10b:
             str += "EC0_WORST_6_10A_10B" + '\t';
             str += CoaHelper.FormatSignificantFigures(ConstantXi, 6) + '\t';
             str += CoaHelper.FormatSignificantFigures(FinalXi, 6) + '\t';
@@ -64,7 +63,7 @@ namespace ComposAPI {
             str += CoaHelper.FormatSignificantFigures(FinalPsi, 6) + '\n';
             break;
 
-          case (LoadCombination.Equation6_10):
+          case LoadCombination.Equation6_10:
           default:
             str += "EC0_6_10" + '\t';
             str += CoaHelper.FormatSignificantFigures(ConstantXi, 6) + '\t';

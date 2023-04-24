@@ -130,19 +130,19 @@ namespace ComposGH.Components {
       double gvs = 0;
       double gS = 0;
       if (DA.GetData(8, ref gM0))
-        mf.gamma_M0 = gM0;
+        mf.Gamma_M0 = gM0;
       if (DA.GetData(9, ref gM1))
-        mf.gamma_M1 = gM1;
+        mf.Gamma_M1 = gM1;
       if (DA.GetData(10, ref gM2))
-        mf.gamma_M2 = gM2;
+        mf.Gamma_M2 = gM2;
       if (DA.GetData(11, ref gC))
-        mf.gamma_C = gC;
+        mf.Gamma_C = gC;
       if (DA.GetData(12, ref gDeck))
-        mf.gamma_Deck = gDeck;
+        mf.Gamma_Deck = gDeck;
       if (DA.GetData(13, ref gvs))
-        mf.gamma_vs = gvs;
+        mf.Gamma_vs = gvs;
       if (DA.GetData(14, ref gS))
-        mf.gamma_S = gS;
+        mf.Gamma_S = gS;
 
       if (Params.Input[8].Sources.Count == 0
         & Params.Input[9].Sources.Count == 0

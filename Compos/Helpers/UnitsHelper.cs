@@ -1,8 +1,8 @@
-﻿using OasysUnits;
-using OasysUnits.Units;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposAPI.Helpers {
   /// <summary>
@@ -18,13 +18,11 @@ namespace ComposAPI.Helpers {
       Mass,
     }
 
-    public static AreaMomentOfInertiaUnit AreaMomentOfInertiaUnit {
-      get { return GetSectionAreaMomentOfInertiaUnit(LengthUnitSection); }
-    }
+    public static AreaMomentOfInertiaUnit AreaMomentOfInertiaUnit => GetSectionAreaMomentOfInertiaUnit(LengthUnitSection);
     public static DensityUnit DensityUnit {
       get {
-        Mass mass = Mass.From(1, MassUnit);
-        Length len = Length.From(1, LengthUnitGeometry);
+        var mass = Mass.From(1, MassUnit);
+        var len = Length.From(1, LengthUnitGeometry);
         Volume vol = len * len * len;
 
         Density density = mass / vol;
@@ -191,10 +189,7 @@ namespace ComposAPI.Helpers {
     public static LengthUnit LengthUnitGeometry { get; set; } = LengthUnit.Meter;
     public static LengthUnit LengthUnitResult { get; set; } = LengthUnit.Meter;
     public static LengthUnit LengthUnitSection { get; set; } = LengthUnit.Meter;
-    public static MassUnit MassUnit {
-      get { return m_mass; }
-      set { m_mass = value; }
-    }
+    public static MassUnit MassUnit { get; set; } = MassUnit.Kilogram;
     public static MomentUnit MomentUnit { get; set; } = MomentUnit.KilonewtonMeter;
     public static AreaMomentOfInertiaUnit SectionAreaMomentOfInertiaUnit {
       get {
@@ -243,10 +238,7 @@ namespace ComposAPI.Helpers {
       }
     }
     public static StrainUnit StrainUnit { get; set; } = StrainUnit.MilliStrain;
-    public static PressureUnit StressUnit {
-      get { return m_stress; }
-      set { m_stress = value; }
-    }
+    public static PressureUnit StressUnit { get; set; } = PressureUnit.NewtonPerSquareMeter;
     public static List<string> FilteredDensityUnits = new List<string>()
         {
             DensityUnit.GramPerCubicMillimeter.ToString(),
@@ -349,10 +341,6 @@ namespace ComposAPI.Helpers {
         PressureUnit.PoundForcePerSquareFoot.ToString(),
         PressureUnit.KilopoundForcePerSquareInch.ToString(),
       };
-
-    private static MassUnit m_mass = MassUnit.Kilogram;
-
-    private static PressureUnit m_stress = PressureUnit.NewtonPerSquareMeter;
 
     public static DensityUnit GetDensityUnit(MassUnit massUnit, LengthUnit lengthUnit) {
       switch (lengthUnit) {

@@ -1,6 +1,6 @@
-﻿using ComposAPI.Helpers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using ComposAPI.Helpers;
 
 namespace ComposAPI {
   public enum LayoutMethod {
@@ -34,13 +34,13 @@ namespace ComposAPI {
       str += "REBAR_LONGITUDINAL" + '\t' + name + '\t' + "PROGRAM_DESIGNED" + '\n';
 
       if (LayoutMethod == LayoutMethod.Automatic) {
-        List<string> parameters = new List<string>();
-        parameters.Add(CoaIdentifier.RebarTransverse);
-        parameters.Add(name);
-        parameters.Add("PROGRAM_DESIGNED");
+        var parameters = new List<string> {
+          CoaIdentifier.RebarTransverse,
+          name,
+          "PROGRAM_DESIGNED"
+        };
         str += CoaHelper.CreateString(parameters);
-      }
-      else {
+      } else {
         foreach (ICustomTransverseReinforcementLayout layout in CustomReinforcementLayouts) {
           str += layout.ToCoaString(name, units);
         }
@@ -53,40 +53,42 @@ namespace ComposAPI {
       string mat = Material.ToString();
       if (LayoutMethod == LayoutMethod.Automatic) {
         return mat + ", Automatic layout";
-      }
-      else {
+      } else {
         string rebar = string.Join(":", CustomReinforcementLayouts.Select(x => x.ToString()).ToList());
         return mat + ", " + rebar;
       }
     }
 
     internal static ITransverseReinforcement FromCoaString(string coaString, string name, Code code, ComposUnits units) {
-      TransverseReinforcement reinforcement = new TransverseReinforcement();
-      reinforcement.CustomReinforcementLayouts = new List<ICustomTransverseReinforcementLayout>();
+      var reinforcement = new TransverseReinforcement {
+        CustomReinforcementLayouts = new List<ICustomTransverseReinforcementLayout>()
+      };
 
       List<string> lines = CoaHelper.SplitAndStripLines(coaString);
       foreach (string line in lines) {
         List<string> parameters = CoaHelper.Split(line);
 
-        if (parameters[0] == "END")
+        if (parameters[0] == "END") {
           return reinforcement;
+        }
 
-        if (parameters[0] == CoaIdentifier.UnitData)
+        if (parameters[0] == CoaIdentifier.UnitData) {
           units.FromCoaString(parameters);
+        }
 
-        if (parameters[1] != name)
+        if (parameters[1] != name) {
           continue;
+        }
 
         switch (parameters[0]) {
-          case (CoaIdentifier.RebarMaterial):
+          case CoaIdentifier.RebarMaterial:
             reinforcement.Material = ReinforcementMaterial.FromCoaString(parameters, code);
             break;
 
-          case (CoaIdentifier.RebarTransverse):
+          case CoaIdentifier.RebarTransverse:
             if (parameters[2] == "PROGRAM_DESIGNED") {
               reinforcement.LayoutMethod = LayoutMethod.Automatic;
-            }
-            else {
+            } else {
               reinforcement.LayoutMethod = LayoutMethod.Custom;
               reinforcement.CustomReinforcementLayouts.Add(CustomTransverseReinforcementLayout.FromCoaString(parameters, units));
             }

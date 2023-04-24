@@ -1,7 +1,7 @@
-﻿using ComposAPI.Helpers;
+﻿using System.Collections.Generic;
+using ComposAPI.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System.Collections.Generic;
 
 namespace ComposAPI {
   public class BeamSizeLimits : IBeamSizeLimits {
@@ -20,13 +20,14 @@ namespace ComposAPI {
     }
 
     public string ToCoaString(string name, ComposUnits units) {
-      List<string> parameters = new List<string>();
-      parameters.Add(CoaIdentifier.DesignCriteria.BeamSizeLimit);
-      parameters.Add(name);
-      parameters.Add(CoaHelper.FormatSignificantFigures(MinDepth.ToUnit(units.Section).Value, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(MaxDepth.ToUnit(units.Section).Value, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(MinWidth.ToUnit(units.Section).Value, 6));
-      parameters.Add(CoaHelper.FormatSignificantFigures(MaxWidth.ToUnit(units.Section).Value, 6));
+      var parameters = new List<string> {
+        CoaIdentifier.DesignCriteria.BeamSizeLimit,
+        name,
+        CoaHelper.FormatSignificantFigures(MinDepth.ToUnit(units.Section).Value, 6),
+        CoaHelper.FormatSignificantFigures(MaxDepth.ToUnit(units.Section).Value, 6),
+        CoaHelper.FormatSignificantFigures(MinWidth.ToUnit(units.Section).Value, 6),
+        CoaHelper.FormatSignificantFigures(MaxWidth.ToUnit(units.Section).Value, 6)
+      };
 
       string coaString = CoaHelper.CreateString(parameters);
 
@@ -45,7 +46,7 @@ namespace ComposAPI {
     internal static IBeamSizeLimits FromCoaString(List<string> parameters, ComposUnits units) {
       LengthUnit unit = units.Section;
 
-      BeamSizeLimits beamSizeLimit = new BeamSizeLimits();
+      var beamSizeLimit = new BeamSizeLimits();
       int i = 2;
       beamSizeLimit.MinDepth = new Length(CoaHelper.ConvertToDouble(parameters[i++]), unit);
       beamSizeLimit.MaxDepth = new Length(CoaHelper.ConvertToDouble(parameters[i++]), unit);

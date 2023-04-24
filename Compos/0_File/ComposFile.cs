@@ -130,8 +130,7 @@ namespace ComposAPI {
     /// </summary>
     /// <param name="memberName"></param>
     /// <param name="option"></param>
-    /// <param name="position">position number</param>
-    /// <returns></returns>
+    /// <returns>position number</returns>
     public float MaxResult(string memberName, string option) {
       Initialise();
       return ComposFile.ComposCOM.MaxResult(memberName, option.ToString(), out short position);
@@ -142,8 +141,7 @@ namespace ComposAPI {
     /// </summary>
     /// <param name="memberName"></param>
     /// <param name="option"></param>
-    /// <param name="position">position number</param>
-    /// <returns></returns>
+    /// <returns>position number</returns>
     public short MaxResultPosition(string memberName, string option) {
       Initialise();
       ComposFile.ComposCOM.MaxResult(memberName, option.ToString(), out short position);
@@ -160,8 +158,7 @@ namespace ComposAPI {
     /// </summary>
     /// <param name="memberName"></param>
     /// <param name="option"></param>
-    /// <param name="position">position number</param>
-    /// <returns></returns>
+    /// <returns>position number</returns>
     public float MinResult(string memberName, string option) {
       Initialise();
       return ComposFile.ComposCOM.MinResult(memberName, option.ToString(), out short position);
@@ -172,8 +169,7 @@ namespace ComposAPI {
     /// </summary>
     /// <param name="memberName"></param>
     /// <param name="option"></param>
-    /// <param name="position">position number</param>
-    /// <returns></returns>
+    /// <returns>position number</returns>
     public short MinResultPosition(string memberName, string option) {
       Initialise();
       ComposFile.ComposCOM.MinResult(memberName, option.ToString(), out short position);

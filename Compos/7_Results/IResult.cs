@@ -1,5 +1,5 @@
-﻿using OasysUnits;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using OasysUnits;
 
 namespace ComposAPI {
   public interface IResult {
@@ -9,7 +9,6 @@ namespace ComposAPI {
     IDeflectionResult Deflections { get; }
     IInternalForceResult InternalForces { get; }
     List<Length> Positions { get; }
-
     ICompositeSectionProperties SectionProperties { get; }
     ISlabStressResult SlabStresses { get; }
     IStudResult StudResults { get; }

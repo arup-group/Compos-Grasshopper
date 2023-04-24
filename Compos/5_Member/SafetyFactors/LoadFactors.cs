@@ -1,5 +1,5 @@
-﻿using ComposAPI.Helpers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using ComposAPI.Helpers;
 
 namespace ComposAPI {
   /// <summary>
@@ -23,11 +23,12 @@ namespace ComposAPI {
     }
 
     internal static ILoadFactors FromCoaString(List<string> parameters) {
-      LoadFactors loadFactors = new LoadFactors();
-      loadFactors.ConstantDead = CoaHelper.ConvertToDouble(parameters[2]);
-      loadFactors.FinalDead = CoaHelper.ConvertToDouble(parameters[3]);
-      loadFactors.ConstantLive = CoaHelper.ConvertToDouble(parameters[4]);
-      loadFactors.FinalLive = CoaHelper.ConvertToDouble(parameters[5]);
+      var loadFactors = new LoadFactors {
+        ConstantDead = CoaHelper.ConvertToDouble(parameters[2]),
+        FinalDead = CoaHelper.ConvertToDouble(parameters[3]),
+        ConstantLive = CoaHelper.ConvertToDouble(parameters[4]),
+        FinalLive = CoaHelper.ConvertToDouble(parameters[5])
+      };
       return loadFactors;
     }
   }

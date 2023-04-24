@@ -9,10 +9,12 @@
 
     public string ToCoaString(string name) {
       string str = "";
-      if (LoadFactors != null)
+      if (LoadFactors != null) {
         str = LoadFactors.ToCoaString(name);
-      if (MaterialFactors != null)
+      }
+      if (MaterialFactors != null) {
         str += MaterialFactors.ToCoaString(name);
+      }
       return str;
     }
   }

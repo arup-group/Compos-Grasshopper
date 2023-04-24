@@ -1,8 +1,8 @@
-﻿using OasysUnits;
-using OasysUnits.Units;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposAPI {
   public class CompositeSectionProperties : SubResult, ICompositeSectionProperties {
@@ -181,8 +181,9 @@ namespace ComposAPI {
     /// </summary>
     public Frequency NaturalFrequency {
       get {
-        if (m_frequency == Frequency.Zero)
+        if (m_frequency == Frequency.Zero) {
           m_frequency = new Frequency(Member.UtilisationFactor(UtilisationFactorOption.NaturalFrequency), FrequencyUnit.Hertz);
+        }
         return m_frequency;
       }
     }
@@ -246,7 +247,7 @@ namespace ComposAPI {
 
     private List<IQuantity> GetResults(BeamResultOption resultType) {
       if (!ResultsCache.ContainsKey(resultType)) {
-        List<IQuantity> results = new List<IQuantity>();
+        var results = new List<IQuantity>();
         for (short pos = 0; pos < NumIntermediatePos; pos++) {
           float value = Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
 
@@ -288,7 +289,7 @@ namespace ComposAPI {
 
     private List<IQuantity> GetResults(ResultOption resultType) {
       if (!ResultsCache.ContainsKey(resultType)) {
-        List<IQuantity> results = new List<IQuantity>();
+        var results = new List<IQuantity>();
         for (short pos = 0; pos < NumIntermediatePos; pos++) {
           float value = Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
 

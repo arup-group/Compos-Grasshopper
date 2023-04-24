@@ -1,80 +1,91 @@
-﻿using OasysUnits;
-using OasysUnits.Units;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposAPI {
   public class Result : IResult {
     public IBeamClassification BeamClassification {
       get {
-        if (m_BeamClassification == null)
+        if (m_BeamClassification == null) {
           m_BeamClassification = new BeamClassification(m_Member, m_NumIntermediatePos);
+        }
         return m_BeamClassification;
       }
     }
     public IBeamStressResult BeamStresses {
       get {
-        if (m_BeamStressResult == null)
+        if (m_BeamStressResult == null) {
           m_BeamStressResult = new BeamStressResult(m_Member, m_NumIntermediatePos);
+        }
         return m_BeamStressResult;
       }
     }
     public ICapacityResult Capacities {
       get {
-        if (m_CapacityResult == null)
+        if (m_CapacityResult == null) {
           m_CapacityResult = new CapacityResult(m_Member, m_NumIntermediatePos);
+        }
         return m_CapacityResult;
       }
     }
     public IDeflectionResult Deflections {
       get {
-        if (m_DeflectionResult == null)
+        if (m_DeflectionResult == null) {
           m_DeflectionResult = new DeflectionResult(m_Member, m_NumIntermediatePos);
+        }
         return m_DeflectionResult;
       }
     }
     public IInternalForceResult InternalForces {
       get {
-        if (m_ForcesAndMoments == null)
+        if (m_ForcesAndMoments == null) {
           m_ForcesAndMoments = new InternalForceResult(m_Member, m_NumIntermediatePos);
+        }
         return m_ForcesAndMoments;
       }
     }
     public List<Length> Positions { get; internal set; }
     public ICompositeSectionProperties SectionProperties {
       get {
-        if (m_CompositeSectionProperties == null)
+        if (m_CompositeSectionProperties == null) {
           m_CompositeSectionProperties = new CompositeSectionProperties(m_Member, m_NumIntermediatePos);
+        }
         return m_CompositeSectionProperties;
       }
     }
     public ISlabStressResult SlabStresses {
       get {
-        if (m_SlabStressResult == null)
+        if (m_SlabStressResult == null) {
           m_SlabStressResult = new SlabStressResult(m_Member, m_NumIntermediatePos);
+        }
         return m_SlabStressResult;
       }
     }
     public IStudResult StudResults {
       get {
-        if (m_StudResult == null)
+        if (m_StudResult == null) {
           m_StudResult = new StudResult(m_Member, m_NumIntermediatePos);
+        }
         return m_StudResult;
       }
     }
     public ITransverseRebarResult TransverseRebarResults {
       get {
-        if (m_NumTranRebar < 0)
+        if (m_NumTranRebar < 0) {
           m_NumTranRebar = m_Member.NumTranRebar();
-        if (m_TransverseRebarResult == null)
+        }
+        if (m_TransverseRebarResult == null) {
           m_TransverseRebarResult = new TransverseRebarResult(m_Member, m_NumTranRebar);
+        }
         return m_TransverseRebarResult;
       }
     }
     public IUtilisation Utilisations {
       get {
-        if (m_Utilisation == null)
+        if (m_Utilisation == null) {
           m_Utilisation = new Utilisation(m_Member);
+        }
         return m_Utilisation;
       }
     }
@@ -103,7 +114,7 @@ namespace ComposAPI {
       m_NumIntermediatePos = member.NumIntermediatePos();
       for (int i = 0; i < m_NumIntermediatePos; i++) {
         float value = member.GetResult(ResultOption.CRITI_SECT_DIST.ToString(), Convert.ToInt16(i));
-        Length pos = new Length(value, LengthUnit.Meter);
+        var pos = new Length(value, LengthUnit.Meter);
         Positions.Add(pos);
       }
     }

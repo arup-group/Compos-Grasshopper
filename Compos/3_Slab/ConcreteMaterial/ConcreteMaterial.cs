@@ -1,9 +1,9 @@
-﻿using ComposAPI.Helpers;
-using OasysUnits;
-using OasysUnits.Units;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using ComposAPI.Helpers;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposAPI {
   public enum ConcreteGrade {
@@ -117,8 +117,9 @@ namespace ComposAPI {
     /// <param name="userStrain"></param>
     public ConcreteMaterial(ConcreteGradeEN grade, DensityClass densityClass, Density dryDensity, bool userDensity, IERatio eRatio, Ratio imposedLoadPercentage, Strain shrinkageStrain, bool userStrain) {
       Grade = grade.ToString();
-      if (Grade.StartsWith("L"))
+      if (Grade.StartsWith("L")) {
         Type = WeightType.LightWeight;
+      }
       Class = densityClass;
       DryDensity = dryDensity;
       UserDensity = userDensity;
@@ -170,49 +171,51 @@ namespace ComposAPI {
     /// <returns></returns>
     ///
     public string ToCoaString(string name, ComposUnits units) {
-      List<string> parameters = new List<string>();
-      parameters.Add(CoaIdentifier.SlabConcreteMaterial);
-      parameters.Add(name);
-      parameters.Add(Grade.Replace("_", "/"));
-      if (Type == WeightType.Normal)
+      var parameters = new List<string> {
+        CoaIdentifier.SlabConcreteMaterial,
+        name,
+        Grade.Replace("_", "/")
+      };
+      if (Type == WeightType.Normal) {
         parameters.Add("NORMAL");
-      else
+      } else {
         parameters.Add("LIGHT");
+      }
       if (UserDensity) {
         parameters.Add("USER_DENSITY");
-        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00}", DryDensity.ToUnit(units.Density).Value));
-      }
-      else {
+        parameters.Add(string.Format(CoaHelper.NoComma, "{0:0.00}", DryDensity.ToUnit(units.Density).Value));
+      } else {
         parameters.Add("CODE_DENSITY");
-        parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.00}", DryDensity.ToUnit(units.Density).Value));
+        parameters.Add(string.Format(CoaHelper.NoComma, "{0:0.00}", DryDensity.ToUnit(units.Density).Value));
         parameters.Add(Class.ToString().Replace("DC", ""));
       }
-      parameters.Add(String.Format(CoaHelper.NoComma, "{0:0.000000}", ImposedLoadPercentage.DecimalFractions));
+      parameters.Add(string.Format(CoaHelper.NoComma, "{0:0.000000}", ImposedLoadPercentage.DecimalFractions));
       if (ERatio.UserDefined) {
         parameters.Add("USER_E_RATIO");
         parameters.Add(CoaHelper.FormatSignificantFigures(ERatio.ShortTerm, 6));
         parameters.Add(CoaHelper.FormatSignificantFigures(ERatio.LongTerm, 6));
         parameters.Add(CoaHelper.FormatSignificantFigures(ERatio.Vibration, 6));
         parameters.Add(CoaHelper.FormatSignificantFigures(ERatio.Shrinkage, 6));
-      }
-      else
+      } else {
         parameters.Add("CODE_E_RATIO");
+      }
       if (UserStrain) {
         parameters.Add("USER_STRAIN");
         parameters.Add(CoaHelper.FormatSignificantFigures(ShrinkageStrain.Ratio, 6));
-      }
-      else
+      } else {
         parameters.Add("CODE_STRAIN");
+      }
 
       return CoaHelper.CreateString(parameters);
     }
 
     public override string ToString() {
       string str;
-      if (Grade == null)
+      if (Grade == null) {
         str = "(Grade not set)";
-      else
+      } else {
         str = Grade.ToString().Replace("_", "/");
+      }
       str += " " + Type + ", D: " + DryDensity.As(ComposUnitsHelper.DensityUnit).ToString().Replace(" ", string.Empty);
       return str;
     }
@@ -220,29 +223,29 @@ namespace ComposAPI {
     internal static IConcreteMaterial FromCoaString(List<string> parameters, ComposUnits units) {
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
 
-      ConcreteMaterial material = new ConcreteMaterial();
+      var material = new ConcreteMaterial();
       if (parameters[2].Length < 4) {
         // BS5950 GRADES
         material.Grade = Enum.Parse(typeof(ConcreteGrade), parameters[2]).ToString();
-      }
-      else {
+      } else {
         // EC4 GRADES
         material.Grade = Enum.Parse(typeof(ConcreteGradeEN), parameters[2].Replace("/", "_")).ToString();
       }
-      if (parameters[3] == "NORMAL")
+      if (parameters[3] == "NORMAL") {
         material.Type = WeightType.Normal;
-      else
+      } else {
         material.Type = WeightType.LightWeight;
+      }
 
       int index;
       if (parameters[4] == "USER_DENSITY") {
         material.UserDensity = true;
         index = 6;
-      }
-      else {
+      } else {
         material.UserDensity = false;
-        if (parameters[6] != "NOT_APPLY")
+        if (parameters[6] != "NOT_APPLY") {
           material.Class = (DensityClass)Enum.Parse(typeof(DensityClass), "DC" + parameters[6]);
+        }
         index = 7;
       }
 
@@ -254,8 +257,7 @@ namespace ComposAPI {
       if (parameters[index] == "CODE_E_RATIO") {
         material.ERatio = new ERatio();
         index++;
-      }
-      else {
+      } else {
         material.ERatio = new ERatio(CoaHelper.ConvertToDouble(parameters[index + 1]), CoaHelper.ConvertToDouble(parameters[index + 2]), CoaHelper.ConvertToDouble(parameters[index + 3]), CoaHelper.ConvertToDouble(parameters[index + 4]));
         index += 5;
       }

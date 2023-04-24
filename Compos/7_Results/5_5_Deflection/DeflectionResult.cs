@@ -1,7 +1,7 @@
-﻿using OasysUnits;
-using OasysUnits.Units;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposAPI {
   public class DeflectionResult : SubResult, IDeflectionResult {
@@ -86,7 +86,7 @@ namespace ComposAPI {
     //}
     private List<Length> GetResults(DeflectionOption resultType) {
       if (!ResultsCache.ContainsKey(resultType)) {
-        List<Length> results = new List<Length>();
+        var results = new List<Length>();
         for (short pos = 0; pos < NumIntermediatePos; pos++) {
           float value = Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
           results.Add(new Length(value, LengthUnit.Meter));

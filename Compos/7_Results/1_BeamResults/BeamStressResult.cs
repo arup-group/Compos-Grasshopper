@@ -1,7 +1,7 @@
-﻿using OasysUnits;
-using OasysUnits.Units;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposAPI {
   public class BeamStressResult : SubResult, IBeamStressResult {
@@ -162,7 +162,7 @@ namespace ComposAPI {
 
     private List<Pressure> GetResults(StressOption resultType) {
       if (!ResultsCache.ContainsKey(resultType)) {
-        List<Pressure> results = new List<Pressure>();
+        var results = new List<Pressure>();
         for (short pos = 0; pos < NumIntermediatePos; pos++) {
           float value = Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
           results.Add(new Pressure(value, PressureUnit.Pascal));

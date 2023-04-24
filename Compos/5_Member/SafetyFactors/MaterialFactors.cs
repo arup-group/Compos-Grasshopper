@@ -1,5 +1,5 @@
-﻿using ComposAPI.Helpers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using ComposAPI.Helpers;
 
 namespace ComposAPI {
   /// <summary>
@@ -29,13 +29,14 @@ namespace ComposAPI {
     }
 
     internal static IMaterialFactors FromCoaString(List<string> parameters) {
-      MaterialFactors materialPartialFactors = new MaterialFactors();
-      materialPartialFactors.SteelBeam = CoaHelper.ConvertToDouble(parameters[2]);
-      materialPartialFactors.ConcreteCompression = CoaHelper.ConvertToDouble(parameters[5]);
-      materialPartialFactors.ConcreteShear = CoaHelper.ConvertToDouble(parameters[6]);
-      materialPartialFactors.MetalDecking = CoaHelper.ConvertToDouble(parameters[7]);
-      materialPartialFactors.ShearStud = CoaHelper.ConvertToDouble(parameters[8]);
-      materialPartialFactors.Reinforcement = CoaHelper.ConvertToDouble(parameters[9]);
+      var materialPartialFactors = new MaterialFactors {
+        SteelBeam = CoaHelper.ConvertToDouble(parameters[2]),
+        ConcreteCompression = CoaHelper.ConvertToDouble(parameters[5]),
+        ConcreteShear = CoaHelper.ConvertToDouble(parameters[6]),
+        MetalDecking = CoaHelper.ConvertToDouble(parameters[7]),
+        ShearStud = CoaHelper.ConvertToDouble(parameters[8]),
+        Reinforcement = CoaHelper.ConvertToDouble(parameters[9])
+      };
       return materialPartialFactors;
     }
   }

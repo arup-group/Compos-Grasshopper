@@ -61,13 +61,13 @@ namespace ComposAPI.Members.Tests {
       duplicate = (SafetyFactorsEN)original.Duplicate();
 
       // 2 check that duplicate has duplicated values
-      Assert.Equal(1.0, duplicate.MaterialFactors.gamma_M0);
-      Assert.Equal(1.0, duplicate.MaterialFactors.gamma_M1);
-      Assert.Equal(1.25, duplicate.MaterialFactors.gamma_M2);
-      Assert.Equal(1.5, duplicate.MaterialFactors.gamma_C);
-      Assert.Equal(1.0, duplicate.MaterialFactors.gamma_Deck);
-      Assert.Equal(1.25, duplicate.MaterialFactors.gamma_vs);
-      Assert.Equal(1.15, duplicate.MaterialFactors.gamma_S);
+      Assert.Equal(1.0, duplicate.MaterialFactors.Gamma_M0);
+      Assert.Equal(1.0, duplicate.MaterialFactors.Gamma_M1);
+      Assert.Equal(1.25, duplicate.MaterialFactors.Gamma_M2);
+      Assert.Equal(1.5, duplicate.MaterialFactors.Gamma_C);
+      Assert.Equal(1.0, duplicate.MaterialFactors.Gamma_Deck);
+      Assert.Equal(1.25, duplicate.MaterialFactors.Gamma_vs);
+      Assert.Equal(1.15, duplicate.MaterialFactors.Gamma_S);
       Assert.Equal(1.0, duplicate.LoadCombinationFactors.ConstantXi);
       Assert.Equal(1.0, duplicate.LoadCombinationFactors.ConstantPsi);
       Assert.Equal(1.35, duplicate.LoadCombinationFactors.Constantgamma_G);
@@ -79,13 +79,13 @@ namespace ComposAPI.Members.Tests {
 
       // 3 make some changes to duplicate
       MaterialPartialFactors partialFactors = new MaterialPartialFactors();
-      partialFactors.gamma_M0 = 1.2;
-      partialFactors.gamma_M1 = 1.25;
-      partialFactors.gamma_M2 = 1.3;
-      partialFactors.gamma_C = 1.35;
-      partialFactors.gamma_Deck = 1.4;
-      partialFactors.gamma_vs = 1.05;
-      partialFactors.gamma_S = 1.5;
+      partialFactors.Gamma_M0 = 1.2;
+      partialFactors.Gamma_M1 = 1.25;
+      partialFactors.Gamma_M2 = 1.3;
+      partialFactors.Gamma_C = 1.35;
+      partialFactors.Gamma_Deck = 1.4;
+      partialFactors.Gamma_vs = 1.05;
+      partialFactors.Gamma_S = 1.5;
       duplicate.MaterialFactors = partialFactors;
       LoadCombinationFactors combinationFactors = new LoadCombinationFactors();
       combinationFactors.ConstantXi = 1.15;
@@ -99,13 +99,13 @@ namespace ComposAPI.Members.Tests {
       duplicate.LoadCombinationFactors = combinationFactors;
 
       // 4 check that duplicate has set changes
-      Assert.Equal(1.2, duplicate.MaterialFactors.gamma_M0);
-      Assert.Equal(1.25, duplicate.MaterialFactors.gamma_M1);
-      Assert.Equal(1.3, duplicate.MaterialFactors.gamma_M2);
-      Assert.Equal(1.35, duplicate.MaterialFactors.gamma_C);
-      Assert.Equal(1.4, duplicate.MaterialFactors.gamma_Deck);
-      Assert.Equal(1.05, duplicate.MaterialFactors.gamma_vs);
-      Assert.Equal(1.5, duplicate.MaterialFactors.gamma_S);
+      Assert.Equal(1.2, duplicate.MaterialFactors.Gamma_M0);
+      Assert.Equal(1.25, duplicate.MaterialFactors.Gamma_M1);
+      Assert.Equal(1.3, duplicate.MaterialFactors.Gamma_M2);
+      Assert.Equal(1.35, duplicate.MaterialFactors.Gamma_C);
+      Assert.Equal(1.4, duplicate.MaterialFactors.Gamma_Deck);
+      Assert.Equal(1.05, duplicate.MaterialFactors.Gamma_vs);
+      Assert.Equal(1.5, duplicate.MaterialFactors.Gamma_S);
       Assert.Equal(1.15, duplicate.LoadCombinationFactors.ConstantXi);
       Assert.Equal(1.45, duplicate.LoadCombinationFactors.ConstantPsi);
       Assert.Equal(1.55, duplicate.LoadCombinationFactors.Constantgamma_G);
@@ -116,13 +116,13 @@ namespace ComposAPI.Members.Tests {
       Assert.Equal(0.95, duplicate.LoadCombinationFactors.Finalgamma_Q);
 
       // 5 check that original has not been changed
-      Assert.Equal(1.0, original.MaterialFactors.gamma_M0);
-      Assert.Equal(1.0, original.MaterialFactors.gamma_M1);
-      Assert.Equal(1.25, original.MaterialFactors.gamma_M2);
-      Assert.Equal(1.5, original.MaterialFactors.gamma_C);
-      Assert.Equal(1.0, original.MaterialFactors.gamma_Deck);
-      Assert.Equal(1.25, original.MaterialFactors.gamma_vs);
-      Assert.Equal(1.15, original.MaterialFactors.gamma_S);
+      Assert.Equal(1.0, original.MaterialFactors.Gamma_M0);
+      Assert.Equal(1.0, original.MaterialFactors.Gamma_M1);
+      Assert.Equal(1.25, original.MaterialFactors.Gamma_M2);
+      Assert.Equal(1.5, original.MaterialFactors.Gamma_C);
+      Assert.Equal(1.0, original.MaterialFactors.Gamma_Deck);
+      Assert.Equal(1.25, original.MaterialFactors.Gamma_vs);
+      Assert.Equal(1.15, original.MaterialFactors.Gamma_S);
       Assert.Equal(1.0, original.LoadCombinationFactors.ConstantXi);
       Assert.Equal(1.0, original.LoadCombinationFactors.ConstantPsi);
       Assert.Equal(1.35, original.LoadCombinationFactors.Constantgamma_G);
@@ -145,13 +145,13 @@ namespace ComposAPI.Members.Tests {
       // Assert
       if (materialFactorsSet) {
         IMaterialPartialFactors mat = safetyFactorsEN.MaterialFactors;
-        Assert.Equal(expected_gamma_M0, mat.gamma_M0);
-        Assert.Equal(expected_gamma_M1, mat.gamma_M1);
-        Assert.Equal(expected_gamma_M2, mat.gamma_M2);
-        Assert.Equal(expected_gamma_C, mat.gamma_C);
-        Assert.Equal(expected_gamma_Deck, mat.gamma_Deck);
-        Assert.Equal(expected_gamma_vs, mat.gamma_vs);
-        Assert.Equal(expected_gamma_S, mat.gamma_S);
+        Assert.Equal(expected_gamma_M0, mat.Gamma_M0);
+        Assert.Equal(expected_gamma_M1, mat.Gamma_M1);
+        Assert.Equal(expected_gamma_M2, mat.Gamma_M2);
+        Assert.Equal(expected_gamma_C, mat.Gamma_C);
+        Assert.Equal(expected_gamma_Deck, mat.Gamma_Deck);
+        Assert.Equal(expected_gamma_vs, mat.Gamma_vs);
+        Assert.Equal(expected_gamma_S, mat.Gamma_S);
       }
       else
         Assert.Null(safetyFactorsEN.MaterialFactors);
@@ -179,13 +179,13 @@ namespace ComposAPI.Members.Tests {
 
       if (materialFactorsSet) {
         MaterialPartialFactors mat = new MaterialPartialFactors();
-        mat.gamma_M0 = gamma_M0;
-        mat.gamma_M1 = gamma_M1;
-        mat.gamma_M2 = gamma_M2;
-        mat.gamma_C = gamma_C;
-        mat.gamma_Deck = gamma_Deck;
-        mat.gamma_vs = gamma_vs;
-        mat.gamma_S = gamma_S;
+        mat.Gamma_M0 = gamma_M0;
+        mat.Gamma_M1 = gamma_M1;
+        mat.Gamma_M2 = gamma_M2;
+        mat.Gamma_C = gamma_C;
+        mat.Gamma_Deck = gamma_Deck;
+        mat.Gamma_vs = gamma_vs;
+        mat.Gamma_S = gamma_S;
         safetyFactorsEN.MaterialFactors = mat;
       }
 

@@ -1,17 +1,16 @@
 ﻿using OasysUnits;
-using System;
 
 namespace ComposAPI {
   public class Decking : IDecking {
-    public Length b1 { get; set; } // dimensions of decking see decking page of property wizard of the program
-    public Length b2 { get; set; }
-    public Length b3 { get; set; }
-    public Length b4 { get; set; }
-    public Length b5 { get; set; }
+    public Length B1 { get; set; } // dimensions of decking see decking page of property wizard of the program
+    public Length B2 { get; set; }
+    public Length B3 { get; set; }
+    public Length B4 { get; set; }
+    public Length B5 { get; set; }
     public IDeckingConfiguration DeckingConfiguration { get; set; }
     public Length Depth { get; set; } // overall depth of decking
     public Length Thickness { get; set; } // 	decking sheet thickness
-    public DeckingType Type { get { return m_type; } }
+    public DeckingType Type => m_type;
     internal DeckingType m_type;
 
     public Decking() {
@@ -19,7 +18,7 @@ namespace ComposAPI {
     }
 
     public virtual string ToCoaString(string name, ComposUnits units) {
-      return String.Empty;
+      return string.Empty;
     }
   }
 

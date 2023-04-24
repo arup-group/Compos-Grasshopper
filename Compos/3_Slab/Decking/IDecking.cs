@@ -2,11 +2,11 @@
 
 namespace ComposAPI {
   public interface IDecking {
-    Length b1 { get; }
-    Length b2 { get; }
-    Length b3 { get; }
-    Length b4 { get; }
-    Length b5 { get; }
+    Length B1 { get; }
+    Length B2 { get; }
+    Length B3 { get; }
+    Length B4 { get; }
+    Length B5 { get; }
     IDeckingConfiguration DeckingConfiguration { get; }
     Length Depth { get; }
     Length Thickness { get; }

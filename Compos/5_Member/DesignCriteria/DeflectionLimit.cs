@@ -1,7 +1,7 @@
-﻿using ComposAPI.Helpers;
+﻿using System.Collections.Generic;
+using ComposAPI.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System.Collections.Generic;
 
 namespace ComposAPI {
   public class DeflectionLimit : IDeflectionLimit {
@@ -22,23 +22,25 @@ namespace ComposAPI {
       string coaString = "";
 
       if (AbsoluteDeflection != Length.Zero) {
-        List<string> parameters = new List<string>();
-        parameters.Add(CoaIdentifier.DesignCriteria.DeflectionLimit);
-        parameters.Add(name);
-        parameters.Add(GetLoadTypeCoaString(type));
-        parameters.Add("ABSOLUTE");
-        parameters.Add(CoaHelper.FormatSignificantFigures(AbsoluteDeflection.ToUnit(units.Displacement).Value, 6));
+        var parameters = new List<string> {
+          CoaIdentifier.DesignCriteria.DeflectionLimit,
+          name,
+          GetLoadTypeCoaString(type),
+          "ABSOLUTE",
+          CoaHelper.FormatSignificantFigures(AbsoluteDeflection.ToUnit(units.Displacement).Value, 6)
+        };
 
         coaString += CoaHelper.CreateString(parameters);
       }
 
       if (SpanOverDeflectionRatio != Ratio.Zero) {
-        List<string> parameters = new List<string>();
-        parameters.Add(CoaIdentifier.DesignCriteria.DeflectionLimit);
-        parameters.Add(name);
-        parameters.Add(GetLoadTypeCoaString(type));
-        parameters.Add("SPAN/DEF_RATIO");
-        parameters.Add(CoaHelper.FormatSignificantFigures(SpanOverDeflectionRatio.DecimalFractions, 6));
+        var parameters = new List<string> {
+          CoaIdentifier.DesignCriteria.DeflectionLimit,
+          name,
+          GetLoadTypeCoaString(type),
+          "SPAN/DEF_RATIO",
+          CoaHelper.FormatSignificantFigures(SpanOverDeflectionRatio.DecimalFractions, 6)
+        };
 
         coaString += CoaHelper.CreateString(parameters);
       }
@@ -48,8 +50,9 @@ namespace ComposAPI {
 
     public override string ToString() {
       string str = "";
-      if (AbsoluteDeflection != Length.Zero)
+      if (AbsoluteDeflection != Length.Zero) {
         str += "δ:" + AbsoluteDeflection.ToUnit(ComposUnitsHelper.LengthUnitResult).ToString("f0").Replace(" ", string.Empty) + ", ";
+      }
 
       if (SpanOverDeflectionRatio != Ratio.Zero) {
         str += "δ:1/" + SpanOverDeflectionRatio.DecimalFractions.ToString("f0").Replace(" ", string.Empty);
@@ -58,28 +61,33 @@ namespace ComposAPI {
     }
 
     internal static IDeflectionLimit FromCoaString(string coaString, string name, DeflectionLimitLoadType type, ComposUnits units) {
-      DeflectionLimit defLim = new DeflectionLimit();
+      var defLim = new DeflectionLimit();
 
       List<string> lines = CoaHelper.SplitAndStripLines(coaString);
       foreach (string line in lines) {
         List<string> parameters = CoaHelper.Split(line);
 
-        if (parameters[0] == "END")
+        if (parameters[0] == "END") {
           return defLim;
+        }
 
-        if (parameters[0] == CoaIdentifier.UnitData)
+        if (parameters[0] == CoaIdentifier.UnitData) {
           units.FromCoaString(parameters);
+        }
 
-        if (parameters[1] != name)
+        if (parameters[1] != name) {
           continue;
+        }
 
-        if (parameters[2] != GetLoadTypeCoaString(type))
+        if (parameters[2] != GetLoadTypeCoaString(type)) {
           continue;
+        }
 
-        if (parameters[3] == "SPAN/DEF_RATIO")
+        if (parameters[3] == "SPAN/DEF_RATIO") {
           defLim.SpanOverDeflectionRatio = new Ratio(CoaHelper.ConvertToDouble(parameters[4]), RatioUnit.DecimalFraction);
-        else if (parameters[3] == "ABSOLUTE")
+        } else if (parameters[3] == "ABSOLUTE") {
           defLim.AbsoluteDeflection = new Length(CoaHelper.ConvertToDouble(parameters[4]), units.Displacement);
+        }
       }
       return defLim;
     }

@@ -70,7 +70,7 @@ namespace ComposAPI {
 
     private List<string> GetResults(ClassResultOption resultType) {
       if (!ResultsCache.ContainsKey(resultType)) {
-        List<string> results = new List<string>();
+        var results = new List<string>();
         for (short pos = 0; pos < NumIntermediatePos; pos++) {
           float value = Member.GetResult(resultType.ToString(), Convert.ToInt16(pos));
           switch (Member.DesignCode.Code) {
@@ -79,28 +79,29 @@ namespace ComposAPI {
             case Code.HKSUOS_2005:
             case Code.HKSUOS_2011:
               if (resultType == ClassResultOption.CLAS_CONS_SECTION || resultType == ClassResultOption.CLAS_FINA_SECTION) {
-                if (value == 1)
+                if (value == 1) {
                   results.Add("Plastic");
-                else if (value == 2)
+                } else if (value == 2) {
                   results.Add("Plastic reduced");
-                else if (value == 3)
+                } else if (value == 3) {
                   results.Add("Elastic");
-                else if (value == 4)
+                } else if (value == 4) {
                   results.Add("Elastic reduced");
-                else
+                } else {
                   results.Add("Unknown");
-              }
-              else {
-                if (value == 1)
+                }
+              } else {
+                if (value == 1) {
                   results.Add("Plastic");
-                else if (value == 2)
+                } else if (value == 2) {
                   results.Add("Compact");
-                else if (value == 3)
+                } else if (value == 3) {
                   results.Add("Semi-compact");
-                else if (value == 4)
+                } else if (value == 4) {
                   results.Add("Slender");
-                else
+                } else {
                   results.Add("Unknown");
+                }
               }
               break;
 
@@ -109,16 +110,17 @@ namespace ComposAPI {
               break;
 
             case Code.AS_NZS2327_2017:
-              if (value == 1)
+              if (value == 1) {
                 results.Add("Compact");
-              else if (value == 2)
+              } else if (value == 2) {
                 results.Add("Non compact");
-              else if (value == 3)
+              } else if (value == 3) {
                 results.Add("Slender");
-              else if (value == 4)
+              } else if (value == 4) {
                 results.Add("Deform");
-              else
+              } else {
                 results.Add("Unknown");
+              }
               break;
           }
         }

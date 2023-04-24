@@ -1,7 +1,7 @@
-﻿using ComposAPI.Helpers;
-using OasysUnits;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using ComposAPI.Helpers;
+using OasysUnits;
 
 namespace ComposAPI {
   public class MeshReinforcement : IMeshReinforcement {
@@ -26,8 +26,7 @@ namespace ComposAPI {
       };
       if (Rotated) {
         parameters.Add("PERPENDICULAR");
-      }
-      else {
+      } else {
         parameters.Add("PARALLEL");
       }
 
@@ -50,8 +49,7 @@ namespace ComposAPI {
       };
       if (parameters[4] == "PARALLEL") {
         reinforcement.Rotated = false;
-      }
-      else {
+      } else {
         reinforcement.Rotated = true;
       }
 

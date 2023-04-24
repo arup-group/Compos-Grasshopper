@@ -1,8 +1,8 @@
-﻿using OasysUnits;
-using OasysUnits.Units;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposAPI {
   public class TransverseRebarResult : SubResult, ITransverseRebarResult {
@@ -36,14 +36,15 @@ namespace ComposAPI {
           m_surface = new List<string>();
           for (short pos = 0; pos < NumIntermediatePos; pos++) {
             float value = Member.TranRebarProp(resultType, Convert.ToInt16(pos));
-            if (value == 1)
+            if (value == 1) {
               m_surface.Add("a-a section");
-            else if (value == 2)
+            } else if (value == 2) {
               m_surface.Add("b-b section");
-            else if (value == 5)
+            } else if (value == 5) {
               m_surface.Add("e-e section");
-            else
+            } else {
               m_surface.Add("unknown");
+            }
           }
         }
         return m_surface;
@@ -165,7 +166,7 @@ namespace ComposAPI {
     /// </summary>
     public List<Force> TotalShearResistance {
       get {
-        List<Force> total = new List<Force>();
+        var total = new List<Force>();
         List<Force> concrete = ConcreteShearResistance;
         List<Force> decking = DeckingShearResistance;
         List<Force> mesh = MeshBarShearResistance;
@@ -197,7 +198,7 @@ namespace ComposAPI {
 
     private List<IQuantity> GetResults(TransverseRebarOption resultType) {
       if (!ResultsCache.ContainsKey(resultType)) {
-        List<IQuantity> results = new List<IQuantity>();
+        var results = new List<IQuantity>();
         for (short pos = 0; pos < NumIntermediatePos; pos++) {
           float value = Member.TranRebarProp(resultType, Convert.ToInt16(pos));
 

@@ -34,13 +34,13 @@ namespace ComposGHTests.Member {
       Assert.Equal(1.0, output.Value.LoadCombinationFactors.FinalPsi);
       Assert.Equal(1.35, output.Value.LoadCombinationFactors.Finalgamma_G);
       Assert.Equal(1.5, output.Value.LoadCombinationFactors.Finalgamma_Q);
-      Assert.Equal(1.0, output.Value.MaterialFactors.gamma_M0);
-      Assert.Equal(1.0, output.Value.MaterialFactors.gamma_M1);
-      Assert.Equal(1.25, output.Value.MaterialFactors.gamma_M2);
-      Assert.Equal(1.5, output.Value.MaterialFactors.gamma_C);
-      Assert.Equal(1.0, output.Value.MaterialFactors.gamma_Deck);
-      Assert.Equal(1.25, output.Value.MaterialFactors.gamma_vs);
-      Assert.Equal(1.15, output.Value.MaterialFactors.gamma_S);
+      Assert.Equal(1.0, output.Value.MaterialFactors.Gamma_M0);
+      Assert.Equal(1.0, output.Value.MaterialFactors.Gamma_M1);
+      Assert.Equal(1.25, output.Value.MaterialFactors.Gamma_M2);
+      Assert.Equal(1.5, output.Value.MaterialFactors.Gamma_C);
+      Assert.Equal(1.0, output.Value.MaterialFactors.Gamma_Deck);
+      Assert.Equal(1.25, output.Value.MaterialFactors.Gamma_vs);
+      Assert.Equal(1.15, output.Value.MaterialFactors.Gamma_S);
     }
 
     [Fact]
@@ -61,13 +61,13 @@ namespace ComposGHTests.Member {
       Assert.Equal(1 + 1 / (j++ + 1), output.Value.LoadCombinationFactors.FinalPsi);
       Assert.Equal(1 + 1 / (j++ + 1), output.Value.LoadCombinationFactors.Finalgamma_G);
       Assert.Equal(1 + 1 / (j++ + 1), output.Value.LoadCombinationFactors.Finalgamma_Q);
-      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.gamma_M0);
-      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.gamma_M1);
-      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.gamma_M2);
-      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.gamma_C);
-      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.gamma_Deck);
-      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.gamma_vs);
-      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.gamma_S);
+      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.Gamma_M0);
+      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.Gamma_M1);
+      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.Gamma_M2);
+      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.Gamma_C);
+      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.Gamma_Deck);
+      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.Gamma_vs);
+      Assert.Equal(1 + 1 / (j++ + 1), output.Value.MaterialFactors.Gamma_S);
     }
 
     [Fact]

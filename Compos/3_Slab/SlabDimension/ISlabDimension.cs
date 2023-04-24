@@ -9,7 +9,7 @@ namespace ComposAPI {
     Length AvailableWidthRight { get; }
     Length EffectiveWidthLeft { get; }
     Length EffectiveWidthRight { get; }
-    // Dimensions
+    // Dimensions 
     Length OverallDepth { get; }
     IQuantity StartPosition { get; }
     // Settings

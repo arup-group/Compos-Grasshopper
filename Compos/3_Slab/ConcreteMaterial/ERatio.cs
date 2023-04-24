@@ -27,8 +27,9 @@
 
     public override string ToString() {
       string str = "ST: " + ShortTerm + ", LT: " + LongTerm + ", V: " + Vibration;
-      if (Shrinkage > 0)
+      if (Shrinkage > 0) {
         str += ", S: " + Shrinkage;
+      }
       return str;
     }
   }

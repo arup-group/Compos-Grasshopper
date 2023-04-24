@@ -1,10 +1,10 @@
-﻿using ComposAPI.Helpers;
-using OasysUnits;
-using OasysUnits.Units;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using ComposAPI.Helpers;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposAPI {
   public enum CementClass {
@@ -32,21 +32,24 @@ namespace ComposAPI {
       // default initialiser
     }
 
-    public string ToCoaString(string name, Code code, NationalAnnex nationalAnnex) {
-      List<string> parameters = new List<string>();
-      //EC4_DESIGN_OPTION
+    public string ToCoaString(string name, NationalAnnex nationalAnnex) {
+      // EC4_DESIGN_OPTION
       // EC4_DESIGN_OPTION | name | Shrink - deform | ignore - Shrink | ApproxERatios | Country - Name | Cement - Type | Creep_Long | Creep_Shrink | T0_Long | T0_Shrink | T_Long | T_Shrink | RH_Long | RH_Shrink
-      parameters.Add(CoaIdentifier.EC4DesignOption); // 0
-      parameters.Add(name); // 1
+      var parameters = new List<string> {
+        CoaIdentifier.EC4DesignOption, // 0
+        name // 1
+      };
 
       CoaHelper.AddParameter(parameters, "SHRINKAGE_DEFORM_EC4", ConsiderShrinkageDeflection); // 2
       CoaHelper.AddParameter(parameters, "IGNORE_SHRINKAGE_DEFORM", IgnoreShrinkageDeflectionForLowLengthToDepthRatios); // 3
       CoaHelper.AddParameter(parameters, "APPROXIMATE_E_RATIO", ApproxModularRatios); // 4
 
-      if (nationalAnnex == NationalAnnex.United_Kingdom) // 5
+      if (nationalAnnex == NationalAnnex.United_Kingdom) {
+        // 5
         parameters.Add("United Kingdom");
-      else
+      } else {
         parameters.Add("Generic");
+      }
 
       switch (CementType) // 6
       {
@@ -63,8 +66,8 @@ namespace ComposAPI {
           parameters.Add("CLASS_R");
           break;
       }
-      CreepShrinkageParametersEN lt = (CreepShrinkageParametersEN)LongTerm;
-      CreepShrinkageParametersEN st = (CreepShrinkageParametersEN)ShortTerm;
+      var lt = (CreepShrinkageParametersEN)LongTerm;
+      var st = (CreepShrinkageParametersEN)ShortTerm;
       parameters.Add(CoaHelper.FormatSignificantFigures(lt.CreepCoefficient, 6)); // 7
       parameters.Add(CoaHelper.FormatSignificantFigures(st.CreepCoefficient, 6)); // 8
       parameters.Add(CoaHelper.FormatSignificantFigures(lt.ConcreteAgeAtLoad, 6)); // 9
@@ -78,7 +81,7 @@ namespace ComposAPI {
     }
 
     internal static CodeOptionsEN FromCoaString(List<string> parameters) {
-      CodeOptionsEN codeOptionsEN = new CodeOptionsEN();
+      var codeOptionsEN = new CodeOptionsEN();
 
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
       int i = 2;
@@ -101,8 +104,8 @@ namespace ComposAPI {
           break;
       }
 
-      CreepShrinkageParametersEN longTerm = new CreepShrinkageParametersEN();
-      CreepShrinkageParametersEN shortTerm = new CreepShrinkageParametersEN();
+      var longTerm = new CreepShrinkageParametersEN();
+      var shortTerm = new CreepShrinkageParametersEN();
 
       longTerm.CreepCoefficient = Convert.ToDouble(parameters[i++], noComma);
       shortTerm.CreepCoefficient = Convert.ToDouble(parameters[i++], noComma);

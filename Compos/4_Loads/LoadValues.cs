@@ -1,6 +1,6 @@
-﻿using OasysUnits;
+﻿using System;
+using OasysUnits;
 using OasysUnits.Units;
-using System;
 
 namespace ComposAPI {
   public class LoadValues {
@@ -24,9 +24,9 @@ namespace ComposAPI {
 
     public NonConstantLoad(IQuantity consDead, IQuantity consLive, IQuantity finalDead, IQuantity finalLive, IQuantity position)
       : base(consDead, consLive, finalDead, finalLive) {
-      if (position.QuantityInfo.UnitType != typeof(LengthUnit) &&
-        position.QuantityInfo.UnitType != typeof(RatioUnit))
+      if (position.QuantityInfo.UnitType != typeof(LengthUnit) && position.QuantityInfo.UnitType != typeof(RatioUnit)) {
         throw new Exception("Position must be either Length or Ratio");
+      }
 
       Position = position;
     }

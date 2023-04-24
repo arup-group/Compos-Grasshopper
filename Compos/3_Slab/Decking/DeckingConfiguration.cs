@@ -1,12 +1,12 @@
-﻿using OasysUnits;
+﻿using System.Collections.Generic;
+using OasysUnits;
 using OasysUnits.Units;
-using System.Collections.Generic;
 
 namespace ComposAPI {
   public class DeckingConfiguration : IDeckingConfiguration {
     public Angle Angle { get; set; } // decking angle relative to steel beam in degrees
     public bool IsDiscontinous { get; set; } // is decking jointed
-    public bool IsValid { get { return true; } }
+    public bool IsValid => true;
     public bool IsWelded { get; set; } // 	is joint welded
 
     public DeckingConfiguration() {

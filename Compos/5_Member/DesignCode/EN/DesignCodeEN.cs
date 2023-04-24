@@ -13,7 +13,7 @@
 
     public override string ToCoaString(string name) {
       string str = base.ToCoaString(name);
-      str += CodeOptions.ToCoaString(name, Code, NationalAnnex);
+      str += CodeOptions.ToCoaString(name, NationalAnnex);
       str += SafetyFactors.ToCoaString(name);
       return str;
     }

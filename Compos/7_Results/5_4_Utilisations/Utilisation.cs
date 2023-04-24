@@ -1,6 +1,6 @@
-﻿using OasysUnits;
+﻿using System.Collections.Generic;
+using OasysUnits;
 using OasysUnits.Units;
-using System.Collections.Generic;
 
 namespace ComposAPI {
   public class Utilisation : SubResult, IUtilisation {
@@ -102,7 +102,7 @@ namespace ComposAPI {
     private Ratio GetResults(UtilisationFactorOption resultType) {
       if (!ResultsCache.ContainsKey(resultType)) {
         float value = Member.UtilisationFactor(resultType);
-        Ratio utilisation = new Ratio(value, RatioUnit.DecimalFraction);
+        var utilisation = new Ratio(value, RatioUnit.DecimalFraction);
         ResultsCache.Add(resultType, utilisation);
       }
       return ResultsCache[resultType];

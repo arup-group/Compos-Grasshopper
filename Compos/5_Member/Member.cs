@@ -1,6 +1,6 @@
-﻿using ComposAPI.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using ComposAPI.Helpers;
 
 namespace ComposAPI {
   public class Member : IMember {
@@ -13,8 +13,9 @@ namespace ComposAPI {
     public string Note { get; set; } = "";
     public IResult Result {
       get {
-        if (m_result == null)
+        if (m_result == null) {
           m_result = new Result(this);
+        }
         return m_result;
       }
     }
@@ -25,7 +26,7 @@ namespace ComposAPI {
     private Result m_result = null;
 
     public Member() {
-      ComposFile file = new ComposFile(new List<IMember>() { this });
+      var file = new ComposFile(new List<IMember>() { this });
       Register(file);
     }
 
@@ -60,14 +61,16 @@ namespace ComposAPI {
     }
 
     public bool Design() {
-      if (Beam.Sections.Count > 1)
+      if (Beam.Sections.Count > 1) {
         throw new Exception("Unable to design member with more than one section");
-      if (!Beam.Sections[0].IsCatalogue)
+      }
+      if (!Beam.Sections[0].IsCatalogue) {
         throw new Exception("Unable to design member, the initial section profile must be a catalogue profile");
+      }
 
       ComposFile file = Member.FileRegister[FileGuid];
       if (file.Design(Name) == 0) {
-        BeamSection newSection = new BeamSection(file.BeamSectDesc(Name));
+        var newSection = new BeamSection(file.BeamSectDesc(Name));
         Beam.Sections[0] = newSection;
         file.Update();
         return true;
@@ -98,29 +101,33 @@ namespace ComposAPI {
 
     public void Register(ComposFile file) {
       FileGuid = file.Guid;
-      if (Member.FileRegister.ContainsKey(file.Guid))
+      if (Member.FileRegister.ContainsKey(file.Guid)) {
         Member.FileRegister.Remove(file.Guid);
+      }
       Member.FileRegister.Add(file.Guid, file);
     }
 
     public string ToCoaString(ComposUnits units) {
-      List<string> parameters = new List<string>();
-      parameters.Add(CoaIdentifier.MemberTitle);
-      parameters.Add(Name);
-      parameters.Add(GridReference);
-      parameters.Add(Note);
+      var parameters = new List<string> {
+        CoaIdentifier.MemberTitle,
+        Name,
+        GridReference,
+        Note
+      };
       string coaString = CoaHelper.CreateString(parameters);
 
       coaString += DesignCode.ToCoaString(Name);
-      if (DesignCriteria != null)
+      if (DesignCriteria != null) {
         coaString += DesignCriteria.ToCoaString(Name, units);
+      }
 
       coaString += Beam.ToCoaString(Name, DesignCode.Code, units);
       coaString += Slab.ToCoaString(Name, units);
       coaString += Stud.ToCoaString(Name, units, DesignCode.Code);
 
-      foreach (ILoad load in Loads)
+      foreach (ILoad load in Loads) {
         coaString += load.ToCoaString(Name, units);
+      }
 
       // EC4_DESIGN_OPTION seems to be part of DesignCode..
 
@@ -132,10 +139,11 @@ namespace ComposAPI {
     }
 
     internal static IMember FromCoaString(List<string> parameters) {
-      Member member = new Member();
-      member.Name = parameters[1];
-      member.GridReference = (parameters.Count > 1) ? parameters[2] : "";
-      member.Note = (parameters.Count > 2) ? parameters[3] : "";
+      var member = new Member {
+        Name = parameters[1],
+        GridReference = (parameters.Count > 1) ? parameters[2] : "",
+        Note = (parameters.Count > 2) ? parameters[3] : ""
+      };
       return member;
     }
 
@@ -143,20 +151,20 @@ namespace ComposAPI {
       return FileRegister[FileGuid].Result(Name, option, position);
     }
 
-    internal float MaxResult(string option, short position) {
-      return Member.FileRegister[FileGuid].MaxResult(Name, option, position);
+    internal float MaxResult(string option) {
+      return Member.FileRegister[FileGuid].MaxResult(Name, option);
     }
 
-    internal short MaxResultPosition(string option, short position) {
-      return Member.FileRegister[FileGuid].MaxResultPosition(Name, option, position);
+    internal short MaxResultPosition(string option) {
+      return Member.FileRegister[FileGuid].MaxResultPosition(Name, option);
     }
 
-    internal float MinResult(string option, short position) {
-      return Member.FileRegister[FileGuid].MinResult(Name, option, position);
+    internal float MinResult(string option) {
+      return Member.FileRegister[FileGuid].MinResult(Name, option);
     }
 
-    internal short MinResultPosition(string option, short position) {
-      return Member.FileRegister[FileGuid].MinResultPosition(Name, option, position);
+    internal short MinResultPosition(string option) {
+      return Member.FileRegister[FileGuid].MinResultPosition(Name, option);
     }
 
     internal short NumIntermediatePos() {

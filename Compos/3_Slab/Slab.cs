@@ -1,6 +1,6 @@
-﻿using ComposAPI.Helpers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using ComposAPI.Helpers;
 
 namespace ComposAPI {
   public class Slab : ISlab {
@@ -47,8 +47,7 @@ namespace ComposAPI {
       if (Dimensions.Count == 0) {
         invalid = "Invalid Slab ";
         dim = "(no dimensions set)";
-      }
-      else {
+      } else {
         dim = (Dimensions.Count > 1) ? string.Join(" : ", Dimensions.Select(x => x.ToString()).ToArray()) : Dimensions[0].ToString();
       }
 
@@ -56,8 +55,7 @@ namespace ComposAPI {
       if (Material == null) {
         invalid = "Invalid Slab ";
         mat = "(no material set)";
-      }
-      else {
+      } else {
         mat = Material.ToString();
       }
       string reinf = "";
@@ -67,8 +65,7 @@ namespace ComposAPI {
       if (Transverse == null) {
         invalid = "Invalid Slab ";
         reinf = "(no reinforcement set)";
-      }
-      else {
+      } else {
         reinf += Transverse.ToString();
       }
       return invalid + dim + ", " + mat + ", " + reinf;
@@ -108,7 +105,7 @@ namespace ComposAPI {
             break;
 
           case CoaIdentifier.DeckingCatalogue:
-            slab.Decking = CatalogueDecking.FromCoaString(parameters, units);
+            slab.Decking = CatalogueDecking.FromCoaString(parameters);
             break;
 
           case CoaIdentifier.DeckingUser:

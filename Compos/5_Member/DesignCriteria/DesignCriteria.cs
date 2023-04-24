@@ -1,7 +1,7 @@
-﻿using ComposAPI.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ComposAPI.Helpers;
 
 namespace ComposAPI {
   public class DesignCriteria : IDesignCriteria {
@@ -9,7 +9,7 @@ namespace ComposAPI {
     // beam size
     public IBeamSizeLimits BeamSizeLimits { get; set; } = new BeamSizeLimits();
     public IList<int> CatalogueSectionTypes {
-      get { return m_CatalogueSections; }
+      get => m_CatalogueSections;
       set {
         m_CatalogueSections = value;
         CheckCatalogueTypeIDs();
@@ -42,29 +42,37 @@ namespace ComposAPI {
     public string ToCoaString(string name, ComposUnits units) {
       string coaString = "";
 
-      if (ConstructionDeadLoad != null)
+      if (ConstructionDeadLoad != null) {
         coaString += ConstructionDeadLoad.ToCoaString(name, DeflectionLimitLoadType.ConstructionDeadLoad, units);
-      if (AdditionalDeadLoad != null)
+      }
+
+      if (AdditionalDeadLoad != null) {
         coaString += AdditionalDeadLoad.ToCoaString(name, DeflectionLimitLoadType.AdditionalDeadLoad, units);
-      if (FinalLiveLoad != null)
+      }
+      if (FinalLiveLoad != null) {
         coaString += FinalLiveLoad.ToCoaString(name, DeflectionLimitLoadType.FinalLiveLoad, units);
-      if (TotalLoads != null)
+      }
+      if (TotalLoads != null) {
         coaString += TotalLoads.ToCoaString(name, DeflectionLimitLoadType.Total, units);
-      if (PostConstruction != null)
+      }
+      if (PostConstruction != null) {
         coaString += PostConstruction.ToCoaString(name, DeflectionLimitLoadType.PostConstruction, units);
+      }
 
       coaString += BeamSizeLimits.ToCoaString(name, units);
 
-      List<string> parameters = new List<string>();
-      parameters.Add(CoaIdentifier.DesignCriteria.OptimiseOption);
-      parameters.Add(name);
-      parameters.Add(GetOptionCoaString(OptimiseOption));
+      var parameters = new List<string> {
+        CoaIdentifier.DesignCriteria.OptimiseOption,
+        name,
+        GetOptionCoaString(OptimiseOption)
+      };
       coaString += CoaHelper.CreateString(parameters);
 
-      parameters = new List<string>();
-      parameters.Add(CoaIdentifier.DesignCriteria.SectionType);
-      parameters.Add(name);
-      parameters.Add(string.Join(" ", CatalogueSectionTypes));
+      parameters = new List<string> {
+        CoaIdentifier.DesignCriteria.SectionType,
+        name,
+        string.Join(" ", CatalogueSectionTypes)
+      };
       coaString += CoaHelper.CreateString(parameters);
 
       if (FrequencyLimits != null) {
@@ -79,20 +87,23 @@ namespace ComposAPI {
     }
 
     internal static IDesignCriteria FromCoaString(string coaString, string name, ComposUnits units) {
-      DesignCriteria designCrit = new DesignCriteria();
+      var designCrit = new DesignCriteria();
 
       List<string> lines = CoaHelper.SplitAndStripLines(coaString);
       foreach (string line in lines) {
         List<string> parameters = CoaHelper.Split(line);
 
-        if (parameters[0] == "END")
+        if (parameters[0] == "END") {
           return designCrit;
+        }
 
-        if (parameters[0] == CoaIdentifier.UnitData)
+        if (parameters[0] == CoaIdentifier.UnitData) {
           units.FromCoaString(parameters);
+        }
 
-        if (parameters[1] != name)
+        if (parameters[1] != name) {
           continue;
+        }
 
         switch (parameters[0]) {
           case CoaIdentifier.DesignCriteria.DeflectionLimit:
@@ -129,16 +140,18 @@ namespace ComposAPI {
             break;
 
           case CoaIdentifier.DesignCriteria.SectionType:
-            List<string> cats = parameters[2].Split(' ').ToList();
-            List<int> catalogueIDs = new List<int>();
-            foreach (string cat in cats)
+            var cats = parameters[2].Split(' ').ToList();
+            var catalogueIDs = new List<int>();
+            foreach (string cat in cats) {
               catalogueIDs.Add(int.Parse(cat));
+            }
             designCrit.CatalogueSectionTypes = catalogueIDs;
             break;
 
           case CoaIdentifier.DesignCriteria.Frequency:
-            if (parameters[2] == "CHECK_NATURAL_FREQUENCY")
+            if (parameters[2] == "CHECK_NATURAL_FREQUENCY") {
               designCrit.FrequencyLimits = ComposAPI.FrequencyLimits.FromCoaString(parameters);
+            }
             break;
         }
       }
@@ -169,8 +182,9 @@ namespace ComposAPI {
 
     internal void CheckCatalogueTypeIDs() {
       foreach (int id in m_CatalogueSections) {
-        if (!CatalogueSectionType.CatalogueSectionTypes.ContainsKey(id))
+        if (!CatalogueSectionType.CatalogueSectionTypes.ContainsKey(id)) {
           throw new Exception("Catalogue Section Type of ID: " + id + " does not exist in Compos Catalogue Section Library");
+        }
       }
     }
   }

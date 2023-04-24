@@ -1,9 +1,9 @@
-﻿using ComposAPI.Helpers;
-using OasysUnits;
-using OasysUnits.Units;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using ComposAPI.Helpers;
+using OasysUnits;
+using OasysUnits.Units;
 
 namespace ComposAPI {
   public enum RebarGrade {
@@ -46,14 +46,14 @@ namespace ComposAPI {
     public string ToCoaString(string name) {
       NumberFormatInfo noComma = CultureInfo.InvariantCulture.NumberFormat;
 
-      List<string> parameters = new List<string>();
-      parameters.Add(CoaIdentifier.RebarMaterial);
-      parameters.Add(name);
+      var parameters = new List<string> {
+        CoaIdentifier.RebarMaterial,
+        name
+      };
       if (UserDefined) {
         parameters.Add("USER_DEFINED");
         parameters.Add(CoaHelper.FormatSignificantFigures(Fy.ToUnit(PressureUnit.NewtonPerSquareMeter).Value, 6));
-      }
-      else {
+      } else {
         parameters.Add("STANDARD");
         parameters.Add(Grade.ToString().Remove(0, 3));
       }
@@ -65,38 +65,36 @@ namespace ComposAPI {
       if (UserDefined) {
         string str = Fy.ToUnit(ComposUnitsHelper.StressUnit).ToString("f0");
         return str.Replace(" ", string.Empty);
-      }
-      else {
+      } else {
         return Grade.ToString().Remove(0, 3);
       }
     }
 
     internal static IReinforcementMaterial FromCoaString(List<string> parameters, Code code) {
-      ReinforcementMaterial material = new ReinforcementMaterial();
+      var material = new ReinforcementMaterial();
 
       if (parameters[2] == "USER_DEFINED") {
         material.UserDefined = true;
         material.Fy = CoaHelper.ConvertToStress(parameters[3], PressureUnit.NewtonPerSquareMeter);
-      }
-      else {
+      } else {
         material.UserDefined = false;
         string gradePrefix;
         switch (code) {
-          case (Code.AS_NZS2327_2017):
+          case Code.AS_NZS2327_2017:
             gradePrefix = "AS_";
             break;
 
-          case (Code.BS5950_3_1_1990_A1_2010):
-          case (Code.BS5950_3_1_1990_Superseded):
+          case Code.BS5950_3_1_1990_A1_2010:
+          case Code.BS5950_3_1_1990_Superseded:
             gradePrefix = "BS_";
             break;
 
-          case (Code.EN1994_1_1_2004):
+          case Code.EN1994_1_1_2004:
             gradePrefix = "EN_";
             break;
 
-          case (Code.HKSUOS_2005):
-          case (Code.HKSUOS_2011):
+          case Code.HKSUOS_2005:
+          case Code.HKSUOS_2011:
             gradePrefix = "HK_";
             break;
 

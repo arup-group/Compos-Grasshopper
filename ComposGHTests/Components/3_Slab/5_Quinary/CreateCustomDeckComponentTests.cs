@@ -41,11 +41,11 @@ namespace ComposGHTests.Slab {
 
       DeckingGoo output = (DeckingGoo)ComponentTestHelper.GetOutput(comp);
       CustomDecking customDecking = (CustomDecking)output.Value;
-      Assert.Equal(11, customDecking.b1.Millimeters);
-      Assert.Equal(12, customDecking.b2.Millimeters);
-      Assert.Equal(13, customDecking.b3.Millimeters);
-      Assert.Equal(14.5, customDecking.b4.Millimeters);
-      Assert.Equal(9, customDecking.b5.Millimeters);
+      Assert.Equal(11, customDecking.B1.Millimeters);
+      Assert.Equal(12, customDecking.B2.Millimeters);
+      Assert.Equal(13, customDecking.B3.Millimeters);
+      Assert.Equal(14.5, customDecking.B4.Millimeters);
+      Assert.Equal(9, customDecking.B5.Millimeters);
       Assert.Equal(8, customDecking.Depth.Millimeters);
       Assert.Equal(7, customDecking.Thickness.Millimeters);
       Assert.Equal(600, customDecking.Strength.Megapascals);
@@ -63,11 +63,11 @@ namespace ComposGHTests.Slab {
 
       DeckingGoo output = (DeckingGoo)ComponentTestHelper.GetOutput(comp);
       CustomDecking customDecking = (CustomDecking)output.Value;
-      Assert.Equal(11, customDecking.b1.Centimeters);
-      Assert.Equal(12, customDecking.b2.Centimeters);
-      Assert.Equal(13, customDecking.b3.Centimeters);
-      Assert.Equal(14.5, customDecking.b4.Centimeters);
-      Assert.Equal(9, customDecking.b5.Centimeters);
+      Assert.Equal(11, customDecking.B1.Centimeters);
+      Assert.Equal(12, customDecking.B2.Centimeters);
+      Assert.Equal(13, customDecking.B3.Centimeters);
+      Assert.Equal(14.5, customDecking.B4.Centimeters);
+      Assert.Equal(9, customDecking.B5.Centimeters);
       Assert.Equal(8, customDecking.Depth.Centimeters);
       Assert.Equal(7, customDecking.Thickness.Centimeters);
       Assert.Equal(600, customDecking.Strength.Pascals);
