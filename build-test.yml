@@ -95,10 +95,23 @@ steps:
     .\codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_composapi.xml -F composapi
     .\codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_composgh.xml -F composgh
     .\codecov -t $env:CODECOV_TOKEN --dir $(System.DefaultWorkingDirectory)\results --file coverage_integration.xml -F integration
+    .\codecov -t $env:CODECOV_TOKEN_OASYSGH --dir $(System.DefaultWorkingDirectory)\results --file coverage_composapi.xml -F composapi
+    .\codecov -t $env:CODECOV_TOKEN_OASYSGH --dir $(System.DefaultWorkingDirectory)\results --file coverage_composgh.xml -F composgh
+    .\codecov -t $env:CODECOV_TOKEN_OASYSGH --dir $(System.DefaultWorkingDirectory)\results --file coverage_integration.xml -F integration
   env:
     CODECOV_TOKEN: $(CODECOV_TOKEN)
+    CODECOV_TOKEN_OASYSGH: $(CODECOV_TOKEN_OASYSGH)
   displayName: Upload Code Coverage to codecovio
   failOnStderr: true
+
+- publish: $(System.DefaultWorkingDirectory)\results\coverage_composapi.xml
+  artifact: ComposTestsCoverage
+
+- publish: $(System.DefaultWorkingDirectory)\results\coverage_composgh.xml
+  artifact: ComposGHTestsCoverage
+
+- publish: $(System.DefaultWorkingDirectory)\results\coverage_integration.xml
+  artifact: IntegrationTestsCoverage
 
 - task: PowerShell@2
   displayName: Check for existing tags
