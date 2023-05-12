@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <Version>0.9.9-beta</Version>
+    <Version>0.9.10-beta</Version>
     <Title>ComposAPI</Title>
     <Description>Description</Description>
     <PlatformTarget>x64</PlatformTarget>
@@ -22,14 +22,6 @@
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
       <_Parameter1>ComposAPITests</_Parameter1>
     </AssemblyAttribute>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="6_Analysis\**" />
-    <Compile Remove="8_Design\**" />
-    <EmbeddedResource Remove="6_Analysis\**" />
-    <EmbeddedResource Remove="8_Design\**" />
-    <None Remove="6_Analysis\**" />
-    <None Remove="8_Design\**" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
