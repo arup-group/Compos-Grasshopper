@@ -16,13 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Components\6_Analysis\**" />
-    <EmbeddedResource Remove="Components\6_Analysis\**" />
-    <None Remove="Components\6_Analysis\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="OasysGH" Version="0.6.4-beta" />
+    <PackageReference Include="OasysGH" Version="0.6.5-beta" />
     <PackageReference Include="OasysUnits" Version="1.0.0" />
     <PackageReference Include="OasysUnits.Serialization.JsonNet" Version="1.0.0" />
     <PackageReference Include="Rhino.Inside" Version="7.0.0" />
