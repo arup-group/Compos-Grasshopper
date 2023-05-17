@@ -11,13 +11,7 @@
     <Platforms>x64</Platforms>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Parameters\**" />
-    <EmbeddedResource Remove="Parameters\**" />
-    <None Remove="Parameters\**" />
-  </ItemGroup>
-
-  <ItemGroup>
+   <ItemGroup>
     <COMReference Include="Compos_8_6">
       <VersionMinor>6</VersionMinor>
       <VersionMajor>8</VersionMajor>
@@ -33,8 +27,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageReference Include="Moq" Version="4.18.4" />
-    <PackageReference Include="OasysUnits" Version="1.0.0" />
-    <PackageReference Include="OasysGH" Version="0.6.5-beta" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
