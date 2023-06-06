@@ -77,6 +77,17 @@ steps:
     codeCoverageTool: 'cobertura'
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/results/integration/**/coverage.cobertura.xml'
     pathToSources: '$(System.DefaultWorkingDirectory)'
+    
+- powershell: |
+    if (200 -ne (Invoke-WebRequest -Uri https://codecov.io/validate -Body (Get-Content -Raw -LiteralPath .\codecov.yml) -Method post | Select-Object StatusCode).StatusCode) { 
+      Write-Output "codecov.yml is invalid"
+      Invoke-WebRequest -Uri https://codecov.io/validate -Body (Get-Content -Raw -LiteralPath .\codecov.yml) -Method post
+      exit(1)
+    } else { 
+      Write-Output "codecov.yml is valid"
+    }
+  displayName: Validate codecov.yml
+  failOnStderr: true
 
 - powershell: |
     $coverage_file_composapi = (Resolve-Path $(System.DefaultWorkingDirectory)/results/composapi/*/coverage.cobertura.xml).Path
