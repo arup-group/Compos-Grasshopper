@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <Version>0.9.11-beta</Version>
+    <Version>0.9.12-beta</Version>
     <Title>Compos</Title>
     <Description>Official Oasys Compos Grasshopper Plugin
 
@@ -63,9 +63,9 @@ Copyright © Oasys 1985 - 2022</Description>
     <PackageReference Include="Grasshopper">
       <Version>6.27.20176.5001</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.3" />
     <PackageReference Include="OasysGH">
-      <Version>0.6.6-beta</Version>
+      <Version>0.6.10-beta</Version>
     </PackageReference>
     <PackageReference Include="OasysUnits.Serialization.JsonNet">
       <Version>1.0.0</Version>
