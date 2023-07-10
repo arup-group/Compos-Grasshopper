@@ -10,6 +10,7 @@ using Grasshopper.Kernel.Types;
 using OasysGH;
 using OasysGH.Components;
 using OasysGH.Helpers;
+using OasysGH.UI;
 
 namespace ComposGH.Components {
   /// <summary>
@@ -30,7 +31,7 @@ namespace ComposGH.Components {
       Ribbon.SubCategoryName.Cat0()) { Hidden = true; } // sets the initial state of the component to hidden
 
     public override void CreateAttributes() {
-      m_attributes = new OasysGH.UI.ThreeButtonAtrributes(this, "Save", "Save As", "Open in Compos", SaveFile, SaveAsFile, OpenCompos, true, "Save Compos file");
+      m_attributes = new ThreeButtonComponentAttributes(this, "Save", "Save As", "Open in Compos", SaveFile, SaveAsFile, OpenCompos, true, "Save Compos file");
     }
 
     public override bool Read(GH_IO.Serialization.GH_IReader reader) {
