@@ -80,46 +80,46 @@ namespace ComposGH.Components {
       pManager.AddGenericParameter("Positions", "Pos", "Positions for each critical section location. Values are measured from beam start.", GH_ParamAccess.list);
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       IResult res = ((MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
       var positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
       IStudResult result = res.StudResults;
 
       int i = 0;
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.StudCapacity.Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
 
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.NumberOfStudsStart.Select(x => new GH_Integer(x)).ToList());
 
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.NumberOfStudsEnd.Select(x => new GH_Integer(x)).ToList());
 
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.NumberOfStudsRequiredStart.Select(x => new GH_Integer(x)).ToList());
 
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.NumberOfStudsRequiredEnd.Select(x => new GH_Integer(x)).ToList());
 
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.StudCapacityRequiredForFullShearInteraction.Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
 
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.ShearInteractionRequired.Select(x => new GH_UnitNumber(x.ToUnit(RatioUnit.DecimalFraction))).ToList());
 
-      Output.SetItem(this, DA, i++, new GH_UnitNumber(
+      DA.SetData(i++, new GH_UnitNumber(
         result.SingleStudCapacity.ToUnit(ForceUnit)));
 
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.ShearInteraction.Select(x => new GH_UnitNumber(x.ToUnit(RatioUnit.DecimalFraction))).ToList());
 
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.StudCapacityStart.Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
 
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.StudCapacityEnd.Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
 
-      Output.SetList(this, DA, i, positions);
+      DA.SetDataList(i, positions);
     }
 
     protected override void UpdateUIFromSelectedItems() {

@@ -69,7 +69,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new DeflectionLimitParam());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       if (Params.Input[0].Sources.Count == 0 &
         Params.Input[1].Sources.Count == 0) {
         AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Inputs failed to collect data.");
@@ -86,7 +86,7 @@ namespace ComposGH.Components {
         deflectionLimit.SpanOverDeflectionRatio = (Ratio)Input.UnitNumber(this, DA, 1, RatioUnit.DecimalFraction);
       }
 
-      Output.SetItem(this, DA, 0, new DeflectionLimitGoo(deflectionLimit));
+      DA.SetData(0, new DeflectionLimitGoo(deflectionLimit));
     }
 
     protected override void UpdateUIFromSelectedItems() {

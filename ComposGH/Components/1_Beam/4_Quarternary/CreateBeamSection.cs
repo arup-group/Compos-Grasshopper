@@ -69,7 +69,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new BeamSectionParam());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       string profile = Helpers.CustomInput.BeamSection(this, DA, 0, false);
       profile = profile.Trim();
 
@@ -89,7 +89,7 @@ namespace ComposGH.Components {
         StartPosition = start,
         TaperedToNext = taper
       };
-      Output.SetItem(this, DA, 0, new BeamSectionGoo(beamSection));
+      DA.SetData(0, new BeamSectionGoo(beamSection));
     }
 
     protected override void UpdateUIFromSelectedItems() {

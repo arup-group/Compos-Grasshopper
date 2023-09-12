@@ -110,7 +110,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new SteelMaterialParam(), "Custom " + SteelMaterialGoo.Name, SteelMaterialGoo.NickName, "Custom " + SteelMaterialGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.item);
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       // override steel grade?
       if (Params.Input[4].Sources.Count > 0) {
         string grade = "";
@@ -143,7 +143,7 @@ namespace ComposGH.Components {
         }
       }
 
-      Output.SetItem(this, DA, 0, new SteelMaterialGoo(new SteelMaterial(
+      DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(
         (Pressure)Input.UnitNumber(this, DA, 0, StressUnit),
         (Pressure)Input.UnitNumber(this, DA, 1, StressUnit),
         (Density)Input.UnitNumber(this, DA, 2, DensityUnit),

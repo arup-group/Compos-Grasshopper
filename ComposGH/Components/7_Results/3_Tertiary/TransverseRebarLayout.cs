@@ -63,23 +63,17 @@ namespace ComposGH.Components {
       pManager.AddGenericParameter("Area", "Area", "Rebar area per meter in group", GH_ParamAccess.list);
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       IResult res = ((MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
       ITransverseRebarResult result = res.TransverseRebarResults;
 
       int i = 0;
-      Output.SetList(this, DA, i++,
-        result.StartPosition.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
-      Output.SetList(this, DA, i++,
-        result.EndPosition.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
-      Output.SetList(this, DA, i++,
-        result.Diameter.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
-      Output.SetList(this, DA, i++,
-        result.Spacing.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
-      Output.SetList(this, DA, i++,
-        result.Cover.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
-      Output.SetList(this, DA, i,
-        result.Area.Select(x => new GH_UnitNumber(x.ToUnit(UnitsHelper.GetAreaUnit(LengthUnit)))).ToList());
+      DA.SetDataList(i++, result.StartPosition.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
+      DA.SetDataList(i++, result.EndPosition.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
+      DA.SetDataList(i++, result.Diameter.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
+      DA.SetDataList(i++, result.Spacing.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
+      DA.SetDataList(i++, result.Cover.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
+      DA.SetDataList(i, result.Area.Select(x => new GH_UnitNumber(x.ToUnit(UnitsHelper.GetAreaUnit(LengthUnit)))).ToList());
     }
 
     protected override void UpdateUIFromSelectedItems() {

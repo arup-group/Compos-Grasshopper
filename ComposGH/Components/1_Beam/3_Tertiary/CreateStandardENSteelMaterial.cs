@@ -67,7 +67,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new SteelMaterialParam(), "Standard " + SteelMaterialGoo.Name, SteelMaterialGoo.NickName, "Standard EN1993-1-1 " + SteelMaterialGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.item);
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       // override steel grade?
       if (Params.Input[0].Sources.Count > 0) {
         string grade = "";
@@ -100,7 +100,7 @@ namespace ComposGH.Components {
         Override_dropDownItems[0] = false;
       }
 
-      Output.SetItem(this, DA, 0, new SteelMaterialGoo(new SteelMaterial(SteelGrade, Code.EN1994_1_1_2004)));
+      DA.SetData(0, new SteelMaterialGoo(new SteelMaterial(SteelGrade, Code.EN1994_1_1_2004)));
     }
 
     protected override void UpdateUIFromSelectedItems() {

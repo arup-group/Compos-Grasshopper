@@ -150,7 +150,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new StudDimensionsParam(), StudDimensionsGoo.Name, StudDimensionsGoo.NickName, "EN " + StudDimensionsGoo.Description + " for a " + StudGoo.Description, GH_ParamAccess.item);
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       if (_selectedItems[0] == StandardSizes[0]) // custom size
       {
         var dia = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
@@ -159,17 +159,17 @@ namespace ComposGH.Components {
         if (Params.Input[2].Sources.Count > 0) {
           _selectedItems[1] = "Custom";
           var strengthS = (Pressure)Input.UnitNumber(this, DA, 2, StressUnit);
-          Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthS)));
+          DA.SetData(0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthS)));
         } else {
-          Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(dia, h, StdGrd)));
+          DA.SetData(0, new StudDimensionsGoo(new StudDimensions(dia, h, StdGrd)));
         }
       } else {
         if (Params.Input[0].Sources.Count > 0) {
           _selectedItems[1] = "Custom";
           var strengthS = (Pressure)Input.UnitNumber(this, DA, 0, StressUnit);
-          Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(StdSize, strengthS)));
+          DA.SetData(0, new StudDimensionsGoo(new StudDimensions(StdSize, strengthS)));
         } else {
-          Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(StdSize, StdGrd)));
+          DA.SetData(0, new StudDimensionsGoo(new StudDimensions(StdSize, StdGrd)));
         }
       }
     }

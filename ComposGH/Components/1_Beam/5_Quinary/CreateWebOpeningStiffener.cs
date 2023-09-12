@@ -106,7 +106,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new WebOpeningStiffenersParam());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       bool bothSides = false;
       DA.GetData(0, ref bothSides);
       var start = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
@@ -115,10 +115,10 @@ namespace ComposGH.Components {
       if (OpeningType == Stiff_types.Web_Opening) {
         var bottomWidth = (Length)Input.UnitNumber(this, DA, 4, LengthUnit);
         var bottomTHK = (Length)Input.UnitNumber(this, DA, 5, LengthUnit);
-        Output.SetItem(this, DA, 0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
+        DA.SetData(0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
             start, topWidth, topTHK, bottomWidth, bottomTHK, bothSides)));
       } else {
-        Output.SetItem(this, DA, 0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
+        DA.SetData(0, new WebOpeningStiffenersGoo(new WebOpeningStiffeners(
             start, topWidth, topTHK, bothSides)));
       }
     }

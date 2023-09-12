@@ -108,7 +108,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new ComposLoadParameter());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       switch (DistributionType) {
         case LoadDistribution.Line:
           var constDeadL1 = (ForcePerLength)Input.UnitNumber(this, DA, 0, ForcePerLengthUnit);
@@ -121,7 +121,7 @@ namespace ComposGH.Components {
           var finalLiveL2 = (ForcePerLength)Input.UnitNumber(this, DA, 7, ForcePerLengthUnit);
           Load loadL = new LinearLoad(
             constDeadL1, constLiveL1, finalDeadL1, finalLiveL1, constDeadL2, constLiveL2, finalDeadL2, finalLiveL2);
-          Output.SetItem(this, DA, 0, new LoadGoo(loadL));
+          DA.SetData(0, new LoadGoo(loadL));
           break;
 
         case LoadDistribution.Area:
@@ -135,7 +135,7 @@ namespace ComposGH.Components {
           var finalLiveA2 = (Pressure)Input.UnitNumber(this, DA, 7, ForcePerAreaUnit);
           Load loadA = new LinearLoad(
             constDeadA1, constLiveA1, finalDeadA1, finalLiveA1, constDeadA2, constLiveA2, finalDeadA2, finalLiveA2);
-          Output.SetItem(this, DA, 0, new LoadGoo(loadA));
+          DA.SetData(0, new LoadGoo(loadA));
           break;
       }
     }

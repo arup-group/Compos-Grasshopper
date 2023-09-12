@@ -77,7 +77,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new BeamSizeLimitsParam());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       var minDepth = new Length(20, LengthUnit.Centimeter);
       if (Params.Input[0].Sources.Count > 0) {
         minDepth = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
@@ -105,7 +105,7 @@ namespace ComposGH.Components {
         MaxWidth = maxWidth
       };
 
-      Output.SetItem(this, DA, 0, new BeamSizeLimitsGoo(beamSizeLimits));
+      DA.SetData(0, new BeamSizeLimitsGoo(beamSizeLimits));
     }
 
     protected override void UpdateUIFromSelectedItems() {

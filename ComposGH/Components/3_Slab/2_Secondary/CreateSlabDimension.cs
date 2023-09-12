@@ -83,7 +83,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new SlabDimensionParam());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       var start = (Length)Input.UnitNumber(this, DA, 0, LengthUnit, true);
       var overallDepth = (Length)Input.UnitNumber(this, DA, 1, LengthUnit, true);
       var availableWidthLeft = (Length)Input.UnitNumber(this, DA, 2, LengthUnit, true);
@@ -108,7 +108,7 @@ namespace ComposGH.Components {
         slabDimension = new SlabDimension(start, overallDepth, availableWidthLeft, availableWidthRight, taperedToNext);
       }
 
-      Output.SetItem(this, DA, 0, new SlabDimensionGoo(slabDimension));
+      DA.SetData(0, new SlabDimensionGoo(slabDimension));
     }
 
     protected override void UpdateUIFromSelectedItems() {

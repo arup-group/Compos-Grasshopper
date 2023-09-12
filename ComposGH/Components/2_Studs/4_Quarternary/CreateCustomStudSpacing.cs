@@ -72,7 +72,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new StudGroupSpacingParam());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       IQuantity start = Input.LengthOrRatio(this, DA, 0, LengthUnit);
       int rows = 1;
       DA.GetData(1, ref rows);
@@ -80,7 +80,7 @@ namespace ComposGH.Components {
       DA.GetData(2, ref lines);
       var spacing = (Length)Input.UnitNumber(this, DA, 3, LengthUnit);
 
-      Output.SetItem(this, DA, 0, new StudGroupSpacingGoo(new StudGroupSpacing(start, rows, lines, spacing)));
+      DA.SetData(0, new StudGroupSpacingGoo(new StudGroupSpacing(start, rows, lines, spacing)));
     }
 
     protected override void UpdateUIFromSelectedItems() {

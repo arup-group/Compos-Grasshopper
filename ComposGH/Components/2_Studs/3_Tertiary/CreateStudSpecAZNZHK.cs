@@ -77,7 +77,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new StudSpecificationParam(), StudSpecificationGoo.Name, StudSpecificationGoo.NickName, StudSpecificationGoo.Description + " applicable for AS/NZ or HK codes, for a " + StudGoo.Description, GH_ParamAccess.item);
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       // get default length inputs used for all cases
       IQuantity noStudZoneStart = Length.Zero;
       if (Params.Input[0].Sources.Count > 0) {
@@ -93,7 +93,7 @@ namespace ComposGH.Components {
 
       var specOther = new StudSpecification(
           noStudZoneStart, noStudZoneEnd, welded);
-      Output.SetItem(this, DA, 0, new StudSpecificationGoo(specOther));
+      DA.SetData(0, new StudSpecificationGoo(specOther));
     }
 
     protected override void UpdateUIFromSelectedItems() {

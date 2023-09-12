@@ -282,7 +282,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new DesignCodeParam());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       SafetyFactorsGoo safetyFactorsGoo = null;
       ISafetyFactors safetyFactors = null;
       SafetyFactorsENGoo ec4safetyFactorsGoo = null;
@@ -337,7 +337,7 @@ namespace ComposGH.Components {
             ec4.SafetyFactors = ec4safetyFactors;
           }
 
-          Output.SetItem(this, DA, 0, new DesignCodeGoo(ec4));
+          DA.SetData(0, new DesignCodeGoo(ec4));
           break;
 
         case Code.AS_NZS2327_2017:
@@ -358,7 +358,7 @@ namespace ComposGH.Components {
             asnz.SafetyFactors = safetyFactors;
           }
 
-          Output.SetItem(this, DA, 0, new DesignCodeGoo(asnz));
+          DA.SetData(0, new DesignCodeGoo(asnz));
           break;
 
         default:

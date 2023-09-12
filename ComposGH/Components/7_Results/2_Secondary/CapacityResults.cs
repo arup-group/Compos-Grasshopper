@@ -99,7 +99,7 @@ namespace ComposGH.Components {
       pManager.AddGenericParameter("Positions", "Pos", "Positions for each critical section location. Values are measured from beam start.", GH_ParamAccess.list);
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       IResult res = ((MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
       var positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
       ICapacityResult result = res.Capacities;
@@ -166,17 +166,17 @@ namespace ComposGH.Components {
       }
 
       int i = 0;
-      Output.SetList(this, DA, i++, outputs0);
-      Output.SetList(this, DA, i++, outputs1);
+      DA.SetDataList(i++, outputs0);
+      DA.SetDataList(i++, outputs1);
 
-      Output.SetList(this, DA, i++, result.Shear
+      DA.SetDataList(i++, result.Shear
         .Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
-      Output.SetList(this, DA, i++, result.ShearBuckling
+      DA.SetDataList(i++, result.ShearBuckling
         .Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
-      Output.SetList(this, DA, i++, result.ShearRequired
+      DA.SetDataList(i++, result.ShearRequired
         .Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
 
-      Output.SetList(this, DA, i, positions);
+      DA.SetDataList(i, positions);
     }
 
     protected override void UpdateUIFromSelectedItems() {

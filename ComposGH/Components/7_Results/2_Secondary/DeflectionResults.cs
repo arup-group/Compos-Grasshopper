@@ -62,26 +62,26 @@ namespace ComposGH.Components {
       pManager.AddGenericParameter("Positions", "Pos", "Positions for each critical section location. Values are measured from beam start.", GH_ParamAccess.list);
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       IResult res = ((MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
       var positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
       IDeflectionResult result = res.Deflections;
 
       int i = 0;
-      Output.SetList(this, DA, i++, result.ConstructionDeadLoad
+      DA.SetDataList(i++, result.ConstructionDeadLoad
         .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
-      Output.SetList(this, DA, i++, result.AdditionalDeadLoad
+      DA.SetDataList(i++, result.AdditionalDeadLoad
         .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
-      Output.SetList(this, DA, i++, result.LiveLoad
+      DA.SetDataList(i++, result.LiveLoad
         .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
-      Output.SetList(this, DA, i++, result.Shrinkage
+      DA.SetDataList(i++, result.Shrinkage
         .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
-      Output.SetList(this, DA, i++, result.PostConstruction
+      DA.SetDataList(i++, result.PostConstruction
         .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
-      Output.SetList(this, DA, i++, result.Total
+      DA.SetDataList(i++, result.Total
         .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
 
-      Output.SetList(this, DA, i, positions);
+      DA.SetDataList(i, positions);
     }
 
     protected override void UpdateUIFromSelectedItems() {

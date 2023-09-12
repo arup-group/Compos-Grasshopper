@@ -60,8 +60,8 @@ namespace ComposGH.Components {
       pManager.AddParameter(new StudDimensionsParam());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
-      Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(StdSize)));
+    protected override void SolveInternal(IGH_DataAccess DA) {
+      DA.SetData(0, new StudDimensionsGoo(new StudDimensions(StdSize)));
     }
 
     protected override void UpdateUIFromSelectedItems() {

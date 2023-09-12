@@ -93,7 +93,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new SupportsParam());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       // override intermediate support?
       if (Params.Input[3].Sources.Count > 0) {
         string restraintType = "";
@@ -130,10 +130,10 @@ namespace ComposGH.Components {
         List<IQuantity> restrs = Input.LengthsOrRatios(this, DA, 2, LengthUnit);
         _selectedItems[0] = "Custom";
         var sup = new Supports(restrs, smir, ffre);
-        Output.SetItem(this, DA, 0, new SupportsGoo(sup));
+        DA.SetData(0, new SupportsGoo(sup));
       } else {
         var sup = new Supports(RestraintType, smir, ffre);
-        Output.SetItem(this, DA, 0, new SupportsGoo(sup));
+        DA.SetData(0, new SupportsGoo(sup));
       }
     }
 

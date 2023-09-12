@@ -61,7 +61,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new DesignCriteriaParam());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       var designCriteria = new DesignCriteria {
         OptimiseOption = OptOption
       };
@@ -117,7 +117,7 @@ namespace ComposGH.Components {
         designCriteria.FrequencyLimits = dlGoo.Value;
       }
 
-      Output.SetItem(this, DA, 0, new DesignCriteriaGoo(designCriteria));
+      DA.SetData(0, new DesignCriteriaGoo(designCriteria));
     }
 
     protected override void UpdateUIFromSelectedItems() {

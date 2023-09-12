@@ -81,7 +81,7 @@ namespace ComposGH.Components {
       pManager.AddBooleanParameter("Catalogue", "Cat", "True if profile is Catalogue", GH_ParamAccess.item);
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       var profile = new BeamSection(CustomInput.BeamSection(this, DA, 0, false));
 
       int i = 0;

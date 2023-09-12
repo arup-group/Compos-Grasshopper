@@ -51,7 +51,7 @@ namespace ComposGH.Components {
       pManager.AddIntegerParameter("Catalogue ID", "CID", "Compos Section Catalogue ID for a " + DesignCriteriaGoo.Description, GH_ParamAccess.list);
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       Dictionary<int, string> catDic = ComposAPI.Helpers.CatalogueSectionType.CatalogueSectionTypes;
 
       string s = "";
@@ -93,7 +93,7 @@ namespace ComposGH.Components {
           _selectedItems[0] = Catalogues[4];
         }
 
-        Output.SetItem(this, DA, 0, new GH_Integer(catDic.FirstOrDefault(x => x.Value == _selectedItems[0]).Key));
+        DA.SetData(0, new GH_Integer(catDic.FirstOrDefault(x => x.Value == _selectedItems[0]).Key));
       }
     }
   }

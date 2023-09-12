@@ -137,7 +137,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new ComposWebOpeningParameter());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       var width_dia = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
 
       int i = 1;
@@ -155,11 +155,11 @@ namespace ComposGH.Components {
 
       switch (OpeningType) {
         case WebOpeningShape.Rectangular:
-          Output.SetItem(this, DA, 0, new WebOpeningGoo(new WebOpening(width_dia, height, x, z, stiff?.Value)));
+          DA.SetData(0, new WebOpeningGoo(new WebOpening(width_dia, height, x, z, stiff?.Value)));
           break;
 
         case WebOpeningShape.Circular:
-          Output.SetItem(this, DA, 0, new WebOpeningGoo(new WebOpening(width_dia, x, z, stiff?.Value)));
+          DA.SetData(0, new WebOpeningGoo(new WebOpening(width_dia, x, z, stiff?.Value)));
           break;
       }
     }

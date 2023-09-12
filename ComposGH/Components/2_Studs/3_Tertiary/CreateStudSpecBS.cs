@@ -77,7 +77,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new StudSpecificationParam(), StudSpecificationGoo.Name, StudSpecificationGoo.NickName, "BS " + StudSpecificationGoo.Description + " for a " + StudGoo.Description, GH_ParamAccess.item);
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       // get default length inputs used for all cases
       IQuantity noStudZoneStart = Length.Zero;
       if (Params.Input[0].Sources.Count > 0) {
@@ -93,7 +93,7 @@ namespace ComposGH.Components {
 
       var specBS = new StudSpecification(
           ec4, noStudZoneStart, noStudZoneEnd);
-      Output.SetItem(this, DA, 0, new StudSpecificationGoo(specBS));
+      DA.SetData(0, new StudSpecificationGoo(specBS));
     }
 
     protected override void UpdateUIFromSelectedItems() {

@@ -92,7 +92,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new ComposStudParameter());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       // we need to eventually add a check if dimensions and specification fit together here!
 
       var studDimensions = (StudDimensionsGoo)Input.GenericGoo<StudDimensionsGoo>(this, DA, 0);
@@ -110,7 +110,7 @@ namespace ComposGH.Components {
         case StudSpacingType.Automatic:
         case StudSpacingType.Min_Num_of_Studs:
           DA.GetData(2, ref minSav);
-          Output.SetItem(this, DA, 0, new StudGoo(
+          DA.SetData(0, new StudGoo(
               new Stud(studDimensions.Value, studSpec.Value, minSav, SpacingType)));
           break;
 
@@ -118,7 +118,7 @@ namespace ComposGH.Components {
           DA.GetData(2, ref minSav);
           double interaction = 0.85;
           DA.GetData(3, ref interaction);
-          Output.SetItem(this, DA, 0, new StudGoo(
+          DA.SetData(0, new StudGoo(
               new Stud(studDimensions.Value, studSpec.Value, minSav, interaction)));
           break;
 
@@ -126,7 +126,7 @@ namespace ComposGH.Components {
           List<StudGroupSpacingGoo> spacings = Input.GenericGooList<StudGroupSpacingGoo>(this, DA, 2);
           bool check = false;
           DA.GetData(3, ref check);
-          Output.SetItem(this, DA, 0, new StudGoo(
+          DA.SetData(0, new StudGoo(
               new Stud(studDimensions.Value, studSpec.Value, spacings?.Select(x => x.Value as IStudGroupSpacing).ToList(), check)));
           break;
       }
