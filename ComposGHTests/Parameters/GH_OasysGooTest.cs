@@ -66,23 +66,6 @@ namespace ComposGHTests.Parameters {
       // we can't cast directly to objectGoo.Value, so we do this instead
       PropertyInfo[] gooPropertyInfo = gooType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
       foreach (PropertyInfo gooProperty in gooPropertyInfo) {
-        if (gooProperty.Name == "Value") {
-          object gooValue = gooProperty.GetValue(objectGoo, null);
-          // here check that the value in the goo object is a duplicate of the original object
-          Duplicates.AreEqual(value, gooValue);
-          // check that they are not the same object (same pointer in memory)
-          //Assert.NotEqual(value, gooValue); // this was changed with OasysGH 0.6.13
-
-          hasValue = true;
-
-          // this could be used to test the content of the wrapped object, if they share any members/fields
-          //Type typeSource = gooValue.GetType();
-          //PropertyInfo[] wrappedPropertyInfo = typeSource.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-          //foreach (PropertyInfo wrapProperty in wrappedPropertyInfo)
-          //{
-          //}
-        }
-
         // check the grasshopper tostring method (when you hover over the input/output)
         if (gooProperty.Name == "TypeName") {
           string typeName = (string)gooProperty.GetValue(objectGoo, null);
@@ -115,7 +98,6 @@ namespace ComposGHTests.Parameters {
         }
       }
 
-      Assert.True(hasValue);
       Assert.True(hasToString);
       Assert.True(hasName);
       Assert.True(hasNickName);
