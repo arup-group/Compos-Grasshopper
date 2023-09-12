@@ -77,7 +77,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new SafetyFactorENParam());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       var combinationFactors = new LoadCombinationFactors();
       double cxi = 0;
       double cpsi0 = 0;
@@ -181,7 +181,7 @@ namespace ComposGH.Components {
         safetyFactors.MaterialFactors = mf;
       }
 
-      Output.SetItem(this, DA, 0, new SafetyFactorsENGoo(safetyFactors));
+      DA.SetData(0, new SafetyFactorsENGoo(safetyFactors));
     }
 
     protected override void UpdateUIFromSelectedItems() {

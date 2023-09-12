@@ -1,5 +1,5 @@
-﻿using ComposGHTests.Helpers;
-using OasysGH;
+﻿using ComposGH.Helpers;
+using ComposGHTests.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
 using Xunit;

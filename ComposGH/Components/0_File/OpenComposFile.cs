@@ -110,7 +110,7 @@ namespace ComposGH.Components {
       pManager.AddGenericParameter(MemberGoo.Name + "(s)", MemberGoo.NickName, MemberGoo.Description + "s contained in the file.", GH_ParamAccess.list);
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       var gh_typ = new GH_ObjectWrapper();
       if (DA.GetData(0, ref gh_typ)) {
         if (gh_typ.Value is GH_String) {

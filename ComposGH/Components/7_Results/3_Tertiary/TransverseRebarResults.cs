@@ -78,30 +78,30 @@ namespace ComposGH.Components {
       pManager.AddGenericParameter("Max Allowed", "VRdc", "Maximum allowed shear resistance at each critical shear position", GH_ParamAccess.list);
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       IResult res = ((MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
       ITransverseRebarResult result = res.TransverseRebarResults;
 
       int i = 0;
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.Positions.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.ControlSurface.Select(x => new GH_String(x)).ToList());
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.EffectiveShearPerimeter.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.TransverseShearForce.Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.TotalShearResistance.Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.ConcreteShearResistance.Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.DeckingShearResistance.Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.MeshBarShearResistance.Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.RebarShearResistance.Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
-      Output.SetList(this, DA, i++,
+      DA.SetDataList(i++,
         result.MaxAllowedShearResistance.Select(x => new GH_UnitNumber(x.ToUnit(ForceUnit))).ToList());
     }
 

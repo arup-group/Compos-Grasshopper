@@ -76,12 +76,12 @@ namespace ComposGH.Components {
       pManager.AddParameter(new ReinforcementMaterialParam());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       if (Params.Input[0].Sources.Count > 0) {
         _selectedItems[0] = "Custom";
-        Output.SetItem(this, DA, 0, new ReinforcementMaterialGoo(new ReinforcementMaterial((Pressure)Input.UnitNumber(this, DA, 0, StressUnit))));
+        DA.SetData(0, new ReinforcementMaterialGoo(new ReinforcementMaterial((Pressure)Input.UnitNumber(this, DA, 0, StressUnit))));
       } else {
-        Output.SetItem(this, DA, 0, new ReinforcementMaterialGoo(new ReinforcementMaterial(Grade)));
+        DA.SetData(0, new ReinforcementMaterialGoo(new ReinforcementMaterial(Grade)));
       }
     }
 

@@ -82,11 +82,11 @@ namespace ComposGH.Components {
       pManager.AddParameter(new StudDimensionsParam());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       var dia = (Length)Input.UnitNumber(this, DA, 0, LengthUnit, true);
       var h = (Length)Input.UnitNumber(this, DA, 1, LengthUnit, true);
       var strengthF = (Force)Input.UnitNumber(this, DA, 2, ForceUnit);
-      Output.SetItem(this, DA, 0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthF)));
+      DA.SetData(0, new StudDimensionsGoo(new StudDimensions(dia, h, strengthF)));
     }
 
     protected override void UpdateUIFromSelectedItems() {

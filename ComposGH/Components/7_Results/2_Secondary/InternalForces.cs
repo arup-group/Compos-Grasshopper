@@ -97,7 +97,7 @@ namespace ComposGH.Components {
       pManager.AddGenericParameter("Positions", "Pos", "Positions for each critical section location. Values are measured from beam start.", GH_ParamAccess.list);
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       IResult res = ((MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
       var positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
       IInternalForceResult result = res.InternalForces;
@@ -170,11 +170,11 @@ namespace ComposGH.Components {
       }
 
       int i = 0;
-      Output.SetList(this, DA, i++, outputs0);
-      Output.SetList(this, DA, i++, outputs1);
-      Output.SetList(this, DA, i++, outputs2);
+      DA.SetDataList(i++, outputs0);
+      DA.SetDataList(i++, outputs1);
+      DA.SetDataList(i++, outputs2);
 
-      Output.SetList(this, DA, i, positions);
+      DA.SetDataList(i, positions);
     }
 
     protected override void UpdateUIFromSelectedItems() {

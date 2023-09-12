@@ -71,7 +71,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new ComposBeamParameter());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       var ghln = new GH_Line();
       if (DA.GetData(0, ref ghln)) {
         if (ghln == null) { AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Line input is null"); }
@@ -87,9 +87,9 @@ namespace ComposGH.Components {
           try {
             if (Params.Input[4].Sources.Count > 0) {
               List<WebOpeningGoo> webOpenings = Input.GenericGooList<WebOpeningGoo>(this, DA, 4);
-              Output.SetItem(this, DA, 0, new BeamGoo(new LineCurve(ln), LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value as IBeamSection).ToList(), webOpenings.Select(x => x.Value as IWebOpening).ToList()));
+              DA.SetData(0, new BeamGoo(new LineCurve(ln), LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value as IBeamSection).ToList(), webOpenings.Select(x => x.Value as IWebOpening).ToList()));
             } else {
-              Output.SetItem(this, DA, 0, new BeamGoo(new LineCurve(ln), LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value as IBeamSection).ToList()));
+              DA.SetData(0, new BeamGoo(new LineCurve(ln), LengthUnit, res.Value, mat.Value, beamSections.Select(x => x.Value as IBeamSection).ToList()));
             }
           } catch (Exception e) {
             AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);

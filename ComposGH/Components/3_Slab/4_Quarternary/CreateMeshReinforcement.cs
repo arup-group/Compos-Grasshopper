@@ -76,7 +76,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new MeshReinforcementParam());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       // get default length inputs used for all cases
       Length cov = Length.Zero;
       if (Params.Input[0].Sources.Count > 0) {
@@ -85,7 +85,7 @@ namespace ComposGH.Components {
 
       bool rotated = false;
       DA.GetData(1, ref rotated);
-      Output.SetItem(this, DA, 0, new MeshReinforcementGoo(new MeshReinforcement(cov, _mesh, rotated)));
+      DA.SetData(0, new MeshReinforcementGoo(new MeshReinforcement(cov, _mesh, rotated)));
     }
 
     protected override void UpdateUIFromSelectedItems() {

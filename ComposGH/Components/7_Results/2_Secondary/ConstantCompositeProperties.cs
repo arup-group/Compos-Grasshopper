@@ -61,22 +61,22 @@ namespace ComposGH.Components {
       pManager.AddGenericParameter("Positions", "Pos", "Positions for each critical section location. Values are measured from beam start.", GH_ParamAccess.list);
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       IResult res = ((MemberGoo)Input.GenericGoo<MemberGoo>(this, DA, 0)).Value.Result;
       var positions = res.Positions.Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList();
       ICompositeSectionProperties result = res.SectionProperties;
 
       int i = 0;
-      Output.SetList(this, DA, i++, result.EffectiveSlabWidthLeft
+      DA.SetDataList(i++, result.EffectiveSlabWidthLeft
         .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
-      Output.SetList(this, DA, i++, result.EffectiveSlabWidthRight
+      DA.SetDataList(i++, result.EffectiveSlabWidthRight
         .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
-      Output.SetList(this, DA, i++, result.GirderWeldThicknessTop
+      DA.SetDataList(i++, result.GirderWeldThicknessTop
         .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
-      Output.SetList(this, DA, i++, result.GirderWeldThicknessBottom
+      DA.SetDataList(i++, result.GirderWeldThicknessBottom
         .Select(x => new GH_UnitNumber(x.ToUnit(LengthUnit))).ToList());
-      Output.SetItem(this, DA, i++, new GH_UnitNumber(result.NaturalFrequency));
-      Output.SetList(this, DA, i, positions);
+      DA.SetData(i++, new GH_UnitNumber(result.NaturalFrequency));
+      DA.SetDataList(i, positions);
     }
 
     protected override void UpdateUIFromSelectedItems() {

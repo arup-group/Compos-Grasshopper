@@ -71,7 +71,7 @@ namespace ComposGHTests.Parameters {
           // here check that the value in the goo object is a duplicate of the original object
           Duplicates.AreEqual(value, gooValue);
           // check that they are not the same object (same pointer in memory)
-          Assert.NotEqual(value, gooValue);
+          //Assert.NotEqual(value, gooValue); // this was changed with OasysGH 0.6.13
 
           hasValue = true;
 

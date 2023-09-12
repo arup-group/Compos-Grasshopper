@@ -126,7 +126,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new ComposLoadParameter());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       IQuantity pos1 = Input.LengthOrRatio(this, DA, 4, LengthUnit);
       IQuantity pos2 = Input.LengthOrRatio(this, DA, 9, LengthUnit);
 
@@ -142,7 +142,7 @@ namespace ComposGH.Components {
           var finalLiveL2 = (ForcePerLength)Input.UnitNumber(this, DA, 8, ForcePerLengthUnit);
           Load loadL = new PatchLoad(
             constDeadL1, constLiveL1, finalDeadL1, finalLiveL1, pos1, constDeadL2, constLiveL2, finalDeadL2, finalLiveL2, pos2);
-          Output.SetItem(this, DA, 0, new LoadGoo(loadL));
+          DA.SetData(0, new LoadGoo(loadL));
           break;
 
         case LoadDistribution.Area:
@@ -156,7 +156,7 @@ namespace ComposGH.Components {
           var finalLiveA2 = (Pressure)Input.UnitNumber(this, DA, 8, ForcePerAreaUnit);
           Load loadA = new PatchLoad(
             constDeadA1, constLiveA1, finalDeadA1, finalLiveA1, pos1, constDeadA2, constLiveA2, finalDeadA2, finalLiveA2, pos2);
-          Output.SetItem(this, DA, 0, new LoadGoo(loadA));
+          DA.SetData(0, new LoadGoo(loadA));
           break;
       }
     }

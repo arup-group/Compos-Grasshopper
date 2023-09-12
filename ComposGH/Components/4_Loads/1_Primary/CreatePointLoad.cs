@@ -83,7 +83,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new ComposLoadParameter());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       var constDead = (Force)Input.UnitNumber(this, DA, 0, ForceUnit);
       var constLive = (Force)Input.UnitNumber(this, DA, 1, ForceUnit);
       var finalDead = (Force)Input.UnitNumber(this, DA, 2, ForceUnit);
@@ -91,7 +91,7 @@ namespace ComposGH.Components {
       IQuantity pos = Input.LengthOrRatio(this, DA, 4, LengthUnit);
 
       Load load = new PointLoad(constDead, constLive, finalDead, finalLive, pos);
-      Output.SetItem(this, DA, 0, new LoadGoo(load));
+      DA.SetData(0, new LoadGoo(load));
     }
 
     protected override void UpdateUIFromSelectedItems() {

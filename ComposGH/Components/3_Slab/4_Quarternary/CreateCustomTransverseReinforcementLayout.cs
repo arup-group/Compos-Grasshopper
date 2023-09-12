@@ -78,14 +78,14 @@ namespace ComposGH.Components {
       pManager.AddParameter(new CustomTransverseReinforcementParam());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       IQuantity start = Input.LengthOrRatio(this, DA, 0, LengthUnit);
       IQuantity end = Input.LengthOrRatio(this, DA, 1, LengthUnit);
       var dia = (Length)Input.UnitNumber(this, DA, 2, LengthUnit);
       var spacing = (Length)Input.UnitNumber(this, DA, 3, LengthUnit);
       var cov = (Length)Input.UnitNumber(this, DA, 4, LengthUnit);
 
-      Output.SetItem(this, DA, 0, new CustomTransverseReinforcementLayoutGoo(new CustomTransverseReinforcementLayout(start, end, dia, spacing, cov)));
+      DA.SetData(0, new CustomTransverseReinforcementLayoutGoo(new CustomTransverseReinforcementLayout(start, end, dia, spacing, cov)));
     }
 
     protected override void UpdateUIFromSelectedItems() {

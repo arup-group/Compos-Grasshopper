@@ -147,7 +147,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new ConcreteMaterialParam(), ConcreteMaterialGoo.Name, ConcreteMaterialGoo.NickName, "EN " + ConcreteMaterialGoo.Description + " for a " + SlabGoo.Description, GH_ParamAccess.item);
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       // override concrete grade?
       if (Params.Input[4].Sources.Count > 0) {
         string grade = "";
@@ -231,7 +231,7 @@ namespace ComposGH.Components {
 
       var concreteMaterial = new ConcreteMaterial(Grade, selectedDensityClass, dryDensity, userDensity, (eRatio == null) ? new ERatio() { ShortTerm = 6, LongTerm = 18, Vibration = 5.39 } : eRatio.Value, imposedLoadPercentage, shrinkageStrain, userStrain);
 
-      Output.SetItem(this, DA, 0, new ConcreteMaterialGoo(concreteMaterial));
+      DA.SetData(0, new ConcreteMaterialGoo(concreteMaterial));
     }
 
     protected override void UpdateUIFromSelectedItems() {

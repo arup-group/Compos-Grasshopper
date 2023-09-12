@@ -93,7 +93,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new ComposDeckingParameter(), "Custom " + DeckingGoo.Name, DeckingGoo.NickName, "Custom " + DeckingGoo.Description + " for a " + SlabGoo.Description, GH_ParamAccess.item);
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       var distB1 = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
       var distB2 = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
       var distB3 = (Length)Input.UnitNumber(this, DA, 2, LengthUnit);
@@ -104,7 +104,7 @@ namespace ComposGH.Components {
       var stress = (Pressure)Input.UnitNumber(this, DA, 7, StressUnit);
       var dconf = (DeckingConfigurationGoo)Input.GenericGoo<DeckingConfigurationGoo>(this, DA, 8);
 
-      Output.SetItem(this, DA, 0, new DeckingGoo(new CustomDecking(distB1, distB2, distB3, distB4, distB5, depth, thickness, stress, (dconf == null) ? new DeckingConfiguration() : dconf.Value)));
+      DA.SetData(0, new DeckingGoo(new CustomDecking(distB1, distB2, distB3, distB4, distB5, depth, thickness, stress, (dconf == null) ? new DeckingConfiguration() : dconf.Value)));
     }
 
     protected override void UpdateUIFromSelectedItems() {

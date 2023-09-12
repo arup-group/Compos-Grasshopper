@@ -94,7 +94,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new ComposWebOpeningParameter(), WebOpeningGoo.Name, WebOpeningGoo.NickName, "Notch " + WebOpeningGoo.Description + " for a " + BeamGoo.Description, GH_ParamAccess.list);
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       var width = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
       var height = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
       var stiff = (WebOpeningStiffenersGoo)Input.GenericGoo<WebOpeningStiffenersGoo>(this, DA, 2);
@@ -106,11 +106,11 @@ namespace ComposGH.Components {
 
       switch (OpeningType) {
         case NotchTypes.Start:
-          Output.SetItem(this, DA, 0, new WebOpeningGoo(new WebOpening(width, height, NotchPosition.Start, stiff?.Value)));
+          DA.SetData(0, new WebOpeningGoo(new WebOpening(width, height, NotchPosition.Start, stiff?.Value)));
           break;
 
         case NotchTypes.End:
-          Output.SetItem(this, DA, 0, new WebOpeningGoo(new WebOpening(width, height, NotchPosition.End, stiff?.Value)));
+          DA.SetData(0, new WebOpeningGoo(new WebOpening(width, height, NotchPosition.End, stiff?.Value)));
           break;
 
         case NotchTypes.Both_ends:
@@ -118,7 +118,7 @@ namespace ComposGH.Components {
             new WebOpeningGoo(new WebOpening(width, height, NotchPosition.Start, stiff?.Value)),
             new WebOpeningGoo(new WebOpening(width, height, NotchPosition.End, stiff?.Value))
           };
-          Output.SetList(this, DA, 0, both);
+          DA.SetDataList(0, both);
           break;
       }
     }

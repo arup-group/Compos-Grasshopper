@@ -1012,7 +1012,7 @@ namespace ComposGH.Components {
       pManager.AddParameter(new BeamSectionParam());
     }
 
-    protected override void SolveInstance(IGH_DataAccess DA) {
+    protected override void SolveInternal(IGH_DataAccess DA) {
       ClearRuntimeMessages();
       for (int i = 0; i < Params.Input.Count; i++) {
         Params.Input[i].ClearRuntimeMessages();
@@ -1041,7 +1041,7 @@ namespace ComposGH.Components {
           ExpireSolution(true);
         }
 
-        Output.SetItem(this, DA, 0, new BeamSectionGoo(new BeamSection("CAT " + ProfileString)));
+        DA.SetData(0, new BeamSectionGoo(new BeamSection("CAT " + ProfileString)));
 
         return;
       }
@@ -1090,7 +1090,7 @@ namespace ComposGH.Components {
           return;
         }
 
-        Output.SetItem(this, DA, 0, new BeamSectionGoo(new BeamSection(profile)));
+        DA.SetData(0, new BeamSectionGoo(new BeamSection(profile)));
       }
       #endregion
     }
