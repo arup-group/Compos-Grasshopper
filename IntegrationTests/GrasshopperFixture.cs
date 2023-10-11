@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using OasysGH.Units;
 using Xunit;
 
 namespace Rhino.Test {
@@ -50,7 +51,7 @@ namespace Rhino.Test {
       InitializeCore();
 
       // setup headless units
-      OasysGH.Units.Utility.SetupUnitsDuringLoad(true);
+      Utility.SetupUnitsDuringLoad();
     }
 
     public void AddPluginToGH() {
