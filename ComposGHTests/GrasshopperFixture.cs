@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using ComposAPI;
+using OasysGH.Units;
 using Xunit;
 
 namespace ComposGHTests {
@@ -51,7 +52,7 @@ namespace ComposGHTests {
       InitializeCore();
 
       // setup headless units
-      OasysGH.Units.Utility.SetupUnitsDuringLoad(true);
+      Utility.SetupUnitsDuringLoad();
     }
 
     public void AddPluginToGH() {
