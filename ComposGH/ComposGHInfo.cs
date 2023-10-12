@@ -141,7 +141,7 @@ namespace ComposGH {
       ComposGHInfo.PluginName,
       ComposGHInfo.Vers,
       ComposGHInfo.isBeta,
-      "phc_alOp3OccDM3D18xJTWDoW44Y1cJvbEScm5LJSX8qnhs"
+      "phc_QjmqOoe8GqTMi3u88ynRR3WWvrJA9zAaqcQS1FDVnJD"
       ));
 
     private PluginInfo() {
