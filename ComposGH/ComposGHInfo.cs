@@ -124,7 +124,7 @@ namespace ComposGH {
     }
     public const string Company = "Oasys";
     public const string Contact = "https://www.oasys-software.com/";
-    public const string Copyright = "Copyright © Oasys 1985 - 2022";
+    public const string Copyright = "Copyright © Oasys 1985 - 2023";
     public const string PluginName = "ComposGH";
     public const string ProductName = "Compos";
     public const string Vers = "0.9.16";
