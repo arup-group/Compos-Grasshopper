@@ -124,10 +124,10 @@ namespace ComposGH {
     }
     public const string Company = "Oasys";
     public const string Contact = "https://www.oasys-software.com/";
-    public const string Copyright = "Copyright © Oasys 1985 - 2023";
+    public const string Copyright = "Copyright © Oasys 1985 - 2024";
     public const string PluginName = "ComposGH";
     public const string ProductName = "Compos";
-    public const string Vers = "0.9.16";
+    public const string Vers = "0.9.17";
     public static string Disclaimer = PluginName + " is pre-release and under active development, including further testing to be undertaken. It is provided \"as-is\" and you bear the risk of using it. Future versions may contain breaking changes. Any files, results, or other types of output information created using " + PluginName + " should not be relied upon without thorough and independent checking.";
     public static Guid GUID = new Guid("c3884cdc-ac5b-4151-afc2-93590cef4f8f");
     public static bool isBeta = true;
