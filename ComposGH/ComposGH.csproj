@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <Version>0.9.16-beta</Version>
+    <Version>0.9.17-beta</Version>
     <Title>Compos</Title>
     <Description>Official Oasys Compos Grasshopper Plugin
 
@@ -11,7 +11,7 @@ The plugin requires a licensed version of Compos to load.
 
 Contact oasys@arup.com to request a free trial version.
 
-Copyright © Oasys 1985 - 2023</Description>
+Copyright © Oasys 1985 - 2024</Description>
     <PlatformTarget>x64</PlatformTarget>
     <Platforms>x64</Platforms>
     <OutputType>Library</OutputType>
@@ -65,7 +65,7 @@ Copyright © Oasys 1985 - 2023</Description>
     </PackageReference>
     <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.3" />
     <PackageReference Include="OasysGH">
-      <Version>1.0.1</Version>
+      <Version>1.0.2</Version>
     </PackageReference>
     <PackageReference Include="OasysUnits.Serialization.JsonNet">
       <Version>1.0.0</Version>
