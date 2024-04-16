@@ -48,8 +48,7 @@ namespace ComposGH.Components {
         string[] oldProfile = memGoo.Value.Beam.Sections[0].SectionDescription.Split(' ');
         string[] newProfile = designedMember.Beam.Sections[0].SectionDescription.Split(' ');
         if (newProfile[2] == oldProfile[2]) {
-          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Failed to design member");
-          return;
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Section size not changed");
         }
         Message = newProfile[2];
         DA.SetData(0, new MemberGoo(designedMember));
