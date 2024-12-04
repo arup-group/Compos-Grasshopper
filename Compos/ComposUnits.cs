@@ -65,27 +65,27 @@ namespace ComposAPI {
     internal void FromCoaString(List<string> parameters) {
       switch (parameters[1]) {
         case CoaIdentifier.Units.Force:
-          Force = (ForceUnit)UnitParser.Default.Parse(parameters[2], typeof(ForceUnit));
+          Force = (ForceUnit)OasysUnitsSetup.Default.UnitParser.Parse(parameters[2], typeof(ForceUnit));
           break;
 
         case CoaIdentifier.Units.Length:
-          Length = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
+          Length = (LengthUnit)OasysUnitsSetup.Default.UnitParser.Parse(parameters[2], typeof(LengthUnit));
           break;
 
         case CoaIdentifier.Units.Displacement:
-          Displacement = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
+          Displacement = (LengthUnit)OasysUnitsSetup.Default.UnitParser.Parse(parameters[2], typeof(LengthUnit));
           break;
 
         case CoaIdentifier.Units.Section:
-          Section = (LengthUnit)UnitParser.Default.Parse(parameters[2], typeof(LengthUnit));
+          Section = (LengthUnit)OasysUnitsSetup.Default.UnitParser.Parse(parameters[2], typeof(LengthUnit));
           break;
 
         case CoaIdentifier.Units.Stress:
-          Stress = (PressureUnit)UnitParser.Default.Parse(parameters[2], typeof(PressureUnit));
+          Stress = (PressureUnit)OasysUnitsSetup.Default.UnitParser.Parse(parameters[2], typeof(PressureUnit));
           break;
 
         case CoaIdentifier.Units.Mass:
-          Mass = (MassUnit)UnitParser.Default.Parse(parameters[2], typeof(MassUnit));
+          Mass = (MassUnit)OasysUnitsSetup.Default.UnitParser.Parse(parameters[2], typeof(MassUnit));
           break;
       }
     }

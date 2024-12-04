@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Xunit;
 
-namespace ComposGHTests.Helpers {
+namespace ComposGHTests.Helper {
   public class Duplicates {
 
     public static bool AreEqual(object objA, object objB, bool excludeGuid = false) {
@@ -59,8 +59,8 @@ namespace ComposGHTests.Helpers {
                 IEnumerable<object> enumerableA = ((IEnumerable)objPropertyValueA).Cast<object>();
                 IEnumerable<object> enumerableB = ((IEnumerable)objPropertyValueB).Cast<object>();
 
-                Type enumrableTypeA = null;
-                Type enumrableTypeB = null;
+                Type? enumrableTypeA = null;
+                Type? enumrableTypeB = null;
                 if (enumerableA.GetType().GetGenericArguments().Length > 0) {
                   enumrableTypeA = enumerableA.GetType().GetGenericArguments()[0];
                 }
@@ -71,18 +71,24 @@ namespace ComposGHTests.Helpers {
 
                 // if type is a struct, we have to check the actual list items
                 // this will fail if list is actually of type "System.Object"..
-                if (enumrableTypeA.ToString() is "System.Object") {
-                  if (enumerableA.Any()) {
-                    enumrableTypeA = enumerableA.First().GetType();
-                  } else {
-                    continue; // can´t get type of struct in empty list?
+                if(enumrableTypeA!=null) {
+                  if (enumrableTypeA.ToString() is "System.Object") {
+                    if (enumerableA.Any()) {
+                      enumrableTypeA = enumerableA.First().GetType();
+                    }
+                    else {
+                      continue; // can´t get type of struct in empty list?
+                    }
                   }
                 }
-                if (enumrableTypeB.ToString() is "System.Object") {
-                  if (enumerableB.Any()) {
-                    enumrableTypeB = enumerableB.First().GetType();
-                  } else {
-                    continue; // can´t get type of struct in empty list?
+                if (enumrableTypeB != null) {
+                  if (enumrableTypeB.ToString() is "System.Object") {
+                    if (enumerableB.Any()) {
+                      enumrableTypeB = enumerableB.First().GetType();
+                    }
+                    else {
+                      continue; // can´t get type of struct in empty list?
+                    }
                   }
                 }
 

@@ -49,12 +49,13 @@ namespace ComposAPI {
       string start = "";
       if (DistanceFromStart.QuantityInfo.UnitType == typeof(LengthUnit)) {
         var l = (Length)DistanceFromStart;
-        if (l != Length.Zero) {
+        if (!ComposUnitsHelper.IsEqual(l, Length.Zero)) {
           start = "From:" + l.ToString("g2").Replace(" ", string.Empty);
         }
-      } else {
+      }
+      else {
         var p = (Ratio)DistanceFromStart;
-        if (p != Ratio.Zero) {
+        if (!ComposUnitsHelper.IsEqual(p, Length.Zero)) {
           start = "From:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
         }
       }

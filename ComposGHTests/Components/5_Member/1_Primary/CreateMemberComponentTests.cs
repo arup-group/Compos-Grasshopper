@@ -1,7 +1,7 @@
 ﻿using ComposGH.Components;
 using ComposGH.Parameters;
 using ComposGHTests.Beam;
-using ComposGHTests.Helpers;
+using ComposGHTests.Helper;
 using ComposGHTests.Load;
 using ComposGHTests.Slab;
 using ComposGHTests.Stud;

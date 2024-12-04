@@ -222,18 +222,6 @@ namespace ComposGH.Parameters {
 
     #endregion
 
-#pragma warning disable IDE0044 // Add readonly modifier
-    #region preview geometry
-    private List<PolyCurve> profileOutlines;
-    private List<Brep> profileExtrusions;
-    private List<Brep> stiffenerPlates;
-
-    private void UpdatePreview() {
-    }
-
-#pragma warning restore IDE0044 // Add readonly modifier
-    #endregion
-
     #region drawing methods
     public BoundingBox ClippingBox => Boundingbox;
 

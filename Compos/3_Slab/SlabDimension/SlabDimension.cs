@@ -95,12 +95,12 @@ namespace ComposAPI {
       string start = "";
       if (StartPosition.QuantityInfo.UnitType == typeof(LengthUnit)) {
         var l = (Length)StartPosition;
-        if (l != Length.Zero) {
+        if (!ComposUnitsHelper.IsEqual(l, Length.Zero)) {
           start = ", s:" + l.ToUnit(ComposUnitsHelper.LengthUnitGeometry).ToString("g2").Replace(" ", string.Empty);
         }
       } else {
         var p = (Ratio)StartPosition;
-        if (p != Ratio.Zero) {
+        if (!ComposUnitsHelper.IsEqual(p, Length.Zero)) {
           start = ", s:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
         }
       }

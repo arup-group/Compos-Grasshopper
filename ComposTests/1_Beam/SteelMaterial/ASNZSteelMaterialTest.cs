@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using ComposAPI.Helpers;
-using ComposGHTests.Helpers;
+using ComposGHTests.Helper;
 using ComposGH.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
@@ -64,7 +64,7 @@ namespace ComposAPI.Beams.Tests {
       Duplicates.AreEqual(original, duplicate);
 
       // 3 check that the memory pointer is not the same
-      Assert.NotSame(original, duplicate);
+      Assert.NotEqual(original, duplicate);
     }
 
     [Fact]

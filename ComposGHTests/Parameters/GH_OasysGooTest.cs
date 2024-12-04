@@ -2,7 +2,7 @@
 using System.Reflection;
 using ComposAPI;
 using ComposGH.Parameters;
-using ComposGHTests.Helpers;
+using ComposGHTests.Helper;
 using Grasshopper.Kernel.Types;
 using Xunit;
 
@@ -57,7 +57,6 @@ namespace ComposGHTests.Parameters {
       // check that they are not the same object (same pointer in memory)
       Assert.NotEqual(duplicate, objectGoo);
 
-      bool hasValue = false;
       bool hasToString = false;
       bool hasName = false;
       bool hasNickName = false;

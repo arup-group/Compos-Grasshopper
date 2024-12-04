@@ -2,7 +2,7 @@
 using System.IO;
 using ComposGH.Components;
 using ComposGH.Parameters;
-using ComposGHTests.Helpers;
+using ComposGHTests.Helper;
 using Grasshopper.Kernel;
 using OasysGH.Components;
 using Xunit;

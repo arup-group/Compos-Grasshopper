@@ -154,12 +154,12 @@ namespace ComposAPI {
       string start = "";
       if (StartPosition.QuantityInfo.UnitType == typeof(LengthUnit)) {
         var l = (Length)StartPosition;
-        if (l != Length.Zero) {
+        if (!ComposUnitsHelper.IsEqual(l, Length.Zero)) {
           start = ", Px:" + l.ToString("g2").Replace(" ", string.Empty);
         }
       } else {
         var p = (Ratio)StartPosition;
-        if (p != Ratio.Zero) {
+        if (!ComposUnitsHelper.IsEqual(p, Length.Zero)) {
           start = ", Px:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
         }
       }
@@ -220,7 +220,7 @@ namespace ComposAPI {
 
         string[] type = parts[1].Split('(', ')');
         if (type.Length > 1) {
-          UnitParser parser = UnitParser.Default;
+          UnitParser parser = OasysUnitsSetup.Default.UnitParser;
           unit = parser.Parse<LengthUnit>(type[1]);
         }
         try {
@@ -245,7 +245,7 @@ namespace ComposAPI {
 
         string[] type = parts[1].Split('(', ')');
         if (type.Length > 1) {
-          UnitParser parser = UnitParser.Default;
+          UnitParser parser = OasysUnitsSetup.Default.UnitParser;
           unit = parser.Parse<LengthUnit>(type[1]);
         }
         try {
