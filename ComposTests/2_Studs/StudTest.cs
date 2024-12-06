@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ComposAPI.Helpers;
 using ComposGH.Helpers;
 using ComposGHTests.Helper;
 using OasysGH;
@@ -619,6 +620,23 @@ namespace ComposAPI.Studs.Tests {
       // 5 check that original has not been changed
       Assert.Equal(0.15, original.MinSavingMultipleZones);
       Assert.Equal(0.90, original.Interaction);
+    }
+
+    [Fact]
+    public void StudSpecificationThrowExceptionIfStartZoneIsNotInProperUnit() {
+      Assert.Throws<System.ArgumentException>(() => new StudSpecification(new Mass(0, MassUnit.Kilogram), new Length(0, LengthUnit.Meter), true));
+    }
+
+    [Fact]
+    public void StudSpecificationThrowExceptionIfEndZoneIsNotInProperUnit() {
+      Assert.Throws<System.ArgumentException>(() => new StudSpecification(new Length(0, LengthUnit.Meter), new Mass(0, MassUnit.Kilogram), true));
+    }
+
+    [Fact]
+    public void StudZoneWillHaveDefaultValueIfNullIsAssigned() {
+      var studSpecification = new StudSpecification(null, null, true);
+      Assert.Equal(0, studSpecification.NoStudZoneStart.Value, 8);
+      Assert.Equal(0, studSpecification.NoStudZoneEnd.Value, 8);
     }
   }
 }
