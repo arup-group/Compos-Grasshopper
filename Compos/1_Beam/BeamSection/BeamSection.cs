@@ -159,7 +159,7 @@ namespace ComposAPI {
         }
       } else {
         var p = (Ratio)StartPosition;
-        if (!ComposUnitsHelper.IsEqual(p, Length.Zero)) {
+        if (!ComposUnitsHelper.IsEqual(p, Ratio.Zero)) {
           start = ", Px:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
         }
       }

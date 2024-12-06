@@ -33,7 +33,7 @@ namespace ComposAPI {
         coaString += CoaHelper.CreateString(parameters);
       }
 
-      if (!ComposUnitsHelper.IsEqual(SpanOverDeflectionRatio, Length.Zero)) {
+      if (!ComposUnitsHelper.IsEqual(SpanOverDeflectionRatio, Ratio.Zero)) {
         var parameters = new List<string> {
           CoaIdentifier.DesignCriteria.DeflectionLimit,
           name,
@@ -54,7 +54,7 @@ namespace ComposAPI {
         str += "δ:" + AbsoluteDeflection.ToUnit(ComposUnitsHelper.LengthUnitResult).ToString("f0").Replace(" ", string.Empty) + ", ";
       }
 
-      if (!ComposUnitsHelper.IsEqual(SpanOverDeflectionRatio, Length.Zero)) {
+      if (!ComposUnitsHelper.IsEqual(SpanOverDeflectionRatio, Ratio.Zero)) {
         str += "δ:1/" + SpanOverDeflectionRatio.DecimalFractions.ToString("f0").Replace(" ", string.Empty);
       }
       return str.TrimEnd(' ').TrimEnd(',');

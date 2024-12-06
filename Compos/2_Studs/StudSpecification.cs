@@ -102,7 +102,7 @@ namespace ComposAPI {
         }
       } else {
         var p = (Ratio)NoStudZoneStart;
-        if (!ComposUnitsHelper.IsEqual(p, Length.Zero)) {
+        if (!ComposUnitsHelper.IsEqual(p, Ratio.Zero)) {
           noStudStart = "NoStudStart:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
         }
       }
@@ -114,7 +114,7 @@ namespace ComposAPI {
         }
       } else {
         var p = (Ratio)NoStudZoneEnd;
-        if (!ComposUnitsHelper.IsEqual(p, Length.Zero)) {
+        if (!ComposUnitsHelper.IsEqual(p, Ratio.Zero)) {
           noStudEnd = "NoStudEnd:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
         }
       }

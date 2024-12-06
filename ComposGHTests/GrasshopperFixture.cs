@@ -3,12 +3,11 @@ using System.Diagnostics;
 using System.IO;
 using ComposAPI;
 using OasysGH.Units;
-using Rhino.PlugIns;
 using Xunit;
 
 namespace ComposGHTests {
   public class GrasshopperFixture : IDisposable {
-    public Rhino.Runtime.InProcess.RhinoCore? Core {
+    public Rhino.Runtime.InProcess.RhinoCore Core {
       get {
         if (null == _Core) {
           InitializeCore();
@@ -16,7 +15,7 @@ namespace ComposGHTests {
         return _Core as Rhino.Runtime.InProcess.RhinoCore;
       }
     }
-    public Grasshopper.Kernel.GH_DocumentIO? DocIO {
+    public Grasshopper.Kernel.GH_DocumentIO DocIO {
       get {
         if (null == _docIO) {
           InitializeDocIO();
@@ -24,7 +23,7 @@ namespace ComposGHTests {
         return _docIO as Grasshopper.Kernel.GH_DocumentIO;
       }
     }
-    public Grasshopper.Plugin.GH_RhinoScriptInterface? GHPlugin {
+    public Grasshopper.Plugin.GH_RhinoScriptInterface GHPlugin {
       get {
         if (null == _GHPlugin) {
           InitializeGrasshopperPlugin();
@@ -32,11 +31,11 @@ namespace ComposGHTests {
         return _GHPlugin as Grasshopper.Plugin.GH_RhinoScriptInterface;
       }
     }
-    private object? _docIO = null;
+    private object _docIO = null;
     private static string _linkFileName = "ComposGhTests.ghlink";
     private static string _linkFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Grasshopper", "Libraries");
-    private object? _Core = null;
-    private object? _GHPlugin = null;
+    private object _Core = null;
+    private object _GHPlugin = null;
     private bool _isDisposed;
 
     static GrasshopperFixture() {
@@ -85,8 +84,7 @@ namespace ComposGHTests {
 
           p.Kill();
         }
-      }
-      catch (Exception) {
+      } catch (Exception) {
         // Compos was already closed by Grasshopper
       }
     }
@@ -97,9 +95,9 @@ namespace ComposGHTests {
       }
       if (disposing) {
         _docIO = null;
-        GHPlugin?.CloseAllDocuments();
+        GHPlugin.CloseAllDocuments();
         _GHPlugin = null;
-        Core?.Dispose();
+        Core.Dispose();
       }
 
       // TODO: free unmanaged resources (unmanaged objects) and override finalizer
@@ -136,14 +134,8 @@ namespace ComposGHTests {
 
     private void InitializeGrasshopperPlugin2() {
       _GHPlugin = Rhino.RhinoApp.GetPlugInObject("Grasshopper");
-      if (_GHPlugin != null) {
-        var ghp = _GHPlugin as Grasshopper.Plugin.GH_RhinoScriptInterface;
-        ghp?.RunHeadless();
-      }
-      else {
-        throw new Exception("failed to initialize grasshopper plugin");
-      }
-
+      var ghp = _GHPlugin as Grasshopper.Plugin.GH_RhinoScriptInterface;
+      ghp.RunHeadless();
     }
   }
 

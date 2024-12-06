@@ -258,7 +258,6 @@ namespace ComposAPI.Slabs.Tests {
       var eRatio = new ERatio();
       var shrinkageStrain = new Strain(shrinkageStrainValue, StrainUnit.MilliStrain);
       var concreteMaterial = new ConcreteMaterial(grade, dryDensity, userDensity, eRatio, new Ratio(imposedLoadPercentage, RatioUnit.DecimalFraction));
-
       // 3 check that inputs are set in object's members
       Assert.Equal(grade.ToString(), concreteMaterial.Grade);
       Assert.Equal(type, concreteMaterial.Type);
@@ -267,7 +266,7 @@ namespace ComposAPI.Slabs.Tests {
       Assert.Equal(userDensity, concreteMaterial.UserDensity);
       Assert.Equal(eRatio, concreteMaterial.ERatio);
       Assert.Equal(imposedLoadPercentage, concreteMaterial.ImposedLoadPercentage.DecimalFractions);
-      Assert.Equal(shrinkageStrain, concreteMaterial.ShrinkageStrain);
+      Assert.True(ComposUnitsHelper.IsEqual(shrinkageStrain, concreteMaterial.ShrinkageStrain));
       Assert.Equal(userStrain, concreteMaterial.UserStrain);
     }
 

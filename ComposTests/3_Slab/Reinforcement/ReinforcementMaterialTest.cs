@@ -114,7 +114,7 @@ namespace ComposAPI.Slabs.Tests {
         Assert.Equal(expected_grade, reinforcementMaterial.Grade);
       }
       Assert.Equal(expected_userDefined, reinforcementMaterial.UserDefined);
-      Assert.Equal(new Pressure(expected_fy, PressureUnit.NewtonPerSquareMeter), reinforcementMaterial.Fy);
+      Assert.True(ComposUnitsHelper.IsEqual(new Pressure(expected_fy, PressureUnit.NewtonPerSquareMeter), reinforcementMaterial.Fy));
     }
 
     [Theory]

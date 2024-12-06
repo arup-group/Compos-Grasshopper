@@ -55,7 +55,7 @@ namespace ComposAPI {
       }
       else {
         var p = (Ratio)DistanceFromStart;
-        if (!ComposUnitsHelper.IsEqual(p, Length.Zero)) {
+        if (!ComposUnitsHelper.IsEqual(p, Ratio.Zero)) {
           start = "From:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
         }
       }

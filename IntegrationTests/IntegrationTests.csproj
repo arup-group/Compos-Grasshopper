@@ -2,9 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-
     <IsPackable>false</IsPackable>
-
     <Platforms>x64</Platforms>
   </PropertyGroup>
 

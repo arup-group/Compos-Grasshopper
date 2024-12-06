@@ -19,9 +19,13 @@ namespace ComposAPI.Helpers {
       Mass,
     }
 
-    public static bool IsEqual(IQuantity first, IQuantity second) {
-      var tolerance = Length.FromMeters(10e-6);
-      return first.Equals(second, tolerance);
+    public static bool IsEqual(IQuantity first, IQuantity second, double tolerance = 1e-8) {
+      if (first.GetType() != second.GetType()) {
+        throw new ArgumentException("It is only possible to compare data of the same kind for equality");
+      }
+      double firstInRespectiveUnitValue = first.ToUnit(first.Unit).Value;
+      double secondInRespectiveUnitValue = second.ToUnit(first.Unit).Value;
+      return Math.Abs(firstInRespectiveUnitValue - secondInRespectiveUnitValue) < tolerance;
     }
 
     public static AreaMomentOfInertiaUnit AreaMomentOfInertiaUnit => GetSectionAreaMomentOfInertiaUnit(LengthUnitSection);
@@ -50,7 +54,7 @@ namespace ComposAPI.Helpers {
                 return PressureUnit.TonneForcePerSquareMillimeter;
 
               default:
-                 throw new ArgumentException(_unitExceptionMessage);
+                throw new ArgumentException(_unitExceptionMessage);
             }
           case LengthUnit.Centimeter:
             switch (ForceUnit) {
@@ -64,7 +68,7 @@ namespace ComposAPI.Helpers {
                 return PressureUnit.TonneForcePerSquareCentimeter;
 
               default:
-                 throw new ArgumentException(_unitExceptionMessage);
+                throw new ArgumentException(_unitExceptionMessage);
             }
           case LengthUnit.Meter:
             switch (ForceUnit) {
@@ -81,7 +85,7 @@ namespace ComposAPI.Helpers {
                 return PressureUnit.TonneForcePerSquareMeter;
 
               default:
-                 throw new ArgumentException(_unitExceptionMessage);
+                throw new ArgumentException(_unitExceptionMessage);
             }
           case LengthUnit.Foot:
             switch (ForceUnit) {
@@ -92,7 +96,7 @@ namespace ComposAPI.Helpers {
                 return PressureUnit.KilopoundForcePerSquareFoot;
 
               default:
-                 throw new ArgumentException(_unitExceptionMessage);
+                throw new ArgumentException(_unitExceptionMessage);
             }
           case LengthUnit.Inch:
             switch (ForceUnit) {
@@ -103,10 +107,10 @@ namespace ComposAPI.Helpers {
                 return PressureUnit.KilopoundForcePerSquareInch;
 
               default:
-                 throw new ArgumentException(_unitExceptionMessage);
+                throw new ArgumentException(_unitExceptionMessage);
             }
           default:
-             throw new ArgumentException(_unitExceptionMessage);
+            throw new ArgumentException(_unitExceptionMessage);
         }
       }
     }
@@ -128,7 +132,7 @@ namespace ComposAPI.Helpers {
                 return ForcePerLengthUnit.TonneForcePerMillimeter;
 
               default:
-                 throw new ArgumentException(_unitExceptionMessage);;
+                throw new ArgumentException(_unitExceptionMessage); ;
             }
           case LengthUnit.Centimeter:
             switch (ForceUnit) {
@@ -145,7 +149,7 @@ namespace ComposAPI.Helpers {
                 return ForcePerLengthUnit.TonneForcePerCentimeter;
 
               default:
-                 throw new ArgumentException(_unitExceptionMessage);;
+                throw new ArgumentException(_unitExceptionMessage); ;
             }
           case LengthUnit.Meter:
             switch (ForceUnit) {
@@ -162,7 +166,7 @@ namespace ComposAPI.Helpers {
                 return ForcePerLengthUnit.TonneForcePerMeter;
 
               default:
-                 throw new ArgumentException(_unitExceptionMessage);;
+                throw new ArgumentException(_unitExceptionMessage); ;
             }
           case LengthUnit.Foot:
             switch (ForceUnit) {
@@ -173,7 +177,7 @@ namespace ComposAPI.Helpers {
                 return ForcePerLengthUnit.KilopoundForcePerFoot;
 
               default:
-                 throw new ArgumentException(_unitExceptionMessage);;
+                throw new ArgumentException(_unitExceptionMessage); ;
             }
           case LengthUnit.Inch:
             switch (ForceUnit) {
@@ -184,10 +188,10 @@ namespace ComposAPI.Helpers {
                 return ForcePerLengthUnit.KilopoundForcePerInch;
 
               default:
-                 throw new ArgumentException(_unitExceptionMessage);;
+                throw new ArgumentException(_unitExceptionMessage); ;
             }
           default:
-             throw new ArgumentException(_unitExceptionMessage);;
+            throw new ArgumentException(_unitExceptionMessage); ;
         }
       }
     }
@@ -239,7 +243,7 @@ namespace ComposAPI.Helpers {
             return AreaUnit.SquareInch;
 
           default:
-             throw new ArgumentException(_unitExceptionMessage);
+            throw new ArgumentException(_unitExceptionMessage);
         }
       }
     }
@@ -433,7 +437,7 @@ namespace ComposAPI.Helpers {
               return PressureUnit.TonneForcePerSquareMillimeter;
 
             default:
-               throw new ArgumentException(_unitExceptionMessage);
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Centimeter:
           switch (forceUnit) {
@@ -447,7 +451,7 @@ namespace ComposAPI.Helpers {
               return PressureUnit.TonneForcePerSquareCentimeter;
 
             default:
-               throw new ArgumentException(_unitExceptionMessage);
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Meter:
           switch (forceUnit) {
@@ -464,7 +468,7 @@ namespace ComposAPI.Helpers {
               return PressureUnit.TonneForcePerSquareMeter;
 
             default:
-               throw new ArgumentException(_unitExceptionMessage);
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Foot:
           switch (forceUnit) {
@@ -475,7 +479,7 @@ namespace ComposAPI.Helpers {
               return PressureUnit.KilopoundForcePerSquareFoot;
 
             default:
-               throw new ArgumentException(_unitExceptionMessage);
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Inch:
           switch (forceUnit) {
@@ -486,10 +490,10 @@ namespace ComposAPI.Helpers {
               return PressureUnit.KilopoundForcePerSquareInch;
 
             default:
-               throw new ArgumentException(_unitExceptionMessage);
+              throw new ArgumentException(_unitExceptionMessage);
           }
         default:
-           throw new ArgumentException(_unitExceptionMessage);
+          throw new ArgumentException(_unitExceptionMessage);
       }
     }
 
@@ -510,7 +514,7 @@ namespace ComposAPI.Helpers {
               return ForcePerLengthUnit.TonneForcePerMillimeter;
 
             default:
-               throw new ArgumentException(_unitExceptionMessage);;
+              throw new ArgumentException(_unitExceptionMessage); ;
           }
         case LengthUnit.Centimeter:
           switch (forceUnit) {
@@ -527,7 +531,7 @@ namespace ComposAPI.Helpers {
               return ForcePerLengthUnit.TonneForcePerCentimeter;
 
             default:
-               throw new ArgumentException(_unitExceptionMessage);;
+              throw new ArgumentException(_unitExceptionMessage); ;
           }
         case LengthUnit.Meter:
           switch (forceUnit) {
@@ -544,7 +548,7 @@ namespace ComposAPI.Helpers {
               return ForcePerLengthUnit.TonneForcePerMeter;
 
             default:
-               throw new ArgumentException(_unitExceptionMessage);;
+              throw new ArgumentException(_unitExceptionMessage); ;
           }
         case LengthUnit.Foot:
           switch (forceUnit) {
@@ -555,7 +559,7 @@ namespace ComposAPI.Helpers {
               return ForcePerLengthUnit.KilopoundForcePerFoot;
 
             default:
-               throw new ArgumentException(_unitExceptionMessage);;
+              throw new ArgumentException(_unitExceptionMessage); ;
           }
         case LengthUnit.Inch:
           switch (forceUnit) {
@@ -566,10 +570,10 @@ namespace ComposAPI.Helpers {
               return ForcePerLengthUnit.KilopoundForcePerInch;
 
             default:
-               throw new ArgumentException(_unitExceptionMessage);;
+              throw new ArgumentException(_unitExceptionMessage); ;
           }
         default:
-           throw new ArgumentException(_unitExceptionMessage);;
+          throw new ArgumentException(_unitExceptionMessage); ;
       }
     }
 
@@ -590,7 +594,7 @@ namespace ComposAPI.Helpers {
               return MomentUnit.TonneForceMillimeter;
 
             default:
-               throw new ArgumentException(_unitExceptionMessage);
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Centimeter:
           switch (forceUnit) {
@@ -607,7 +611,7 @@ namespace ComposAPI.Helpers {
               return MomentUnit.TonneForceCentimeter;
 
             default:
-               throw new ArgumentException(_unitExceptionMessage);
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Meter:
           switch (forceUnit) {
@@ -624,7 +628,7 @@ namespace ComposAPI.Helpers {
               return MomentUnit.TonneForceMeter;
 
             default:
-               throw new ArgumentException(_unitExceptionMessage);
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Foot:
           switch (forceUnit) {
@@ -635,7 +639,7 @@ namespace ComposAPI.Helpers {
               return MomentUnit.KilopoundForceFoot;
 
             default:
-               throw new ArgumentException(_unitExceptionMessage);
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Inch:
           switch (forceUnit) {
@@ -646,10 +650,10 @@ namespace ComposAPI.Helpers {
               return MomentUnit.KilopoundForceInch;
 
             default:
-               throw new ArgumentException(_unitExceptionMessage);
+              throw new ArgumentException(_unitExceptionMessage);
           }
         default:
-           throw new ArgumentException(_unitExceptionMessage);
+          throw new ArgumentException(_unitExceptionMessage);
       }
     }
 
