@@ -1,15 +1,11 @@
-﻿using ComposAPI;
-using ComposAPI.Helpers;
-using Oasys.Taxonomy.Profiles;
+﻿using ComposAPI.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
-using System.IO;
 using Xunit;
-
+[assembly: CollectionBehavior(DisableTestParallelization = true, MaxParallelThreads = 1)]
 namespace ComposAPITests.Helper {
   [Collection("ComposAPI Fixture collection")]
   public class ComposUnitsHelperTest {
-
     [Theory]
     [InlineData(LengthUnit.LightYear, ForceUnit.Newton)]
     [InlineData(LengthUnit.Meter, ForceUnit.Newton)]
