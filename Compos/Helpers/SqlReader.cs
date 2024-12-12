@@ -15,9 +15,7 @@ namespace ComposAPI.Helpers {
   /// </summary>
   public class SqlReader : MarshalByRefObject {
     public static SqlReader Instance => lazy.Value;
-   // public static Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
     private static readonly Lazy<SqlReader> lazy = new Lazy<SqlReader>(() => Initialize());
-   // private static assemblies = AppDomain.GetAssemblies();
     public SqlReader() {
     }
 
