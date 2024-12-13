@@ -69,7 +69,7 @@ $filesToUpdate = @(
     @{
         FilePath = ".\ComposGH\ComposGHInfo.cs"
         SearchPattern = 'string GrasshopperVersion = "(.*?)"'
-        ReplacementPattern = 'string Vers = "' + $newVersion + '"'
+        ReplacementPattern = 'string GrasshopperVersion = "' + $newVersion + '"'
     }
 )
 
