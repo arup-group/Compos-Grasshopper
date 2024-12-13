@@ -4,7 +4,7 @@ using OasysUnits;
 using OasysUnits.Units;
 using Xunit;
 
-namespace ComposGHTests.Helpers {
+namespace ComposGHTests.Helper {
   [Collection("GrasshopperFixture collection")]
   public class ObjectExtensionTest {
 
@@ -185,8 +185,8 @@ namespace ComposGHTests.Helpers {
     internal Force Force { get; set; }
     internal int I { get; set; }
     internal IList<IQuantity> IQuantities { get; set; } = new List<IQuantity>();
-    internal IQuantity IQuantity { get; set; }
-    internal string S { get; set; }
+    internal IQuantity IQuantity { get; set; } = new Length();
+    internal string S { get; set; } = string.Empty;
     internal IList<Length> Structs { get; set; } = new List<Length>();
     internal TestEnum TestEnum { get; set; }
 
@@ -222,8 +222,8 @@ namespace ComposGHTests.Helpers {
     internal Force _force;
     internal int _i;
     internal IList<IQuantity> _iQuantities = new List<IQuantity>();
-    internal IQuantity _iQuantity;
-    internal string _s;
+    internal IQuantity _iQuantity = new Length();
+    internal string _s = string.Empty;
     internal IList<Length> _structs = new List<Length>();
     internal TestEnum _testEnum;
 

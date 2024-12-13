@@ -9,6 +9,7 @@ namespace ComposAPI.Helpers {
   /// Get or Set global units in this static class
   /// </summary>
   public static class ComposUnitsHelper {
+    private static string _unitExceptionMessage = "Requested unit is not supported";
     public enum ComposUnits {
       Length_Geometry,
       Length_Section,
@@ -16,6 +17,15 @@ namespace ComposAPI.Helpers {
       Force,
       Stress,
       Mass,
+    }
+
+    public static bool IsEqual(IQuantity first, IQuantity second, double tolerance = 1e-8) {
+      if (first.GetType() != second.GetType()) {
+        throw new ArgumentException("It is only possible to compare data of the same kind for equality");
+      }
+      double firstInRespectiveUnitValue = first.ToUnit(first.Unit).Value;
+      double secondInRespectiveUnitValue = second.ToUnit(first.Unit).Value;
+      return Math.Abs(firstInRespectiveUnitValue - secondInRespectiveUnitValue) < tolerance;
     }
 
     public static AreaMomentOfInertiaUnit AreaMomentOfInertiaUnit => GetSectionAreaMomentOfInertiaUnit(LengthUnitSection);
@@ -29,214 +39,13 @@ namespace ComposAPI.Helpers {
         return density.Unit;
       }
     }
-    public static PressureUnit ForcePerAreaUnit {
-      get {
-        switch (LengthUnitGeometry) {
-          case LengthUnit.Millimeter:
-            switch (ForceUnit) {
-              case ForceUnit.Newton:
-                return PressureUnit.NewtonPerSquareMillimeter;
-
-              case ForceUnit.Kilonewton:
-                return PressureUnit.KilonewtonPerSquareMillimeter;
-
-              case ForceUnit.TonneForce:
-                return PressureUnit.TonneForcePerSquareMillimeter;
-
-              default:
-                return PressureUnit.Undefined;
-            }
-          case LengthUnit.Centimeter:
-            switch (ForceUnit) {
-              case ForceUnit.Newton:
-                return PressureUnit.NewtonPerSquareCentimeter;
-
-              case ForceUnit.Kilonewton:
-                return PressureUnit.KilonewtonPerSquareCentimeter;
-
-              case ForceUnit.TonneForce:
-                return PressureUnit.TonneForcePerSquareCentimeter;
-
-              default:
-                return PressureUnit.Undefined;
-            }
-          case LengthUnit.Meter:
-            switch (ForceUnit) {
-              case ForceUnit.Newton:
-                return PressureUnit.NewtonPerSquareMeter;
-
-              case ForceUnit.Kilonewton:
-                return PressureUnit.KilonewtonPerSquareMeter;
-
-              case ForceUnit.Meganewton:
-                return PressureUnit.MeganewtonPerSquareMeter;
-
-              case ForceUnit.TonneForce:
-                return PressureUnit.TonneForcePerSquareMeter;
-
-              default:
-                return PressureUnit.Undefined;
-            }
-          case LengthUnit.Foot:
-            switch (ForceUnit) {
-              case ForceUnit.PoundForce:
-                return PressureUnit.PoundForcePerSquareFoot;
-
-              case ForceUnit.KilopoundForce:
-                return PressureUnit.KilopoundForcePerSquareFoot;
-
-              default:
-                return PressureUnit.Undefined;
-            }
-          case LengthUnit.Inch:
-            switch (ForceUnit) {
-              case ForceUnit.PoundForce:
-                return PressureUnit.PoundForcePerSquareInch;
-
-              case ForceUnit.KilopoundForce:
-                return PressureUnit.KilopoundForcePerSquareInch;
-
-              default:
-                return PressureUnit.Undefined;
-            }
-          default:
-            return PressureUnit.Undefined;
-        }
-      }
-    }
-    public static ForcePerLengthUnit ForcePerLengthUnit {
-      get {
-        switch (LengthUnitGeometry) {
-          case LengthUnit.Millimeter:
-            switch (ForceUnit) {
-              case ForceUnit.Newton:
-                return ForcePerLengthUnit.NewtonPerMillimeter;
-
-              case ForceUnit.Kilonewton:
-                return ForcePerLengthUnit.KilonewtonPerMillimeter;
-
-              case ForceUnit.Meganewton:
-                return ForcePerLengthUnit.MeganewtonPerMillimeter;
-
-              case ForceUnit.TonneForce:
-                return ForcePerLengthUnit.TonneForcePerMillimeter;
-
-              default:
-                return ForcePerLengthUnit.Undefined;
-            }
-          case LengthUnit.Centimeter:
-            switch (ForceUnit) {
-              case ForceUnit.Newton:
-                return ForcePerLengthUnit.NewtonPerCentimeter;
-
-              case ForceUnit.Kilonewton:
-                return ForcePerLengthUnit.KilonewtonPerCentimeter;
-
-              case ForceUnit.Meganewton:
-                return ForcePerLengthUnit.MeganewtonPerCentimeter;
-
-              case ForceUnit.TonneForce:
-                return ForcePerLengthUnit.TonneForcePerCentimeter;
-
-              default:
-                return ForcePerLengthUnit.Undefined;
-            }
-          case LengthUnit.Meter:
-            switch (ForceUnit) {
-              case ForceUnit.Newton:
-                return ForcePerLengthUnit.NewtonPerMeter;
-
-              case ForceUnit.Kilonewton:
-                return ForcePerLengthUnit.KilonewtonPerMeter;
-
-              case ForceUnit.Meganewton:
-                return ForcePerLengthUnit.MeganewtonPerMeter;
-
-              case ForceUnit.TonneForce:
-                return ForcePerLengthUnit.TonneForcePerMeter;
-
-              default:
-                return ForcePerLengthUnit.Undefined;
-            }
-          case LengthUnit.Foot:
-            switch (ForceUnit) {
-              case ForceUnit.PoundForce:
-                return ForcePerLengthUnit.PoundForcePerFoot;
-
-              case ForceUnit.KilopoundForce:
-                return ForcePerLengthUnit.KilopoundForcePerFoot;
-
-              default:
-                return ForcePerLengthUnit.Undefined;
-            }
-          case LengthUnit.Inch:
-            switch (ForceUnit) {
-              case ForceUnit.PoundForce:
-                return ForcePerLengthUnit.PoundForcePerInch;
-
-              case ForceUnit.KilopoundForce:
-                return ForcePerLengthUnit.KilopoundForcePerInch;
-
-              default:
-                return ForcePerLengthUnit.Undefined;
-            }
-          default:
-            return ForcePerLengthUnit.Undefined;
-        }
-      }
-    }
+    
     public static ForceUnit ForceUnit { get; set; } = ForceUnit.Newton;
     public static LengthUnit LengthUnitGeometry { get; set; } = LengthUnit.Meter;
     public static LengthUnit LengthUnitResult { get; set; } = LengthUnit.Meter;
     public static LengthUnit LengthUnitSection { get; set; } = LengthUnit.Meter;
     public static MassUnit MassUnit { get; set; } = MassUnit.Kilogram;
     public static MomentUnit MomentUnit { get; set; } = MomentUnit.KilonewtonMeter;
-    public static AreaMomentOfInertiaUnit SectionAreaMomentOfInertiaUnit {
-      get {
-        switch (LengthUnitSection) {
-          case LengthUnit.Millimeter:
-            return AreaMomentOfInertiaUnit.MillimeterToTheFourth;
-
-          case LengthUnit.Centimeter:
-            return AreaMomentOfInertiaUnit.CentimeterToTheFourth;
-
-          case LengthUnit.Meter:
-            return AreaMomentOfInertiaUnit.MeterToTheFourth;
-
-          case LengthUnit.Foot:
-            return AreaMomentOfInertiaUnit.FootToTheFourth;
-
-          case LengthUnit.Inch:
-            return AreaMomentOfInertiaUnit.InchToTheFourth;
-
-          default:
-            return AreaMomentOfInertiaUnit.Undefined;
-        }
-      }
-    }
-    public static AreaUnit SectionAreaUnit {
-      get {
-        switch (LengthUnitSection) {
-          case LengthUnit.Millimeter:
-            return AreaUnit.SquareMillimeter;
-
-          case LengthUnit.Centimeter:
-            return AreaUnit.SquareCentimeter;
-
-          case LengthUnit.Meter:
-            return AreaUnit.SquareMeter;
-
-          case LengthUnit.Foot:
-            return AreaUnit.SquareFoot;
-
-          case LengthUnit.Inch:
-            return AreaUnit.SquareInch;
-
-          default:
-            return AreaUnit.Undefined;
-        }
-      }
-    }
     public static StrainUnit StrainUnit { get; set; } = StrainUnit.MilliStrain;
     public static PressureUnit StressUnit { get; set; } = PressureUnit.NewtonPerSquareMeter;
     public static List<string> FilteredDensityUnits = new List<string>()
@@ -356,7 +165,7 @@ namespace ComposAPI.Helpers {
               return DensityUnit.TonnePerCubicMillimeter;
 
             default:
-              return DensityUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Centimeter:
           switch (massUnit) {
@@ -370,7 +179,7 @@ namespace ComposAPI.Helpers {
               return DensityUnit.TonnePerCubicCentimeter;
 
             default:
-              return DensityUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Meter:
           switch (massUnit) {
@@ -384,7 +193,7 @@ namespace ComposAPI.Helpers {
               return DensityUnit.TonnePerCubicMeter;
 
             default:
-              return DensityUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Foot:
           switch (massUnit) {
@@ -395,7 +204,7 @@ namespace ComposAPI.Helpers {
               return DensityUnit.KilopoundPerCubicFoot;
 
             default:
-              return DensityUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Inch:
           switch (massUnit) {
@@ -406,10 +215,10 @@ namespace ComposAPI.Helpers {
               return DensityUnit.KilopoundPerCubicInch;
 
             default:
-              return DensityUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         default:
-          return DensityUnit.Undefined;
+          throw new ArgumentException(_unitExceptionMessage);
       }
     }
 
@@ -427,7 +236,7 @@ namespace ComposAPI.Helpers {
               return PressureUnit.TonneForcePerSquareMillimeter;
 
             default:
-              return PressureUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Centimeter:
           switch (forceUnit) {
@@ -441,7 +250,7 @@ namespace ComposAPI.Helpers {
               return PressureUnit.TonneForcePerSquareCentimeter;
 
             default:
-              return PressureUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Meter:
           switch (forceUnit) {
@@ -458,7 +267,7 @@ namespace ComposAPI.Helpers {
               return PressureUnit.TonneForcePerSquareMeter;
 
             default:
-              return PressureUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Foot:
           switch (forceUnit) {
@@ -469,7 +278,7 @@ namespace ComposAPI.Helpers {
               return PressureUnit.KilopoundForcePerSquareFoot;
 
             default:
-              return PressureUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Inch:
           switch (forceUnit) {
@@ -480,10 +289,10 @@ namespace ComposAPI.Helpers {
               return PressureUnit.KilopoundForcePerSquareInch;
 
             default:
-              return PressureUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         default:
-          return PressureUnit.Undefined;
+          throw new ArgumentException(_unitExceptionMessage);
       }
     }
 
@@ -504,7 +313,7 @@ namespace ComposAPI.Helpers {
               return ForcePerLengthUnit.TonneForcePerMillimeter;
 
             default:
-              return ForcePerLengthUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Centimeter:
           switch (forceUnit) {
@@ -521,7 +330,7 @@ namespace ComposAPI.Helpers {
               return ForcePerLengthUnit.TonneForcePerCentimeter;
 
             default:
-              return ForcePerLengthUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Meter:
           switch (forceUnit) {
@@ -538,7 +347,7 @@ namespace ComposAPI.Helpers {
               return ForcePerLengthUnit.TonneForcePerMeter;
 
             default:
-              return ForcePerLengthUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Foot:
           switch (forceUnit) {
@@ -549,7 +358,7 @@ namespace ComposAPI.Helpers {
               return ForcePerLengthUnit.KilopoundForcePerFoot;
 
             default:
-              return ForcePerLengthUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Inch:
           switch (forceUnit) {
@@ -560,10 +369,10 @@ namespace ComposAPI.Helpers {
               return ForcePerLengthUnit.KilopoundForcePerInch;
 
             default:
-              return ForcePerLengthUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         default:
-          return ForcePerLengthUnit.Undefined;
+          throw new ArgumentException(_unitExceptionMessage);
       }
     }
 
@@ -584,7 +393,7 @@ namespace ComposAPI.Helpers {
               return MomentUnit.TonneForceMillimeter;
 
             default:
-              return MomentUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Centimeter:
           switch (forceUnit) {
@@ -601,7 +410,7 @@ namespace ComposAPI.Helpers {
               return MomentUnit.TonneForceCentimeter;
 
             default:
-              return MomentUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Meter:
           switch (forceUnit) {
@@ -618,7 +427,7 @@ namespace ComposAPI.Helpers {
               return MomentUnit.TonneForceMeter;
 
             default:
-              return MomentUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Foot:
           switch (forceUnit) {
@@ -629,7 +438,7 @@ namespace ComposAPI.Helpers {
               return MomentUnit.KilopoundForceFoot;
 
             default:
-              return MomentUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         case LengthUnit.Inch:
           switch (forceUnit) {
@@ -640,10 +449,10 @@ namespace ComposAPI.Helpers {
               return MomentUnit.KilopoundForceInch;
 
             default:
-              return MomentUnit.Undefined;
+              throw new ArgumentException(_unitExceptionMessage);
           }
         default:
-          return MomentUnit.Undefined;
+          throw new ArgumentException(_unitExceptionMessage);
       }
     }
 
@@ -665,7 +474,7 @@ namespace ComposAPI.Helpers {
           return AreaMomentOfInertiaUnit.InchToTheFourth;
 
         default:
-          return AreaMomentOfInertiaUnit.Undefined;
+          throw new ArgumentException(_unitExceptionMessage);
       }
     }
   }

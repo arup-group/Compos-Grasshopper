@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Microsoft.Data.Sqlite;
+
 
 namespace ComposAPI.Helpers {
   /// <summary>
@@ -13,17 +16,10 @@ namespace ComposAPI.Helpers {
   public class SqlReader : MarshalByRefObject {
     public static SqlReader Instance => lazy.Value;
     private static readonly Lazy<SqlReader> lazy = new Lazy<SqlReader>(() => Initialize());
-
     public SqlReader() {
     }
 
     public static SqlReader Initialize() {
-      string codeBase = Assembly.GetCallingAssembly().CodeBase;
-      var uri = new UriBuilder(codeBase);
-      string codeBasePath = Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
-
-      Assembly.LoadFile(codeBasePath + @"\Microsoft.Data.Sqlite.dll");
-
       return new SqlReader();
     }
 

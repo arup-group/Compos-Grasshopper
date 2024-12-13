@@ -23,8 +23,6 @@ namespace ComposGH.Components {
     protected override System.Drawing.Bitmap Icon => Resources.ProfileProperties;
     private LengthUnit LengthUnit = DefaultUnits.LengthUnitGeometry;
 
-    private int ProfileSerialized = 0;
-
     public BeamSectionProperties() : base(BeamSectionGoo.Name.Replace(" ", string.Empty) + "Props",
       BeamSectionGoo.Name.Replace(" ", string.Empty),
       "Get " + BeamSectionGoo.Description + " Properties",

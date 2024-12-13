@@ -1,11 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-
+    <TargetFramework>net48</TargetFramework>
     <IsPackable>false</IsPackable>
-
     <Platforms>x64</Platforms>
   </PropertyGroup>
 

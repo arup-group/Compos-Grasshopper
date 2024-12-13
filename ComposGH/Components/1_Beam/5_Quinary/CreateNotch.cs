@@ -12,6 +12,7 @@ using OasysGH.Units;
 using OasysGH.Units.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
+using ComposAPI.Helpers;
 
 namespace ComposGH.Components {
   public class CreateNotch : GH_OasysDropDownComponent {
@@ -43,7 +44,8 @@ namespace ComposGH.Components {
           return;
         }
         OpeningType = (NotchTypes)Enum.Parse(typeof(NotchTypes), _selectedItems[i].Replace(' ', '_'));
-      } else if (i == 1) // change is made to length unit
+      }
+      else if (i == 1) // change is made to length unit
         {
         LengthUnit = (LengthUnit)UnitsHelper.Parse(typeof(LengthUnit), _selectedItems[i]);
       }
@@ -54,7 +56,8 @@ namespace ComposGH.Components {
     public override void VariableParameterMaintenance() {
       if (OpeningType == NotchTypes.Both_ends) {
         Params.Output[0].Access = GH_ParamAccess.list;
-      } else {
+      }
+      else {
         Params.Output[0].Access = GH_ParamAccess.item;
       }
 
@@ -98,12 +101,9 @@ namespace ComposGH.Components {
       var width = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
       var height = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
       var stiff = (WebOpeningStiffenersGoo)Input.GenericGoo<WebOpeningStiffenersGoo>(this, DA, 2);
-      if (stiff != null) {
-        if (stiff.Value.BottomStiffenerWidth != Length.Zero) {
-          AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "For Beam Notches only top stiffener(s) will be used.");
-        }
+      if (stiff != null && !ComposUnitsHelper.IsEqual(stiff.Value.BottomStiffenerWidth, Length.Zero)) {
+        AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "For Beam Notches only top stiffener(s) will be used.");
       }
-
       switch (OpeningType) {
         case NotchTypes.Start:
           DA.SetData(0, new WebOpeningGoo(new WebOpening(width, height, NotchPosition.Start, stiff?.Value)));

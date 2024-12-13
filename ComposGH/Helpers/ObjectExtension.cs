@@ -118,7 +118,7 @@ namespace ComposGH.Helpers {
         // assign all source property to taget object's properties
         foreach (FieldInfo field in fieldInfo) {
           object objPropertyValue;
-          Type propertyType = field.GetType();
+          Type propertyType = field.FieldType;
           try {
             // check wether property is an guid - this we do not want to duplicate
             if (propertyType.Equals(typeof(Guid))) {

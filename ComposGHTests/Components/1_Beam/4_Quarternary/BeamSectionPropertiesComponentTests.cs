@@ -1,5 +1,5 @@
 ﻿using ComposGH.Components;
-using ComposGHTests.Helpers;
+using ComposGHTests.Helper;
 using Grasshopper.Kernel.Types;
 using OasysGH.Parameters;
 using OasysUnits.Units;

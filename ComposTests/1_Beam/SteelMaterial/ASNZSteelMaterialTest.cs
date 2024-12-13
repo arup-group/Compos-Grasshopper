@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Linq;
 using ComposAPI.Helpers;
-using ComposGHTests.Helpers;
+using ComposGHTests.Helper;
 using ComposGH.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
 using Xunit;
+using System.Runtime.InteropServices;
 
 namespace ComposAPI.Beams.Tests {
   [Collection("ComposAPI Fixture collection")]
   public class ASNZSteelMaterialTest {
-
+    private IntPtr GetAddress(object myObject) {
+      var handle = GCHandle.Alloc(myObject, GCHandleType.WeakTrackResurrection);
+     return GCHandle.ToIntPtr(handle);
+    }
     // 1 setup inputs
     [Theory]
     [InlineData(StandardASNZSteelMaterialGrade.C450_AS1163, 450, WeldMaterialGrade.Grade_35)]
@@ -62,9 +66,9 @@ namespace ComposAPI.Beams.Tests {
 
       // 2 check that duplicate has duplicated values
       Duplicates.AreEqual(original, duplicate);
-
+     
       // 3 check that the memory pointer is not the same
-      Assert.NotSame(original, duplicate);
+      Assert.NotEqual(GetAddress(original), GetAddress(duplicate));
     }
 
     [Fact]

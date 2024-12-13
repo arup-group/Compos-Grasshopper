@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using ComposAPI.Helpers;
 using ComposGH.Helpers;
-using ComposGHTests.Helpers;
+using ComposGHTests.Helper;
 using OasysGH;
 using OasysUnits;
 using OasysUnits.Units;
@@ -242,22 +242,23 @@ namespace ComposAPI.Beams.Tests {
     }
 
     [Theory]
-    [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	1	0.000000	STD I 600. 200. 15. 25.	TAPERED_YES\n", 0, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600. 200. 15. 25.", true)]
-    [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	2	0.500000	STD I(m) 0.4 0.2 0.015 0.025	TAPERED_NO\n", 0.5, 400, 200, 200, 25, 25, 0, false, 15, "STD I(m) 0.4 0.2 0.015 0.025", false)]
-    [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	3	1.00000	STD I 600 200 15 25	TAPERED_NO\n", 1, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600 200 15 25", false)]
+    [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	1	0.000000	STD I 600. 200. 15. 25.	TAPERED_YES\n", 0, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600. 200. 15. 25.", true, "STD I 600. 200. 15. 25., Tapered")]
+    [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	2	0.500000	STD I(m) 0.4 0.2 0.015 0.025	TAPERED_NO\n", 0.5, 400, 200, 200, 25, 25, 0, false, 15, "STD I(m) 0.4 0.2 0.015 0.025", false, "STD I(m) 0.4 0.2 0.015 0.025, Px:0.5m")]
+    [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	3	1.00000	STD I 600 200 15 25	TAPERED_NO\n", 1, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600 200 15 25", false, "STD I 600 200 15 25, Px:1m")]
     //[InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	4	2.00000	CAT HE HE260.B 19920101	TAPERED_NO\n", 2, 260, 200, 200, 25, 25, 0, true, 15, "CAT HE HE260.B 19920101", false)]
-    [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	5	3.00000	STD I 600 200 15 25	TAPERED_YES\n", 3, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600 200 15 25", true)]
-    [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	6	4.00000	STD I(m) 100. 200. 20. 10.	TAPERED_YES\n", 4, 100000, 200000, 200000, 10000, 10000, 0, false, 20000, "STD I(m) 100. 200. 20. 10.", true)]
-    [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	7	5.00000	STD GI(m) 100. 200. 300. 10. 20. 30.	TAPERED_NO\n", 5, 100000, 200000, 300000, 20000, 30000, 0, false, 10000, "STD GI(m) 100. 200. 300. 10. 20. 30.", false)]
-    [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	1	-0.500000	STD I 600. 200. 15. 25.	TAPERED_YES\n", -0.5, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600. 200. 15. 25.", true)]
+    [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	5	3.00000	STD I 600 200 15 25	TAPERED_YES\n", 3, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600 200 15 25", true, "STD I 600 200 15 25, Px:3m, Tapered")]
+    [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	6	4.00000	STD I(m) 100. 200. 20. 10.	TAPERED_YES\n", 4, 100000, 200000, 200000, 10000, 10000, 0, false, 20000, "STD I(m) 100. 200. 20. 10.", true, "STD I(m) 100. 200. 20. 10., Px:4m, Tapered")]
+    [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	7	5.00000	STD GI(m) 100. 200. 300. 10. 20. 30.	TAPERED_NO\n", 5, 100000, 200000, 300000, 20000, 30000, 0, false, 10000, "STD GI(m) 100. 200. 300. 10. 20. 30.", false, "STD GI(m) 100. 200. 300. 10. 20. 30., Px:5m")]
+    [InlineData("BEAM_SECTION_AT_X	MEMBER-1	7	1	-0.500000	STD I 600. 200. 15. 25.	TAPERED_YES\n", -0.5, 600, 200, 200, 25, 25, 0, false, 15, "STD I 600. 200. 15. 25.", true, "STD I 600. 200. 15. 25., Px:50%, Tapered")]
     public void FromCoaStringTest(string coaString, double expected_startPosition, double expected_depth, double expected_topFlangeWidth, double expected_bottomFlangeWidth,
-      double expected_topFlangeThickness, double expected_bottomFlangeThickness, double expected_rootRadius, bool expected_isCatalogue, double expected_webThickness, string expected_sectionDescription, bool expected_taperToNext) {
+      double expected_topFlangeThickness, double expected_bottomFlangeThickness, double expected_rootRadius, bool expected_isCatalogue, double expected_webThickness, string expected_sectionDescription, bool expected_taperToNext, string expectedString) {
       List<string> parameters = CoaHelper.Split(coaString);
       IBeamSection beam = BeamSection.FromCoaString(parameters, ComposUnits.GetStandardUnits());
 
       if (beam.StartPosition.QuantityInfo.UnitType == typeof(RatioUnit)) {
         Assert.Equal(expected_startPosition, beam.StartPosition.As(RatioUnit.DecimalFraction) * -1);
-      } else {
+      }
+      else {
         Assert.Equal(expected_startPosition, beam.StartPosition.As(LengthUnit.Meter));
       }
       Assert.Equal(expected_depth, beam.Depth.Millimeters);
@@ -270,6 +271,9 @@ namespace ComposAPI.Beams.Tests {
       Assert.Equal(expected_isCatalogue, beam.IsCatalogue);
       Assert.Equal(expected_sectionDescription, beam.SectionDescription);
       Assert.Equal(expected_taperToNext, beam.TaperedToNext);
+      //string ss = beam.ToString();
+      Assert.Equal(expectedString, beam.ToString());
+
     }
 
     [Theory]
@@ -286,7 +290,8 @@ namespace ComposAPI.Beams.Tests {
       var beamSection = new BeamSection();
       if (startPosition < 0) {
         beamSection.StartPosition = new Ratio(Math.Abs(startPosition), RatioUnit.DecimalFraction);
-      } else {
+      }
+      else {
         beamSection.StartPosition = new Length(startPosition, LengthUnit.Meter);
       }
       beamSection.Depth = new Length(depth, LengthUnit.Millimeter);

@@ -1,7 +1,7 @@
 ﻿using ComposAPI;
 using ComposGH.Components;
 using ComposGH.Parameters;
-using ComposGHTests.Helpers;
+using ComposGHTests.Helper;
 using Xunit;
 
 namespace ComposGHTests.Beam {

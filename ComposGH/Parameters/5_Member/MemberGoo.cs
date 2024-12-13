@@ -65,7 +65,7 @@ namespace ComposGH.Parameters {
       if (Value == null) {
         return "Null";
       } else {
-        return "Compos " + TypeName + " {" + Value.ToString() + "}"; ;
+        return "Compos " + TypeName + " {" + Value.ToString() + "}";
       }
     }
 
@@ -220,18 +220,6 @@ namespace ComposGH.Parameters {
       //return dup;
     }
 
-    #endregion
-
-#pragma warning disable IDE0044 // Add readonly modifier
-    #region preview geometry
-    private List<PolyCurve> profileOutlines;
-    private List<Brep> profileExtrusions;
-    private List<Brep> stiffenerPlates;
-
-    private void UpdatePreview() {
-    }
-
-#pragma warning restore IDE0044 // Add readonly modifier
     #endregion
 
     #region drawing methods
