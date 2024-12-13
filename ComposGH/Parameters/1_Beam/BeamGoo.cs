@@ -268,7 +268,7 @@ namespace ComposGH.Parameters {
       if (Value == null) {
         return "Null";
       } else {
-        return "Compos " + TypeName + " {" + Value.ToString() + "}"; ;
+        return "Compos " + TypeName + " {" + Value.ToString() + "}";
       }
     }
 

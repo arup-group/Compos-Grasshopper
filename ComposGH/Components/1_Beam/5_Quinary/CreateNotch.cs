@@ -101,12 +101,9 @@ namespace ComposGH.Components {
       var width = (Length)Input.UnitNumber(this, DA, 0, LengthUnit);
       var height = (Length)Input.UnitNumber(this, DA, 1, LengthUnit);
       var stiff = (WebOpeningStiffenersGoo)Input.GenericGoo<WebOpeningStiffenersGoo>(this, DA, 2);
-      if (stiff != null) {
-        if (!ComposUnitsHelper.IsEqual(stiff.Value.BottomStiffenerWidth, Length.Zero)) {
-          AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "For Beam Notches only top stiffener(s) will be used.");
-        }
+      if (stiff != null && !ComposUnitsHelper.IsEqual(stiff.Value.BottomStiffenerWidth, Length.Zero)) {
+        AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "For Beam Notches only top stiffener(s) will be used.");
       }
-
       switch (OpeningType) {
         case NotchTypes.Start:
           DA.SetData(0, new WebOpeningGoo(new WebOpening(width, height, NotchPosition.Start, stiff?.Value)));
