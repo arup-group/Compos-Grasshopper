@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.IO;
 using ComposAPI;
@@ -119,7 +119,7 @@ namespace ComposGH {
     public const string Copyright = "Copyright © Oasys 1985 - 2024";
     public const string PluginName = "ComposGH";
     public const string ProductName = "Compos";
-    public const string GrasshopperVersion = "0.9.18";
+    public const string GrasshopperVersion = "0.9.19-beta";
     public static string Disclaimer = PluginName + " is pre-release and under active development, including further testing to be undertaken. It is provided \"as-is\" and you bear the risk of using it. Future versions may contain breaking changes. Any files, results, or other types of output information created using " + PluginName + " should not be relied upon without thorough and independent checking.";
     public static Guid GUID = new Guid("c3884cdc-ac5b-4151-afc2-93590cef4f8f");
     public static bool isBeta = true;
