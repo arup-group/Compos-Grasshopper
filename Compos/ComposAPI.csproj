@@ -24,14 +24,14 @@
     </AssemblyAttribute>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System"/>
+    <Reference Include="System.Core"/>
+    <Reference Include="System.Xml.Linq"/>
+    <Reference Include="System.Data.DataSetExtensions"/>
+    <Reference Include="Microsoft.CSharp"/>
+    <Reference Include="System.Data"/>
+    <Reference Include="System.Net.Http"/>
+    <Reference Include="System.Xml"/>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\ComposGH\Resources\ComposLogo128.png">
@@ -46,8 +46,8 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <None Include="ClassDiagram.cd" />
-    <None Include="licenses\UnitsNet" />
+    <None Include="ClassDiagram.cd"/>
+    <None Include="licenses\UnitsNet"/>
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Compos_8_6">
@@ -62,9 +62,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.3" />
-    <PackageReference Include="OasysUnits">
-      <Version>1.2.1</Version>
-    </PackageReference>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.3"/>
+    <PackageReference Include="OasysUnits" Version="1.2.1"/>
   </ItemGroup>
 </Project>
