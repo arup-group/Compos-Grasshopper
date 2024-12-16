@@ -21,7 +21,7 @@ function Validate-VersionFormat {
     )
 
     # Regex pattern for validating version format (X.X.X-beta)
-    $versionPattern = '^\d+\.\d+\.\d+\-beta$'
+    $versionPattern = '^\d+\.\d+\.\d+$'
 
     # Check if version matches the pattern
     return $version -match $versionPattern
@@ -59,17 +59,17 @@ $filesToUpdate = @(
     @{
         FilePath = ".\ComposGH\ComposGH.csproj"
         SearchPattern = '<Version>(.*?)<\/Version>'
-        ReplacementPattern = "<Version>$newVersion</Version>"
+        ReplacementPattern = "<Version>$newVersion-beta</Version>"
     },
 	@{
         FilePath = ".\Compos\ComposAPI.csproj"
         SearchPattern = '<Version>(.*?)<\/Version>'
-        ReplacementPattern = "<Version>$newVersion</Version>"
+        ReplacementPattern = "<Version>$newVersion-beta</Version>"
     },
     @{
         FilePath = ".\ComposGH\ComposGHInfo.cs"
         SearchPattern = 'string GrasshopperVersion = "(.*?)"'
-        ReplacementPattern = 'string GrasshopperVersion = "' + $newVersion + '"'
+        ReplacementPattern = 'string GrasshopperVersion = "' + $newVersion + '-beta"'
     }
 )
 
