@@ -1,6 +1,6 @@
 using System.IO;
 using System.Reflection;
-using ComposGHTests.Helpers;
+using ComposGHTests.Helper;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using Xunit;

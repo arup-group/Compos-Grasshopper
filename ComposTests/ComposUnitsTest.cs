@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using ComposAPI;
 using ComposAPI.Helpers;
 using OasysUnits.Units;
 using Xunit;
 
-namespace ComposAPI.Tests {
+namespace ComposAPITests {
   [Collection("ComposAPI Fixture collection")]
   public class ComposUnitsTest {
 
@@ -45,13 +46,14 @@ namespace ComposAPI.Tests {
     [InlineData(ForceUnit.Newton, LengthUnit.Meter, LengthUnit.Millimeter, LengthUnit.Meter, PressureUnit.NewtonPerSquareMeter, MassUnit.Kilogram, "UNIT_DATA	FORCE	N	1.00000\nUNIT_DATA	LENGTH	m	1.00000\nUNIT_DATA	DISP	mm	1000.00\nUNIT_DATA	SECTION	m	1.00000\nUNIT_DATA	STRESS	N/m²	1.00000\nUNIT_DATA	MASS	kg	1.00000\n")]
     [InlineData(ForceUnit.Newton, LengthUnit.Meter, LengthUnit.Meter, LengthUnit.Millimeter, PressureUnit.NewtonPerSquareMeter, MassUnit.Kilogram, "UNIT_DATA	FORCE	N	1.00000\nUNIT_DATA	LENGTH	m	1.00000\nUNIT_DATA	DISP	m	1.00000\nUNIT_DATA	SECTION	mm	1000.00\nUNIT_DATA	STRESS	N/m²	1.00000\nUNIT_DATA	MASS	kg	1.00000\n")]
     public void ToCoaStringTest(ForceUnit forceUnit, LengthUnit lengthUnit, LengthUnit displacementUnit, LengthUnit sectionUnit, PressureUnit stressUnit, MassUnit massUnit, string expected_coaString) {
-      var units = new ComposUnits();
-      units.Force = forceUnit;
-      units.Length = lengthUnit;
-      units.Displacement = displacementUnit;
-      units.Section = sectionUnit;
-      units.Stress = stressUnit;
-      units.Mass = massUnit;
+      var units = new ComposUnits {
+        Force = forceUnit,
+        Length = lengthUnit,
+        Displacement = displacementUnit,
+        Section = sectionUnit,
+        Stress = stressUnit,
+        Mass = massUnit
+      };
       string coaString = units.ToCoaString();
 
       Assert.Equal(expected_coaString, coaString);

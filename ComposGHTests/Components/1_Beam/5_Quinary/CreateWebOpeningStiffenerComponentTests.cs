@@ -1,6 +1,6 @@
 ﻿using ComposGH.Components;
 using ComposGH.Parameters;
-using ComposGHTests.Helpers;
+using ComposGHTests.Helper;
 using Grasshopper.Kernel.Parameters;
 using Grasshopper.Kernel.Types;
 using OasysGH.Components;

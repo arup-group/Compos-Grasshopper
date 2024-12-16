@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ComposAPI.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
 
@@ -181,7 +182,7 @@ namespace ComposAPI {
     /// </summary>
     public Frequency NaturalFrequency {
       get {
-        if (m_frequency == Frequency.Zero) {
+        if (ComposUnitsHelper.IsEqual(m_frequency,Frequency.Zero)) {
           m_frequency = new Frequency(Member.UtilisationFactor(UtilisationFactorOption.NaturalFrequency), FrequencyUnit.Hertz);
         }
         return m_frequency;

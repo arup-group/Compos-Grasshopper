@@ -4,7 +4,7 @@ using System.IO;
 using ComposAPI;
 using ComposGH.Components;
 using ComposGH.Parameters;
-using ComposGHTests.Helpers;
+using ComposGHTests.Helper;
 using ComposGHTests.Member;
 using OasysGH.Components;
 using Xunit;

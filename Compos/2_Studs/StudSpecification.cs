@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ComposAPI.Helpers;
 using OasysUnits;
 using OasysUnits.Units;
 
@@ -96,24 +97,24 @@ namespace ComposAPI {
       string noStudStart = "";
       if (NoStudZoneStart.QuantityInfo.UnitType == typeof(LengthUnit)) {
         var l = (Length)NoStudZoneStart;
-        if (l != Length.Zero) {
+        if (!ComposUnitsHelper.IsEqual(l, Length.Zero)) {
           noStudStart = "NoStudStart:" + l.ToString("g2").Replace(" ", string.Empty);
         }
       } else {
         var p = (Ratio)NoStudZoneStart;
-        if (p != Ratio.Zero) {
+        if (!ComposUnitsHelper.IsEqual(p, Ratio.Zero)) {
           noStudStart = "NoStudStart:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
         }
       }
       string noStudEnd = "";
       if (NoStudZoneEnd.QuantityInfo.UnitType == typeof(LengthUnit)) {
         var l = (Length)NoStudZoneEnd;
-        if (l != Length.Zero) {
+        if (!ComposUnitsHelper.IsEqual(l, Length.Zero)) {
           noStudEnd = "NoStudEnd:" + l.ToString("g2").Replace(" ", string.Empty);
         }
       } else {
         var p = (Ratio)NoStudZoneEnd;
-        if (p != Ratio.Zero) {
+        if (!ComposUnitsHelper.IsEqual(p, Ratio.Zero)) {
           noStudEnd = "NoStudEnd:" + p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
         }
       }

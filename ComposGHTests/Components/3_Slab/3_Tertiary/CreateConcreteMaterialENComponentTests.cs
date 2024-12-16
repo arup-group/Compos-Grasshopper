@@ -1,7 +1,7 @@
 ﻿using ComposAPI;
 using ComposGH.Components;
 using ComposGH.Parameters;
-using ComposGHTests.Helpers;
+using ComposGHTests.Helper;
 using OasysGH.Components;
 using Xunit;
 using static ComposAPI.ConcreteMaterial;
@@ -73,9 +73,9 @@ namespace ComposGHTests.Slab {
     [Fact]
     public void CreateComponentWithInputs3() {
       GH_OasysDropDownComponent comp = ComponentMother();
-      Assert.Equal(3, comp._dropDownItems.Count);
-      comp.SetSelected(0, comp._dropDownItems[0].Count - 1); // change dropdown to last grade which should be a lightweight one
-      Assert.Equal(4, comp._dropDownItems.Count);
+      Assert.Equal(3, comp.DropDownItems.Count);
+      comp.SetSelected(0, comp.DropDownItems[0].Count - 1); // change dropdown to last grade which should be a lightweight one
+      Assert.Equal(4, comp.DropDownItems.Count);
 
       var output = (ConcreteMaterialGoo)ComponentTestHelper.GetOutput(comp);
       Assert.NotEqual(DensityClass.NOT_APPLY, output.Value.Class);

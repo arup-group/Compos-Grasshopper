@@ -21,7 +21,7 @@ namespace ComposAPI {
     public string ToCoaString(string name, DeflectionLimitLoadType type, ComposUnits units) {
       string coaString = "";
 
-      if (AbsoluteDeflection != Length.Zero) {
+      if (!ComposUnitsHelper.IsEqual(AbsoluteDeflection,Length.Zero)) {
         var parameters = new List<string> {
           CoaIdentifier.DesignCriteria.DeflectionLimit,
           name,
@@ -33,7 +33,7 @@ namespace ComposAPI {
         coaString += CoaHelper.CreateString(parameters);
       }
 
-      if (SpanOverDeflectionRatio != Ratio.Zero) {
+      if (!ComposUnitsHelper.IsEqual(SpanOverDeflectionRatio, Ratio.Zero)) {
         var parameters = new List<string> {
           CoaIdentifier.DesignCriteria.DeflectionLimit,
           name,
@@ -50,11 +50,11 @@ namespace ComposAPI {
 
     public override string ToString() {
       string str = "";
-      if (AbsoluteDeflection != Length.Zero) {
+     if (!ComposUnitsHelper.IsEqual(AbsoluteDeflection, Length.Zero)) {
         str += "δ:" + AbsoluteDeflection.ToUnit(ComposUnitsHelper.LengthUnitResult).ToString("f0").Replace(" ", string.Empty) + ", ";
       }
 
-      if (SpanOverDeflectionRatio != Ratio.Zero) {
+      if (!ComposUnitsHelper.IsEqual(SpanOverDeflectionRatio, Ratio.Zero)) {
         str += "δ:1/" + SpanOverDeflectionRatio.DecimalFractions.ToString("f0").Replace(" ", string.Empty);
       }
       return str.TrimEnd(' ').TrimEnd(',');

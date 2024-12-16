@@ -144,7 +144,8 @@ namespace ComposAPI.File.Tests {
     [InlineData("Compos2_UTF8.coa")] //Not found: UNIT_DATA	STRESS	N/m�	1.00000
     public void FromAndToCoaStringTest(string fileName) {
       string path = Path.GetFullPath(ComposFileTest.RelativePath);
-      string expectedCoaString = System.IO.File.ReadAllText(Path.Combine(path, fileName), Encoding.UTF8);
+      string filePath = Path.Combine(path, fileName);
+      string expectedCoaString = System.IO.File.ReadAllText(Path.Combine(path, fileName), ComposFile.GetFileEncoding(filePath));
       var file = ComposFile.FromCoaString(expectedCoaString);
       string actualCoaString = file.ToCoaString();
       ComposFileTest.Compare(expectedCoaString, actualCoaString);

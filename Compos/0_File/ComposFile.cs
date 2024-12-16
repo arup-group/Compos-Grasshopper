@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Pipes;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using Compos_8_6;
 using ComposAPI.Helpers;
@@ -55,12 +58,32 @@ namespace ComposAPI {
       if (status == 1) {
         return null;
       }
-
-      // open temp coa file as ASCII string
-      string coaString = File.ReadAllText(tempCoa, Encoding.Default);
+      string coaString = File.ReadAllText(tempCoa, GetFileEncoding(tempCoa));
       var file = ComposFile.FromCoaString(coaString);
-
       return file;
+    }
+
+    public static Encoding GetFileEncoding(string filePath) {
+      Stream fileStream = File.OpenRead(filePath);
+      var Utf8EncodingVerifier = Encoding.GetEncoding("utf-8", new EncoderExceptionFallback(), new DecoderExceptionFallback());
+      using (var reader = new StreamReader(fileStream, Utf8EncodingVerifier,
+             detectEncodingFromByteOrderMarks: true, leaveOpen: true, bufferSize: 1024)) {
+        string detectedEncoding;
+        try {
+          while (!reader.EndOfStream) {
+            reader.ReadLine();
+          }
+          detectedEncoding = reader.CurrentEncoding.BodyName;
+        }
+        catch (Exception) {
+          // Failed to decode the file using the BOM/UT8. 
+          // Assume it's local ANSI
+          detectedEncoding = "ISO-8859-1";
+        }
+        // Rewind the stream
+        fileStream.Seek(0, SeekOrigin.Begin);
+        return Encoding.GetEncoding(detectedEncoding);
+      }
     }
 
     public void AddMember(IMember member) {

@@ -30,7 +30,8 @@ namespace ComposAPI {
         }
         if (value.QuantityInfo.UnitType != typeof(LengthUnit) & value.QuantityInfo.UnitType != typeof(RatioUnit)) {
           throw new ArgumentException("Centroid Position From Start must be either Length or Ratio");
-        } else {
+        }
+        else {
           m_CentroidPosFromStart = value;
         }
       }
@@ -43,7 +44,8 @@ namespace ComposAPI {
         }
         if (value.QuantityInfo.UnitType != typeof(LengthUnit) & value.QuantityInfo.UnitType != typeof(RatioUnit)) {
           throw new ArgumentException("Centroid Position From Top must be either Length or Ratio");
-        } else {
+        }
+        else {
           m_CentroidPosFromTop = value;
         }
       }
@@ -142,7 +144,8 @@ namespace ComposAPI {
       // static type for this constructor
       if (position == NotchPosition.Start) {
         WebOpeningType = OpeningType.Start_notch;
-      } else {
+      }
+      else {
         WebOpeningType = OpeningType.End_notch;
       }
       // inputs
@@ -204,12 +207,14 @@ namespace ComposAPI {
       }
       if (OpeningStiffeners == null) {
         parameters.Add("STIFFENER_NO");
-      } else {
+      }
+      else {
         parameters.Add("STIFFENER_YES");
 
         if (!OpeningStiffeners.IsBothSides | OpeningStiffeners.IsNotch) {
           parameters.Add("ONE_SIDE_STIFFENER");
-        } else {
+        }
+        else {
           parameters.Add("BOTH_SIDE_STIFFENER");
         }
 
@@ -219,7 +224,8 @@ namespace ComposAPI {
         if (OpeningStiffeners.IsNotch) {
           parameters.Add(CoaHelper.FormatSignificantFigures(OpeningStiffeners.TopStiffenerWidth.ToUnit(units.Section).Value, 6));
           parameters.Add(CoaHelper.FormatSignificantFigures(OpeningStiffeners.TopStiffenerThickness.ToUnit(units.Section).Value, 6));
-        } else {
+        }
+        else {
           parameters.Add(CoaHelper.FormatSignificantFigures(OpeningStiffeners.BottomStiffenerWidth.ToUnit(units.Section).Value, 6));
           parameters.Add(CoaHelper.FormatSignificantFigures(OpeningStiffeners.BottomStiffenerThickness.ToUnit(units.Section).Value, 6));
         }
@@ -235,14 +241,14 @@ namespace ComposAPI {
         case OpeningType.Start_notch:
         case OpeningType.End_notch:
         case OpeningType.Rectangular:
-          if (Width == null || Height == null) {
+          if (ComposUnitsHelper.IsEqual(Width, Length.Zero) || ComposUnitsHelper.IsEqual(Height, Length.Zero)) {
             return "Invalid Webopening";
           }
           size = Width.As(Height.Unit).ToString("g2") + "x" + Height.ToString("g2").Replace(" ", string.Empty);
           break;
 
         case OpeningType.Circular:
-          if (Diameter == null) {
+          if (ComposUnitsHelper.IsEqual(Diameter, Length.Zero)) {
             return "Invalid Webopening";
           }
           size = "Ø" + Diameter.ToString("g2").Replace(" ", string.Empty);
@@ -264,11 +270,13 @@ namespace ComposAPI {
           string x = "";
           if (CentroidPosFromStart == null) {
             return "Invalid Webopening";
-          } else {
+          }
+          else {
             if (CentroidPosFromStart.QuantityInfo.UnitType == typeof(LengthUnit)) {
               var l = (Length)CentroidPosFromStart;
               x = l.ToString("f2").Replace(" ", string.Empty);
-            } else {
+            }
+            else {
               var p = (Ratio)CentroidPosFromStart;
               x = p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
             }
@@ -277,11 +285,13 @@ namespace ComposAPI {
           string z = "";
           if (CentroidPosFromStart == null) {
             return "Invalid Webopening";
-          } else {
+          }
+          else {
             if (CentroidPosFromTop.QuantityInfo.UnitType == typeof(LengthUnit)) {
               var l = (Length)CentroidPosFromTop;
               z = l.ToString("g2").Replace(" ", string.Empty);
-            } else {
+            }
+            else {
               var p = (Ratio)CentroidPosFromTop;
               z = p.ToUnit(RatioUnit.Percent).ToString("g2").Replace(" ", string.Empty);
             }
@@ -331,12 +341,14 @@ namespace ComposAPI {
           opening.Diameter = new Length(Convert.ToDouble(parameters[3], noComma), units.Section);
           if (parameters[5].EndsWith("%")) {
             opening.CentroidPosFromStart = new Ratio(Convert.ToDouble(parameters[5].Replace("%", string.Empty), noComma), RatioUnit.Percent);
-          } else {
+          }
+          else {
             opening.CentroidPosFromStart = new Length(Convert.ToDouble(parameters[5], noComma), units.Length);
           }
           if (parameters[6].EndsWith("%")) {
             opening.CentroidPosFromTop = new Ratio(Convert.ToDouble(parameters[6].Replace("%", string.Empty), noComma), RatioUnit.Percent);
-          } else {
+          }
+          else {
             opening.CentroidPosFromTop = new Length(Convert.ToDouble(parameters[6], noComma), units.Section);
           }
           break;
@@ -346,7 +358,8 @@ namespace ComposAPI {
 
         if (parameters[8] == "ONE_SIDE_STIFFENER") {
           webOpeningStiffeners.IsBothSides = false;
-        } else {
+        }
+        else {
           webOpeningStiffeners.IsBothSides = true;
         }
 
@@ -356,7 +369,8 @@ namespace ComposAPI {
 
         if (parameters[2] == "LEFT_NOTCH" | parameters[2] == "RIGHT_NOTCH") {
           webOpeningStiffeners.IsNotch = true;
-        } else {
+        }
+        else {
           webOpeningStiffeners.IsNotch = false;
           webOpeningStiffeners.BottomStiffenerWidth = new Length(Convert.ToDouble(parameters[12], noComma), units.Section);
           webOpeningStiffeners.BottomStiffenerThickness = new Length(Convert.ToDouble(parameters[13], noComma), units.Section);
