@@ -20,3 +20,4 @@ ComposGHConverter/bin
 /ConverterTests/obj
 *.log
 /ComposGH.sln.DotSettings.user
+.idea
