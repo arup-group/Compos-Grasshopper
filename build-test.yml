@@ -178,8 +178,20 @@ steps:
     $yakRh7Name =  $yakCurrentVersName -Replace "rh6_27", "rh7_0"
     Rename-Item -Path $yakCurrentVersName -NewName $yakRh7Name
     ..\yak build --platform win
+    New-Item -ItemType Directory -Path $(System.DefaultWorkingDirectory)\results\yak
+    Copy-Item $yakCurrentVersName $(System.DefaultWorkingDirectory)\results\yak\$yakCurrentVersName
+    Copy-Item $yakRh7Name $(System.DefaultWorkingDirectory)\results\yak\$yakRh7Name
   displayName: Package yak
-  
+
+- task: PowerShell@2
+  displayName: 'List files in Yak folder'
+  inputs:
+    targetType: 'inline'
+    script: |
+      $yakFolder = "$(System.DefaultWorkingDirectory)/results/yak"
+      Write-Host "Listing files in folder: $yakFolder"
+      Get-ChildItem -Path $yakFolder -Filter "*.yak" | ForEach-Object { Write-Host "Found file: $($_.FullName)" }
+ 
 - publish: $(System.DefaultWorkingDirectory)\results\yak\
   displayName: Publish Yak Package to Azure
   artifact: Yak Package
