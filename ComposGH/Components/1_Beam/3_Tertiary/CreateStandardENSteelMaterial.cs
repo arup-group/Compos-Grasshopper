@@ -11,7 +11,7 @@ using OasysGH.Helpers;
 
 namespace ComposGH.Components {
   public class CreateStandardENSteelMaterial : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
+    // This region handles how the component is displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("e671a346-5989-47e0-aacc-920c77fdfb1f");
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;

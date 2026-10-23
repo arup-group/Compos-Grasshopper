@@ -24,7 +24,7 @@ namespace ComposGH.Components {
       Final
     }
 
-    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
+    // This region handles how the component is displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("5ea441b0-03aa-4aa9-a63f-356c1fa05427");
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;

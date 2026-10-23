@@ -51,21 +51,21 @@ namespace ComposGH.Helpers {
           object objPropertyValue;
           Type propertyType = property.PropertyType;
           try {
-            // check wether property is an guid - this we do not want to duplicate
+            // check whether property is a guid - this we do not want to duplicate
             if (propertyType.Equals(typeof(System.Guid))) {
               objPropertyValue = Guid.NewGuid();
             } else {
               objPropertyValue = property.GetValue(objSource, null);
             }
 
-            // check wether property is an interface
+            // check whether property is an interface
             if (propertyType.IsInterface) {
               if (objPropertyValue != null) {
                 propertyType = objPropertyValue.GetType();
               }
             }
 
-            // check wether property is an enumerable
+            // check whether property is an enumerable
             if (typeof(IEnumerable).IsAssignableFrom(propertyType) && !typeof(string).IsAssignableFrom(propertyType)) {
               if (objPropertyValue == null) {
                 property.SetValue(objTarget, null, null);
@@ -120,21 +120,21 @@ namespace ComposGH.Helpers {
           object objPropertyValue;
           Type propertyType = field.FieldType;
           try {
-            // check wether property is an guid - this we do not want to duplicate
+            // check whether property is a guid - this we do not want to duplicate
             if (propertyType.Equals(typeof(Guid))) {
               objPropertyValue = Guid.NewGuid();
             } else {
               objPropertyValue = field.GetValue(objSource);
             }
 
-            // check wether property is an interface
+            // check whether property is an interface
             if (propertyType.IsInterface) {
               if (objPropertyValue != null) {
                 propertyType = objPropertyValue.GetType();
               }
             }
 
-            // check wether property is an enumerable
+            // check whether property is an enumerable
             if (typeof(IEnumerable).IsAssignableFrom(propertyType) && !typeof(string).IsAssignableFrom(propertyType)) {
               if (objPropertyValue == null) {
                 field.SetValue(objTarget, null);

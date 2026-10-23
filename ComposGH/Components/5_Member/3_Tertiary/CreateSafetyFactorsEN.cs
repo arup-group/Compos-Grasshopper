@@ -11,7 +11,7 @@ using OasysGH.Helpers;
 
 namespace ComposGH.Components {
   public class CreateSafetyFactorsEN : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
+    // This region handles how the component is displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("842633ae-4a9c-4483-a606-02f1099fed0f");
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;

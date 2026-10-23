@@ -12,7 +12,7 @@ using OasysGH.Helpers;
 
 namespace ComposGH.Components {
   public class CreateDesignCode : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
+    // This region handles how the component is displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("f89b420e-a35e-4197-9c64-87504fe02b59");
     public override GH_Exposure Exposure => GH_Exposure.secondary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;

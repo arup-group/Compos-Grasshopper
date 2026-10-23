@@ -9,7 +9,7 @@ using OasysGH.Helpers;
 
 namespace ComposGH.Components {
   public class CreateRestraint : GH_OasysComponent {
-    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
+    // This region handles how the component is displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("82c87cde-f442-475b-9131-8f2974c42499");
     public override GH_Exposure Exposure => GH_Exposure.secondary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;

@@ -15,7 +15,7 @@ using OasysUnits.Units;
 
 namespace ComposGH.Components {
   public class BeamSectionProperties : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
+    // This region handles how the component is displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("93b27356-f92d-454f-b39d-5c7e2c607391");
 
     public override GH_Exposure Exposure => GH_Exposure.quarternary;

@@ -12,7 +12,7 @@ namespace ComposGH.Components {
   /// Component to check if a Compos model satisfies the chosen code
   /// </summary>
   public class CodeSatisfied : GH_OasysComponent, IGH_VariableParameterComponent {
-    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
+    // This region handles how the component is displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("c402ae16-b8c0-4203-86c7-43c3f2917075");
     public override GH_Exposure Exposure => GH_Exposure.primary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;
