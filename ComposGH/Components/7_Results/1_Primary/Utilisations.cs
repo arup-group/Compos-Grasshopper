@@ -10,7 +10,7 @@ using OasysGH.Helpers;
 
 namespace ComposGH.Components {
   public class Utilisations : GH_OasysComponent, IGH_VariableParameterComponent {
-    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
+    // This region handles how the component is displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("dcbd858c-6077-40a0-b109-ed0a3e2d7217");
     public override GH_Exposure Exposure => GH_Exposure.primary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;

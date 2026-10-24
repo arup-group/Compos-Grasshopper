@@ -8,7 +8,7 @@ using OasysGH.Components;
 
 namespace ComposGH.Components {
   public class CreateSafetyFactors : GH_OasysComponent {
-    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
+    // This region handles how the component is displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("c0df8c23-4aa1-439b-83a1-9b59078284c2");
     public override GH_Exposure Exposure => GH_Exposure.tertiary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;

@@ -25,7 +25,7 @@ namespace ComposGH.Components {
       Vibration
     }
 
-    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
+    // This region handles how the component is displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("afdb280d-8af4-4aba-b4c0-e9247b5b16d3");
     public override GH_Exposure Exposure => GH_Exposure.secondary;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;

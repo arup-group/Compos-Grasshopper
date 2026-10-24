@@ -16,7 +16,7 @@ using OasysUnits.Units;
 
 namespace ComposGH.Components {
   public class TransverseRebarLayout : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon including name, exposure level and icon
+    // This region handles how the component is displayed on the ribbon including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("4ecc12be-e364-40a1-95ec-9a61c7099334");
     public override GH_Exposure Exposure => GH_Exposure.tertiary | GH_Exposure.obscure;
     public override OasysPluginInfo PluginInfo => ComposGH.PluginInfo.Instance;

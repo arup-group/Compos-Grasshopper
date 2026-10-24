@@ -17,7 +17,7 @@ using Rhino.Geometry;
 
 namespace ComposGH.Components {
   public class CreateBeam : GH_OasysDropDownComponent {
-    // This region handles how the component in displayed on the ribbon
+    // This region handles how the component is displayed on the ribbon
     // including name, exposure level and icon
     public override Guid ComponentGuid => new Guid("060641e49fc648eb8d7699f2d6697111");
     public override GH_Exposure Exposure => GH_Exposure.primary;
