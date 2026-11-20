@@ -23,7 +23,7 @@ steps:
       command: 'restore'
       restoreSolution: 'ComposGH.sln'
 
-- powershell: aws s3 cp s3://oasys-installer-store/Compos/compos.msi .\compos.msi
+- powershell: aws s3 cp s3://oasys-installer-store/Compos/latest-release-branch compos.msi --exclude "*" --include Arup_Compos_x64_*.msi --recursive
   displayName: 'Download Compos'
   failOnStderr: true
 
