@@ -23,12 +23,12 @@ steps:
       command: 'restore'
       restoreSolution: 'ComposGH.sln'
 
-- powershell: aws s3 cp s3://oasys-installer-store/Compos/latest-release-branch .\compos.exe --exclude "*" --include Arup_Compos_x64_*.exe --recursive
+- powershell: aws s3 cp s3://oasys-installer-store/Compos/latest-release-branch .\compos.msi --exclude "*" --include Arup_Compos_x64_*.msi --recursive
   displayName: 'Download Compos'
   failOnStderr: true
 
 - powershell: |
-    $installerPath = $(ls -r $(Pipeline.Workspace)\compos.exe)
+    $installerPath = $(ls -r $(Pipeline.Workspace)\compos.msi)
     Write-output "Installer Path: ${installerPath}"
     $app = Start-Process ${installerPath} -ArgumentList '/norestart /quiet' -PassThru -Wait
     $app.WaitForExit()
